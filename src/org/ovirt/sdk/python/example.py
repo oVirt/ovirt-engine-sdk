@@ -8,7 +8,7 @@ from org.ovirt.sdk.python.api import API
 from org.ovirt.sdk.python.xml import params
 
 #create proxy
-api = API(url='http://localhost:8080', username='mpastern@qa.lab.tlv.redhat.com', password='maiklp85')
+api = API(url='http://host:port', username='user@domain', password='password')
 
 #list
 vms1 = api.vms.list()
