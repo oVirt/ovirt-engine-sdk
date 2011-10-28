@@ -49,7 +49,7 @@ def add(key, val, mode=Mode.RW):
     @param mode: is the access mode [r|rw]
     '''
     with lock:
-        if (mode is Mode.R and cache.has_key(key)):
+        if mode is Mode.R and cache.has_key(key):
             raise ImmutableError(key)
         else:
             cache[key] = __Item(val, mode)
@@ -62,10 +62,10 @@ def get(key, remove=False):
     @param remove: removes the value from cache [true|false]
     '''    
     with lock: 
-        if (cache.has_key(key)):
-            if (remove):
+        if cache.has_key(key):
+            if  remove:
                 item = cache[key]
-                if (item.mode is Mode.RW):
+                if item.mode is Mode.RW:
                     item = cache.pop(key)
                     return item.val
                 else: raise ImmutableError(key)
@@ -79,7 +79,7 @@ def remove(key):
     @param key: is the cache key
     '''    
     with lock: 
-        if (cache.has_key(key)):
+        if cache.has_key(key):
             item = cache[key]
             if (item.mode is Mode.RW):
                 cache.pop(key)

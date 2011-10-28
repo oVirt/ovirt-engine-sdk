@@ -13,13 +13,13 @@ api = API(url='http://host:port', username='user@domain', password='password')
 vms1 = api.vms.list()
 
 #list by query
-vms2 = api.vms.list(query = 'name=python_vm')
+vms2 = api.vms.list(query='name=python_vm')
 
 #search vms by property constraint
 vms3 = api.vms.list(memory=1073741824)
 
 #update resource
-vm1 = api.vms.get(name = 'python_vm')
+vm1 = api.vms.get(name='python_vm')
 
 mem = vm1.memory
 vm1.description = 'updated_desc'
@@ -27,16 +27,16 @@ vm2 = vm1.update()
 vm3 = api.vms.get(name='python_vm')
 
 #list by constraints
-vms4 = api.vms.list(name = 'pythond_sdk_poc2')
+vms4 = api.vms.list(name='pythond_sdk_poc2')
 
 #get by name
-vm4 = api.vms.get(name = 'pythond_sdk_poc2')
+vm4 = api.vms.get(name='pythond_sdk_poc2')
 
 
 #get by constraints
-vm5 = api.vms.get(id = '02f0f4a4-9738-4731-83c4-293f3f734782')
+vm5 = api.vms.get(id='02f0f4a4-9738-4731-83c4-293f3f734782')
 
-if(vm4 is None):
+if vm4 is None:
     
     #add vm
     cluster = params.Cluster(name='Default_iscsi')

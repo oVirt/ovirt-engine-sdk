@@ -45,7 +45,7 @@ class Proxy():
         try:
             conn.doRequest(method=method, url=url, body=body, headers=headers)
             response = conn.getResponse()
-            if (response.status < 400):
+            if response.status < 400:
                 res = response.read()
                 return params.parseString(res) if res is not None and res is not '' else res
             else:

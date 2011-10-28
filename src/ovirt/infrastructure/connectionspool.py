@@ -20,15 +20,15 @@ class ConnectionsPool(object):
         self.__rlock = thread.allocate_lock()
            
         for _ in range(count): 
-            self.__free_connetcions.put(item = Connection(url = url, \
-                                                          port = port, \
-                                                          key_file = key_file, \
-                                                          cert_file = cert_file, \
-                                                          strict = strict, \
-                                                          timeout = timeout, \
-                                                          username = username, \
-                                                          password = password,
-                                                          manager = self))
+            self.__free_connetcions.put(item = Connection(url=url, \
+                                                          port=port, \
+                                                          key_file=key_file, \
+                                                          cert_file=cert_file, \
+                                                          strict=strict, \
+                                                          timeout=timeout, \
+                                                          username=username, \
+                                                          password=password,
+                                                          manager=self))
     def getConnection(self, get_ttl=100):
 #        try:
             with self.__plock:

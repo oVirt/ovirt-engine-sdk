@@ -76,12 +76,12 @@ class ConnectionError(Exception):
 class RequestError(Exception):
     def __init__(self, response):
         f_detail = params.parseString(response.read()) 
-        if (isinstance(f_detail, params.Action) and f_detail.fault is not None):            
+        if isinstance(f_detail, params.Action) and f_detail.fault is not None:            
             #self.reason = f_detail.fault.reason
             self.detail = f_detail.fault.detail
         else:
             #self.reason = response.reason
-            if(f_detail is not None):            
+            if f_detail is not None:            
                 self.detail = f_detail.detail
         self.reason = response.reason             
         self.status = response.status        

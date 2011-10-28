@@ -4,11 +4,11 @@ Created on Oct 23, 2011
 @author: mpastern
 '''
 from ovirt.xml import params
-from ovirt.infrastructure.common import Base
 from ovirt.utils.urlhelper import UrlHelper
 from ovirt.utils.filterhelper import FilterHelper
 from ovirt.utils.parsehelper import ParseHelper
 from ovirt.utils.searchhelper import SearchHelper
+from ovirt.infrastructure.common import Base
 
 ############ GENERATED CODE ############
 
@@ -60,7 +60,7 @@ class NIC(params.NIC, Base):
         '''
         url = '/api/vms/{vm:id}/nics/{nic:id}'
         
-        if ((force or grace_period) is not False):            
+        if (force or grace_period) is not False:            
             action = params.Action(force=force, grace_period=grace_period)                
             result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(), 
                                                                          '{nic:id}': self.get_id()}), 
@@ -87,7 +87,7 @@ class NICs(Base):
         
         url = '/api/vms/{vm:id}/nics'
         
-        if(name is not None): kwargs['name']=name        
+        if name is not None: kwargs['name']=name        
         result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_nic()
 
         return NIC(self.parentclass, 
@@ -165,7 +165,7 @@ class VM(params.VM, Base):
         '''
         url = '/api/vms/{vm:id}'
         
-        if ((force or grace_period) is not False):            
+        if (force or grace_period) is not False:            
             action = params.Action(force=force, grace_period=grace_period)                
             result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}), 
                                              body=ParseHelper.toXml(action))
