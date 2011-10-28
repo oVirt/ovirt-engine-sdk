@@ -5,9 +5,8 @@ Created on Oct 17, 2011
 '''
 
 import socket
-
-from org.ovirt.sdk.python.xml import params
-from org.ovirt.sdk.python.infrastructure.errors import ConnectionError, RequestError
+from ovirt.infrastructure.errors import RequestError, ConnectionError
+from ovirt.xml import params
 
 class Proxy():
     '''

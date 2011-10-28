@@ -3,12 +3,11 @@ Created on Oct 5, 2011
 
 @author: mpastern
 '''
-
-from org.ovirt.sdk.python.infrastructure.connectionspool import ConnectionsPool
-from org.ovirt.sdk.python.infrastructure.brokers import VMs
-from org.ovirt.sdk.python.infrastructure.proxy import Proxy
-from org.ovirt.sdk.python.infrastructure import contextmanager
-from org.ovirt.sdk.python.infrastructure.contextmanager import Mode
+from ovirt.infrastructure import contextmanager
+from ovirt.infrastructure.connectionspool import ConnectionsPool
+from ovirt.infrastructure.proxy import Proxy
+from ovirt.infrastructure.contextmanager import Mode
+from ovirt.infrastructure.brokers import VMs
 
 
 class API(): 

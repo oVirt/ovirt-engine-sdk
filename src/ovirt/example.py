@@ -3,9 +3,8 @@ Created on Oct 5, 2011
 
 @author: mpastern
 '''
-
-from org.ovirt.sdk.python.api import API
-from org.ovirt.sdk.python.xml import params
+from ovirt.api import API
+from ovirt.xml import params
 
 #create proxy
 api = API(url='http://host:port', username='user@domain', password='password')
@@ -68,5 +67,6 @@ if(vm4 is None):
 
     #result = vm.start()
     
-#delete the vm    
-result = vm6.delete()
+#delete the vm
+else:    
+    result = vm4.delete()

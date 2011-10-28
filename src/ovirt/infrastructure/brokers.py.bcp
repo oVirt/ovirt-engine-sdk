@@ -6,13 +6,12 @@ Created on Oct 23, 2011
 
 ############ GENERATED CODE ############
 
-from org.ovirt.sdk.python.utils.searchhelper import SearchHelper
-from org.ovirt.sdk.python.utils.parsehelper import ParseHelper
-from org.ovirt.sdk.python.infrastructure.common import Base   
-from org.ovirt.sdk.python.utils.filterhelper import FilterHelper
-from org.ovirt.sdk.python.utils.urlhelper import UrlHelper
-from org.ovirt.sdk.python.xml import params
-
+from ovirt.xml import params
+from ovirt.infrastructure.common import Base
+from ovirt.utils.urlhelper import UrlHelper
+from ovirt.utils.filterhelper import FilterHelper
+from ovirt.utils.parsehelper import ParseHelper
+from ovirt.utils.searchhelper import SearchHelper
 
 class NIC(params.NIC, Base):
     '''

@@ -3,7 +3,7 @@ Created on Oct 24, 2011
 
 @author: mpastern
 '''
-from org.ovirt.sdk.python.utils.searchhelper import SearchHelper
+from ovirt.utils.searchhelper import SearchHelper
 
 class FilterHelper():
     @staticmethod

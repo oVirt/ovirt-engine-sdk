@@ -3,8 +3,7 @@ Created on Oct 23, 2011
 
 @author: mpastern
 '''
-
-from org.ovirt.sdk.python.infrastructure import contextmanager
+from ovirt.infrastructure import contextmanager
 
 class Base(object):
     ''' Returns the proxy to connections pool '''
@@ -12,7 +11,7 @@ class Base(object):
 #FIXME: consider creating new proxy for each call so it will be executed
         #on separate thread heap space
         
-#FIXME: (URGENT) manage cache peer API instance  
+#FIXME: manage cache peer API instance  
         return contextmanager.get('proxy')
     
     def __getattr__(self, item):
