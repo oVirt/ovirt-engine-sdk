@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Tue Oct 18 22:06:39 2011 by generateDS.py version 2.6a.
+# Generated Tue Nov  8 17:23:18 2011 by generateDS.py version 2.6a.
 #
 ## IMPORTANT!!!
 
@@ -10,7 +10,6 @@
 # in a few places as denoted by the NOT_GENERATED comments
 
 #FIXME: fix xsd so no manual modifications will be needed
-
 
 import sys
 import getopt
@@ -413,9 +412,9 @@ class Link(GeneratedsSuper):
             outfile.write(' rel=%s' % (self.gds_format_string(quote_attrib(self.rel).encode(ExternalEncoding), input_name='rel'), ))
     def exportChildren(self, outfile, level, namespace_='', name_='Link', fromsubclass_=False):
         if self.request:
-            self.request.export(outfile, level, namespace_, name_='request', )
+            self.request.export(outfile, level, namespace_, name_='request')
         if self.response:
-            self.response.export(outfile, level, namespace_, name_='response', )
+            self.response.export(outfile, level, namespace_, name_='response')
     def hasContent_(self):
         if (
             self.request is not None or
@@ -8130,6 +8129,88 @@ class IP(GeneratedsSuper):
 # end class IP
 
 
+class IPs(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, total=None, active=None, ip=None):
+        super(IPs, self).__init__(total, active, )
+        if ip is None:
+            self.ip = []
+        else:
+            self.ip = ip
+    def factory(*args_, **kwargs_):
+        if IPs.subclass:
+            return IPs.subclass(*args_, **kwargs_)
+        else:
+            return IPs(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_ip(self): return self.ip
+    def set_ip(self, ip): self.ip = ip
+    def add_ip(self, value): self.ip.append(value)
+    def insert_ip(self, index, value): self.ip[index] = value
+    def export(self, outfile, level, namespace_='', name_='IPs', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='IPs')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='IPs'):
+        super(IPs, self).exportAttributes(outfile, level, already_processed, namespace_, name_='IPs')
+    def exportChildren(self, outfile, level, namespace_='', name_='IPs', fromsubclass_=False):
+        super(IPs, self).exportChildren(outfile, level, namespace_, name_, True)
+        for ip_ in self.ip:
+            ip_.export(outfile, level, namespace_, name_='ip')
+    def hasContent_(self):
+        if (
+            self.ip or
+            super(IPs, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='IPs'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(IPs, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(IPs, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('ip=[\n')
+        level += 1
+        for ip_ in self.ip:
+            showIndent(outfile, level)
+            outfile.write('model_.ip(\n')
+            ip_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(IPs, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'ip':
+            obj_ = IP.factory()
+            obj_.build(child_)
+            self.ip.append(obj_)
+        super(IPs, self).buildChildren(child_, node, nodeName_, True)
+# end class IPs
+
+
 class MAC(GeneratedsSuper):
     subclass = None
     superclass = None
@@ -10780,16 +10861,16 @@ class VmMemoryPolicy(GeneratedsSuper):
 class GuestInfo(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, ip=None):
-        self.ip = ip
+    def __init__(self, ips=None):
+        self.ips = ips
     def factory(*args_, **kwargs_):
         if GuestInfo.subclass:
             return GuestInfo.subclass(*args_, **kwargs_)
         else:
             return GuestInfo(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_ip(self): return self.ip
-    def set_ip(self, ip): self.ip = ip
+    def get_ips(self): return self.ips
+    def set_ips(self, ips): self.ips = ips
     def export(self, outfile, level, namespace_='', name_='GuestInfo', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -10805,11 +10886,11 @@ class GuestInfo(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GuestInfo'):
         pass
     def exportChildren(self, outfile, level, namespace_='', name_='GuestInfo', fromsubclass_=False):
-        if self.ip:
-            self.ip.export(outfile, level, namespace_, name_='ip')
+        if self.ips:
+            self.ips.export(outfile, level, namespace_, name_='ips')
     def hasContent_(self):
         if (
-            self.ip is not None
+            self.ips is not None
             ):
             return True
         else:
@@ -10822,10 +10903,10 @@ class GuestInfo(GeneratedsSuper):
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
         pass
     def exportLiteralChildren(self, outfile, level, name_):
-        if self.ip is not None:
+        if self.ips is not None:
             showIndent(outfile, level)
-            outfile.write('ip=model_.IP(\n')
-            self.ip.exportLiteral(outfile, level, name_='ip')
+            outfile.write('ips=model_.ips(\n')
+            self.ips.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -10836,10 +10917,10 @@ class GuestInfo(GeneratedsSuper):
     def buildAttributes(self, node, attrs, already_processed):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'ip':
-            obj_ = IP.factory()
+        if nodeName_ == 'ips':
+            obj_ = IPs.factory()
             obj_.build(child_)
-            self.set_ip(obj_)
+            self.set_ips(obj_)
 # end class GuestInfo
 
 
@@ -15617,7 +15698,6 @@ def parseString(inString):
 #    rootObj.export(sys.stdout, 0, name_="link",
 #        namespacedef_='')
     # End NOT_GENERATED
-    
     return rootObj
 
 
@@ -15632,8 +15712,8 @@ def parseLiteral(inFileName):
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('#from xml import *\n\n')
-    sys.stdout.write('import xml as model_\n\n')
+    sys.stdout.write('#from params import *\n\n')
+    sys.stdout.write('import params as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')
@@ -15717,6 +15797,7 @@ __all__ = [
     "HostStorage",
     "Hosts",
     "IP",
+    "IPs",
     "IscsiDetails",
     "KSM",
     "Link",
@@ -15799,7 +15880,7 @@ __all__ = [
     ]
 
 # Begin NOT_GENERATED
-__rootClassMap = {
+_rootClassMap = {
                     "action"                        : Action,
                     "actions"                       : Actions,
                     "bonding"                       : Bonding,
@@ -15851,6 +15932,7 @@ __rootClassMap = {
                     "host_states"                   : HostStates,
                     "host_storage"                  : HostStorage,
                     "ip"                            : IP,
+                    "ips"                           : IPs,
                     "iscsi"                         : IscsiDetails,
                     "ksm"                           : KSM,
                     "link"                          : Link,
@@ -15941,5 +16023,5 @@ def findRootClass(rootTag):
     which one it actually is.  This function will map the first
     tag in the XML (i.e. the root) to an internal class.
     """
-    return __rootClassMap.get(rootTag)
+    return _rootClassMap.get(rootTag)
 # End NOT_GENERATED
