@@ -75,19 +75,25 @@ class ConnectionError(Exception):
         
 class RequestError(Exception):
     def __init__(self, response):
-        f_detail = params.parseString(response.read()) 
-        if isinstance(f_detail, params.Action) and f_detail.fault is not None:            
-            #self.reason = f_detail.fault.reason
-            self.detail = f_detail.fault.detail
-        else:
-            #self.reason = response.reason
-            if f_detail is not None:            
-                self.detail = f_detail.detail
+        res = response.read()
+        self.detail = None
+        print 'res: ' + res
+        if res is not None and str(res) is not '' and str(res).find('Error report') != -1:
+            self.detail = res
+        elif res is not None:
+            f_detail = params.parseString(res) 
+            if isinstance(f_detail, params.Action) and f_detail.fault is not None:            
+                #self.reason = f_detail.fault.reason
+                self.detail = f_detail.fault.detail
+            else:
+                #self.reason = response.reason
+                if f_detail is not None:            
+                    self.detail = f_detail.detail
         self.reason = response.reason             
         self.status = response.status        
         Exception.__init__(self, '[ERROR]::oVirt API request failure.' + self.__str__())
     def __str__(self):
-        return '\r\nstatus: ' + str(self.status) + '\r\nreason: ' + self.reason + '\r\ndetail: ' + self.detail
+        return '\r\nstatus: ' + str(self.status) + '\r\nreason: ' + self.reason + '\r\ndetail: ' + str(self.detail)
     
 class ImmutableError(Exception):
     def __init__(self, key):

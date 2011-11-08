@@ -7,7 +7,7 @@ from ovirt.infrastructure import contextmanager
 from ovirt.infrastructure.connectionspool import ConnectionsPool
 from ovirt.infrastructure.proxy import Proxy
 from ovirt.infrastructure.contextmanager import Mode
-from ovirt.infrastructure.brokers import VMs
+from ovirt.infrastructure.brokers import *
 
 
 class API(): 
@@ -29,4 +29,18 @@ class API():
 ############ GENERATED CODE FROM HERE############
 
         #TODO: add here generated root collections
+        #self.vms = VMs()        self.capabilities = Capabilities()
+        self.clusters = Clusters()
+        self.datacenters = DataCenters()
+        self.domains = Domains()
+        self.events = Events()
+        self.groups = Groups()
+        self.hosts = Hosts()
+        self.networks = Networks()
+        self.roles = Roles()
+        self.storagedomains = StorageDomains()
+        self.tags = Tags()
+        self.templates = Templates()
+        self.users = Users()
+        self.vmpools = VmPools()
         self.vms = VMs()

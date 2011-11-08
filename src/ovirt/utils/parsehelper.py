@@ -5,6 +5,7 @@ Created on Oct 18, 2011
 '''
 
 import StringIO
+from ovirt.xml import params
 
 class ParseHelper():
     '''Provides parsing capabilities'''
@@ -13,7 +14,14 @@ class ParseHelper():
     def toXml(entity):
         '''Parse entity to corresponding XML representation'''       
         output = StringIO.StringIO()
-        entity.export(output, 0, name_=type(entity).__name__.lower())
+
+        type_name = type(entity).__name__.lower()
+        for k,v in params._rootClassMap.items():
+            if v.__name__.lower() == type_name:
+                type_name = k
+                break
+        
+        entity.export(output, 0, name_=type_name)
         return output.getvalue()
     
     @staticmethod
