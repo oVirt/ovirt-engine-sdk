@@ -1,8 +1,7 @@
 # ovirt-engine global ignore list
 ###########################
-
 # mvn folders
-###########################
+############################
 target
 
 # build-time files
@@ -24,3 +23,4 @@ target
 # Py compiled files
 ###########################
 *.pyc
+
