@@ -1,8 +1,15 @@
-'''
-Created on Oct 5, 2011
 
-@author: mpastern
+
+########################################
+############ GENERATED CODE ############
+########################################
+
 '''
+Generated at: 2011-11-09 13:08:18.516421
+
+@author: mpastern@redhat.com
+'''
+
 from ovirt.infrastructure import contextmanager
 from ovirt.infrastructure.connectionspool import ConnectionsPool
 from ovirt.infrastructure.proxy import Proxy
@@ -10,12 +17,11 @@ from ovirt.infrastructure.contextmanager import Mode
 from ovirt.infrastructure.brokers import *
 
 
-class API(): 
-    
+class API():
     #TODO: - read .ini configuration
-    
+
     def __init__(self, url, username, password, key_file=None, cert_file=None, port=None, strict=None, timeout=60):
-        contextmanager.add('proxy', 
+        contextmanager.add('proxy',
                            Proxy(ConnectionsPool(url=url,
                                                  username=username,
                                                  password=password,
@@ -25,11 +31,8 @@ class API():
                                                  strict=strict,
                                                  timeout=timeout)),
                            Mode.R)
-        
-############ GENERATED CODE FROM HERE############
 
-        #TODO: add here generated root collections
-        #self.vms = VMs()        self.capabilities = Capabilities()
+        self.capabilities = Capabilities()
         self.clusters = Clusters()
         self.datacenters = DataCenters()
         self.domains = Domains()
