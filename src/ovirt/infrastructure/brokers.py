@@ -1,7 +1,11 @@
+
+
+########################################
 ############ GENERATED CODE ############
+########################################
 
 '''
-Generated at: 2011-11-08 17:59:01.959332
+Generated at: 2011-11-09 13:08:18.363238
 
 @author: mpastern@redhat.com
 '''
@@ -591,7 +595,7 @@ class GroupsRolePermit(params.Permit, Base):
                                              headers={'Content-type':None})
         return result
 
-class HostNIC(params.NIC, Base):
+class HostNIC(params.HostNIC, Base):
     def __init__(self, host, nic):
         self.parentclass = host
         self.superclass  =  nic
@@ -788,7 +792,7 @@ class HostStatistics(Base):
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
 
-class HostStorage(params.Storage, Base):
+class HostStorage(params.HostStorage, Base):
     def __init__(self, host, storage):
         self.parentclass = host
         self.superclass  =  storage
