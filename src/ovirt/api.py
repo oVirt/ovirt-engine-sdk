@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-09 20:31:32.095332
+Generated at: 2011-11-09 21:26:56.486730
 
 @author: mpastern@redhat.com
 '''
@@ -14,7 +14,21 @@ from ovirt.infrastructure import contextmanager
 from ovirt.infrastructure.connectionspool import ConnectionsPool
 from ovirt.infrastructure.proxy import Proxy
 from ovirt.infrastructure.contextmanager import Mode
-from ovirt.infrastructure.brokers import *
+from ovirt.infrastructure.brokers import Capabilities
+from ovirt.infrastructure.brokers import Clusters
+from ovirt.infrastructure.brokers import DataCenters
+from ovirt.infrastructure.brokers import Domains
+from ovirt.infrastructure.brokers import Events
+from ovirt.infrastructure.brokers import Groups
+from ovirt.infrastructure.brokers import Hosts
+from ovirt.infrastructure.brokers import Networks
+from ovirt.infrastructure.brokers import Roles
+from ovirt.infrastructure.brokers import StorageDomains
+from ovirt.infrastructure.brokers import Tags
+from ovirt.infrastructure.brokers import Templates
+from ovirt.infrastructure.brokers import Users
+from ovirt.infrastructure.brokers import VMs
+from ovirt.infrastructure.brokers import VmPools
 
 
 class API():
