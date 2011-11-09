@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-09 20:31:30.499745
+Generated at: 2011-11-09 22:20:53.164266
 
 @author: mpastern@redhat.com
 '''
@@ -61,10 +61,10 @@ class Cluster(params.Cluster, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Cluster:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Cluster:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -91,19 +91,19 @@ class ClusterNetwork(params.Network, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Cluster:id}' : self.parentclass.get_id(),
-                                                                         '{Network:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                         '{network:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Cluster:id}' : self.parentclass.get_id(),
-                                                                         '{Network:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                         '{network:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
     def update(self):
         url = '/api/clusters/{cluster:id}/networks/{network:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{Cluster:id}' : self.parentclass.get_id(),
+        result = self._getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{network:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass))
 
@@ -111,15 +111,15 @@ class ClusterNetwork(params.Network, Base):
 
 class ClusterNetworks(Base):
  
-    def __init__(self, Cluster):
-        self.parentclass = Cluster
+    def __init__(self, cluster):
+        self.parentclass = cluster
 
-    def add(self, Network):
+    def add(self, network):
 
         url = '/api/clusters/{cluster:id}/networks'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{Cluster:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Network))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(network))
 
         return ClusterNetwork(self.parentclass, result)
 
@@ -128,7 +128,7 @@ class ClusterNetworks(Base):
         url = '/api/clusters/{cluster:id}/networks'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Cluster:id}': self.parentclass.get_id()})).get_clusternetwork()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_network()
 
         return ClusterNetwork(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -141,7 +141,7 @@ class ClusterNetworks(Base):
 
         url = '/api/clusters/{cluster:id}/networks'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Cluster:id}': self.parentclass.get_id()})).get_clusternetwork()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_network()
 
         return ParseHelper.toSubCollection(ClusterNetwork,
                                            self.parentclass,
@@ -163,26 +163,26 @@ class ClusterPermission(params.Permission, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Cluster:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Cluster:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class ClusterPermissions(Base):
  
-    def __init__(self, Cluster):
-        self.parentclass = Cluster
+    def __init__(self, cluster):
+        self.parentclass = cluster
 
-    def add(self, Permission):
+    def add(self, permission):
 
         url = '/api/clusters/{cluster:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{Cluster:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Permission))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permission))
 
         return ClusterPermission(self.parentclass, result)
 
@@ -191,7 +191,7 @@ class ClusterPermissions(Base):
         url = '/api/clusters/{cluster:id}/permissions'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Cluster:id}': self.parentclass.get_id()})).get_clusterpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_permission()
 
         return ClusterPermission(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -204,7 +204,7 @@ class ClusterPermissions(Base):
 
         url = '/api/clusters/{cluster:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Cluster:id}': self.parentclass.get_id()})).get_clusterpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_permission()
 
         return ParseHelper.toSubCollection(ClusterPermission,
                                            self.parentclass,
@@ -214,11 +214,11 @@ class Clusters(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, Cluster):
+    def add(self, cluster):
         url = '/api/clusters'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(Cluster))
+                                      body=ParseHelper.toXml(cluster))
         return Cluster(result)
 
     def get(self, name='*', **kwargs):
@@ -260,10 +260,10 @@ class DataCenter(params.DataCenter, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{DataCenter:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{DataCenter:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -290,26 +290,26 @@ class DataCenterPermission(params.Permission, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{DataCenter:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{DataCenter:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class DataCenterPermissions(Base):
  
-    def __init__(self, DataCenter):
-        self.parentclass = DataCenter
+    def __init__(self, datacenter):
+        self.parentclass = datacenter
 
-    def add(self, Permission):
+    def add(self, permission):
 
         url = '/api/datacenters/{datacenter:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{DataCenter:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Permission))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permission))
 
         return DataCenterPermission(self.parentclass, result)
 
@@ -318,7 +318,7 @@ class DataCenterPermissions(Base):
         url = '/api/datacenters/{datacenter:id}/permissions'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{DataCenter:id}': self.parentclass.get_id()})).get_datacenterpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_permission()
 
         return DataCenterPermission(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -331,7 +331,7 @@ class DataCenterPermissions(Base):
 
         url = '/api/datacenters/{datacenter:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{DataCenter:id}': self.parentclass.get_id()})).get_datacenterpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_permission()
 
         return ParseHelper.toSubCollection(DataCenterPermission,
                                            self.parentclass,
@@ -353,12 +353,12 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{DataCenter:id}' : self.parentclass.get_id(),
-                                                                         '{StorageDomain:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+                                                                         '{storagedomain:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{DataCenter:id}' : self.parentclass.get_id(),
-                                                                         '{StorageDomain:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+                                                                         '{storagedomain:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -367,8 +367,8 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{DataCenter:id}' : self.parentclass.get_id(),
-                                                                     '{StorageDomain:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+                                                                     '{storagedomain:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
 
         return result
@@ -378,23 +378,23 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{DataCenter:id}' : self.parentclass.get_id(),
-                                                                     '{StorageDomain:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+                                                                     '{storagedomain:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
 
         return result
 
 class DataCenterStorageDomains(Base):
  
-    def __init__(self, DataCenter):
-        self.parentclass = DataCenter
+    def __init__(self, datacenter):
+        self.parentclass = datacenter
 
-    def add(self, StorageDomain):
+    def add(self, storagedomain):
 
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{DataCenter:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(StorageDomain))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(storagedomain))
 
         return DataCenterStorageDomain(self.parentclass, result)
 
@@ -403,7 +403,7 @@ class DataCenterStorageDomains(Base):
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{DataCenter:id}': self.parentclass.get_id()})).get_datacenterstoragedomain()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_storage_domain()
 
         return DataCenterStorageDomain(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -416,7 +416,7 @@ class DataCenterStorageDomains(Base):
 
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{DataCenter:id}': self.parentclass.get_id()})).get_datacenterstoragedomain()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_storage_domain()
 
         return ParseHelper.toSubCollection(DataCenterStorageDomain,
                                            self.parentclass,
@@ -426,11 +426,11 @@ class DataCenters(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, DataCenter):
+    def add(self, datacenter):
         url = '/api/datacenters'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(DataCenter))
+                                      body=ParseHelper.toXml(datacenter))
         return DataCenter(result)
 
     def get(self, name='*', **kwargs):
@@ -480,15 +480,15 @@ class DomainGroup(params.Group, Base):
 
 class DomainGroups(Base):
  
-    def __init__(self, Domain):
-        self.parentclass = Domain
+    def __init__(self, domain):
+        self.parentclass = domain
 
     def get(self, name='None', **kwargs):
 
         url = '/api/domains/{domain:id}/groups'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Domain:id}': self.parentclass.get_id()})).get_domaingroup()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_group()
 
         return DomainGroup(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -501,7 +501,7 @@ class DomainGroups(Base):
 
         url = '/api/domains/{domain:id}/groups'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Domain:id}': self.parentclass.get_id()})).get_domaingroup()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_group()
 
         return ParseHelper.toSubCollection(DomainGroup,
                                            self.parentclass,
@@ -520,15 +520,15 @@ class DomainUser(params.User, Base):
 
 class DomainUsers(Base):
  
-    def __init__(self, Domain):
-        self.parentclass = Domain
+    def __init__(self, domain):
+        self.parentclass = domain
 
     def get(self, name='None', **kwargs):
 
         url = '/api/domains/{domain:id}/users'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Domain:id}': self.parentclass.get_id()})).get_domainuser()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_user()
 
         return DomainUser(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -541,7 +541,7 @@ class DomainUsers(Base):
 
         url = '/api/domains/{domain:id}/users'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Domain:id}': self.parentclass.get_id()})).get_domainuser()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_user()
 
         return ParseHelper.toSubCollection(DomainUser,
                                            self.parentclass,
@@ -626,10 +626,10 @@ class Group(params.Group, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Group:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Group:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -649,26 +649,26 @@ class GroupPermission(params.Permission, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Group:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Group:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class GroupPermissions(Base):
  
-    def __init__(self, Group):
-        self.parentclass = Group
+    def __init__(self, group):
+        self.parentclass = group
 
-    def add(self, Permission):
+    def add(self, permission):
 
         url = '/api/groups/{group:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{Group:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Permission))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permission))
 
         return GroupPermission(self.parentclass, result)
 
@@ -677,7 +677,7 @@ class GroupPermissions(Base):
         url = '/api/groups/{group:id}/permissions'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Group:id}': self.parentclass.get_id()})).get_grouppermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_permission()
 
         return GroupPermission(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -690,7 +690,7 @@ class GroupPermissions(Base):
 
         url = '/api/groups/{group:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Group:id}': self.parentclass.get_id()})).get_grouppermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_permission()
 
         return ParseHelper.toSubCollection(GroupPermission,
                                            self.parentclass,
@@ -712,26 +712,26 @@ class GroupRole(params.Role, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Group:id}' : self.parentclass.get_id(),
-                                                                         '{Role:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
+                                                                         '{role:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Group:id}' : self.parentclass.get_id(),
-                                                                         '{Role:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
+                                                                         '{role:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class GroupRoles(Base):
  
-    def __init__(self, Group):
-        self.parentclass = Group
+    def __init__(self, group):
+        self.parentclass = group
 
-    def add(self, Role):
+    def add(self, role):
 
         url = '/api/groups/{group:id}/roles'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{Group:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Role))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(role))
 
         return GroupRole(self.parentclass, result)
 
@@ -740,7 +740,7 @@ class GroupRoles(Base):
         url = '/api/groups/{group:id}/roles'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Group:id}': self.parentclass.get_id()})).get_grouprole()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_role()
 
         return GroupRole(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -753,7 +753,7 @@ class GroupRoles(Base):
 
         url = '/api/groups/{group:id}/roles'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Group:id}': self.parentclass.get_id()})).get_grouprole()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_role()
 
         return ParseHelper.toSubCollection(GroupRole,
                                            self.parentclass,
@@ -775,26 +775,26 @@ class GroupTag(params.Tag, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Group:id}' : self.parentclass.get_id(),
-                                                                         '{Tag:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
+                                                                         '{tag:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Group:id}' : self.parentclass.get_id(),
-                                                                         '{Tag:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
+                                                                         '{tag:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class GroupTags(Base):
  
-    def __init__(self, Group):
-        self.parentclass = Group
+    def __init__(self, group):
+        self.parentclass = group
 
-    def add(self, Tag):
+    def add(self, tag):
 
         url = '/api/groups/{group:id}/tags'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{Group:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Tag))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(tag))
 
         return GroupTag(self.parentclass, result)
 
@@ -803,7 +803,7 @@ class GroupTags(Base):
         url = '/api/groups/{group:id}/tags'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Group:id}': self.parentclass.get_id()})).get_grouptag()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_tag()
 
         return GroupTag(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -816,7 +816,7 @@ class GroupTags(Base):
 
         url = '/api/groups/{group:id}/tags'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Group:id}': self.parentclass.get_id()})).get_grouptag()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_tag()
 
         return ParseHelper.toSubCollection(GroupTag,
                                            self.parentclass,
@@ -826,11 +826,11 @@ class Groups(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, Group):
+    def add(self, group):
         url = '/api/groups'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(Group))
+                                      body=ParseHelper.toXml(group))
         return Group(result)
 
     def get(self, name='*', **kwargs):
@@ -868,12 +868,12 @@ class GroupsRolePermit(params.Permit, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{GroupsRole:id}' : self.parentclass.get_id(),
-                                                                         '{Permit:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{groupsrole:id}' : self.parentclass.get_id(),
+                                                                         '{permit:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{GroupsRole:id}' : self.parentclass.get_id(),
-                                                                         '{Permit:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{groupsrole:id}' : self.parentclass.get_id(),
+                                                                         '{permit:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -901,10 +901,10 @@ class Host(params.Host, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Host:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Host:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -913,7 +913,7 @@ class Host(params.Host, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{Host:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -922,7 +922,7 @@ class Host(params.Host, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{Host:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -931,7 +931,7 @@ class Host(params.Host, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{Host:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -940,7 +940,7 @@ class Host(params.Host, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{Host:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -949,7 +949,7 @@ class Host(params.Host, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{Host:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -958,7 +958,7 @@ class Host(params.Host, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{Host:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -967,7 +967,7 @@ class Host(params.Host, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{Host:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -976,7 +976,7 @@ class Host(params.Host, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{Host:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -985,7 +985,7 @@ class Host(params.Host, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='GET',
-                                          url=UrlHelper.replace(url, {'{Host:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -1012,12 +1012,12 @@ class HostNIC(params.HostNIC, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Host:id}' : self.parentclass.get_id(),
-                                                                         '{Nic:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                                                         '{nic:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Host:id}' : self.parentclass.get_id(),
-                                                                         '{Nic:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                                                         '{nic:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -1026,8 +1026,8 @@ class HostNIC(params.HostNIC, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{Host:id}' : self.parentclass.get_id(),
-                                                                     '{Nic:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                                                     '{nic:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
 
         return result
@@ -1037,8 +1037,8 @@ class HostNIC(params.HostNIC, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{Host:id}' : self.parentclass.get_id(),
-                                                                     '{Nic:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                                                     '{nic:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
 
         return result
@@ -1046,7 +1046,7 @@ class HostNIC(params.HostNIC, Base):
     def update(self):
         url = '/api/hosts/{host:id}/nics/{nic:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{Host:id}' : self.parentclass.get_id(),
+        result = self._getProxy().update(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass))
 
@@ -1054,15 +1054,15 @@ class HostNIC(params.HostNIC, Base):
 
 class HostNics(Base):
  
-    def __init__(self, Host):
-        self.parentclass = Host
+    def __init__(self, host):
+        self.parentclass = host
 
-    def add(self, Nic):
+    def add(self, nic):
 
         url = '/api/hosts/{host:id}/nics'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{Host:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Nic))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(nic))
 
         return HostNIC(self.parentclass, result)
 
@@ -1071,7 +1071,7 @@ class HostNics(Base):
         url = '/api/hosts/{host:id}/nics'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Host:id}': self.parentclass.get_id()})).get_host_nic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_nic()
 
         return HostNIC(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1084,7 +1084,7 @@ class HostNics(Base):
 
         url = '/api/hosts/{host:id}/nics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Host:id}': self.parentclass.get_id()})).get_host_nic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_nic()
 
         return ParseHelper.toSubCollection(HostNIC,
                                            self.parentclass,
@@ -1106,26 +1106,26 @@ class HostPermission(params.Permission, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Host:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Host:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class HostPermissions(Base):
  
-    def __init__(self, Host):
-        self.parentclass = Host
+    def __init__(self, host):
+        self.parentclass = host
 
-    def add(self, Permission):
+    def add(self, permission):
 
         url = '/api/hosts/{host:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{Host:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Permission))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permission))
 
         return HostPermission(self.parentclass, result)
 
@@ -1134,7 +1134,7 @@ class HostPermissions(Base):
         url = '/api/hosts/{host:id}/permissions'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Host:id}': self.parentclass.get_id()})).get_hostpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_permission()
 
         return HostPermission(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1147,7 +1147,7 @@ class HostPermissions(Base):
 
         url = '/api/hosts/{host:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Host:id}': self.parentclass.get_id()})).get_hostpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_permission()
 
         return ParseHelper.toSubCollection(HostPermission,
                                            self.parentclass,
@@ -1166,15 +1166,15 @@ class HostStatistic(params.Statistic, Base):
 
 class HostStatistics(Base):
  
-    def __init__(self, Host):
-        self.parentclass = Host
+    def __init__(self, host):
+        self.parentclass = host
 
     def get(self, name='None', **kwargs):
 
         url = '/api/hosts/{host:id}/statistics'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Host:id}': self.parentclass.get_id()})).get_hoststatistic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_statistic()
 
         return HostStatistic(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1187,7 +1187,7 @@ class HostStatistics(Base):
 
         url = '/api/hosts/{host:id}/statistics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Host:id}': self.parentclass.get_id()})).get_hoststatistic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_statistic()
 
         return ParseHelper.toSubCollection(HostStatistic,
                                            self.parentclass,
@@ -1220,26 +1220,26 @@ class HostTag(params.Tag, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Host:id}' : self.parentclass.get_id(),
-                                                                         '{Tag:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                                                         '{tag:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Host:id}' : self.parentclass.get_id(),
-                                                                         '{Tag:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                                                         '{tag:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class HostTags(Base):
  
-    def __init__(self, Host):
-        self.parentclass = Host
+    def __init__(self, host):
+        self.parentclass = host
 
-    def add(self, Tag):
+    def add(self, tag):
 
         url = '/api/hosts/{host:id}/tags'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{Host:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Tag))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(tag))
 
         return HostTag(self.parentclass, result)
 
@@ -1248,7 +1248,7 @@ class HostTags(Base):
         url = '/api/hosts/{host:id}/tags'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Host:id}': self.parentclass.get_id()})).get_hosttag()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_tag()
 
         return HostTag(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1261,7 +1261,7 @@ class HostTags(Base):
 
         url = '/api/hosts/{host:id}/tags'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Host:id}': self.parentclass.get_id()})).get_hosttag()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_tag()
 
         return ParseHelper.toSubCollection(HostTag,
                                            self.parentclass,
@@ -1271,11 +1271,11 @@ class Hosts(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, Host):
+    def add(self, host):
         url = '/api/hosts'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(Host))
+                                      body=ParseHelper.toXml(host))
         return Host(result)
 
     def get(self, name='*', **kwargs):
@@ -1324,10 +1324,10 @@ class Network(params.Network, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Network:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Network:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -1342,11 +1342,11 @@ class Networks(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, Network):
+    def add(self, network):
         url = '/api/networks'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(Network))
+                                      body=ParseHelper.toXml(network))
         return Network(result)
 
     def get(self, name='*', **kwargs):
@@ -1386,10 +1386,10 @@ class Role(params.Role, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Role:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Role:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -1409,26 +1409,26 @@ class RolePermit(params.Permit, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Role:id}' : self.parentclass.get_id(),
-                                                                         '{Permit:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}' : self.parentclass.get_id(),
+                                                                         '{permit:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Role:id}' : self.parentclass.get_id(),
-                                                                         '{Permit:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}' : self.parentclass.get_id(),
+                                                                         '{permit:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class RolePermits(Base):
  
-    def __init__(self, Role):
-        self.parentclass = Role
+    def __init__(self, role):
+        self.parentclass = role
 
-    def add(self, Permit):
+    def add(self, permit):
 
         url = '/api/roles/{role:id}/permits'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{Role:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Permit))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permit))
 
         return RolePermit(self.parentclass, result)
 
@@ -1437,7 +1437,7 @@ class RolePermits(Base):
         url = '/api/roles/{role:id}/permits'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Role:id}': self.parentclass.get_id()})).get_rolepermit()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()})).get_permit()
 
         return RolePermit(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1450,7 +1450,7 @@ class RolePermits(Base):
 
         url = '/api/roles/{role:id}/permits'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Role:id}': self.parentclass.get_id()})).get_rolepermit()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()})).get_permit()
 
         return ParseHelper.toSubCollection(RolePermit,
                                            self.parentclass,
@@ -1460,11 +1460,11 @@ class Roles(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, Role):
+    def add(self, role):
         url = '/api/roles'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(Role))
+                                      body=ParseHelper.toXml(role))
         return Role(result)
 
     def get(self, name='*', **kwargs):
@@ -1510,10 +1510,10 @@ class StorageDomain(params.StorageDomain, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{StorageDomain:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{StorageDomain:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -1537,15 +1537,15 @@ class StorageDomainFile(params.File, Base):
 
 class StorageDomainFiles(Base):
  
-    def __init__(self, StorageDomain):
-        self.parentclass = StorageDomain
+    def __init__(self, storagedomain):
+        self.parentclass = storagedomain
 
     def get(self, name='None', **kwargs):
 
         url = '/api/storagedomains/{storagedomain:id}/files'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{StorageDomain:id}': self.parentclass.get_id()})).get_storagedomainfile()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_file()
 
         return StorageDomainFile(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1558,7 +1558,7 @@ class StorageDomainFiles(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/files'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{StorageDomain:id}': self.parentclass.get_id()})).get_storagedomainfile()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_file()
 
         return ParseHelper.toSubCollection(StorageDomainFile,
                                            self.parentclass,
@@ -1580,26 +1580,26 @@ class StorageDomainPermission(params.Permission, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{StorageDomain:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{StorageDomain:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class StorageDomainPermissions(Base):
  
-    def __init__(self, StorageDomain):
-        self.parentclass = StorageDomain
+    def __init__(self, storagedomain):
+        self.parentclass = storagedomain
 
-    def add(self, Permission):
+    def add(self, permission):
 
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{StorageDomain:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Permission))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permission))
 
         return StorageDomainPermission(self.parentclass, result)
 
@@ -1608,7 +1608,7 @@ class StorageDomainPermissions(Base):
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{StorageDomain:id}': self.parentclass.get_id()})).get_storagedomainpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_permission()
 
         return StorageDomainPermission(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1621,7 +1621,7 @@ class StorageDomainPermissions(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{StorageDomain:id}': self.parentclass.get_id()})).get_storagedomainpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_permission()
 
         return ParseHelper.toSubCollection(StorageDomainPermission,
                                            self.parentclass,
@@ -1643,23 +1643,23 @@ class StorageDomainTemplate(params.Template, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{StorageDomain:id}' : self.parentclass.get_id(),
-                                                                     '{Template:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
+                                                                     '{template:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
 
         return result
 
 class StorageDomainTemplates(Base):
  
-    def __init__(self, StorageDomain):
-        self.parentclass = StorageDomain
+    def __init__(self, storagedomain):
+        self.parentclass = storagedomain
 
     def get(self, name='None', **kwargs):
 
         url = '/api/storagedomains/{storagedomain:id}/templates'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{StorageDomain:id}': self.parentclass.get_id()})).get_storagedomaintemplate()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_template()
 
         return StorageDomainTemplate(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1672,7 +1672,7 @@ class StorageDomainTemplates(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/templates'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{StorageDomain:id}': self.parentclass.get_id()})).get_storagedomaintemplate()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_template()
 
         return ParseHelper.toSubCollection(StorageDomainTemplate,
                                            self.parentclass,
@@ -1694,23 +1694,23 @@ class StorageDomainVM(params.VM, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{StorageDomain:id}' : self.parentclass.get_id(),
-                                                                     '{VM:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
+                                                                     '{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
 
         return result
 
 class StorageDomainVMs(Base):
  
-    def __init__(self, StorageDomain):
-        self.parentclass = StorageDomain
+    def __init__(self, storagedomain):
+        self.parentclass = storagedomain
 
     def get(self, name='None', **kwargs):
 
         url = '/api/storagedomains/{storagedomain:id}/vms'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{StorageDomain:id}': self.parentclass.get_id()})).get_storagedomainvm()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_vm()
 
         return StorageDomainVM(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1723,7 +1723,7 @@ class StorageDomainVMs(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/vms'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{StorageDomain:id}': self.parentclass.get_id()})).get_storagedomainvm()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_vm()
 
         return ParseHelper.toSubCollection(StorageDomainVM,
                                            self.parentclass,
@@ -1733,11 +1733,11 @@ class StorageDomains(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, StorageDomain):
+    def add(self, storagedomain):
         url = '/api/storagedomains'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(StorageDomain))
+                                      body=ParseHelper.toXml(storagedomain))
         return StorageDomain(result)
 
     def get(self, name='*', **kwargs):
@@ -1775,10 +1775,10 @@ class Tag(params.Tag, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Tag:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Tag:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -1793,11 +1793,11 @@ class Tags(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, Tag):
+    def add(self, tag):
         url = '/api/tags'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(Tag))
+                                      body=ParseHelper.toXml(tag))
         return Tag(result)
 
     def get(self, name='*', **kwargs):
@@ -1843,10 +1843,10 @@ class Template(params.Template, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Template:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Template:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -1855,7 +1855,7 @@ class Template(params.Template, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{Template:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -1879,15 +1879,15 @@ class TemplateCdRom(params.CdRom, Base):
 
 class TemplateCdRoms(Base):
  
-    def __init__(self, Template):
-        self.parentclass = Template
+    def __init__(self, template):
+        self.parentclass = template
 
     def get(self, name='None', **kwargs):
 
         url = '/api/templates/{template:id}/cdroms'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Template:id}': self.parentclass.get_id()})).get_templatecdrom()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_cdrom()
 
         return TemplateCdRom(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1900,7 +1900,7 @@ class TemplateCdRoms(Base):
 
         url = '/api/templates/{template:id}/cdroms'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Template:id}': self.parentclass.get_id()})).get_templatecdrom()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_cdrom()
 
         return ParseHelper.toSubCollection(TemplateCdRom,
                                            self.parentclass,
@@ -1919,15 +1919,15 @@ class TemplateDisk(params.Disk, Base):
 
 class TemplateDisks(Base):
  
-    def __init__(self, Template):
-        self.parentclass = Template
+    def __init__(self, template):
+        self.parentclass = template
 
     def get(self, name='None', **kwargs):
 
         url = '/api/templates/{template:id}/disks'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Template:id}': self.parentclass.get_id()})).get_templatedisk()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_disk()
 
         return TemplateDisk(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1940,7 +1940,7 @@ class TemplateDisks(Base):
 
         url = '/api/templates/{template:id}/disks'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Template:id}': self.parentclass.get_id()})).get_templatedisk()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_disk()
 
         return ParseHelper.toSubCollection(TemplateDisk,
                                            self.parentclass,
@@ -1959,15 +1959,15 @@ class TemplateNic(params.NIC, Base):
 
 class TemplateNics(Base):
  
-    def __init__(self, Template):
-        self.parentclass = Template
+    def __init__(self, template):
+        self.parentclass = template
 
     def get(self, name='None', **kwargs):
 
         url = '/api/templates/{template:id}/nics'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Template:id}': self.parentclass.get_id()})).get_templatenic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_nic()
 
         return TemplateNic(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1980,7 +1980,7 @@ class TemplateNics(Base):
 
         url = '/api/templates/{template:id}/nics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Template:id}': self.parentclass.get_id()})).get_templatenic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_nic()
 
         return ParseHelper.toSubCollection(TemplateNic,
                                            self.parentclass,
@@ -2002,26 +2002,26 @@ class TemplatePermission(params.Permission, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Template:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{Template:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class TemplatePermissions(Base):
  
-    def __init__(self, Template):
-        self.parentclass = Template
+    def __init__(self, template):
+        self.parentclass = template
 
-    def add(self, Permission):
+    def add(self, permission):
 
         url = '/api/templates/{template:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{Template:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Permission))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permission))
 
         return TemplatePermission(self.parentclass, result)
 
@@ -2030,7 +2030,7 @@ class TemplatePermissions(Base):
         url = '/api/templates/{template:id}/permissions'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Template:id}': self.parentclass.get_id()})).get_templatepermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_permission()
 
         return TemplatePermission(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2043,7 +2043,7 @@ class TemplatePermissions(Base):
 
         url = '/api/templates/{template:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{Template:id}': self.parentclass.get_id()})).get_templatepermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_permission()
 
         return ParseHelper.toSubCollection(TemplatePermission,
                                            self.parentclass,
@@ -2053,11 +2053,11 @@ class Templates(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, Template):
+    def add(self, template):
         url = '/api/templates'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(Template))
+                                      body=ParseHelper.toXml(template))
         return Template(result)
 
     def get(self, name='*', **kwargs):
@@ -2101,10 +2101,10 @@ class User(params.User, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{User:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{User:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -2124,26 +2124,26 @@ class UserPermission(params.Permission, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{User:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{User:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class UserPermissions(Base):
  
-    def __init__(self, User):
-        self.parentclass = User
+    def __init__(self, user):
+        self.parentclass = user
 
-    def add(self, Permission):
+    def add(self, permission):
 
         url = '/api/users/{user:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{User:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Permission))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permission))
 
         return UserPermission(self.parentclass, result)
 
@@ -2152,7 +2152,7 @@ class UserPermissions(Base):
         url = '/api/users/{user:id}/permissions'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{User:id}': self.parentclass.get_id()})).get_userpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_permission()
 
         return UserPermission(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2165,7 +2165,7 @@ class UserPermissions(Base):
 
         url = '/api/users/{user:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{User:id}': self.parentclass.get_id()})).get_userpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_permission()
 
         return ParseHelper.toSubCollection(UserPermission,
                                            self.parentclass,
@@ -2187,26 +2187,26 @@ class UserRole(params.Role, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{User:id}' : self.parentclass.get_id(),
-                                                                         '{Role:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
+                                                                         '{role:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{User:id}' : self.parentclass.get_id(),
-                                                                         '{Role:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
+                                                                         '{role:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class UserRoles(Base):
  
-    def __init__(self, User):
-        self.parentclass = User
+    def __init__(self, user):
+        self.parentclass = user
 
-    def add(self, Role):
+    def add(self, role):
 
         url = '/api/users/{user:id}/roles'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{User:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Role))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(role))
 
         return UserRole(self.parentclass, result)
 
@@ -2215,7 +2215,7 @@ class UserRoles(Base):
         url = '/api/users/{user:id}/roles'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{User:id}': self.parentclass.get_id()})).get_userrole()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_role()
 
         return UserRole(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2228,7 +2228,7 @@ class UserRoles(Base):
 
         url = '/api/users/{user:id}/roles'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{User:id}': self.parentclass.get_id()})).get_userrole()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_role()
 
         return ParseHelper.toSubCollection(UserRole,
                                            self.parentclass,
@@ -2250,26 +2250,26 @@ class UserTag(params.Tag, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{User:id}' : self.parentclass.get_id(),
-                                                                         '{Tag:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
+                                                                         '{tag:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{User:id}' : self.parentclass.get_id(),
-                                                                         '{Tag:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
+                                                                         '{tag:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class UserTags(Base):
  
-    def __init__(self, User):
-        self.parentclass = User
+    def __init__(self, user):
+        self.parentclass = user
 
-    def add(self, Tag):
+    def add(self, tag):
 
         url = '/api/users/{user:id}/tags'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{User:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Tag))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(tag))
 
         return UserTag(self.parentclass, result)
 
@@ -2278,7 +2278,7 @@ class UserTags(Base):
         url = '/api/users/{user:id}/tags'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{User:id}': self.parentclass.get_id()})).get_usertag()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_tag()
 
         return UserTag(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2291,7 +2291,7 @@ class UserTags(Base):
 
         url = '/api/users/{user:id}/tags'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{User:id}': self.parentclass.get_id()})).get_usertag()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_tag()
 
         return ParseHelper.toSubCollection(UserTag,
                                            self.parentclass,
@@ -2301,11 +2301,11 @@ class Users(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, User):
+    def add(self, user):
         url = '/api/users'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(User))
+                                      body=ParseHelper.toXml(user))
         return User(result)
 
     def get(self, name='*', **kwargs):
@@ -2343,12 +2343,12 @@ class UsersRolePermit(params.Permit, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{UsersRole:id}' : self.parentclass.get_id(),
-                                                                         '{Permit:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{usersrole:id}' : self.parentclass.get_id(),
+                                                                         '{permit:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{UsersRole:id}' : self.parentclass.get_id(),
-                                                                         '{Permit:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{usersrole:id}' : self.parentclass.get_id(),
+                                                                         '{permit:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -2382,10 +2382,10 @@ class VM(params.VM, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -2394,7 +2394,7 @@ class VM(params.VM, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{VM:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -2403,7 +2403,7 @@ class VM(params.VM, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{VM:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -2412,7 +2412,7 @@ class VM(params.VM, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{VM:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -2421,7 +2421,7 @@ class VM(params.VM, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{VM:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -2430,7 +2430,7 @@ class VM(params.VM, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{VM:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -2439,7 +2439,7 @@ class VM(params.VM, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{VM:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -2448,7 +2448,7 @@ class VM(params.VM, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{VM:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -2457,7 +2457,7 @@ class VM(params.VM, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{VM:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -2466,7 +2466,7 @@ class VM(params.VM, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{VM:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
@@ -2493,19 +2493,19 @@ class VMCdRom(params.CdRom, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{CdRom:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{cdrom:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{CdRom:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{cdrom:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
     def update(self):
         url = '/api/vms/{vm:id}/cdroms/{cdrom:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
+        result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{cdrom:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass))
 
@@ -2513,15 +2513,15 @@ class VMCdRom(params.CdRom, Base):
 
 class VMCdRoms(Base):
  
-    def __init__(self, VM):
-        self.parentclass = VM
+    def __init__(self, vm):
+        self.parentclass = vm
 
-    def add(self, CdRom):
+    def add(self, cdrom):
 
         url = '/api/vms/{vm:id}/cdroms'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(CdRom))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(cdrom))
 
         return VMCdRom(self.parentclass, result)
 
@@ -2530,7 +2530,7 @@ class VMCdRoms(Base):
         url = '/api/vms/{vm:id}/cdroms'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmcdrom()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_cdrom()
 
         return VMCdRom(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2543,7 +2543,7 @@ class VMCdRoms(Base):
 
         url = '/api/vms/{vm:id}/cdroms'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmcdrom()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_cdrom()
 
         return ParseHelper.toSubCollection(VMCdRom,
                                            self.parentclass,
@@ -2565,19 +2565,19 @@ class VMDisk(params.Disk, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{Disk:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{disk:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{Disk:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{disk:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
     def update(self):
         url = '/api/vms/{vm:id}/disks/{disk:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
+        result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{disk:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass))
 
@@ -2585,15 +2585,15 @@ class VMDisk(params.Disk, Base):
 
 class VMDisks(Base):
  
-    def __init__(self, VM):
-        self.parentclass = VM
+    def __init__(self, vm):
+        self.parentclass = vm
 
-    def add(self, Disk):
+    def add(self, disk):
 
         url = '/api/vms/{vm:id}/disks'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Disk))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(disk))
 
         return VMDisk(self.parentclass, result)
 
@@ -2602,7 +2602,7 @@ class VMDisks(Base):
         url = '/api/vms/{vm:id}/disks'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmdisk()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_disk()
 
         return VMDisk(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2615,7 +2615,7 @@ class VMDisks(Base):
 
         url = '/api/vms/{vm:id}/disks'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmdisk()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_disk()
 
         return ParseHelper.toSubCollection(VMDisk,
                                            self.parentclass,
@@ -2637,19 +2637,19 @@ class VMNic(params.NIC, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{Nic:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{nic:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{Nic:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{nic:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
     def update(self):
         url = '/api/vms/{vm:id}/nics/{nic:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
+        result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass))
 
@@ -2657,15 +2657,15 @@ class VMNic(params.NIC, Base):
 
 class VMNics(Base):
  
-    def __init__(self, VM):
-        self.parentclass = VM
+    def __init__(self, vm):
+        self.parentclass = vm
 
-    def add(self, Nic):
+    def add(self, nic):
 
         url = '/api/vms/{vm:id}/nics'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Nic))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(nic))
 
         return VMNic(self.parentclass, result)
 
@@ -2674,7 +2674,7 @@ class VMNics(Base):
         url = '/api/vms/{vm:id}/nics'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmnic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_nic()
 
         return VMNic(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2687,7 +2687,7 @@ class VMNics(Base):
 
         url = '/api/vms/{vm:id}/nics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmnic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_nic()
 
         return ParseHelper.toSubCollection(VMNic,
                                            self.parentclass,
@@ -2709,26 +2709,26 @@ class VMPermission(params.Permission, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class VMPermissions(Base):
  
-    def __init__(self, VM):
-        self.parentclass = VM
+    def __init__(self, vm):
+        self.parentclass = vm
 
-    def add(self, Permission):
+    def add(self, permission):
 
         url = '/api/vms/{vm:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Permission))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permission))
 
         return VMPermission(self.parentclass, result)
 
@@ -2737,7 +2737,7 @@ class VMPermissions(Base):
         url = '/api/vms/{vm:id}/permissions'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_permission()
 
         return VMPermission(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2750,7 +2750,7 @@ class VMPermissions(Base):
 
         url = '/api/vms/{vm:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_permission()
 
         return ParseHelper.toSubCollection(VMPermission,
                                            self.parentclass,
@@ -2772,12 +2772,12 @@ class VMSnapshot(params.Snapshot, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{Snapshot:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{snapshot:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{Snapshot:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{snapshot:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -2786,23 +2786,23 @@ class VMSnapshot(params.Snapshot, Base):
 
         action = params.Action()
         result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                     '{Snapshot:id}': self.get_id()}),
+                                          url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                     '{snapshot:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
 
         return result
 
 class VMSnapshots(Base):
  
-    def __init__(self, VM):
-        self.parentclass = VM
+    def __init__(self, vm):
+        self.parentclass = vm
 
-    def add(self, Snapshot):
+    def add(self, snapshot):
 
         url = '/api/vms/{vm:id}/snapshots'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Snapshot))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(snapshot))
 
         return VMSnapshot(self.parentclass, result)
 
@@ -2811,7 +2811,7 @@ class VMSnapshots(Base):
         url = '/api/vms/{vm:id}/snapshots'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmsnapshot()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_snapshot()
 
         return VMSnapshot(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2824,7 +2824,7 @@ class VMSnapshots(Base):
 
         url = '/api/vms/{vm:id}/snapshots'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmsnapshot()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_snapshot()
 
         return ParseHelper.toSubCollection(VMSnapshot,
                                            self.parentclass,
@@ -2843,15 +2843,15 @@ class VMStatistic(params.Statistic, Base):
 
 class VMStatistics(Base):
  
-    def __init__(self, VM):
-        self.parentclass = VM
+    def __init__(self, vm):
+        self.parentclass = vm
 
     def get(self, name='None', **kwargs):
 
         url = '/api/vms/{vm:id}/statistics'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmstatistic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_statistic()
 
         return VMStatistic(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2864,7 +2864,7 @@ class VMStatistics(Base):
 
         url = '/api/vms/{vm:id}/statistics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmstatistic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_statistic()
 
         return ParseHelper.toSubCollection(VMStatistic,
                                            self.parentclass,
@@ -2886,26 +2886,26 @@ class VMTag(params.Tag, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{Tag:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{tag:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VM:id}' : self.parentclass.get_id(),
-                                                                         '{Tag:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                         '{tag:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class VMTags(Base):
  
-    def __init__(self, VM):
-        self.parentclass = VM
+    def __init__(self, vm):
+        self.parentclass = vm
 
-    def add(self, Tag):
+    def add(self, tag):
 
         url = '/api/vms/{vm:id}/tags'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Tag))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(tag))
 
         return VMTag(self.parentclass, result)
 
@@ -2914,7 +2914,7 @@ class VMTags(Base):
         url = '/api/vms/{vm:id}/tags'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmtag()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_tag()
 
         return VMTag(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2927,7 +2927,7 @@ class VMTags(Base):
 
         url = '/api/vms/{vm:id}/tags'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VM:id}': self.parentclass.get_id()})).get_vmtag()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_tag()
 
         return ParseHelper.toSubCollection(VMTag,
                                            self.parentclass,
@@ -2937,11 +2937,11 @@ class VMs(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, VM):
+    def add(self, vm):
         url = '/api/vms'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(VM))
+                                      body=ParseHelper.toXml(vm))
         return VM(result)
 
     def get(self, name='*', **kwargs):
@@ -2981,10 +2981,10 @@ class VmPool(params.VmPool, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VmPool:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VmPool:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
@@ -3011,26 +3011,26 @@ class VmPoolPermission(params.Permission, Base):
 
         if ((force or grace_period) is not False):
             action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VmPool:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              body=ParseHelper.toXml(action))
         else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{VmPool:id}' : self.parentclass.get_id(),
-                                                                         '{Permission:id}': self.get_id()}),
+            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}' : self.parentclass.get_id(),
+                                                                         '{permission:id}': self.get_id()}),
                                              headers={'Content-type':None})
         return result
 
 class VmPoolPermissions(Base):
  
-    def __init__(self, VmPool):
-        self.parentclass = VmPool
+    def __init__(self, vmpool):
+        self.parentclass = vmpool
 
-    def add(self, Permission):
+    def add(self, permission):
 
         url = '/api/vmpools/{vmpool:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{VmPool:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(Permission))
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permission))
 
         return VmPoolPermission(self.parentclass, result)
 
@@ -3039,7 +3039,7 @@ class VmPoolPermissions(Base):
         url = '/api/vmpools/{vmpool:id}/permissions'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VmPool:id}': self.parentclass.get_id()})).get_vmpoolpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()})).get_permission()
 
         return VmPoolPermission(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -3052,7 +3052,7 @@ class VmPoolPermissions(Base):
 
         url = '/api/vmpools/{vmpool:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{VmPool:id}': self.parentclass.get_id()})).get_vmpoolpermission()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()})).get_permission()
 
         return ParseHelper.toSubCollection(VmPoolPermission,
                                            self.parentclass,
@@ -3062,11 +3062,11 @@ class VmPools(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, VmPool):
+    def add(self, vmpool):
         url = '/api/vmpools'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(VmPool))
+                                      body=ParseHelper.toXml(vmpool))
         return VmPool(result)
 
     def get(self, name='*', **kwargs):
