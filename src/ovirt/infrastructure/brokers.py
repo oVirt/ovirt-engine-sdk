@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-09 16:50:02.913103
+Generated at: 2011-11-09 20:31:30.499745
 
 @author: mpastern@redhat.com
 '''
@@ -76,14 +76,14 @@ class Cluster(params.Cluster, Base):
         return Cluster(result)
 
 class ClusterNetwork(params.Network, Base):
-    def __init__(self, Cluster, network):
-        self.parentclass = Cluster
+    def __init__(self, cluster, network):
+        self.parentclass = cluster
         self.superclass  =  network
 
-    def __new__(cls, Cluster, network):
+    def __new__(cls, cluster, network):
         if network is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Cluster, network)
+        obj.__init__(cluster, network)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -148,14 +148,14 @@ class ClusterNetworks(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class ClusterPermission(params.Permission, Base):
-    def __init__(self, Cluster, permission):
-        self.parentclass = Cluster
+    def __init__(self, cluster, permission):
+        self.parentclass = cluster
         self.superclass  =  permission
 
-    def __new__(cls, Cluster, permission):
+    def __new__(cls, cluster, permission):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Cluster, permission)
+        obj.__init__(cluster, permission)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -275,14 +275,14 @@ class DataCenter(params.DataCenter, Base):
         return DataCenter(result)
 
 class DataCenterPermission(params.Permission, Base):
-    def __init__(self, DataCenter, permission):
-        self.parentclass = DataCenter
+    def __init__(self, datacenter, permission):
+        self.parentclass = datacenter
         self.superclass  =  permission
 
-    def __new__(cls, DataCenter, permission):
+    def __new__(cls, datacenter, permission):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(DataCenter, permission)
+        obj.__init__(datacenter, permission)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -338,14 +338,14 @@ class DataCenterPermissions(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class DataCenterStorageDomain(params.StorageDomain, Base):
-    def __init__(self, DataCenter, storagedomain):
-        self.parentclass = DataCenter
+    def __init__(self, datacenter, storagedomain):
+        self.parentclass = datacenter
         self.superclass  =  storagedomain
 
-    def __new__(cls, DataCenter, storagedomain):
+    def __new__(cls, datacenter, storagedomain):
         if storagedomain is None: return None
         obj = object.__new__(cls)
-        obj.__init__(DataCenter, storagedomain)
+        obj.__init__(datacenter, storagedomain)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -468,14 +468,14 @@ class Domain(params.Domain, Base):
         return obj
 
 class DomainGroup(params.Group, Base):
-    def __init__(self, Domain, group):
-        self.parentclass = Domain
+    def __init__(self, domain, group):
+        self.parentclass = domain
         self.superclass  =  group
 
-    def __new__(cls, Domain, group):
+    def __new__(cls, domain, group):
         if group is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Domain, group)
+        obj.__init__(domain, group)
         return obj
 
 class DomainGroups(Base):
@@ -508,14 +508,14 @@ class DomainGroups(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class DomainUser(params.User, Base):
-    def __init__(self, Domain, user):
-        self.parentclass = Domain
+    def __init__(self, domain, user):
+        self.parentclass = domain
         self.superclass  =  user
 
-    def __new__(cls, Domain, user):
+    def __new__(cls, domain, user):
         if user is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Domain, user)
+        obj.__init__(domain, user)
         return obj
 
 class DomainUsers(Base):
@@ -634,14 +634,14 @@ class Group(params.Group, Base):
         return result
 
 class GroupPermission(params.Permission, Base):
-    def __init__(self, Group, permission):
-        self.parentclass = Group
+    def __init__(self, group, permission):
+        self.parentclass = group
         self.superclass  =  permission
 
-    def __new__(cls, Group, permission):
+    def __new__(cls, group, permission):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Group, permission)
+        obj.__init__(group, permission)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -697,14 +697,14 @@ class GroupPermissions(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class GroupRole(params.Role, Base):
-    def __init__(self, Group, role):
-        self.parentclass = Group
+    def __init__(self, group, role):
+        self.parentclass = group
         self.superclass  =  role
 
-    def __new__(cls, Group, role):
+    def __new__(cls, group, role):
         if role is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Group, role)
+        obj.__init__(group, role)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -760,14 +760,14 @@ class GroupRoles(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class GroupTag(params.Tag, Base):
-    def __init__(self, Group, tag):
-        self.parentclass = Group
+    def __init__(self, group, tag):
+        self.parentclass = group
         self.superclass  =  tag
 
-    def __new__(cls, Group, tag):
+    def __new__(cls, group, tag):
         if tag is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Group, tag)
+        obj.__init__(group, tag)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -853,14 +853,14 @@ class Groups(Base):
                                         FilterHelper.filter(result, kwargs))
 
 class GroupsRolePermit(params.Permit, Base):
-    def __init__(self, GroupsRole, permit):
-        self.parentclass = GroupsRole
+    def __init__(self, groupsrole, permit):
+        self.parentclass = groupsrole
         self.superclass  =  permit
 
-    def __new__(cls, GroupsRole, permit):
+    def __new__(cls, groupsrole, permit):
         if permit is None: return None
         obj = object.__new__(cls)
-        obj.__init__(GroupsRole, permit)
+        obj.__init__(groupsrole, permit)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -997,14 +997,14 @@ class Host(params.Host, Base):
         return Host(result)
 
 class HostNIC(params.HostNIC, Base):
-    def __init__(self, Host, nic):
-        self.parentclass = Host
+    def __init__(self, host, nic):
+        self.parentclass = host
         self.superclass  =  nic
 
-    def __new__(cls, Host, nic):
+    def __new__(cls, host, nic):
         if nic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Host, nic)
+        obj.__init__(host, nic)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -1091,14 +1091,14 @@ class HostNics(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class HostPermission(params.Permission, Base):
-    def __init__(self, Host, permission):
-        self.parentclass = Host
+    def __init__(self, host, permission):
+        self.parentclass = host
         self.superclass  =  permission
 
-    def __new__(cls, Host, permission):
+    def __new__(cls, host, permission):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Host, permission)
+        obj.__init__(host, permission)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -1154,14 +1154,14 @@ class HostPermissions(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class HostStatistic(params.Statistic, Base):
-    def __init__(self, Host, statistic):
-        self.parentclass = Host
+    def __init__(self, host, statistic):
+        self.parentclass = host
         self.superclass  =  statistic
 
-    def __new__(cls, Host, statistic):
+    def __new__(cls, host, statistic):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Host, statistic)
+        obj.__init__(host, statistic)
         return obj
 
 class HostStatistics(Base):
@@ -1194,25 +1194,25 @@ class HostStatistics(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class HostStorage(params.HostStorage, Base):
-    def __init__(self, Host, storage):
-        self.parentclass = Host
+    def __init__(self, host, storage):
+        self.parentclass = host
         self.superclass  =  storage
 
-    def __new__(cls, Host, storage):
+    def __new__(cls, host, storage):
         if storage is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Host, storage)
+        obj.__init__(host, storage)
         return obj
 
 class HostTag(params.Tag, Base):
-    def __init__(self, Host, tag):
-        self.parentclass = Host
+    def __init__(self, host, tag):
+        self.parentclass = host
         self.superclass  =  tag
 
-    def __new__(cls, Host, tag):
+    def __new__(cls, host, tag):
         if tag is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Host, tag)
+        obj.__init__(host, tag)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -1298,14 +1298,14 @@ class Hosts(Base):
                                         FilterHelper.filter(result, kwargs))
 
 class HostsNicStatistic(params.Statistic, Base):
-    def __init__(self, HostsNic, statistic):
-        self.parentclass = HostsNic
+    def __init__(self, hostsnic, statistic):
+        self.parentclass = hostsnic
         self.superclass  =  statistic
 
-    def __new__(cls, HostsNic, statistic):
+    def __new__(cls, hostsnic, statistic):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(HostsNic, statistic)
+        obj.__init__(hostsnic, statistic)
         return obj
 
 class Network(params.Network, Base):
@@ -1394,14 +1394,14 @@ class Role(params.Role, Base):
         return result
 
 class RolePermit(params.Permit, Base):
-    def __init__(self, Role, permit):
-        self.parentclass = Role
+    def __init__(self, role, permit):
+        self.parentclass = role
         self.superclass  =  permit
 
-    def __new__(cls, Role, permit):
+    def __new__(cls, role, permit):
         if permit is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Role, permit)
+        obj.__init__(role, permit)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -1525,14 +1525,14 @@ class StorageDomain(params.StorageDomain, Base):
         return StorageDomain(result)
 
 class StorageDomainFile(params.File, Base):
-    def __init__(self, StorageDomain, file):
-        self.parentclass = StorageDomain
+    def __init__(self, storagedomain, file):
+        self.parentclass = storagedomain
         self.superclass  =  file
 
-    def __new__(cls, StorageDomain, file):
+    def __new__(cls, storagedomain, file):
         if file is None: return None
         obj = object.__new__(cls)
-        obj.__init__(StorageDomain, file)
+        obj.__init__(storagedomain, file)
         return obj
 
 class StorageDomainFiles(Base):
@@ -1565,14 +1565,14 @@ class StorageDomainFiles(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class StorageDomainPermission(params.Permission, Base):
-    def __init__(self, StorageDomain, permission):
-        self.parentclass = StorageDomain
+    def __init__(self, storagedomain, permission):
+        self.parentclass = storagedomain
         self.superclass  =  permission
 
-    def __new__(cls, StorageDomain, permission):
+    def __new__(cls, storagedomain, permission):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(StorageDomain, permission)
+        obj.__init__(storagedomain, permission)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -1628,14 +1628,14 @@ class StorageDomainPermissions(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class StorageDomainTemplate(params.Template, Base):
-    def __init__(self, StorageDomain, template):
-        self.parentclass = StorageDomain
+    def __init__(self, storagedomain, template):
+        self.parentclass = storagedomain
         self.superclass  =  template
 
-    def __new__(cls, StorageDomain, template):
+    def __new__(cls, storagedomain, template):
         if template is None: return None
         obj = object.__new__(cls)
-        obj.__init__(StorageDomain, template)
+        obj.__init__(storagedomain, template)
         return obj
 
     def import_StorageDomain(self):
@@ -1679,14 +1679,14 @@ class StorageDomainTemplates(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class StorageDomainVM(params.VM, Base):
-    def __init__(self, StorageDomain, vm):
-        self.parentclass = StorageDomain
+    def __init__(self, storagedomain, vm):
+        self.parentclass = storagedomain
         self.superclass  =  vm
 
-    def __new__(cls, StorageDomain, vm):
+    def __new__(cls, storagedomain, vm):
         if vm is None: return None
         obj = object.__new__(cls)
-        obj.__init__(StorageDomain, vm)
+        obj.__init__(storagedomain, vm)
         return obj
 
     def import_StorageDomain(self):
@@ -1867,14 +1867,14 @@ class Template(params.Template, Base):
         return Template(result)
 
 class TemplateCdRom(params.CdRom, Base):
-    def __init__(self, Template, cdrom):
-        self.parentclass = Template
+    def __init__(self, template, cdrom):
+        self.parentclass = template
         self.superclass  =  cdrom
 
-    def __new__(cls, Template, cdrom):
+    def __new__(cls, template, cdrom):
         if cdrom is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Template, cdrom)
+        obj.__init__(template, cdrom)
         return obj
 
 class TemplateCdRoms(Base):
@@ -1907,14 +1907,14 @@ class TemplateCdRoms(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class TemplateDisk(params.Disk, Base):
-    def __init__(self, Template, disk):
-        self.parentclass = Template
+    def __init__(self, template, disk):
+        self.parentclass = template
         self.superclass  =  disk
 
-    def __new__(cls, Template, disk):
+    def __new__(cls, template, disk):
         if disk is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Template, disk)
+        obj.__init__(template, disk)
         return obj
 
 class TemplateDisks(Base):
@@ -1947,14 +1947,14 @@ class TemplateDisks(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class TemplateNic(params.NIC, Base):
-    def __init__(self, Template, nic):
-        self.parentclass = Template
+    def __init__(self, template, nic):
+        self.parentclass = template
         self.superclass  =  nic
 
-    def __new__(cls, Template, nic):
+    def __new__(cls, template, nic):
         if nic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Template, nic)
+        obj.__init__(template, nic)
         return obj
 
 class TemplateNics(Base):
@@ -1987,14 +1987,14 @@ class TemplateNics(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class TemplatePermission(params.Permission, Base):
-    def __init__(self, Template, permission):
-        self.parentclass = Template
+    def __init__(self, template, permission):
+        self.parentclass = template
         self.superclass  =  permission
 
-    def __new__(cls, Template, permission):
+    def __new__(cls, template, permission):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(Template, permission)
+        obj.__init__(template, permission)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -2109,14 +2109,14 @@ class User(params.User, Base):
         return result
 
 class UserPermission(params.Permission, Base):
-    def __init__(self, User, permission):
-        self.parentclass = User
+    def __init__(self, user, permission):
+        self.parentclass = user
         self.superclass  =  permission
 
-    def __new__(cls, User, permission):
+    def __new__(cls, user, permission):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(User, permission)
+        obj.__init__(user, permission)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -2172,14 +2172,14 @@ class UserPermissions(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class UserRole(params.Role, Base):
-    def __init__(self, User, role):
-        self.parentclass = User
+    def __init__(self, user, role):
+        self.parentclass = user
         self.superclass  =  role
 
-    def __new__(cls, User, role):
+    def __new__(cls, user, role):
         if role is None: return None
         obj = object.__new__(cls)
-        obj.__init__(User, role)
+        obj.__init__(user, role)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -2235,14 +2235,14 @@ class UserRoles(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class UserTag(params.Tag, Base):
-    def __init__(self, User, tag):
-        self.parentclass = User
+    def __init__(self, user, tag):
+        self.parentclass = user
         self.superclass  =  tag
 
-    def __new__(cls, User, tag):
+    def __new__(cls, user, tag):
         if tag is None: return None
         obj = object.__new__(cls)
-        obj.__init__(User, tag)
+        obj.__init__(user, tag)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -2328,14 +2328,14 @@ class Users(Base):
                                         FilterHelper.filter(result, kwargs))
 
 class UsersRolePermit(params.Permit, Base):
-    def __init__(self, UsersRole, permit):
-        self.parentclass = UsersRole
+    def __init__(self, usersrole, permit):
+        self.parentclass = usersrole
         self.superclass  =  permit
 
-    def __new__(cls, UsersRole, permit):
+    def __new__(cls, usersrole, permit):
         if permit is None: return None
         obj = object.__new__(cls)
-        obj.__init__(UsersRole, permit)
+        obj.__init__(usersrole, permit)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -2478,14 +2478,14 @@ class VM(params.VM, Base):
         return VM(result)
 
 class VMCdRom(params.CdRom, Base):
-    def __init__(self, VM, cdrom):
-        self.parentclass = VM
+    def __init__(self, vm, cdrom):
+        self.parentclass = vm
         self.superclass  =  cdrom
 
-    def __new__(cls, VM, cdrom):
+    def __new__(cls, vm, cdrom):
         if cdrom is None: return None
         obj = object.__new__(cls)
-        obj.__init__(VM, cdrom)
+        obj.__init__(vm, cdrom)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -2550,14 +2550,14 @@ class VMCdRoms(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class VMDisk(params.Disk, Base):
-    def __init__(self, VM, disk):
-        self.parentclass = VM
+    def __init__(self, vm, disk):
+        self.parentclass = vm
         self.superclass  =  disk
 
-    def __new__(cls, VM, disk):
+    def __new__(cls, vm, disk):
         if disk is None: return None
         obj = object.__new__(cls)
-        obj.__init__(VM, disk)
+        obj.__init__(vm, disk)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -2622,14 +2622,14 @@ class VMDisks(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class VMNic(params.NIC, Base):
-    def __init__(self, VM, nic):
-        self.parentclass = VM
+    def __init__(self, vm, nic):
+        self.parentclass = vm
         self.superclass  =  nic
 
-    def __new__(cls, VM, nic):
+    def __new__(cls, vm, nic):
         if nic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(VM, nic)
+        obj.__init__(vm, nic)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -2694,14 +2694,14 @@ class VMNics(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class VMPermission(params.Permission, Base):
-    def __init__(self, VM, permission):
-        self.parentclass = VM
+    def __init__(self, vm, permission):
+        self.parentclass = vm
         self.superclass  =  permission
 
-    def __new__(cls, VM, permission):
+    def __new__(cls, vm, permission):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(VM, permission)
+        obj.__init__(vm, permission)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -2757,14 +2757,14 @@ class VMPermissions(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class VMSnapshot(params.Snapshot, Base):
-    def __init__(self, VM, snapshot):
-        self.parentclass = VM
+    def __init__(self, vm, snapshot):
+        self.parentclass = vm
         self.superclass  =  snapshot
 
-    def __new__(cls, VM, snapshot):
+    def __new__(cls, vm, snapshot):
         if snapshot is None: return None
         obj = object.__new__(cls)
-        obj.__init__(VM, snapshot)
+        obj.__init__(vm, snapshot)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -2831,14 +2831,14 @@ class VMSnapshots(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class VMStatistic(params.Statistic, Base):
-    def __init__(self, VM, statistic):
-        self.parentclass = VM
+    def __init__(self, vm, statistic):
+        self.parentclass = vm
         self.superclass  =  statistic
 
-    def __new__(cls, VM, statistic):
+    def __new__(cls, vm, statistic):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(VM, statistic)
+        obj.__init__(vm, statistic)
         return obj
 
 class VMStatistics(Base):
@@ -2871,14 +2871,14 @@ class VMStatistics(Base):
                                            FilterHelper.filter(result, kwargs))
 
 class VMTag(params.Tag, Base):
-    def __init__(self, VM, tag):
-        self.parentclass = VM
+    def __init__(self, vm, tag):
+        self.parentclass = vm
         self.superclass  =  tag
 
-    def __new__(cls, VM, tag):
+    def __new__(cls, vm, tag):
         if tag is None: return None
         obj = object.__new__(cls)
-        obj.__init__(VM, tag)
+        obj.__init__(vm, tag)
         return obj
 
     def delete(self, force=False, grace_period=False):
@@ -2996,14 +2996,14 @@ class VmPool(params.VmPool, Base):
         return VmPool(result)
 
 class VmPoolPermission(params.Permission, Base):
-    def __init__(self, VmPool, permission):
-        self.parentclass = VmPool
+    def __init__(self, vmpool, permission):
+        self.parentclass = vmpool
         self.superclass  =  permission
 
-    def __new__(cls, VmPool, permission):
+    def __new__(cls, vmpool, permission):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(VmPool, permission)
+        obj.__init__(vmpool, permission)
         return obj
 
     def delete(self, force=False, grace_period=False):

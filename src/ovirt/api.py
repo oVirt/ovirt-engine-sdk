@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-09 16:50:03.037467
+Generated at: 2011-11-09 20:31:32.095332
 
 @author: mpastern@redhat.com
 '''
@@ -14,8 +14,7 @@ from ovirt.infrastructure import contextmanager
 from ovirt.infrastructure.connectionspool import ConnectionsPool
 from ovirt.infrastructure.proxy import Proxy
 from ovirt.infrastructure.contextmanager import Mode
-from ovirt.infrastructure.brokers import VMs
-from ovirt.infrastructure.brokers import VM
+from ovirt.infrastructure.brokers import *
 
 
 class API():
