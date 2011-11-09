@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-09 13:08:18.363238
+Generated at: 2011-11-09 14:12:47.538686
 
 @author: mpastern@redhat.com
 '''
@@ -670,7 +670,7 @@ class HostNics(Base):
         url = '/api/hosts/{host:id}/nics'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_hostnic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_host_nic()
 
         return HostNIC(self.parentclass,
                    FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -683,7 +683,7 @@ class HostNics(Base):
 
         url = '/api/hosts/{host:id}/nics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_hostnic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_host_nic()
 
         return ParseHelper.toSubCollection(HostNIC,
                                            self.parentclass,
@@ -2186,7 +2186,7 @@ class DataCenters(Base):
     def get(self, name='*', **kwargs):
         url = '/api/datacenters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_datacenter()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_data_center()
         return DataCenter(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
@@ -2198,7 +2198,7 @@ class DataCenters(Base):
 
         url='/api/datacenters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_datacenter()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_data_center()
         return ParseHelper.toCollection(DataCenter,
                                         FilterHelper.filter(result, kwargs))
 
@@ -2614,7 +2614,7 @@ class StorageDomains(Base):
     def get(self, name='*', **kwargs):
         url = '/api/storagedomains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_storagedomain()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_storage_domain()
         return StorageDomain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
@@ -2626,7 +2626,7 @@ class StorageDomains(Base):
 
         url='/api/storagedomains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_storagedomain()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_storage_domain()
         return ParseHelper.toCollection(StorageDomain,
                                         FilterHelper.filter(result, kwargs))
 
