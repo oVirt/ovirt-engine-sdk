@@ -14,15 +14,17 @@ class ParseHelper():
     def toXml(entity):
         '''Parse entity to corresponding XML representation'''       
         output = StringIO.StringIO()
-
         type_name = type(entity).__name__.lower()
-        for k,v in params._rootClassMap.items():
-            if v.__name__.lower() == type_name:
-                type_name = k
-                break
-        
-        entity.export(output, 0, name_=type_name)
+        entity.export(output, 0, name_=ParseHelper.getXmlType(type_name))
         return output.getvalue()
+    
+    @staticmethod
+    def getXmlType(type_name):
+        tn = type_name.lower()
+        for k,v in params._rootClassMap.items():
+            if v.__name__.lower() == tn:
+                return k
+        return type_name
     
     @staticmethod
     def toType(fromItem, toType):
