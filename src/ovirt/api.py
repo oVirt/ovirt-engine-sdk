@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-09 13:08:18.516421
+Generated at: 2011-11-09 16:50:03.037467
 
 @author: mpastern@redhat.com
 '''
@@ -14,7 +14,8 @@ from ovirt.infrastructure import contextmanager
 from ovirt.infrastructure.connectionspool import ConnectionsPool
 from ovirt.infrastructure.proxy import Proxy
 from ovirt.infrastructure.contextmanager import Mode
-from ovirt.infrastructure.brokers import *
+from ovirt.infrastructure.brokers import VMs
+from ovirt.infrastructure.brokers import VM
 
 
 class API():
@@ -45,5 +46,5 @@ class API():
         self.tags = Tags()
         self.templates = Templates()
         self.users = Users()
-        self.vmpools = VmPools()
         self.vms = VMs()
+        self.vmpools = VmPools()
