@@ -21,26 +21,26 @@ class Proxy():
 
     def get(self, url, headers={}):
         return self.request(method='GET', url=url, headers=headers)
-    
+
     def delete(self, url, body=None, headers={}):
         return self.request('DELETE', url, body, headers)
 
     def update(self, url, body=None, headers={}):
         return self.request('PUT', url, body, headers)
-    
+
     def add(self, url, body=None, headers={}):
         return self.request('POST', url, body, headers)
-    
+
     def action(self, url, body=None, headers={}):
         return self.request('POST', url, body, headers)
-    
+
     def request(self, method, url, body=None, headers={}):
-        return self.__doRequest(method,\
-                                url,\
-                                body=body,\
-                                headers=headers,\
+        return self.__doRequest(method, \
+                                url, \
+                                body=body, \
+                                headers=headers, \
                                 conn=self.getConnectionsPool().getConnection())
-            
+
     def __doRequest(self, method, url, conn, body=None, headers={}):
         try:
             conn.doRequest(method=method, url=url, body=body, headers=headers)
@@ -54,7 +54,7 @@ class Proxy():
             raise ConnectionError, str(e)
         finally:
             conn.close()
-    
+
     @staticmethod
     def instance(connections_pool):
         Proxy(connections_pool)

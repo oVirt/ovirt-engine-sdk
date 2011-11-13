@@ -8,13 +8,13 @@ class TypeUtil(object):
     '''
     classdocs
     '''
-    
+
 #    @staticmethod
 #    def getValueByKey(name, cache = {}):
 #        if cache.has_key(name): return cache[name]
 #        return name
-    
+
     @staticmethod
-    def getValueByKeyOrNone(name, cache = {}):
+    def getValueByKeyOrNone(name, cache={}):
         if cache.has_key(name): return cache[name]
         return None

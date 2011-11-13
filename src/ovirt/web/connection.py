@@ -14,16 +14,16 @@ class Connection(object):
     The oVirt api connection proxy
     '''
     def __init__(self, url, port, key_file, cert_file, strict, timeout, username, password, manager):
-        self.__connetcion = self.__createConnection(url=url, 
-                                                    port=port, 
-                                                    key_file=key_file, 
-                                                    cert_file=cert_file, 
-                                                    strict=strict, 
-                                                    timeout=timeout)        
-        self.__headers    = self.__createHeaders(username, password)
-        self.__manager    = manager
-        self.__id         = id(self)
-        
+        self.__connetcion = self.__createConnection(url=url,
+                                                    port=port,
+                                                    key_file=key_file,
+                                                    cert_file=cert_file,
+                                                    strict=strict,
+                                                    timeout=timeout)
+        self.__headers = self.__createHeaders(username, password)
+        self.__manager = manager
+        self.__id = id(self)
+
     def get_id(self):
         return self.__id
 
@@ -44,42 +44,42 @@ class Connection(object):
             else:
                 extended_headers[k] = headers[k]
         return extended_headers
-        
-    def getResponse(self, buffering = False):
+
+    def getResponse(self, buffering=False):
         return self.__connetcion.getresponse(buffering)
-    
+
     def setDebugLevel(self, level):
         self.__connection.set_debuglevel(level)
-        
+
     def setTunnel(self, host, port=None, headers=None):
         self.__connection.set_tunnel(host, port, headers)
-        
+
     def close(self):
         self.__connetcion.close()
         if (self.__manager is not None):
             self.__manager._freeResource(self)
-        
-    def __createConnection(self, url, key_file=None, cert_file=None, port=None, strict=None, timeout=None, source_address = None):        
-        u = urlparse.urlparse(url)        
+
+    def __createConnection(self, url, key_file=None, cert_file=None, port=None, strict=None, timeout=None, source_address=None):
+        u = urlparse.urlparse(url)
         if(u.scheme is 'https'):
-            return HTTPSConnection(host=u.hostname, 
-                                   port=u.port, 
-                                   key_file=key_file, 
-                                   cert_file=cert_file, 
-                                   strict=strict, 
-                                   timeout=timeout, 
+            return HTTPSConnection(host=u.hostname,
+                                   port=u.port,
+                                   key_file=key_file,
+                                   cert_file=cert_file,
+                                   strict=strict,
+                                   timeout=timeout,
                                    source_address=source_address)
-        return HTTPConnection(host=u.hostname, 
-                              port=u.port, 
-                              strict=strict, 
+        return HTTPConnection(host=u.hostname,
+                              port=u.port,
+                              strict=strict,
                               timeout=timeout)
 
     def __createHeaders(self, username, password):
-        auth = base64.encodestring("%s:%s" % (username, password)).strip()        
+        auth = base64.encodestring("%s:%s" % (username, password)).strip()
         return {"Content-type": "application/xml", "Authorization": "Basic %s" % auth}
     id = property(get_id, None, None, None)
-    
+
 #    connection = property(get_connection, None, None, None)
 #    headers = property(get_headers, None, None, None)
-    
-    
+
+

@@ -37,28 +37,28 @@ vm4 = api.vms.get(name='pythond_sdk_poc2')
 vm5 = api.vms.get(id='02f0f4a4-9738-4731-83c4-293f3f734782')
 
 if vm4 is None:
-    
+
     #add vm
     cluster = params.Cluster(name='Default_iscsi')
-    template = params.Template(name='Template2_iscsi')    
+    template = params.Template(name='Template2_iscsi')
     param = params.VM(name='pythond_sdk_poc2', cluster=cluster, template=template, memory=1073741824)
     vm6 = api.vms.add(param)
-  
+
     #add nic to vm
-    network = params.Network(name='rhevm')    
-    nic = params.NIC(name='eth0', network=network, interface='e1000')     
+    network = params.Network(name='rhevm')
+    nic = params.NIC(name='eth0', network=network, interface='e1000')
     vm6.nics.add(nic)
-        
+
     #list vm's nics
     nics1 = vm6.nics.list()
-    
+
     #list vm's nics by constraints
     nics2 = vm6.nics.list(name='eth0')
     nics3 = vm6.nics.list(interface='e1000')
-    
+
     #get sub resource
     nic1 = vm6.nics.get(name='eth0')
-        
+
     #update sub-resource
     nic1.name = 'eth01'
     nic2 = nic1.update()
@@ -66,7 +66,7 @@ if vm4 is None:
     nic4 = vm6.nics.get(name='eth0')
 
     #result = vm.start()
-    
+
 #delete the vm
-else:    
+else:
     result = vm4.delete()

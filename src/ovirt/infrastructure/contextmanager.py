@@ -12,8 +12,8 @@ lock = threading.RLock()
 
 class __Item():
     def __init__(self, val, mode):
-        self.__val  = val
-        self._mode  = mode
+        self.__val = val
+        self._mode = mode
 
     def get_val(self):
         return self.__val
@@ -22,24 +22,24 @@ class __Item():
     def get_mode(self):
         return self.__mode
 
-    val  = property(get_val, None, None, None)
+    val = property(get_val, None, None, None)
     mode = property(get_mode, None, None, None)
-        
+
 class Mode():
     RW, R = range(2)
-    
+
     def __init__(self, Type):
         self.value = Type
-        
+
     def __str__(self):
         if self.value == Mode.RW:
             return 'ReadWrite'
         if self.value == Mode.R:
             return 'Read'
-        
-    def __eq__(self,y):
+
+    def __eq__(self, y):
         return self.value == y.value
-    
+
 def add(key, val, mode=Mode.RW):
     ''' 
     stores the value in cache
@@ -53,15 +53,15 @@ def add(key, val, mode=Mode.RW):
             raise ImmutableError(key)
         else:
             cache[key] = __Item(val, mode)
-    
+
 def get(key, remove=False):
     ''' 
     retrieves the value from the cache
     
     @param key: is the cache key
     @param remove: removes the value from cache [true|false]
-    '''    
-    with lock: 
+    '''
+    with lock:
         if cache.has_key(key):
             if  remove:
                 item = cache[key]
@@ -77,8 +77,8 @@ def remove(key):
     removes the value from cache
     
     @param key: is the cache key
-    '''    
-    with lock: 
+    '''
+    with lock:
         if cache.has_key(key):
             item = cache[key]
             if (item.mode is Mode.RW):

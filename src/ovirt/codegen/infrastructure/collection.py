@@ -20,16 +20,16 @@ class Collection(object):
 
     def setResource(self, value):
         self.resource = value
-        
+
     def hasResource(self, value):
         return self.resource is not None
 
     def addMethod(self, name, body):
         self.methods[name] = body
-        
+
     def hasMethod(self, name):
         return self.methods.has_key(name)
-        
+
     def getMethod(self, name):
         if self.hasMethod(name):
             return self.methods[name]

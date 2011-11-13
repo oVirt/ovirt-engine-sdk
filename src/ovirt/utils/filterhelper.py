@@ -10,8 +10,8 @@ class FilterHelper():
     def filter(collection, kwargs={}):
         '''Filters collection based on **kwargs'''
         return SearchHelper.filterResults(collection, kwargs) if (len(kwargs) is not 0) else collection
-    
+
     @staticmethod
     def getItem(result=[]):
-        '''Returns first item in collection if exist, otherwise None''' 
+        '''Returns first item in collection if exist, otherwise None'''
         return result[0] if(result is not None and len(result) > 0) else None

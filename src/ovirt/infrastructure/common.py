@@ -10,14 +10,14 @@ class Base(object):
     def _getProxy(self):
 #FIXME: consider creating new proxy for each call so it will be executed
         #on separate thread heap space
-        
+
 #FIXME: manage cache peer API instance  
         return contextmanager.get('proxy')
-    
+
     def __getattr__(self, item):
         return self.superclass.__getattribute__(item)
-    
-    def __setattr__(self,  item, value):
+
+    def __setattr__(self, item, value):
 #FIXME: find better solution than predefining the sub-collection
         if item is not 'superclass'\
             and item is not 'parentclass'\
