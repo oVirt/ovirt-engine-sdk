@@ -55,7 +55,8 @@ class Connection(object):
         self.__connection.set_tunnel(host, port, headers)
 
     def close(self):
-        self.__connetcion.close()
+        #self.__connetcion.close()
+#FIXME: create connection watchdog to close it on idle-ttl expiration, rather than after the call
         if (self.__manager is not None):
             self.__manager._freeResource(self)
 
