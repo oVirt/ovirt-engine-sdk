@@ -35,6 +35,13 @@ class ParseHelper():
         return type_name
 
     @staticmethod
+    def getSingularXmlTypeInstance(type_name):
+        instance = ParseHelper.getXmlTypeInstance(type_name)
+        if instance.endswith('s'):
+            return instance[0 : len(instance) - 1]
+        return instance
+
+    @staticmethod
     def toType(fromItem, toType):
         '''Encapsulates the entity with the broker instance.'''
         return toType(fromItem)
