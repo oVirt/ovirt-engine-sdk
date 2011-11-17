@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-09 22:20:53.164266
+Generated at: 2011-11-17 15:23:20.739760
 
 @author: mpastern@redhat.com
 '''
@@ -123,7 +123,7 @@ class ClusterNetworks(Base):
 
         return ClusterNetwork(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/clusters/{cluster:id}/networks'
 
@@ -186,7 +186,7 @@ class ClusterPermissions(Base):
 
         return ClusterPermission(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/clusters/{cluster:id}/permissions'
 
@@ -313,7 +313,7 @@ class DataCenterPermissions(Base):
 
         return DataCenterPermission(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/datacenters/{datacenter:id}/permissions'
 
@@ -398,7 +398,7 @@ class DataCenterStorageDomains(Base):
 
         return DataCenterStorageDomain(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
@@ -483,7 +483,7 @@ class DomainGroups(Base):
     def __init__(self, domain):
         self.parentclass = domain
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/domains/{domain:id}/groups'
 
@@ -523,7 +523,7 @@ class DomainUsers(Base):
     def __init__(self, domain):
         self.parentclass = domain
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/domains/{domain:id}/users'
 
@@ -672,7 +672,7 @@ class GroupPermissions(Base):
 
         return GroupPermission(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/groups/{group:id}/permissions'
 
@@ -735,7 +735,7 @@ class GroupRoles(Base):
 
         return GroupRole(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/groups/{group:id}/roles'
 
@@ -798,7 +798,7 @@ class GroupTags(Base):
 
         return GroupTag(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/groups/{group:id}/tags'
 
@@ -1066,7 +1066,7 @@ class HostNics(Base):
 
         return HostNIC(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/hosts/{host:id}/nics'
 
@@ -1129,7 +1129,7 @@ class HostPermissions(Base):
 
         return HostPermission(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/hosts/{host:id}/permissions'
 
@@ -1169,7 +1169,7 @@ class HostStatistics(Base):
     def __init__(self, host):
         self.parentclass = host
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/hosts/{host:id}/statistics'
 
@@ -1243,7 +1243,7 @@ class HostTags(Base):
 
         return HostTag(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/hosts/{host:id}/tags'
 
@@ -1432,7 +1432,7 @@ class RolePermits(Base):
 
         return RolePermit(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/roles/{role:id}/permits'
 
@@ -1540,7 +1540,7 @@ class StorageDomainFiles(Base):
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/storagedomains/{storagedomain:id}/files'
 
@@ -1603,7 +1603,7 @@ class StorageDomainPermissions(Base):
 
         return StorageDomainPermission(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
@@ -1654,7 +1654,7 @@ class StorageDomainTemplates(Base):
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/storagedomains/{storagedomain:id}/templates'
 
@@ -1705,7 +1705,7 @@ class StorageDomainVMs(Base):
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/storagedomains/{storagedomain:id}/vms'
 
@@ -1882,7 +1882,7 @@ class TemplateCdRoms(Base):
     def __init__(self, template):
         self.parentclass = template
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/templates/{template:id}/cdroms'
 
@@ -1922,7 +1922,7 @@ class TemplateDisks(Base):
     def __init__(self, template):
         self.parentclass = template
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/templates/{template:id}/disks'
 
@@ -1962,7 +1962,7 @@ class TemplateNics(Base):
     def __init__(self, template):
         self.parentclass = template
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/templates/{template:id}/nics'
 
@@ -2025,7 +2025,7 @@ class TemplatePermissions(Base):
 
         return TemplatePermission(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/templates/{template:id}/permissions'
 
@@ -2147,7 +2147,7 @@ class UserPermissions(Base):
 
         return UserPermission(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/users/{user:id}/permissions'
 
@@ -2210,7 +2210,7 @@ class UserRoles(Base):
 
         return UserRole(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/users/{user:id}/roles'
 
@@ -2273,7 +2273,7 @@ class UserTags(Base):
 
         return UserTag(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/users/{user:id}/tags'
 
@@ -2525,7 +2525,7 @@ class VMCdRoms(Base):
 
         return VMCdRom(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/vms/{vm:id}/cdroms'
 
@@ -2597,7 +2597,7 @@ class VMDisks(Base):
 
         return VMDisk(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/vms/{vm:id}/disks'
 
@@ -2669,7 +2669,7 @@ class VMNics(Base):
 
         return VMNic(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/vms/{vm:id}/nics'
 
@@ -2732,7 +2732,7 @@ class VMPermissions(Base):
 
         return VMPermission(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/vms/{vm:id}/permissions'
 
@@ -2806,7 +2806,7 @@ class VMSnapshots(Base):
 
         return VMSnapshot(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/vms/{vm:id}/snapshots'
 
@@ -2846,7 +2846,7 @@ class VMStatistics(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/vms/{vm:id}/statistics'
 
@@ -2909,7 +2909,7 @@ class VMTags(Base):
 
         return VMTag(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/vms/{vm:id}/tags'
 
@@ -3034,7 +3034,7 @@ class VmPoolPermissions(Base):
 
         return VmPoolPermission(self.parentclass, result)
 
-    def get(self, name='None', **kwargs):
+    def get(self, name=None, **kwargs):
 
         url = '/api/vmpools/{vmpool:id}/permissions'
 

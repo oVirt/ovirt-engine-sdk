@@ -39,7 +39,7 @@ class SubCollection(object):
         #url = '/api/vms/{vm:id}/nics'" 
 
         sub_collection_get_template = \
-        ("    def get(self, name='None', **kwargs):\n\n" + \
+        ("    def get(self, name=None, **kwargs):\n\n" + \
         "        url = '%(url)s'\n\n" + \
         "        if(name is not None): kwargs['name']=name\n" + \
         "        result = self._getProxy().get(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()})).get_%(actual_resource_name_lc)s()\n\n" + \
