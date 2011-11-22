@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-17 15:23:20.739760
+Generated at: 2011-11-22 11:46:29.089768
 
 @author: mpastern@redhat.com
 '''
@@ -1071,7 +1071,7 @@ class HostNics(Base):
         url = '/api/hosts/{host:id}/nics'
 
         if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_nic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_host_nic()
 
         return HostNIC(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1084,7 +1084,7 @@ class HostNics(Base):
 
         url = '/api/hosts/{host:id}/nics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_nic()
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_host_nic()
 
         return ParseHelper.toSubCollection(HostNIC,
                                            self.parentclass,

@@ -28,13 +28,15 @@ class SubCollection(object):
     @staticmethod
     def get(url, parent_resource_name_lc, encapsulating_resource, actual_resource_name_candidate, KNOWN_WRAPPER_TYPES={}):
         actual_encapsulating_resource = TypeUtil.getValueByKeyOrNone(encapsulating_resource.lower(), KNOWN_WRAPPER_TYPES)
-        actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(actual_resource_name_candidate.lower())).lower()
+        actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(actual_encapsulating_resource if actual_encapsulating_resource is not None \
+                                                                  else actual_resource_name_candidate.lower())).lower()
 
         sub_collection_get_template_values = {'url':url,
                                               'parent_resource_name_lc':parent_resource_name_lc.lower(),
                                               'resource_name_lc':encapsulating_resource.lower(),
                                               'actual_resource_name_lc':actual_resource_name_lc,
-                                              'encapsulating_resource':actual_encapsulating_resource if actual_encapsulating_resource is not None else encapsulating_resource}
+                                              'encapsulating_resource':actual_encapsulating_resource if actual_encapsulating_resource is not None
+                                                                                                     else encapsulating_resource}
 
         #url = '/api/vms/{vm:id}/nics'" 
 
@@ -51,10 +53,13 @@ class SubCollection(object):
     @staticmethod
     def list(url, parent_resource_name_lc, encapsulating_resource, actual_resource_name_candidate, KNOWN_WRAPPER_TYPES={}):
         actual_encapsulating_resource = TypeUtil.getValueByKeyOrNone(encapsulating_resource.lower(), KNOWN_WRAPPER_TYPES)
-        actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(actual_resource_name_candidate.lower())).lower()
+        actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(actual_encapsulating_resource if actual_encapsulating_resource is not None \
+                                                                  else actual_resource_name_candidate.lower())).lower()
+
 
         sub_collection_list_template_values = {'url':url,
-                                               'encapsulating_resource':actual_encapsulating_resource if actual_encapsulating_resource is not None else encapsulating_resource,
+                                               'encapsulating_resource':actual_encapsulating_resource if actual_encapsulating_resource is not None
+                                                                                                      else encapsulating_resource,
                                                'parent_resource_name_lc':parent_resource_name_lc.lower(),
                                                'actual_resource_name_lc':actual_resource_name_lc}
 
@@ -80,7 +85,8 @@ class SubCollection(object):
         sub_collection_add_template_values = {'resource_to_add':resource_to_add.lower(),
                                               'url':url,
                                               'parent_resource_name_lc':parent_resource_name_lc.lower(),
-                                              'encapsulating_entity':actual_encapsulating_entity if actual_encapsulating_entity is not None else encapsulating_entity}
+                                              'encapsulating_entity':actual_encapsulating_entity if actual_encapsulating_entity is not None \
+                                                                                                 else encapsulating_entity}
 
 
 
