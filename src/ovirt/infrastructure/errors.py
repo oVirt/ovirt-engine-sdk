@@ -77,7 +77,6 @@ class RequestError(Exception):
     def __init__(self, response):
         res = response.read()
         self.detail = None
-        print 'res: ' + res
         if res is not None and str(res) is not '' and str(res).find('Error report') != -1:
             self.detail = res
         elif res is not None:
