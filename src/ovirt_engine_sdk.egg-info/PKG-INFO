@@ -1,0 +1,16 @@
+Metadata-Version: 1.0
+Name: ovirt-engine-sdk
+Version: 1.0-SNAPSHOT
+Summary: A SDK interface to oVirt Virtualization
+Home-page: www.ovirt.org
+Author: Unknown
+Author-email: engine-devel@ovirt.org
+License: ASL2
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: ASL2 License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 2.4
