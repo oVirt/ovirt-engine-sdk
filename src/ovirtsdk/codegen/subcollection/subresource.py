@@ -50,13 +50,13 @@ class SubResource(object):
         #FIXME: check if there are more params to put to Action
         #"      action = params.Action(vm=self.superclass)"
 
-
+#FIXME: once RSDL supports action parameters, implement them at action
+#"        action = params.Action()\n%(add_action_parans)s"
 
         #url = '/api/vms/{vm:id}/nics/{nic:id}/do'"
         sub_collection_resource_action_template = \
-        ("    def %(action_name)s(self%(add_method_params)s):\n" + \
+        ("    def %(action_name)s(self%(add_method_params)s, action=params.Action()):\n" + \
         "        url = '%(url)s'\n\n" + \
-        "        action = params.Action()\n%(add_action_parans)s" + \
         "        result = self._getProxy().request(method='%(method)s',\n" + \
         "                                          url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
         "                                                                     '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \

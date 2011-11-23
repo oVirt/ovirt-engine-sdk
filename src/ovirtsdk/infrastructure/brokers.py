@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-23 16:14:52.483751
+Generated at: 2011-11-24 00:30:50.352562
 
 @author: mpastern@redhat.com
 '''
@@ -362,10 +362,9 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
                                              headers={'Content-type':None})
         return result
 
-    def activate(self):
+    def activate(self, action=params.Action()):
         url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
                                                                      '{storagedomain:id}': self.get_id()}),
@@ -373,10 +372,9 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         return result
 
-    def deactivate(self):
+    def deactivate(self, action=params.Action()):
         url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/deactivate'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
                                                                      '{storagedomain:id}': self.get_id()}),
@@ -908,82 +906,73 @@ class Host(params.Host, Base):
                                              headers={'Content-type':None})
         return result
 
-    def install(self):
+    def install(self, action=params.Action()):
         url = '/api/hosts/{host:id}/install'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def fence(self):
+    def fence(self, action=params.Action()):
         url = '/api/hosts/{host:id}/fence'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def activate(self):
+    def activate(self, action=params.Action()):
         url = '/api/hosts/{host:id}/activate'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def deactivate(self):
+    def deactivate(self, action=params.Action()):
         url = '/api/hosts/{host:id}/deactivate'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def approve(self):
+    def approve(self, action=params.Action()):
         url = '/api/hosts/{host:id}/approve'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def iscsilogin(self):
+    def iscsilogin(self, action=params.Action()):
         url = '/api/hosts/{host:id}/iscsilogin'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def iscsidiscover(self):
+    def iscsidiscover(self, action=params.Action()):
         url = '/api/hosts/{host:id}/iscsidiscover'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def commitnetconfig(self):
+    def commitnetconfig(self, action=params.Action()):
         url = '/api/hosts/{host:id}/commitnetconfig'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def Storage(self):
+    def Storage(self, action=params.Action()):
         url = '/api/hosts/{host:id}/storage'
 
-        action = params.Action()
         result = self._getProxy().request(method='GET',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
@@ -1021,10 +1010,9 @@ class HostNIC(params.HostNIC, Base):
                                              headers={'Content-type':None})
         return result
 
-    def detach(self):
+    def detach(self, action=params.Action()):
         url = '/api/hosts/{host:id}/nics/{nic:id}/detach'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
@@ -1032,10 +1020,9 @@ class HostNIC(params.HostNIC, Base):
 
         return result
 
-    def attach(self):
+    def attach(self, action=params.Action()):
         url = '/api/hosts/{host:id}/nics/{nic:id}/attach'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
@@ -1638,10 +1625,9 @@ class StorageDomainTemplate(params.Template, Base):
         obj.__init__(storagedomain, template)
         return obj
 
-    def import_StorageDomain(self):
+    def import_StorageDomain(self, action=params.Action()):
         url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/import'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
                                                                      '{template:id}': self.get_id()}),
@@ -1689,10 +1675,9 @@ class StorageDomainVM(params.VM, Base):
         obj.__init__(storagedomain, vm)
         return obj
 
-    def import_StorageDomain(self):
+    def import_StorageDomain(self, action=params.Action()):
         url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/import'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
                                                                      '{vm:id}': self.get_id()}),
@@ -1850,10 +1835,9 @@ class Template(params.Template, Base):
                                              headers={'Content-type':None})
         return result
 
-    def export(self):
+    def export(self, action=params.Action()):
         url = '/api/templates/{template:id}/export'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
@@ -2389,82 +2373,73 @@ class VM(params.VM, Base):
                                              headers={'Content-type':None})
         return result
 
-    def shutdown(self):
+    def shutdown(self, action=params.Action()):
         url = '/api/vms/{vm:id}/shutdown'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def start(self):
+    def start(self, action=params.Action()):
         url = '/api/vms/{vm:id}/start'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def stop(self):
+    def stop(self, action=params.Action()):
         url = '/api/vms/{vm:id}/stop'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def suspend(self):
+    def suspend(self, action=params.Action()):
         url = '/api/vms/{vm:id}/suspend'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def detach(self):
+    def detach(self, action=params.Action()):
         url = '/api/vms/{vm:id}/detach'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def export(self):
+    def export(self, action=params.Action()):
         url = '/api/vms/{vm:id}/export'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def move(self):
+    def move(self, action=params.Action()):
         url = '/api/vms/{vm:id}/move'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def Ticket(self):
+    def Ticket(self, action=params.Action()):
         url = '/api/vms/{vm:id}/ticket'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
         return result
 
-    def migrate(self):
+    def migrate(self, action=params.Action()):
         url = '/api/vms/{vm:id}/migrate'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action))
@@ -2781,10 +2756,9 @@ class VMSnapshot(params.Snapshot, Base):
                                              headers={'Content-type':None})
         return result
 
-    def restore(self):
+    def restore(self, action=params.Action()):
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/restore'
 
-        action = params.Action()
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{snapshot:id}': self.get_id()}),
