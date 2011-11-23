@@ -19,6 +19,8 @@ class ConnectionsPool(object):
         self.__plock = thread.allocate_lock()
         self.__rlock = thread.allocate_lock()
 
+        self.__url = url
+
         for _ in range(count):
             self.__free_connetcions.put(item=Connection(url=url, \
                                                         port=port, \
@@ -47,3 +49,6 @@ class ConnectionsPool(object):
         with self.__rlock:
             conn = self.__busy_connetcions.pop(conn.get_id())
             self.__free_connetcions.put_nowait(conn)
+
+    def get_url(self):
+        return self.__url

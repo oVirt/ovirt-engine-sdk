@@ -55,6 +55,9 @@ class Proxy():
         finally:
             conn.close()
 
+    def get_url(self):
+        return self.getConnectionsPool().get_url()
+
     @staticmethod
     def instance(connections_pool):
         Proxy(connections_pool)
