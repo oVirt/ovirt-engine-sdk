@@ -3,7 +3,7 @@ Created on Oct 24, 2011
 
 @author: mpastern
 '''
-from ovirt.codegen.utils.typeutil import TypeUtil
+from ovirtsdk.codegen.utils.typeutil import TypeUtil
 
 #============================================================
 #===========================RESOURCE=========================

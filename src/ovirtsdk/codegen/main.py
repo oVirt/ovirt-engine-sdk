@@ -5,21 +5,21 @@ Created on Oct 23, 2011
 '''
 
 from collections import OrderedDict
-from ovirt.api import API
+from ovirtsdk.api import API
 
-from ovirt.infrastructure import contextmanager
+from ovirtsdk.infrastructure import contextmanager
 
-from ovirt.xml import params
+from ovirtsdk.xml import params
 import inspect
 
-from ovirt.utils.parsehelper import ParseHelper
-from ovirt.codegen.imp.imprt import Import
-from ovirt.codegen.collection.resource import Resource
-from ovirt.codegen.entrypoint.entrypoint import EntryPoint
-from ovirt.codegen.collection.collection import Collection
-from ovirt.codegen.subcollection.subresource import SubResource
-from ovirt.codegen.utils.typeutil import TypeUtil
-from ovirt.codegen.subcollection.subcollection import SubCollection
+from ovirtsdk.utils.parsehelper import ParseHelper
+from ovirtsdk.codegen.imp.imprt import Import
+from ovirtsdk.codegen.collection.resource import Resource
+from ovirtsdk.codegen.entrypoint.entrypoint import EntryPoint
+from ovirtsdk.codegen.collection.collection import Collection
+from ovirtsdk.codegen.subcollection.subresource import SubResource
+from ovirtsdk.codegen.utils.typeutil import TypeUtil
+from ovirtsdk.codegen.subcollection.subcollection import SubCollection
 
 SERVER = 'http://server:port'
 USER = 'user@domain'

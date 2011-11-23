@@ -18,12 +18,12 @@ stamp = \
 "@author: mpastern@redhat.com\n'''\n\n"
 
 imports = intro + stamp + \
-"from ovirt.xml import params\n" + \
-"from ovirt.utils.urlhelper import UrlHelper\n" + \
-"from ovirt.utils.filterhelper import FilterHelper\n" + \
-"from ovirt.utils.parsehelper import ParseHelper\n" + \
-"from ovirt.utils.searchhelper import SearchHelper\n" + \
-"from ovirt.infrastructure.common import Base\n\n\n"
+"from ovirtsdk.xml import params\n" + \
+"from ovirtsdk.utils.urlhelper import UrlHelper\n" + \
+"from ovirtsdk.utils.filterhelper import FilterHelper\n" + \
+"from ovirtsdk.utils.parsehelper import ParseHelper\n" + \
+"from ovirtsdk.utils.searchhelper import SearchHelper\n" + \
+"from ovirtsdk.infrastructure.common import Base\n\n\n"
 
 class Import(object):
     @staticmethod

@@ -3,7 +3,7 @@ Created on Oct 23, 2011
 
 @author: mpastern
 '''
-from ovirt.infrastructure import contextmanager
+from ovirtsdk.infrastructure import contextmanager
 
 class Base(object):
     ''' Returns the proxy to connections pool '''

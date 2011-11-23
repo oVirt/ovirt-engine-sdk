@@ -5,17 +5,17 @@
 ########################################
 
 '''
-Generated at: 2011-11-22 11:46:29.089768
+Generated at: 2011-11-23 16:14:52.483751
 
 @author: mpastern@redhat.com
 '''
 
-from ovirt.xml import params
-from ovirt.utils.urlhelper import UrlHelper
-from ovirt.utils.filterhelper import FilterHelper
-from ovirt.utils.parsehelper import ParseHelper
-from ovirt.utils.searchhelper import SearchHelper
-from ovirt.infrastructure.common import Base
+from ovirtsdk.xml import params
+from ovirtsdk.utils.urlhelper import UrlHelper
+from ovirtsdk.utils.filterhelper import FilterHelper
+from ovirtsdk.utils.parsehelper import ParseHelper
+from ovirtsdk.utils.searchhelper import SearchHelper
+from ovirtsdk.infrastructure.common import Base
 
 
 class Capabilities(Base):

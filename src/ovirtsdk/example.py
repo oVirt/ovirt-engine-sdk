@@ -3,8 +3,8 @@ Created on Oct 5, 2011
 
 @author: mpastern
 '''
-from ovirt.api import API
-from ovirt.xml import params
+from ovirtsdk.api import API
+from ovirtsdk.xml import params
 
 #create proxy
 api = API(url='http://host:port', username='user@domain', password='password')

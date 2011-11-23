@@ -5,7 +5,7 @@ Created on Oct 18, 2011
 '''
 
 import StringIO
-from ovirt.xml import params
+from ovirtsdk.xml import params
 
 class ParseHelper():
     '''Provides parsing capabilities'''

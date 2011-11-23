@@ -5,7 +5,7 @@ Created on Oct 16, 2011
 '''
 from Queue import Queue
 import thread
-from ovirt.web.connection import Connection
+from ovirtsdk.web.connection import Connection
 
 class ConnectionsPool(object):
     '''

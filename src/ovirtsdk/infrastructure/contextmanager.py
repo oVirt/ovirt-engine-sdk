@@ -5,7 +5,7 @@ Created on Oct 23, 2011
 '''
 
 import threading
-from ovirt.infrastructure.errors import ImmutableError
+from ovirtsdk.infrastructure.errors import ImmutableError
 
 cache = {}
 lock = threading.RLock()

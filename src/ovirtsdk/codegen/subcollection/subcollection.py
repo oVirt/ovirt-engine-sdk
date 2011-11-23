@@ -3,8 +3,8 @@ Created on Oct 24, 2011
 
 @author: mpastern
 '''
-from ovirt.utils.parsehelper import ParseHelper
-from ovirt.codegen.utils.typeutil import TypeUtil
+from ovirtsdk.utils.parsehelper import ParseHelper
+from ovirtsdk.codegen.utils.typeutil import TypeUtil
 
 #============================================================
 #======================SUB COLLECTION========================

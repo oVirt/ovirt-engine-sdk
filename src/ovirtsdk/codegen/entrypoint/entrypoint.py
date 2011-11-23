@@ -15,16 +15,16 @@ class EntryPoint(object):
         "########################################\n\n" + \
         "'''\nGenerated at: " + str(datetime.datetime.now()) + "\n\n" + \
         "@author: mpastern@redhat.com\n'''\n\n" + \
-        "from ovirt.infrastructure import contextmanager\n" + \
-        "from ovirt.infrastructure.connectionspool import ConnectionsPool\n" + \
-        "from ovirt.infrastructure.proxy import Proxy\n" + \
-        "from ovirt.infrastructure.contextmanager import Mode\n"
+        "from ovirtsdk.infrastructure import contextmanager\n" + \
+        "from ovirtsdk.infrastructure.connectionspool import ConnectionsPool\n" + \
+        "from ovirtsdk.infrastructure.proxy import Proxy\n" + \
+        "from ovirtsdk.infrastructure.contextmanager import Mode\n"
 
         return entry_point_imports_template
 
     @staticmethod
     def entryPointCustomImports(types=[]):
-        entry_point_custom_imports_template = "from ovirt.infrastructure.brokers import %s\n"
+        entry_point_custom_imports_template = "from ovirtsdk.infrastructure.brokers import %s\n"
 
         imports = ''
         for item in types:

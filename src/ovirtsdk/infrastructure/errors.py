@@ -3,7 +3,7 @@ Created on May 11, 2010
 
 @author: mpastern@redhat.com
 '''
-from ovirt.xml import params
+from ovirtsdk.xml import params
 
 class ERROR(Exception):
     def __init__(self, content):

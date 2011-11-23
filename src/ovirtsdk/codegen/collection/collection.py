@@ -6,8 +6,8 @@ Created on Oct 24, 2011
 #============================================================
 #=======================COLLECTION RESOURCE==================
 #============================================================
-from ovirt.utils.parsehelper import ParseHelper
-from ovirt.codegen.utils.typeutil import TypeUtil
+from ovirtsdk.utils.parsehelper import ParseHelper
+from ovirtsdk.codegen.utils.typeutil import TypeUtil
 
 class Collection(object):
     @staticmethod
