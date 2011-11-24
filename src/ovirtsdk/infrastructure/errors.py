@@ -67,11 +67,11 @@ class RhevmClientHandlerInitiationTimeout(Exception):
 
 class ExpectationError(Exception):
     def __init__(self, expect):
-        Exception.__init__(self, '[ERROR]::' % expect)
+        Exception.__init__(self, '[ERROR]:: %s' % expect)
 
 class ConnectionError(Exception):
     def __init__(self, expect):
-        Exception.__init__(self, '[ERROR]::oVirt API connection failure, ' % expect)
+        Exception.__init__(self, '[ERROR]::oVirt API connection failure, %s' % expect)
 
 class RequestError(Exception):
     def __init__(self, response):
