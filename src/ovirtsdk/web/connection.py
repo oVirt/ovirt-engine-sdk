@@ -62,7 +62,7 @@ class Connection(object):
 
     def __createConnection(self, url, key_file=None, cert_file=None, port=None, strict=None, timeout=None, source_address=None):
         u = urlparse.urlparse(url)
-        if(u.scheme is 'https'):
+        if(u.scheme == 'https'):
             return HTTPSConnection(host=u.hostname,
                                    port=u.port,
                                    key_file=key_file,
