@@ -20,10 +20,11 @@ from ovirtsdk.codegen.collection.collection import Collection
 from ovirtsdk.codegen.subcollection.subresource import SubResource
 from ovirtsdk.codegen.utils.typeutil import TypeUtil
 from ovirtsdk.codegen.subcollection.subcollection import SubCollection
+from ovirtsdk.utils.reflectionhelper import ReflectionHelper
 
-SERVER = 'http://server:port'
-USER = 'user@domain'
-PASSWORD = 'password'
+SERVER = 'http://localhost:8080'
+USER = 'admin@internal'
+PASSWORD = '123456'
 
 BROKERS_FILE = '../infrastructure/brokers.py'
 ENTRY_POINT_FILE = '../api.py'
@@ -295,7 +296,6 @@ class CodeGen():
         return candidate.endswith('s')
 
     def __toResourceType(self, candidate):
-# TODO: get real object type from generateDS               
         return candidate[0:1].upper() + candidate[1:len(candidate)]
 
     @staticmethod
@@ -373,13 +373,6 @@ class CodeGen():
         if (dlen > 4 and (dlen % 2 is 0)):#and rel is not in ['get']):
             if(DEBUG): print 'WARNING: found deep dependency (' + str(dlen) + '): ' + 'rel: ' + rel + ', url: ' + url + ', method: ' + http_method + ', for url: ' + url
 
-def __createParamsEntitiesMap():
-    known_wrapper_types = {}
-    for name, obj in inspect.getmembers(params):
-        if inspect.isclass(obj):
-            known_wrapper_types[name.lower()] = name
-    return known_wrapper_types
-
 if __name__ == "__main__":
-    KNOWN_WRAPPER_TYPES = __createParamsEntitiesMap()
+    KNOWN_WRAPPER_TYPES = ReflectionHelper.getClassNames(params)
     CodeGen().gen()

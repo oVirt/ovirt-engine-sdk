@@ -15,6 +15,10 @@ import sys
 import getopt
 import re as re_
 
+# Begin NOT_GENERATED
+from ovirtsdk.utils.reflectionhelper import ReflectionHelper
+# End NOT_GENERATED
+
 etree_ = None
 Verbose_import_ = False
 (   XMLParser_import_none, XMLParser_import_lxml,
@@ -165,7 +169,25 @@ except ImportError, exp:
                     if class_obj2 is not None:
                         class_obj1 = class_obj2
             return class_obj1
-
+        
+# Begin NOT_GENERATED
+        def __setattr__(self, item, value):
+            if value is not None and not isinstance(value, list) and \
+               ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'], type(value)) and \
+               not ReflectionHelper.isModuleMember(sys.modules[__name__], type(value)) and \
+               value.__dict__.has_key('superclass') and value.superclass is not None and \
+               value.superclass != BaseResource:
+                object.__setattr__(self, item, value.superclass)
+            elif not isinstance(value, list) and  \
+                 ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'], type(self)) and \
+                 self.__dict__.has_key('superclass') and self.superclass is not None and \
+                 not ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'], type(value)) and\
+                  item is not 'superclass' and \
+                  item is not 'parentclass' :
+                object.__setattr__(self.superclass, item, value)
+            else:
+                super.__setattr__(self, item, value)
+# End NOT_GENERATED  
 
 #
 # If you have installed IPython you can uncomment and use the following.
