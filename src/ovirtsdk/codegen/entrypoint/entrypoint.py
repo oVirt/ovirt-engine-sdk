@@ -38,7 +38,7 @@ class EntryPoint(object):
         EntryPoint.entryPointCustomImports(types) + \
         "class API():\n" + \
         "    #TODO: - read .ini configuration\n\n" + \
-        "    def __init__(self, url, username, password, key_file=None, cert_file=None, port=None, strict=None, timeout=60):\n" + \
+        "    def __init__(self, url, username, password, key_file=None, cert_file=None, port=None, timeout=None):\n" + \
         "        contextmanager.add('proxy',\n" + \
         "                           Proxy(ConnectionsPool(url=url,\n" + \
         "                                                 username=username,\n" + \
@@ -46,7 +46,7 @@ class EntryPoint(object):
         "                                                 key_file=key_file,\n" + \
         "                                                 cert_file=cert_file,\n" + \
         "                                                 port=port,\n" + \
-        "                                                 strict=strict,\n" + \
+        "                                                 strict=False,\n" + \
         "                                                 timeout=timeout)),\n" + \
         "                           Mode.R)\n\n"
 
