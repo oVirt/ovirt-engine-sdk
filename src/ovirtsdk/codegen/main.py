@@ -10,7 +10,6 @@ from ovirtsdk.api import API
 from ovirtsdk.infrastructure import contextmanager
 
 from ovirtsdk.xml import params
-import inspect
 
 from ovirtsdk.utils.parsehelper import ParseHelper
 from ovirtsdk.codegen.imp.imprt import Import
@@ -22,9 +21,9 @@ from ovirtsdk.codegen.utils.typeutil import TypeUtil
 from ovirtsdk.codegen.subcollection.subcollection import SubCollection
 from ovirtsdk.utils.reflectionhelper import ReflectionHelper
 
-SERVER = 'http://localhost:8080'
-USER = 'admin@internal'
-PASSWORD = '123456'
+SERVER = 'http://host:port'
+USER = 'user@domain'
+PASSWORD = 'password'
 
 BROKERS_FILE = '../infrastructure/brokers.py'
 ENTRY_POINT_FILE = '../api.py'

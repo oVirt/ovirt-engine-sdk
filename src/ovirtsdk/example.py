@@ -8,7 +8,7 @@ from ovirtsdk.xml import params
 
 #create proxy
 #api = API(url='http://host:port', username='user@domain', password='password')
-api = API(url='http://localhost:8080', username='admin@internal', password='123456')
+api = API(url='http://host:port', username='user@domain', password='password')
 
 #list
 vms1 = api.vms.list()
