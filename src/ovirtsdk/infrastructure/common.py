@@ -16,14 +16,3 @@ class Base(object):
 
     def __getattr__(self, item):
         return self.superclass.__getattribute__(item)
-
-    def __setattr__(self, item, value):
-#FIXME: find better solution than predefining the sub-collection
-        if item is not 'superclass'\
-            and item is not 'parentclass'\
-            and self.__dict__.has_key('superclass')\
-            and not self.__dict__.has_key(item)\
-            and self.__dict__['superclass'].__dict__.has_key(item):
-            self.__dict__['superclass'].__dict__[item] = value
-        else:
-            self.__dict__[item] = value
