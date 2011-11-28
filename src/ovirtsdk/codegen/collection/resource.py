@@ -36,12 +36,11 @@ class Resource(object):
 
     @staticmethod
     def addSubCollectionInstances(parent, sub_collections={}):
-        tmpl = "        self.%s = []\n" + \
-               "        self.%s = %s(%s)\n"
+        tmpl = "        self.%s = %s(%s)\n"
 
         new_tmpl = ''
         for k, v in sub_collections.items():
-            new_tmpl += tmpl % (k.lower(), k.lower(), v, parent)
+            new_tmpl += tmpl % (k.lower(), v, parent)
 
         return new_tmpl
 

@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-24 00:30:50.352562
+Generated at: 2011-11-28 15:39:29.510588
 
 @author: mpastern@redhat.com
 '''
@@ -43,9 +43,7 @@ class Capabilities(Base):
 
 class Cluster(params.Cluster, Base):
     def __init__(self, cluster):
-        self.networks = []
         self.networks = ClusterNetworks(cluster)
-        self.permissions = []
         self.permissions = ClusterPermissions(cluster)
 
         self.superclass = cluster
@@ -242,9 +240,7 @@ class Clusters(Base):
 
 class DataCenter(params.DataCenter, Base):
     def __init__(self, datacenter):
-        self.storagedomains = []
         self.storagedomains = DataCenterStorageDomains(datacenter)
-        self.permissions = []
         self.permissions = DataCenterPermissions(datacenter)
 
         self.superclass = datacenter
@@ -452,9 +448,7 @@ class DataCenters(Base):
 
 class Domain(params.Domain, Base):
     def __init__(self, domain):
-        self.users = []
         self.users = DomainUsers(domain)
-        self.groups = []
         self.groups = DomainGroups(domain)
 
         self.superclass = domain
@@ -604,11 +598,8 @@ class Events(Base):
 
 class Group(params.Group, Base):
     def __init__(self, group):
-        self.permissions = []
         self.permissions = GroupPermissions(group)
-        self.roles = []
         self.roles = GroupRoles(group)
-        self.tags = []
         self.tags = GroupTags(group)
 
         self.superclass = group
@@ -877,13 +868,9 @@ class GroupsRolePermit(params.Permit, Base):
 
 class Host(params.Host, Base):
     def __init__(self, host):
-        self.nics = []
         self.nics = HostNics(host)
-        self.permissions = []
         self.permissions = HostPermissions(host)
-        self.statistics = []
         self.statistics = HostStatistics(host)
-        self.tags = []
         self.tags = HostTags(host)
 
         self.superclass = host
@@ -1357,7 +1344,6 @@ class Networks(Base):
 
 class Role(params.Role, Base):
     def __init__(self, role):
-        self.permits = []
         self.permits = RolePermits(role)
 
         self.superclass = role
@@ -1475,13 +1461,9 @@ class Roles(Base):
 
 class StorageDomain(params.StorageDomain, Base):
     def __init__(self, storagedomain):
-        self.files = []
         self.files = StorageDomainFiles(storagedomain)
-        self.templates = []
         self.templates = StorageDomainTemplates(storagedomain)
-        self.vms = []
         self.vms = StorageDomainVMs(storagedomain)
-        self.permissions = []
         self.permissions = StorageDomainPermissions(storagedomain)
 
         self.superclass = storagedomain
@@ -1806,13 +1788,9 @@ class Tags(Base):
 
 class Template(params.Template, Base):
     def __init__(self, template):
-        self.nics = []
         self.nics = TemplateNics(template)
-        self.cdroms = []
         self.cdroms = TemplateCdRoms(template)
-        self.disks = []
         self.disks = TemplateDisks(template)
-        self.permissions = []
         self.permissions = TemplatePermissions(template)
 
         self.superclass = template
@@ -2065,11 +2043,8 @@ class Templates(Base):
 
 class User(params.User, Base):
     def __init__(self, user):
-        self.permissions = []
         self.permissions = UserPermissions(user)
-        self.roles = []
         self.roles = UserRoles(user)
-        self.tags = []
         self.tags = UserTags(user)
 
         self.superclass = user
@@ -2338,19 +2313,12 @@ class UsersRolePermit(params.Permit, Base):
 
 class VM(params.VM, Base):
     def __init__(self, vm):
-        self.cdroms = []
         self.cdroms = VMCdRoms(vm)
-        self.statistics = []
         self.statistics = VMStatistics(vm)
-        self.tags = []
         self.tags = VMTags(vm)
-        self.nics = []
         self.nics = VMNics(vm)
-        self.disks = []
         self.disks = VMDisks(vm)
-        self.snapshots = []
         self.snapshots = VMSnapshots(vm)
-        self.permissions = []
         self.permissions = VMPermissions(vm)
 
         self.superclass = vm
@@ -2939,7 +2907,6 @@ class VMs(Base):
 
 class VmPool(params.VmPool, Base):
     def __init__(self, vmpool):
-        self.permissions = []
         self.permissions = VmPoolPermissions(vmpool)
 
         self.superclass = vmpool
