@@ -1,4 +1,4 @@
-Metadata-Version: 1.0
+Metadata-Version: 0.1
 Name: ovirt-engine-sdk
 Version: 1.0-SNAPSHOT
 Summary: A SDK interface to oVirt Virtualization
