@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-28 15:39:29.510588
+Generated at: 2011-11-29 15:41:07.932745
 
 @author: mpastern@redhat.com
 '''
@@ -1607,7 +1607,7 @@ class StorageDomainTemplate(params.Template, Base):
         obj.__init__(storagedomain, template)
         return obj
 
-    def import_StorageDomain(self, action=params.Action()):
+    def import_template(self, action=params.Action()):
         url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/import'
 
         result = self._getProxy().request(method='POST',
@@ -1657,7 +1657,7 @@ class StorageDomainVM(params.VM, Base):
         obj.__init__(storagedomain, vm)
         return obj
 
-    def import_StorageDomain(self, action=params.Action()):
+    def import_vm(self, action=params.Action()):
         url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/import'
 
         result = self._getProxy().request(method='POST',

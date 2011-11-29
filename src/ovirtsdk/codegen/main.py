@@ -10,6 +10,7 @@ from ovirtsdk.api import API
 from ovirtsdk.infrastructure import contextmanager
 
 from ovirtsdk.xml import params
+import inspect
 
 from ovirtsdk.utils.parsehelper import ParseHelper
 from ovirtsdk.codegen.imp.imprt import Import
@@ -21,9 +22,9 @@ from ovirtsdk.codegen.utils.typeutil import TypeUtil
 from ovirtsdk.codegen.subcollection.subcollection import SubCollection
 from ovirtsdk.utils.reflectionhelper import ReflectionHelper
 
-SERVER = 'http://host:port'
-USER = 'user@domain'
-PASSWORD = 'password'
+SERVER = 'http://localhost:8080'
+USER = 'admin@internal'
+PASSWORD = '123456'
 
 BROKERS_FILE = '../infrastructure/brokers.py'
 ENTRY_POINT_FILE = '../api.py'
@@ -255,7 +256,9 @@ class CodeGen():
 
     def __createAction(self, root_coll, sub_coll, action_name, url, rel, http_method, body_type, response_type, collectionsHolder):
         resource = root_coll[:len(root_coll) - 1]
-        action_name = self.__adaptActionName(action_name, resource)
+        sub_resource = sub_coll[:len(sub_coll) - 1] if sub_coll is not None else None
+        action_name = self.__adaptActionName(action_name, sub_resource if sub_resource is not None
+                                                                       else resource)
         if (sub_coll is None or sub_coll == ''):
             if (not collectionsHolder.has_key(resource)):
                 self.__extendCollection(root_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
@@ -286,7 +289,7 @@ class CodeGen():
     #rename /preserved/ names
     def __adaptActionName(self, action_name, resource):
         if action_name in PRESERVED_NAMES:
-            return action_name + '_' + resource
+            return action_name + '_' + resource.lower()
         return action_name
 
     @staticmethod
