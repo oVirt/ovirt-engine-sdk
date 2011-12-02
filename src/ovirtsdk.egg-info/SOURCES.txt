@@ -14,6 +14,7 @@ src/ovirtsdk/infrastructure/threadpool.py
 src/ovirtsdk/utils/__init__.py
 src/ovirtsdk/utils/filterhelper.py
 src/ovirtsdk/utils/parsehelper.py
+src/ovirtsdk/utils/reflectionhelper.py
 src/ovirtsdk/utils/searchhelper.py
 src/ovirtsdk/utils/urlhelper.py
 src/ovirtsdk/web/__init__.py
