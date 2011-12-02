@@ -186,7 +186,7 @@ except ImportError, exp:
                   item is not 'parentclass' :
                 object.__setattr__(self.superclass, item, value)
             else:
-                super.__setattr__(self, item, value)
+                object.__setattr__(self, item, value)
 # End NOT_GENERATED  
 
 #
