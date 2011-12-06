@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-11-29 15:41:07.932745
+Generated at: 2011-12-06 16:31:22.072119
 
 @author: mpastern@redhat.com
 '''
@@ -1031,12 +1031,12 @@ class HostNics(Base):
     def __init__(self, host):
         self.parentclass = host
 
-    def add(self, nic):
+    def add(self, hostnic):
 
         url = '/api/hosts/{host:id}/nics'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(nic))
+                                      body=ParseHelper.toXml(hostnic))
 
         return HostNIC(self.parentclass, result)
 

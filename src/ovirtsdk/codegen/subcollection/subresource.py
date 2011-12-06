@@ -66,14 +66,14 @@ class SubResource(object):
         return sub_collection_resource_action_template
 
     @staticmethod
-    def update(url, parent_resource_name_lc, resource_name, actual_self_name, KNOWN_WRAPPER_TYPES):
-        actual_xml_entity = TypeUtil.getValueByKeyOrNone(actual_self_name.lower(), KNOWN_WRAPPER_TYPES)
+    def update(url, parent_resource_name_lc, resource_name, returned_type, KNOWN_WRAPPER_TYPES):
+        actual_xml_entity = TypeUtil.getValueByKeyOrNone(returned_type.lower(), KNOWN_WRAPPER_TYPES)
 
         sub_collection_resource_update_template_values = {'url':url,
                                                           'parent_resource_name_lc':parent_resource_name_lc.lower(),
                                                           'resource_name':resource_name,
                                                           'resource_name_lc':resource_name.lower(),
-                                                          'actual_self_name':actual_xml_entity if actual_xml_entity is not None else actual_self_name}
+                                                          'returned_type':actual_xml_entity if actual_xml_entity is not None else returned_type}
 
         #url = '/api/vms/{vm:id}/nics/{nic:id}'"
         sub_collection_resource_update_template = \
@@ -82,7 +82,7 @@ class SubResource(object):
         "        result = self._getProxy().update(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
         "                                                                     '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
         "                                         body=ParseHelper.toXml(self.superclass))\n\n" + \
-        "        return %(actual_self_name)s(self.parentclass, result)\n\n") % sub_collection_resource_update_template_values
+        "        return %(returned_type)s(self.parentclass, result)\n\n") % sub_collection_resource_update_template_values
 
         return sub_collection_resource_update_template
 

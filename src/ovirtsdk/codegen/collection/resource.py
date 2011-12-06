@@ -84,9 +84,9 @@ class Resource(object):
         return res
 
     @staticmethod
-    def delete(url, resource_name_lc):
+    def delete(url, resource_name):
         resource_delete_template_values = {'url':url,
-                                           'resource_name_lc':resource_name_lc.lower()}
+                                           'resource_name_lc':resource_name.lower()}
 
         resource_delete_template = \
         ("    def delete(self, force=False, grace_period=False):\n" + \
@@ -103,14 +103,14 @@ class Resource(object):
         return resource_delete_template
 
     @staticmethod
-    def update(url, resource_name, actual_self_name, KNOWN_WRAPPER_TYPES={}):
+    def update(url, resource_name, KNOWN_WRAPPER_TYPES={}):
 
-        actual_xml_entity = TypeUtil.getValueByKeyOrNone(actual_self_name.lower(), KNOWN_WRAPPER_TYPES)
+        actual_xml_entity = TypeUtil.getValueByKeyOrNone(resource_name.lower(), KNOWN_WRAPPER_TYPES)
 
         resource_update_template_values = {'url':url,
                                            'resource_name':resource_name,
                                            'resource_name_lc':resource_name.lower(),
-                                           'actual_self_name':actual_xml_entity if actual_xml_entity is not None else actual_self_name}
+                                           'actual_self_name':actual_xml_entity if actual_xml_entity is not None else resource_name}
 
         resource_update_template = \
         ("    def update(self):\n" + \

@@ -22,9 +22,9 @@ class Collection(object):
         return collection_resource_template
 
     @staticmethod
-    def get(url, resource_name_lc, resource_type, KNOWN_WRAPPER_TYPES={}):
+    def get(url, resource_type, KNOWN_WRAPPER_TYPES={}):
         actual_resource_type = TypeUtil.getValueByKeyOrNone(resource_type.lower(), KNOWN_WRAPPER_TYPES)
-        actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(resource_name_lc.lower())).lower()
+        actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(resource_type.lower())).lower()
 
         collection_get_template_values = {'url':url,
                                           'resource_name_lc':actual_resource_name_lc,
@@ -39,9 +39,9 @@ class Collection(object):
         return collection_get_template
 
     @staticmethod
-    def list(url, resource_name_lc, resource_type, KNOWN_WRAPPER_TYPES={}):
+    def list(url, resource_type, KNOWN_WRAPPER_TYPES={}):
         actual_resource_type = TypeUtil.getValueByKeyOrNone(resource_type.lower(), KNOWN_WRAPPER_TYPES)
-        actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(resource_name_lc.lower())).lower()
+        actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(resource_type.lower())).lower()
 
         collection_list_template_values = {'url':url,
                                            'resource_name_lc':actual_resource_name_lc,
@@ -62,11 +62,11 @@ class Collection(object):
         return collection_list_template
 
     @staticmethod
-    def add(url, resource_to_add_lc, resource_type, KNOWN_WRAPPER_TYPES={}):
+    def add(url, resource_type, KNOWN_WRAPPER_TYPES={}):
         actual_resource_type = TypeUtil.getValueByKeyOrNone(resource_type.lower(), KNOWN_WRAPPER_TYPES)
 
         collection_add_template_values = {'url':url,
-                                          'resource_to_add_lc':resource_to_add_lc.lower(),
+                                          'resource_to_add_lc':resource_type.lower(),
                                           'resource_type' : actual_resource_type if actual_resource_type is not None else resource_type}
 
         collection_add_template = \

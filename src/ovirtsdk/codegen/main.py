@@ -10,7 +10,6 @@ from ovirtsdk.api import API
 from ovirtsdk.infrastructure import contextmanager
 
 from ovirtsdk.xml import params
-import inspect
 
 from ovirtsdk.utils.parsehelper import ParseHelper
 from ovirtsdk.codegen.imp.imprt import Import
@@ -22,9 +21,9 @@ from ovirtsdk.codegen.utils.typeutil import TypeUtil
 from ovirtsdk.codegen.subcollection.subcollection import SubCollection
 from ovirtsdk.utils.reflectionhelper import ReflectionHelper
 
-SERVER = 'http://localhost:8080'
-USER = 'admin@internal'
-PASSWORD = '123456'
+SERVER = 'http://server:port'
+USER = 'user@domain'
+PASSWORD = 'password'
 
 BROKERS_FILE = '../infrastructure/brokers.py'
 ENTRY_POINT_FILE = '../api.py'
@@ -61,13 +60,13 @@ class CodeGen():
             if (not (rel + '_' + url) in usedRels):
                 #request
                 http_method = link.request.http_method
-                if (link.request.body is not None and hasattr(link.request.body, 'type')):
-                    body_type = link.request.body.type
+                if (link.request and link.request.body and hasattr(link.request.body, 'type_')):
+                    body_type = link.request.body.type_
 
                 #response
                 response = link.response
-                if (link.response is not None and hasattr(link.response, 'type')):
-                    response_type = response.type
+                if (link.response and hasattr(link.response, 'type_')):
+                    response_type = self.__toSingular(response.type_)
 
                 #get relations
                 splitted_url = url.strip()[1:].split('/')
@@ -132,6 +131,11 @@ class CodeGen():
                 res = resources[i + 1] if ((i + 1 < len(resources))) else None
                 dct[coll] = res
         return dct
+    
+    def __toSingular(self, typ):
+        if typ and typ.endswith('s') and typ not in COLLECTION_TO_ENTITY_EXCEPTIONS:
+            return typ[0:len(typ)-1]
+        return typ            
 
     def __appendRootCollections(self, collectionsHolder={}):
         collections = ''
@@ -160,7 +164,6 @@ class CodeGen():
         #num of permutations for N=K is K
         #num of pairs        for N=K is k/2 (to differ between the res & coll check the last pair val)
 
-#FIXME: work with response_type if available otherwise : retrieve it (as it is right now)
         root_coll = None
         for k, v in resources.items():
             i += 1
@@ -216,27 +219,28 @@ class CodeGen():
             if(DEBUG): print '[root] creating collection: ' + collection + ', for url: ' + url
             if(DEBUG): print '/n' + collection_body
 
-        resource = collection[:len(collection) - 1] if self.__isCollection(collection)\
-                   and\
-                   collection not in COLLECTION_TO_ENTITY_EXCEPTIONS else collection
+#        resource = collection[:len(collection) - 1] if self.__isCollection(collection)\
+#                   and\
+#                   collection not in COLLECTION_TO_ENTITY_EXCEPTIONS else collection
 
         #['get', 'add', 'delete', 'update']
         if (rel == 'get'):
-            get_method = Collection.get(url, resource, self.__toResourceType(resource), KNOWN_WRAPPER_TYPES)
+            get_method = Collection.get(url, response_type, KNOWN_WRAPPER_TYPES)
             collectionsHolder[collection]['body'] += get_method
             if(DEBUG): print 'adding to collection: ' + collection + ', url: ' + url + ', get() method:\n' + get_method
 
-            list_method = Collection.list(url, resource, self.__toResourceType(resource), KNOWN_WRAPPER_TYPES)
+            list_method = Collection.list(url, response_type, KNOWN_WRAPPER_TYPES)
             collectionsHolder[collection]['body'] += list_method
             if(DEBUG): print 'adding to collection: ' + collection + ', url: ' + url + ', list() method:\n' + list_method
 
         elif (rel == 'add'):
-            add_method = Collection.add(url, resource, self.__toResourceType(resource), KNOWN_WRAPPER_TYPES)
+            add_method = Collection.add(url, response_type, KNOWN_WRAPPER_TYPES)
             collectionsHolder[collection]['body'] += add_method
             if(DEBUG): print 'adding to collection: ' + collection + ', url: ' + url + ', add() method:\n' + add_method
 
     def __extendResource(self, collection, url, rel, http_method, body_type, response_type, collectionsHolder):
-        resource = collection[:len(collection) - 1]
+        resource = response_type if response_type is not None \
+                                 else collection[:len(collection) - 1]
 
         if (not collectionsHolder.has_key(resource)):
             resource_body = Resource.resource(self.__toResourceType(resource), [], KNOWN_WRAPPER_TYPES)
@@ -250,7 +254,7 @@ class CodeGen():
             collectionsHolder[resource]['body'] += del_method
             if(DEBUG): print 'adding to resource: ' + resource + ' delete method:\n\n' + del_method
         elif (rel == 'update'):
-            upd_method = Resource.update(url, self.__toResourceType(resource), self.__toResourceType(resource), KNOWN_WRAPPER_TYPES)
+            upd_method = Resource.update(url, self.__toResourceType(resource), KNOWN_WRAPPER_TYPES)
             collectionsHolder[resource]['body'] += upd_method
             if(DEBUG): print 'adding to resource: ' + self.__toResourceType(resource) + ' update method:\n\n' + upd_method
 
@@ -311,7 +315,8 @@ class CodeGen():
         #str: /api/clusters/{cluster:id}/permissions
 
         root_res = root_coll[:len(root_coll) - 1]
-        sub_res = sub_coll[:len(sub_coll) - 1]
+        sub_res = response_type if response_type is not None \
+                                else sub_coll[:len(sub_coll) - 1]
         #sub_coll_type = self.__toResourceType(root_res) + self.__toResourceType(sub_coll)
         sub_coll_type = root_res + sub_coll
         sub_res_type = sub_coll_type[:len(sub_coll_type) - 1]
@@ -349,7 +354,6 @@ class CodeGen():
     def __extnedSubResource(self, root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder):
         root_res = root_coll[:len(root_coll) - 1]
         sub_res = sub_coll[:len(sub_coll) - 1] if self.__isCollection(sub_coll) else sub_coll
-        #sub_res_type = self.__toResourceType(root_res) + self.__toResourceType(sub_res)
         sub_res_type = root_res + sub_res
 
         if (not collectionsHolder.has_key(sub_res_type)):
