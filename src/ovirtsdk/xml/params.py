@@ -169,7 +169,6 @@ except ImportError, exp:
                     if class_obj2 is not None:
                         class_obj1 = class_obj2
             return class_obj1
-        
 # Begin NOT_GENERATED
         def __setattr__(self, item, value):
             if value is not None and not isinstance(value, list) and \
@@ -188,6 +187,7 @@ except ImportError, exp:
             else:
                 object.__setattr__(self, item, value)
 # End NOT_GENERATED  
+
 
 #
 # If you have installed IPython you can uncomment and use the following.
@@ -394,11 +394,12 @@ def _cast(typ, value):
 class Link(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, href=None, rel=None, request=None, response=None):
+    def __init__(self, href=None, rel=None, request=None, response=None, extensiontype_=None):
         self.href = _cast(None, href)
         self.rel = _cast(None, rel)
         self.request = request
         self.response = response
+        self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if Link.subclass:
             return Link.subclass(*args_, **kwargs_)
@@ -413,6 +414,8 @@ class Link(GeneratedsSuper):
     def set_href(self, href): self.href = href
     def get_rel(self): return self.rel
     def set_rel(self, rel): self.rel = rel
+    def get_extensiontype_(self): return self.extensiontype_
+    def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def export(self, outfile, level, namespace_='', name_='Link', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -432,6 +435,10 @@ class Link(GeneratedsSuper):
         if self.rel is not None and 'rel' not in already_processed:
             already_processed.append('rel')
             outfile.write(' rel=%s' % (self.gds_format_string(quote_attrib(self.rel).encode(ExternalEncoding), input_name='rel'), ))
+        if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
+            already_processed.append('xsi:type')
+            outfile.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            outfile.write(' xsi:type="%s"' % self.extensiontype_)
     def exportChildren(self, outfile, level, namespace_='', name_='Link', fromsubclass_=False):
         if self.request:
             self.request.export(outfile, level, namespace_, name_='request')
@@ -486,6 +493,10 @@ class Link(GeneratedsSuper):
         if value is not None and 'rel' not in already_processed:
             already_processed.append('rel')
             self.rel = value
+        value = find_attr_value_('xsi:type', node)
+        if value is not None and 'xsi:type' not in already_processed:
+            already_processed.append('xsi:type')
+            self.extensiontype_ = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'request':
             obj_ = Request.factory()
@@ -1077,7 +1088,8 @@ class Actions(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'link':
-            obj_ = Link.factory()
+            class_obj_ = self.get_class_obj_(child_, Link)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.link.append(obj_)
 # end class Actions
@@ -4083,7 +4095,8 @@ class BaseResource(GeneratedsSuper):
             obj_.build(child_)
             self.set_creation_status(obj_)
         elif nodeName_ == 'link':
-            obj_ = Link.factory()
+            class_obj_ = self.get_class_obj_(child_, Link)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.link.append(obj_)
 # end class BaseResource
@@ -9204,7 +9217,7 @@ class Storage(BaseResource):
 class StorageDomain(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, data_center=None, type_=None, status=None, master=None, storage=None, host=None, format=None, available=None, used=None, committed=None, storage_format=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, data_center=None, type_=None, status=None, master=None, storage=None, host=None, format=None, destroy=None, available=None, used=None, committed=None, storage_format=None):
         super(StorageDomain, self).__init__(href, id, name, description, actions, creation_status, link, )
         self.data_center = data_center
         self.type_ = type_
@@ -9213,6 +9226,7 @@ class StorageDomain(BaseResource):
         self.storage = storage
         self.host = host
         self.format = format
+        self.destroy = destroy
         self.available = available
         self.used = used
         self.committed = committed
@@ -9237,6 +9251,8 @@ class StorageDomain(BaseResource):
     def set_host(self, host): self.host = host
     def get_format(self): return self.format
     def set_format(self, format): self.format = format
+    def get_destroy(self): return self.destroy
+    def set_destroy(self, destroy): self.destroy = destroy
     def get_available(self): return self.available
     def set_available(self, available): self.available = available
     def get_used(self): return self.used
@@ -9278,6 +9294,9 @@ class StorageDomain(BaseResource):
         if self.format is not None:
             showIndent(outfile, level)
             outfile.write('<%sformat>%s</%sformat>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.format)), input_name='format'), namespace_))
+        if self.destroy is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sdestroy>%s</%sdestroy>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.destroy)), input_name='destroy'), namespace_))
         if self.available is not None:
             showIndent(outfile, level)
             outfile.write('<%savailable>%s</%savailable>\n' % (namespace_, self.gds_format_integer(self.available, input_name='available'), namespace_))
@@ -9299,6 +9318,7 @@ class StorageDomain(BaseResource):
             self.storage is not None or
             self.host is not None or
             self.format is not None or
+            self.destroy is not None or
             self.available is not None or
             self.used is not None or
             self.committed is not None or
@@ -9350,6 +9370,9 @@ class StorageDomain(BaseResource):
         if self.format is not None:
             showIndent(outfile, level)
             outfile.write('format=%s,\n' % self.format)
+        if self.destroy is not None:
+            showIndent(outfile, level)
+            outfile.write('destroy=%s,\n' % self.destroy)
         if self.available is not None:
             showIndent(outfile, level)
             outfile.write('available=%d,\n' % self.available)
@@ -9410,6 +9433,16 @@ class StorageDomain(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'format')
             self.format = ival_
+        elif nodeName_ == 'destroy':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'destroy')
+            self.destroy = ival_
         elif nodeName_ == 'available':
             sval_ = child_.text
             try:
@@ -14144,7 +14177,10 @@ class Body(GeneratedsSuper):
     superclass = None
     def __init__(self, type_=None, parameters_set=None):
         self.type_ = type_
-        self.parameters_set = parameters_set
+        if parameters_set is None:
+            self.parameters_set = []
+        else:
+            self.parameters_set = parameters_set
     def factory(*args_, **kwargs_):
         if Body.subclass:
             return Body.subclass(*args_, **kwargs_)
@@ -14155,6 +14191,8 @@ class Body(GeneratedsSuper):
     def set_type(self, type_): self.type_ = type_
     def get_parameters_set(self): return self.parameters_set
     def set_parameters_set(self, parameters_set): self.parameters_set = parameters_set
+    def add_parameters_set(self, value): self.parameters_set.append(value)
+    def insert_parameters_set(self, index, value): self.parameters_set[index] = value
     def export(self, outfile, level, namespace_='', name_='Body', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -14173,12 +14211,12 @@ class Body(GeneratedsSuper):
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
-        if self.parameters_set:
-            self.parameters_set.export(outfile, level, namespace_, name_='parameters_set')
+        for parameters_set_ in self.parameters_set:
+            parameters_set_.export(outfile, level, namespace_, name_='parameters_set')
     def hasContent_(self):
         if (
             self.type_ is not None or
-            self.parameters_set is not None
+            self.parameters_set
             ):
             return True
         else:
@@ -14194,12 +14232,18 @@ class Body(GeneratedsSuper):
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('type_=%s,\n' % quote_python(self.type_).encode(ExternalEncoding))
-        if self.parameters_set is not None:
+        showIndent(outfile, level)
+        outfile.write('parameters_set=[\n')
+        level += 1
+        for parameters_set_ in self.parameters_set:
             showIndent(outfile, level)
-            outfile.write('parameters_set=model_.parameters_set(\n')
-            self.parameters_set.exportLiteral(outfile, level)
+            outfile.write('model_.parameters_set(\n')
+            parameters_set_.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -14215,7 +14259,7 @@ class Body(GeneratedsSuper):
         elif nodeName_ == 'parameters_set':
             obj_ = ParametersSet.factory()
             obj_.build(child_)
-            self.set_parameters_set(obj_)
+            self.parameters_set.append(obj_)
 # end class Body
 
 
@@ -14367,20 +14411,28 @@ class Response(GeneratedsSuper):
 # end class Response
 
 
-class Parameter(BaseResource):
+class Parameter(GeneratedsSuper):
     subclass = None
-    superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, type_=None):
-        super(Parameter, self).__init__(href, id, name, description, actions, creation_status, link, )
+    superclass = None
+    def __init__(self, name=None, description=None, type_=None, mandatory=None):
+        self.name = name
+        self.description = description
         self.type_ = type_
+        self.mandatory = mandatory
     def factory(*args_, **kwargs_):
         if Parameter.subclass:
             return Parameter.subclass(*args_, **kwargs_)
         else:
             return Parameter(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def get_name(self): return self.name
+    def set_name(self, name): self.name = name
+    def get_description(self): return self.description
+    def set_description(self, description): self.description = description
     def get_type(self): return self.type_
     def set_type(self, type_): self.type_ = type_
+    def get_mandatory(self): return self.mandatory
+    def set_mandatory(self, mandatory): self.mandatory = mandatory
     def export(self, outfile, level, namespace_='', name_='Parameter', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -14394,16 +14446,26 @@ class Parameter(BaseResource):
         else:
             outfile.write('/>\n')
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Parameter'):
-        super(Parameter, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Parameter')
+        pass
     def exportChildren(self, outfile, level, namespace_='', name_='Parameter', fromsubclass_=False):
-        super(Parameter, self).exportChildren(outfile, level, namespace_, name_, True)
+        if self.name is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sname>%s</%sname>\n' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_))
+        if self.description is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sdescription>%s</%sdescription>\n' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_))
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
+        if self.mandatory is not None:
+            showIndent(outfile, level)
+            outfile.write('<%smandatory>%s</%smandatory>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.mandatory)), input_name='mandatory'), namespace_))
     def hasContent_(self):
         if (
+            self.name is not None or
+            self.description is not None or
             self.type_ is not None or
-            super(Parameter, self).hasContent_()
+            self.mandatory is not None
             ):
             return True
         else:
@@ -14414,29 +14476,54 @@ class Parameter(BaseResource):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(Parameter, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+        pass
     def exportLiteralChildren(self, outfile, level, name_):
-        super(Parameter, self).exportLiteralChildren(outfile, level, name_)
+        if self.name is not None:
+            showIndent(outfile, level)
+            outfile.write('name=%s,\n' % quote_python(self.name).encode(ExternalEncoding))
+        if self.description is not None:
+            showIndent(outfile, level)
+            outfile.write('description=%s,\n' % quote_python(self.description).encode(ExternalEncoding))
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('type_=%s,\n' % quote_python(self.type_).encode(ExternalEncoding))
+        if self.mandatory is not None:
+            showIndent(outfile, level)
+            outfile.write('mandatory=%s,\n' % self.mandatory)
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        super(Parameter, self).buildAttributes(node, attrs, already_processed)
+        pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'type':
+        if nodeName_ == 'name':
+            name_ = child_.text
+            name_ = self.gds_validate_string(name_, node, 'name')
+            self.name = name_
+        elif nodeName_ == 'description':
+            description_ = child_.text
+            description_ = self.gds_validate_string(description_, node, 'description')
+            self.description = description_
+        elif nodeName_ == 'type':
             type_ = child_.text
             type_ = self.gds_validate_string(type_, node, 'type')
             self.type_ = type_
-        super(Parameter, self).buildChildren(child_, node, nodeName_, True)
+        elif nodeName_ == 'mandatory':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'mandatory')
+            self.mandatory = ival_
 # end class Parameter
 
 
-class Parameters(GeneratedsSuper):
+class ParametersSet(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, parameter=None):
@@ -14445,20 +14532,20 @@ class Parameters(GeneratedsSuper):
         else:
             self.parameter = parameter
     def factory(*args_, **kwargs_):
-        if Parameters.subclass:
-            return Parameters.subclass(*args_, **kwargs_)
+        if ParametersSet.subclass:
+            return ParametersSet.subclass(*args_, **kwargs_)
         else:
-            return Parameters(*args_, **kwargs_)
+            return ParametersSet(*args_, **kwargs_)
     factory = staticmethod(factory)
     def get_parameter(self): return self.parameter
     def set_parameter(self, parameter): self.parameter = parameter
     def add_parameter(self, value): self.parameter.append(value)
     def insert_parameter(self, index, value): self.parameter[index] = value
-    def export(self, outfile, level, namespace_='', name_='Parameters', namespacedef_=''):
+    def export(self, outfile, level, namespace_='', name_='ParametersSet', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = []
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Parameters')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ParametersSet')
         if self.hasContent_():
             outfile.write('>\n')
             self.exportChildren(outfile, level + 1, namespace_, name_)
@@ -14466,9 +14553,9 @@ class Parameters(GeneratedsSuper):
             outfile.write('</%s%s>\n' % (namespace_, name_))
         else:
             outfile.write('/>\n')
-    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Parameters'):
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='ParametersSet'):
         pass
-    def exportChildren(self, outfile, level, namespace_='', name_='Parameters', fromsubclass_=False):
+    def exportChildren(self, outfile, level, namespace_='', name_='ParametersSet', fromsubclass_=False):
         for parameter_ in self.parameter:
             parameter_.export(outfile, level, namespace_, name_='parameter')
     def hasContent_(self):
@@ -14478,7 +14565,7 @@ class Parameters(GeneratedsSuper):
             return True
         else:
             return False
-    def exportLiteral(self, outfile, level, name_='Parameters'):
+    def exportLiteral(self, outfile, level, name_='ParametersSet'):
         level += 1
         self.exportLiteralAttributes(outfile, level, [], name_)
         if self.hasContent_():
@@ -14510,32 +14597,31 @@ class Parameters(GeneratedsSuper):
             obj_ = Parameter.factory()
             obj_.build(child_)
             self.parameter.append(obj_)
-# end class Parameters
+# end class ParametersSet
 
 
-class ParametersSet(GeneratedsSuper):
+class Schema(Link):
     subclass = None
-    superclass = None
-    def __init__(self, parameters=None):
-        if parameters is None:
-            self.parameters = []
-        else:
-            self.parameters = parameters
+    superclass = Link
+    def __init__(self, href=None, rel=None, request=None, response=None, name=None, description=None):
+        super(Schema, self).__init__(href, rel, request, response, )
+        self.name = name
+        self.description = description
     def factory(*args_, **kwargs_):
-        if ParametersSet.subclass:
-            return ParametersSet.subclass(*args_, **kwargs_)
+        if Schema.subclass:
+            return Schema.subclass(*args_, **kwargs_)
         else:
-            return ParametersSet(*args_, **kwargs_)
+            return Schema(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_parameters(self): return self.parameters
-    def set_parameters(self, parameters): self.parameters = parameters
-    def add_parameters(self, value): self.parameters.append(value)
-    def insert_parameters(self, index, value): self.parameters[index] = value
-    def export(self, outfile, level, namespace_='', name_='ParametersSet', namespacedef_=''):
+    def get_name(self): return self.name
+    def set_name(self, name): self.name = name
+    def get_description(self): return self.description
+    def set_description(self, description): self.description = description
+    def export(self, outfile, level, namespace_='', name_='Schema', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = []
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ParametersSet')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Schema')
         if self.hasContent_():
             outfile.write('>\n')
             self.exportChildren(outfile, level + 1, namespace_, name_)
@@ -14543,58 +14629,66 @@ class ParametersSet(GeneratedsSuper):
             outfile.write('</%s%s>\n' % (namespace_, name_))
         else:
             outfile.write('/>\n')
-    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='ParametersSet'):
-        pass
-    def exportChildren(self, outfile, level, namespace_='', name_='ParametersSet', fromsubclass_=False):
-        for parameters_ in self.parameters:
-            parameters_.export(outfile, level, namespace_, name_='parameters')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Schema'):
+        super(Schema, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Schema')
+    def exportChildren(self, outfile, level, namespace_='', name_='Schema', fromsubclass_=False):
+        super(Schema, self).exportChildren(outfile, level, namespace_, name_, True)
+        if self.name is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sname>%s</%sname>\n' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_))
+        if self.description is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sdescription>%s</%sdescription>\n' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_))
     def hasContent_(self):
         if (
-            self.parameters
+            self.name is not None or
+            self.description is not None or
+            super(Schema, self).hasContent_()
             ):
             return True
         else:
             return False
-    def exportLiteral(self, outfile, level, name_='ParametersSet'):
+    def exportLiteral(self, outfile, level, name_='Schema'):
         level += 1
         self.exportLiteralAttributes(outfile, level, [], name_)
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
+        super(Schema, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('parameters=[\n')
-        level += 1
-        for parameters_ in self.parameters:
+        super(Schema, self).exportLiteralChildren(outfile, level, name_)
+        if self.name is not None:
             showIndent(outfile, level)
-            outfile.write('model_.parameters(\n')
-            parameters_.exportLiteral(outfile, level)
+            outfile.write('name=%s,\n' % quote_python(self.name).encode(ExternalEncoding))
+        if self.description is not None:
             showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
+            outfile.write('description=%s,\n' % quote_python(self.description).encode(ExternalEncoding))
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        pass
+        super(Schema, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'parameters':
-            obj_ = Parameters.factory()
-            obj_.build(child_)
-            self.parameters.append(obj_)
-# end class ParametersSet
+        if nodeName_ == 'name':
+            name_ = child_.text
+            name_ = self.gds_validate_string(name_, node, 'name')
+            self.name = name_
+        elif nodeName_ == 'description':
+            description_ = child_.text
+            description_ = self.gds_validate_string(description_, node, 'description')
+            self.description = description_
+        super(Schema, self).buildChildren(child_, node, nodeName_, True)
+# end class Schema
 
 
 class RSDL(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, version=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, schema=None, version=None):
         super(RSDL, self).__init__(href, id, name, description, actions, creation_status, link, )
+        self.schema = schema
         self.version = version
     def factory(*args_, **kwargs_):
         if RSDL.subclass:
@@ -14602,6 +14696,8 @@ class RSDL(BaseResource):
         else:
             return RSDL(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def get_schema(self): return self.schema
+    def set_schema(self, schema): self.schema = schema
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
     def export(self, outfile, level, namespace_='', name_='RSDL', namespacedef_=''):
@@ -14620,10 +14716,13 @@ class RSDL(BaseResource):
         super(RSDL, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RSDL')
     def exportChildren(self, outfile, level, namespace_='', name_='RSDL', fromsubclass_=False):
         super(RSDL, self).exportChildren(outfile, level, namespace_, name_, True)
+        if self.schema:
+            self.schema.export(outfile, level, namespace_, name_='schema')
         if self.version:
             self.version.export(outfile, level, namespace_, name_='version')
     def hasContent_(self):
         if (
+            self.schema is not None or
             self.version is not None or
             super(RSDL, self).hasContent_()
             ):
@@ -14639,6 +14738,12 @@ class RSDL(BaseResource):
         super(RSDL, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
         super(RSDL, self).exportLiteralChildren(outfile, level, name_)
+        if self.schema is not None:
+            showIndent(outfile, level)
+            outfile.write('schema=model_.schema(\n')
+            self.schema.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.version is not None:
             showIndent(outfile, level)
             outfile.write('version=model_.version(\n')
@@ -14653,7 +14758,11 @@ class RSDL(BaseResource):
     def buildAttributes(self, node, attrs, already_processed):
         super(RSDL, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'version':
+        if nodeName_ == 'schema':
+            obj_ = Schema.factory()
+            obj_.build(child_)
+            self.set_schema(obj_)
+        elif nodeName_ == 'version':
             class_obj_ = self.get_class_obj_(child_, Version)
             obj_ = class_obj_.factory()
             obj_.build(child_)
@@ -15683,7 +15792,6 @@ def get_root_tag(node):
     # End NOT_GENERATED
     return tag, rootClass
 
-
 def parse(inFileName):
     doc = parsexml_(inFileName)
     rootNode = doc.getroot()
@@ -15838,7 +15946,6 @@ __all__ = [
     "Options",
     "OsTypes",
     "Parameter",
-    "Parameters",
     "ParametersSet",
     "Permission",
     "Permissions",
@@ -15856,6 +15963,7 @@ __all__ = [
     "SchedulingPolicies",
     "SchedulingPolicy",
     "SchedulingPolicyThresholds",
+    "Schema",
     "Slaves",
     "Snapshot",
     "Snapshots",
@@ -16031,8 +16139,8 @@ _rootClassMap = {
                     "request"                       : Request,
                     "response"                      : Response,
                     "parameter"                     : Parameter,
-                    "parameters"                    : Parameters,
                     "parameters_set"                : ParametersSet,
+                    "schema"                        : Schema,                    
                     "rsdl"                          : RSDL
                 }
 
