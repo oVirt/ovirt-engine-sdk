@@ -47,8 +47,7 @@ class CodeGen():
 
         collectionsHolder = {}
         usedRels = []
-
-        for link in contextmanager.get('proxy').request('GET', '/api?rsdl').link:
+        for link in contextmanager.get('proxy').request('GET', '/api?rsdl').links.link:
 
             response_type = None
             body_type = None
