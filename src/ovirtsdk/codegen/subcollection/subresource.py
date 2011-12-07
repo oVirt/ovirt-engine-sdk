@@ -38,30 +38,26 @@ class SubResource(object):
         return sub_resource_template
 
     @staticmethod
-    def action(url, action_name, parent_resource_name_lc, resource_name_lc, method, action_params={}):
+    def action(url, action_name, parent_resource_name_lc, body_type, resource_name_lc, method, action_params={}):
         sub_collection_resource_action_template_values = {'url':url,
                                                           'action_name':action_name,
                                                           'method': method,
                                                           'parent_resource_name_lc':parent_resource_name_lc.lower(),
+                                                          'body_type':body_type,
+                                                          'body_type_lc':body_type.lower(),
                                                           'resource_name_lc':resource_name_lc.lower(),
                                                           'add_method_params' : Resource._addMethodParams(action_params.keys()),
                                                           'add_action_parans' : Resource._addActionParams(action_params)}
 
-        #FIXME: check if there are more params to put to Action
-        #"      action = params.Action(vm=self.superclass)"
-
-#FIXME: once RSDL supports action parameters, implement them at action
-#"        action = params.Action()\n%(add_action_parans)s"
-
-        #url = '/api/vms/{vm:id}/nics/{nic:id}/do'"
         sub_collection_resource_action_template = \
-        ("    def %(action_name)s(self%(add_method_params)s, action=params.Action()):\n" + \
+        ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().request(method='%(method)s',\n" + \
         "                                          url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
         "                                                                     '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
-        "                                          body=ParseHelper.toXml(action))\n\n"
-        "        return result\n\n") % sub_collection_resource_action_template_values
+        "                                          body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+        "        return result\n\n"
+        ) % sub_collection_resource_action_template_values
 
         return sub_collection_resource_action_template
 
@@ -75,7 +71,6 @@ class SubResource(object):
                                                           'resource_name_lc':resource_name.lower(),
                                                           'returned_type':actual_xml_entity if actual_xml_entity is not None else returned_type}
 
-        #url = '/api/vms/{vm:id}/nics/{nic:id}'"
         sub_collection_resource_update_template = \
         ("    def update(self):\n" + \
         "        url = '%(url)s'\n\n" + \
@@ -87,13 +82,14 @@ class SubResource(object):
         return sub_collection_resource_update_template
 
     @staticmethod
-    def delete(url, parent_resource_name_lc, resource_name_lc):
+    def delete(url, parent_resource_name_lc, resource_name_lc, body_type):
         sub_collection_resource_delete_template_values = {'url':url,
+                                                          'body_type_lc':body_type.lower() if body_type is not None 
+                                                                                           else None,
                                                           'parent_resource_name_lc':parent_resource_name_lc.lower(),
                                                           'resource_name_lc':resource_name_lc.lower()}
 
-        #url = '/api/vms/{vm:id}/nics/{nic:id}'"
-        sub_collection_resource_delete_template = \
+        forced_sub_collection_resource_delete_template = \
         ("    def delete(self, force=False, grace_period=False):\n" + \
          "        url = '%(url)s'\n\n" + \
          "        if ((force or grace_period) is not False):\n" + \
@@ -107,4 +103,25 @@ class SubResource(object):
          "                                             headers={'Content-type':None})\n" + \
          "        return result\n\n") % sub_collection_resource_delete_template_values
 
-        return sub_collection_resource_delete_template
+        sub_collection_resource_delete_template = \
+        ("    def delete(self):\n" + \
+         "        url = '%(url)s'\n\n" + \
+         "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
+         "                                                                   '{%(resource_name_lc)s:id}': self.get_id()}),\n"+
+         "                                       headers={'Content-type':None})\n\n"
+         ) % sub_collection_resource_delete_template_values
+
+        body_sub_collection_resource_delete_template = \
+        ("    def delete(self, %(body_type_lc)s):\n" + \
+         "        url = '%(url)s'\n\n" + \
+         "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
+         "                                                                   '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
+         "                                       body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+         ) % sub_collection_resource_delete_template_values
+
+        if not body_type:
+            return sub_collection_resource_delete_template
+        elif body_type == 'Action':
+            return forced_sub_collection_resource_delete_template
+        else:
+            return body_sub_collection_resource_delete_template

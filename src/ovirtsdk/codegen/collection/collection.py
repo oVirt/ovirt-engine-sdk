@@ -62,12 +62,12 @@ class Collection(object):
         return collection_list_template
 
     @staticmethod
-    def add(url, resource_type, KNOWN_WRAPPER_TYPES={}):
-        actual_resource_type = TypeUtil.getValueByKeyOrNone(resource_type.lower(), KNOWN_WRAPPER_TYPES)
+    def add(url, body_type, response_type, KNOWN_WRAPPER_TYPES={}):
+        actual_resource_type = TypeUtil.getValueByKeyOrNone(response_type.lower(), KNOWN_WRAPPER_TYPES)
 
         collection_add_template_values = {'url':url,
-                                          'resource_to_add_lc':resource_type.lower(),
-                                          'resource_type' : actual_resource_type if actual_resource_type is not None else resource_type}
+                                          'resource_to_add_lc':body_type.lower(),
+                                          'resource_type' : actual_resource_type if actual_resource_type is not None else response_type}
 
         collection_add_template = \
         ("    def add(self, %(resource_to_add_lc)s):\n" + \

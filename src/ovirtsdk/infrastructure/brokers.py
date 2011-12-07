@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-12-06 16:31:22.072119
+Generated at: 2011-12-07 12:52:52.924845
 
 @author: mpastern@redhat.com
 '''
@@ -54,17 +54,11 @@ class Cluster(params.Cluster, Base):
         obj.__init__(cluster)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/clusters/{cluster:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def update(self):
         url = '/api/clusters/{cluster:id}'
@@ -84,19 +78,12 @@ class ClusterNetwork(params.Network, Base):
         obj.__init__(cluster, network)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/clusters/{cluster:id}/networks/{network:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                         '{network:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                         '{network:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                   '{network:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def update(self):
         url = '/api/clusters/{cluster:id}/networks/{network:id}'
@@ -156,19 +143,12 @@ class ClusterPermission(params.Permission, Base):
         obj.__init__(cluster, permission)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/clusters/{cluster:id}/permissions/{permission:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                   '{permission:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class ClusterPermissions(Base):
  
@@ -251,17 +231,11 @@ class DataCenter(params.DataCenter, Base):
         obj.__init__(datacenter)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/datacenters/{datacenter:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def update(self):
         url = '/api/datacenters/{datacenter:id}'
@@ -281,19 +255,12 @@ class DataCenterPermission(params.Permission, Base):
         obj.__init__(datacenter, permission)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/datacenters/{datacenter:id}/permissions/{permission:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+                                                                   '{permission:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class DataCenterPermissions(Base):
  
@@ -344,19 +311,12 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         obj.__init__(datacenter, storagedomain)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
-                                                                         '{storagedomain:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
-                                                                         '{storagedomain:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+                                                                   '{storagedomain:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def activate(self, action=params.Action()):
         url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate'
@@ -610,17 +570,11 @@ class Group(params.Group, Base):
         obj.__init__(group)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/groups/{group:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class GroupPermission(params.Permission, Base):
     def __init__(self, group, permission):
@@ -633,19 +587,12 @@ class GroupPermission(params.Permission, Base):
         obj.__init__(group, permission)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/groups/{group:id}/permissions/{permission:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
+                                                                   '{permission:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class GroupPermissions(Base):
  
@@ -696,19 +643,12 @@ class GroupRole(params.Role, Base):
         obj.__init__(group, role)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/groups/{group:id}/roles/{role:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
-                                                                         '{role:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
-                                                                         '{role:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
+                                                                   '{role:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class GroupRoles(Base):
  
@@ -759,19 +699,12 @@ class GroupTag(params.Tag, Base):
         obj.__init__(group, tag)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/groups/{group:id}/tags/{tag:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
-                                                                         '{tag:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
-                                                                         '{tag:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
+                                                                   '{tag:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class GroupTags(Base):
  
@@ -852,19 +785,12 @@ class GroupsRolePermit(params.Permit, Base):
         obj.__init__(groupsrole, permit)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/groups/{group:id}/roles/{role:id}/permits/{permit:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{groupsrole:id}' : self.parentclass.get_id(),
-                                                                         '{permit:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{groupsrole:id}' : self.parentclass.get_id(),
-                                                                         '{permit:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{groupsrole:id}' : self.parentclass.get_id(),
+                                                                   '{permit:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class Host(params.Host, Base):
     def __init__(self, host):
@@ -881,17 +807,11 @@ class Host(params.Host, Base):
         obj.__init__(host)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/hosts/{host:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def install(self, action=params.Action()):
         url = '/api/hosts/{host:id}/install'
@@ -957,14 +877,6 @@ class Host(params.Host, Base):
                                           body=ParseHelper.toXml(action))
         return result
 
-    def Storage(self, action=params.Action()):
-        url = '/api/hosts/{host:id}/storage'
-
-        result = self._getProxy().request(method='GET',
-                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
-        return result
-
     def update(self):
         url = '/api/hosts/{host:id}'
 
@@ -983,19 +895,12 @@ class HostNIC(params.HostNIC, Base):
         obj.__init__(host, nic)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/hosts/{host:id}/nics/{nic:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                         '{nic:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                         '{nic:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                                                   '{nic:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def detach(self, action=params.Action()):
         url = '/api/hosts/{host:id}/nics/{nic:id}/detach'
@@ -1075,19 +980,12 @@ class HostPermission(params.Permission, Base):
         obj.__init__(host, permission)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/hosts/{host:id}/permissions/{permission:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                                                   '{permission:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class HostPermissions(Base):
  
@@ -1189,19 +1087,12 @@ class HostTag(params.Tag, Base):
         obj.__init__(host, tag)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/hosts/{host:id}/tags/{tag:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                         '{tag:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                         '{tag:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                                                   '{tag:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class HostTags(Base):
  
@@ -1293,17 +1184,11 @@ class Network(params.Network, Base):
         obj.__init__(network)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/networks/{network:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def update(self):
         url = '/api/networks/{network:id}'
@@ -1354,17 +1239,11 @@ class Role(params.Role, Base):
         obj.__init__(role)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/roles/{role:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class RolePermit(params.Permit, Base):
     def __init__(self, role, permit):
@@ -1377,19 +1256,12 @@ class RolePermit(params.Permit, Base):
         obj.__init__(role, permit)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/roles/{role:id}/permits/{permit:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}' : self.parentclass.get_id(),
-                                                                         '{permit:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}' : self.parentclass.get_id(),
-                                                                         '{permit:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}' : self.parentclass.get_id(),
+                                                                   '{permit:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class RolePermits(Base):
  
@@ -1474,17 +1346,11 @@ class StorageDomain(params.StorageDomain, Base):
         obj.__init__(storagedomain)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self, storagedomain):
         url = '/api/storagedomains/{storagedomain:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
+                                       body=ParseHelper.toXml(storagedomain))
 
     def update(self):
         url = '/api/storagedomains/{storagedomain:id}'
@@ -1544,19 +1410,12 @@ class StorageDomainPermission(params.Permission, Base):
         obj.__init__(storagedomain, permission)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/storagedomains/{storagedomain:id}/permissions/{permission:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
+                                                                   '{permission:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class StorageDomainPermissions(Base):
  
@@ -1737,17 +1596,11 @@ class Tag(params.Tag, Base):
         obj.__init__(tag)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/tags/{tag:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def update(self):
         url = '/api/tags/{tag:id}'
@@ -1801,17 +1654,11 @@ class Template(params.Template, Base):
         obj.__init__(template)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/templates/{template:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def export(self, action=params.Action()):
         url = '/api/templates/{template:id}/export'
@@ -1959,19 +1806,12 @@ class TemplatePermission(params.Permission, Base):
         obj.__init__(template, permission)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/templates/{template:id}/permissions/{permission:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
+                                                                   '{permission:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class TemplatePermissions(Base):
  
@@ -2055,17 +1895,11 @@ class User(params.User, Base):
         obj.__init__(user)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/users/{user:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class UserPermission(params.Permission, Base):
     def __init__(self, user, permission):
@@ -2078,19 +1912,12 @@ class UserPermission(params.Permission, Base):
         obj.__init__(user, permission)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/users/{user:id}/permissions/{permission:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
+                                                                   '{permission:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class UserPermissions(Base):
  
@@ -2141,19 +1968,12 @@ class UserRole(params.Role, Base):
         obj.__init__(user, role)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/users/{user:id}/roles/{role:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
-                                                                         '{role:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
-                                                                         '{role:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
+                                                                   '{role:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class UserRoles(Base):
  
@@ -2204,19 +2024,12 @@ class UserTag(params.Tag, Base):
         obj.__init__(user, tag)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/users/{user:id}/tags/{tag:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
-                                                                         '{tag:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
-                                                                         '{tag:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
+                                                                   '{tag:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class UserTags(Base):
  
@@ -2297,19 +2110,12 @@ class UsersRolePermit(params.Permit, Base):
         obj.__init__(usersrole, permit)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/users/{user:id}/roles/{role:id}/permits/{permit:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{usersrole:id}' : self.parentclass.get_id(),
-                                                                         '{permit:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{usersrole:id}' : self.parentclass.get_id(),
-                                                                         '{permit:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{usersrole:id}' : self.parentclass.get_id(),
+                                                                   '{permit:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class VM(params.VM, Base):
     def __init__(self, vm):
@@ -2329,17 +2135,11 @@ class VM(params.VM, Base):
         obj.__init__(vm)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/vms/{vm:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def shutdown(self, action=params.Action()):
         url = '/api/vms/{vm:id}/shutdown'
@@ -2397,7 +2197,7 @@ class VM(params.VM, Base):
                                           body=ParseHelper.toXml(action))
         return result
 
-    def Ticket(self, action=params.Action()):
+    def ticket(self, action=params.Action()):
         url = '/api/vms/{vm:id}/ticket'
 
         result = self._getProxy().request(method='POST',
@@ -2431,19 +2231,12 @@ class VMCdRom(params.CdRom, Base):
         obj.__init__(vm, cdrom)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/vms/{vm:id}/cdroms/{cdrom:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{cdrom:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{cdrom:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                   '{cdrom:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def update(self):
         url = '/api/vms/{vm:id}/cdroms/{cdrom:id}'
@@ -2503,19 +2296,12 @@ class VMDisk(params.Disk, Base):
         obj.__init__(vm, disk)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/vms/{vm:id}/disks/{disk:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{disk:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{disk:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                   '{disk:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def update(self):
         url = '/api/vms/{vm:id}/disks/{disk:id}'
@@ -2575,19 +2361,12 @@ class VMNic(params.NIC, Base):
         obj.__init__(vm, nic)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/vms/{vm:id}/nics/{nic:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{nic:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{nic:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                   '{nic:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def update(self):
         url = '/api/vms/{vm:id}/nics/{nic:id}'
@@ -2647,19 +2426,12 @@ class VMPermission(params.Permission, Base):
         obj.__init__(vm, permission)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/vms/{vm:id}/permissions/{permission:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                   '{permission:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class VMPermissions(Base):
  
@@ -2710,19 +2482,12 @@ class VMSnapshot(params.Snapshot, Base):
         obj.__init__(vm, snapshot)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{snapshot:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{snapshot:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                   '{snapshot:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def restore(self, action=params.Action()):
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/restore'
@@ -2823,19 +2588,12 @@ class VMTag(params.Tag, Base):
         obj.__init__(vm, tag)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/vms/{vm:id}/tags/{tag:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{tag:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                         '{tag:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                   '{tag:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class VMTags(Base):
  
@@ -2917,17 +2675,11 @@ class VmPool(params.VmPool, Base):
         obj.__init__(vmpool)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/vmpools/{vmpool:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
     def update(self):
         url = '/api/vmpools/{vmpool:id}'
@@ -2947,19 +2699,12 @@ class VmPoolPermission(params.Permission, Base):
         obj.__init__(vmpool, permission)
         return obj
 
-    def delete(self, force=False, grace_period=False):
+    def delete(self):
         url = '/api/vmpools/{vmpool:id}/permissions/{permission:id}'
 
-        if ((force or grace_period) is not False):
-            action = params.Action(force=force, grace_period=grace_period)
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             body=ParseHelper.toXml(action))
-        else:
-            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}' : self.parentclass.get_id(),
-                                                                         '{permission:id}': self.get_id()}),
-                                             headers={'Content-type':None})
-        return result
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}' : self.parentclass.get_id(),
+                                                                   '{permission:id}': self.get_id()}),
+                                       headers={'Content-type':None})
 
 class VmPoolPermissions(Base):
  

@@ -183,7 +183,9 @@ class CodeGen():
                     sub_coll = ParseHelper.getXmlWrapperType(k)
                     if (v is None and self.__isCollection(k)):
                         self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
-                    elif(v is None):
+#                    elif(v is None):
+                    elif(v is None and http_method == 'POST'):
+#FIXME: remove http_methond cond                        
                         self.__createAction(root_coll, None, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
                     else:
                         self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
@@ -219,10 +221,6 @@ class CodeGen():
             if(DEBUG): print '[root] creating collection: ' + collection + ', for url: ' + url
             if(DEBUG): print '/n' + collection_body
 
-#        resource = collection[:len(collection) - 1] if self.__isCollection(collection)\
-#                   and\
-#                   collection not in COLLECTION_TO_ENTITY_EXCEPTIONS else collection
-
         #['get', 'add', 'delete', 'update']
         if (rel == 'get'):
             get_method = Collection.get(url, response_type, KNOWN_WRAPPER_TYPES)
@@ -234,7 +232,7 @@ class CodeGen():
             if(DEBUG): print 'adding to collection: ' + collection + ', url: ' + url + ', list() method:\n' + list_method
 
         elif (rel == 'add'):
-            add_method = Collection.add(url, response_type, KNOWN_WRAPPER_TYPES)
+            add_method = Collection.add(url, body_type, response_type, KNOWN_WRAPPER_TYPES)
             collectionsHolder[collection]['body'] += add_method
             if(DEBUG): print 'adding to collection: ' + collection + ', url: ' + url + ', add() method:\n' + add_method
 
@@ -250,7 +248,7 @@ class CodeGen():
 
         #['get', 'add', 'delete', 'update']
         if (rel == 'delete'):
-            del_method = Resource.delete(url, resource)
+            del_method = Resource.delete(url, body_type, resource)
             collectionsHolder[resource]['body'] += del_method
             if(DEBUG): print 'adding to resource: ' + resource + ' delete method:\n\n' + del_method
         elif (rel == 'update'):
@@ -267,7 +265,7 @@ class CodeGen():
             if (not collectionsHolder.has_key(resource)):
                 self.__extendCollection(root_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
 #TODO: add real action params
-            action_body = Resource.action(url, action_name, resource, http_method, {})
+            action_body = Resource.action(url, body_type, action_name, resource, http_method, {})
             collectionsHolder[resource]['body'] += action_body
             if(DEBUG): print '[act] creating action: ' + action_name + '() on resource: ' + resource + ', for url: ' + url
             if(DEBUG): print '\n' + action_body
@@ -284,7 +282,7 @@ class CodeGen():
             if (not collectionsHolder.has_key(nested_resource)):
                 self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
 
-            action_body = SubResource.action(url, action_name, resource, sub_resource, http_method, {})
+            action_body = SubResource.action(url, action_name, resource, body_type, sub_resource, http_method, {})
             collectionsHolder[nested_resource]['body'] += action_body
 #TODO: add real action params
             if(DEBUG): print '[act] creating action: ' + action_name + '() on sub-resource: ' + nested_resource + ', for url: ' + url
@@ -347,7 +345,7 @@ class CodeGen():
             if(DEBUG): print 'adding to sub-collection: ' + sub_coll_type + ', url: ' + url + ', list() method:\n' + list_method
 
         elif (rel == 'add'):
-            add_method = SubCollection.add(url, sub_res, root_res, self.__toResourceType(sub_res_type), KNOWN_WRAPPER_TYPES)
+            add_method = SubCollection.add(url, body_type, root_res, self.__toResourceType(sub_res_type), KNOWN_WRAPPER_TYPES)
             collectionsHolder[sub_coll_type]['body'] += add_method
             if(DEBUG): print 'adding to sub-collection: ' + sub_coll_type + ', url: ' + url + ', add() method:\n' + add_method
 
@@ -364,7 +362,7 @@ class CodeGen():
 
         #['get', 'add', 'delete', 'update']
         if (rel == 'delete'):
-            del_method = SubResource.delete(url, root_res, sub_res)
+            del_method = SubResource.delete(url, root_res, sub_res, body_type)
             collectionsHolder[sub_res_type]['body'] += del_method
             if(DEBUG): print 'adding to sub-resource: ' + sub_res_type + ' delete() method:\n\n' + del_method
         elif (rel == 'update'):

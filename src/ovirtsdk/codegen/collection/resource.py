@@ -45,9 +45,11 @@ class Resource(object):
         return new_tmpl
 
     @staticmethod
-    def action(url, action_name, resource_name_lc, method, action_params={}):
+    def action(url, body_type, action_name, resource_name_lc, method, action_params={}):
         resource_action_template_values = {'url':url,
-                                           'action_name':action_name,
+                                           'body_type':body_type,
+                                           'body_type_lc':body_type.lower(),
+                                           'action_name':action_name.lower(),
                                            'method': method,
                                            'resource_name_lc':resource_name_lc.lower(),
                                            'method_params': Resource._addMethodParams(action_params.keys()),
@@ -56,16 +58,14 @@ class Resource(object):
         #FIXME: check if there are more params to put to Action
         #"      action = params.Action(vm=self.superclass)"
 
-#FIXME: once RSDL supports action parameters, implement them at action
-#"        action = params.Action()\n%(action_params)s"
-
         resource_action_template = \
-        ("    def %(action_name)s(self%(method_params)s, action=params.Action()):\n" + \
+        ("    def %(action_name)s(self%(method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().request(method='%(method)s',\n" + \
         "                                          url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
-        "                                          body=ParseHelper.toXml(action))\n" + \
-        "        return result\n\n") % resource_action_template_values
+        "                                          body=ParseHelper.toXml(%(body_type_lc)s))\n" + \
+        "        return result\n\n"
+        ) % resource_action_template_values
 
         return resource_action_template
 
@@ -84,11 +84,15 @@ class Resource(object):
         return res
 
     @staticmethod
-    def delete(url, resource_name):
+    def delete(url, body_type, resource_name):
         resource_delete_template_values = {'url':url,
+                                           'body_type':body_type,
+                                           'body_type_lc':body_type.lower() if body_type is not None 
+                                                                            else None,
                                            'resource_name_lc':resource_name.lower()}
 
-        resource_delete_template = \
+        
+        forced_resource_delete_template = \
         ("    def delete(self, force=False, grace_period=False):\n" + \
         "        url = '%(url)s'\n\n" + \
         "        if ((force or grace_period) is not False):\n" + \
@@ -98,9 +102,30 @@ class Resource(object):
         "        else:\n" + \
         "            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
         "                                             headers={'Content-type':None})\n" + \
-        "        return result\n\n") % resource_delete_template_values
+        "        return result\n\n"
+        ) % resource_delete_template_values
+        
+        resource_delete_template = \
+        ("    def delete(self):\n" + \
+        "        url = '%(url)s'\n\n" + \
+        "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n"+
+        "                                       headers={'Content-type':None})\n\n"
+        ) % resource_delete_template_values
 
-        return resource_delete_template
+
+        body_resource_delete_template = \
+        ("    def delete(self, %(body_type_lc)s):\n" + \
+        "        url = '%(url)s'\n\n" + \
+        "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
+        "                                       body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+        ) % resource_delete_template_values
+
+        if not body_type:
+            return resource_delete_template
+        elif body_type == 'Action':
+            return forced_resource_delete_template
+        else:
+            return body_resource_delete_template
 
     @staticmethod
     def update(url, resource_name, KNOWN_WRAPPER_TYPES={}):
@@ -108,7 +133,6 @@ class Resource(object):
         actual_xml_entity = TypeUtil.getValueByKeyOrNone(resource_name.lower(), KNOWN_WRAPPER_TYPES)
 
         resource_update_template_values = {'url':url,
-                                           'resource_name':resource_name,
                                            'resource_name_lc':resource_name.lower(),
                                            'actual_self_name':actual_xml_entity if actual_xml_entity is not None else resource_name}
 

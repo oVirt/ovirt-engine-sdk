@@ -79,10 +79,10 @@ class SubCollection(object):
         return sub_collection_list_template
 
     @staticmethod
-    def add(url, resource_to_add, parent_resource_name_lc, encapsulating_entity, KNOWN_WRAPPER_TYPES={}):
+    def add(url, body_type, parent_resource_name_lc, encapsulating_entity, KNOWN_WRAPPER_TYPES={}):
         actual_encapsulating_entity = TypeUtil.getValueByKeyOrNone(encapsulating_entity.lower(), KNOWN_WRAPPER_TYPES)
 
-        sub_collection_add_template_values = {'resource_to_add':resource_to_add.lower(),
+        sub_collection_add_template_values = {'resource_to_add':body_type.lower(),
                                               'url':url,
                                               'parent_resource_name_lc':parent_resource_name_lc.lower(),
                                               'encapsulating_entity':actual_encapsulating_entity if actual_encapsulating_entity is not None \
