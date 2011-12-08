@@ -8,8 +8,10 @@ Created on Oct 24, 2011
 #============================================================
 from ovirtsdk.utils.parsehelper import ParseHelper
 from ovirtsdk.codegen.utils.typeutil import TypeUtil
+from ovirtsdk.codegen.doc.documentation import Documentation
 
 class Collection(object):
+
     @staticmethod
     def collection(collection_name):
         collection_resource_template_values = {'collection_name':collection_name}
@@ -22,7 +24,7 @@ class Collection(object):
         return collection_resource_template
 
     @staticmethod
-    def get(url, resource_type, KNOWN_WRAPPER_TYPES={}):
+    def get(url, resource_type, link, KNOWN_WRAPPER_TYPES={}):
         actual_resource_type = TypeUtil.getValueByKeyOrNone(resource_type.lower(), KNOWN_WRAPPER_TYPES)
         actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(resource_type.lower())).lower()
 
@@ -32,6 +34,8 @@ class Collection(object):
 
         collection_get_template = \
         ("    def get(self, name='*', **kwargs):\n" + \
+         Documentation.document(link, {'name: the name of the entity':False,
+                                       '**kwargs: property based filtering"': False}) +
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_%(resource_name_lc)s()\n" + \
         "        return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
@@ -39,7 +43,7 @@ class Collection(object):
         return collection_get_template
 
     @staticmethod
-    def list(url, resource_type, KNOWN_WRAPPER_TYPES={}):
+    def list(url, resource_type, link, KNOWN_WRAPPER_TYPES={}):
         actual_resource_type = TypeUtil.getValueByKeyOrNone(resource_type.lower(), KNOWN_WRAPPER_TYPES)
         actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(resource_type.lower())).lower()
 
@@ -49,11 +53,8 @@ class Collection(object):
 
         collection_list_template = \
         ("    def list(self, query=None, **kwargs):\n" + \
-        "        '''\n" + \
-        "        @param query   : oVirt engine dialect query\n" + \
-        "        @param **kwargs: used to filter collection members if no search capabilities\n" + \
-        "                         available at given collection resource\n" + \
-        "        '''\n\n" + \
+         Documentation.document(link, {'query: oVirt engine dialect query':False,
+                                       '**kwargs: property based filtering"': False}) +
         "        url='%(url)s'\n\n" + \
         "        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_%(resource_name_lc)s()\n" + \
         "        return ParseHelper.toCollection(%(resource_type)s,\n" + \
@@ -62,7 +63,7 @@ class Collection(object):
         return collection_list_template
 
     @staticmethod
-    def add(url, body_type, response_type, KNOWN_WRAPPER_TYPES={}):
+    def add(url, body_type, response_type, link, KNOWN_WRAPPER_TYPES={}):
         actual_resource_type = TypeUtil.getValueByKeyOrNone(response_type.lower(), KNOWN_WRAPPER_TYPES)
 
         collection_add_template_values = {'url':url,
@@ -71,6 +72,7 @@ class Collection(object):
 
         collection_add_template = \
         ("    def add(self, %(resource_to_add_lc)s):\n" + \
+         Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().add(url=url,\n" + \
         "                                      body=ParseHelper.toXml(%(resource_to_add_lc)s))\n" + \

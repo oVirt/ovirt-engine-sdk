@@ -4,6 +4,8 @@ Created on Oct 24, 2011
 @author: mpastern
 '''
 from ovirtsdk.codegen.utils.typeutil import TypeUtil
+from ovirtsdk.codegen.doc.documentation import Documentation
+from ovirtsdk.codegen.collection.collection import Collection
 
 #============================================================
 #===========================RESOURCE=========================
@@ -45,7 +47,7 @@ class Resource(object):
         return new_tmpl
 
     @staticmethod
-    def action(url, body_type, action_name, resource_name_lc, method, action_params={}):
+    def action(url, body_type, link, action_name, resource_name_lc, method, action_params={}):
         resource_action_template_values = {'url':url,
                                            'body_type':body_type,
                                            'body_type_lc':body_type.lower(),
@@ -60,6 +62,7 @@ class Resource(object):
 
         resource_action_template = \
         ("    def %(action_name)s(self%(method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \
+         Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().request(method='%(method)s',\n" + \
         "                                          url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
@@ -84,16 +87,17 @@ class Resource(object):
         return res
 
     @staticmethod
-    def delete(url, body_type, resource_name):
+    def delete(url, body_type, link, resource_name):
         resource_delete_template_values = {'url':url,
                                            'body_type':body_type,
-                                           'body_type_lc':body_type.lower() if body_type is not None 
+                                           'body_type_lc':body_type.lower() if body_type is not None
                                                                             else None,
                                            'resource_name_lc':resource_name.lower()}
 
-        
+
         forced_resource_delete_template = \
         ("    def delete(self, force=False, grace_period=False):\n" + \
+         Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
         "        if ((force or grace_period) is not False):\n" + \
         "            action = params.Action(force=force, grace_period=grace_period)\n" + \
@@ -104,17 +108,19 @@ class Resource(object):
         "                                             headers={'Content-type':None})\n" + \
         "        return result\n\n"
         ) % resource_delete_template_values
-        
+
         resource_delete_template = \
         ("    def delete(self):\n" + \
+         Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
-        "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n"+
+        "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" +
         "                                       headers={'Content-type':None})\n\n"
         ) % resource_delete_template_values
 
 
         body_resource_delete_template = \
         ("    def delete(self, %(body_type_lc)s):\n" + \
+         Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
         "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
         "                                       body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
@@ -128,7 +134,7 @@ class Resource(object):
             return body_resource_delete_template
 
     @staticmethod
-    def update(url, resource_name, KNOWN_WRAPPER_TYPES={}):
+    def update(url, resource_name, link, KNOWN_WRAPPER_TYPES={}):
 
         actual_xml_entity = TypeUtil.getValueByKeyOrNone(resource_name.lower(), KNOWN_WRAPPER_TYPES)
 
@@ -138,6 +144,7 @@ class Resource(object):
 
         resource_update_template = \
         ("    def update(self):\n" + \
+         Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().update(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
         "                                         body=ParseHelper.toXml(self.superclass))\n" + \

@@ -79,6 +79,7 @@ class CodeGen():
                                       url,
                                       http_method,
                                       body_type,
+                                      link,
                                       response_type,
                                       self.__toMap(rel, splitted_url),
                                       collectionsHolder,
@@ -130,11 +131,11 @@ class CodeGen():
                 res = resources[i + 1] if ((i + 1 < len(resources))) else None
                 dct[coll] = res
         return dct
-    
+
     def __toSingular(self, typ):
         if typ and typ.endswith('s') and typ not in COLLECTION_TO_ENTITY_EXCEPTIONS:
-            return typ[0:len(typ)-1]
-        return typ            
+            return typ[0:len(typ) - 1]
+        return typ
 
     def __appendRootCollections(self, collectionsHolder={}):
         collections = ''
@@ -142,7 +143,7 @@ class CodeGen():
             if (v.has_key('root_collection') and v['root_collection'] == True):
                 collections += v['name'] + ' = ' + self.__toResourceType(v['name']) + '()'
 
-    def __appendResource(self, rel, url, http_method, body_type, response_type, resources={}, collectionsHolder={}, known_actions=[]):
+    def __appendResource(self, rel, url, http_method, body_type, link, response_type, resources={}, collectionsHolder={}, known_actions=[]):
         '''appends to class_map (collectionsHolder) resource/method/action'''
         i = 0
         ln = len(resources)        # NOTE currently supported deep is ^3+NONE (^3||^N is TODO:)
@@ -170,9 +171,9 @@ class CodeGen():
                 #coll = k
                 coll = ParseHelper.getXmlWrapperType(k)
                 if (v is None):
-                    self.__extendCollection(coll, url, rel, http_method, body_type, response_type, collectionsHolder)
+                    self.__extendCollection(coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
                 else:
-                    self.__extendResource(coll, url, rel, http_method, body_type, response_type, collectionsHolder)
+                    self.__extendResource(coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
             elif(ln is 2): #vms/xxx/disks/yyy
                 if (i is 1): #vms/xxx
                     #root_coll = k
@@ -181,13 +182,13 @@ class CodeGen():
                     #sub_coll = k
                     sub_coll = ParseHelper.getXmlWrapperType(k)
                     if (v is None and self.__isCollection(k)):
-                        self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
+                        self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
 #                    elif(v is None):
                     elif(v is None and http_method == 'POST'):
 #FIXME: remove http_methond cond                        
-                        self.__createAction(root_coll, None, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
+                        self.__createAction(root_coll, None, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
                     else:
-                        self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
+                        self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
             elif(ln is 3): #/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate
                 if (i is 1): #vms/xxx
                     #root_coll = k
@@ -196,21 +197,21 @@ class CodeGen():
                     #sub_coll = k
                     sub_coll = ParseHelper.getXmlWrapperType(k)
                     if (v is None and self.__isCollection(k)):
-                        self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
+                        self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
                     elif(v is None):
-                        self.__createAction(root_coll, None, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
+                        self.__createAction(root_coll, None, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
                     else:
                         if(resources.values()[i] is None):
-                            self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
+                            self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
                 if (i is 3 and v is None and not self.__isCollection(k)):
-                    self.__createAction(root_coll, sub_coll, k, url, rel, http_method, body_type, response_type, collectionsHolder)
+                    self.__createAction(root_coll, sub_coll, k, url, rel, http_method, body_type, link, response_type, collectionsHolder)
                 elif(i is 3 and resources.values()[2] is not None):
                     self.__extnedSubResource(root_coll + self.__toResourceType(resources.keys()[1]),
-                                             self.__toResourceType(resources.keys()[2]), url, rel, http_method, body_type, response_type, collectionsHolder)
+                                             self.__toResourceType(resources.keys()[2]), url, rel, http_method, body_type, link, response_type, collectionsHolder)
             elif(ln > 3):  #vms/xxx/disks/yyy/snapshots/zzz or deeper
                 if(DEBUG): print 'WARNING: unsupported deep(' + str(len(resources)) + "): url: " + url
 
-    def __extendCollection(self, collection, url, rel, http_method, body_type, response_type, collectionsHolder):
+    def __extendCollection(self, collection, url, rel, http_method, body_type, link, response_type, collectionsHolder):
         if (not collectionsHolder.has_key(collection)):
             collection_body = Collection.collection(collection)
             collectionsHolder[collection] = {'body':collection_body,
@@ -222,20 +223,20 @@ class CodeGen():
 
         #['get', 'add', 'delete', 'update']
         if (rel == 'get'):
-            get_method = Collection.get(url, response_type, KNOWN_WRAPPER_TYPES)
+            get_method = Collection.get(url, response_type, link, KNOWN_WRAPPER_TYPES)
             collectionsHolder[collection]['body'] += get_method
             if(DEBUG): print 'adding to collection: ' + collection + ', url: ' + url + ', get() method:\n' + get_method
 
-            list_method = Collection.list(url, response_type, KNOWN_WRAPPER_TYPES)
+            list_method = Collection.list(url, response_type, link, KNOWN_WRAPPER_TYPES)
             collectionsHolder[collection]['body'] += list_method
             if(DEBUG): print 'adding to collection: ' + collection + ', url: ' + url + ', list() method:\n' + list_method
 
         elif (rel == 'add'):
-            add_method = Collection.add(url, body_type, response_type, KNOWN_WRAPPER_TYPES)
+            add_method = Collection.add(url, body_type, response_type, link, KNOWN_WRAPPER_TYPES)
             collectionsHolder[collection]['body'] += add_method
             if(DEBUG): print 'adding to collection: ' + collection + ', url: ' + url + ', add() method:\n' + add_method
 
-    def __extendResource(self, collection, url, rel, http_method, body_type, response_type, collectionsHolder):
+    def __extendResource(self, collection, url, rel, http_method, body_type, link, response_type, collectionsHolder):
         resource = response_type if response_type is not None \
                                  else collection[:len(collection) - 1]
 
@@ -247,15 +248,15 @@ class CodeGen():
 
         #['get', 'add', 'delete', 'update']
         if (rel == 'delete'):
-            del_method = Resource.delete(url, body_type, resource)
+            del_method = Resource.delete(url, body_type, link, resource)
             collectionsHolder[resource]['body'] += del_method
             if(DEBUG): print 'adding to resource: ' + resource + ' delete method:\n\n' + del_method
         elif (rel == 'update'):
-            upd_method = Resource.update(url, self.__toResourceType(resource), KNOWN_WRAPPER_TYPES)
+            upd_method = Resource.update(url, self.__toResourceType(resource), link, KNOWN_WRAPPER_TYPES)
             collectionsHolder[resource]['body'] += upd_method
             if(DEBUG): print 'adding to resource: ' + self.__toResourceType(resource) + ' update method:\n\n' + upd_method
 
-    def __createAction(self, root_coll, sub_coll, action_name, url, rel, http_method, body_type, response_type, collectionsHolder):
+    def __createAction(self, root_coll, sub_coll, action_name, url, rel, http_method, body_type, link, response_type, collectionsHolder):
         resource = root_coll[:len(root_coll) - 1]
         sub_resource = sub_coll[:len(sub_coll) - 1] if sub_coll is not None else None
         action_name = self.__adaptActionName(action_name, sub_resource if sub_resource is not None
@@ -264,7 +265,7 @@ class CodeGen():
             if (not collectionsHolder.has_key(resource)):
                 self.__extendCollection(root_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
 #TODO: add real action params
-            action_body = Resource.action(url, body_type, action_name, resource, http_method, {})
+            action_body = Resource.action(url, body_type, link, action_name, resource, http_method, {})
             collectionsHolder[resource]['body'] += action_body
             if(DEBUG): print '[act] creating action: ' + action_name + '() on resource: ' + resource + ', for url: ' + url
             if(DEBUG): print '\n' + action_body
@@ -281,7 +282,7 @@ class CodeGen():
             if (not collectionsHolder.has_key(nested_resource)):
                 self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
 
-            action_body = SubResource.action(url, action_name, resource, body_type, sub_resource, http_method, {})
+            action_body = SubResource.action(url, link, action_name, resource, body_type, sub_resource, http_method, {})
             collectionsHolder[nested_resource]['body'] += action_body
 #TODO: add real action params
             if(DEBUG): print '[act] creating action: ' + action_name + '() on sub-resource: ' + nested_resource + ', for url: ' + url
@@ -308,7 +309,7 @@ class CodeGen():
             return collectionsHolder[actual_parent]
         return None
 
-    def __extendSubCollection(self, root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder):
+    def __extendSubCollection(self, root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder):
         #str: /api/clusters/{cluster:id}/permissions
 
         root_res = root_coll[:len(root_coll) - 1]
@@ -335,20 +336,20 @@ class CodeGen():
 
         #['get', 'add', 'delete', 'update']
         if (rel == 'get'):
-            get_method_body = SubCollection.get(url, root_res, self.__toResourceType(sub_res_type), sub_res, KNOWN_WRAPPER_TYPES)
+            get_method_body = SubCollection.get(url, link, root_res, self.__toResourceType(sub_res_type), sub_res, KNOWN_WRAPPER_TYPES)
             collectionsHolder[sub_coll_type]['body'] += get_method_body
             if(DEBUG): print 'adding to sub-collection: ' + sub_coll_type + ', url: ' + url + ', get() method:\n' + get_method_body
 
-            list_method = SubCollection.list(url, root_res, self.__toResourceType(sub_res_type), sub_res, KNOWN_WRAPPER_TYPES)
+            list_method = SubCollection.list(url, link, root_res, self.__toResourceType(sub_res_type), sub_res, KNOWN_WRAPPER_TYPES)
             collectionsHolder[sub_coll_type]['body'] += list_method
             if(DEBUG): print 'adding to sub-collection: ' + sub_coll_type + ', url: ' + url + ', list() method:\n' + list_method
 
         elif (rel == 'add'):
-            add_method = SubCollection.add(url, body_type, root_res, self.__toResourceType(sub_res_type), KNOWN_WRAPPER_TYPES)
+            add_method = SubCollection.add(url, link, body_type, root_res, self.__toResourceType(sub_res_type), KNOWN_WRAPPER_TYPES)
             collectionsHolder[sub_coll_type]['body'] += add_method
             if(DEBUG): print 'adding to sub-collection: ' + sub_coll_type + ', url: ' + url + ', add() method:\n' + add_method
 
-    def __extnedSubResource(self, root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder):
+    def __extnedSubResource(self, root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder):
         root_res = root_coll[:len(root_coll) - 1]
         sub_res = sub_coll[:len(sub_coll) - 1] if self.__isCollection(sub_coll) else sub_coll
         sub_res_type = root_res + sub_res
@@ -361,11 +362,11 @@ class CodeGen():
 
         #['get', 'add', 'delete', 'update']
         if (rel == 'delete'):
-            del_method = SubResource.delete(url, root_res, sub_res, body_type)
+            del_method = SubResource.delete(url, link, root_res, sub_res, body_type)
             collectionsHolder[sub_res_type]['body'] += del_method
             if(DEBUG): print 'adding to sub-resource: ' + sub_res_type + ' delete() method:\n\n' + del_method
         elif (rel == 'update'):
-            update_method = SubResource.update(url, root_res, self.__toResourceType(sub_res), sub_res_type, KNOWN_WRAPPER_TYPES)
+            update_method = SubResource.update(url, link, root_res, self.__toResourceType(sub_res), sub_res_type, KNOWN_WRAPPER_TYPES)
             collectionsHolder[sub_res_type]['body'] += update_method
             if(DEBUG): print 'adding to sub-resource: ' + sub_res_type + ' update() method:\n\n' + update_method
 

@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-12-07 12:52:52.924845
+Generated at: 2011-12-08 16:16:07.102543
 
 @author: mpastern@redhat.com
 '''
@@ -23,6 +23,13 @@ class Capabilities(Base):
         """Constructor."""
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Capabilities:
+        '''
+
         url = '/api/capabilities'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_capabilities()
@@ -30,9 +37,10 @@ class Capabilities(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return Capabilities:
         '''
 
         url='/api/capabilities'
@@ -55,12 +63,20 @@ class Cluster(params.Cluster, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/clusters/{cluster:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
     def update(self):
+        '''
+        @return Cluster:
+        '''
+
         url = '/api/clusters/{cluster:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
@@ -79,6 +95,10 @@ class ClusterNetwork(params.Network, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/clusters/{cluster:id}/networks/{network:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
@@ -86,6 +106,10 @@ class ClusterNetwork(params.Network, Base):
                                        headers={'Content-type':None})
 
     def update(self):
+        '''
+        @return Network:
+        '''
+
         url = '/api/clusters/{cluster:id}/networks/{network:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
@@ -101,6 +125,13 @@ class ClusterNetworks(Base):
 
     def add(self, network):
 
+        '''
+        @type Network:
+
+
+        @return Network:
+        '''
+
         url = '/api/clusters/{cluster:id}/networks'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
@@ -109,6 +140,13 @@ class ClusterNetworks(Base):
         return ClusterNetwork(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Networks:
+        '''
 
         url = '/api/clusters/{cluster:id}/networks'
 
@@ -120,8 +158,9 @@ class ClusterNetworks(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Networks:
         '''
 
         url = '/api/clusters/{cluster:id}/networks'
@@ -144,6 +183,10 @@ class ClusterPermission(params.Permission, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/clusters/{cluster:id}/permissions/{permission:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
@@ -157,6 +200,19 @@ class ClusterPermissions(Base):
 
     def add(self, permission):
 
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.group.id: string
+
+        @return Permission:
+        '''
+
         url = '/api/clusters/{cluster:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
@@ -165,6 +221,13 @@ class ClusterPermissions(Base):
         return ClusterPermission(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
+        '''
 
         url = '/api/clusters/{cluster:id}/permissions'
 
@@ -176,8 +239,9 @@ class ClusterPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
         '''
 
         url = '/api/clusters/{cluster:id}/permissions'
@@ -193,6 +257,15 @@ class Clusters(Base):
         """Constructor."""
 
     def add(self, cluster):
+        '''
+        @type Cluster:
+
+        @param cluster.datacenter.id|name: string
+        @param cluster.name: string
+
+        @return Cluster:
+        '''
+
         url = '/api/clusters'
 
         result = self._getProxy().add(url=url,
@@ -200,6 +273,13 @@ class Clusters(Base):
         return Cluster(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Clusters:
+        '''
+
         url = '/api/clusters'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_cluster()
@@ -207,9 +287,10 @@ class Clusters(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return Clusters:
         '''
 
         url='/api/clusters'
@@ -232,12 +313,20 @@ class DataCenter(params.DataCenter, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/datacenters/{datacenter:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
     def update(self):
+        '''
+        @return DataCenter:
+        '''
+
         url = '/api/datacenters/{datacenter:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
@@ -256,6 +345,10 @@ class DataCenterPermission(params.Permission, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/datacenters/{datacenter:id}/permissions/{permission:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
@@ -269,6 +362,19 @@ class DataCenterPermissions(Base):
 
     def add(self, permission):
 
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.group.id: string
+
+        @return Permission:
+        '''
+
         url = '/api/datacenters/{datacenter:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
@@ -277,6 +383,13 @@ class DataCenterPermissions(Base):
         return DataCenterPermission(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
+        '''
 
         url = '/api/datacenters/{datacenter:id}/permissions'
 
@@ -288,8 +401,9 @@ class DataCenterPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
         '''
 
         url = '/api/datacenters/{datacenter:id}/permissions'
@@ -312,6 +426,10 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
@@ -320,6 +438,13 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
     def activate(self, action=params.Action()):
         url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate'
+
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
@@ -330,6 +455,13 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
     def deactivate(self, action=params.Action()):
         url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/deactivate'
+
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
@@ -345,6 +477,14 @@ class DataCenterStorageDomains(Base):
 
     def add(self, storagedomain):
 
+        '''
+        @type StorageDomain:
+
+        @param storagedomain.id|name: string
+
+        @return StorageDomain:
+        '''
+
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
@@ -353,6 +493,13 @@ class DataCenterStorageDomains(Base):
         return DataCenterStorageDomain(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return StorageDomains:
+        '''
 
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
@@ -364,8 +511,9 @@ class DataCenterStorageDomains(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return StorageDomains:
         '''
 
         url = '/api/datacenters/{datacenter:id}/storagedomains'
@@ -381,6 +529,13 @@ class DataCenters(Base):
         """Constructor."""
 
     def add(self, datacenter):
+        '''
+        @type DataCenter:
+
+
+        @return DataCenter:
+        '''
+
         url = '/api/datacenters'
 
         result = self._getProxy().add(url=url,
@@ -388,6 +543,13 @@ class DataCenters(Base):
         return DataCenter(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return DataCenters:
+        '''
+
         url = '/api/datacenters'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_data_center()
@@ -395,9 +557,10 @@ class DataCenters(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return DataCenters:
         '''
 
         url='/api/datacenters'
@@ -437,6 +600,13 @@ class DomainGroups(Base):
 
     def get(self, name=None, **kwargs):
 
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Groups:
+        '''
+
         url = '/api/domains/{domain:id}/groups'
 
         if(name is not None): kwargs['name']=name
@@ -447,8 +617,9 @@ class DomainGroups(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Groups:
         '''
 
         url = '/api/domains/{domain:id}/groups'
@@ -477,6 +648,13 @@ class DomainUsers(Base):
 
     def get(self, name=None, **kwargs):
 
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Users:
+        '''
+
         url = '/api/domains/{domain:id}/users'
 
         if(name is not None): kwargs['name']=name
@@ -487,8 +665,9 @@ class DomainUsers(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Users:
         '''
 
         url = '/api/domains/{domain:id}/users'
@@ -504,6 +683,13 @@ class Domains(Base):
         """Constructor."""
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Domains:
+        '''
+
         url = '/api/domains'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_domain()
@@ -511,9 +697,10 @@ class Domains(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return Domains:
         '''
 
         url='/api/domains'
@@ -538,6 +725,13 @@ class Events(Base):
         """Constructor."""
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Events:
+        '''
+
         url = '/api/events'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_event()
@@ -545,9 +739,10 @@ class Events(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return Events:
         '''
 
         url='/api/events'
@@ -571,6 +766,10 @@ class Group(params.Group, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/groups/{group:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}': self.get_id()}),
@@ -588,6 +787,10 @@ class GroupPermission(params.Permission, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/groups/{group:id}/permissions/{permission:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
@@ -601,6 +804,34 @@ class GroupPermissions(Base):
 
     def add(self, permission):
 
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.role.id: string
+          @param permission.data_center.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.cluster.id: string
+        Overload 3:
+          @param permission.role.id: string
+          @param permission.host.id: string
+        Overload 4:
+          @param permission.role.id: string
+          @param permission.storage_domain.id: string
+        Overload 5:
+          @param permission.role.id: string
+          @param permission.vm.id: string
+        Overload 6:
+          @param permission.role.id: string
+          @param permission.vmpool.id: string
+        Overload 7:
+          @param permission.role.id: string
+          @param permission.template.id: string
+
+        @return Permission:
+        '''
+
         url = '/api/groups/{group:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
@@ -609,6 +840,13 @@ class GroupPermissions(Base):
         return GroupPermission(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
+        '''
 
         url = '/api/groups/{group:id}/permissions'
 
@@ -620,8 +858,9 @@ class GroupPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
         '''
 
         url = '/api/groups/{group:id}/permissions'
@@ -644,6 +883,10 @@ class GroupRole(params.Role, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/groups/{group:id}/roles/{role:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
@@ -657,6 +900,13 @@ class GroupRoles(Base):
 
     def add(self, role):
 
+        '''
+        @type Role:
+
+
+        @return Role:
+        '''
+
         url = '/api/groups/{group:id}/roles'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
@@ -665,6 +915,13 @@ class GroupRoles(Base):
         return GroupRole(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Roles:
+        '''
 
         url = '/api/groups/{group:id}/roles'
 
@@ -676,8 +933,9 @@ class GroupRoles(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Roles:
         '''
 
         url = '/api/groups/{group:id}/roles'
@@ -700,6 +958,10 @@ class GroupTag(params.Tag, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/groups/{group:id}/tags/{tag:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
@@ -713,6 +975,14 @@ class GroupTags(Base):
 
     def add(self, tag):
 
+        '''
+        @type Tag:
+
+        @param tag.id|name: string
+
+        @return Tag:
+        '''
+
         url = '/api/groups/{group:id}/tags'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
@@ -721,6 +991,13 @@ class GroupTags(Base):
         return GroupTag(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Tags:
+        '''
 
         url = '/api/groups/{group:id}/tags'
 
@@ -732,8 +1009,9 @@ class GroupTags(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Tags:
         '''
 
         url = '/api/groups/{group:id}/tags'
@@ -749,6 +1027,13 @@ class Groups(Base):
         """Constructor."""
 
     def add(self, group):
+        '''
+        @type Group:
+
+
+        @return Group:
+        '''
+
         url = '/api/groups'
 
         result = self._getProxy().add(url=url,
@@ -756,6 +1041,13 @@ class Groups(Base):
         return Group(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Groups:
+        '''
+
         url = '/api/groups'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_group()
@@ -763,9 +1055,10 @@ class Groups(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return Groups:
         '''
 
         url='/api/groups'
@@ -786,6 +1079,10 @@ class GroupsRolePermit(params.Permit, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/groups/{group:id}/roles/{role:id}/permits/{permit:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{groupsrole:id}' : self.parentclass.get_id(),
@@ -808,12 +1105,23 @@ class Host(params.Host, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/hosts/{host:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
     def install(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/hosts/{host:id}/install'
 
         result = self._getProxy().request(method='POST',
@@ -822,6 +1130,13 @@ class Host(params.Host, Base):
         return result
 
     def fence(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/hosts/{host:id}/fence'
 
         result = self._getProxy().request(method='POST',
@@ -830,6 +1145,13 @@ class Host(params.Host, Base):
         return result
 
     def activate(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/hosts/{host:id}/activate'
 
         result = self._getProxy().request(method='POST',
@@ -838,6 +1160,13 @@ class Host(params.Host, Base):
         return result
 
     def deactivate(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/hosts/{host:id}/deactivate'
 
         result = self._getProxy().request(method='POST',
@@ -846,6 +1175,16 @@ class Host(params.Host, Base):
         return result
 
     def approve(self, action=params.Action()):
+        '''
+        @type Action:
+
+        [@param action.cluster.id|name: string]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+
+        @return Response:
+        '''
+
         url = '/api/hosts/{host:id}/approve'
 
         result = self._getProxy().request(method='POST',
@@ -854,6 +1193,13 @@ class Host(params.Host, Base):
         return result
 
     def iscsilogin(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/hosts/{host:id}/iscsilogin'
 
         result = self._getProxy().request(method='POST',
@@ -862,6 +1208,13 @@ class Host(params.Host, Base):
         return result
 
     def iscsidiscover(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/hosts/{host:id}/iscsidiscover'
 
         result = self._getProxy().request(method='POST',
@@ -870,6 +1223,13 @@ class Host(params.Host, Base):
         return result
 
     def commitnetconfig(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/hosts/{host:id}/commitnetconfig'
 
         result = self._getProxy().request(method='POST',
@@ -878,6 +1238,10 @@ class Host(params.Host, Base):
         return result
 
     def update(self):
+        '''
+        @return Host:
+        '''
+
         url = '/api/hosts/{host:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
@@ -896,6 +1260,10 @@ class HostNIC(params.HostNIC, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/hosts/{host:id}/nics/{nic:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
@@ -904,6 +1272,13 @@ class HostNIC(params.HostNIC, Base):
 
     def detach(self, action=params.Action()):
         url = '/api/hosts/{host:id}/nics/{nic:id}/detach'
+
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
@@ -915,6 +1290,16 @@ class HostNIC(params.HostNIC, Base):
     def attach(self, action=params.Action()):
         url = '/api/hosts/{host:id}/nics/{nic:id}/attach'
 
+        '''
+        @type Action:
+
+        @param action.network.id|name: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+
+        @return Response:
+        '''
+
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
@@ -923,6 +1308,10 @@ class HostNIC(params.HostNIC, Base):
         return result
 
     def update(self):
+        '''
+        @return HostNIC:
+        '''
+
         url = '/api/hosts/{host:id}/nics/{nic:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
@@ -938,6 +1327,22 @@ class HostNics(Base):
 
     def add(self, hostnic):
 
+        '''
+        @type HostNIC:
+
+        @param bonding.slaves.slaves.id|name: string
+        @param hostnic.network.id|name: string
+        @param hostnic.name: string
+        [@param hostnic.bonding.options.option--LIST: {name=string, value=string, type=string}]
+        [@param hostnic.ip.gateway: string]
+        [@param hostnic.boot_protocol: string]
+        [@param hostnic.mac: string]
+        [@param hostnic.ip.address: string]
+        [@param hostnic.ip.netmask: string]
+
+        @return HostNIC:
+        '''
+
         url = '/api/hosts/{host:id}/nics'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
@@ -946,6 +1351,13 @@ class HostNics(Base):
         return HostNIC(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return HostNics:
+        '''
 
         url = '/api/hosts/{host:id}/nics'
 
@@ -957,8 +1369,9 @@ class HostNics(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return HostNics:
         '''
 
         url = '/api/hosts/{host:id}/nics'
@@ -981,6 +1394,10 @@ class HostPermission(params.Permission, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/hosts/{host:id}/permissions/{permission:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
@@ -994,6 +1411,19 @@ class HostPermissions(Base):
 
     def add(self, permission):
 
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.group.id: string
+
+        @return Permission:
+        '''
+
         url = '/api/hosts/{host:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
@@ -1002,6 +1432,13 @@ class HostPermissions(Base):
         return HostPermission(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
+        '''
 
         url = '/api/hosts/{host:id}/permissions'
 
@@ -1013,8 +1450,9 @@ class HostPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
         '''
 
         url = '/api/hosts/{host:id}/permissions'
@@ -1043,6 +1481,13 @@ class HostStatistics(Base):
 
     def get(self, name=None, **kwargs):
 
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Statistics:
+        '''
+
         url = '/api/hosts/{host:id}/statistics'
 
         if(name is not None): kwargs['name']=name
@@ -1053,8 +1498,9 @@ class HostStatistics(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Statistics:
         '''
 
         url = '/api/hosts/{host:id}/statistics'
@@ -1088,6 +1534,10 @@ class HostTag(params.Tag, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/hosts/{host:id}/tags/{tag:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
@@ -1101,6 +1551,13 @@ class HostTags(Base):
 
     def add(self, tag):
 
+        '''
+        @type Tag:
+
+
+        @return Tag:
+        '''
+
         url = '/api/hosts/{host:id}/tags'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
@@ -1109,6 +1566,13 @@ class HostTags(Base):
         return HostTag(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Tags:
+        '''
 
         url = '/api/hosts/{host:id}/tags'
 
@@ -1120,8 +1584,9 @@ class HostTags(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Tags:
         '''
 
         url = '/api/hosts/{host:id}/tags'
@@ -1137,6 +1602,13 @@ class Hosts(Base):
         """Constructor."""
 
     def add(self, host):
+        '''
+        @type Host:
+
+
+        @return Host:
+        '''
+
         url = '/api/hosts'
 
         result = self._getProxy().add(url=url,
@@ -1144,6 +1616,13 @@ class Hosts(Base):
         return Host(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Hosts:
+        '''
+
         url = '/api/hosts'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_host()
@@ -1151,9 +1630,10 @@ class Hosts(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return Hosts:
         '''
 
         url='/api/hosts'
@@ -1185,12 +1665,20 @@ class Network(params.Network, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/networks/{network:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
     def update(self):
+        '''
+        @return Network:
+        '''
+
         url = '/api/networks/{network:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
@@ -1202,6 +1690,22 @@ class Networks(Base):
         """Constructor."""
 
     def add(self, network):
+        '''
+        @type Network:
+
+        @param network.data_center.id|name: string
+        @param network.name: string
+        [@param network.description: string]
+        [@param network.vlan.id: string]
+        [@param network.ip.address: string]
+        [@param network.ip.gateway: string]
+        [@param network.ip.netmask: string]
+        [@param network.display: boolean]
+        [@param network.stp: boolean]
+
+        @return Network:
+        '''
+
         url = '/api/networks'
 
         result = self._getProxy().add(url=url,
@@ -1209,6 +1713,13 @@ class Networks(Base):
         return Network(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Networks:
+        '''
+
         url = '/api/networks'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_network()
@@ -1216,9 +1727,10 @@ class Networks(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return Networks:
         '''
 
         url='/api/networks'
@@ -1240,6 +1752,10 @@ class Role(params.Role, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/roles/{role:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
@@ -1257,6 +1773,10 @@ class RolePermit(params.Permit, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/roles/{role:id}/permits/{permit:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}' : self.parentclass.get_id(),
@@ -1270,6 +1790,14 @@ class RolePermits(Base):
 
     def add(self, permit):
 
+        '''
+        @type Permit:
+
+        @param permit.id|name: string
+
+        @return Permit:
+        '''
+
         url = '/api/roles/{role:id}/permits'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
@@ -1278,6 +1806,13 @@ class RolePermits(Base):
         return RolePermit(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Permits:
+        '''
 
         url = '/api/roles/{role:id}/permits'
 
@@ -1289,8 +1824,9 @@ class RolePermits(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Permits:
         '''
 
         url = '/api/roles/{role:id}/permits'
@@ -1306,6 +1842,13 @@ class Roles(Base):
         """Constructor."""
 
     def add(self, role):
+        '''
+        @type Role:
+
+
+        @return Role:
+        '''
+
         url = '/api/roles'
 
         result = self._getProxy().add(url=url,
@@ -1313,6 +1856,13 @@ class Roles(Base):
         return Role(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Roles:
+        '''
+
         url = '/api/roles'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_role()
@@ -1320,9 +1870,10 @@ class Roles(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return Roles:
         '''
 
         url='/api/roles'
@@ -1347,12 +1898,24 @@ class StorageDomain(params.StorageDomain, Base):
         return obj
 
     def delete(self, storagedomain):
+        '''
+        @type StorageDomain:
+
+        @param storagdomain.host.id|name: string
+
+        @return None:
+        '''
+
         url = '/api/storagedomains/{storagedomain:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
                                        body=ParseHelper.toXml(storagedomain))
 
     def update(self):
+        '''
+        @return StorageDomain:
+        '''
+
         url = '/api/storagedomains/{storagedomain:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
@@ -1377,6 +1940,13 @@ class StorageDomainFiles(Base):
 
     def get(self, name=None, **kwargs):
 
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Files:
+        '''
+
         url = '/api/storagedomains/{storagedomain:id}/files'
 
         if(name is not None): kwargs['name']=name
@@ -1387,8 +1957,9 @@ class StorageDomainFiles(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Files:
         '''
 
         url = '/api/storagedomains/{storagedomain:id}/files'
@@ -1411,6 +1982,10 @@ class StorageDomainPermission(params.Permission, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/storagedomains/{storagedomain:id}/permissions/{permission:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
@@ -1424,6 +1999,19 @@ class StorageDomainPermissions(Base):
 
     def add(self, permission):
 
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.group.id: string
+
+        @return Permission:
+        '''
+
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
@@ -1432,6 +2020,13 @@ class StorageDomainPermissions(Base):
         return StorageDomainPermission(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
+        '''
 
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
@@ -1443,8 +2038,9 @@ class StorageDomainPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
         '''
 
         url = '/api/storagedomains/{storagedomain:id}/permissions'
@@ -1469,6 +2065,14 @@ class StorageDomainTemplate(params.Template, Base):
     def import_template(self, action=params.Action()):
         url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/import'
 
+        '''
+        @type Action:
+
+        @param action.cluster.id|name: string
+
+        @return Response:
+        '''
+
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
                                                                      '{template:id}': self.get_id()}),
@@ -1483,6 +2087,13 @@ class StorageDomainTemplates(Base):
 
     def get(self, name=None, **kwargs):
 
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Templates:
+        '''
+
         url = '/api/storagedomains/{storagedomain:id}/templates'
 
         if(name is not None): kwargs['name']=name
@@ -1493,8 +2104,9 @@ class StorageDomainTemplates(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Templates:
         '''
 
         url = '/api/storagedomains/{storagedomain:id}/templates'
@@ -1519,6 +2131,14 @@ class StorageDomainVM(params.VM, Base):
     def import_vm(self, action=params.Action()):
         url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/import'
 
+        '''
+        @type Action:
+
+        @param action.cluster.id|name: string
+
+        @return Response:
+        '''
+
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
                                                                      '{vm:id}': self.get_id()}),
@@ -1533,6 +2153,13 @@ class StorageDomainVMs(Base):
 
     def get(self, name=None, **kwargs):
 
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return VMs:
+        '''
+
         url = '/api/storagedomains/{storagedomain:id}/vms'
 
         if(name is not None): kwargs['name']=name
@@ -1543,8 +2170,9 @@ class StorageDomainVMs(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return VMs:
         '''
 
         url = '/api/storagedomains/{storagedomain:id}/vms'
@@ -1560,6 +2188,37 @@ class StorageDomains(Base):
         """Constructor."""
 
     def add(self, storagedomain):
+        '''
+        @type StorageDomain:
+
+        Overload 1:
+          @param storagdomain.name: string
+          @param storagdomain.host.id|name: string
+          @param storagdomain.type: string
+          @param storagdomain.storage.type: string
+          @param storagdomain.format: boolean
+          [@param storagdomain.storage.logical_units--LIST: {address=string, port=int, target=string, username=string, password=string, serial=string, vendor_id=string, product_id=string, lun_mapping=int, portal=string, paths=int, id=string}]
+        Overload 2:
+          @param storagdomain.storage.path: string
+          @param storagdomain.name: string
+          @param storagdomain.storage.address: string
+          @param storagdomain.host.id|name: string
+          @param storagdomain.type: string
+          @param storagdomain.storage.type: string
+          @param storagdomain.format: boolean
+          [@param storagdomain.storage.logical_units--LIST: {address=string, port=int, target=string, username=string, password=string, serial=string, vendor_id=string, product_id=string, lun_mapping=int, portal=string, paths=int, id=string}]
+        Overload 3:
+          @param storagdomain.storage.path: string
+          @param storagdomain.name: string
+          @param storagdomain.host.id|name: string
+          @param storagdomain.type: string
+          @param storagdomain.storage.type: string
+          @param storagdomain.format: boolean
+          [@param storagdomain.storage.logical_units--LIST: {address=string, port=int, target=string, username=string, password=string, serial=string, vendor_id=string, product_id=string, lun_mapping=int, portal=string, paths=int, id=string}]
+
+        @return StorageDomain:
+        '''
+
         url = '/api/storagedomains'
 
         result = self._getProxy().add(url=url,
@@ -1567,6 +2226,13 @@ class StorageDomains(Base):
         return StorageDomain(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return StorageDomains:
+        '''
+
         url = '/api/storagedomains'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_storage_domain()
@@ -1574,9 +2240,10 @@ class StorageDomains(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return StorageDomains:
         '''
 
         url='/api/storagedomains'
@@ -1597,12 +2264,20 @@ class Tag(params.Tag, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/tags/{tag:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
     def update(self):
+        '''
+        @return Tag:
+        '''
+
         url = '/api/tags/{tag:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
@@ -1614,6 +2289,13 @@ class Tags(Base):
         """Constructor."""
 
     def add(self, tag):
+        '''
+        @type Tag:
+
+
+        @return Tag:
+        '''
+
         url = '/api/tags'
 
         result = self._getProxy().add(url=url,
@@ -1621,6 +2303,13 @@ class Tags(Base):
         return Tag(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Tags:
+        '''
+
         url = '/api/tags'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_tag()
@@ -1628,9 +2317,10 @@ class Tags(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return Tags:
         '''
 
         url='/api/tags'
@@ -1655,12 +2345,27 @@ class Template(params.Template, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/templates/{template:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
     def export(self, action=params.Action()):
+        '''
+        @type Action:
+
+        @param action.storage_domain.id|name: string
+        [@param action.async: boolean]
+        [@param action.exclusive: boolean]
+        [@param action.grace_period.expiry: long]
+
+        @return Response:
+        '''
+
         url = '/api/templates/{template:id}/export'
 
         result = self._getProxy().request(method='POST',
@@ -1669,6 +2374,10 @@ class Template(params.Template, Base):
         return result
 
     def update(self):
+        '''
+        @return Template:
+        '''
+
         url = '/api/templates/{template:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
@@ -1693,6 +2402,13 @@ class TemplateCdRoms(Base):
 
     def get(self, name=None, **kwargs):
 
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return CdRoms:
+        '''
+
         url = '/api/templates/{template:id}/cdroms'
 
         if(name is not None): kwargs['name']=name
@@ -1703,8 +2419,9 @@ class TemplateCdRoms(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return CdRoms:
         '''
 
         url = '/api/templates/{template:id}/cdroms'
@@ -1733,6 +2450,13 @@ class TemplateDisks(Base):
 
     def get(self, name=None, **kwargs):
 
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Disks:
+        '''
+
         url = '/api/templates/{template:id}/disks'
 
         if(name is not None): kwargs['name']=name
@@ -1743,8 +2467,9 @@ class TemplateDisks(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Disks:
         '''
 
         url = '/api/templates/{template:id}/disks'
@@ -1773,6 +2498,13 @@ class TemplateNics(Base):
 
     def get(self, name=None, **kwargs):
 
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Nics:
+        '''
+
         url = '/api/templates/{template:id}/nics'
 
         if(name is not None): kwargs['name']=name
@@ -1783,8 +2515,9 @@ class TemplateNics(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Nics:
         '''
 
         url = '/api/templates/{template:id}/nics'
@@ -1807,6 +2540,10 @@ class TemplatePermission(params.Permission, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/templates/{template:id}/permissions/{permission:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
@@ -1820,6 +2557,19 @@ class TemplatePermissions(Base):
 
     def add(self, permission):
 
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.group.id: string
+
+        @return Permission:
+        '''
+
         url = '/api/templates/{template:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
@@ -1828,6 +2578,13 @@ class TemplatePermissions(Base):
         return TemplatePermission(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
+        '''
 
         url = '/api/templates/{template:id}/permissions'
 
@@ -1839,8 +2596,9 @@ class TemplatePermissions(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
         '''
 
         url = '/api/templates/{template:id}/permissions'
@@ -1856,6 +2614,36 @@ class Templates(Base):
         """Constructor."""
 
     def add(self, template):
+        '''
+        @type Template:
+
+        @param template.vm.id|name: string
+        @param template.name: string
+        [@param template.memory: long]
+        [@param template.cpu.topology.cores: int]
+        [@param template.high_availability.enabled:  boolean]
+        [@param template.os.cmdline: string]
+        [@param template.origin: string]
+        [@param template.high_availability.priority:  int]
+        [@param template.timezone: string]
+        [@param template.domain.name: string]
+        [@param template.type: string]
+        [@param template.stateless:  boolean]
+        [@param template.placement_policy.affinity: string]
+        [@param template.description: string]
+        [@param template.custom_properties.custom_property: {name=string, value=string, regex=string}]
+        [@param template.os.type: string]
+        [@param template.os.boot.dev: string]
+        [@param template.cpu.topology.sockets: int]
+        [@param template.os.kernel: string]
+        [@param template.display.type: string]
+        [@param template.display.monitors: int]
+        [@param template.os.initRd: string]
+        [@param template.usb.enabled: boolean]
+
+        @return Template:
+        '''
+
         url = '/api/templates'
 
         result = self._getProxy().add(url=url,
@@ -1863,6 +2651,13 @@ class Templates(Base):
         return Template(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Templates:
+        '''
+
         url = '/api/templates'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_template()
@@ -1870,9 +2665,10 @@ class Templates(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return Templates:
         '''
 
         url='/api/templates'
@@ -1896,6 +2692,10 @@ class User(params.User, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/users/{user:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}': self.get_id()}),
@@ -1913,6 +2713,10 @@ class UserPermission(params.Permission, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/users/{user:id}/permissions/{permission:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
@@ -1926,6 +2730,34 @@ class UserPermissions(Base):
 
     def add(self, permission):
 
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.role.id: string
+          @param permission.data_center.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.cluster.id: string
+        Overload 3:
+          @param permission.role.id: string
+          @param permission.host.id: string
+        Overload 4:
+          @param permission.role.id: string
+          @param permission.storage_domain.id: string
+        Overload 5:
+          @param permission.role.id: string
+          @param permission.vm.id: string
+        Overload 6:
+          @param permission.role.id: string
+          @param permission.vmpool.id: string
+        Overload 7:
+          @param permission.role.id: string
+          @param permission.template.id: string
+
+        @return Permission:
+        '''
+
         url = '/api/users/{user:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
@@ -1934,6 +2766,13 @@ class UserPermissions(Base):
         return UserPermission(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
+        '''
 
         url = '/api/users/{user:id}/permissions'
 
@@ -1945,8 +2784,9 @@ class UserPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
         '''
 
         url = '/api/users/{user:id}/permissions'
@@ -1969,6 +2809,10 @@ class UserRole(params.Role, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/users/{user:id}/roles/{role:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
@@ -1982,6 +2826,13 @@ class UserRoles(Base):
 
     def add(self, role):
 
+        '''
+        @type Role:
+
+
+        @return Role:
+        '''
+
         url = '/api/users/{user:id}/roles'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
@@ -1990,6 +2841,13 @@ class UserRoles(Base):
         return UserRole(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Roles:
+        '''
 
         url = '/api/users/{user:id}/roles'
 
@@ -2001,8 +2859,9 @@ class UserRoles(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Roles:
         '''
 
         url = '/api/users/{user:id}/roles'
@@ -2025,6 +2884,10 @@ class UserTag(params.Tag, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/users/{user:id}/tags/{tag:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
@@ -2038,6 +2901,14 @@ class UserTags(Base):
 
     def add(self, tag):
 
+        '''
+        @type Tag:
+
+        @param tag.id|name: string
+
+        @return Tag:
+        '''
+
         url = '/api/users/{user:id}/tags'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
@@ -2046,6 +2917,13 @@ class UserTags(Base):
         return UserTag(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Tags:
+        '''
 
         url = '/api/users/{user:id}/tags'
 
@@ -2057,8 +2935,9 @@ class UserTags(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Tags:
         '''
 
         url = '/api/users/{user:id}/tags'
@@ -2074,6 +2953,13 @@ class Users(Base):
         """Constructor."""
 
     def add(self, user):
+        '''
+        @type User:
+
+
+        @return User:
+        '''
+
         url = '/api/users'
 
         result = self._getProxy().add(url=url,
@@ -2081,6 +2967,13 @@ class Users(Base):
         return User(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Users:
+        '''
+
         url = '/api/users'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_user()
@@ -2088,9 +2981,10 @@ class Users(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return Users:
         '''
 
         url='/api/users'
@@ -2111,6 +3005,10 @@ class UsersRolePermit(params.Permit, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/users/{user:id}/roles/{role:id}/permits/{permit:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{usersrole:id}' : self.parentclass.get_id(),
@@ -2136,12 +3034,23 @@ class VM(params.VM, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/vms/{vm:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
     def shutdown(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/vms/{vm:id}/shutdown'
 
         result = self._getProxy().request(method='POST',
@@ -2150,6 +3059,27 @@ class VM(params.VM, Base):
         return result
 
     def start(self, action=params.Action()):
+        '''
+        @type Action:
+
+        [@param action.vm.os.initRd: string]
+        [@param action.vm.domain.name: string]
+        [@param action.host.id|name: string]
+        [@param action.async: boolean]
+        [@param action.vm.display.type: string]
+        [@param action.vm.os.kernel: string]
+        [@param action.grace_period.expiry: long]
+        [@param action.display.type: string]
+        [@param action.vm.stateless: boolean]
+        [@param action.vm.os.cmdline: string]
+        [@param action.vm.domain.user.username: string]
+        [@param action.pause: boolean]
+        [@param action.vm.os.boot.dev: string]
+        [@param action.vm.domain.user.password: string]
+
+        @return Response:
+        '''
+
         url = '/api/vms/{vm:id}/start'
 
         result = self._getProxy().request(method='POST',
@@ -2158,6 +3088,13 @@ class VM(params.VM, Base):
         return result
 
     def stop(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/vms/{vm:id}/stop'
 
         result = self._getProxy().request(method='POST',
@@ -2166,6 +3103,13 @@ class VM(params.VM, Base):
         return result
 
     def suspend(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/vms/{vm:id}/suspend'
 
         result = self._getProxy().request(method='POST',
@@ -2174,6 +3118,13 @@ class VM(params.VM, Base):
         return result
 
     def detach(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/vms/{vm:id}/detach'
 
         result = self._getProxy().request(method='POST',
@@ -2182,6 +3133,18 @@ class VM(params.VM, Base):
         return result
 
     def export(self, action=params.Action()):
+        '''
+        @type Action:
+
+        [@param action.async: boolean]
+        [@param action.exclusive: boolean]
+        [@param action.discard_snapshots: boolean]
+        [@param action.storage_domain.id|name: string]
+        [@param action.grace_period.expiry: long]
+
+        @return Response:
+        '''
+
         url = '/api/vms/{vm:id}/export'
 
         result = self._getProxy().request(method='POST',
@@ -2190,6 +3153,16 @@ class VM(params.VM, Base):
         return result
 
     def move(self, action=params.Action()):
+        '''
+        @type Action:
+
+        @param action.storage_domain.id|name: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+
+        @return Response:
+        '''
+
         url = '/api/vms/{vm:id}/move'
 
         result = self._getProxy().request(method='POST',
@@ -2198,6 +3171,13 @@ class VM(params.VM, Base):
         return result
 
     def ticket(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
         url = '/api/vms/{vm:id}/ticket'
 
         result = self._getProxy().request(method='POST',
@@ -2206,6 +3186,17 @@ class VM(params.VM, Base):
         return result
 
     def migrate(self, action=params.Action()):
+        '''
+        @type Action:
+
+        [@param action.host.id|name: string]
+        [@param action.async: boolean]
+        [@param action.force: boolean]
+        [@param action.grace_period.expiry: long]
+
+        @return Response:
+        '''
+
         url = '/api/vms/{vm:id}/migrate'
 
         result = self._getProxy().request(method='POST',
@@ -2214,6 +3205,10 @@ class VM(params.VM, Base):
         return result
 
     def update(self):
+        '''
+        @return VM:
+        '''
+
         url = '/api/vms/{vm:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
@@ -2232,6 +3227,10 @@ class VMCdRom(params.CdRom, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/vms/{vm:id}/cdroms/{cdrom:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
@@ -2239,6 +3238,10 @@ class VMCdRom(params.CdRom, Base):
                                        headers={'Content-type':None})
 
     def update(self):
+        '''
+        @return CdRom:
+        '''
+
         url = '/api/vms/{vm:id}/cdroms/{cdrom:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
@@ -2254,6 +3257,13 @@ class VMCdRoms(Base):
 
     def add(self, cdrom):
 
+        '''
+        @type CdRom:
+
+
+        @return CdRom:
+        '''
+
         url = '/api/vms/{vm:id}/cdroms'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
@@ -2262,6 +3272,13 @@ class VMCdRoms(Base):
         return VMCdRom(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return CdRoms:
+        '''
 
         url = '/api/vms/{vm:id}/cdroms'
 
@@ -2273,8 +3290,9 @@ class VMCdRoms(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return CdRoms:
         '''
 
         url = '/api/vms/{vm:id}/cdroms'
@@ -2297,6 +3315,10 @@ class VMDisk(params.Disk, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/vms/{vm:id}/disks/{disk:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
@@ -2304,6 +3326,10 @@ class VMDisk(params.Disk, Base):
                                        headers={'Content-type':None})
 
     def update(self):
+        '''
+        @return Disk:
+        '''
+
         url = '/api/vms/{vm:id}/disks/{disk:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
@@ -2319,6 +3345,13 @@ class VMDisks(Base):
 
     def add(self, disk):
 
+        '''
+        @type Disk:
+
+
+        @return Disk:
+        '''
+
         url = '/api/vms/{vm:id}/disks'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
@@ -2327,6 +3360,13 @@ class VMDisks(Base):
         return VMDisk(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Disks:
+        '''
 
         url = '/api/vms/{vm:id}/disks'
 
@@ -2338,8 +3378,9 @@ class VMDisks(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Disks:
         '''
 
         url = '/api/vms/{vm:id}/disks'
@@ -2362,6 +3403,10 @@ class VMNic(params.NIC, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/vms/{vm:id}/nics/{nic:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
@@ -2369,6 +3414,10 @@ class VMNic(params.NIC, Base):
                                        headers={'Content-type':None})
 
     def update(self):
+        '''
+        @return NIC:
+        '''
+
         url = '/api/vms/{vm:id}/nics/{nic:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
@@ -2384,6 +3433,17 @@ class VMNics(Base):
 
     def add(self, nic):
 
+        '''
+        @type NIC:
+
+        @param nic.network.id|name: string
+        @param nic.name: string
+        [@param nic.mac.address: string]
+        [@param nic.interface: string]
+
+        @return NIC:
+        '''
+
         url = '/api/vms/{vm:id}/nics'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
@@ -2392,6 +3452,13 @@ class VMNics(Base):
         return VMNic(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Nics:
+        '''
 
         url = '/api/vms/{vm:id}/nics'
 
@@ -2403,8 +3470,9 @@ class VMNics(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Nics:
         '''
 
         url = '/api/vms/{vm:id}/nics'
@@ -2427,6 +3495,10 @@ class VMPermission(params.Permission, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/vms/{vm:id}/permissions/{permission:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
@@ -2440,6 +3512,19 @@ class VMPermissions(Base):
 
     def add(self, permission):
 
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.group.id: string
+
+        @return Permission:
+        '''
+
         url = '/api/vms/{vm:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
@@ -2448,6 +3533,13 @@ class VMPermissions(Base):
         return VMPermission(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
+        '''
 
         url = '/api/vms/{vm:id}/permissions'
 
@@ -2459,8 +3551,9 @@ class VMPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
         '''
 
         url = '/api/vms/{vm:id}/permissions'
@@ -2483,6 +3576,10 @@ class VMSnapshot(params.Snapshot, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
@@ -2491,6 +3588,13 @@ class VMSnapshot(params.Snapshot, Base):
 
     def restore(self, action=params.Action()):
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/restore'
+
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
@@ -2506,6 +3610,13 @@ class VMSnapshots(Base):
 
     def add(self, snapshot):
 
+        '''
+        @type Snapshot:
+
+
+        @return Snapshot:
+        '''
+
         url = '/api/vms/{vm:id}/snapshots'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
@@ -2514,6 +3625,13 @@ class VMSnapshots(Base):
         return VMSnapshot(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Snapshots:
+        '''
 
         url = '/api/vms/{vm:id}/snapshots'
 
@@ -2525,8 +3643,9 @@ class VMSnapshots(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Snapshots:
         '''
 
         url = '/api/vms/{vm:id}/snapshots'
@@ -2555,6 +3674,13 @@ class VMStatistics(Base):
 
     def get(self, name=None, **kwargs):
 
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Statistics:
+        '''
+
         url = '/api/vms/{vm:id}/statistics'
 
         if(name is not None): kwargs['name']=name
@@ -2565,8 +3691,9 @@ class VMStatistics(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Statistics:
         '''
 
         url = '/api/vms/{vm:id}/statistics'
@@ -2589,6 +3716,10 @@ class VMTag(params.Tag, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/vms/{vm:id}/tags/{tag:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
@@ -2602,6 +3733,14 @@ class VMTags(Base):
 
     def add(self, tag):
 
+        '''
+        @type Tag:
+
+        @param tag.id|name: string
+
+        @return Tag:
+        '''
+
         url = '/api/vms/{vm:id}/tags'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
@@ -2610,6 +3749,13 @@ class VMTags(Base):
         return VMTag(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Tags:
+        '''
 
         url = '/api/vms/{vm:id}/tags'
 
@@ -2621,8 +3767,9 @@ class VMTags(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Tags:
         '''
 
         url = '/api/vms/{vm:id}/tags'
@@ -2638,6 +3785,36 @@ class VMs(Base):
         """Constructor."""
 
     def add(self, vm):
+        '''
+        @type VM:
+
+        @param vm.teamplate.id|name: string
+        @param vm.cluster.id|name: string
+        [@param vm.timezone: string]
+        [@param vm.os.boot.dev: string]
+        [@param vm.custom_properties.custom_property: {name=string, value=string, regex=string}]
+        [@param vm.os.type: string]
+        [@param vm.usb.enabled: boolean]
+        [@param vm.type: string]
+        [@param vm.os.initRd: string]
+        [@param vm.display.monitors: int]
+        [@param vm.display.type: string]
+        [@param vm.os.cmdline: string]
+        [@param vm.cpu.topology.cores: int]
+        [@param vm.memory: long]
+        [@param vm.high_availability.priority:  int]
+        [@param vm.high_availability.enabled:  boolean]
+        [@param vm.domain.name: string]
+        [@param vm.description: string]
+        [@param vm.stateless:  boolean]
+        [@param vm.cpu.topology.sockets: int]
+        [@param vm.placement_policy.affinity: string]
+        [@param vm.origin: string]
+        [@param vm.os.kernel: string]
+
+        @return VM:
+        '''
+
         url = '/api/vms'
 
         result = self._getProxy().add(url=url,
@@ -2645,6 +3822,13 @@ class VMs(Base):
         return VM(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return VMs:
+        '''
+
         url = '/api/vms'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_vm()
@@ -2652,9 +3836,10 @@ class VMs(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return VMs:
         '''
 
         url='/api/vms'
@@ -2676,12 +3861,20 @@ class VmPool(params.VmPool, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/vmpools/{vmpool:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
     def update(self):
+        '''
+        @return VmPool:
+        '''
+
         url = '/api/vmpools/{vmpool:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
@@ -2700,6 +3893,10 @@ class VmPoolPermission(params.Permission, Base):
         return obj
 
     def delete(self):
+        '''
+        @return None:
+        '''
+
         url = '/api/vmpools/{vmpool:id}/permissions/{permission:id}'
 
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}' : self.parentclass.get_id(),
@@ -2713,6 +3910,19 @@ class VmPoolPermissions(Base):
 
     def add(self, permission):
 
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.group.id: string
+
+        @return Permission:
+        '''
+
         url = '/api/vmpools/{vmpool:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
@@ -2721,6 +3931,13 @@ class VmPoolPermissions(Base):
         return VmPoolPermission(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
+
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
+        '''
 
         url = '/api/vmpools/{vmpool:id}/permissions'
 
@@ -2732,8 +3949,9 @@ class VmPoolPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param **kwargs: property based filtering"]
+
+        @return Permissions:
         '''
 
         url = '/api/vmpools/{vmpool:id}/permissions'
@@ -2749,6 +3967,16 @@ class VmPools(Base):
         """Constructor."""
 
     def add(self, vmpool):
+        '''
+        @type VmPool:
+
+        @param vmpool.cluster.id|name: string
+        @param vmpool.template.id|name: string
+        @param vmpool.name: string
+
+        @return VmPool:
+        '''
+
         url = '/api/vmpools'
 
         result = self._getProxy().add(url=url,
@@ -2756,6 +3984,13 @@ class VmPools(Base):
         return VmPool(result)
 
     def get(self, name='*', **kwargs):
+        '''
+        [@param name: the name of the entity]
+        [@param **kwargs: property based filtering"]
+
+        @return VmPools:
+        '''
+
         url = '/api/vmpools'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_vmpool()
@@ -2763,9 +3998,10 @@ class VmPools(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        @param query   : oVirt engine dialect query
-        @param **kwargs: used to filter collection members if no search capabilities
-                         available at given collection resource
+        [@param query: oVirt engine dialect query]
+        [@param **kwargs: property based filtering"]
+
+        @return VmPools:
         '''
 
         url='/api/vmpools'

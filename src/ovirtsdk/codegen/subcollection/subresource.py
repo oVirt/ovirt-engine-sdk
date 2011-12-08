@@ -5,6 +5,7 @@ Created on Oct 24, 2011
 '''
 from ovirtsdk.codegen.utils.typeutil import TypeUtil
 from ovirtsdk.codegen.collection.resource import Resource
+from ovirtsdk.codegen.doc.documentation import Documentation
 
 
 #============================================================
@@ -38,7 +39,7 @@ class SubResource(object):
         return sub_resource_template
 
     @staticmethod
-    def action(url, action_name, parent_resource_name_lc, body_type, resource_name_lc, method, action_params={}):
+    def action(url, link, action_name, parent_resource_name_lc, body_type, resource_name_lc, method, action_params={}):
         sub_collection_resource_action_template_values = {'url':url,
                                                           'action_name':action_name,
                                                           'method': method,
@@ -52,6 +53,7 @@ class SubResource(object):
         sub_collection_resource_action_template = \
         ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \
         "        url = '%(url)s'\n\n" + \
+        Documentation.document(link) +
         "        result = self._getProxy().request(method='%(method)s',\n" + \
         "                                          url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
         "                                                                     '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
@@ -62,7 +64,7 @@ class SubResource(object):
         return sub_collection_resource_action_template
 
     @staticmethod
-    def update(url, parent_resource_name_lc, resource_name, returned_type, KNOWN_WRAPPER_TYPES):
+    def update(url, link, parent_resource_name_lc, resource_name, returned_type, KNOWN_WRAPPER_TYPES):
         actual_xml_entity = TypeUtil.getValueByKeyOrNone(returned_type.lower(), KNOWN_WRAPPER_TYPES)
 
         sub_collection_resource_update_template_values = {'url':url,
@@ -73,6 +75,7 @@ class SubResource(object):
 
         sub_collection_resource_update_template = \
         ("    def update(self):\n" + \
+         Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().update(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
         "                                                                     '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
@@ -82,15 +85,16 @@ class SubResource(object):
         return sub_collection_resource_update_template
 
     @staticmethod
-    def delete(url, parent_resource_name_lc, resource_name_lc, body_type):
+    def delete(url, link, parent_resource_name_lc, resource_name_lc, body_type):
         sub_collection_resource_delete_template_values = {'url':url,
-                                                          'body_type_lc':body_type.lower() if body_type is not None 
+                                                          'body_type_lc':body_type.lower() if body_type is not None
                                                                                            else None,
                                                           'parent_resource_name_lc':parent_resource_name_lc.lower(),
                                                           'resource_name_lc':resource_name_lc.lower()}
 
         forced_sub_collection_resource_delete_template = \
         ("    def delete(self, force=False, grace_period=False):\n" + \
+         Documentation.document(link) +
          "        url = '%(url)s'\n\n" + \
          "        if ((force or grace_period) is not False):\n" + \
          "            action = params.Action(force=force, grace_period=grace_period)\n" + \
@@ -105,14 +109,16 @@ class SubResource(object):
 
         sub_collection_resource_delete_template = \
         ("    def delete(self):\n" + \
+         Documentation.document(link) +
          "        url = '%(url)s'\n\n" + \
          "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
-         "                                                                   '{%(resource_name_lc)s:id}': self.get_id()}),\n"+
+         "                                                                   '{%(resource_name_lc)s:id}': self.get_id()}),\n" +
          "                                       headers={'Content-type':None})\n\n"
          ) % sub_collection_resource_delete_template_values
 
         body_sub_collection_resource_delete_template = \
         ("    def delete(self, %(body_type_lc)s):\n" + \
+         Documentation.document(link) +
          "        url = '%(url)s'\n\n" + \
          "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
          "                                                                   '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
