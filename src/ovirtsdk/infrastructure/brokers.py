@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-12-12 14:34:09.692128
+Generated at: 2011-12-12 18:51:35.413591
 
 @author: mpastern@redhat.com
 '''
@@ -32,12 +32,12 @@ class Capabilities(Base):
 
         url = '/api/capabilities'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_capabilities()
+        result = self._getProxy().get(url=url).get_capabilities()
+        if name != '*': kwargs['name']=name
         return Capabilities(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Capabilities:
@@ -45,7 +45,7 @@ class Capabilities(Base):
 
         url='/api/capabilities'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_capabilities()
+        result = self._getProxy().get(url=url).get_capabilities()
         return ParseHelper.toCollection(Capabilities,
                                         FilterHelper.filter(result, kwargs))
 
@@ -143,7 +143,7 @@ class ClusterNetworks(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Networks:
         '''
@@ -224,7 +224,7 @@ class ClusterPermissions(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Permissions:
         '''
@@ -275,19 +275,19 @@ class Clusters(Base):
     def get(self, name='*', **kwargs):
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Clusters:
         '''
 
         url = '/api/clusters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_cluster()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_cluster()
         return Cluster(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Clusters:
@@ -295,7 +295,7 @@ class Clusters(Base):
 
         url='/api/clusters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_cluster()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_cluster()
         return ParseHelper.toCollection(Cluster,
                                         FilterHelper.filter(result, kwargs))
 
@@ -386,7 +386,7 @@ class DataCenterPermissions(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Permissions:
         '''
@@ -496,7 +496,7 @@ class DataCenterStorageDomains(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return StorageDomains:
         '''
@@ -545,19 +545,19 @@ class DataCenters(Base):
     def get(self, name='*', **kwargs):
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return DataCenters:
         '''
 
         url = '/api/datacenters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_data_center()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_data_center()
         return DataCenter(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return DataCenters:
@@ -565,7 +565,7 @@ class DataCenters(Base):
 
         url='/api/datacenters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_data_center()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_data_center()
         return ParseHelper.toCollection(DataCenter,
                                         FilterHelper.filter(result, kwargs))
 
@@ -602,7 +602,7 @@ class DomainGroups(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Groups:
         '''
@@ -615,8 +615,9 @@ class DomainGroups(Base):
         return DomainGroup(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, query=None, **kwargs):
         '''
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Groups:
@@ -624,8 +625,9 @@ class DomainGroups(Base):
 
         url = '/api/domains/{domain:id}/groups'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_group()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{domain:id}': self.parentclass.get_id()}),
+                                                                   qargs={'search':query})).get_group()
         return ParseHelper.toSubCollection(DomainGroup,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -650,7 +652,7 @@ class DomainUsers(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Users:
         '''
@@ -663,8 +665,9 @@ class DomainUsers(Base):
         return DomainUser(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, query=None, **kwargs):
         '''
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Users:
@@ -672,8 +675,9 @@ class DomainUsers(Base):
 
         url = '/api/domains/{domain:id}/users'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_user()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{domain:id}': self.parentclass.get_id()}),
+                                                                   qargs={'search':query})).get_user()
         return ParseHelper.toSubCollection(DomainUser,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -692,12 +696,12 @@ class Domains(Base):
 
         url = '/api/domains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_domain()
+        result = self._getProxy().get(url=url).get_domain()
+        if name != '*': kwargs['name']=name
         return Domain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Domains:
@@ -705,7 +709,7 @@ class Domains(Base):
 
         url='/api/domains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_domain()
+        result = self._getProxy().get(url=url).get_domain()
         return ParseHelper.toCollection(Domain,
                                         FilterHelper.filter(result, kwargs))
 
@@ -727,27 +731,28 @@ class Events(Base):
     def get(self, name='*', **kwargs):
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Events:
         '''
 
         url = '/api/events'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_event()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_event()
         return Event(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, from_event_id=None, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
+        [@param from_event_id: event_id]
 
         @return Events:
         '''
 
         url='/api/events'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_event()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query,'from':from_event_id})).get_event()
         return ParseHelper.toCollection(Event,
                                         FilterHelper.filter(result, kwargs))
 
@@ -843,7 +848,7 @@ class GroupPermissions(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Permissions:
         '''
@@ -918,7 +923,7 @@ class GroupRoles(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Roles:
         '''
@@ -994,7 +999,7 @@ class GroupTags(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Tags:
         '''
@@ -1043,19 +1048,19 @@ class Groups(Base):
     def get(self, name='*', **kwargs):
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Groups:
         '''
 
         url = '/api/groups'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_group()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_group()
         return Group(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Groups:
@@ -1063,7 +1068,7 @@ class Groups(Base):
 
         url='/api/groups'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_group()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_group()
         return ParseHelper.toCollection(Group,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1354,7 +1359,7 @@ class HostNics(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return HostNics:
         '''
@@ -1435,7 +1440,7 @@ class HostPermissions(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Permissions:
         '''
@@ -1483,7 +1488,7 @@ class HostStatistics(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Statistics:
         '''
@@ -1569,7 +1574,7 @@ class HostTags(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Tags:
         '''
@@ -1618,19 +1623,19 @@ class Hosts(Base):
     def get(self, name='*', **kwargs):
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Hosts:
         '''
 
         url = '/api/hosts'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_host()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_host()
         return Host(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Hosts:
@@ -1638,7 +1643,7 @@ class Hosts(Base):
 
         url='/api/hosts'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_host()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_host()
         return ParseHelper.toCollection(Host,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1715,19 +1720,19 @@ class Networks(Base):
     def get(self, name='*', **kwargs):
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Networks:
         '''
 
         url = '/api/networks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_network()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_network()
         return Network(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Networks:
@@ -1735,7 +1740,7 @@ class Networks(Base):
 
         url='/api/networks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_network()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_network()
         return ParseHelper.toCollection(Network,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1809,7 +1814,7 @@ class RolePermits(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Permits:
         '''
@@ -1865,12 +1870,12 @@ class Roles(Base):
 
         url = '/api/roles'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_role()
+        result = self._getProxy().get(url=url).get_role()
+        if name != '*': kwargs['name']=name
         return Role(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Roles:
@@ -1878,7 +1883,7 @@ class Roles(Base):
 
         url='/api/roles'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_role()
+        result = self._getProxy().get(url=url).get_role()
         return ParseHelper.toCollection(Role,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1942,7 +1947,7 @@ class StorageDomainFiles(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Files:
         '''
@@ -1955,8 +1960,9 @@ class StorageDomainFiles(Base):
         return StorageDomainFile(self.parentclass,
                                           FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, query=None, **kwargs):
         '''
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Files:
@@ -1964,8 +1970,9 @@ class StorageDomainFiles(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/files'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_file()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                   qargs={'search':query})).get_file()
         return ParseHelper.toSubCollection(StorageDomainFile,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2023,7 +2030,7 @@ class StorageDomainPermissions(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Permissions:
         '''
@@ -2089,7 +2096,7 @@ class StorageDomainTemplates(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Templates:
         '''
@@ -2155,7 +2162,7 @@ class StorageDomainVMs(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return VMs:
         '''
@@ -2235,12 +2242,12 @@ class StorageDomains(Base):
 
         url = '/api/storagedomains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_storage_domain()
+        result = self._getProxy().get(url=url).get_storage_domain()
+        if name != '*': kwargs['name']=name
         return StorageDomain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
         [@param **kwargs: property based filtering"]
 
         @return StorageDomains:
@@ -2248,7 +2255,7 @@ class StorageDomains(Base):
 
         url='/api/storagedomains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_storage_domain()
+        result = self._getProxy().get(url=url).get_storage_domain()
         return ParseHelper.toCollection(StorageDomain,
                                         FilterHelper.filter(result, kwargs))
 
@@ -2312,12 +2319,12 @@ class Tags(Base):
 
         url = '/api/tags'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_tag()
+        result = self._getProxy().get(url=url).get_tag()
+        if name != '*': kwargs['name']=name
         return Tag(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Tags:
@@ -2325,7 +2332,7 @@ class Tags(Base):
 
         url='/api/tags'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_tag()
+        result = self._getProxy().get(url=url).get_tag()
         return ParseHelper.toCollection(Tag,
                                         FilterHelper.filter(result, kwargs))
 
@@ -2404,7 +2411,7 @@ class TemplateCdRoms(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return CdRoms:
         '''
@@ -2452,7 +2459,7 @@ class TemplateDisks(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Disks:
         '''
@@ -2500,7 +2507,7 @@ class TemplateNics(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Nics:
         '''
@@ -2581,7 +2588,7 @@ class TemplatePermissions(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Permissions:
         '''
@@ -2653,19 +2660,19 @@ class Templates(Base):
     def get(self, name='*', **kwargs):
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Templates:
         '''
 
         url = '/api/templates'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_template()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_template()
         return Template(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Templates:
@@ -2673,7 +2680,7 @@ class Templates(Base):
 
         url='/api/templates'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_template()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_template()
         return ParseHelper.toCollection(Template,
                                         FilterHelper.filter(result, kwargs))
 
@@ -2769,7 +2776,7 @@ class UserPermissions(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Permissions:
         '''
@@ -2844,7 +2851,7 @@ class UserRoles(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Roles:
         '''
@@ -2920,7 +2927,7 @@ class UserTags(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Tags:
         '''
@@ -2976,12 +2983,12 @@ class Users(Base):
 
         url = '/api/users'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_user()
+        result = self._getProxy().get(url=url).get_user()
+        if name != '*': kwargs['name']=name
         return User(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Users:
@@ -2989,7 +2996,7 @@ class Users(Base):
 
         url='/api/users'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_user()
+        result = self._getProxy().get(url=url).get_user()
         return ParseHelper.toCollection(User,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3275,7 +3282,7 @@ class VMCdRoms(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return CdRoms:
         '''
@@ -3363,7 +3370,7 @@ class VMDisks(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Disks:
         '''
@@ -3455,7 +3462,7 @@ class VMNics(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Nics:
         '''
@@ -3536,7 +3543,7 @@ class VMPermissions(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Permissions:
         '''
@@ -3628,7 +3635,7 @@ class VMSnapshots(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Snapshots:
         '''
@@ -3676,7 +3683,7 @@ class VMStatistics(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Statistics:
         '''
@@ -3752,7 +3759,7 @@ class VMTags(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Tags:
         '''
@@ -3825,19 +3832,19 @@ class VMs(Base):
     def get(self, name='*', **kwargs):
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return VMs:
         '''
 
         url = '/api/vms'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_vm()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vm()
         return VM(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return VMs:
@@ -3845,7 +3852,7 @@ class VMs(Base):
 
         url='/api/vms'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_vm()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_vm()
         return ParseHelper.toCollection(VM,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3935,7 +3942,7 @@ class VmPoolPermissions(Base):
 
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Permissions:
         '''
@@ -3987,19 +3994,19 @@ class VmPools(Base):
     def get(self, name='*', **kwargs):
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return VmPools:
         '''
 
         url = '/api/vmpools'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_vmpool()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vmpool()
         return VmPool(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine dialect query]
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return VmPools:
@@ -4007,7 +4014,7 @@ class VmPools(Base):
 
         url='/api/vmpools'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_vmpool()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_vmpool()
         return ParseHelper.toCollection(VmPool,
                                         FilterHelper.filter(result, kwargs))
 
