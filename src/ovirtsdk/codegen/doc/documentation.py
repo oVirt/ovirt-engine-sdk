@@ -9,7 +9,7 @@ class Documentation():
     DOC_OFFSET = '        '
 
     @staticmethod
-    def document(link, custom_params={}):#argument_type, signatures, return_type):
+    def document(link, custom_params={}, mapper={}):#argument_type, signatures, return_type):
         '''
         @param body: request body
         @param custom_params: custom params to add {param:mandatory=true|false}
@@ -69,16 +69,29 @@ class Documentation():
                 doc_str += opt_params
 
         for k in custom_params.keys(): #TODO: revisit - not optimal in terms of overload
-            if custom_params[k] == True:
-                doc_str += offset + custom_mand_param_doc_template % k
-            else:
-                doc_str += offset + custom_opt_param_doc_template % k
+            if len(mapper) == 0 or Documentation._isMapperHasKey(mapper, k) == True:
+                if custom_params[k] == True:
+                    doc_str += offset + custom_mand_param_doc_template % k
+                else:
+                    doc_str += offset + custom_opt_param_doc_template % k
+
+        for k, v in mapper.items():
+            if doc_str.find(k + ':') == -1:
+                doc_str += offset + opt_param_doc_template % (k, v)
 
         doc_str += (('\n' + return_doc) if doc_str != offset + "'''\n"
                                         else return_doc)
         doc_str += doc_str_out
 
         return doc_str
+
+    @staticmethod
+    def _isMapperHasKey(mapper, k):
+        if mapper and len(mapper) > 0:
+            for key in mapper.keys():
+                if k.startswith(key + ':'):
+                    return True
+        return False
 
     @staticmethod
     def _getRequestType(link):

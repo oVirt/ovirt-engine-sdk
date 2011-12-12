@@ -6,6 +6,7 @@ Created on Oct 24, 2011
 from ovirtsdk.utils.parsehelper import ParseHelper
 from ovirtsdk.codegen.utils.typeutil import TypeUtil
 from ovirtsdk.codegen.doc.documentation import Documentation
+from ovirtsdk.codegen.utils.paramutils import ParamUtils
 
 #============================================================
 #======================SUB COLLECTION========================
@@ -45,7 +46,7 @@ class SubCollection(object):
         sub_collection_get_template = \
         ("    def get(self, name=None, **kwargs):\n\n" + \
          Documentation.document(link, {'name: the name of the entity':False,
-                                       '**kwargs: property based filtering"': False}) +
+                                       '**kwargs: property based filtering': False}) +
         "        url = '%(url)s'\n\n" + \
         "        if(name is not None): kwargs['name']=name\n" + \
         "        result = self._getProxy().get(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()})).get_%(actual_resource_name_lc)s()\n\n" + \
@@ -67,16 +68,34 @@ class SubCollection(object):
                                                'parent_resource_name_lc':parent_resource_name_lc.lower(),
                                                'actual_resource_name_lc':actual_resource_name_lc}
 
-        sub_collection_list_template = \
-        ("    def list(self, **kwargs):\n" + \
-         Documentation.document(link, {'**kwargs: property based filtering"': False}) +
-        "        url = '%(url)s'\n\n" + \
-        "        result = self._getProxy().get(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()})).get_%(actual_resource_name_lc)s()\n\n" + \
-        "        return ParseHelper.toSubCollection(%(encapsulating_resource)s,\n" + \
-        "                                           self.parentclass,\n" + \
-        "                                           FilterHelper.filter(result, kwargs))\n\n") % sub_collection_list_template_values
+        prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
+        method_params_copy = method_params.copy()
+        method_params['**kwargs'] = '**kwargs'
 
-        return sub_collection_list_template
+        if prms_str != '':
+            return \
+            ("    def list(self, " + prms_str + ", **kwargs):\n" + \
+             Documentation.document(link, {'**kwargs: property based filtering"': False,
+                                           'query: oVirt engine search dialect query':False},
+                                    method_params) +
+            "        url = '%(url)s'\n\n" + \
+            "        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,\n " +
+            "                                                                                        args={'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()}),\n" +
+            "                                                                   qargs=" + ParamUtils.toDictStr(url_params.keys(), method_params_copy.keys()) +
+            ")).get_%(actual_resource_name_lc)s()\n" + \
+            "        return ParseHelper.toSubCollection(%(encapsulating_resource)s,\n" + \
+            "                                           self.parentclass,\n" + \
+            "                                           FilterHelper.filter(result, kwargs))\n\n") % sub_collection_list_template_values
+        return \
+            ("    def list(self, **kwargs):\n" + \
+             Documentation.document(link, {'**kwargs: property based filtering"': False}) +
+            "        url = '%(url)s'\n\n" + \
+            "        result = self._getProxy().get(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()})).get_%(actual_resource_name_lc)s()\n\n" + \
+            "        return ParseHelper.toSubCollection(%(encapsulating_resource)s,\n" + \
+            "                                           self.parentclass,\n" + \
+            "                                           FilterHelper.filter(result, kwargs))\n\n") % sub_collection_list_template_values
+
+
 
     @staticmethod
     def add(url, link, body_type, parent_resource_name_lc, encapsulating_entity, KNOWN_WRAPPER_TYPES={}):

@@ -9,6 +9,8 @@ Created on Oct 24, 2011
 from ovirtsdk.utils.parsehelper import ParseHelper
 from ovirtsdk.codegen.utils.typeutil import TypeUtil
 from ovirtsdk.codegen.doc.documentation import Documentation
+from ovirtsdk.codegen.infrastructure.staticdataholder import PRESERVED_NAMES
+from ovirtsdk.codegen.utils.paramutils import ParamUtils
 
 class Collection(object):
 
@@ -32,15 +34,26 @@ class Collection(object):
                                           'resource_name_lc':actual_resource_name_lc,
                                           'resource_type' : actual_resource_type if actual_resource_type is not None else resource_type}
 
-        collection_get_template = \
-        ("    def get(self, name='*', **kwargs):\n" + \
-         Documentation.document(link, {'name: the name of the entity':False,
-                                       '**kwargs: property based filtering"': False}) +
-        "        url = '%(url)s'\n\n" + \
-        "        result = self._getProxy().get(url=SearchHelper.appendQuery(url, 'name='+name)).get_%(resource_name_lc)s()\n" + \
-        "        return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
+        prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
 
-        return collection_get_template
+        if 'search' in url_params:
+            return \
+            ("    def get(self, name='*', **kwargs):\n" + \
+             Documentation.document(link, {'name: the name of the entity':False,
+                                           '**kwargs: property based filtering': False}) +
+            "        url = '%(url)s'\n\n" + \
+            "        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_%(resource_name_lc)s()\n" + \
+            "        return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
+
+
+        return \
+            ("    def get(self, name='*', **kwargs):\n" + \
+             Documentation.document(link, {'name: the name of the entity':False,
+                                           '**kwargs: property based filtering"': False}) +
+            "        url = '%(url)s'\n\n" + \
+            "        result = self._getProxy().get(url=url).get_%(resource_name_lc)s()\n" + \
+            "        if name != '*': kwargs['name']=name\n"
+            "        return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
 
     @staticmethod
     def list(url, resource_type, link, KNOWN_WRAPPER_TYPES={}):
@@ -51,16 +64,29 @@ class Collection(object):
                                            'resource_name_lc':actual_resource_name_lc,
                                            'resource_type' : actual_resource_type if actual_resource_type is not None else resource_type}
 
-        collection_list_template = \
-        ("    def list(self, query=None, **kwargs):\n" + \
-         Documentation.document(link, {'query: oVirt engine dialect query':False,
-                                       '**kwargs: property based filtering"': False}) +
+        prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
+        method_params_copy = method_params.copy()
+        method_params['**kwargs'] = '**kwargs'
+
+        if prms_str != '':
+            return \
+            ("    def list(self, " + prms_str + ", **kwargs):\n" + \
+             Documentation.document(link, {'**kwargs: property based filtering"': False,
+                                           'query: oVirt engine search dialect query':False},
+                                    method_params) +
+            "        url='%(url)s'\n\n" + \
+            "        result = self._getProxy().get(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
+                                                                                                              method_params_copy.keys()) +
+                                                                                ")).get_%(resource_name_lc)s()\n" + \
+            "        return ParseHelper.toCollection(%(resource_type)s,\n" + \
+            "                                        FilterHelper.filter(result, kwargs))\n\n") % collection_list_template_values
+        return \
+        ("    def list(self, **kwargs):\n" + \
+         Documentation.document(link, {'**kwargs: property based filtering"': False}) +
         "        url='%(url)s'\n\n" + \
-        "        result = self._getProxy().get(url=SearchHelper.appendQuery(url, query)).get_%(resource_name_lc)s()\n" + \
+        "        result = self._getProxy().get(url=url).get_%(resource_name_lc)s()\n" + \
         "        return ParseHelper.toCollection(%(resource_type)s,\n" + \
         "                                        FilterHelper.filter(result, kwargs))\n\n") % collection_list_template_values
-
-        return collection_list_template
 
     @staticmethod
     def add(url, body_type, response_type, link, KNOWN_WRAPPER_TYPES={}):

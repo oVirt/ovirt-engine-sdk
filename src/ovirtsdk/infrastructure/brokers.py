@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-12-08 16:16:07.102543
+Generated at: 2011-12-12 14:34:09.692128
 
 @author: mpastern@redhat.com
 '''
@@ -3788,6 +3788,7 @@ class VMs(Base):
         '''
         @type VM:
 
+        @param vm.name: string
         @param vm.teamplate.id|name: string
         @param vm.cluster.id|name: string
         [@param vm.timezone: string]

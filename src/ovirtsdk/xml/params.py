@@ -169,7 +169,7 @@ except ImportError, exp:
                     if class_obj2 is not None:
                         class_obj1 = class_obj2
             return class_obj1
-
+        
 # Begin NOT_GENERATED
         def __setattr__(self, item, value):
             if value is not None and not isinstance(value, list) and \
@@ -14368,6 +14368,83 @@ class Usb(GeneratedsSuper):
 # end class Usb
 
 
+class Url(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, parameters_set=None):
+        if parameters_set is None:
+            self.parameters_set = []
+        else:
+            self.parameters_set = parameters_set
+    def factory(*args_, **kwargs_):
+        if Url.subclass:
+            return Url.subclass(*args_, **kwargs_)
+        else:
+            return Url(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_parameters_set(self): return self.parameters_set
+    def set_parameters_set(self, parameters_set): self.parameters_set = parameters_set
+    def add_parameters_set(self, value): self.parameters_set.append(value)
+    def insert_parameters_set(self, index, value): self.parameters_set[index] = value
+    def export(self, outfile, level, namespace_='', name_='Url', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Url')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Url'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='Url', fromsubclass_=False):
+        for parameters_set_ in self.parameters_set:
+            parameters_set_.export(outfile, level, namespace_, name_='parameters_set')
+    def hasContent_(self):
+        if (
+            self.parameters_set
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='Url'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('parameters_set=[\n')
+        level += 1
+        for parameters_set_ in self.parameters_set:
+            showIndent(outfile, level)
+            outfile.write('model_.parameters_set(\n')
+            parameters_set_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'parameters_set':
+            obj_ = ParametersSet.factory()
+            obj_.build(child_)
+            self.parameters_set.append(obj_)
+# end class Url
+
+
 class Body(GeneratedsSuper):
     subclass = None
     superclass = None
@@ -14462,8 +14539,9 @@ class Body(GeneratedsSuper):
 class Request(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, http_method=None, body=None):
+    def __init__(self, http_method=None, url=None, body=None):
         self.http_method = http_method
+        self.url = url
         self.body = body
     def factory(*args_, **kwargs_):
         if Request.subclass:
@@ -14476,6 +14554,8 @@ class Request(GeneratedsSuper):
     def validate_HttpMethod(self, value):
         # Validate type HttpMethod, a restriction on xs:string.
         pass
+    def get_url(self): return self.url
+    def set_url(self, url): self.url = url
     def get_body(self): return self.body
     def set_body(self, body): self.body = body
     def export(self, outfile, level, namespace_='', name_='Request', namespacedef_=''):
@@ -14496,11 +14576,14 @@ class Request(GeneratedsSuper):
         if self.http_method is not None:
             showIndent(outfile, level)
             outfile.write('<%shttp_method>%s</%shttp_method>\n' % (namespace_, self.gds_format_string(quote_xml(self.http_method).encode(ExternalEncoding), input_name='http_method'), namespace_))
+        if self.url:
+            self.url.export(outfile, level, namespace_, name_='url')
         if self.body:
             self.body.export(outfile, level, namespace_, name_='body')
     def hasContent_(self):
         if (
             self.http_method is not None or
+            self.url is not None or
             self.body is not None
             ):
             return True
@@ -14517,6 +14600,12 @@ class Request(GeneratedsSuper):
         if self.http_method is not None:
             showIndent(outfile, level)
             outfile.write('http_method=%s,\n' % quote_python(self.http_method).encode(ExternalEncoding))
+        if self.url is not None:
+            showIndent(outfile, level)
+            outfile.write('url=model_.url(\n')
+            self.url.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.body is not None:
             showIndent(outfile, level)
             outfile.write('body=model_.body(\n')
@@ -14536,6 +14625,10 @@ class Request(GeneratedsSuper):
             http_method_ = self.gds_validate_string(http_method_, node, 'http_method')
             self.http_method = http_method_
             self.validate_HttpMethod(self.http_method)    # validate type HttpMethod
+        elif nodeName_ == 'url':
+            obj_ = Url.factory()
+            obj_.build(child_)
+            self.set_url(obj_)
         elif nodeName_ == 'body':
             obj_ = Body.factory()
             obj_.build(child_)
@@ -14607,12 +14700,12 @@ class Response(GeneratedsSuper):
 # end class Response
 
 
-class Parameter(GeneratedsSuper):
+class Parameter(BaseResource):
     subclass = None
-    superclass = None
-    def __init__(self, name=None, description=None, type_=None, mandatory=None):
-        self.name = name
-        self.description = description
+    superclass = BaseResource
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, value=None, type_=None, mandatory=None):
+        super(Parameter, self).__init__(href, id, name, description, actions, creation_status, link, )
+        self.value = value
         self.type_ = type_
         self.mandatory = mandatory
     def factory(*args_, **kwargs_):
@@ -14621,10 +14714,8 @@ class Parameter(GeneratedsSuper):
         else:
             return Parameter(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_name(self): return self.name
-    def set_name(self, name): self.name = name
-    def get_description(self): return self.description
-    def set_description(self, description): self.description = description
+    def get_value(self): return self.value
+    def set_value(self, value): self.value = value
     def get_type(self): return self.type_
     def set_type(self, type_): self.type_ = type_
     def get_mandatory(self): return self.mandatory
@@ -14642,14 +14733,12 @@ class Parameter(GeneratedsSuper):
         else:
             outfile.write('/>\n')
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Parameter'):
-        pass
+        super(Parameter, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Parameter')
     def exportChildren(self, outfile, level, namespace_='', name_='Parameter', fromsubclass_=False):
-        if self.name is not None:
+        super(Parameter, self).exportChildren(outfile, level, namespace_, name_, True)
+        if self.value is not None:
             showIndent(outfile, level)
-            outfile.write('<%sname>%s</%sname>\n' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_))
-        if self.description is not None:
-            showIndent(outfile, level)
-            outfile.write('<%sdescription>%s</%sdescription>\n' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_))
+            outfile.write('<%svalue>%s</%svalue>\n' % (namespace_, self.gds_format_string(quote_xml(self.value).encode(ExternalEncoding), input_name='value'), namespace_))
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
@@ -14658,10 +14747,10 @@ class Parameter(GeneratedsSuper):
             outfile.write('<%smandatory>%s</%smandatory>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.mandatory)), input_name='mandatory'), namespace_))
     def hasContent_(self):
         if (
-            self.name is not None or
-            self.description is not None or
+            self.value is not None or
             self.type_ is not None or
-            self.mandatory is not None
+            self.mandatory is not None or
+            super(Parameter, self).hasContent_()
             ):
             return True
         else:
@@ -14672,14 +14761,12 @@ class Parameter(GeneratedsSuper):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
+        super(Parameter, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
-        if self.name is not None:
+        super(Parameter, self).exportLiteralChildren(outfile, level, name_)
+        if self.value is not None:
             showIndent(outfile, level)
-            outfile.write('name=%s,\n' % quote_python(self.name).encode(ExternalEncoding))
-        if self.description is not None:
-            showIndent(outfile, level)
-            outfile.write('description=%s,\n' % quote_python(self.description).encode(ExternalEncoding))
+            outfile.write('value=%s,\n' % quote_python(self.value).encode(ExternalEncoding))
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('type_=%s,\n' % quote_python(self.type_).encode(ExternalEncoding))
@@ -14692,16 +14779,12 @@ class Parameter(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        pass
+        super(Parameter, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'name':
-            name_ = child_.text
-            name_ = self.gds_validate_string(name_, node, 'name')
-            self.name = name_
-        elif nodeName_ == 'description':
-            description_ = child_.text
-            description_ = self.gds_validate_string(description_, node, 'description')
-            self.description = description_
+        if nodeName_ == 'value':
+            value_ = child_.text
+            value_ = self.gds_validate_string(value_, node, 'value')
+            self.value = value_
         elif nodeName_ == 'type':
             type_ = child_.text
             type_ = self.gds_validate_string(type_, node, 'type')
@@ -14716,6 +14799,7 @@ class Parameter(GeneratedsSuper):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'mandatory')
             self.mandatory = ival_
+        super(Parameter, self).buildChildren(child_, node, nodeName_, True)
 # end class Parameter
 
 
@@ -16020,15 +16104,11 @@ class API(BaseResource):
 class DetailedLink(Link):
     subclass = None
     superclass = Link
-    def __init__(self, href=None, rel=None, request=None, response=None, linkCapabilities=None, keyValuePair=None):
+    def __init__(self, href=None, rel=None, request=None, response=None, linkCapabilities=None):
         super(DetailedLink, self).__init__(href, rel, )
         self.request = request
         self.response = response
         self.linkCapabilities = linkCapabilities
-        if keyValuePair is None:
-            self.keyValuePair = []
-        else:
-            self.keyValuePair = keyValuePair
     def factory(*args_, **kwargs_):
         if DetailedLink.subclass:
             return DetailedLink.subclass(*args_, **kwargs_)
@@ -16041,10 +16121,6 @@ class DetailedLink(Link):
     def set_response(self, response): self.response = response
     def get_linkCapabilities(self): return self.linkCapabilities
     def set_linkCapabilities(self, linkCapabilities): self.linkCapabilities = linkCapabilities
-    def get_keyValuePair(self): return self.keyValuePair
-    def set_keyValuePair(self, keyValuePair): self.keyValuePair = keyValuePair
-    def add_keyValuePair(self, value): self.keyValuePair.append(value)
-    def insert_keyValuePair(self, index, value): self.keyValuePair[index] = value
     def export(self, outfile, level, namespace_='', name_='DetailedLink', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -16067,14 +16143,11 @@ class DetailedLink(Link):
             self.response.export(outfile, level, namespace_, name_='response')
         if self.linkCapabilities:
             self.linkCapabilities.export(outfile, level, namespace_, name_='linkCapabilities')
-        for keyValuePair_ in self.keyValuePair:
-            keyValuePair_.export(outfile, level, namespace_, name_='keyValuePair')
     def hasContent_(self):
         if (
             self.request is not None or
             self.response is not None or
             self.linkCapabilities is not None or
-            self.keyValuePair or
             super(DetailedLink, self).hasContent_()
             ):
             return True
@@ -16107,18 +16180,6 @@ class DetailedLink(Link):
             self.linkCapabilities.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('keyValuePair=[\n')
-        level += 1
-        for keyValuePair_ in self.keyValuePair:
-            showIndent(outfile, level)
-            outfile.write('model_.keyValuePair(\n')
-            keyValuePair_.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -16139,10 +16200,6 @@ class DetailedLink(Link):
             obj_ = LinkCapabilities.factory()
             obj_.build(child_)
             self.set_linkCapabilities(obj_)
-        elif nodeName_ == 'keyValuePair':
-            obj_ = KeyValuePair.factory()
-            obj_.build(child_)
-            self.keyValuePair.append(obj_)
         super(DetailedLink, self).buildChildren(child_, node, nodeName_, True)
 # end class DetailedLink
 
@@ -16368,6 +16425,7 @@ __all__ = [
     "Templates",
     "Ticket",
     "TransparentHugePages",
+    "Url",
     "Usb",
     "User",
     "Users",
@@ -16526,7 +16584,8 @@ _rootClassMap = {
                     "keyValuePair"                  : KeyValuePair,
                     "linkCapabilities"              : LinkCapabilities,
                     "detailedLink"                  : DetailedLink,
-                    "detailedLinks"                 : DetailedLinks
+                    "detailedLinks"                 : DetailedLinks,
+                    "url"                           : Url
                 }
 
 

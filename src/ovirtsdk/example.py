@@ -7,14 +7,16 @@ from ovirtsdk.api import API
 from ovirtsdk.xml import params
 
 #create proxy
-#api = API(url='http://host:port', username='user@domain', password='password')
 api = API(url='http://host:port', username='user@domain', password='password')
 
 #list
 vms1 = api.vms.list()
 
-#list by query
+#list by oVirt query
 vms2 = api.vms.list(query='name=python_vm')
+
+#list by oVirt query and supported extra parameter/s
+events = api.events.list(query='severity=error', from_event_id=9183)
 
 #search vms by property constraint
 vms3 = api.vms.list(memory=536870912)

@@ -3,11 +3,16 @@ import re
 import fnmatch
 
 class SearchHelper():
+
     @staticmethod
-    def appendQuery(url, query=None):
+    def appendQuery(url, qargs={}):
         '''Appends search query to url'''
-        if (query is not None and len(query) > 0):
-            url += '?' + urlencode({'search' : query})
+
+        if (qargs and len(qargs) > 0):
+            for k, v in qargs.items():
+                if v != None:
+                    url += '?' + urlencode({k : v}) if url.find('?') is -1 \
+                                                    else '&' + urlencode({k : v})
         return url
 
     @staticmethod

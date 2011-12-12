@@ -34,7 +34,7 @@ KNOWN_ACTIONS = ['get', 'add', 'delete', 'update']
 COLLECTION_TO_ENTITY_EXCEPTIONS = ['Capabilities', 'Storage']
 
 #names that should not be used as method/s names
-PRESERVED_NAMES = ['import']
+PRESERVED_NAMES = ['import', 'from']
 
 #xml wrapper (actual server) types 
 KNOWN_WRAPPER_TYPES = {}
