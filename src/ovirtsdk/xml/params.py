@@ -169,7 +169,7 @@ except ImportError, exp:
                     if class_obj2 is not None:
                         class_obj1 = class_obj2
             return class_obj1
-        
+
 # Begin NOT_GENERATED
         def __setattr__(self, item, value):
             if value is not None and not isinstance(value, list) and \
@@ -187,7 +187,7 @@ except ImportError, exp:
                 object.__setattr__(self.superclass, item, value)
             else:
                 object.__setattr__(self, item, value)
-# End NOT_GENERATED  
+# End NOT_GENERATED 
 
 #
 # If you have installed IPython you can uncomment and use the following.
@@ -14539,8 +14539,9 @@ class Body(GeneratedsSuper):
 class Request(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, http_method=None, url=None, body=None):
+    def __init__(self, http_method=None, headers=None, url=None, body=None):
         self.http_method = http_method
+        self.headers = headers
         self.url = url
         self.body = body
     def factory(*args_, **kwargs_):
@@ -14554,6 +14555,8 @@ class Request(GeneratedsSuper):
     def validate_HttpMethod(self, value):
         # Validate type HttpMethod, a restriction on xs:string.
         pass
+    def get_headers(self): return self.headers
+    def set_headers(self, headers): self.headers = headers
     def get_url(self): return self.url
     def set_url(self, url): self.url = url
     def get_body(self): return self.body
@@ -14576,6 +14579,8 @@ class Request(GeneratedsSuper):
         if self.http_method is not None:
             showIndent(outfile, level)
             outfile.write('<%shttp_method>%s</%shttp_method>\n' % (namespace_, self.gds_format_string(quote_xml(self.http_method).encode(ExternalEncoding), input_name='http_method'), namespace_))
+        if self.headers:
+            self.headers.export(outfile, level, namespace_, name_='headers')
         if self.url:
             self.url.export(outfile, level, namespace_, name_='url')
         if self.body:
@@ -14583,6 +14588,7 @@ class Request(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.http_method is not None or
+            self.headers is not None or
             self.url is not None or
             self.body is not None
             ):
@@ -14600,6 +14606,12 @@ class Request(GeneratedsSuper):
         if self.http_method is not None:
             showIndent(outfile, level)
             outfile.write('http_method=%s,\n' % quote_python(self.http_method).encode(ExternalEncoding))
+        if self.headers is not None:
+            showIndent(outfile, level)
+            outfile.write('headers=model_.headers(\n')
+            self.headers.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.url is not None:
             showIndent(outfile, level)
             outfile.write('url=model_.url(\n')
@@ -14625,6 +14637,10 @@ class Request(GeneratedsSuper):
             http_method_ = self.gds_validate_string(http_method_, node, 'http_method')
             self.http_method = http_method_
             self.validate_HttpMethod(self.http_method)    # validate type HttpMethod
+        elif nodeName_ == 'headers':
+            obj_ = Headers.factory()
+            obj_.build(child_)
+            self.set_headers(obj_)
         elif nodeName_ == 'url':
             obj_ = Url.factory()
             obj_.build(child_)
@@ -14801,6 +14817,172 @@ class Parameter(BaseResource):
             self.mandatory = ival_
         super(Parameter, self).buildChildren(child_, node, nodeName_, True)
 # end class Parameter
+
+
+class Header(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, value=None, mandatory=None):
+        super(Header, self).__init__(href, id, name, description, actions, creation_status, link, )
+        self.value = value
+        self.mandatory = mandatory
+    def factory(*args_, **kwargs_):
+        if Header.subclass:
+            return Header.subclass(*args_, **kwargs_)
+        else:
+            return Header(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_value(self): return self.value
+    def set_value(self, value): self.value = value
+    def get_mandatory(self): return self.mandatory
+    def set_mandatory(self, mandatory): self.mandatory = mandatory
+    def export(self, outfile, level, namespace_='', name_='Header', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Header')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Header'):
+        super(Header, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Header')
+    def exportChildren(self, outfile, level, namespace_='', name_='Header', fromsubclass_=False):
+        super(Header, self).exportChildren(outfile, level, namespace_, name_, True)
+        if self.value is not None:
+            showIndent(outfile, level)
+            outfile.write('<%svalue>%s</%svalue>\n' % (namespace_, self.gds_format_string(quote_xml(self.value).encode(ExternalEncoding), input_name='value'), namespace_))
+        if self.mandatory is not None:
+            showIndent(outfile, level)
+            outfile.write('<%smandatory>%s</%smandatory>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.mandatory)), input_name='mandatory'), namespace_))
+    def hasContent_(self):
+        if (
+            self.value is not None or
+            self.mandatory is not None or
+            super(Header, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='Header'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(Header, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(Header, self).exportLiteralChildren(outfile, level, name_)
+        if self.value is not None:
+            showIndent(outfile, level)
+            outfile.write('value=%s,\n' % quote_python(self.value).encode(ExternalEncoding))
+        if self.mandatory is not None:
+            showIndent(outfile, level)
+            outfile.write('mandatory=%s,\n' % self.mandatory)
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(Header, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'value':
+            value_ = child_.text
+            value_ = self.gds_validate_string(value_, node, 'value')
+            self.value = value_
+        elif nodeName_ == 'mandatory':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'mandatory')
+            self.mandatory = ival_
+        super(Header, self).buildChildren(child_, node, nodeName_, True)
+# end class Header
+
+
+class Headers(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, header=None):
+        if header is None:
+            self.header = []
+        else:
+            self.header = header
+    def factory(*args_, **kwargs_):
+        if Headers.subclass:
+            return Headers.subclass(*args_, **kwargs_)
+        else:
+            return Headers(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_header(self): return self.header
+    def set_header(self, header): self.header = header
+    def add_header(self, value): self.header.append(value)
+    def insert_header(self, index, value): self.header[index] = value
+    def export(self, outfile, level, namespace_='', name_='Headers', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Headers')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Headers'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='Headers', fromsubclass_=False):
+        for header_ in self.header:
+            header_.export(outfile, level, namespace_, name_='header')
+    def hasContent_(self):
+        if (
+            self.header
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='Headers'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('header=[\n')
+        level += 1
+        for header_ in self.header:
+            showIndent(outfile, level)
+            outfile.write('model_.header(\n')
+            header_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'header':
+            obj_ = Header.factory()
+            obj_.build(child_)
+            self.header.append(obj_)
+# end class Headers
 
 
 class ParametersSet(GeneratedsSuper):
@@ -16353,6 +16535,8 @@ __all__ = [
     "Group",
     "Groups",
     "GuestInfo",
+    "Header",
+    "Headers",
     "HighAvailability",
     "Host",
     "HostNIC",
@@ -16585,7 +16769,9 @@ _rootClassMap = {
                     "linkCapabilities"              : LinkCapabilities,
                     "detailedLink"                  : DetailedLink,
                     "detailedLinks"                 : DetailedLinks,
-                    "url"                           : Url
+                    "url"                           : Url,
+                    "header"                        : Header,
+                    "headers"                       : Headers
                 }
 
 
