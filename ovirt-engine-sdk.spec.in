@@ -1,0 +1,48 @@
+%{!?python_sitelib: %define python_sitelib %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
+
+Name:           ovirt-engine-sdk
+Version:        [?]
+Release:        1%{?dist}
+Summary:        oVirt engien Software development kit
+Group:          Development/Libraries
+License:        ASL 2.0
+URL:            http://ovirt.org
+#Source0:        http://ovirt.org/releases/%{name}-%{version}-%{release}.tar.gz
+Source0:        %{name}-%{version}-%{release}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildArch:      noarch
+
+BuildRequires:  python-devel
+%if 0%{?fedora} >= 8
+BuildRequires: python-setuptools-devel
+%else
+BuildRequires: python-setuptools
+%endif
+
+Requires: python
+Requires: python-lxml
+
+%description
+Software development kit
+
+%prep
+%setup -c -q
+
+%build
+%{__python} -c 'import setuptools; execfile("setup.py")' build
+
+%install
+[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+%{__python} -c 'import setuptools; execfile("setup.py")' install -O1 --skip-build --root %{buildroot}
+
+%clean
+[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+
+%files
+%defattr(-,root,root,-)
+%{python_sitelib}/ovirtsdk
+%{python_sitelib}/ovirt_engine_sdk-*-info
+
+%changelog
+* Thu Dec 15 2011 Ofer Schreiber <oschreib@redhat.com.org>
+- Initial build

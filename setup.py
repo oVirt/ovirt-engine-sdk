@@ -28,6 +28,7 @@ version_info = {
 setup(
     package_dir={ '': 'src' },
     packages=[ 'ovirtsdk.infrastructure', 'ovirtsdk.utils', 'ovirtsdk.web', 'ovirtsdk.xml'],
+    py_modules=['ovirtsdk.api'],
     install_requires=[],
     entry_points={},
     **version_info
