@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-12-12 18:51:35.413591
+Generated at: 2011-12-28 11:33:21.800251
 
 @author: mpastern@redhat.com
 '''
@@ -3205,6 +3205,21 @@ class VM(params.VM, Base):
         '''
 
         url = '/api/vms/{vm:id}/migrate'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+        return result
+
+    def cancelmigration(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
+        url = '/api/vms/{vm:id}/cancelmigration'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
