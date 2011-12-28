@@ -13,4 +13,4 @@ Classifier: Environment :: Console
 Classifier: Intended Audience :: System Administrators
 Classifier: License :: OSI Approved :: ASL2 License
 Classifier: Operating System :: OS Independent
-Classifier: Programming Language :: Python :: 2.4
+Classifier: Programming Language :: Python :: 2.6

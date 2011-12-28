@@ -6,6 +6,8 @@ src/ovirt_engine_sdk.egg-info/PKG-INFO
 src/ovirt_engine_sdk.egg-info/SOURCES.txt
 src/ovirt_engine_sdk.egg-info/dependency_links.txt
 src/ovirt_engine_sdk.egg-info/top_level.txt
+src/ovirtsdk/__init__.py
+src/ovirtsdk/api.py
 src/ovirtsdk/infrastructure/__init__.py
 src/ovirtsdk/infrastructure/brokers.py
 src/ovirtsdk/infrastructure/common.py
