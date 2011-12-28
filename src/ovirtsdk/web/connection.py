@@ -45,8 +45,8 @@ class Connection(object):
                 extended_headers[k] = headers[k]
         return extended_headers
 
-    def getResponse(self, buffering=False):
-        return self.__connetcion.getresponse(buffering)
+    def getResponse(self):
+        return self.__connetcion.getresponse()
 
     def setDebugLevel(self, level):
         self.__connection.set_debuglevel(level)
@@ -60,7 +60,7 @@ class Connection(object):
         if (self.__manager is not None):
             self.__manager._freeResource(self)
 
-    def __createConnection(self, url, key_file=None, cert_file=None, port=None, strict=None, timeout=None, source_address=None):
+    def __createConnection(self, url, key_file=None, cert_file=None, port=None, strict=None, timeout=None):
         u = urlparse.urlparse(url)
         if(u.scheme == 'https'):
             return HTTPSConnection(host=u.hostname,
@@ -68,8 +68,7 @@ class Connection(object):
                                    key_file=key_file,
                                    cert_file=cert_file,
                                    strict=strict,
-                                   timeout=timeout,
-                                   source_address=source_address)
+                                   timeout=timeout)
         return HTTPConnection(host=u.hostname,
                               port=u.port,
                               strict=strict,
