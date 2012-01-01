@@ -9,11 +9,10 @@ from setuptools import setup, Command
 version_info = {
     'name': 'ovirt-engine-sdk',
     'version': '1.0-SNAPSHOT',
-    'description': 'A SDK interface to oVirt'
-                   ' Virtualization',
-    'author': 'Unknown',
-    'author_email': 'engine-devel@ovirt.org',
-    'url': 'www.ovirt.org',
+    'description': 'A SDK interface to oVirt Virtualization',
+    'author': 'Michael Pasternak',
+    'author_email': 'mpastern@redhat.com',
+    'url': 'http://www.ovirt.org/wiki/SDK',
     'license': 'ASL2',
     'classifiers': [
         'Development Status :: 1 - Beta',
@@ -29,7 +28,7 @@ setup(
     package_dir={ '': 'src' },
     packages=[ 'ovirtsdk.infrastructure', 'ovirtsdk.utils', 'ovirtsdk.web', 'ovirtsdk.xml'],
     py_modules=['ovirtsdk.api'],
-    install_requires=[],
+    install_requires=['lxml >= 2.2.8'],
     entry_points={},
     **version_info
 )

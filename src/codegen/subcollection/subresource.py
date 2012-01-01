@@ -3,9 +3,9 @@ Created on Oct 24, 2011
 
 @author: mpastern
 '''
-from ovirtsdk.codegen.utils.typeutil import TypeUtil
-from ovirtsdk.codegen.collection.resource import Resource
-from ovirtsdk.codegen.doc.documentation import Documentation
+from codegen.utils.typeutil import TypeUtil
+from codegen.collection.resource import Resource
+from codegen.doc.documentation import Documentation
 
 
 #============================================================

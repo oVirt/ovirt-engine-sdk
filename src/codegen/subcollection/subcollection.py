@@ -4,9 +4,9 @@ Created on Oct 24, 2011
 @author: mpastern
 '''
 from ovirtsdk.utils.parsehelper import ParseHelper
-from ovirtsdk.codegen.utils.typeutil import TypeUtil
-from ovirtsdk.codegen.doc.documentation import Documentation
-from ovirtsdk.codegen.utils.paramutils import ParamUtils
+from codegen.utils.typeutil import TypeUtil
+from codegen.doc.documentation import Documentation
+from codegen.utils.paramutils import ParamUtils
 
 #============================================================
 #======================SUB COLLECTION========================

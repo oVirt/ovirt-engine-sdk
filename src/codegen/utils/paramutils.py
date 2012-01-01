@@ -3,7 +3,7 @@ Created on Dec 12, 2011
 
 @author: mpastern
 '''
-from ovirtsdk.codegen.infrastructure.staticdataholder import PRESERVED_NAMES
+from codegen.infrastructure.staticdataholder import PRESERVED_NAMES
 
 class ParamUtils():
     @staticmethod

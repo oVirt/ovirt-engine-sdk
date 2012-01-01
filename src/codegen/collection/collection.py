@@ -7,10 +7,10 @@ Created on Oct 24, 2011
 #=======================COLLECTION RESOURCE==================
 #============================================================
 from ovirtsdk.utils.parsehelper import ParseHelper
-from ovirtsdk.codegen.utils.typeutil import TypeUtil
-from ovirtsdk.codegen.doc.documentation import Documentation
-from ovirtsdk.codegen.infrastructure.staticdataholder import PRESERVED_NAMES
-from ovirtsdk.codegen.utils.paramutils import ParamUtils
+from codegen.utils.typeutil import TypeUtil
+from codegen.doc.documentation import Documentation
+from codegen.infrastructure.staticdataholder import PRESERVED_NAMES
+from codegen.utils.paramutils import ParamUtils
 
 class Collection(object):
 

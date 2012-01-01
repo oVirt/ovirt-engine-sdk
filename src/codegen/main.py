@@ -12,21 +12,21 @@ from ovirtsdk.infrastructure import contextmanager
 from ovirtsdk.xml import params
 
 from ovirtsdk.utils.parsehelper import ParseHelper
-from ovirtsdk.codegen.imp.imprt import Import
-from ovirtsdk.codegen.collection.resource import Resource
-from ovirtsdk.codegen.entrypoint.entrypoint import EntryPoint
-from ovirtsdk.codegen.collection.collection import Collection
-from ovirtsdk.codegen.subcollection.subresource import SubResource
-from ovirtsdk.codegen.utils.typeutil import TypeUtil
-from ovirtsdk.codegen.subcollection.subcollection import SubCollection
+from codegen.imp.imprt import Import
+from codegen.collection.resource import Resource
+from codegen.entrypoint.entrypoint import EntryPoint
+from codegen.collection.collection import Collection
+from codegen.subcollection.subresource import SubResource
+from codegen.utils.typeutil import TypeUtil
+from codegen.subcollection.subcollection import SubCollection
 from ovirtsdk.utils.reflectionhelper import ReflectionHelper
 
 SERVER = 'http://server:port'
 USER = 'user@domain'
 PASSWORD = 'password'
 
-BROKERS_FILE = '../infrastructure/brokers.py'
-ENTRY_POINT_FILE = '../api.py'
+BROKERS_FILE = '../ovirtsdk/infrastructure/brokers.py'
+ENTRY_POINT_FILE = '../ovirtsdk/api.py'
 
 KNOWN_ACTIONS = ['get', 'add', 'delete', 'update']
 
@@ -69,7 +69,7 @@ class CodeGen():
 
                 #get relations
                 splitted_url = url.strip()[1:].split('/')
-                entry_point = splitted_url.pop(0)
+                splitted_url.pop(0)
 
                 #check for exceptions from known pattern
                 #self.__checkIfTooDeep(splitted_url, rel, url, http_method)
@@ -139,7 +139,7 @@ class CodeGen():
 
     def __appendRootCollections(self, collectionsHolder={}):
         collections = ''
-        for k, v in collectionsHolder.items():
+        for v in collectionsHolder.values():
             if (v.has_key('root_collection') and v['root_collection'] == True):
                 collections += v['name'] + ' = ' + self.__toResourceType(v['name']) + '()'
 
