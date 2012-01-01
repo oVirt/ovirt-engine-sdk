@@ -31,7 +31,7 @@ class Connection(object):
         return self.__connection
 
     def getDefaultHeaders(self):
-        return self.__headers
+        return self.__headers.copy()
 
     def doRequest(self, method, url, body=urllib.urlencode({}), headers={}):
         return self.__connetcion.request(method, url, body, self.getHeaders(headers))
