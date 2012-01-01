@@ -21,7 +21,7 @@ version_info = {
         'Intended Audience :: System Administrators',
         'License :: OSI Approved :: ASL2 License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2.7' ],
+        'Programming Language :: Python :: 2.6' ],
 }
 
 
