@@ -5,7 +5,7 @@
 ########################################
 
 '''
-Generated at: 2011-12-28 11:33:21.800251
+Generated at: 2012-01-01 14:38:51.670589
 
 @author: mpastern@redhat.com
 '''
@@ -2076,6 +2076,7 @@ class StorageDomainTemplate(params.Template, Base):
         @type Action:
 
         @param action.cluster.id|name: string
+        @param action.storagedomain.id|name: string
 
         @return Response:
         '''
@@ -2142,6 +2143,7 @@ class StorageDomainVM(params.VM, Base):
         @type Action:
 
         @param action.cluster.id|name: string
+        @param action.storagedomain.id|name: string
 
         @return Response:
         '''
