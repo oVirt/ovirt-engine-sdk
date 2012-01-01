@@ -6,7 +6,7 @@ RPMTOP=$(shell bash -c "pwd -P")/rpmtop
 SPEC=ovirt-engine-sdk.spec
 
 TARBALL=ovirt-engine-sdk-$(rpmversion)-$(rpmrelease).tar.gz
-SRPM=$(RPMTOP)/SRPMS/ovirt-engine-sdk-$(rpmversion)-$(rpmrelease).src.rpm
+SRPM=$(RPMTOP)/SRPMS/ovirt-engine-sdk-$(rpmversion)-$(rpmrelease)*.src.rpm
 
 TESTS=pyflakes
 
@@ -20,12 +20,12 @@ pyflakes:
 .PHONY: tarball
 tarball: $(TARBALL)
 $(TARBALL): Makefile #$(TESTS)
-	tar zcf $(TARBALL) `git ls-files `
+	git -c tar.umask=0022 archive --format=tar --prefix ovirt-engine-sdk/ HEAD | gzip > $(TARBALL)
 
 .PHONY: srpm rpm
 srpm: $(SRPM)
 $(SRPM): $(TARBALL) ovirt-engine-sdk.spec.in
-	sed 's/^Version:.*/Version: $(rpmversion)/;s/^Release:.*/Release: $(rpmrelease)/' ovirt-engine-sdk.spec.in > $(SPEC)
+	sed 's/^Version:.*/Version: $(rpmversion)/;s/^Release:.*/Release: $(rpmrelease)%{dist}/;s/%{release}/$(rpmrelease)/' ovirt-engine-sdk.spec.in > $(SPEC)
 	mkdir -p $(RPMTOP)/{RPMS,SRPMS,SOURCES,BUILD}
 	rpmbuild -bs \
 	    --define="_topdir $(RPMTOP)" \
