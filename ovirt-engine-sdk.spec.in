@@ -33,6 +33,7 @@ With this package, custom software can be built for oVirt-Engine.
 %{python_sitelib}/ovirt_engine_sdk-*-info
 %doc AUTHORS
 %doc README
+%doc LICENSE
 
 %changelog
 * Thu Dec 15 2011 Ofer Schreiber <oschreib@redhat.com> - 1.0-1
