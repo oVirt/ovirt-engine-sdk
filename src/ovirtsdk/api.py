@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-01-08 12:18:35.056597
+Generated at: 2012-01-16 15:28:14.387026
 
 @author: mpastern@redhat.com
 '''
@@ -76,3 +76,15 @@ class API():
         self.users = Users()
         self.vms = VMs()
         self.vmpools = VmPools()
+
+    def disconnect(self):
+        ''' terminates server connection/s '''
+        contextmanager._remove('proxy', force=True)
+
+    def test(self):
+        ''' test server connectivity '''
+        proxy = contextmanager.get('proxy')
+        if proxy:
+            proxy.request(method='GET', url='/api')
+            return True
+        return False

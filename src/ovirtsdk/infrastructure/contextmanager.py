@@ -23,7 +23,7 @@ lock = threading.RLock()
 class __Item():
     def __init__(self, val, mode):
         self.__val = val
-        self._mode = mode
+        self.__mode = mode
 
     def get_val(self):
         return self.__val
@@ -82,15 +82,16 @@ def get(key, remove=False):
             else: return cache[key].val
         return None
 
-def remove(key):
+def _remove(key, force=False):
     ''' 
     removes the value from cache
     
     @param key: is the cache key
+    @param force: force remove regardless cache mode
     '''
     with lock:
         if cache.has_key(key):
             item = cache[key]
-            if (item.mode is Mode.RW):
+            if (item.mode is Mode.RW) or force:
                 cache.pop(key)
             else: raise ImmutableError(key)

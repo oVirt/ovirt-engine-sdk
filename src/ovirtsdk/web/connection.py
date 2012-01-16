@@ -70,6 +70,9 @@ class Connection(object):
         if (self.__manager is not None):
             self.__manager._freeResource(self)
 
+    def state(self):
+        return self.__connetcion.__state
+
     def __createConnection(self, url, key_file=None, cert_file=None, port=None, strict=None, timeout=None):
         u = urlparse.urlparse(url)
         if(u.scheme == 'https'):
@@ -87,9 +90,5 @@ class Connection(object):
     def __createHeaders(self, username, password):
         auth = base64.encodestring("%s:%s" % (username, password)).strip()
         return {"Content-type": "application/xml", "Authorization": "Basic %s" % auth}
+
     id = property(get_id, None, None, None)
-
-#    connection = property(get_connection, None, None, None)
-#    headers = property(get_headers, None, None, None)
-
-

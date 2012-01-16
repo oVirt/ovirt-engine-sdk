@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-01-08 12:18:33.519309
+Generated at: 2012-01-16 15:28:12.965063
 
 @author: mpastern@redhat.com
 '''
@@ -1134,21 +1134,6 @@ class Host(params.Host, Base):
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
-    def install(self, action=params.Action()):
-        '''
-        @type Action:
-
-
-        @return Response:
-        '''
-
-        url = '/api/hosts/{host:id}/install'
-
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
-        return result
-
     def fence(self, action=params.Action()):
         '''
         @type Action:
@@ -1158,6 +1143,21 @@ class Host(params.Host, Base):
         '''
 
         url = '/api/hosts/{host:id}/fence'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+        return result
+
+    def install(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
+        url = '/api/hosts/{host:id}/install'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
@@ -1290,12 +1290,15 @@ class HostNIC(params.HostNIC, Base):
                                                                    '{nic:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
-    def detach(self, action=params.Action()):
-        url = '/api/hosts/{host:id}/nics/{nic:id}/detach'
+    def attach(self, action=params.Action()):
+        url = '/api/hosts/{host:id}/nics/{nic:id}/attach'
 
         '''
         @type Action:
 
+        @param action.network.id|name: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
 
         @return Response:
         '''
@@ -1307,15 +1310,12 @@ class HostNIC(params.HostNIC, Base):
 
         return result
 
-    def attach(self, action=params.Action()):
-        url = '/api/hosts/{host:id}/nics/{nic:id}/attach'
+    def detach(self, action=params.Action()):
+        url = '/api/hosts/{host:id}/nics/{nic:id}/detach'
 
         '''
         @type Action:
 
-        @param action.network.id|name: string
-        [@param action.async: boolean]
-        [@param action.grace_period.expiry: long]
 
         @return Response:
         '''
@@ -3141,21 +3141,6 @@ class VM(params.VM, Base):
                                           body=ParseHelper.toXml(action))
         return result
 
-    def detach(self, action=params.Action()):
-        '''
-        @type Action:
-
-
-        @return Response:
-        '''
-
-        url = '/api/vms/{vm:id}/detach'
-
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
-        return result
-
     def export(self, action=params.Action()):
         '''
         @type Action:
@@ -3170,6 +3155,21 @@ class VM(params.VM, Base):
         '''
 
         url = '/api/vms/{vm:id}/export'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+        return result
+
+    def detach(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
+        url = '/api/vms/{vm:id}/detach'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),

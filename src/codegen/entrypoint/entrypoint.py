@@ -49,9 +49,27 @@ class EntryPoint(object):
 
         return entry_point_imports_template
 
+
+    @staticmethod
+    def instanceMethods():
+        methods_template = "\n" + \
+        "    def disconnect(self):\n" + \
+        "        ''' terminates server connection/s '''\n" + \
+        "        contextmanager._remove('proxy', force=True)\n" + \
+        "\n" + \
+        "    def test(self):\n" + \
+        "        ''' test server connectivity '''\n" + \
+        "        proxy = contextmanager.get('proxy')\n" + \
+        "        if proxy:\n" + \
+        "            proxy.request(method='GET', url='/api')\n" + \
+        "            return True\n" + \
+        "        return False\n"
+
+        return methods_template
+
     @staticmethod
     def entryPointCustomImports(types=[]):
-        entry_point_custom_imports_template = "from ovirtsdk.infrastructure.brokers import %s\n"
+        entry_point_custom_imports_template = "from ovirtsdk.infrastructure.brokers import % s\n"
 
         imports = ''
         for item in types:
@@ -77,7 +95,7 @@ class EntryPoint(object):
         "                                                 timeout=timeout)),\n" + \
         "                           Mode.R)\n\n"
 
-        return (api_template + rootCollections)
+        return (api_template + rootCollections + EntryPoint.instanceMethods())
 
     @staticmethod
     def collection(name, item={}):
