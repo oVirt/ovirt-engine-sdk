@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-01-16 15:28:12.965063
+Generated at: 2012-01-17 17:57:21.822267
 
 @author: mpastern@redhat.com
 '''
@@ -47,9 +47,12 @@ class Capabilities(Base):
 
         url = '/api/capabilities'
 
-        result = self._getProxy().get(url=url).get_capabilities()
-        if name != '*': kwargs['name']=name
-        return Capabilities(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return Capabilities(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=url).get_capabilities()
+            if name != '*': kwargs['name']=name
+            return Capabilities(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -165,11 +168,15 @@ class ClusterNetworks(Base):
 
         url = '/api/clusters/{cluster:id}/networks'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_network()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return ClusterNetwork(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_network()
 
-        return ClusterNetwork(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return ClusterNetwork(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -246,11 +253,15 @@ class ClusterPermissions(Base):
 
         url = '/api/clusters/{cluster:id}/permissions'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_permission()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return ClusterPermission(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_permission()
 
-        return ClusterPermission(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return ClusterPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -287,7 +298,7 @@ class Clusters(Base):
                                       body=ParseHelper.toXml(cluster))
         return Cluster(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param name: the name of the entity]
         [@param **kwargs: property based filtering]
@@ -297,8 +308,11 @@ class Clusters(Base):
 
         url = '/api/clusters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_cluster()
-        return Cluster(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return Cluster(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_cluster()
+            return Cluster(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
@@ -408,11 +422,15 @@ class DataCenterPermissions(Base):
 
         url = '/api/datacenters/{datacenter:id}/permissions'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_permission()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return DataCenterPermission(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_permission()
 
-        return DataCenterPermission(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return DataCenterPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -518,11 +536,15 @@ class DataCenterStorageDomains(Base):
 
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_storage_domain()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return DataCenterStorageDomain(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_storage_domain()
 
-        return DataCenterStorageDomain(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return DataCenterStorageDomain(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -557,7 +579,7 @@ class DataCenters(Base):
                                       body=ParseHelper.toXml(datacenter))
         return DataCenter(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param name: the name of the entity]
         [@param **kwargs: property based filtering]
@@ -567,8 +589,11 @@ class DataCenters(Base):
 
         url = '/api/datacenters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_data_center()
-        return DataCenter(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return DataCenter(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_data_center()
+            return DataCenter(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
@@ -624,11 +649,15 @@ class DomainGroups(Base):
 
         url = '/api/domains/{domain:id}/groups'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_group()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return DomainGroup(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_group()
 
-        return DomainGroup(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return DomainGroup(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
@@ -674,11 +703,15 @@ class DomainUsers(Base):
 
         url = '/api/domains/{domain:id}/users'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_user()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return DomainUser(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_user()
 
-        return DomainUser(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return DomainUser(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
@@ -711,9 +744,12 @@ class Domains(Base):
 
         url = '/api/domains'
 
-        result = self._getProxy().get(url=url).get_domain()
-        if name != '*': kwargs['name']=name
-        return Domain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return Domain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=url).get_domain()
+            if name != '*': kwargs['name']=name
+            return Domain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -743,7 +779,7 @@ class Events(Base):
     def __init__(self):
         """Constructor."""
 
-    def get(self, name='*', **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param name: the name of the entity]
         [@param **kwargs: property based filtering]
@@ -753,8 +789,11 @@ class Events(Base):
 
         url = '/api/events'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_event()
-        return Event(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return Event(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_event()
+            return Event(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, from_event_id=None, **kwargs):
         '''
@@ -870,11 +909,15 @@ class GroupPermissions(Base):
 
         url = '/api/groups/{group:id}/permissions'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_permission()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return GroupPermission(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_permission()
 
-        return GroupPermission(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return GroupPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -945,11 +988,15 @@ class GroupRoles(Base):
 
         url = '/api/groups/{group:id}/roles'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_role()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return GroupRole(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_role()
 
-        return GroupRole(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return GroupRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -1021,11 +1068,15 @@ class GroupTags(Base):
 
         url = '/api/groups/{group:id}/tags'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_tag()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return GroupTag(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_tag()
 
-        return GroupTag(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return GroupTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -1060,7 +1111,7 @@ class Groups(Base):
                                       body=ParseHelper.toXml(group))
         return Group(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param name: the name of the entity]
         [@param **kwargs: property based filtering]
@@ -1070,8 +1121,11 @@ class Groups(Base):
 
         url = '/api/groups'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_group()
-        return Group(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return Group(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_group()
+            return Group(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
@@ -1381,11 +1435,15 @@ class HostNics(Base):
 
         url = '/api/hosts/{host:id}/nics'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_host_nic()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return HostNIC(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_host_nic()
 
-        return HostNIC(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return HostNIC(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -1462,11 +1520,15 @@ class HostPermissions(Base):
 
         url = '/api/hosts/{host:id}/permissions'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_permission()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return HostPermission(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_permission()
 
-        return HostPermission(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return HostPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -1510,11 +1572,15 @@ class HostStatistics(Base):
 
         url = '/api/hosts/{host:id}/statistics'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_statistic()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return HostStatistic(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_statistic()
 
-        return HostStatistic(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return HostStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -1596,11 +1662,15 @@ class HostTags(Base):
 
         url = '/api/hosts/{host:id}/tags'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_tag()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return HostTag(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_tag()
 
-        return HostTag(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return HostTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -1635,7 +1705,7 @@ class Hosts(Base):
                                       body=ParseHelper.toXml(host))
         return Host(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param name: the name of the entity]
         [@param **kwargs: property based filtering]
@@ -1645,8 +1715,11 @@ class Hosts(Base):
 
         url = '/api/hosts'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_host()
-        return Host(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return Host(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_host()
+            return Host(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
@@ -1732,7 +1805,7 @@ class Networks(Base):
                                       body=ParseHelper.toXml(network))
         return Network(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param name: the name of the entity]
         [@param **kwargs: property based filtering]
@@ -1742,8 +1815,11 @@ class Networks(Base):
 
         url = '/api/networks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_network()
-        return Network(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return Network(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_network()
+            return Network(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
@@ -1836,11 +1912,15 @@ class RolePermits(Base):
 
         url = '/api/roles/{role:id}/permits'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()})).get_permit()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return RolePermit(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()})).get_permit()
 
-        return RolePermit(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return RolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -1885,9 +1965,12 @@ class Roles(Base):
 
         url = '/api/roles'
 
-        result = self._getProxy().get(url=url).get_role()
-        if name != '*': kwargs['name']=name
-        return Role(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return Role(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=url).get_role()
+            if name != '*': kwargs['name']=name
+            return Role(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -1969,11 +2052,15 @@ class StorageDomainFiles(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/files'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_file()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return StorageDomainFile(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_file()
 
-        return StorageDomainFile(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return StorageDomainFile(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
@@ -2052,11 +2139,15 @@ class StorageDomainPermissions(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_permission()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return StorageDomainPermission(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_permission()
 
-        return StorageDomainPermission(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return StorageDomainPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -2119,11 +2210,15 @@ class StorageDomainTemplates(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/templates'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_template()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return StorageDomainTemplate(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_template()
 
-        return StorageDomainTemplate(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return StorageDomainTemplate(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -2186,11 +2281,15 @@ class StorageDomainVMs(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/vms'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_vm()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return StorageDomainVM(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_vm()
 
-        return StorageDomainVM(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return StorageDomainVM(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -2259,9 +2358,12 @@ class StorageDomains(Base):
 
         url = '/api/storagedomains'
 
-        result = self._getProxy().get(url=url).get_storage_domain()
-        if name != '*': kwargs['name']=name
-        return StorageDomain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return StorageDomain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=url).get_storage_domain()
+            if name != '*': kwargs['name']=name
+            return StorageDomain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -2336,9 +2438,12 @@ class Tags(Base):
 
         url = '/api/tags'
 
-        result = self._getProxy().get(url=url).get_tag()
-        if name != '*': kwargs['name']=name
-        return Tag(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return Tag(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=url).get_tag()
+            if name != '*': kwargs['name']=name
+            return Tag(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -2435,11 +2540,15 @@ class TemplateCdRoms(Base):
 
         url = '/api/templates/{template:id}/cdroms'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_cdrom()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return TemplateCdRom(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_cdrom()
 
-        return TemplateCdRom(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return TemplateCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -2483,11 +2592,15 @@ class TemplateDisks(Base):
 
         url = '/api/templates/{template:id}/disks'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_disk()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return TemplateDisk(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_disk()
 
-        return TemplateDisk(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return TemplateDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -2531,11 +2644,15 @@ class TemplateNics(Base):
 
         url = '/api/templates/{template:id}/nics'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_nic()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return TemplateNic(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_nic()
 
-        return TemplateNic(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return TemplateNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -2612,11 +2729,15 @@ class TemplatePermissions(Base):
 
         url = '/api/templates/{template:id}/permissions'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_permission()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return TemplatePermission(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_permission()
 
-        return TemplatePermission(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return TemplatePermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -2674,7 +2795,7 @@ class Templates(Base):
                                       body=ParseHelper.toXml(template))
         return Template(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param name: the name of the entity]
         [@param **kwargs: property based filtering]
@@ -2684,8 +2805,11 @@ class Templates(Base):
 
         url = '/api/templates'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_template()
-        return Template(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return Template(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_template()
+            return Template(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
@@ -2800,11 +2924,15 @@ class UserPermissions(Base):
 
         url = '/api/users/{user:id}/permissions'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_permission()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return UserPermission(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_permission()
 
-        return UserPermission(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return UserPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -2875,11 +3003,15 @@ class UserRoles(Base):
 
         url = '/api/users/{user:id}/roles'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_role()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return UserRole(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_role()
 
-        return UserRole(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return UserRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -2951,11 +3083,15 @@ class UserTags(Base):
 
         url = '/api/users/{user:id}/tags'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_tag()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return UserTag(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_tag()
 
-        return UserTag(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return UserTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -3000,9 +3136,12 @@ class Users(Base):
 
         url = '/api/users'
 
-        result = self._getProxy().get(url=url).get_user()
-        if name != '*': kwargs['name']=name
-        return User(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return User(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=url).get_user()
+            if name != '*': kwargs['name']=name
+            return User(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -3321,11 +3460,15 @@ class VMCdRoms(Base):
 
         url = '/api/vms/{vm:id}/cdroms'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_cdrom()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return VMCdRom(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_cdrom()
 
-        return VMCdRom(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -3409,11 +3552,15 @@ class VMDisks(Base):
 
         url = '/api/vms/{vm:id}/disks'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_disk()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return VMDisk(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_disk()
 
-        return VMDisk(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -3501,11 +3648,15 @@ class VMNics(Base):
 
         url = '/api/vms/{vm:id}/nics'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_nic()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return VMNic(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_nic()
 
-        return VMNic(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -3582,11 +3733,15 @@ class VMPermissions(Base):
 
         url = '/api/vms/{vm:id}/permissions'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_permission()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return VMPermission(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_permission()
 
-        return VMPermission(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -3674,11 +3829,15 @@ class VMSnapshots(Base):
 
         url = '/api/vms/{vm:id}/snapshots'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_snapshot()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return VMSnapshot(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_snapshot()
 
-        return VMSnapshot(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMSnapshot(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -3722,11 +3881,15 @@ class VMStatistics(Base):
 
         url = '/api/vms/{vm:id}/statistics'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_statistic()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return VMStatistic(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_statistic()
 
-        return VMStatistic(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -3798,11 +3961,15 @@ class VMTags(Base):
 
         url = '/api/vms/{vm:id}/tags'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_tag()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return VMTag(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_tag()
 
-        return VMTag(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -3861,7 +4028,7 @@ class VMs(Base):
                                       body=ParseHelper.toXml(vm))
         return VM(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param name: the name of the entity]
         [@param **kwargs: property based filtering]
@@ -3871,8 +4038,11 @@ class VMs(Base):
 
         url = '/api/vms'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vm()
-        return VM(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return VM(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vm()
+            return VM(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''
@@ -3981,11 +4151,15 @@ class VmPoolPermissions(Base):
 
         url = '/api/vmpools/{vmpool:id}/permissions'
 
-        if(name is not None): kwargs['name']=name
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()})).get_permission()
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
+                                                               kwargs['id']))
+            return VmPoolPermission(self.parentclass, result)
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()})).get_permission()
 
-        return VmPoolPermission(self.parentclass,
-                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VmPoolPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
@@ -4023,7 +4197,7 @@ class VmPools(Base):
                                       body=ParseHelper.toXml(vmpool))
         return VmPool(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param name: the name of the entity]
         [@param **kwargs: property based filtering]
@@ -4033,8 +4207,11 @@ class VmPools(Base):
 
         url = '/api/vmpools'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vmpool()
-        return VmPool(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            return VmPool(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+        else:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vmpool()
+            return VmPool(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, **kwargs):
         '''

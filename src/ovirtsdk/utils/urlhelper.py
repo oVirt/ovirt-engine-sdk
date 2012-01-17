@@ -20,3 +20,9 @@ class UrlHelper(object):
         for k, v in args.items():
             url = url.replace(k, v)
         return url
+
+    @staticmethod
+    def append(url, urlparam):
+        if urlparam:
+            return url + '/' + urlparam
+        return url

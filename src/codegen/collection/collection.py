@@ -49,12 +49,16 @@ class Collection(object):
 
         if 'search' in url_params:
             return \
-            ("    def get(self, name='*', **kwargs):\n" + \
+            ("    def get(self, name='name', **kwargs):\n" + \
              Documentation.document(link, {'name: the name of the entity':False,
                                            '**kwargs: property based filtering': False}) +
             "        url = '%(url)s'\n\n" + \
-            "        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_%(resource_name_lc)s()\n" + \
-            "        return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
+
+            "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
+            "            return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))\n" +
+            "        else:\n" +
+            "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_%(resource_name_lc)s()\n" + \
+            "            return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
 
 
         return \
@@ -62,9 +66,12 @@ class Collection(object):
              Documentation.document(link, {'name: the name of the entity':False,
                                            '**kwargs: property based filtering"': False}) +
             "        url = '%(url)s'\n\n" + \
-            "        result = self._getProxy().get(url=url).get_%(resource_name_lc)s()\n" + \
-            "        if name != '*': kwargs['name']=name\n"
-            "        return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
+            "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
+            "            return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))\n" +
+            "        else:\n" +
+            "            result = self._getProxy().get(url=url).get_%(resource_name_lc)s()\n" + \
+            "            if name != '*': kwargs['name']=name\n"
+            "            return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
 
     @staticmethod
     def list(url, resource_type, link, KNOWN_WRAPPER_TYPES={}):

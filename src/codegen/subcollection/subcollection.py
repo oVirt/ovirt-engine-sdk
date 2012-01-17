@@ -60,10 +60,14 @@ class SubCollection(object):
          Documentation.document(link, {'name: the name of the entity':False,
                                        '**kwargs: property based filtering': False}) +
         "        url = '%(url)s'\n\n" + \
-        "        if(name is not None): kwargs['name']=name\n" + \
-        "        result = self._getProxy().get(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()})).get_%(actual_resource_name_lc)s()\n\n" + \
-        "        return %(encapsulating_resource)s(self.parentclass,\n" + \
-        "                                          FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % sub_collection_get_template_values
+        "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
+        "            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()}),\n" +
+        "                                                               kwargs['id']))\n" +
+        "            return %(encapsulating_resource)s(self.parentclass, result)\n" +
+        "        else:\n" +
+        "            if(name is not None): kwargs['name']=name\n" + \
+        "            result = self._getProxy().get(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()})).get_%(actual_resource_name_lc)s()\n\n" + \
+        "            return %(encapsulating_resource)s(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % sub_collection_get_template_values
 
         return sub_collection_get_template
 
