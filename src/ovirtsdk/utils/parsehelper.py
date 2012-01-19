@@ -32,7 +32,7 @@ class ParseHelper():
     def getXmlWrapperType(type_name):
         tn = type_name.lower()
         for k, v in params._rootClassMap.items():
-            if v.__name__.lower() == tn:
+            if v.__name__.lower() == tn or k.lower() == tn:
                 return v.__name__
         return type_name
 
@@ -43,6 +43,14 @@ class ParseHelper():
             if v.__name__.lower() == tn:
                 return k
         return type_name
+
+    @staticmethod
+    def getXmlType(type_name):
+        tn = type_name.lower()
+        for k, v in params._rootClassMap.items():
+            if v.__name__.lower() == tn or k.lower() == tn:
+                return v
+        return None
 
     @staticmethod
     def getSingularXmlTypeInstance(type_name):
