@@ -16,6 +16,8 @@
 
 import StringIO
 from ovirtsdk.xml import params
+from ovirtsdk.utils.reflectionhelper import ReflectionHelper
+import sys
 
 class ParseHelper():
     '''Provides parsing capabilities'''
@@ -23,8 +25,13 @@ class ParseHelper():
     @staticmethod
     def toXml(entity):
         '''Parse entity to corresponding XML representation'''
-        output = StringIO.StringIO()
+
+        if ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'],
+                                           type(entity)) and hasattr(entity, 'superclass'):
+            entity = entity.superclass
+
         type_name = type(entity).__name__.lower()
+        output = StringIO.StringIO()
         entity.export(output, 0, name_=ParseHelper.getXmlTypeInstance(type_name))
         return output.getvalue()
 
