@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-01-17 17:57:21.822267
+Generated at: 2012-01-20 19:55:09.361114
 
 @author: mpastern@redhat.com
 '''
@@ -31,6 +31,7 @@ from ovirtsdk.utils.filterhelper import FilterHelper
 from ovirtsdk.utils.parsehelper import ParseHelper
 from ovirtsdk.utils.searchhelper import SearchHelper
 from ovirtsdk.infrastructure.common import Base
+from ovirtsdk.infrastructure.errors import RequestError
 
 
 class Capabilities(Base):
@@ -48,7 +49,12 @@ class Capabilities(Base):
         url = '/api/capabilities'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return Capabilities(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return Capabilities(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=url).get_capabilities()
             if name != '*': kwargs['name']=name
@@ -169,9 +175,14 @@ class ClusterNetworks(Base):
         url = '/api/clusters/{cluster:id}/networks'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return ClusterNetwork(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return ClusterNetwork(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_network()
@@ -254,9 +265,14 @@ class ClusterPermissions(Base):
         url = '/api/clusters/{cluster:id}/permissions'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return ClusterPermission(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return ClusterPermission(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_permission()
@@ -309,7 +325,12 @@ class Clusters(Base):
         url = '/api/clusters'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return Cluster(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return Cluster(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_cluster()
             return Cluster(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -423,9 +444,14 @@ class DataCenterPermissions(Base):
         url = '/api/datacenters/{datacenter:id}/permissions'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return DataCenterPermission(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return DataCenterPermission(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_permission()
@@ -537,9 +563,14 @@ class DataCenterStorageDomains(Base):
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return DataCenterStorageDomain(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return DataCenterStorageDomain(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_storage_domain()
@@ -590,7 +621,12 @@ class DataCenters(Base):
         url = '/api/datacenters'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return DataCenter(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return DataCenter(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_data_center()
             return DataCenter(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -650,9 +686,14 @@ class DomainGroups(Base):
         url = '/api/domains/{domain:id}/groups'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return DomainGroup(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return DomainGroup(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_group()
@@ -704,9 +745,14 @@ class DomainUsers(Base):
         url = '/api/domains/{domain:id}/users'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return DomainUser(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return DomainUser(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_user()
@@ -745,7 +791,12 @@ class Domains(Base):
         url = '/api/domains'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return Domain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return Domain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=url).get_domain()
             if name != '*': kwargs['name']=name
@@ -790,7 +841,12 @@ class Events(Base):
         url = '/api/events'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return Event(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return Event(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_event()
             return Event(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -910,9 +966,14 @@ class GroupPermissions(Base):
         url = '/api/groups/{group:id}/permissions'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return GroupPermission(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return GroupPermission(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_permission()
@@ -989,9 +1050,14 @@ class GroupRoles(Base):
         url = '/api/groups/{group:id}/roles'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return GroupRole(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return GroupRole(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_role()
@@ -1069,9 +1135,14 @@ class GroupTags(Base):
         url = '/api/groups/{group:id}/tags'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return GroupTag(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return GroupTag(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_tag()
@@ -1122,7 +1193,12 @@ class Groups(Base):
         url = '/api/groups'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return Group(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return Group(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_group()
             return Group(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1436,9 +1512,14 @@ class HostNics(Base):
         url = '/api/hosts/{host:id}/nics'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return HostNIC(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return HostNIC(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_host_nic()
@@ -1521,9 +1602,14 @@ class HostPermissions(Base):
         url = '/api/hosts/{host:id}/permissions'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return HostPermission(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return HostPermission(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_permission()
@@ -1573,9 +1659,14 @@ class HostStatistics(Base):
         url = '/api/hosts/{host:id}/statistics'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return HostStatistic(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return HostStatistic(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_statistic()
@@ -1663,9 +1754,14 @@ class HostTags(Base):
         url = '/api/hosts/{host:id}/tags'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return HostTag(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return HostTag(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_tag()
@@ -1716,7 +1812,12 @@ class Hosts(Base):
         url = '/api/hosts'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return Host(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return Host(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_host()
             return Host(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1816,7 +1917,12 @@ class Networks(Base):
         url = '/api/networks'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return Network(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return Network(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_network()
             return Network(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -1913,9 +2019,14 @@ class RolePermits(Base):
         url = '/api/roles/{role:id}/permits'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return RolePermit(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return RolePermit(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()})).get_permit()
@@ -1966,7 +2077,12 @@ class Roles(Base):
         url = '/api/roles'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return Role(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return Role(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=url).get_role()
             if name != '*': kwargs['name']=name
@@ -2053,9 +2169,14 @@ class StorageDomainFiles(Base):
         url = '/api/storagedomains/{storagedomain:id}/files'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return StorageDomainFile(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return StorageDomainFile(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_file()
@@ -2140,9 +2261,14 @@ class StorageDomainPermissions(Base):
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return StorageDomainPermission(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return StorageDomainPermission(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_permission()
@@ -2211,9 +2337,14 @@ class StorageDomainTemplates(Base):
         url = '/api/storagedomains/{storagedomain:id}/templates'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return StorageDomainTemplate(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return StorageDomainTemplate(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_template()
@@ -2282,9 +2413,14 @@ class StorageDomainVMs(Base):
         url = '/api/storagedomains/{storagedomain:id}/vms'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return StorageDomainVM(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return StorageDomainVM(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_vm()
@@ -2359,7 +2495,12 @@ class StorageDomains(Base):
         url = '/api/storagedomains'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return StorageDomain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return StorageDomain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=url).get_storage_domain()
             if name != '*': kwargs['name']=name
@@ -2439,7 +2580,12 @@ class Tags(Base):
         url = '/api/tags'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return Tag(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return Tag(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=url).get_tag()
             if name != '*': kwargs['name']=name
@@ -2541,9 +2687,14 @@ class TemplateCdRoms(Base):
         url = '/api/templates/{template:id}/cdroms'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return TemplateCdRom(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return TemplateCdRom(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_cdrom()
@@ -2593,9 +2744,14 @@ class TemplateDisks(Base):
         url = '/api/templates/{template:id}/disks'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return TemplateDisk(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return TemplateDisk(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_disk()
@@ -2645,9 +2801,14 @@ class TemplateNics(Base):
         url = '/api/templates/{template:id}/nics'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return TemplateNic(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return TemplateNic(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_nic()
@@ -2730,9 +2891,14 @@ class TemplatePermissions(Base):
         url = '/api/templates/{template:id}/permissions'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return TemplatePermission(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return TemplatePermission(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_permission()
@@ -2806,7 +2972,12 @@ class Templates(Base):
         url = '/api/templates'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return Template(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return Template(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_template()
             return Template(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -2925,9 +3096,14 @@ class UserPermissions(Base):
         url = '/api/users/{user:id}/permissions'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return UserPermission(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return UserPermission(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_permission()
@@ -3004,9 +3180,14 @@ class UserRoles(Base):
         url = '/api/users/{user:id}/roles'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return UserRole(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return UserRole(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_role()
@@ -3084,9 +3265,14 @@ class UserTags(Base):
         url = '/api/users/{user:id}/tags'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return UserTag(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return UserTag(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_tag()
@@ -3137,7 +3323,12 @@ class Users(Base):
         url = '/api/users'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return User(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return User(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=url).get_user()
             if name != '*': kwargs['name']=name
@@ -3461,9 +3652,14 @@ class VMCdRoms(Base):
         url = '/api/vms/{vm:id}/cdroms'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return VMCdRom(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMCdRom(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_cdrom()
@@ -3553,9 +3749,14 @@ class VMDisks(Base):
         url = '/api/vms/{vm:id}/disks'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return VMDisk(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMDisk(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_disk()
@@ -3649,9 +3850,14 @@ class VMNics(Base):
         url = '/api/vms/{vm:id}/nics'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return VMNic(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMNic(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_nic()
@@ -3734,9 +3940,14 @@ class VMPermissions(Base):
         url = '/api/vms/{vm:id}/permissions'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return VMPermission(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMPermission(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_permission()
@@ -3830,9 +4041,14 @@ class VMSnapshots(Base):
         url = '/api/vms/{vm:id}/snapshots'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return VMSnapshot(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMSnapshot(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_snapshot()
@@ -3882,9 +4098,14 @@ class VMStatistics(Base):
         url = '/api/vms/{vm:id}/statistics'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return VMStatistic(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMStatistic(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_statistic()
@@ -3962,9 +4183,14 @@ class VMTags(Base):
         url = '/api/vms/{vm:id}/tags'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return VMTag(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMTag(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_tag()
@@ -4039,7 +4265,12 @@ class VMs(Base):
         url = '/api/vms'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return VM(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return VM(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vm()
             return VM(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -4152,9 +4383,14 @@ class VmPoolPermissions(Base):
         url = '/api/vmpools/{vmpool:id}/permissions'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
-                                                               kwargs['id']))
-            return VmPoolPermission(self.parentclass, result)
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VmPoolPermission(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()})).get_permission()
@@ -4208,7 +4444,12 @@ class VmPools(Base):
         url = '/api/vmpools'
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            return VmPool(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            try :
+                return VmPool(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vmpool()
             return VmPool(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))

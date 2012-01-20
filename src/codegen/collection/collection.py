@@ -55,7 +55,12 @@ class Collection(object):
             "        url = '%(url)s'\n\n" + \
 
             "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
-            "            return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))\n" +
+            "            try :\n" + \
+            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))\n" +
+            "            except RequestError, err:\n" + \
+            "                if err.status and err.status == 404:\n" + \
+            "                    return None\n" + \
+            "                raise err\n" + \
             "        else:\n" +
             "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_%(resource_name_lc)s()\n" + \
             "            return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
@@ -67,7 +72,12 @@ class Collection(object):
                                            '**kwargs: property based filtering"': False}) +
             "        url = '%(url)s'\n\n" + \
             "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
-            "            return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))\n" +
+            "            try :\n" + \
+            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))\n" +
+            "            except RequestError, err:\n" + \
+            "                if err.status and err.status == 404:\n" + \
+            "                    return None\n" + \
+            "                raise err\n" + \
             "        else:\n" +
             "            result = self._getProxy().get(url=url).get_%(resource_name_lc)s()\n" + \
             "            if name != '*': kwargs['name']=name\n"

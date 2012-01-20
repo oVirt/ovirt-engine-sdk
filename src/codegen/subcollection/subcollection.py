@@ -61,9 +61,15 @@ class SubCollection(object):
                                        '**kwargs: property based filtering': False}) +
         "        url = '%(url)s'\n\n" + \
         "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
-        "            result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()}),\n" +
-        "                                                               kwargs['id']))\n" +
-        "            return %(encapsulating_resource)s(self.parentclass, result)\n" +
+
+        "            try :\n" + \
+        "                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()}),\n" +
+        "                                                                   kwargs['id']))\n" +
+        "                return %(encapsulating_resource)s(self.parentclass, result)\n" +
+        "            except RequestError, err:\n" + \
+        "                if err.status and err.status == 404:\n" + \
+        "                    return None\n" + \
+        "                raise err\n" + \
         "        else:\n" +
         "            if(name is not None): kwargs['name']=name\n" + \
         "            result = self._getProxy().get(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()})).get_%(actual_resource_name_lc)s()\n\n" + \
