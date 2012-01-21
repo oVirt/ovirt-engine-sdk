@@ -184,6 +184,16 @@ except ImportError, exp:
                   item is not 'superclass' and \
                   item is not 'parentclass' :
                 object.__setattr__(self.superclass, item, value)
+            elif isinstance(value, list):
+                parsed_list = []
+                for obj in value:
+                    if ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'], type(obj)) and \
+                       obj.__dict__.has_key('superclass') and obj.superclass is not None and \
+                       item is not 'superclass' and item is not 'parentclass' :
+                        parsed_list.append(obj.superclass)
+                    else:
+                        parsed_list.append(obj)
+                object.__setattr__(self, item, parsed_list)
             else:
                 object.__setattr__(self, item, value)
 # End NOT_GENERATED 
