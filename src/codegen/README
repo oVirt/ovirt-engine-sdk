@@ -1,0 +1,10 @@
+== CodeGen ==
+
+This is code generation suite for the ovirt-engine-sdk
+
+1. backup old ../ovirt-engine-sdk/src/ovirtsdk/xml/params.py
+2. [easy_install generateDS (if not installed)]
+3. generateDS.py -o ../ovirt-engine-sdk/src/ovirtsdk/xml/params.py ../restapi/interface/definition/src/main/resources/api.xsd
+4. add all code marked as NOT_GENERATED from params.py.bcp to new params.py
+5. [if where added new types to the schema - add them to _rootClassMap in params.py]
+5. run main.py
