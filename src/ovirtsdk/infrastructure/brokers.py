@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-01-20 19:55:09.361114
+Generated at: 2012-01-29 17:56:48.097699
 
 @author: mpastern@redhat.com
 '''
@@ -152,6 +152,7 @@ class ClusterNetworks(Base):
         '''
         @type Network:
 
+        @param network.id|name: string
 
         @return Network:
         '''
@@ -496,14 +497,14 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
                                        headers={'Content-type':None})
 
     def activate(self, action=params.Action()):
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate'
-
         '''
         @type Action:
 
 
         @return Response:
         '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
@@ -513,14 +514,14 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         return result
 
     def deactivate(self, action=params.Action()):
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/deactivate'
-
         '''
         @type Action:
 
 
         @return Response:
         '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/deactivate'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
@@ -600,6 +601,11 @@ class DataCenters(Base):
         '''
         @type DataCenter:
 
+        @param datacenter.name: string
+        @param datacenter.storage_type: string
+        @param datacenter.supported_versions.version--LIST: {major=int, minor=int}
+        [@param datacenter.description: string]
+        [@param datacenter.storage_format: string]
 
         @return DataCenter:
         '''
@@ -1027,6 +1033,7 @@ class GroupRoles(Base):
         '''
         @type Role:
 
+        @param role.id: string
 
         @return Role:
         '''
@@ -1172,6 +1179,7 @@ class Groups(Base):
         '''
         @type Group:
 
+        @param group.name: string
 
         @return Group:
         '''
@@ -1421,8 +1429,6 @@ class HostNIC(params.HostNIC, Base):
                                        headers={'Content-type':None})
 
     def attach(self, action=params.Action()):
-        url = '/api/hosts/{host:id}/nics/{nic:id}/attach'
-
         '''
         @type Action:
 
@@ -1433,6 +1439,8 @@ class HostNIC(params.HostNIC, Base):
         @return Response:
         '''
 
+        url = '/api/hosts/{host:id}/nics/{nic:id}/attach'
+
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
@@ -1441,14 +1449,14 @@ class HostNIC(params.HostNIC, Base):
         return result
 
     def detach(self, action=params.Action()):
-        url = '/api/hosts/{host:id}/nics/{nic:id}/detach'
-
         '''
         @type Action:
 
 
         @return Response:
         '''
+
+        url = '/api/hosts/{host:id}/nics/{nic:id}/detach'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
@@ -1791,6 +1799,18 @@ class Hosts(Base):
         '''
         @type Host:
 
+        @param host.name: string
+        @param host.address: string
+        @param host.root_password: string
+        @param host.cluster.id: string
+        [@param host.port: int]
+        [@param host.storage_manager.priority: int]
+        [@param host.power_management.type: string]
+        [@param host.power_management.enabled: boolean]
+        [@param host.power_management.address: string]
+        [@param host.power_management.user_name: string]
+        [@param host.power_management.password: string]
+        [@param host.power_management.options.option--LIST: {name=string, value=string}]
 
         @return Host:
         '''
@@ -2056,6 +2076,10 @@ class Roles(Base):
         '''
         @type Role:
 
+        @param role.name: string
+        @param role.permits.permit--LIST: {id=string}
+        [@param role.description: string]
+        [@param role.administrative: boolean]
 
         @return Role:
         '''
@@ -2302,8 +2326,6 @@ class StorageDomainTemplate(params.Template, Base):
         return obj
 
     def import_template(self, action=params.Action()):
-        url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/import'
-
         '''
         @type Action:
 
@@ -2312,6 +2334,8 @@ class StorageDomainTemplate(params.Template, Base):
 
         @return Response:
         '''
+
+        url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/import'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
@@ -2378,8 +2402,6 @@ class StorageDomainVM(params.VM, Base):
         return obj
 
     def import_vm(self, action=params.Action()):
-        url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/import'
-
         '''
         @type Action:
 
@@ -2388,6 +2410,8 @@ class StorageDomainVM(params.VM, Base):
 
         @return Response:
         '''
+
+        url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/import'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
@@ -2559,6 +2583,9 @@ class Tags(Base):
         '''
         @type Tag:
 
+        @param tag.name: string
+        [@param tag.description: string]
+        [@param tag.parent.name: string]
 
         @return Tag:
         '''
@@ -3157,6 +3184,7 @@ class UserRoles(Base):
         '''
         @type Role:
 
+        @param role.id: string
 
         @return Role:
         '''
@@ -3302,6 +3330,8 @@ class Users(Base):
         '''
         @type User:
 
+        @param user.user_name: string
+        @param user.domain.id|name: string
 
         @return User:
         '''
@@ -3312,10 +3342,10 @@ class Users(Base):
                                       body=ParseHelper.toXml(user))
         return User(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: property based filtering]
 
         @return Users:
         '''
@@ -3330,12 +3360,12 @@ class Users(Base):
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=url).get_user()
-            if name != '*': kwargs['name']=name
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_user()
             return User(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, query=None, **kwargs):
         '''
+        [@param query: oVirt engine search dialect query]
         [@param **kwargs: property based filtering"]
 
         @return Users:
@@ -3343,7 +3373,7 @@ class Users(Base):
 
         url='/api/users'
 
-        result = self._getProxy().get(url=url).get_user()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_user()
         return ParseHelper.toCollection(User,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3629,6 +3659,7 @@ class VMCdRoms(Base):
         '''
         @type CdRom:
 
+        @param cdrom.file.id: string
 
         @return CdRom:
         '''
@@ -3726,6 +3757,14 @@ class VMDisks(Base):
         '''
         @type Disk:
 
+        @param size: int
+        @param disk.type: string
+        @param disk.interface: string
+        @param disk.format: string
+        [@param disk.sparse: boolean]
+        [@param disk.bootable: boolean]
+        [@param disk.propagate_errors: boolean]
+        [@param disk.wipe_after_delete: boolean]
 
         @return Disk:
         '''
@@ -3992,14 +4031,14 @@ class VMSnapshot(params.Snapshot, Base):
                                        headers={'Content-type':None})
 
     def restore(self, action=params.Action()):
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/restore'
-
         '''
         @type Action:
 
 
         @return Response:
         '''
+
+        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/restore'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
@@ -4018,6 +4057,7 @@ class VMSnapshots(Base):
         '''
         @type Snapshot:
 
+        @param snapshot.description: string
 
         @return Snapshot:
         '''

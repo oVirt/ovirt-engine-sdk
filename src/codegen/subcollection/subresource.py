@@ -64,8 +64,8 @@ class SubResource(object):
 
         sub_collection_resource_action_template = \
         ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \
-        "        url = '%(url)s'\n\n" + \
         Documentation.document(link) +
+        "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().request(method='%(method)s',\n" + \
         "                                          url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
         "                                                                     '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
