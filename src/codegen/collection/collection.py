@@ -50,8 +50,8 @@ class Collection(object):
         if 'search' in url_params:
             return \
             ("    def get(self, name='name', **kwargs):\n" + \
-             Documentation.document(link, {'name: the name of the entity':False,
-                                           '**kwargs: property based filtering': False}) +
+             Documentation.document(link, {'name: string (string the name of the entity)':False,
+                                           '**kwargs: dict (property based filtering)': False}) +
             "        url = '%(url)s'\n\n" + \
 
             "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
@@ -68,8 +68,8 @@ class Collection(object):
 
         return \
             ("    def get(self, name='*', **kwargs):\n" + \
-             Documentation.document(link, {'name: the name of the entity':False,
-                                           '**kwargs: property based filtering"': False}) +
+             Documentation.document(link, {'name: string (the name of the entity)':False,
+                                           '**kwargs: dict (property based filtering)"': False}) +
             "        url = '%(url)s'\n\n" + \
             "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
             "            try :\n" + \
@@ -99,8 +99,8 @@ class Collection(object):
         if prms_str != '':
             return \
             ("    def list(self, " + prms_str + ", **kwargs):\n" + \
-             Documentation.document(link, {'**kwargs: property based filtering"': False,
-                                           'query: oVirt engine search dialect query':False},
+             Documentation.document(link, {'**kwargs: dict (property based filtering)"': False,
+                                           'query: string (oVirt engine search dialect query)':False},
                                     method_params) +
             "        url='%(url)s'\n\n" + \
             "        result = self._getProxy().get(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
@@ -110,7 +110,7 @@ class Collection(object):
             "                                        FilterHelper.filter(result, kwargs))\n\n") % collection_list_template_values
         return \
         ("    def list(self, **kwargs):\n" + \
-         Documentation.document(link, {'**kwargs: property based filtering"': False}) +
+         Documentation.document(link, {'**kwargs: dict (property based filtering)"': False}) +
         "        url='%(url)s'\n\n" + \
         "        result = self._getProxy().get(url=url).get_%(resource_name_lc)s()\n" + \
         "        return ParseHelper.toCollection(%(resource_type)s,\n" + \

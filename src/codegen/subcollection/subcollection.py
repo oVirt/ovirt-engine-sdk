@@ -57,8 +57,8 @@ class SubCollection(object):
 
         sub_collection_get_template = \
         ("    def get(self, name=None, **kwargs):\n\n" + \
-         Documentation.document(link, {'name: the name of the entity':False,
-                                       '**kwargs: property based filtering': False}) +
+         Documentation.document(link, {'name: string (the name of the entity)':False,
+                                       '**kwargs: dict (property based filtering)': False}) +
         "        url = '%(url)s'\n\n" + \
         "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
 
@@ -97,8 +97,8 @@ class SubCollection(object):
         if prms_str != '':
             return \
             ("    def list(self, " + prms_str + ", **kwargs):\n" + \
-             Documentation.document(link, {'**kwargs: property based filtering"': False,
-                                           'query: oVirt engine search dialect query':False},
+             Documentation.document(link, {'**kwargs: dict (property based filtering)"': False,
+                                           'query: string (oVirt engine search dialect query)':False},
                                     method_params) +
             "        url = '%(url)s'\n\n" + \
             "        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,\n " +
@@ -110,7 +110,7 @@ class SubCollection(object):
             "                                           FilterHelper.filter(result, kwargs))\n\n") % sub_collection_list_template_values
         return \
             ("    def list(self, **kwargs):\n" + \
-             Documentation.document(link, {'**kwargs: property based filtering"': False}) +
+             Documentation.document(link, {'**kwargs: dict (property based filtering)"': False}) +
             "        url = '%(url)s'\n\n" + \
             "        result = self._getProxy().get(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}': self.parentclass.get_id()})).get_%(actual_resource_name_lc)s()\n\n" + \
             "        return ParseHelper.toSubCollection(%(encapsulating_resource)s,\n" + \

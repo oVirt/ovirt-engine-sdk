@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-01-29 17:56:48.097699
+Generated at: 2012-01-30 14:28:48.648768
 
 @author: mpastern@redhat.com
 '''
@@ -40,8 +40,8 @@ class Capabilities(Base):
 
     def get(self, name='*', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param name: string (the name of the entity)]
 
         @return Capabilities:
         '''
@@ -62,7 +62,7 @@ class Capabilities(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Capabilities:
         '''
@@ -167,8 +167,8 @@ class ClusterNetworks(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Networks:
         '''
@@ -192,7 +192,7 @@ class ClusterNetworks(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Networks:
         '''
@@ -257,8 +257,8 @@ class ClusterPermissions(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Permissions:
         '''
@@ -282,7 +282,7 @@ class ClusterPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Permissions:
         '''
@@ -317,8 +317,8 @@ class Clusters(Base):
 
     def get(self, name='name', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return Clusters:
         '''
@@ -338,8 +338,8 @@ class Clusters(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return Clusters:
         '''
@@ -436,8 +436,8 @@ class DataCenterPermissions(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Permissions:
         '''
@@ -461,7 +461,7 @@ class DataCenterPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Permissions:
         '''
@@ -555,8 +555,8 @@ class DataCenterStorageDomains(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return StorageDomains:
         '''
@@ -580,7 +580,7 @@ class DataCenterStorageDomains(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return StorageDomains:
         '''
@@ -618,8 +618,8 @@ class DataCenters(Base):
 
     def get(self, name='name', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return DataCenters:
         '''
@@ -639,8 +639,8 @@ class DataCenters(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return DataCenters:
         '''
@@ -683,8 +683,8 @@ class DomainGroups(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Groups:
         '''
@@ -708,8 +708,8 @@ class DomainGroups(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return Groups:
         '''
@@ -742,8 +742,8 @@ class DomainUsers(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Users:
         '''
@@ -767,8 +767,8 @@ class DomainUsers(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return Users:
         '''
@@ -788,8 +788,8 @@ class Domains(Base):
 
     def get(self, name='*', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param name: string (the name of the entity)]
 
         @return Domains:
         '''
@@ -810,7 +810,7 @@ class Domains(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Domains:
         '''
@@ -838,8 +838,8 @@ class Events(Base):
 
     def get(self, name='name', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return Events:
         '''
@@ -859,8 +859,8 @@ class Events(Base):
 
     def list(self, query=None, from_event_id=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
         [@param from_event_id: event_id]
 
         @return Events:
@@ -963,8 +963,8 @@ class GroupPermissions(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Permissions:
         '''
@@ -988,7 +988,7 @@ class GroupPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Permissions:
         '''
@@ -1048,8 +1048,8 @@ class GroupRoles(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Roles:
         '''
@@ -1073,7 +1073,7 @@ class GroupRoles(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Roles:
         '''
@@ -1133,8 +1133,8 @@ class GroupTags(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Tags:
         '''
@@ -1158,7 +1158,7 @@ class GroupTags(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Tags:
         '''
@@ -1192,8 +1192,8 @@ class Groups(Base):
 
     def get(self, name='name', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return Groups:
         '''
@@ -1213,8 +1213,8 @@ class Groups(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return Groups:
         '''
@@ -1511,8 +1511,8 @@ class HostNics(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return HostNics:
         '''
@@ -1536,7 +1536,7 @@ class HostNics(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return HostNics:
         '''
@@ -1601,8 +1601,8 @@ class HostPermissions(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Permissions:
         '''
@@ -1626,7 +1626,7 @@ class HostPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Permissions:
         '''
@@ -1658,8 +1658,8 @@ class HostStatistics(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Statistics:
         '''
@@ -1683,7 +1683,7 @@ class HostStatistics(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Statistics:
         '''
@@ -1753,8 +1753,8 @@ class HostTags(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Tags:
         '''
@@ -1778,7 +1778,7 @@ class HostTags(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Tags:
         '''
@@ -1823,8 +1823,8 @@ class Hosts(Base):
 
     def get(self, name='name', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return Hosts:
         '''
@@ -1844,8 +1844,8 @@ class Hosts(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return Hosts:
         '''
@@ -1928,8 +1928,8 @@ class Networks(Base):
 
     def get(self, name='name', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return Networks:
         '''
@@ -1949,8 +1949,8 @@ class Networks(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return Networks:
         '''
@@ -2030,8 +2030,8 @@ class RolePermits(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Permits:
         '''
@@ -2055,7 +2055,7 @@ class RolePermits(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Permits:
         '''
@@ -2092,8 +2092,8 @@ class Roles(Base):
 
     def get(self, name='*', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param name: string (the name of the entity)]
 
         @return Roles:
         '''
@@ -2114,7 +2114,7 @@ class Roles(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Roles:
         '''
@@ -2184,8 +2184,8 @@ class StorageDomainFiles(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Files:
         '''
@@ -2209,8 +2209,8 @@ class StorageDomainFiles(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return Files:
         '''
@@ -2276,8 +2276,8 @@ class StorageDomainPermissions(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Permissions:
         '''
@@ -2301,7 +2301,7 @@ class StorageDomainPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Permissions:
         '''
@@ -2352,8 +2352,8 @@ class StorageDomainTemplates(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Templates:
         '''
@@ -2377,7 +2377,7 @@ class StorageDomainTemplates(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Templates:
         '''
@@ -2428,8 +2428,8 @@ class StorageDomainVMs(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return VMs:
         '''
@@ -2453,7 +2453,7 @@ class StorageDomainVMs(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return VMs:
         '''
@@ -2510,8 +2510,8 @@ class StorageDomains(Base):
 
     def get(self, name='*', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param name: string (the name of the entity)]
 
         @return StorageDomains:
         '''
@@ -2532,7 +2532,7 @@ class StorageDomains(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return StorageDomains:
         '''
@@ -2598,8 +2598,8 @@ class Tags(Base):
 
     def get(self, name='*', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param name: string (the name of the entity)]
 
         @return Tags:
         '''
@@ -2620,7 +2620,7 @@ class Tags(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Tags:
         '''
@@ -2705,8 +2705,8 @@ class TemplateCdRoms(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return CdRoms:
         '''
@@ -2730,7 +2730,7 @@ class TemplateCdRoms(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return CdRoms:
         '''
@@ -2762,8 +2762,8 @@ class TemplateDisks(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Disks:
         '''
@@ -2787,7 +2787,7 @@ class TemplateDisks(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Disks:
         '''
@@ -2819,8 +2819,8 @@ class TemplateNics(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Nics:
         '''
@@ -2844,7 +2844,7 @@ class TemplateNics(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Nics:
         '''
@@ -2909,8 +2909,8 @@ class TemplatePermissions(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Permissions:
         '''
@@ -2934,7 +2934,7 @@ class TemplatePermissions(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Permissions:
         '''
@@ -2990,8 +2990,8 @@ class Templates(Base):
 
     def get(self, name='name', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return Templates:
         '''
@@ -3011,8 +3011,8 @@ class Templates(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return Templates:
         '''
@@ -3114,8 +3114,8 @@ class UserPermissions(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Permissions:
         '''
@@ -3139,7 +3139,7 @@ class UserPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Permissions:
         '''
@@ -3199,8 +3199,8 @@ class UserRoles(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Roles:
         '''
@@ -3224,7 +3224,7 @@ class UserRoles(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Roles:
         '''
@@ -3284,8 +3284,8 @@ class UserTags(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Tags:
         '''
@@ -3309,7 +3309,7 @@ class UserTags(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Tags:
         '''
@@ -3344,8 +3344,8 @@ class Users(Base):
 
     def get(self, name='name', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return Users:
         '''
@@ -3365,8 +3365,8 @@ class Users(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return Users:
         '''
@@ -3674,8 +3674,8 @@ class VMCdRoms(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return CdRoms:
         '''
@@ -3699,7 +3699,7 @@ class VMCdRoms(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return CdRoms:
         '''
@@ -3779,8 +3779,8 @@ class VMDisks(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Disks:
         '''
@@ -3804,7 +3804,7 @@ class VMDisks(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Disks:
         '''
@@ -3880,8 +3880,8 @@ class VMNics(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Nics:
         '''
@@ -3905,7 +3905,7 @@ class VMNics(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Nics:
         '''
@@ -3970,8 +3970,8 @@ class VMPermissions(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Permissions:
         '''
@@ -3995,7 +3995,7 @@ class VMPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Permissions:
         '''
@@ -4072,8 +4072,8 @@ class VMSnapshots(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Snapshots:
         '''
@@ -4097,7 +4097,7 @@ class VMSnapshots(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Snapshots:
         '''
@@ -4129,8 +4129,8 @@ class VMStatistics(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Statistics:
         '''
@@ -4154,7 +4154,7 @@ class VMStatistics(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Statistics:
         '''
@@ -4214,8 +4214,8 @@ class VMTags(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Tags:
         '''
@@ -4239,7 +4239,7 @@ class VMTags(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Tags:
         '''
@@ -4296,8 +4296,8 @@ class VMs(Base):
 
     def get(self, name='name', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return VMs:
         '''
@@ -4317,8 +4317,8 @@ class VMs(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return VMs:
         '''
@@ -4414,8 +4414,8 @@ class VmPoolPermissions(Base):
     def get(self, name=None, **kwargs):
 
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
 
         @return Permissions:
         '''
@@ -4439,7 +4439,7 @@ class VmPoolPermissions(Base):
 
     def list(self, **kwargs):
         '''
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
 
         @return Permissions:
         '''
@@ -4475,8 +4475,8 @@ class VmPools(Base):
 
     def get(self, name='name', **kwargs):
         '''
-        [@param name: the name of the entity]
-        [@param **kwargs: property based filtering]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return VmPools:
         '''
@@ -4496,8 +4496,8 @@ class VmPools(Base):
 
     def list(self, query=None, **kwargs):
         '''
-        [@param query: oVirt engine search dialect query]
-        [@param **kwargs: property based filtering"]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
 
         @return VmPools:
         '''
