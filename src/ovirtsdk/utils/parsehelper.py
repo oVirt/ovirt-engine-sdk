@@ -54,7 +54,9 @@ class ParseHelper():
     @staticmethod
     def getXmlType(type_name):
         tn = type_name.lower()
-        for k, v in params._rootClassMap.items():
+        items = params._rootClassMap.items()
+        items.extend(params._elementToClassMap.items())
+        for k, v in items:
             if v.__name__.lower() == tn or k.lower() == tn:
                 return v
         return None
