@@ -168,6 +168,8 @@ except ImportError, exp:
                     if class_obj2 is not None:
                         class_obj1 = class_obj2
             return class_obj1
+        def gds_build_any(self, node, type_name=None):
+            return None
 
 # Begin NOT_GENERATED
         def __setattr__(self, item, value):
@@ -197,6 +199,7 @@ except ImportError, exp:
             else:
                 object.__setattr__(self, item, value)
 # End NOT_GENERATED 
+
 
 #
 # If you have installed IPython you can uncomment and use the following.
@@ -751,13 +754,13 @@ class ApiSummary(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='ApiSummary'):
         pass
     def exportChildren(self, outfile, level, namespace_='', name_='ApiSummary', fromsubclass_=False):
-        if self.vms:
+        if self.vms is not None:
             self.vms.export(outfile, level, namespace_, name_='vms')
-        if self.hosts:
+        if self.hosts is not None:
             self.hosts.export(outfile, level, namespace_, name_='hosts')
-        if self.users:
+        if self.users is not None:
             self.users.export(outfile, level, namespace_, name_='users')
-        if self.storage_domains:
+        if self.storage_domains is not None:
             self.storage_domains.export(outfile, level, namespace_, name_='storage_domains')
     def hasContent_(self):
         if (
@@ -1740,7 +1743,7 @@ class CPU(GeneratedsSuper):
             already_processed.append('id')
             outfile.write(' id=%s' % (self.gds_format_string(quote_attrib(self.id).encode(ExternalEncoding), input_name='id'), ))
     def exportChildren(self, outfile, level, namespace_='', name_='CPU', fromsubclass_=False):
-        if self.topology:
+        if self.topology is not None:
             self.topology.export(outfile, level, namespace_, name_='topology')
         if self.level is not None:
             showIndent(outfile, level)
@@ -2313,67 +2316,67 @@ class VersionCaps(Version):
         if self.current is not None:
             showIndent(outfile, level)
             outfile.write('<%scurrent>%s</%scurrent>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.current)), input_name='current'), namespace_))
-        if self.features:
+        if self.features is not None:
             self.features.export(outfile, level, namespace_, name_='features')
-        if self.cpus:
+        if self.cpus is not None:
             self.cpus.export(outfile, level, namespace_, name_='cpus')
-        if self.power_managers:
+        if self.power_managers is not None:
             self.power_managers.export(outfile, level, namespace_, name_='power_managers')
-        if self.fence_types:
+        if self.fence_types is not None:
             self.fence_types.export(outfile, level, namespace_, name_='fence_types')
-        if self.storage_types:
+        if self.storage_types is not None:
             self.storage_types.export(outfile, level, namespace_, name_='storage_types')
-        if self.storage_domain_types:
+        if self.storage_domain_types is not None:
             self.storage_domain_types.export(outfile, level, namespace_, name_='storage_domain_types')
-        if self.vm_types:
+        if self.vm_types is not None:
             self.vm_types.export(outfile, level, namespace_, name_='vm_types')
-        if self.boot_devices:
+        if self.boot_devices is not None:
             self.boot_devices.export(outfile, level, namespace_, name_='boot_devices')
-        if self.display_types:
+        if self.display_types is not None:
             self.display_types.export(outfile, level, namespace_, name_='display_types')
-        if self.nic_interfaces:
+        if self.nic_interfaces is not None:
             self.nic_interfaces.export(outfile, level, namespace_, name_='nic_interfaces')
-        if self.disk_types:
+        if self.disk_types is not None:
             self.disk_types.export(outfile, level, namespace_, name_='disk_types')
-        if self.os_types:
+        if self.os_types is not None:
             self.os_types.export(outfile, level, namespace_, name_='os_types')
-        if self.disk_formats:
+        if self.disk_formats is not None:
             self.disk_formats.export(outfile, level, namespace_, name_='disk_formats')
-        if self.disk_interfaces:
+        if self.disk_interfaces is not None:
             self.disk_interfaces.export(outfile, level, namespace_, name_='disk_interfaces')
-        if self.vm_affinities:
+        if self.vm_affinities is not None:
             self.vm_affinities.export(outfile, level, namespace_, name_='vm_affinities')
-        if self.custom_properties:
+        if self.custom_properties is not None:
             self.custom_properties.export(outfile, level, namespace_, name_='custom_properties')
-        if self.boot_protocols:
+        if self.boot_protocols is not None:
             self.boot_protocols.export(outfile, level, namespace_, name_='boot_protocols')
-        if self.error_handling:
+        if self.error_handling is not None:
             self.error_handling.export(outfile, level, namespace_, name_='error_handling')
-        if self.storage_formats:
+        if self.storage_formats is not None:
             self.storage_formats.export(outfile, level, namespace_, name_='storage_formats')
-        if self.creation_states:
+        if self.creation_states is not None:
             self.creation_states.export(outfile, level, namespace_, name_='creation_states')
-        if self.power_management_states:
+        if self.power_management_states is not None:
             self.power_management_states.export(outfile, level, namespace_, name_='power_management_states')
-        if self.host_states:
+        if self.host_states is not None:
             self.host_states.export(outfile, level, namespace_, name_='host_states')
-        if self.host_non_operational_details:
+        if self.host_non_operational_details is not None:
             self.host_non_operational_details.export(outfile, level, namespace_, name_='host_non_operational_details')
-        if self.network_states:
+        if self.network_states is not None:
             self.network_states.export(outfile, level, namespace_, name_='network_states')
-        if self.storage_domain_states:
+        if self.storage_domain_states is not None:
             self.storage_domain_states.export(outfile, level, namespace_, name_='storage_domain_states')
-        if self.template_states:
+        if self.template_states is not None:
             self.template_states.export(outfile, level, namespace_, name_='template_states')
-        if self.vm_states:
+        if self.vm_states is not None:
             self.vm_states.export(outfile, level, namespace_, name_='vm_states')
-        if self.vm_pause_details:
+        if self.vm_pause_details is not None:
             self.vm_pause_details.export(outfile, level, namespace_, name_='vm_pause_details')
-        if self.disk_states:
+        if self.disk_states is not None:
             self.disk_states.export(outfile, level, namespace_, name_='disk_states')
-        if self.host_nic_states:
+        if self.host_nic_states is not None:
             self.host_nic_states.export(outfile, level, namespace_, name_='host_nic_states')
-        if self.data_center_states:
+        if self.data_center_states is not None:
             self.data_center_states.export(outfile, level, namespace_, name_='data_center_states')
     def hasContent_(self):
         if (
@@ -2799,9 +2802,9 @@ class Capabilities(GeneratedsSuper):
     def exportChildren(self, outfile, level, namespace_='', name_='Capabilities', fromsubclass_=False):
         for version_ in self.version:
             version_.export(outfile, level, namespace_, name_='version')
-        if self.permits:
+        if self.permits is not None:
             self.permits.export(outfile, level, namespace_, name_='permits')
-        if self.scheduling_policies:
+        if self.scheduling_policies is not None:
             self.scheduling_policies.export(outfile, level, namespace_, name_='scheduling_policies')
     def hasContent_(self):
         if (
@@ -2970,7 +2973,7 @@ class Features(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Features'):
         pass
     def exportChildren(self, outfile, level, namespace_='', name_='Features', fromsubclass_=False):
-        if self.transparent_hugepages:
+        if self.transparent_hugepages is not None:
             self.transparent_hugepages.export(outfile, level, namespace_, name_='transparent_hugepages')
     def hasContent_(self):
         if (
@@ -3461,21 +3464,21 @@ class DisplayTypes(GeneratedsSuper):
 class NicInterfaces(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, nic_interfaces=None):
-        if nic_interfaces is None:
-            self.nic_interfaces = []
+    def __init__(self, nic_interface=None):
+        if nic_interface is None:
+            self.nic_interface = []
         else:
-            self.nic_interfaces = nic_interfaces
+            self.nic_interface = nic_interface
     def factory(*args_, **kwargs_):
         if NicInterfaces.subclass:
             return NicInterfaces.subclass(*args_, **kwargs_)
         else:
             return NicInterfaces(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_nic_interfaces(self): return self.nic_interfaces
-    def set_nic_interfaces(self, nic_interfaces): self.nic_interfaces = nic_interfaces
-    def add_nic_interfaces(self, value): self.nic_interfaces.append(value)
-    def insert_nic_interfaces(self, index, value): self.nic_interfaces[index] = value
+    def get_nic_interface(self): return self.nic_interface
+    def set_nic_interface(self, nic_interface): self.nic_interface = nic_interface
+    def add_nic_interface(self, value): self.nic_interface.append(value)
+    def insert_nic_interface(self, index, value): self.nic_interface[index] = value
     def export(self, outfile, level, namespace_='', name_='NicInterfaces', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -3491,12 +3494,12 @@ class NicInterfaces(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='NicInterfaces'):
         pass
     def exportChildren(self, outfile, level, namespace_='', name_='NicInterfaces', fromsubclass_=False):
-        for nic_interfaces_ in self.nic_interfaces:
+        for nic_interface_ in self.nic_interface:
             showIndent(outfile, level)
-            outfile.write('<%snic_interfaces>%s</%snic_interfaces>\n' % (namespace_, self.gds_format_string(quote_xml(nic_interfaces_).encode(ExternalEncoding), input_name='nic_interfaces'), namespace_))
+            outfile.write('<%snic_interface>%s</%snic_interface>\n' % (namespace_, self.gds_format_string(quote_xml(nic_interface_).encode(ExternalEncoding), input_name='nic_interface'), namespace_))
     def hasContent_(self):
         if (
-            self.nic_interfaces
+            self.nic_interface
             ):
             return True
         else:
@@ -3510,11 +3513,11 @@ class NicInterfaces(GeneratedsSuper):
         pass
     def exportLiteralChildren(self, outfile, level, name_):
         showIndent(outfile, level)
-        outfile.write('nic_interfaces=[\n')
+        outfile.write('nic_interface=[\n')
         level += 1
-        for nic_interfaces_ in self.nic_interfaces:
+        for nic_interface_ in self.nic_interface:
             showIndent(outfile, level)
-            outfile.write('%s,\n' % quote_python(nic_interfaces_).encode(ExternalEncoding))
+            outfile.write('%s,\n' % quote_python(nic_interface_).encode(ExternalEncoding))
         level -= 1
         showIndent(outfile, level)
         outfile.write('],\n')
@@ -3526,10 +3529,10 @@ class NicInterfaces(GeneratedsSuper):
     def buildAttributes(self, node, attrs, already_processed):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'nic_interfaces':
-            nic_interfaces_ = child_.text
-            nic_interfaces_ = self.gds_validate_string(nic_interfaces_, node, 'nic_interfaces')
-            self.nic_interfaces.append(nic_interfaces_)
+        if nodeName_ == 'nic_interface':
+            nic_interface_ = child_.text
+            nic_interface_ = self.gds_validate_string(nic_interface_, node, 'nic_interface')
+            self.nic_interface.append(nic_interface_)
 # end class NicInterfaces
 
 
@@ -4202,9 +4205,9 @@ class BaseResource(GeneratedsSuper):
         if self.description is not None:
             showIndent(outfile, level)
             outfile.write('<%sdescription>%s</%sdescription>\n' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_))
-        if self.actions:
+        if self.actions is not None:
             self.actions.export(outfile, level, namespace_, name_='actions')
-        if self.creation_status:
+        if self.creation_status is not None:
             self.creation_status.export(outfile, level, namespace_, name_='creation_status')
         for link_ in self.link:
             link_.export(outfile, level, namespace_, name_='link')
@@ -4621,11 +4624,11 @@ class DataCenter(BaseResource):
         if self.storage_format is not None:
             showIndent(outfile, level)
             outfile.write('<%sstorage_format>%s</%sstorage_format>\n' % (namespace_, self.gds_format_string(quote_xml(self.storage_format).encode(ExternalEncoding), input_name='storage_format'), namespace_))
-        if self.version:
+        if self.version is not None:
             self.version.export(outfile, level, namespace_, name_='version')
-        if self.supported_versions:
+        if self.supported_versions is not None:
             self.supported_versions.export(outfile, level, namespace_, name_='supported_versions')
-        if self.status:
+        if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
     def hasContent_(self):
         if (
@@ -4933,7 +4936,8 @@ class MemoryOverCommit(GeneratedsSuper):
 class MemoryPolicy(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, overcommit=None, transparent_hugepages=None):
+    def __init__(self, guaranteed=None, overcommit=None, transparent_hugepages=None):
+        self.guaranteed = guaranteed
         self.overcommit = overcommit
         self.transparent_hugepages = transparent_hugepages
     def factory(*args_, **kwargs_):
@@ -4942,6 +4946,8 @@ class MemoryPolicy(GeneratedsSuper):
         else:
             return MemoryPolicy(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def get_guaranteed(self): return self.guaranteed
+    def set_guaranteed(self, guaranteed): self.guaranteed = guaranteed
     def get_overcommit(self): return self.overcommit
     def set_overcommit(self, overcommit): self.overcommit = overcommit
     def get_transparent_hugepages(self): return self.transparent_hugepages
@@ -4961,12 +4967,16 @@ class MemoryPolicy(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='MemoryPolicy'):
         pass
     def exportChildren(self, outfile, level, namespace_='', name_='MemoryPolicy', fromsubclass_=False):
-        if self.overcommit:
+        if self.guaranteed is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sguaranteed>%s</%sguaranteed>\n' % (namespace_, self.gds_format_integer(self.guaranteed, input_name='guaranteed'), namespace_))
+        if self.overcommit is not None:
             self.overcommit.export(outfile, level, namespace_, name_='overcommit')
-        if self.transparent_hugepages:
+        if self.transparent_hugepages is not None:
             self.transparent_hugepages.export(outfile, level, namespace_, name_='transparent_hugepages')
     def hasContent_(self):
         if (
+            self.guaranteed is not None or
             self.overcommit is not None or
             self.transparent_hugepages is not None
             ):
@@ -4981,6 +4991,9 @@ class MemoryPolicy(GeneratedsSuper):
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
         pass
     def exportLiteralChildren(self, outfile, level, name_):
+        if self.guaranteed is not None:
+            showIndent(outfile, level)
+            outfile.write('guaranteed=%d,\n' % self.guaranteed)
         if self.overcommit is not None:
             showIndent(outfile, level)
             outfile.write('overcommit=model_.MemoryOverCommit(\n')
@@ -5001,7 +5014,15 @@ class MemoryPolicy(GeneratedsSuper):
     def buildAttributes(self, node, attrs, already_processed):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'overcommit':
+        if nodeName_ == 'guaranteed':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'guaranteed')
+            self.guaranteed = ival_
+        elif nodeName_ == 'overcommit':
             obj_ = MemoryOverCommit.factory()
             obj_.build(child_)
             self.set_overcommit(obj_)
@@ -5148,7 +5169,7 @@ class SchedulingPolicy(GeneratedsSuper):
         if self.policy is not None:
             showIndent(outfile, level)
             outfile.write('<%spolicy>%s</%spolicy>\n' % (namespace_, self.gds_format_string(quote_xml(self.policy).encode(ExternalEncoding), input_name='policy'), namespace_))
-        if self.thresholds:
+        if self.thresholds is not None:
             self.thresholds.export(outfile, level, namespace_, name_='thresholds')
     def hasContent_(self):
         if (
@@ -5242,19 +5263,19 @@ class Cluster(BaseResource):
         super(Cluster, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Cluster')
     def exportChildren(self, outfile, level, namespace_='', name_='Cluster', fromsubclass_=False):
         super(Cluster, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.cpu:
+        if self.cpu is not None:
             self.cpu.export(outfile, level, namespace_, name_='cpu')
-        if self.data_center:
+        if self.data_center is not None:
             self.data_center.export(outfile, level, namespace_, name_='data_center')
-        if self.memory_policy:
+        if self.memory_policy is not None:
             self.memory_policy.export(outfile, level, namespace_, name_='memory_policy')
-        if self.scheduling_policy:
+        if self.scheduling_policy is not None:
             self.scheduling_policy.export(outfile, level, namespace_, name_='scheduling_policy')
-        if self.version:
+        if self.version is not None:
             self.version.export(outfile, level, namespace_, name_='version')
-        if self.supported_versions:
+        if self.supported_versions is not None:
             self.supported_versions.export(outfile, level, namespace_, name_='supported_versions')
-        if self.error_handling:
+        if self.error_handling is not None:
             self.error_handling.export(outfile, level, namespace_, name_='error_handling')
     def hasContent_(self):
         if (
@@ -5504,9 +5525,9 @@ class PowerManagement(GeneratedsSuper):
         if self.password is not None:
             showIndent(outfile, level)
             outfile.write('<%spassword>%s</%spassword>\n' % (namespace_, self.gds_format_string(quote_xml(self.password).encode(ExternalEncoding), input_name='password'), namespace_))
-        if self.options:
+        if self.options is not None:
             self.options.export(outfile, level, namespace_, name_='options')
-        if self.status:
+        if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
     def hasContent_(self):
         if (
@@ -5894,7 +5915,7 @@ class TransparentHugePages(GeneratedsSuper):
 class Host(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, address=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, statistics=None, cpu=None, summary=None, override_iptables=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, address=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, statistics=None, cpu=None, memory=None, summary=None, override_iptables=None):
         super(Host, self).__init__(href, id, name, description, actions, creation_status, link, )
         self.address = address
         self.status = status
@@ -5910,6 +5931,7 @@ class Host(BaseResource):
         self.root_password = root_password
         self.statistics = statistics
         self.cpu = cpu
+        self.memory = memory
         self.summary = summary
         self.override_iptables = override_iptables
     def factory(*args_, **kwargs_):
@@ -5946,6 +5968,8 @@ class Host(BaseResource):
     def set_statistics(self, statistics): self.statistics = statistics
     def get_cpu(self): return self.cpu
     def set_cpu(self, cpu): self.cpu = cpu
+    def get_memory(self): return self.memory
+    def set_memory(self, memory): self.memory = memory
     def get_summary(self): return self.summary
     def set_summary(self, summary): self.summary = summary
     def get_override_iptables(self): return self.override_iptables
@@ -5969,9 +5993,9 @@ class Host(BaseResource):
         if self.address is not None:
             showIndent(outfile, level)
             outfile.write('<%saddress>%s</%saddress>\n' % (namespace_, self.gds_format_string(quote_xml(self.address).encode(ExternalEncoding), input_name='address'), namespace_))
-        if self.status:
+        if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
-        if self.cluster:
+        if self.cluster is not None:
             self.cluster.export(outfile, level, namespace_, name_='cluster')
         if self.port is not None:
             showIndent(outfile, level)
@@ -5980,26 +6004,28 @@ class Host(BaseResource):
             showIndent(outfile, level)
             outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
         if self.storage_manager is not None:
-            showIndent(outfile, level)
-            outfile.write('<%sstorage_manager>%s</%sstorage_manager>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.storage_manager)), input_name='storage_manager'), namespace_))
-        if self.version:
+            self.storage_manager.export(outfile, level, namespace_, name_='storage_manager')
+        if self.version is not None:
             self.version.export(outfile, level, namespace_, name_='version')
-        if self.power_management:
+        if self.power_management is not None:
             self.power_management.export(outfile, level, namespace_, name_='power_management')
-        if self.ksm:
+        if self.ksm is not None:
             self.ksm.export(outfile, level, namespace_, name_='ksm')
-        if self.transparent_hugepages:
+        if self.transparent_hugepages is not None:
             self.transparent_hugepages.export(outfile, level, namespace_, name_='transparent_hugepages')
-        if self.iscsi:
+        if self.iscsi is not None:
             self.iscsi.export(outfile, level, namespace_, name_='iscsi')
         if self.root_password is not None:
             showIndent(outfile, level)
             outfile.write('<%sroot_password>%s</%sroot_password>\n' % (namespace_, self.gds_format_string(quote_xml(self.root_password).encode(ExternalEncoding), input_name='root_password'), namespace_))
-        if self.statistics:
+        if self.statistics is not None:
             self.statistics.export(outfile, level, namespace_, name_='statistics')
-        if self.cpu:
+        if self.cpu is not None:
             self.cpu.export(outfile, level, namespace_, name_='cpu')
-        if self.summary:
+        if self.memory is not None:
+            showIndent(outfile, level)
+            outfile.write('<%smemory>%s</%smemory>\n' % (namespace_, self.gds_format_integer(self.memory, input_name='memory'), namespace_))
+        if self.summary is not None:
             self.summary.export(outfile, level, namespace_, name_='summary')
         if self.override_iptables is not None:
             showIndent(outfile, level)
@@ -6020,6 +6046,7 @@ class Host(BaseResource):
             self.root_password is not None or
             self.statistics is not None or
             self.cpu is not None or
+            self.memory is not None or
             self.summary is not None or
             self.override_iptables is not None or
             super(Host, self).hasContent_()
@@ -6059,7 +6086,10 @@ class Host(BaseResource):
             outfile.write('type_=%s,\n' % quote_python(self.type_).encode(ExternalEncoding))
         if self.storage_manager is not None:
             showIndent(outfile, level)
-            outfile.write('storage_manager=%s,\n' % self.storage_manager)
+            outfile.write('storage_manager=model_.StorageManager(\n')
+            self.storage_manager.exportLiteral(outfile, level, name_='storage_manager')
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.version is not None:
             showIndent(outfile, level)
             outfile.write('version=model_.Version(\n')
@@ -6105,6 +6135,9 @@ class Host(BaseResource):
             self.cpu.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.memory is not None:
+            showIndent(outfile, level)
+            outfile.write('memory=%d,\n' % self.memory)
         if self.summary is not None:
             showIndent(outfile, level)
             outfile.write('summary=model_.VmSummary(\n')
@@ -6147,15 +6180,9 @@ class Host(BaseResource):
             type_ = self.gds_validate_string(type_, node, 'type')
             self.type_ = type_
         elif nodeName_ == 'storage_manager':
-            sval_ = child_.text
-            if sval_ in ('true', '1'):
-                ival_ = True
-            elif sval_ in ('false', '0'):
-                ival_ = False
-            else:
-                raise_parse_error(child_, 'requires boolean')
-            ival_ = self.gds_validate_boolean(ival_, node, 'storage_manager')
-            self.storage_manager = ival_
+            obj_ = StorageManager.factory()
+            obj_.build(child_)
+            self.set_storage_manager(obj_)
         elif nodeName_ == 'version':
             class_obj_ = self.get_class_obj_(child_, Version)
             obj_ = class_obj_.factory()
@@ -6189,6 +6216,14 @@ class Host(BaseResource):
             obj_ = CPU.factory()
             obj_.build(child_)
             self.set_cpu(obj_)
+        elif nodeName_ == 'memory':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'memory')
+            self.memory = ival_
         elif nodeName_ == 'summary':
             obj_ = VmSummary.factory()
             obj_.build(child_)
@@ -6205,6 +6240,80 @@ class Host(BaseResource):
             self.override_iptables = ival_
         super(Host, self).buildChildren(child_, node, nodeName_, True)
 # end class Host
+
+
+class StorageManager(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, priority=None, valueOf_=None):
+        self.priority = _cast(int, priority)
+        self.valueOf_ = valueOf_
+    def factory(*args_, **kwargs_):
+        if StorageManager.subclass:
+            return StorageManager.subclass(*args_, **kwargs_)
+        else:
+            return StorageManager(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_priority(self): return self.priority
+    def set_priority(self, priority): self.priority = priority
+    def get_valueOf_(self): return self.valueOf_
+    def set_valueOf_(self, valueOf_): self.valueOf_ = valueOf_
+    def export(self, outfile, level, namespace_='', name_='StorageManager', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='StorageManager')
+        if self.hasContent_():
+            outfile.write('>')
+            outfile.write(str(self.valueOf_).encode(ExternalEncoding))
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='StorageManager'):
+        if self.priority is not None and 'priority' not in already_processed:
+            already_processed.append('priority')
+            outfile.write(' priority="%s"' % self.gds_format_integer(self.priority, input_name='priority'))
+    def exportChildren(self, outfile, level, namespace_='', name_='StorageManager', fromsubclass_=False):
+        pass
+    def hasContent_(self):
+        if (
+            self.valueOf_
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='StorageManager'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        if self.priority is not None and 'priority' not in already_processed:
+            already_processed.append('priority')
+            showIndent(outfile, level)
+            outfile.write('priority = %d,\n' % (self.priority,))
+    def exportLiteralChildren(self, outfile, level, name_):
+        pass
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        self.valueOf_ = get_all_text_(node)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('priority', node)
+        if value is not None and 'priority' not in already_processed:
+            already_processed.append('priority')
+            try:
+                self.priority = int(value)
+            except ValueError, exp:
+                raise_parse_error(node, 'Bad integer attribute: %s' % exp)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        pass
+# end class StorageManager
 
 
 class HostStates(GeneratedsSuper):
@@ -6579,7 +6688,7 @@ class Permit(BaseResource):
         if self.administrative is not None:
             showIndent(outfile, level)
             outfile.write('<%sadministrative>%s</%sadministrative>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.administrative)), input_name='administrative'), namespace_))
-        if self.role:
+        if self.role is not None:
             self.role.export(outfile, level, namespace_, name_='role')
     def hasContent_(self):
         if (
@@ -6756,9 +6865,9 @@ class Role(BaseResource):
         if self.administrative is not None:
             showIndent(outfile, level)
             outfile.write('<%sadministrative>%s</%sadministrative>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.administrative)), input_name='administrative'), namespace_))
-        if self.user:
+        if self.user is not None:
             self.user.export(outfile, level, namespace_, name_='user')
-        if self.permits:
+        if self.permits is not None:
             self.permits.export(outfile, level, namespace_, name_='permits')
     def hasContent_(self):
         if (
@@ -6974,7 +7083,7 @@ class User(BaseResource):
         super(User, self).exportAttributes(outfile, level, already_processed, namespace_, name_='User')
     def exportChildren(self, outfile, level, namespace_='', name_='User', fromsubclass_=False):
         super(User, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.domain:
+        if self.domain is not None:
             self.domain.export(outfile, level, namespace_, name_='domain')
         if self.department is not None:
             showIndent(outfile, level)
@@ -6994,9 +7103,9 @@ class User(BaseResource):
         if self.email is not None:
             showIndent(outfile, level)
             outfile.write('<%semail>%s</%semail>\n' % (namespace_, self.gds_format_string(quote_xml(self.email).encode(ExternalEncoding), input_name='email'), namespace_))
-        if self.roles:
+        if self.roles is not None:
             self.roles.export(outfile, level, namespace_, name_='roles')
-        if self.groups:
+        if self.groups is not None:
             self.groups.export(outfile, level, namespace_, name_='groups')
     def hasContent_(self):
         if (
@@ -7228,9 +7337,9 @@ class Group(BaseResource):
         super(Group, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Group')
     def exportChildren(self, outfile, level, namespace_='', name_='Group', fromsubclass_=False):
         super(Group, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.domain:
+        if self.domain is not None:
             self.domain.export(outfile, level, namespace_, name_='domain')
-        if self.roles:
+        if self.roles is not None:
             self.roles.export(outfile, level, namespace_, name_='roles')
     def hasContent_(self):
         if (
@@ -7421,25 +7530,25 @@ class Permission(BaseResource):
         super(Permission, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Permission')
     def exportChildren(self, outfile, level, namespace_='', name_='Permission', fromsubclass_=False):
         super(Permission, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.role:
+        if self.role is not None:
             self.role.export(outfile, level, namespace_, name_='role')
-        if self.user:
+        if self.user is not None:
             self.user.export(outfile, level, namespace_, name_='user')
-        if self.group:
+        if self.group is not None:
             self.group.export(outfile, level, namespace_, name_='group')
-        if self.data_center:
+        if self.data_center is not None:
             self.data_center.export(outfile, level, namespace_, name_='data_center')
-        if self.cluster:
+        if self.cluster is not None:
             self.cluster.export(outfile, level, namespace_, name_='cluster')
-        if self.host:
+        if self.host is not None:
             self.host.export(outfile, level, namespace_, name_='host')
-        if self.storage_domain:
+        if self.storage_domain is not None:
             self.storage_domain.export(outfile, level, namespace_, name_='storage_domain')
-        if self.vm:
+        if self.vm is not None:
             self.vm.export(outfile, level, namespace_, name_='vm')
-        if self.vmpool:
+        if self.vmpool is not None:
             self.vmpool.export(outfile, level, namespace_, name_='vmpool')
-        if self.template:
+        if self.template is not None:
             self.template.export(outfile, level, namespace_, name_='template')
     def hasContent_(self):
         if (
@@ -7691,7 +7800,7 @@ class Domain(BaseResource):
         super(Domain, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Domain')
     def exportChildren(self, outfile, level, namespace_='', name_='Domain', fromsubclass_=False):
         super(Domain, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.user:
+        if self.user is not None:
             self.user.export(outfile, level, namespace_, name_='user')
     def hasContent_(self):
         if (
@@ -7880,19 +7989,19 @@ class Event(BaseResource):
         if self.time is not None:
             showIndent(outfile, level)
             outfile.write('<%stime>%s</%stime>\n' % (namespace_, self.gds_format_string(quote_xml(self.time).encode(ExternalEncoding), input_name='time'), namespace_))
-        if self.user:
+        if self.user is not None:
             self.user.export(outfile, level, namespace_, name_='user')
-        if self.vm:
+        if self.vm is not None:
             self.vm.export(outfile, level, namespace_, name_='vm')
-        if self.storage_domain:
+        if self.storage_domain is not None:
             self.storage_domain.export(outfile, level, namespace_, name_='storage_domain')
-        if self.host:
+        if self.host is not None:
             self.host.export(outfile, level, namespace_, name_='host')
-        if self.template:
+        if self.template is not None:
             self.template.export(outfile, level, namespace_, name_='template')
-        if self.cluster:
+        if self.cluster is not None:
             self.cluster.export(outfile, level, namespace_, name_='cluster')
-        if self.data_center:
+        if self.data_center is not None:
             self.data_center.export(outfile, level, namespace_, name_='data_center')
     def hasContent_(self):
         if (
@@ -8145,7 +8254,7 @@ class File(BaseResource):
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
-        if self.storage_domain:
+        if self.storage_domain is not None:
             self.storage_domain.export(outfile, level, namespace_, name_='storage_domain')
     def hasContent_(self):
         if (
@@ -8632,18 +8741,18 @@ class Network(BaseResource):
         super(Network, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Network')
     def exportChildren(self, outfile, level, namespace_='', name_='Network', fromsubclass_=False):
         super(Network, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.data_center:
+        if self.data_center is not None:
             self.data_center.export(outfile, level, namespace_, name_='data_center')
-        if self.cluster:
+        if self.cluster is not None:
             self.cluster.export(outfile, level, namespace_, name_='cluster')
-        if self.ip:
+        if self.ip is not None:
             self.ip.export(outfile, level, namespace_, name_='ip')
-        if self.vlan:
+        if self.vlan is not None:
             self.vlan.export(outfile, level, namespace_, name_='vlan')
         if self.stp is not None:
             showIndent(outfile, level)
             outfile.write('<%sstp>%s</%sstp>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.stp)), input_name='stp'), namespace_))
-        if self.status:
+        if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
         if self.display is not None:
             showIndent(outfile, level)
@@ -9324,9 +9433,9 @@ class Storage(BaseResource):
             outfile.write('<%spath>%s</%spath>\n' % (namespace_, self.gds_format_string(quote_xml(self.path).encode(ExternalEncoding), input_name='path'), namespace_))
         for logical_unit_ in self.logical_unit:
             logical_unit_.export(outfile, level, namespace_, name_='logical_unit')
-        if self.volume_group:
+        if self.volume_group is not None:
             self.volume_group.export(outfile, level, namespace_, name_='volume_group')
-        if self.host:
+        if self.host is not None:
             self.host.export(outfile, level, namespace_, name_='host')
     def hasContent_(self):
         if (
@@ -9482,19 +9591,19 @@ class StorageDomain(BaseResource):
         super(StorageDomain, self).exportAttributes(outfile, level, already_processed, namespace_, name_='StorageDomain')
     def exportChildren(self, outfile, level, namespace_='', name_='StorageDomain', fromsubclass_=False):
         super(StorageDomain, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.data_center:
+        if self.data_center is not None:
             self.data_center.export(outfile, level, namespace_, name_='data_center')
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
-        if self.status:
+        if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
         if self.master is not None:
             showIndent(outfile, level)
             outfile.write('<%smaster>%s</%smaster>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.master)), input_name='master'), namespace_))
-        if self.storage:
+        if self.storage is not None:
             self.storage.export(outfile, level, namespace_, name_='storage')
-        if self.host:
+        if self.host is not None:
             self.host.export(outfile, level, namespace_, name_='host')
         if self.format is not None:
             showIndent(outfile, level)
@@ -9912,23 +10021,23 @@ class Template(BaseResource):
         super(Template, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Template')
     def exportChildren(self, outfile, level, namespace_='', name_='Template', fromsubclass_=False):
         super(Template, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.vm:
+        if self.vm is not None:
             self.vm.export(outfile, level, namespace_, name_='vm')
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
-        if self.status:
+        if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
         if self.memory is not None:
             showIndent(outfile, level)
             outfile.write('<%smemory>%s</%smemory>\n' % (namespace_, self.gds_format_integer(self.memory, input_name='memory'), namespace_))
-        if self.cpu:
+        if self.cpu is not None:
             self.cpu.export(outfile, level, namespace_, name_='cpu')
-        if self.os:
+        if self.os is not None:
             self.os.export(outfile, level, namespace_, name_='os')
-        if self.cluster:
+        if self.cluster is not None:
             self.cluster.export(outfile, level, namespace_, name_='cluster')
-        if self.storage_domain:
+        if self.storage_domain is not None:
             self.storage_domain.export(outfile, level, namespace_, name_='storage_domain')
         if self.creation_time is not None:
             showIndent(outfile, level)
@@ -9936,9 +10045,9 @@ class Template(BaseResource):
         if self.origin is not None:
             showIndent(outfile, level)
             outfile.write('<%sorigin>%s</%sorigin>\n' % (namespace_, self.gds_format_string(quote_xml(self.origin).encode(ExternalEncoding), input_name='origin'), namespace_))
-        if self.high_availability:
+        if self.high_availability is not None:
             self.high_availability.export(outfile, level, namespace_, name_='high_availability')
-        if self.display:
+        if self.display is not None:
             self.display.export(outfile, level, namespace_, name_='display')
         if self.stateless is not None:
             showIndent(outfile, level)
@@ -9946,9 +10055,9 @@ class Template(BaseResource):
         if self.timezone is not None:
             showIndent(outfile, level)
             outfile.write('<%stimezone>%s</%stimezone>\n' % (namespace_, self.gds_format_string(quote_xml(self.timezone).encode(ExternalEncoding), input_name='timezone'), namespace_))
-        if self.domain:
+        if self.domain is not None:
             self.domain.export(outfile, level, namespace_, name_='domain')
-        if self.usb:
+        if self.usb is not None:
             self.usb.export(outfile, level, namespace_, name_='usb')
     def hasContent_(self):
         if (
@@ -11001,7 +11110,7 @@ class VmPlacementPolicy(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VmPlacementPolicy'):
         pass
     def exportChildren(self, outfile, level, namespace_='', name_='VmPlacementPolicy', fromsubclass_=False):
-        if self.host:
+        if self.host is not None:
             self.host.export(outfile, level, namespace_, name_='host')
         if self.affinity is not None:
             showIndent(outfile, level)
@@ -11050,74 +11159,6 @@ class VmPlacementPolicy(GeneratedsSuper):
 # end class VmPlacementPolicy
 
 
-class VmMemoryPolicy(GeneratedsSuper):
-    subclass = None
-    superclass = None
-    def __init__(self, guaranteed=None):
-        self.guaranteed = guaranteed
-    def factory(*args_, **kwargs_):
-        if VmMemoryPolicy.subclass:
-            return VmMemoryPolicy.subclass(*args_, **kwargs_)
-        else:
-            return VmMemoryPolicy(*args_, **kwargs_)
-    factory = staticmethod(factory)
-    def get_guaranteed(self): return self.guaranteed
-    def set_guaranteed(self, guaranteed): self.guaranteed = guaranteed
-    def export(self, outfile, level, namespace_='', name_='VmMemoryPolicy', namespacedef_=''):
-        showIndent(outfile, level)
-        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
-        already_processed = []
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='VmMemoryPolicy')
-        if self.hasContent_():
-            outfile.write('>\n')
-            self.exportChildren(outfile, level + 1, namespace_, name_)
-            showIndent(outfile, level)
-            outfile.write('</%s%s>\n' % (namespace_, name_))
-        else:
-            outfile.write('/>\n')
-    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VmMemoryPolicy'):
-        pass
-    def exportChildren(self, outfile, level, namespace_='', name_='VmMemoryPolicy', fromsubclass_=False):
-        if self.guaranteed is not None:
-            showIndent(outfile, level)
-            outfile.write('<%sguaranteed>%s</%sguaranteed>\n' % (namespace_, self.gds_format_integer(self.guaranteed, input_name='guaranteed'), namespace_))
-    def hasContent_(self):
-        if (
-            self.guaranteed is not None
-            ):
-            return True
-        else:
-            return False
-    def exportLiteral(self, outfile, level, name_='VmMemoryPolicy'):
-        level += 1
-        self.exportLiteralAttributes(outfile, level, [], name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.guaranteed is not None:
-            showIndent(outfile, level)
-            outfile.write('guaranteed=%d,\n' % self.guaranteed)
-    def build(self, node):
-        self.buildAttributes(node, node.attrib, [])
-        for child in node:
-            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
-            self.buildChildren(child, node, nodeName_)
-    def buildAttributes(self, node, attrs, already_processed):
-        pass
-    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'guaranteed':
-            sval_ = child_.text
-            try:
-                ival_ = int(sval_)
-            except (TypeError, ValueError), exp:
-                raise_parse_error(child_, 'requires integer: %s' % exp)
-            ival_ = self.gds_validate_integer(ival_, node, 'guaranteed')
-            self.guaranteed = ival_
-# end class VmMemoryPolicy
-
-
 class GuestInfo(GeneratedsSuper):
     subclass = None
     superclass = None
@@ -11146,7 +11187,7 @@ class GuestInfo(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GuestInfo'):
         pass
     def exportChildren(self, outfile, level, namespace_='', name_='GuestInfo', fromsubclass_=False):
-        if self.ips:
+        if self.ips is not None:
             self.ips.export(outfile, level, namespace_, name_='ips')
     def hasContent_(self):
         if (
@@ -11301,26 +11342,26 @@ class VM(BaseResource):
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
-        if self.status:
+        if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
         if self.memory is not None:
             showIndent(outfile, level)
             outfile.write('<%smemory>%s</%smemory>\n' % (namespace_, self.gds_format_integer(self.memory, input_name='memory'), namespace_))
-        if self.cpu:
+        if self.cpu is not None:
             self.cpu.export(outfile, level, namespace_, name_='cpu')
-        if self.os:
+        if self.os is not None:
             self.os.export(outfile, level, namespace_, name_='os')
-        if self.high_availability:
+        if self.high_availability is not None:
             self.high_availability.export(outfile, level, namespace_, name_='high_availability')
-        if self.display:
+        if self.display is not None:
             self.display.export(outfile, level, namespace_, name_='display')
-        if self.host:
+        if self.host is not None:
             self.host.export(outfile, level, namespace_, name_='host')
-        if self.cluster:
+        if self.cluster is not None:
             self.cluster.export(outfile, level, namespace_, name_='cluster')
-        if self.template:
+        if self.template is not None:
             self.template.export(outfile, level, namespace_, name_='template')
-        if self.storage_domain:
+        if self.storage_domain is not None:
             self.storage_domain.export(outfile, level, namespace_, name_='storage_domain')
         if self.start_time is not None:
             showIndent(outfile, level)
@@ -11337,31 +11378,31 @@ class VM(BaseResource):
         if self.timezone is not None:
             showIndent(outfile, level)
             outfile.write('<%stimezone>%s</%stimezone>\n' % (namespace_, self.gds_format_string(quote_xml(self.timezone).encode(ExternalEncoding), input_name='timezone'), namespace_))
-        if self.domain:
+        if self.domain is not None:
             self.domain.export(outfile, level, namespace_, name_='domain')
-        if self.custom_properties:
+        if self.custom_properties is not None:
             self.custom_properties.export(outfile, level, namespace_, name_='custom_properties')
-        if self.statistics:
+        if self.statistics is not None:
             self.statistics.export(outfile, level, namespace_, name_='statistics')
-        if self.disks:
+        if self.disks is not None:
             self.disks.export(outfile, level, namespace_, name_='disks')
-        if self.nics:
+        if self.nics is not None:
             self.nics.export(outfile, level, namespace_, name_='nics')
-        if self.tags:
+        if self.tags is not None:
             self.tags.export(outfile, level, namespace_, name_='tags')
-        if self.placement_policy:
+        if self.placement_policy is not None:
             self.placement_policy.export(outfile, level, namespace_, name_='placement_policy')
-        if self.memory_policy:
+        if self.memory_policy is not None:
             self.memory_policy.export(outfile, level, namespace_, name_='memory_policy')
-        if self.guest_info:
+        if self.guest_info is not None:
             self.guest_info.export(outfile, level, namespace_, name_='guest_info')
-        if self.usb:
+        if self.usb is not None:
             self.usb.export(outfile, level, namespace_, name_='usb')
-        if self.vmpool:
+        if self.vmpool is not None:
             self.vmpool.export(outfile, level, namespace_, name_='vmpool')
-        if self.cdroms:
+        if self.cdroms is not None:
             self.cdroms.export(outfile, level, namespace_, name_='cdroms')
-        if self.floppies:
+        if self.floppies is not None:
             self.floppies.export(outfile, level, namespace_, name_='floppies')
     def hasContent_(self):
         if (
@@ -11527,7 +11568,7 @@ class VM(BaseResource):
             outfile.write('),\n')
         if self.memory_policy is not None:
             showIndent(outfile, level)
-            outfile.write('memory_policy=model_.VmMemoryPolicy(\n')
+            outfile.write('memory_policy=model_.MemoryPolicy(\n')
             self.memory_policy.exportLiteral(outfile, level, name_='memory_policy')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -11672,7 +11713,7 @@ class VM(BaseResource):
             obj_.build(child_)
             self.set_placement_policy(obj_)
         elif nodeName_ == 'memory_policy':
-            obj_ = VmMemoryPolicy.factory()
+            obj_ = MemoryPolicy.factory()
             obj_.build(child_)
             self.set_memory_policy(obj_)
         elif nodeName_ == 'guest_info':
@@ -11970,9 +12011,9 @@ class VmPool(BaseResource):
         if self.size is not None:
             showIndent(outfile, level)
             outfile.write('<%ssize>%s</%ssize>\n' % (namespace_, self.gds_format_integer(self.size, input_name='size'), namespace_))
-        if self.cluster:
+        if self.cluster is not None:
             self.cluster.export(outfile, level, namespace_, name_='cluster')
-        if self.template:
+        if self.template is not None:
             self.template.export(outfile, level, namespace_, name_='template')
     def hasContent_(self):
         if (
@@ -12158,9 +12199,9 @@ class BaseDevice(BaseResource):
             outfile.write(' xsi:type="%s"' % self.extensiontype_)
     def exportChildren(self, outfile, level, namespace_='', name_='BaseDevice', fromsubclass_=False):
         super(BaseDevice, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.vm:
+        if self.vm is not None:
             self.vm.export(outfile, level, namespace_, name_='vm')
-        if self.template:
+        if self.template is not None:
             self.template.export(outfile, level, namespace_, name_='template')
     def hasContent_(self):
         if (
@@ -12313,7 +12354,7 @@ class CdRom(BaseDevice):
         super(CdRom, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CdRom')
     def exportChildren(self, outfile, level, namespace_='', name_='CdRom', fromsubclass_=False):
         super(CdRom, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.file:
+        if self.file is not None:
             self.file.export(outfile, level, namespace_, name_='file')
     def hasContent_(self):
         if (
@@ -12466,7 +12507,7 @@ class Floppy(BaseDevice):
         super(Floppy, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Floppy')
     def exportChildren(self, outfile, level, namespace_='', name_='Floppy', fromsubclass_=False):
         super(Floppy, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.file:
+        if self.file is not None:
             self.file.export(outfile, level, namespace_, name_='file', )
     def hasContent_(self):
         if (
@@ -12649,7 +12690,7 @@ class Disk(BaseDevice):
         super(Disk, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Disk')
     def exportChildren(self, outfile, level, namespace_='', name_='Disk', fromsubclass_=False):
         super(Disk, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.storage_domains:
+        if self.storage_domains is not None:
             self.storage_domains.export(outfile, level, namespace_, name_='storage_domains')
         if self.size is not None:
             showIndent(outfile, level)
@@ -12657,7 +12698,7 @@ class Disk(BaseDevice):
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
-        if self.status:
+        if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
         if self.interface is not None:
             showIndent(outfile, level)
@@ -12677,7 +12718,7 @@ class Disk(BaseDevice):
         if self.propagate_errors is not None:
             showIndent(outfile, level)
             outfile.write('<%spropagate_errors>%s</%spropagate_errors>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.propagate_errors)), input_name='propagate_errors'), namespace_))
-        if self.statistics:
+        if self.statistics is not None:
             self.statistics.export(outfile, level, namespace_, name_='statistics')
     def hasContent_(self):
         if (
@@ -13048,14 +13089,14 @@ class NIC(BaseDevice):
         super(NIC, self).exportAttributes(outfile, level, already_processed, namespace_, name_='NIC')
     def exportChildren(self, outfile, level, namespace_='', name_='NIC', fromsubclass_=False):
         super(NIC, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.network:
+        if self.network is not None:
             self.network.export(outfile, level, namespace_, name_='network')
         if self.interface is not None:
             showIndent(outfile, level)
             outfile.write('<%sinterface>%s</%sinterface>\n' % (namespace_, self.gds_format_string(quote_xml(self.interface).encode(ExternalEncoding), input_name='interface'), namespace_))
-        if self.mac:
+        if self.mac is not None:
             self.mac.export(outfile, level, namespace_, name_='mac')
-        if self.statistics:
+        if self.statistics is not None:
             self.statistics.export(outfile, level, namespace_, name_='statistics')
     def hasContent_(self):
         if (
@@ -13244,9 +13285,9 @@ class Snapshot(BaseResource):
         super(Snapshot, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Snapshot')
     def exportChildren(self, outfile, level, namespace_='', name_='Snapshot', fromsubclass_=False):
         super(Snapshot, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.vm:
+        if self.vm is not None:
             self.vm.export(outfile, level, namespace_, name_='vm')
-        if self.disk:
+        if self.disk is not None:
             self.disk.export(outfile, level, namespace_, name_='disk')
         if self.date is not None:
             showIndent(outfile, level)
@@ -13451,22 +13492,22 @@ class HostNIC(BaseResource):
         super(HostNIC, self).exportAttributes(outfile, level, already_processed, namespace_, name_='HostNIC')
     def exportChildren(self, outfile, level, namespace_='', name_='HostNIC', fromsubclass_=False):
         super(HostNIC, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.host:
+        if self.host is not None:
             self.host.export(outfile, level, namespace_, name_='host')
-        if self.network:
+        if self.network is not None:
             self.network.export(outfile, level, namespace_, name_='network')
-        if self.mac:
+        if self.mac is not None:
             self.mac.export(outfile, level, namespace_, name_='mac')
-        if self.ip:
+        if self.ip is not None:
             self.ip.export(outfile, level, namespace_, name_='ip')
-        if self.vlan:
+        if self.vlan is not None:
             self.vlan.export(outfile, level, namespace_, name_='vlan')
-        if self.bonding:
+        if self.bonding is not None:
             self.bonding.export(outfile, level, namespace_, name_='bonding')
         if self.boot_protocol is not None:
             showIndent(outfile, level)
             outfile.write('<%sboot_protocol>%s</%sboot_protocol>\n' % (namespace_, self.gds_format_string(quote_xml(self.boot_protocol).encode(ExternalEncoding), input_name='boot_protocol'), namespace_))
-        if self.statistics:
+        if self.statistics is not None:
             self.statistics.export(outfile, level, namespace_, name_='statistics')
         if self.check_connectivity is not None:
             showIndent(outfile, level)
@@ -13474,7 +13515,7 @@ class HostNIC(BaseResource):
         if self.speed is not None:
             showIndent(outfile, level)
             outfile.write('<%sspeed>%s</%sspeed>\n' % (namespace_, self.gds_format_integer(self.speed, input_name='speed'), namespace_))
-        if self.status:
+        if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
     def hasContent_(self):
         if (
@@ -13891,9 +13932,9 @@ class Bonding(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Bonding'):
         pass
     def exportChildren(self, outfile, level, namespace_='', name_='Bonding', fromsubclass_=False):
-        if self.options:
+        if self.options is not None:
             self.options.export(outfile, level, namespace_, name_='options')
-        if self.slaves:
+        if self.slaves is not None:
             self.slaves.export(outfile, level, namespace_, name_='slaves')
     def hasContent_(self):
         if (
@@ -14052,7 +14093,7 @@ class TagParent(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='TagParent'):
         pass
     def exportChildren(self, outfile, level, namespace_='', name_='TagParent', fromsubclass_=False):
-        if self.tag:
+        if self.tag is not None:
             self.tag.export(outfile, level, namespace_, name_='tag')
     def hasContent_(self):
         if (
@@ -14132,15 +14173,15 @@ class Tag(BaseResource):
         super(Tag, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Tag')
     def exportChildren(self, outfile, level, namespace_='', name_='Tag', fromsubclass_=False):
         super(Tag, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.host:
+        if self.host is not None:
             self.host.export(outfile, level, namespace_, name_='host')
-        if self.vm:
+        if self.vm is not None:
             self.vm.export(outfile, level, namespace_, name_='vm')
-        if self.user:
+        if self.user is not None:
             self.user.export(outfile, level, namespace_, name_='user')
-        if self.group:
+        if self.group is not None:
             self.group.export(outfile, level, namespace_, name_='group')
-        if self.parent:
+        if self.parent is not None:
             self.parent.export(outfile, level, namespace_, name_='parent')
     def hasContent_(self):
         if (
@@ -14588,11 +14629,11 @@ class Request(GeneratedsSuper):
         if self.http_method is not None:
             showIndent(outfile, level)
             outfile.write('<%shttp_method>%s</%shttp_method>\n' % (namespace_, self.gds_format_string(quote_xml(self.http_method).encode(ExternalEncoding), input_name='http_method'), namespace_))
-        if self.headers:
+        if self.headers is not None:
             self.headers.export(outfile, level, namespace_, name_='headers')
-        if self.url:
+        if self.url is not None:
             self.url.export(outfile, level, namespace_, name_='url')
-        if self.body:
+        if self.body is not None:
             self.body.export(outfile, level, namespace_, name_='body')
     def hasContent_(self):
         if (
@@ -15205,11 +15246,11 @@ class RSDL(GeneratedsSuper):
         if self.description is not None:
             showIndent(outfile, level)
             outfile.write('<%sdescription>%s</%sdescription>\n' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_))
-        if self.version:
+        if self.version is not None:
             self.version.export(outfile, level, namespace_, name_='version')
-        if self.schema:
+        if self.schema is not None:
             self.schema.export(outfile, level, namespace_, name_='schema')
-        if self.links:
+        if self.links is not None:
             self.links.export(outfile, level, namespace_, name_='links')
     def hasContent_(self):
         if (
@@ -15328,7 +15369,7 @@ class ProductInfo(BaseResource):
         if self.vendor is not None:
             showIndent(outfile, level)
             outfile.write('<%svendor>%s</%svendor>\n' % (namespace_, self.gds_format_string(quote_xml(self.vendor).encode(ExternalEncoding), input_name='vendor'), namespace_))
-        if self.version:
+        if self.version is not None:
             self.version.export(outfile, level, namespace_, name_='version')
     def hasContent_(self):
         if (
@@ -15517,7 +15558,7 @@ class Statistic(BaseResource):
         super(Statistic, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Statistic')
     def exportChildren(self, outfile, level, namespace_='', name_='Statistic', fromsubclass_=False):
         super(Statistic, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.values:
+        if self.values is not None:
             self.values.export(outfile, level, namespace_, name_='values', )
         if self.type_ is not None:
             showIndent(outfile, level)
@@ -15525,15 +15566,15 @@ class Statistic(BaseResource):
         if self.unit is not None:
             showIndent(outfile, level)
             outfile.write('<%sunit>%s</%sunit>\n' % (namespace_, self.gds_format_string(quote_xml(self.unit).encode(ExternalEncoding), input_name='unit'), namespace_))
-        if self.disk:
+        if self.disk is not None:
             self.disk.export(outfile, level, namespace_, name_='disk')
-        if self.host:
+        if self.host is not None:
             self.host.export(outfile, level, namespace_, name_='host')
-        if self.host_nic:
+        if self.host_nic is not None:
             self.host_nic.export(outfile, level, namespace_, name_='host_nic')
-        if self.nic:
+        if self.nic is not None:
             self.nic.export(outfile, level, namespace_, name_='nic')
-        if self.vm:
+        if self.vm is not None:
             self.vm.export(outfile, level, namespace_, name_='vm')
     def hasContent_(self):
         if (
@@ -15680,9 +15721,9 @@ class Creation(BaseResource):
         super(Creation, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Creation')
     def exportChildren(self, outfile, level, namespace_='', name_='Creation', fromsubclass_=False):
         super(Creation, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.status:
+        if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
-        if self.fault:
+        if self.fault is not None:
             self.fault.export(outfile, level, namespace_, name_='fault')
     def hasContent_(self):
         if (
@@ -15829,11 +15870,11 @@ class Action(BaseResource):
         if self.async is not None:
             showIndent(outfile, level)
             outfile.write('<%sasync>%s</%sasync>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.async)), input_name='async'), namespace_))
-        if self.grace_period:
+        if self.grace_period is not None:
             self.grace_period.export(outfile, level, namespace_, name_='grace_period')
-        if self.host:
+        if self.host is not None:
             self.host.export(outfile, level, namespace_, name_='host')
-        if self.network:
+        if self.network is not None:
             self.network.export(outfile, level, namespace_, name_='network')
         if self.root_password is not None:
             showIndent(outfile, level)
@@ -15844,13 +15885,13 @@ class Action(BaseResource):
         if self.fence_type is not None:
             showIndent(outfile, level)
             outfile.write('<%sfence_type>%s</%sfence_type>\n' % (namespace_, self.gds_format_string(quote_xml(self.fence_type).encode(ExternalEncoding), input_name='fence_type'), namespace_))
-        if self.ticket:
+        if self.ticket is not None:
             self.ticket.export(outfile, level, namespace_, name_='ticket')
-        if self.iscsi:
+        if self.iscsi is not None:
             self.iscsi.export(outfile, level, namespace_, name_='iscsi')
-        if self.storage_domain:
+        if self.storage_domain is not None:
             self.storage_domain.export(outfile, level, namespace_, name_='storage_domain')
-        if self.cluster:
+        if self.cluster is not None:
             self.cluster.export(outfile, level, namespace_, name_='cluster')
         if self.discard_snapshots is not None:
             showIndent(outfile, level)
@@ -15858,7 +15899,7 @@ class Action(BaseResource):
         if self.exclusive is not None:
             showIndent(outfile, level)
             outfile.write('<%sexclusive>%s</%sexclusive>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.exclusive)), input_name='exclusive'), namespace_))
-        if self.vm:
+        if self.vm is not None:
             self.vm.export(outfile, level, namespace_, name_='vm')
         if self.pause is not None:
             showIndent(outfile, level)
@@ -15866,14 +15907,14 @@ class Action(BaseResource):
         if self.force is not None:
             showIndent(outfile, level)
             outfile.write('<%sforce>%s</%sforce>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.force)), input_name='force'), namespace_))
-        if self.status:
+        if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
-        if self.fault:
+        if self.fault is not None:
             self.fault.export(outfile, level, namespace_, name_='fault')
         for iscsi_target_ in self.iscsi_target:
             showIndent(outfile, level)
             outfile.write('<%siscsi_target>%s</%siscsi_target>\n' % (namespace_, self.gds_format_string(quote_xml(iscsi_target_).encode(ExternalEncoding), input_name='iscsi_target'), namespace_))
-        if self.power_management:
+        if self.power_management is not None:
             self.power_management.export(outfile, level, namespace_, name_='power_management')
     def hasContent_(self):
         if (
@@ -16225,11 +16266,11 @@ class API(BaseResource):
         super(API, self).exportAttributes(outfile, level, already_processed, namespace_, name_='API')
     def exportChildren(self, outfile, level, namespace_='', name_='API', fromsubclass_=False):
         super(API, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.special_objects:
+        if self.special_objects is not None:
             self.special_objects.export(outfile, level, namespace_, name_='special_objects', )
-        if self.product_info:
+        if self.product_info is not None:
             self.product_info.export(outfile, level, namespace_, name_='product_info', )
-        if self.summary:
+        if self.summary is not None:
             self.summary.export(outfile, level, namespace_, name_='summary', )
     def hasContent_(self):
         if (
@@ -16328,11 +16369,11 @@ class DetailedLink(Link):
         super(DetailedLink, self).exportAttributes(outfile, level, already_processed, namespace_, name_='DetailedLink')
     def exportChildren(self, outfile, level, namespace_='', name_='DetailedLink', fromsubclass_=False):
         super(DetailedLink, self).exportChildren(outfile, level, namespace_, name_, True)
-        if self.request:
+        if self.request is not None:
             self.request.export(outfile, level, namespace_, name_='request')
-        if self.response:
+        if self.response is not None:
             self.response.export(outfile, level, namespace_, name_='response')
-        if self.linkCapabilities:
+        if self.linkCapabilities is not None:
             self.linkCapabilities.export(outfile, level, namespace_, name_='linkCapabilities')
     def hasContent_(self):
         if (
@@ -16416,7 +16457,6 @@ def get_root_tag(node):
     # End NOT_GENERATED
     return tag, rootClass
 
-
 def parse(inFileName):
     doc = parsexml_(inFileName)
     rootNode = doc.getroot()
@@ -16454,7 +16494,6 @@ def parseString(inString):
 #        namespacedef_='')
     # End NOT_GENERATED
     return rootObj
-
 
 def parseLiteral(inFileName):
     doc = parsexml_(inFileName)
@@ -16608,6 +16647,7 @@ __all__ = [
     "StorageDomainTypes",
     "StorageDomains",
     "StorageFormats",
+    "StorageManager",
     "StorageTypes",
     "SupportedVersions",
     "Tag",
@@ -16630,7 +16670,6 @@ __all__ = [
     "Version",
     "VersionCaps",
     "VmAffinities",
-    "VmMemoryPolicy",
     "VmPauseDetails",
     "VmPlacementPolicy",
     "VmPool",
@@ -16757,7 +16796,6 @@ _rootClassMap = {
                     "vlan"                          : VLAN,
                     "vm_affinities"                 : VmAffinities,
                     "vm"                            : VM,
-                    "memory_policy"                 : VmMemoryPolicy,
                     "vm_pause_detail"               : VmPauseDetails,
                     "placement_policy"              : VmPlacementPolicy,
                     "vmpool"                        : VmPool,
