@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-01-30 14:28:48.648768
+Generated at: 2012-02-06 16:41:07.883042
 
 @author: mpastern@redhat.com
 '''
@@ -603,7 +603,8 @@ class DataCenters(Base):
 
         @param datacenter.name: string
         @param datacenter.storage_type: string
-        @param datacenter.supported_versions.version--LIST: {major=int, minor=int}
+        @param datacenter.version.major: int
+        @param datacenter.version.minor: int
         [@param datacenter.description: string]
         [@param datacenter.storage_format: string]
 
@@ -1983,6 +1984,17 @@ class Role(params.Role, Base):
         return self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
+    def update(self):
+        '''
+        @return Role:
+        '''
+
+        url = '/api/roles/{role:id}'
+
+        result = self._getProxy().update(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
+                                         body=ParseHelper.toXml(self.superclass))
+        return Role(result)
+
 class RolePermit(params.Permit, Base):
     def __init__(self, role, permit):
         self.parentclass = role
@@ -2969,7 +2981,7 @@ class Templates(Base):
         [@param template.stateless:  boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
-        [@param template.custom_properties.custom_property: {name=string, value=string, regex=string}]
+        [@param template.custom_properties.custom_property--LIST: {name=string, value=string}]
         [@param template.os.type: string]
         [@param template.os.boot.dev: string]
         [@param template.cpu.topology.sockets: int]
@@ -4265,7 +4277,7 @@ class VMs(Base):
         @param vm.cluster.id|name: string
         [@param vm.timezone: string]
         [@param vm.os.boot.dev: string]
-        [@param vm.custom_properties.custom_property: {name=string, value=string, regex=string}]
+        [@param vm.custom_properties.custom_property--LIST: {name=string, value=string}]
         [@param vm.os.type: string]
         [@param vm.usb.enabled: boolean]
         [@param vm.type: string]
