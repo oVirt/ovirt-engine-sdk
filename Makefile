@@ -5,7 +5,7 @@ rpmversion=1.2
 RPMTOP=$(shell bash -c "pwd -P")/rpmtop
 SPEC=ovirt-engine-sdk.spec
 
-TARBALL=ovirt-engine-sdk-$(rpmversion)-$(rpmrelease).tar.gz
+TARBALL=ovirt-engine-sdk-$(rpmversion).tar.gz
 SRPM=$(RPMTOP)/SRPMS/ovirt-engine-sdk-$(rpmversion)-$(rpmrelease)*.src.rpm
 
 TESTS=pyflakes
