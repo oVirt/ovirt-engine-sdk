@@ -53,17 +53,28 @@ class EntryPoint(object):
     @staticmethod
     def instanceMethods():
         methods_template = "\n" + \
-        "    def disconnect(self):\n" + \
-        "        ''' terminates server connection/s '''\n" + \
-        "        contextmanager._remove('proxy', force=True)\n" + \
-        "\n" + \
-        "    def test(self):\n" + \
-        "        ''' test server connectivity '''\n" + \
-        "        proxy = contextmanager.get('proxy')\n" + \
-        "        if proxy:\n" + \
-        "            proxy.request(method='GET', url='/api')\n" + \
-        "            return True\n" + \
-        "        return False\n"
+        """    
+    def disconnect(self):
+        ''' terminates server connection/s '''
+        contextmanager._remove('proxy', force=True)
+
+    def test(self, throw_exception=False):
+        ''' test server connectivity '''
+        proxy = contextmanager.get('proxy')
+        if proxy:
+            try :
+                proxy.request(method='GET', url='/api')
+            except Exception, e:
+                if throw_exception: raise e
+                else: return False
+            return True
+        return False
+
+    def get_product_info(self):
+        if self.test():
+            proxy = contextmanager.get('proxy')
+            return proxy.request(method='GET', url='/api').product_info
+        """
 
         return methods_template
 
