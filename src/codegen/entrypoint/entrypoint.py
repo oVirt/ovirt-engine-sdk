@@ -53,7 +53,7 @@ class EntryPoint(object):
     @staticmethod
     def instanceMethods():
         methods_template = "\n" + \
-        """    
+"""
     def disconnect(self):
         ''' terminates server connection/s '''
         contextmanager._remove('proxy', force=True)
@@ -74,7 +74,7 @@ class EntryPoint(object):
         if self.test():
             proxy = contextmanager.get('proxy')
             return proxy.request(method='GET', url='/api').product_info
-        """
+"""
 
         return methods_template
 
