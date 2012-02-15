@@ -37,6 +37,9 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Wed Feb 15 2012 Michael Pasternak <mpastern@redhat.com> - 1.5
+- several minor improvements
+
 * Fri Feb 10 2012 Michael Pasternak <mpastern@redhat.com> - 1.4
 - added get_product_info() method to entry point
 
