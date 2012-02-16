@@ -4273,7 +4273,7 @@ class VMs(Base):
         @type VM:
 
         @param vm.name: string
-        @param vm.teamplate.id|name: string
+        @param vm.template.id|name: string
         @param vm.cluster.id|name: string
         [@param vm.timezone: string]
         [@param vm.os.boot.dev: string]
