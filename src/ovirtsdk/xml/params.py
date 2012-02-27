@@ -200,7 +200,6 @@ except ImportError, exp:
                 object.__setattr__(self, item, value)
 # End NOT_GENERATED 
 
-
 #
 # If you have installed IPython you can uncomment and use the following.
 # IPython is available from http://ipython.scipy.org/.
@@ -5915,7 +5914,7 @@ class TransparentHugePages(GeneratedsSuper):
 class Host(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, address=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, statistics=None, cpu=None, memory=None, summary=None, override_iptables=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, address=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, statistics=None, cpu=None, memory=None, summary=None, override_iptables=None, reboot_after_installation=None):
         super(Host, self).__init__(href, id, name, description, actions, creation_status, link, )
         self.address = address
         self.status = status
@@ -5934,6 +5933,7 @@ class Host(BaseResource):
         self.memory = memory
         self.summary = summary
         self.override_iptables = override_iptables
+        self.reboot_after_installation = reboot_after_installation
     def factory(*args_, **kwargs_):
         if Host.subclass:
             return Host.subclass(*args_, **kwargs_)
@@ -5974,6 +5974,8 @@ class Host(BaseResource):
     def set_summary(self, summary): self.summary = summary
     def get_override_iptables(self): return self.override_iptables
     def set_override_iptables(self, override_iptables): self.override_iptables = override_iptables
+    def get_reboot_after_installation(self): return self.reboot_after_installation
+    def set_reboot_after_installation(self, reboot_after_installation): self.reboot_after_installation = reboot_after_installation
     def export(self, outfile, level, namespace_='', name_='Host', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -6030,6 +6032,9 @@ class Host(BaseResource):
         if self.override_iptables is not None:
             showIndent(outfile, level)
             outfile.write('<%soverride_iptables>%s</%soverride_iptables>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.override_iptables)), input_name='override_iptables'), namespace_))
+        if self.reboot_after_installation is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sreboot_after_installation>%s</%sreboot_after_installation>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.reboot_after_installation)), input_name='reboot_after_installation'), namespace_))
     def hasContent_(self):
         if (
             self.address is not None or
@@ -6049,6 +6054,7 @@ class Host(BaseResource):
             self.memory is not None or
             self.summary is not None or
             self.override_iptables is not None or
+            self.reboot_after_installation is not None or
             super(Host, self).hasContent_()
             ):
             return True
@@ -6147,6 +6153,9 @@ class Host(BaseResource):
         if self.override_iptables is not None:
             showIndent(outfile, level)
             outfile.write('override_iptables=%s,\n' % self.override_iptables)
+        if self.reboot_after_installation is not None:
+            showIndent(outfile, level)
+            outfile.write('reboot_after_installation=%s,\n' % self.reboot_after_installation)
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -6238,6 +6247,16 @@ class Host(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'override_iptables')
             self.override_iptables = ival_
+        elif nodeName_ == 'reboot_after_installation':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'reboot_after_installation')
+            self.reboot_after_installation = ival_
         super(Host, self).buildChildren(child_, node, nodeName_, True)
 # end class Host
 
@@ -12633,7 +12652,7 @@ class Floppies(BaseDevices):
 class Disk(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, vm=None, template=None, storage_domains=None, size=None, type_=None, status=None, interface=None, format=None, sparse=None, bootable=None, wipe_after_delete=None, propagate_errors=None, statistics=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, vm=None, template=None, storage_domains=None, size=None, type_=None, status=None, interface=None, format=None, sparse=None, bootable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, plugged=None):
         super(Disk, self).__init__(href, id, name, description, actions, creation_status, link, vm, template, )
         self.storage_domains = storage_domains
         self.size = size
@@ -12646,6 +12665,7 @@ class Disk(BaseDevice):
         self.wipe_after_delete = wipe_after_delete
         self.propagate_errors = propagate_errors
         self.statistics = statistics
+        self.plugged = plugged
     def factory(*args_, **kwargs_):
         if Disk.subclass:
             return Disk.subclass(*args_, **kwargs_)
@@ -12674,6 +12694,8 @@ class Disk(BaseDevice):
     def set_propagate_errors(self, propagate_errors): self.propagate_errors = propagate_errors
     def get_statistics(self): return self.statistics
     def set_statistics(self, statistics): self.statistics = statistics
+    def get_plugged(self): return self.plugged
+    def set_plugged(self, plugged): self.plugged = plugged
     def export(self, outfile, level, namespace_='', name_='Disk', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -12720,6 +12742,9 @@ class Disk(BaseDevice):
             outfile.write('<%spropagate_errors>%s</%spropagate_errors>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.propagate_errors)), input_name='propagate_errors'), namespace_))
         if self.statistics is not None:
             self.statistics.export(outfile, level, namespace_, name_='statistics')
+        if self.plugged is not None:
+            showIndent(outfile, level)
+            outfile.write('<%splugged>%s</%splugged>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.plugged)), input_name='plugged'), namespace_))
     def hasContent_(self):
         if (
             self.storage_domains is not None or
@@ -12733,6 +12758,7 @@ class Disk(BaseDevice):
             self.wipe_after_delete is not None or
             self.propagate_errors is not None or
             self.statistics is not None or
+            self.plugged is not None or
             super(Disk, self).hasContent_()
             ):
             return True
@@ -12789,6 +12815,9 @@ class Disk(BaseDevice):
             self.statistics.exportLiteral(outfile, level, name_='statistics')
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.plugged is not None:
+            showIndent(outfile, level)
+            outfile.write('plugged=%s,\n' % self.plugged)
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -12869,6 +12898,16 @@ class Disk(BaseDevice):
             obj_ = Statistics.factory()
             obj_.build(child_)
             self.set_statistics(obj_)
+        elif nodeName_ == 'plugged':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'plugged')
+            self.plugged = ival_
         super(Disk, self).buildChildren(child_, node, nodeName_, True)
 # end class Disk
 
@@ -14769,11 +14808,11 @@ class Response(GeneratedsSuper):
 class Parameter(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, value=None, type_=None, mandatory=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, required=None, value=None, type_=None):
         super(Parameter, self).__init__(href, id, name, description, actions, creation_status, link, )
+        self.required = _cast(bool, required)
         self.value = value
         self.type_ = type_
-        self.mandatory = mandatory
     def factory(*args_, **kwargs_):
         if Parameter.subclass:
             return Parameter.subclass(*args_, **kwargs_)
@@ -14784,8 +14823,8 @@ class Parameter(BaseResource):
     def set_value(self, value): self.value = value
     def get_type(self): return self.type_
     def set_type(self, type_): self.type_ = type_
-    def get_mandatory(self): return self.mandatory
-    def set_mandatory(self, mandatory): self.mandatory = mandatory
+    def get_required(self): return self.required
+    def set_required(self, required): self.required = required
     def export(self, outfile, level, namespace_='', name_='Parameter', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -14800,6 +14839,9 @@ class Parameter(BaseResource):
             outfile.write('/>\n')
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Parameter'):
         super(Parameter, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Parameter')
+        if self.required is not None and 'required' not in already_processed:
+            already_processed.append('required')
+            outfile.write(' required="%s"' % self.gds_format_boolean(self.gds_str_lower(str(self.required)), input_name='required'))
     def exportChildren(self, outfile, level, namespace_='', name_='Parameter', fromsubclass_=False):
         super(Parameter, self).exportChildren(outfile, level, namespace_, name_, True)
         if self.value is not None:
@@ -14808,14 +14850,10 @@ class Parameter(BaseResource):
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
-        if self.mandatory is not None:
-            showIndent(outfile, level)
-            outfile.write('<%smandatory>%s</%smandatory>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.mandatory)), input_name='mandatory'), namespace_))
     def hasContent_(self):
         if (
             self.value is not None or
             self.type_ is not None or
-            self.mandatory is not None or
             super(Parameter, self).hasContent_()
             ):
             return True
@@ -14827,6 +14865,10 @@ class Parameter(BaseResource):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        if self.required is not None and 'required' not in already_processed:
+            already_processed.append('required')
+            showIndent(outfile, level)
+            outfile.write('required = %s,\n' % (self.required,))
         super(Parameter, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
         super(Parameter, self).exportLiteralChildren(outfile, level, name_)
@@ -14836,15 +14878,21 @@ class Parameter(BaseResource):
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('type_=%s,\n' % quote_python(self.type_).encode(ExternalEncoding))
-        if self.mandatory is not None:
-            showIndent(outfile, level)
-            outfile.write('mandatory=%s,\n' % self.mandatory)
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('required', node)
+        if value is not None and 'required' not in already_processed:
+            already_processed.append('required')
+            if value in ('true', '1'):
+                self.required = True
+            elif value in ('false', '0'):
+                self.required = False
+            else:
+                raise_parse_error(node, 'Bad boolean attribute')
         super(Parameter, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'value':
@@ -14855,16 +14903,6 @@ class Parameter(BaseResource):
             type_ = child_.text
             type_ = self.gds_validate_string(type_, node, 'type')
             self.type_ = type_
-        elif nodeName_ == 'mandatory':
-            sval_ = child_.text
-            if sval_ in ('true', '1'):
-                ival_ = True
-            elif sval_ in ('false', '0'):
-                ival_ = False
-            else:
-                raise_parse_error(child_, 'requires boolean')
-            ival_ = self.gds_validate_boolean(ival_, node, 'mandatory')
-            self.mandatory = ival_
         super(Parameter, self).buildChildren(child_, node, nodeName_, True)
 # end class Parameter
 
@@ -15778,7 +15816,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, pause=None, force=None, status=None, fault=None, iscsi_target=None, power_management=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, status=None, fault=None, iscsi_target=None, power_management=None):
         super(Action, self).__init__(href, id, name, description, actions, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -15794,6 +15832,9 @@ class Action(BaseResource):
         self.discard_snapshots = discard_snapshots
         self.exclusive = exclusive
         self.vm = vm
+        self.host_nics = host_nics
+        self.check_connectivity = check_connectivity
+        self.connectivity_timeout = connectivity_timeout
         self.pause = pause
         self.force = force
         self.status = status
@@ -15837,6 +15878,12 @@ class Action(BaseResource):
     def set_exclusive(self, exclusive): self.exclusive = exclusive
     def get_vm(self): return self.vm
     def set_vm(self, vm): self.vm = vm
+    def get_host_nics(self): return self.host_nics
+    def set_host_nics(self, host_nics): self.host_nics = host_nics
+    def get_check_connectivity(self): return self.check_connectivity
+    def set_check_connectivity(self, check_connectivity): self.check_connectivity = check_connectivity
+    def get_connectivity_timeout(self): return self.connectivity_timeout
+    def set_connectivity_timeout(self, connectivity_timeout): self.connectivity_timeout = connectivity_timeout
     def get_pause(self): return self.pause
     def set_pause(self, pause): self.pause = pause
     def get_force(self): return self.force
@@ -15901,6 +15948,14 @@ class Action(BaseResource):
             outfile.write('<%sexclusive>%s</%sexclusive>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.exclusive)), input_name='exclusive'), namespace_))
         if self.vm is not None:
             self.vm.export(outfile, level, namespace_, name_='vm')
+        if self.host_nics is not None:
+            self.host_nics.export(outfile, level, namespace_, name_='host_nics')
+        if self.check_connectivity is not None:
+            showIndent(outfile, level)
+            outfile.write('<%scheck_connectivity>%s</%scheck_connectivity>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.check_connectivity)), input_name='check_connectivity'), namespace_))
+        if self.connectivity_timeout is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sconnectivity_timeout>%s</%sconnectivity_timeout>\n' % (namespace_, self.gds_format_integer(self.connectivity_timeout, input_name='connectivity_timeout'), namespace_))
         if self.pause is not None:
             showIndent(outfile, level)
             outfile.write('<%spause>%s</%spause>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.pause)), input_name='pause'), namespace_))
@@ -15932,6 +15987,9 @@ class Action(BaseResource):
             self.discard_snapshots is not None or
             self.exclusive is not None or
             self.vm is not None or
+            self.host_nics is not None or
+            self.check_connectivity is not None or
+            self.connectivity_timeout is not None or
             self.pause is not None or
             self.force is not None or
             self.status is not None or
@@ -16018,6 +16076,18 @@ class Action(BaseResource):
             self.vm.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.host_nics is not None:
+            showIndent(outfile, level)
+            outfile.write('host_nics=model_.host_nics(\n')
+            self.host_nics.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.check_connectivity is not None:
+            showIndent(outfile, level)
+            outfile.write('check_connectivity=%s,\n' % self.check_connectivity)
+        if self.connectivity_timeout is not None:
+            showIndent(outfile, level)
+            outfile.write('connectivity_timeout=%d,\n' % self.connectivity_timeout)
         if self.pause is not None:
             showIndent(outfile, level)
             outfile.write('pause=%s,\n' % self.pause)
@@ -16133,6 +16203,28 @@ class Action(BaseResource):
             obj_ = VM.factory()
             obj_.build(child_)
             self.set_vm(obj_)
+        elif nodeName_ == 'host_nics':
+            obj_ = HostNics.factory()
+            obj_.build(child_)
+            self.set_host_nics(obj_)
+        elif nodeName_ == 'check_connectivity':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'check_connectivity')
+            self.check_connectivity = ival_
+        elif nodeName_ == 'connectivity_timeout':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'connectivity_timeout')
+            self.connectivity_timeout = ival_
         elif nodeName_ == 'pause':
             sval_ = child_.text
             if sval_ in ('true', '1'):
@@ -16457,6 +16549,7 @@ def get_root_tag(node):
     # End NOT_GENERATED
     return tag, rootClass
 
+
 def parse(inFileName):
     doc = parsexml_(inFileName)
     rootNode = doc.getroot()
@@ -16494,6 +16587,7 @@ def parseString(inString):
 #        namespacedef_='')
     # End NOT_GENERATED
     return rootObj
+
 
 def parseLiteral(inFileName):
     doc = parsexml_(inFileName)
@@ -16679,6 +16773,7 @@ __all__ = [
     "VmTypes",
     "VolumeGroup"
     ]
+
 
 # Begin NOT_GENERATED
 _rootClassMap = {

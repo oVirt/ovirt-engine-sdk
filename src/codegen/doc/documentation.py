@@ -23,7 +23,7 @@ class Documentation():
     def document(link, custom_params={}, mapper={}):#argument_type, signatures, return_type):
         '''
         @param body: request body
-        @param custom_params: custom params to add {param:mandatory=true|false}
+        @param custom_params: custom params to add {param:required=true|false}
         @param offset: documentation offset
         
         @return: method documentation
@@ -58,7 +58,7 @@ class Documentation():
                     opt_params = ''
                     doc_str += parameters_set_template % str(i)
                     for parameter in parameters_set.parameter:
-                        if parameter.mandatory == True:
+                        if parameter.required == True:
                             mand_params += offset + \
                                            parameters_set_offset + \
                                            mand_param_doc_template % (parameter.name, parameter.type_.replace('xs:', ''))
@@ -70,7 +70,7 @@ class Documentation():
                     mand_params = ''
                     opt_params = ''
                     for parameter in parameters_set.parameter:
-                        if parameter.mandatory == True:
+                        if parameter.required == True:
                             mand_params += offset + \
                                            mand_param_doc_template % (parameter.name, parameter.type_.replace('xs:', ''))
                         else:
