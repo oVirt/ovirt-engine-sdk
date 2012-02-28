@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-02-10 21:28:40.081285
+Generated at: 2012-02-28 13:08:28.528442
 
 @author: mpastern@redhat.com
 '''
@@ -49,7 +49,7 @@ from ovirtsdk.infrastructure.brokers import VmPools
 class API():
     #TODO: - read .ini configuration
 
-    def __init__(self, url, username, password, key_file=None, cert_file=None, port=None, timeout=None):
+    def __init__(self, url, username, password, key_file=None, cert_file=None, port=None, timeout=None, debug=False):
         contextmanager.add('proxy',
                            Proxy(ConnectionsPool(url=url,
                                                  username=username,
@@ -58,7 +58,8 @@ class API():
                                                  cert_file=cert_file,
                                                  port=port,
                                                  strict=False,
-                                                 timeout=timeout)),
+                                                 timeout=timeout,
+                                                 debug=debug)),
                            Mode.R)
 
         self.capabilities = Capabilities()

@@ -22,7 +22,7 @@ class ConnectionsPool(object):
     '''
     ConnectionsManager used to manage pool of web connections
     '''
-    def __init__(self, url, port, key_file, cert_file, strict, timeout, username, password, count=20):
+    def __init__(self, url, port, key_file, cert_file, strict, timeout, username, password, count=20, debug=False):
 
         self.__free_connetcions = Queue(0)
         self.__busy_connetcions = {}
@@ -41,7 +41,8 @@ class ConnectionsPool(object):
                                                         timeout=timeout, \
                                                         username=username, \
                                                         password=password,
-                                                        manager=self))
+                                                        manager=self,
+                                                        debug=debug))
     def getConnection(self, get_ttl=100):
 #        try:
             with self.__plock:

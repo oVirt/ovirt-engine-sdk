@@ -23,13 +23,14 @@ class Connection(object):
     '''
     The oVirt api connection proxy
     '''
-    def __init__(self, url, port, key_file, cert_file, strict, timeout, username, password, manager):
+    def __init__(self, url, port, key_file, cert_file, strict, timeout, username, password, manager, debug=False):
         self.__connetcion = self.__createConnection(url=url,
                                                     port=port,
                                                     key_file=key_file,
                                                     cert_file=cert_file,
                                                     strict=strict,
                                                     timeout=timeout)
+        self.__connetcion.set_debuglevel(int(debug))
         self.__headers = self.__createHeaders(username, password)
         self.__manager = manager
         self.__id = id(self)
