@@ -92,20 +92,33 @@ class EntryPoint(object):
     def entryPoint(types=[], rootCollections=''):
         api_template = EntryPoint.entryPointImports() + \
         EntryPoint.entryPointCustomImports(types) + \
-        "class API():\n" + \
-        "    #TODO: - read .ini configuration\n\n" + \
-        "    def __init__(self, url, username, password, key_file=None, cert_file=None, port=None, timeout=None, debug=False):\n" + \
-        "        contextmanager.add('proxy',\n" + \
-        "                           Proxy(ConnectionsPool(url=url,\n" + \
-        "                                                 username=username,\n" + \
-        "                                                 password=password,\n" + \
-        "                                                 key_file=key_file,\n" + \
-        "                                                 cert_file=cert_file,\n" + \
-        "                                                 port=port,\n" + \
-        "                                                 strict=False,\n" + \
-        "                                                 timeout=timeout,\n" + \
-        "                                                 debug=debug)),\n" + \
-        "                           Mode.R)\n\n"
+"""class API():
+    def __init__(self, url, username, password, key_file=None, cert_file=None, port=None, timeout=None, debug=False):
+
+        \"""
+        @param url: server url (format "http/s://server[:port]/api")
+        @param username: user (format user@domain)
+        @param password: password
+        [@param key_file: key_file for ssl enabled connection]
+        [@param cert_file: cert_file for ssl enabled connection] 
+        [@param port: port to use (if not specified in url)]
+        [@param timeout: request timeout]
+        [@param debug: debug (format True|False)]
+        \"""
+
+        contextmanager.add('proxy',
+                           Proxy(ConnectionsPool(url=url,
+                                                 username=username,
+                                                 password=password,
+                                                 key_file=key_file,
+                                                 cert_file=cert_file,
+                                                 port=port,
+                                                 strict=False,
+                                                 timeout=timeout,
+                                                 debug=debug)),
+                           Mode.R)
+
+"""
 
         return (api_template + rootCollections + EntryPoint.instanceMethods())
 

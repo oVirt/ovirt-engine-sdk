@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-02-28 13:08:28.528442
+Generated at: 2012-02-28 13:51:28.379097
 
 @author: mpastern@redhat.com
 '''
@@ -47,9 +47,19 @@ from ovirtsdk.infrastructure.brokers import VmPools
 
 
 class API():
-    #TODO: - read .ini configuration
-
     def __init__(self, url, username, password, key_file=None, cert_file=None, port=None, timeout=None, debug=False):
+
+        """
+        @param url: server url (format "http/s://server[:port]/api")
+        @param username: user (format user@domain)
+        @param password: password
+        [@param key_file: key_file for ssl enabled connection]
+        [@param cert_file: cert_file for ssl enabled connection] 
+        [@param port: port to use (if not specified in url)]
+        [@param timeout: request timeout]
+        [@param debug: debug (format True|False)]
+        """
+
         contextmanager.add('proxy',
                            Proxy(ConnectionsPool(url=url,
                                                  username=username,
