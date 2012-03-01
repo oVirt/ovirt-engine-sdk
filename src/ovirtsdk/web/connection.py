@@ -77,7 +77,7 @@ class Connection(object):
 
     def __parse_url(self, url):
         if not url.startswith('http'):
-            url = "http://" + url
+            url = "https://" + url
         return urlparse.urlparse(url)
 
 
