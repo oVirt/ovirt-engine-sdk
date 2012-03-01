@@ -74,8 +74,16 @@ class Connection(object):
     def state(self):
         return self.__connetcion.__state
 
+
+    def __parse_url(self, url):
+        if not url.startswith('http'):
+            url = "http://" + url
+        return urlparse.urlparse(url)
+
+
     def __createConnection(self, url, key_file=None, cert_file=None, port=None, strict=None, timeout=None):
-        u = urlparse.urlparse(url)
+        u = self.__parse_url(url)
+
         if(u.scheme == 'https'):
             return HTTPSConnection(host=u.hostname,
                                    port=u.port,
