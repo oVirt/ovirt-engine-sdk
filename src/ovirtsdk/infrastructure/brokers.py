@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-02-06 16:41:07.883042
+Generated at: 2012-03-01 14:43:19.399737
 
 @author: mpastern@redhat.com
 '''
@@ -858,18 +858,17 @@ class Events(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_event()
             return Event(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, from_event_id=None, **kwargs):
+    def list(self, query=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param from_event_id: event_id]
 
         @return Events:
         '''
 
         url='/api/events'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query,'from':from_event_id})).get_event()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_event()
         return ParseHelper.toCollection(Event,
                                         FilterHelper.filter(result, kwargs))
 

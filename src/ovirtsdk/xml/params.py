@@ -11994,11 +11994,12 @@ class VmPauseDetails(GeneratedsSuper):
 class VmPool(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, size=None, cluster=None, template=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, size=None, cluster=None, template=None, prestarted_vms=None):
         super(VmPool, self).__init__(href, id, name, description, actions, creation_status, link, )
         self.size = size
         self.cluster = cluster
         self.template = template
+        self.prestarted_vms = prestarted_vms
     def factory(*args_, **kwargs_):
         if VmPool.subclass:
             return VmPool.subclass(*args_, **kwargs_)
@@ -12011,6 +12012,8 @@ class VmPool(BaseResource):
     def set_cluster(self, cluster): self.cluster = cluster
     def get_template(self): return self.template
     def set_template(self, template): self.template = template
+    def get_prestarted_vms(self): return self.prestarted_vms
+    def set_prestarted_vms(self, prestarted_vms): self.prestarted_vms = prestarted_vms
     def export(self, outfile, level, namespace_='', name_='VmPool', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -12034,11 +12037,15 @@ class VmPool(BaseResource):
             self.cluster.export(outfile, level, namespace_, name_='cluster')
         if self.template is not None:
             self.template.export(outfile, level, namespace_, name_='template')
+        if self.prestarted_vms is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sprestarted_vms>%s</%sprestarted_vms>\n' % (namespace_, self.gds_format_integer(self.prestarted_vms, input_name='prestarted_vms'), namespace_))
     def hasContent_(self):
         if (
             self.size is not None or
             self.cluster is not None or
             self.template is not None or
+            self.prestarted_vms is not None or
             super(VmPool, self).hasContent_()
             ):
             return True
@@ -12068,6 +12075,9 @@ class VmPool(BaseResource):
             self.template.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.prestarted_vms is not None:
+            showIndent(outfile, level)
+            outfile.write('prestarted_vms=%d,\n' % self.prestarted_vms)
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -12092,6 +12102,14 @@ class VmPool(BaseResource):
             obj_ = Template.factory()
             obj_.build(child_)
             self.set_template(obj_)
+        elif nodeName_ == 'prestarted_vms':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'prestarted_vms')
+            self.prestarted_vms = ival_
         super(VmPool, self).buildChildren(child_, node, nodeName_, True)
 # end class VmPool
 
@@ -14808,11 +14826,12 @@ class Response(GeneratedsSuper):
 class Parameter(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, required=None, value=None, type_=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, required=None, type_=None, context=None, value=None):
         super(Parameter, self).__init__(href, id, name, description, actions, creation_status, link, )
         self.required = _cast(bool, required)
+        self.type_ = _cast(None, type_)
+        self.context = _cast(None, context)
         self.value = value
-        self.type_ = type_
     def factory(*args_, **kwargs_):
         if Parameter.subclass:
             return Parameter.subclass(*args_, **kwargs_)
@@ -14821,10 +14840,12 @@ class Parameter(BaseResource):
     factory = staticmethod(factory)
     def get_value(self): return self.value
     def set_value(self, value): self.value = value
-    def get_type(self): return self.type_
-    def set_type(self, type_): self.type_ = type_
     def get_required(self): return self.required
     def set_required(self, required): self.required = required
+    def get_type(self): return self.type_
+    def set_type(self, type_): self.type_ = type_
+    def get_context(self): return self.context
+    def set_context(self, context): self.context = context
     def export(self, outfile, level, namespace_='', name_='Parameter', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -14842,18 +14863,20 @@ class Parameter(BaseResource):
         if self.required is not None and 'required' not in already_processed:
             already_processed.append('required')
             outfile.write(' required="%s"' % self.gds_format_boolean(self.gds_str_lower(str(self.required)), input_name='required'))
+        if self.type_ is not None and 'type_' not in already_processed:
+            already_processed.append('type_')
+            outfile.write(' type=%s' % (self.gds_format_string(quote_attrib(self.type_).encode(ExternalEncoding), input_name='type'), ))
+        if self.context is not None and 'context' not in already_processed:
+            already_processed.append('context')
+            outfile.write(' context=%s' % (self.gds_format_string(quote_attrib(self.context).encode(ExternalEncoding), input_name='context'), ))
     def exportChildren(self, outfile, level, namespace_='', name_='Parameter', fromsubclass_=False):
         super(Parameter, self).exportChildren(outfile, level, namespace_, name_, True)
         if self.value is not None:
             showIndent(outfile, level)
             outfile.write('<%svalue>%s</%svalue>\n' % (namespace_, self.gds_format_string(quote_xml(self.value).encode(ExternalEncoding), input_name='value'), namespace_))
-        if self.type_ is not None:
-            showIndent(outfile, level)
-            outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
     def hasContent_(self):
         if (
             self.value is not None or
-            self.type_ is not None or
             super(Parameter, self).hasContent_()
             ):
             return True
@@ -14869,15 +14892,20 @@ class Parameter(BaseResource):
             already_processed.append('required')
             showIndent(outfile, level)
             outfile.write('required = %s,\n' % (self.required,))
+        if self.type_ is not None and 'type_' not in already_processed:
+            already_processed.append('type_')
+            showIndent(outfile, level)
+            outfile.write('type_ = "%s",\n' % (self.type_,))
+        if self.context is not None and 'context' not in already_processed:
+            already_processed.append('context')
+            showIndent(outfile, level)
+            outfile.write('context = "%s",\n' % (self.context,))
         super(Parameter, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
         super(Parameter, self).exportLiteralChildren(outfile, level, name_)
         if self.value is not None:
             showIndent(outfile, level)
             outfile.write('value=%s,\n' % quote_python(self.value).encode(ExternalEncoding))
-        if self.type_ is not None:
-            showIndent(outfile, level)
-            outfile.write('type_=%s,\n' % quote_python(self.type_).encode(ExternalEncoding))
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -14893,16 +14921,20 @@ class Parameter(BaseResource):
                 self.required = False
             else:
                 raise_parse_error(node, 'Bad boolean attribute')
+        value = find_attr_value_('type', node)
+        if value is not None and 'type' not in already_processed:
+            already_processed.append('type')
+            self.type_ = value
+        value = find_attr_value_('context', node)
+        if value is not None and 'context' not in already_processed:
+            already_processed.append('context')
+            self.context = value
         super(Parameter, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'value':
             value_ = child_.text
             value_ = self.gds_validate_string(value_, node, 'value')
             self.value = value_
-        elif nodeName_ == 'type':
-            type_ = child_.text
-            type_ = self.gds_validate_string(type_, node, 'type')
-            self.type_ = type_
         super(Parameter, self).buildChildren(child_, node, nodeName_, True)
 # end class Parameter
 
@@ -16773,7 +16805,6 @@ __all__ = [
     "VmTypes",
     "VolumeGroup"
     ]
-
 
 # Begin NOT_GENERATED
 _rootClassMap = {
