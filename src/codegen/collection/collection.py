@@ -47,7 +47,7 @@ class Collection(object):
 
         prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
 
-        if 'search' in url_params:
+        if 'search:query' in url_params:
             return \
             ("    def get(self, name='name', **kwargs):\n" + \
              Documentation.document(link, {'name: string (string the name of the entity)':False,

@@ -15,31 +15,33 @@
 #
 
 from codegen.infrastructure.staticdataholder import PRESERVED_NAMES
+from papyon.util.odict import odict
 
 class ParamUtils():
     @staticmethod
     def getMethodParamsByUrlParamsMeta(link):
         method_parameters = ''
-        method_params = {}
-        url_params = {}
+        method_params = odict()
+        url_params = odict()
 
         if link.request and link.request.url and link.request.url.parameters_set \
            and len(link.request.url.parameters_set) > 0:
             for parameters_set in link.request.url.parameters_set:
                 for param in parameters_set.parameter:
-                    if param.context == 'query':
-#TODO: support other param types                        
-                        url_params[param.name] = param.value
-                        if param.name in PRESERVED_NAMES:
-                            name_candidate = param.name + '_' + param.value
-                        else:
-                            name_candidate = param.name
-                        if name_candidate == 'search':
-                            method_parameters += param.value + '=None, '
-                            method_params[param.value] = name_candidate
+                    url_params[param.name+':'+param.context] = param.value
+                    if param.name in PRESERVED_NAMES:
+                        name_candidate = param.name + '_' + param.value
+                    else:
+                        name_candidate = param.name
+                    if name_candidate == 'search':
+                        method_parameters += param.value + '=None, '
+                        method_params[param.value] = name_candidate
+                    else:
+                        if param.name == 'case_sensitive':
+                            method_parameters += name_candidate + '=True, '
                         else:
                             method_parameters += name_candidate + '=None, '
-                            method_params[name_candidate] = param.value
+                        method_params[name_candidate] = param.value
 
         return method_parameters[0:len(method_parameters) - 2], method_params, url_params
 

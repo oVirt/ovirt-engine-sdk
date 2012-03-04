@@ -17,6 +17,7 @@
 
 from codegen.utils.typeutil import TypeUtil
 from codegen.doc.documentation import Documentation
+from codegen.utils.paramutils import ParamUtils
 
 #============================================================
 #===========================RESOURCE=========================
@@ -106,41 +107,51 @@ class Resource(object):
                                            'resource_name_lc':resource_name.lower()}
 
 
-        forced_resource_delete_template = \
-        ("    def delete(self, force=False, grace_period=False):\n" + \
-         Documentation.document(link) +
-        "        url = '%(url)s'\n\n" + \
-        "        if ((force or grace_period) is not False):\n" + \
-        "            action = params.Action(force=force, grace_period=grace_period)\n" + \
-        "            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
-        "                                             body=ParseHelper.toXml(action))\n" + \
-        "        else:\n" + \
-        "            result = self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
-        "                                             headers={'Content-type':None})\n" + \
-        "        return result\n\n"
-        ) % resource_delete_template_values
+        prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
 
-        resource_delete_template = \
-        ("    def delete(self):\n" + \
-         Documentation.document(link) +
-        "        url = '%(url)s'\n\n" + \
-        "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" +
-        "                                       headers={'Content-type':None})\n\n"
-        ) % resource_delete_template_values
+        if prms_str != '':
+            resource_delete_template = \
+            ("    def delete(self, " + prms_str + "):\n" + \
+             Documentation.document(link, {}, method_params) +
+            "        url = UrlHelper.replace('%(url)s',\n" + \
+            "                                {'{%(resource_name_lc)s:id}': self.get_id()})\n\n" + \
+            "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
+                                                                                                               method_params.copy().keys()) +
+                                                                                "),\n" +
+            "                                       headers={'Content-type':None})\n\n"
+            ) % resource_delete_template_values
 
 
-        body_resource_delete_template = \
-        ("    def delete(self, %(body_type_lc)s):\n" + \
-         Documentation.document(link) +
-        "        url = '%(url)s'\n\n" + \
-        "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
-        "                                       body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
-        ) % resource_delete_template_values
+            body_resource_delete_template = \
+            ("    def delete(self, %(body_type_lc)s, " + prms_str + "):\n" + \
+             Documentation.document(link, {}, method_params) +
+            "        url = UrlHelper.replace('%(url)s',\n" + \
+            "                                {'{%(resource_name_lc)s:id}': self.get_id()})\n\n" + \
+            "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
+                                                                                                               method_params.copy().keys()) +
+                                                                                "),\n" + \
+            "                                       body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+            ) % resource_delete_template_values
+        else:
+            resource_delete_template = \
+            ("    def delete(self):\n" + \
+             Documentation.document(link) +
+            "        url = '%(url)s'\n\n" + \
+            "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" +
+            "                                       headers={'Content-type':None})\n\n"
+            ) % resource_delete_template_values
+
+
+            body_resource_delete_template = \
+            ("    def delete(self, %(body_type_lc)s):\n" + \
+             Documentation.document(link) +
+            "        url = '%(url)s'\n\n" + \
+            "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
+            "                                       body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+            ) % resource_delete_template_values
 
         if not body_type:
             return resource_delete_template
-        elif body_type == 'Action':
-            return forced_resource_delete_template
         else:
             return body_resource_delete_template
 

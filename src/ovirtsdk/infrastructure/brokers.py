@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-03-01 14:43:19.399737
+Generated at: 2012-03-04 19:07:37.314350
 
 @author: mpastern@redhat.com
 '''
@@ -86,14 +86,17 @@ class Cluster(params.Cluster, Base):
         obj.__init__(cluster)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/clusters/{cluster:id}'
+        url = UrlHelper.replace('/api/clusters/{cluster:id}',
+                                {'{cluster:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def update(self):
@@ -118,15 +121,18 @@ class ClusterNetwork(params.Network, Base):
         obj.__init__(cluster, network)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/clusters/{cluster:id}/networks/{network:id}'
+        url = UrlHelper.replace('/api/clusters/{cluster:id}/networks/{network:id}',
+                                {'{cluster:id}' : self.parentclass.get_id(),
+                                 '{network:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                   '{network:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def update(self):
@@ -216,15 +222,18 @@ class ClusterPermission(params.Permission, Base):
         obj.__init__(cluster, permission)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/clusters/{cluster:id}/permissions/{permission:id}'
+        url = UrlHelper.replace('/api/clusters/{cluster:id}/permissions/{permission:id}',
+                                {'{cluster:id}' : self.parentclass.get_id(),
+                                 '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                   '{permission:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class ClusterPermissions(Base):
@@ -336,17 +345,18 @@ class Clusters(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_cluster()
             return Cluster(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return Clusters:
         '''
 
         url='/api/clusters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_cluster()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_cluster()
         return ParseHelper.toCollection(Cluster,
                                         FilterHelper.filter(result, kwargs))
 
@@ -363,14 +373,17 @@ class DataCenter(params.DataCenter, Base):
         obj.__init__(datacenter)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/datacenters/{datacenter:id}'
+        url = UrlHelper.replace('/api/datacenters/{datacenter:id}',
+                                {'{datacenter:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def update(self):
@@ -395,15 +408,18 @@ class DataCenterPermission(params.Permission, Base):
         obj.__init__(datacenter, permission)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/permissions/{permission:id}'
+        url = UrlHelper.replace('/api/datacenters/{datacenter:id}/permissions/{permission:id}',
+                                {'{datacenter:id}' : self.parentclass.get_id(),
+                                 '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
-                                                                   '{permission:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class DataCenterPermissions(Base):
@@ -485,15 +501,18 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         obj.__init__(datacenter, storagedomain)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}'
+        url = UrlHelper.replace('/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}',
+                                {'{datacenter:id}' : self.parentclass.get_id(),
+                                 '{storagedomain:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
-                                                                   '{storagedomain:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def activate(self, action=params.Action()):
@@ -638,17 +657,18 @@ class DataCenters(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_data_center()
             return DataCenter(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return DataCenters:
         '''
 
         url='/api/datacenters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_data_center()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_data_center()
         return ParseHelper.toCollection(DataCenter,
                                         FilterHelper.filter(result, kwargs))
 
@@ -707,10 +727,11 @@ class DomainGroups(Base):
 
             return DomainGroup(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return Groups:
         '''
@@ -719,7 +740,7 @@ class DomainGroups(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{domain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search':query})).get_group()
+                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive})).get_group()
         return ParseHelper.toSubCollection(DomainGroup,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -766,10 +787,11 @@ class DomainUsers(Base):
 
             return DomainUser(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return Users:
         '''
@@ -778,7 +800,7 @@ class DomainUsers(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{domain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search':query})).get_user()
+                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive})).get_user()
         return ParseHelper.toSubCollection(DomainUser,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -858,17 +880,19 @@ class Events(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_event()
             return Event(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, from_event_id=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
+        [@param from_event_id: event_id]
 
         @return Events:
         '''
 
         url='/api/events'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_event()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'from:matrix':from_event_id})).get_event()
         return ParseHelper.toCollection(Event,
                                         FilterHelper.filter(result, kwargs))
 
@@ -886,14 +910,17 @@ class Group(params.Group, Base):
         obj.__init__(group)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/groups/{group:id}'
+        url = UrlHelper.replace('/api/groups/{group:id}',
+                                {'{group:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class GroupPermission(params.Permission, Base):
@@ -907,15 +934,18 @@ class GroupPermission(params.Permission, Base):
         obj.__init__(group, permission)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/groups/{group:id}/permissions/{permission:id}'
+        url = UrlHelper.replace('/api/groups/{group:id}/permissions/{permission:id}',
+                                {'{group:id}' : self.parentclass.get_id(),
+                                 '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
-                                                                   '{permission:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class GroupPermissions(Base):
@@ -1012,15 +1042,18 @@ class GroupRole(params.Role, Base):
         obj.__init__(group, role)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/groups/{group:id}/roles/{role:id}'
+        url = UrlHelper.replace('/api/groups/{group:id}/roles/{role:id}',
+                                {'{group:id}' : self.parentclass.get_id(),
+                                 '{role:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
-                                                                   '{role:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class GroupRoles(Base):
@@ -1097,15 +1130,18 @@ class GroupTag(params.Tag, Base):
         obj.__init__(group, tag)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/groups/{group:id}/tags/{tag:id}'
+        url = UrlHelper.replace('/api/groups/{group:id}/tags/{tag:id}',
+                                {'{group:id}' : self.parentclass.get_id(),
+                                 '{tag:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.get_id(),
-                                                                   '{tag:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class GroupTags(Base):
@@ -1211,17 +1247,18 @@ class Groups(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_group()
             return Group(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return Groups:
         '''
 
         url='/api/groups'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_group()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_group()
         return ParseHelper.toCollection(Group,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1236,15 +1273,18 @@ class GroupsRolePermit(params.Permit, Base):
         obj.__init__(groupsrole, permit)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/groups/{group:id}/roles/{role:id}/permits/{permit:id}'
+        url = UrlHelper.replace('/api/groups/{group:id}/roles/{role:id}/permits/{permit:id}',
+                                {'{groupsrole:id}' : self.parentclass.get_id(),
+                                 '{permit:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{groupsrole:id}' : self.parentclass.get_id(),
-                                                                   '{permit:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class Host(params.Host, Base):
@@ -1262,14 +1302,17 @@ class Host(params.Host, Base):
         obj.__init__(host)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/hosts/{host:id}'
+        url = UrlHelper.replace('/api/hosts/{host:id}',
+                                {'{host:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def fence(self, action=params.Action()):
@@ -1417,15 +1460,18 @@ class HostNIC(params.HostNIC, Base):
         obj.__init__(host, nic)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/hosts/{host:id}/nics/{nic:id}'
+        url = UrlHelper.replace('/api/hosts/{host:id}/nics/{nic:id}',
+                                {'{host:id}' : self.parentclass.get_id(),
+                                 '{nic:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                   '{nic:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def attach(self, action=params.Action()):
@@ -1560,15 +1606,18 @@ class HostPermission(params.Permission, Base):
         obj.__init__(host, permission)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/hosts/{host:id}/permissions/{permission:id}'
+        url = UrlHelper.replace('/api/hosts/{host:id}/permissions/{permission:id}',
+                                {'{host:id}' : self.parentclass.get_id(),
+                                 '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                   '{permission:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class HostPermissions(Base):
@@ -1718,15 +1767,18 @@ class HostTag(params.Tag, Base):
         obj.__init__(host, tag)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/hosts/{host:id}/tags/{tag:id}'
+        url = UrlHelper.replace('/api/hosts/{host:id}/tags/{tag:id}',
+                                {'{host:id}' : self.parentclass.get_id(),
+                                 '{tag:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                   '{tag:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class HostTags(Base):
@@ -1842,17 +1894,18 @@ class Hosts(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_host()
             return Host(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return Hosts:
         '''
 
         url='/api/hosts'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_host()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_host()
         return ParseHelper.toCollection(Host,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1878,14 +1931,17 @@ class Network(params.Network, Base):
         obj.__init__(network)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/networks/{network:id}'
+        url = UrlHelper.replace('/api/networks/{network:id}',
+                                {'{network:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def update(self):
@@ -1947,17 +2003,18 @@ class Networks(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_network()
             return Network(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return Networks:
         '''
 
         url='/api/networks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_network()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_network()
         return ParseHelper.toCollection(Network,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1973,14 +2030,17 @@ class Role(params.Role, Base):
         obj.__init__(role)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/roles/{role:id}'
+        url = UrlHelper.replace('/api/roles/{role:id}',
+                                {'{role:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def update(self):
@@ -2005,15 +2065,18 @@ class RolePermit(params.Permit, Base):
         obj.__init__(role, permit)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/roles/{role:id}/permits/{permit:id}'
+        url = UrlHelper.replace('/api/roles/{role:id}/permits/{permit:id}',
+                                {'{role:id}' : self.parentclass.get_id(),
+                                 '{permit:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{role:id}' : self.parentclass.get_id(),
-                                                                   '{permit:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class RolePermits(Base):
@@ -2151,18 +2214,20 @@ class StorageDomain(params.StorageDomain, Base):
         obj.__init__(storagedomain)
         return obj
 
-    def delete(self, storagedomain):
+    def delete(self, storagedomain, async=None):
         '''
         @type StorageDomain:
 
         @param storagdomain.host.id|name: string
+        [@param async: true|false]
 
         @return None:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}'
+        url = UrlHelper.replace('/api/storagedomains/{storagedomain:id}',
+                                {'{storagedomain:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        body=ParseHelper.toXml(storagedomain))
 
     def update(self):
@@ -2218,10 +2283,11 @@ class StorageDomainFiles(Base):
 
             return StorageDomainFile(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return Files:
         '''
@@ -2230,7 +2296,7 @@ class StorageDomainFiles(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search':query})).get_file()
+                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive})).get_file()
         return ParseHelper.toSubCollection(StorageDomainFile,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2246,15 +2312,18 @@ class StorageDomainPermission(params.Permission, Base):
         obj.__init__(storagedomain, permission)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/permissions/{permission:id}'
+        url = UrlHelper.replace('/api/storagedomains/{storagedomain:id}/permissions/{permission:id}',
+                                {'{storagedomain:id}' : self.parentclass.get_id(),
+                                 '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
-                                                                   '{permission:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class StorageDomainPermissions(Base):
@@ -2565,14 +2634,17 @@ class Tag(params.Tag, Base):
         obj.__init__(tag)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/tags/{tag:id}'
+        url = UrlHelper.replace('/api/tags/{tag:id}',
+                                {'{tag:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def update(self):
@@ -2657,14 +2729,17 @@ class Template(params.Template, Base):
         obj.__init__(template)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/templates/{template:id}'
+        url = UrlHelper.replace('/api/templates/{template:id}',
+                                {'{template:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def export(self, action=params.Action()):
@@ -2879,15 +2954,18 @@ class TemplatePermission(params.Permission, Base):
         obj.__init__(template, permission)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/templates/{template:id}/permissions/{permission:id}'
+        url = UrlHelper.replace('/api/templates/{template:id}/permissions/{permission:id}',
+                                {'{template:id}' : self.parentclass.get_id(),
+                                 '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
-                                                                   '{permission:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class TemplatePermissions(Base):
@@ -3020,17 +3098,18 @@ class Templates(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_template()
             return Template(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return Templates:
         '''
 
         url='/api/templates'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_template()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_template()
         return ParseHelper.toCollection(Template,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3048,14 +3127,17 @@ class User(params.User, Base):
         obj.__init__(user)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/users/{user:id}'
+        url = UrlHelper.replace('/api/users/{user:id}',
+                                {'{user:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class UserPermission(params.Permission, Base):
@@ -3069,15 +3151,18 @@ class UserPermission(params.Permission, Base):
         obj.__init__(user, permission)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/users/{user:id}/permissions/{permission:id}'
+        url = UrlHelper.replace('/api/users/{user:id}/permissions/{permission:id}',
+                                {'{user:id}' : self.parentclass.get_id(),
+                                 '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
-                                                                   '{permission:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class UserPermissions(Base):
@@ -3174,15 +3259,18 @@ class UserRole(params.Role, Base):
         obj.__init__(user, role)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/users/{user:id}/roles/{role:id}'
+        url = UrlHelper.replace('/api/users/{user:id}/roles/{role:id}',
+                                {'{user:id}' : self.parentclass.get_id(),
+                                 '{role:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
-                                                                   '{role:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class UserRoles(Base):
@@ -3259,15 +3347,18 @@ class UserTag(params.Tag, Base):
         obj.__init__(user, tag)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/users/{user:id}/tags/{tag:id}'
+        url = UrlHelper.replace('/api/users/{user:id}/tags/{tag:id}',
+                                {'{user:id}' : self.parentclass.get_id(),
+                                 '{tag:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.get_id(),
-                                                                   '{tag:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class UserTags(Base):
@@ -3374,17 +3465,18 @@ class Users(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_user()
             return User(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return Users:
         '''
 
         url='/api/users'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_user()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_user()
         return ParseHelper.toCollection(User,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3399,15 +3491,18 @@ class UsersRolePermit(params.Permit, Base):
         obj.__init__(usersrole, permit)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/users/{user:id}/roles/{role:id}/permits/{permit:id}'
+        url = UrlHelper.replace('/api/users/{user:id}/roles/{role:id}/permits/{permit:id}',
+                                {'{usersrole:id}' : self.parentclass.get_id(),
+                                 '{permit:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{usersrole:id}' : self.parentclass.get_id(),
-                                                                   '{permit:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class VM(params.VM, Base):
@@ -3428,14 +3523,17 @@ class VM(params.VM, Base):
         obj.__init__(vm)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/vms/{vm:id}'
+        url = UrlHelper.replace('/api/vms/{vm:id}',
+                                {'{vm:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def shutdown(self, action=params.Action()):
@@ -3636,15 +3734,18 @@ class VMCdRom(params.CdRom, Base):
         obj.__init__(vm, cdrom)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/vms/{vm:id}/cdroms/{cdrom:id}'
+        url = UrlHelper.replace('/api/vms/{vm:id}/cdroms/{cdrom:id}',
+                                {'{vm:id}' : self.parentclass.get_id(),
+                                 '{cdrom:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                   '{cdrom:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def update(self):
@@ -3734,15 +3835,18 @@ class VMDisk(params.Disk, Base):
         obj.__init__(vm, disk)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}'
+        url = UrlHelper.replace('/api/vms/{vm:id}/disks/{disk:id}',
+                                {'{vm:id}' : self.parentclass.get_id(),
+                                 '{disk:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                   '{disk:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def update(self):
@@ -3839,15 +3943,18 @@ class VMNic(params.NIC, Base):
         obj.__init__(vm, nic)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/vms/{vm:id}/nics/{nic:id}'
+        url = UrlHelper.replace('/api/vms/{vm:id}/nics/{nic:id}',
+                                {'{vm:id}' : self.parentclass.get_id(),
+                                 '{nic:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                   '{nic:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def update(self):
@@ -3940,15 +4047,18 @@ class VMPermission(params.Permission, Base):
         obj.__init__(vm, permission)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/vms/{vm:id}/permissions/{permission:id}'
+        url = UrlHelper.replace('/api/vms/{vm:id}/permissions/{permission:id}',
+                                {'{vm:id}' : self.parentclass.get_id(),
+                                 '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                   '{permission:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class VMPermissions(Base):
@@ -4030,15 +4140,18 @@ class VMSnapshot(params.Snapshot, Base):
         obj.__init__(vm, snapshot)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}'
+        url = UrlHelper.replace('/api/vms/{vm:id}/snapshots/{snapshot:id}',
+                                {'{vm:id}' : self.parentclass.get_id(),
+                                 '{snapshot:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                   '{snapshot:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def restore(self, action=params.Action()):
@@ -4189,15 +4302,18 @@ class VMTag(params.Tag, Base):
         obj.__init__(vm, tag)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/vms/{vm:id}/tags/{tag:id}'
+        url = UrlHelper.replace('/api/vms/{vm:id}/tags/{tag:id}',
+                                {'{vm:id}' : self.parentclass.get_id(),
+                                 '{tag:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                   '{tag:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class VMTags(Base):
@@ -4326,17 +4442,18 @@ class VMs(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vm()
             return VM(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return VMs:
         '''
 
         url='/api/vms'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_vm()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_vm()
         return ParseHelper.toCollection(VM,
                                         FilterHelper.filter(result, kwargs))
 
@@ -4352,14 +4469,17 @@ class VmPool(params.VmPool, Base):
         obj.__init__(vmpool)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/vmpools/{vmpool:id}'
+        url = UrlHelper.replace('/api/vmpools/{vmpool:id}',
+                                {'{vmpool:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
     def update(self):
@@ -4384,15 +4504,18 @@ class VmPoolPermission(params.Permission, Base):
         obj.__init__(vmpool, permission)
         return obj
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: true|false]
+
         @return None:
         '''
 
-        url = '/api/vmpools/{vmpool:id}/permissions/{permission:id}'
+        url = UrlHelper.replace('/api/vmpools/{vmpool:id}/permissions/{permission:id}',
+                                {'{vmpool:id}' : self.parentclass.get_id(),
+                                 '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{vmpool:id}' : self.parentclass.get_id(),
-                                                                   '{permission:id}': self.get_id()}),
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
 class VmPoolPermissions(Base):
@@ -4505,17 +4628,18 @@ class VmPools(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vmpool()
             return VmPool(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
 
         @return VmPools:
         '''
 
         url='/api/vmpools'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':query})).get_vmpool()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_vmpool()
         return ParseHelper.toCollection(VmPool,
                                         FilterHelper.filter(result, kwargs))
 
