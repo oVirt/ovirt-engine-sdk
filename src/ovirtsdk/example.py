@@ -40,6 +40,18 @@ vm1.description = 'updated_desc'
 vm2 = vm1.update()
 vm3 = api.vms.get(name='python_vm')
 
+#update using reference type
+cl = api.clusters.get(name='test')
+print cl.data_center.id
+dc = api.datacenters.get(id='c747d78b-ee6a-485c-8f81-1b9d46be51e9')
+print dc.id
+cl.set_data_center(dc)
+print cl.data_center.id
+updated_cl = cl.update()
+print updated_cl.data_center.id
+cl = api.clusters.get(name='test')
+print cl.data_center.id
+
 #list by constraints
 vms4 = api.vms.list(name='pythond_sdk_poc2')
 

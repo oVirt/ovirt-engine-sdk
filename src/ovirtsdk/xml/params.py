@@ -178,7 +178,11 @@ except ImportError, exp:
                not ReflectionHelper.isModuleMember(sys.modules[__name__], type(value)) and \
                value.__dict__.has_key('superclass') and value.superclass is not None and \
                value.superclass != BaseResource:
-                object.__setattr__(self, item, value.superclass)
+                if ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'], type(self)) and \
+                   self.__dict__.has_key('superclass') and self.superclass is not None:
+                    object.__setattr__(self.superclass, item, value.superclass)
+                else:
+                    object.__setattr__(self, item, value.superclass)
             elif not isinstance(value, list) and  \
                  ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'], type(self)) and \
                  self.__dict__.has_key('superclass') and self.superclass is not None and \
