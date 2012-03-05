@@ -24,7 +24,8 @@ class Documentation():
         '''
         @param body: request body
         @param custom_params: custom params to add {param:required=true|false}
-        @param offset: documentation offset
+        @param custom_params: mapper params to add {param:required=true|false}
+        
         
         @return: method documentation
         '''
@@ -58,24 +59,50 @@ class Documentation():
                     opt_params = ''
                     doc_str += parameters_set_template % str(i)
                     for parameter in parameters_set.parameter:
-                        if parameter.required == True:
-                            mand_params += offset + \
-                                           parameters_set_offset + \
-                                           mand_param_doc_template % (parameter.name, parameter.type_.replace('xs:', ''))
+                        if parameter.type_ == 'collection':
+                            if parameter.parameters_set and parameter.parameters_set.parameter:
+                                for collection_parameter in parameter.parameters_set.parameter:
+                                    if parameter.required == True:
+                                        mand_params += offset + \
+                                                       parameters_set_offset + \
+                                                       mand_param_doc_template % (parameter.name + '.' + collection_parameter.name,
+                                                                                  collection_parameter.type_.replace('xs:', ''))
+                                    else:
+                                        opt_params += offset + \
+                                                      parameters_set_offset + \
+                                                      opt_param_doc_template % (parameter.name + '.' + collection_parameter.name,
+                                                                                collection_parameter.type_.replace('xs:', ''))
                         else:
-                            opt_params += offset + \
-                                          parameters_set_offset + \
-                                          opt_param_doc_template % (parameter.name, parameter.type_.replace('xs:', ''))
+                            if parameter.required == True:
+                                mand_params += offset + \
+                                               parameters_set_offset + \
+                                               mand_param_doc_template % (parameter.name, parameter.type_.replace('xs:', ''))
+                            else:
+                                opt_params += offset + \
+                                              parameters_set_offset + \
+                                              opt_param_doc_template % (parameter.name, parameter.type_.replace('xs:', ''))
                 else:
                     mand_params = ''
                     opt_params = ''
                     for parameter in parameters_set.parameter:
-                        if parameter.required == True:
-                            mand_params += offset + \
-                                           mand_param_doc_template % (parameter.name, parameter.type_.replace('xs:', ''))
+                        if parameter.type_ == 'collection':
+                            if parameter.parameters_set and parameter.parameters_set.parameter:
+                                for collection_parameter in parameter.parameters_set.parameter:
+                                    if parameter.required == True:
+                                        mand_params += offset + \
+                                                       mand_param_doc_template % (parameter.name + '.' + collection_parameter.name,
+                                                                                  collection_parameter.type_.replace('xs:', ''))
+                                    else:
+                                        opt_params += offset + \
+                                                      opt_param_doc_template % (parameter.name + '.' + collection_parameter.name,
+                                                                                collection_parameter.type_.replace('xs:', ''))
                         else:
-                            opt_params += offset + \
-                                          opt_param_doc_template % (parameter.name, parameter.type_.replace('xs:', ''))
+                            if parameter.required == True:
+                                mand_params += offset + \
+                                               mand_param_doc_template % (parameter.name, parameter.type_.replace('xs:', ''))
+                            else:
+                                opt_params += offset + \
+                                              opt_param_doc_template % (parameter.name, parameter.type_.replace('xs:', ''))
                 doc_str += mand_params
                 doc_str += opt_params
 

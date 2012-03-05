@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-03-04 19:07:37.314350
+Generated at: 2012-03-05 18:25:44.311480
 
 @author: mpastern@redhat.com
 '''
@@ -1537,7 +1537,9 @@ class HostNics(Base):
         @param bonding.slaves.slaves.id|name: string
         @param hostnic.network.id|name: string
         @param hostnic.name: string
-        [@param hostnic.bonding.options.option--LIST: {name=string, value=string, type=string}]
+        [@param hostnic.bonding.options.option.name: string]
+        [@param hostnic.bonding.options.option.value: string]
+        [@param hostnic.bonding.options.type: string]
         [@param hostnic.ip.gateway: string]
         [@param hostnic.boot_protocol: string]
         [@param hostnic.mac: string]
@@ -1862,7 +1864,8 @@ class Hosts(Base):
         [@param host.power_management.address: string]
         [@param host.power_management.user_name: string]
         [@param host.power_management.password: string]
-        [@param host.power_management.options.option--LIST: {name=string, value=string}]
+        [@param host.power_management.options.option.name: string]
+        [@param host.power_management.options.option.value: string]
 
         @return Host:
         '''
@@ -2151,7 +2154,7 @@ class Roles(Base):
         @type Role:
 
         @param role.name: string
-        @param role.permits.permit--LIST: {id=string}
+        @param role.permits.permit.id: string
         [@param role.description: string]
         [@param role.administrative: boolean]
 
@@ -2560,7 +2563,18 @@ class StorageDomains(Base):
           @param storagdomain.type: string
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_units--LIST: {address=string, port=int, target=string, username=string, password=string, serial=string, vendor_id=string, product_id=string, lun_mapping=int, portal=string, paths=int, id=string}]
+          [@param storagdomain.storage.logical_units.logical_unit.address: string]
+          [@param storagdomain.storage.logical_units.logical_unit.port: int]
+          [@param storagdomain.storage.logical_units.logical_unit.target: string]
+          [@param storagdomain.storage.logical_units.logical_unit.username: string]
+          [@param storagdomain.storage.logical_units.logical_unit.password: string]
+          [@param storagdomain.storage.logical_units.logical_unit.serial: string]
+          [@param storagdomain.storage.logical_units.logical_unit.vendor_id: string]
+          [@param storagdomain.storage.logical_units.logical_unit.product_id: string]
+          [@param storagdomain.storage.logical_units.logical_unit.lun_mapping: int]
+          [@param storagdomain.storage.logical_units.logical_unit.portal: string]
+          [@param storagdomain.storage.logical_units.logical_unit.paths: int]
+          [@param storagdomain.storage.logical_units.logical_unit.id: string]
         Overload 2:
           @param storagdomain.storage.path: string
           @param storagdomain.name: string
@@ -2569,7 +2583,18 @@ class StorageDomains(Base):
           @param storagdomain.type: string
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_units--LIST: {address=string, port=int, target=string, username=string, password=string, serial=string, vendor_id=string, product_id=string, lun_mapping=int, portal=string, paths=int, id=string}]
+          [@param storagdomain.storage.logical_units.logical_unit.address: string]
+          [@param storagdomain.storage.logical_units.logical_unit.port: int]
+          [@param storagdomain.storage.logical_units.logical_unit.target: string]
+          [@param storagdomain.storage.logical_units.logical_unit.username: string]
+          [@param storagdomain.storage.logical_units.logical_unit.password: string]
+          [@param storagdomain.storage.logical_units.logical_unit.serial: string]
+          [@param storagdomain.storage.logical_units.logical_unit.vendor_id: string]
+          [@param storagdomain.storage.logical_units.logical_unit.product_id: string]
+          [@param storagdomain.storage.logical_units.logical_unit.lun_mapping: int]
+          [@param storagdomain.storage.logical_units.logical_unit.portal: string]
+          [@param storagdomain.storage.logical_units.logical_unit.paths: int]
+          [@param storagdomain.storage.logical_units.logical_unit.id: string]
         Overload 3:
           @param storagdomain.storage.path: string
           @param storagdomain.name: string
@@ -2577,7 +2602,18 @@ class StorageDomains(Base):
           @param storagdomain.type: string
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_units--LIST: {address=string, port=int, target=string, username=string, password=string, serial=string, vendor_id=string, product_id=string, lun_mapping=int, portal=string, paths=int, id=string}]
+          [@param storagdomain.storage.logical_units.logical_unit.address: string]
+          [@param storagdomain.storage.logical_units.logical_unit.port: int]
+          [@param storagdomain.storage.logical_units.logical_unit.target: string]
+          [@param storagdomain.storage.logical_units.logical_unit.username: string]
+          [@param storagdomain.storage.logical_units.logical_unit.password: string]
+          [@param storagdomain.storage.logical_units.logical_unit.serial: string]
+          [@param storagdomain.storage.logical_units.logical_unit.vendor_id: string]
+          [@param storagdomain.storage.logical_units.logical_unit.product_id: string]
+          [@param storagdomain.storage.logical_units.logical_unit.lun_mapping: int]
+          [@param storagdomain.storage.logical_units.logical_unit.portal: string]
+          [@param storagdomain.storage.logical_units.logical_unit.paths: int]
+          [@param storagdomain.storage.logical_units.logical_unit.id: string]
 
         @return StorageDomain:
         '''
@@ -3058,7 +3094,8 @@ class Templates(Base):
         [@param template.stateless:  boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
-        [@param template.custom_properties.custom_property--LIST: {name=string, value=string}]
+        [@param template.custom_properties.custom_property.name: string]
+        [@param template.custom_properties.custom_property.value: string]
         [@param template.os.type: string]
         [@param template.os.boot.dev: string]
         [@param template.cpu.topology.sockets: int]
@@ -4392,7 +4429,8 @@ class VMs(Base):
         @param vm.cluster.id|name: string
         [@param vm.timezone: string]
         [@param vm.os.boot.dev: string]
-        [@param vm.custom_properties.custom_property--LIST: {name=string, value=string}]
+        [@param vm.custom_properties.custom_property.name: string]
+        [@param vm.custom_properties.custom_property.value: string]
         [@param vm.os.type: string]
         [@param vm.usb.enabled: boolean]
         [@param vm.type: string]
