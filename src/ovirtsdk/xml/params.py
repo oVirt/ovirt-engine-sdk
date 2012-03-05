@@ -14830,12 +14830,13 @@ class Response(GeneratedsSuper):
 class Parameter(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, required=None, type_=None, context=None, value=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, required=None, type_=None, context=None, value=None, parameters_set=None):
         super(Parameter, self).__init__(href, id, name, description, actions, creation_status, link, )
         self.required = _cast(bool, required)
         self.type_ = _cast(None, type_)
         self.context = _cast(None, context)
         self.value = value
+        self.parameters_set = parameters_set
     def factory(*args_, **kwargs_):
         if Parameter.subclass:
             return Parameter.subclass(*args_, **kwargs_)
@@ -14844,6 +14845,8 @@ class Parameter(BaseResource):
     factory = staticmethod(factory)
     def get_value(self): return self.value
     def set_value(self, value): self.value = value
+    def get_parameters_set(self): return self.parameters_set
+    def set_parameters_set(self, parameters_set): self.parameters_set = parameters_set
     def get_required(self): return self.required
     def set_required(self, required): self.required = required
     def get_type(self): return self.type_
@@ -14878,9 +14881,12 @@ class Parameter(BaseResource):
         if self.value is not None:
             showIndent(outfile, level)
             outfile.write('<%svalue>%s</%svalue>\n' % (namespace_, self.gds_format_string(quote_xml(self.value).encode(ExternalEncoding), input_name='value'), namespace_))
+        if self.parameters_set is not None:
+            self.parameters_set.export(outfile, level, namespace_, name_='parameters_set')
     def hasContent_(self):
         if (
             self.value is not None or
+            self.parameters_set is not None or
             super(Parameter, self).hasContent_()
             ):
             return True
@@ -14910,6 +14916,12 @@ class Parameter(BaseResource):
         if self.value is not None:
             showIndent(outfile, level)
             outfile.write('value=%s,\n' % quote_python(self.value).encode(ExternalEncoding))
+        if self.parameters_set is not None:
+            showIndent(outfile, level)
+            outfile.write('parameters_set=model_.parameters_set(\n')
+            self.parameters_set.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -14939,6 +14951,10 @@ class Parameter(BaseResource):
             value_ = child_.text
             value_ = self.gds_validate_string(value_, node, 'value')
             self.value = value_
+        elif nodeName_ == 'parameters_set':
+            obj_ = ParametersSet.factory()
+            obj_.build(child_)
+            self.set_parameters_set(obj_)
         super(Parameter, self).buildChildren(child_, node, nodeName_, True)
 # end class Parameter
 
