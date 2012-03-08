@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-03-05 18:25:44.311480
+Generated at: 2012-03-08 13:53:17.356523
 
 @author: mpastern@redhat.com
 '''
@@ -1537,9 +1537,12 @@ class HostNics(Base):
         @param bonding.slaves.slaves.id|name: string
         @param hostnic.network.id|name: string
         @param hostnic.name: string
-        [@param hostnic.bonding.options.option.name: string]
-        [@param hostnic.bonding.options.option.value: string]
-        [@param hostnic.bonding.options.type: string]
+        [@param hostnic.bonding.options: collection]
+        {
+          [@ivar option.name: string]
+          [@ivar option.value: string]
+          [@ivar type: string]
+        }
         [@param hostnic.ip.gateway: string]
         [@param hostnic.boot_protocol: string]
         [@param hostnic.mac: string]
@@ -1864,8 +1867,11 @@ class Hosts(Base):
         [@param host.power_management.address: string]
         [@param host.power_management.user_name: string]
         [@param host.power_management.password: string]
-        [@param host.power_management.options.option.name: string]
-        [@param host.power_management.options.option.value: string]
+        [@param host.power_management.options: collection]
+        {
+          [@ivar option.name: string]
+          [@ivar option.value: string]
+        }
 
         @return Host:
         '''
@@ -2154,7 +2160,10 @@ class Roles(Base):
         @type Role:
 
         @param role.name: string
-        @param role.permits.permit.id: string
+        @param role.permits: collection
+        {
+          @ivar permit.id: string
+        }
         [@param role.description: string]
         [@param role.administrative: boolean]
 
@@ -2563,18 +2572,21 @@ class StorageDomains(Base):
           @param storagdomain.type: string
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_units.logical_unit.address: string]
-          [@param storagdomain.storage.logical_units.logical_unit.port: int]
-          [@param storagdomain.storage.logical_units.logical_unit.target: string]
-          [@param storagdomain.storage.logical_units.logical_unit.username: string]
-          [@param storagdomain.storage.logical_units.logical_unit.password: string]
-          [@param storagdomain.storage.logical_units.logical_unit.serial: string]
-          [@param storagdomain.storage.logical_units.logical_unit.vendor_id: string]
-          [@param storagdomain.storage.logical_units.logical_unit.product_id: string]
-          [@param storagdomain.storage.logical_units.logical_unit.lun_mapping: int]
-          [@param storagdomain.storage.logical_units.logical_unit.portal: string]
-          [@param storagdomain.storage.logical_units.logical_unit.paths: int]
-          [@param storagdomain.storage.logical_units.logical_unit.id: string]
+          [@param storagdomain.storage.logical_units: collection]
+          {
+            [@ivar logical_unit.address: string]
+            [@ivar logical_unit.port: int]
+            [@ivar logical_unit.target: string]
+            [@ivar logical_unit.username: string]
+            [@ivar logical_unit.password: string]
+            [@ivar logical_unit.serial: string]
+            [@ivar logical_unit.vendor_id: string]
+            [@ivar logical_unit.product_id: string]
+            [@ivar logical_unit.lun_mapping: int]
+            [@ivar logical_unit.portal: string]
+            [@ivar logical_unit.paths: int]
+            [@ivar logical_unit.id: string]
+          }
         Overload 2:
           @param storagdomain.storage.path: string
           @param storagdomain.name: string
@@ -2583,18 +2595,21 @@ class StorageDomains(Base):
           @param storagdomain.type: string
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_units.logical_unit.address: string]
-          [@param storagdomain.storage.logical_units.logical_unit.port: int]
-          [@param storagdomain.storage.logical_units.logical_unit.target: string]
-          [@param storagdomain.storage.logical_units.logical_unit.username: string]
-          [@param storagdomain.storage.logical_units.logical_unit.password: string]
-          [@param storagdomain.storage.logical_units.logical_unit.serial: string]
-          [@param storagdomain.storage.logical_units.logical_unit.vendor_id: string]
-          [@param storagdomain.storage.logical_units.logical_unit.product_id: string]
-          [@param storagdomain.storage.logical_units.logical_unit.lun_mapping: int]
-          [@param storagdomain.storage.logical_units.logical_unit.portal: string]
-          [@param storagdomain.storage.logical_units.logical_unit.paths: int]
-          [@param storagdomain.storage.logical_units.logical_unit.id: string]
+          [@param storagdomain.storage.logical_units: collection]
+          {
+            [@ivar logical_unit.address: string]
+            [@ivar logical_unit.port: int]
+            [@ivar logical_unit.target: string]
+            [@ivar logical_unit.username: string]
+            [@ivar logical_unit.password: string]
+            [@ivar logical_unit.serial: string]
+            [@ivar logical_unit.vendor_id: string]
+            [@ivar logical_unit.product_id: string]
+            [@ivar logical_unit.lun_mapping: int]
+            [@ivar logical_unit.portal: string]
+            [@ivar logical_unit.paths: int]
+            [@ivar logical_unit.id: string]
+          }
         Overload 3:
           @param storagdomain.storage.path: string
           @param storagdomain.name: string
@@ -2602,18 +2617,21 @@ class StorageDomains(Base):
           @param storagdomain.type: string
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_units.logical_unit.address: string]
-          [@param storagdomain.storage.logical_units.logical_unit.port: int]
-          [@param storagdomain.storage.logical_units.logical_unit.target: string]
-          [@param storagdomain.storage.logical_units.logical_unit.username: string]
-          [@param storagdomain.storage.logical_units.logical_unit.password: string]
-          [@param storagdomain.storage.logical_units.logical_unit.serial: string]
-          [@param storagdomain.storage.logical_units.logical_unit.vendor_id: string]
-          [@param storagdomain.storage.logical_units.logical_unit.product_id: string]
-          [@param storagdomain.storage.logical_units.logical_unit.lun_mapping: int]
-          [@param storagdomain.storage.logical_units.logical_unit.portal: string]
-          [@param storagdomain.storage.logical_units.logical_unit.paths: int]
-          [@param storagdomain.storage.logical_units.logical_unit.id: string]
+          [@param storagdomain.storage.logical_units: collection]
+          {
+            [@ivar logical_unit.address: string]
+            [@ivar logical_unit.port: int]
+            [@ivar logical_unit.target: string]
+            [@ivar logical_unit.username: string]
+            [@ivar logical_unit.password: string]
+            [@ivar logical_unit.serial: string]
+            [@ivar logical_unit.vendor_id: string]
+            [@ivar logical_unit.product_id: string]
+            [@ivar logical_unit.lun_mapping: int]
+            [@ivar logical_unit.portal: string]
+            [@ivar logical_unit.paths: int]
+            [@ivar logical_unit.id: string]
+          }
 
         @return StorageDomain:
         '''
@@ -3094,8 +3112,11 @@ class Templates(Base):
         [@param template.stateless:  boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
-        [@param template.custom_properties.custom_property.name: string]
-        [@param template.custom_properties.custom_property.value: string]
+        [@param template.custom_properties: collection]
+        {
+          [@ivar custom_property.name: string]
+          [@ivar custom_property.value: string]
+        }
         [@param template.os.type: string]
         [@param template.os.boot.dev: string]
         [@param template.cpu.topology.sockets: int]
@@ -4429,8 +4450,11 @@ class VMs(Base):
         @param vm.cluster.id|name: string
         [@param vm.timezone: string]
         [@param vm.os.boot.dev: string]
-        [@param vm.custom_properties.custom_property.name: string]
-        [@param vm.custom_properties.custom_property.value: string]
+        [@param vm.custom_properties: collection]
+        {
+          [@ivar custom_property.name: string]
+          [@ivar custom_property.value: string]
+        }
         [@param vm.os.type: string]
         [@param vm.usb.enabled: boolean]
         [@param vm.type: string]
