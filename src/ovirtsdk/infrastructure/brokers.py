@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-03-11 16:19:03.167784
+Generated at: 2012-03-11 20:25:34.116543
 
 @author: mpastern@redhat.com
 '''
@@ -1685,7 +1685,15 @@ class HostNics(Base):
           [@ivar host_nic.ip.address: string]
           [@ivar host_nic.ip.netmask: string]
           [@ivar host_nic.bonding.options.option: collection]
+          {
+            [@param option.name: string]
+            [@param option.value: string]
+            [@param option.type: string]
+          }
           [@ivar bonding.slaves.host_nic: collection]
+          {
+            [@param host_nic.name|id: string]
+          }
         }
         [@param action.checkConnectivity: boolean]
         [@param action.connectivityTimeout: int]
