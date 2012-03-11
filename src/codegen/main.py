@@ -193,10 +193,11 @@ class CodeGen():
                     sub_coll = ParseHelper.getXmlWrapperType(k)
                     if (v is None and self.__isCollection(k)):
                         self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
-#                    elif(v is None):
-                    elif(v is None and http_method == 'POST'):
-#FIXME: remove http_methond cond                        
-                        self.__createAction(root_coll, None, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
+                    elif((v is None or v.find(':id') == -1) and http_method == 'POST'):
+                        if v is None:
+                            self.__createAction(root_coll, None, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
+                        else:
+                            self.__createAction(root_coll, sub_coll, v, url, rel, http_method, body_type, link, response_type, collectionsHolder, collection_action=True)
                     else:
                         self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
             elif(ln is 3): #/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate
@@ -266,25 +267,21 @@ class CodeGen():
             collectionsHolder[resource]['body'] += upd_method
             if(DEBUG): print 'adding to resource: ' + self.__toResourceType(resource) + ' update method:\n\n' + upd_method
 
-    def __createAction(self, root_coll, sub_coll, action_name, url, rel, http_method, body_type, link, response_type, collectionsHolder):
+    def __createAction(self, root_coll, sub_coll, action_name, url, rel, http_method, body_type, link, response_type, collectionsHolder, collection_action=False):
         resource = root_coll[:len(root_coll) - 1]
-        sub_resource = sub_coll[:len(sub_coll) - 1] if sub_coll is not None else None
+        sub_resource = sub_coll[:len(sub_coll) - 1] if sub_coll is not None and not collection_action else None if sub_coll is None else sub_coll
         action_name = self.__adaptActionName(action_name, sub_resource if sub_resource is not None
                                                                        else resource)
         if (sub_coll is None or sub_coll == ''):
             if (not collectionsHolder.has_key(resource)):
                 self.__extendCollection(root_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
-#TODO: add real action params
             action_body = Resource.action(url, body_type, link, action_name, resource, http_method, {})
             collectionsHolder[resource]['body'] += action_body
             if(DEBUG): print '[act] creating action: ' + action_name + '() on resource: ' + resource + ', for url: ' + url
             if(DEBUG): print '\n' + action_body
         else:
-            #nested_collection = self.__toResourceType(root_coll[:len(root_coll)-1]) + self.__toResourceType(sub_coll)
             nested_collection = root_coll[:len(root_coll) - 1] + sub_coll
-            nested_resource = nested_collection[:len(nested_collection) - 1]
-
-            sub_resource = sub_coll[:len(sub_coll) - 1]
+            nested_resource = nested_collection[:len(nested_collection) - 1] if not collection_action else nested_collection
 
             if (not collectionsHolder.has_key(nested_collection)):
                 self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
@@ -292,9 +289,9 @@ class CodeGen():
             if (not collectionsHolder.has_key(nested_resource)):
                 self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
 
-            action_body = SubResource.action(url, link, action_name, resource, body_type, sub_resource, http_method, {})
+            action_body = SubResource.action(url, link, action_name, resource, body_type, sub_resource, http_method, {}, collection_action)
             collectionsHolder[nested_resource]['body'] += action_body
-#TODO: add real action params
+
             if(DEBUG): print '[act] creating action: ' + action_name + '() on sub-resource: ' + nested_resource + ', for url: ' + url
             if(DEBUG): print '\n' + action_body
 

@@ -52,7 +52,7 @@ class SubResource(object):
         return sub_resource_template
 
     @staticmethod
-    def action(url, link, action_name, parent_resource_name_lc, body_type, resource_name_lc, method, action_params={}):
+    def action(url, link, action_name, parent_resource_name_lc, body_type, resource_name_lc, method, action_params={}, collection_action=False):
         sub_collection_resource_action_template_values = {'url':url,
                                                           'action_name':action_name,
                                                           'method': method,
@@ -63,16 +63,27 @@ class SubResource(object):
                                                           'add_method_params' : Resource._addMethodParams(action_params.keys()),
                                                           'add_action_parans' : Resource._addActionParams(action_params)}
 
-        sub_collection_resource_action_template = \
-        ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \
-        Documentation.document(link) +
-        "        url = '%(url)s'\n\n" + \
-        "        result = self._getProxy().request(method='%(method)s',\n" + \
-        "                                          url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
-        "                                                                     '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
-        "                                          body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
-        "        return result\n\n"
-        ) % sub_collection_resource_action_template_values
+        if collection_action == True:
+            sub_collection_resource_action_template = \
+            ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \
+            Documentation.document(link) +
+            "        url = '%(url)s'\n\n" + \
+            "        result = self._getProxy().request(method='%(method)s',\n" + \
+            "                                          url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id()}),\n" + \
+            "                                          body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+            "        return result\n\n"
+            ) % sub_collection_resource_action_template_values
+        else:
+            sub_collection_resource_action_template = \
+            ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \
+            Documentation.document(link) +
+            "        url = '%(url)s'\n\n" + \
+            "        result = self._getProxy().request(method='%(method)s',\n" + \
+            "                                          url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
+            "                                                                     '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
+            "                                          body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+            "        return result\n\n"
+            ) % sub_collection_resource_action_template_values
 
         return sub_collection_resource_action_template
 

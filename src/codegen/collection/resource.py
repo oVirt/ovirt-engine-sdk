@@ -123,7 +123,7 @@ class Resource(object):
 
 
             body_resource_delete_template = \
-            ("    def delete(self, %(body_type_lc)s, " + prms_str + "):\n" + \
+            ("    def delete(self, %(body_type_lc)s=params.%(body_type)s(), " + prms_str + "):\n" + \
              Documentation.document(link, {}, method_params) +
             "        url = UrlHelper.replace('%(url)s',\n" + \
             "                                {'{%(resource_name_lc)s:id}': self.get_id()})\n\n" + \
