@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-03-08 13:53:17.356523
+Generated at: 2012-03-11 16:19:03.167784
 
 @author: mpastern@redhat.com
 '''
@@ -101,6 +101,19 @@ class Cluster(params.Cluster, Base):
 
     def update(self):
         '''
+        [@param cluster.name: string]
+        [@param cluster.description: string]
+        [@param cluster.cpu.id: string]
+        [@param cluster.version.major: int]
+        [@param cluster.version.minor: int]
+        [@param cluster.memory_policy.overcommit.percent: double]
+        [@param cluster.memory_policy.transparent_hugepages.enabled: boolean]
+        [@param cluster.scheduling_policy.policy: string]
+        [@param cluster.scheduling_policy.thresholds.low: int]
+        [@param cluster.scheduling_policy.thresholds.high: int]
+        [@param cluster.scheduling_policy.thresholds.duration: int]
+        [@param cluster.error_handling.on_error: string]
+
         @return Cluster:
         '''
 
@@ -137,6 +150,8 @@ class ClusterNetwork(params.Network, Base):
 
     def update(self):
         '''
+        [@param network.display: boolean]
+
         @return Network:
         '''
 
@@ -312,8 +327,19 @@ class Clusters(Base):
         '''
         @type Cluster:
 
-        @param cluster.datacenter.id|name: string
+        @param cluster.data_center.id|name: string
         @param cluster.name: string
+        @param cluster.version.major: int
+        @param cluster.version.minor: int
+        @param cluster.cpu.id: string
+        [@param cluster.description: string]
+        [@param cluster.memory_policy.overcommit.percent: double]
+        [@param cluster.memory_policy.transparent_hugepages.enabled: boolean]
+        [@param cluster.scheduling_policy.policy: string]
+        [@param cluster.scheduling_policy.thresholds.low: int]
+        [@param cluster.scheduling_policy.thresholds.high: int]
+        [@param cluster.scheduling_policy.thresholds.duration: int]
+        [@param cluster.error_handling.on_error: string]
 
         @return Cluster:
         '''
@@ -388,6 +414,13 @@ class DataCenter(params.DataCenter, Base):
 
     def update(self):
         '''
+        [@param datacenter.name: string]
+        [@param datacenter.storage_type: string]
+        [@param datacenter.version.major: int]
+        [@param datacenter.version.minor: int]
+        [@param datacenter.description: string]
+        [@param datacenter.storage_format: string]
+
         @return DataCenter:
         '''
 
@@ -1440,6 +1473,23 @@ class Host(params.Host, Base):
 
     def update(self):
         '''
+        [@param host.name: string]
+        [@param host.address: string]
+        [@param host.root_password: string]
+        [@param host.cluster.id: string]
+        [@param host.port: int]
+        [@param host.storage_manager.priority: int]
+        [@param host.power_management.type: string]
+        [@param host.power_management.enabled: boolean]
+        [@param host.power_management.address: string]
+        [@param host.power_management.user_name: string]
+        [@param host.power_management.password: string]
+        [@param host.power_management.options.option: collection]
+        {
+          [@ivar name: string]
+          [@ivar value: string]
+        }
+
         @return Host:
         '''
 
@@ -1513,6 +1563,24 @@ class HostNIC(params.HostNIC, Base):
 
     def update(self):
         '''
+        [@param hostnic.bonding.slaves.host_nic: collection]
+        {
+          [@ivar host_nic.id|name: string]
+        }
+        [@param hostnic.network.id|name: string]
+        [@param hostnic.name: string]
+        [@param hostnic.bonding.options.option: collection]
+        {
+          [@ivar option.name: string]
+          [@ivar option.value: string]
+          [@ivar type: string]
+        }
+        [@param hostnic.ip.gateway: string]
+        [@param hostnic.boot_protocol: string]
+        [@param hostnic.mac: string]
+        [@param hostnic.ip.address: string]
+        [@param hostnic.ip.netmask: string]
+
         @return HostNIC:
         '''
 
@@ -1534,10 +1602,13 @@ class HostNics(Base):
         '''
         @type HostNIC:
 
-        @param bonding.slaves.slaves.id|name: string
+        @param hostnic.bonding.slaves.host_nic: collection
+        {
+          @ivar host_nic.id|name: string
+        }
         @param hostnic.network.id|name: string
         @param hostnic.name: string
-        [@param hostnic.bonding.options: collection]
+        [@param hostnic.bonding.options.option: collection]
         {
           [@ivar option.name: string]
           [@ivar option.value: string]
@@ -1599,6 +1670,37 @@ class HostNics(Base):
         return ParseHelper.toSubCollection(HostNIC,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
+
+    def setupnetworks(self, action=params.Action()):
+        '''
+        @type Action:
+
+        [@param action.host_nics.host_nic: collection]
+        {
+          [@ivar host_nic.network.id|name: string]
+          [@ivar host_nic.name: string]
+          [@ivar host_nic.ip.gateway: string]
+          [@ivar host_nic.boot_protocol: string]
+          [@ivar host_nic.mac: string]
+          [@ivar host_nic.ip.address: string]
+          [@ivar host_nic.ip.netmask: string]
+          [@ivar host_nic.bonding.options.option: collection]
+          [@ivar bonding.slaves.host_nic: collection]
+        }
+        [@param action.checkConnectivity: boolean]
+        [@param action.connectivityTimeout: int]
+        [@param action.force: boolean]
+
+        @return Response:
+        '''
+
+        url = '/api/hosts/{host:id}/nics/setupnetworks'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id()}),
+                                          body=ParseHelper.toXml(action))
+
+        return result
 
 class HostPermission(params.Permission, Base):
     def __init__(self, host, permission):
@@ -1867,7 +1969,7 @@ class Hosts(Base):
         [@param host.power_management.address: string]
         [@param host.power_management.user_name: string]
         [@param host.power_management.password: string]
-        [@param host.power_management.options: collection]
+        [@param host.power_management.options.option: collection]
         {
           [@ivar option.name: string]
           [@ivar option.value: string]
@@ -1955,6 +2057,14 @@ class Network(params.Network, Base):
 
     def update(self):
         '''
+        [@param network.description: string]
+        [@param network.vlan.id: string]
+        [@param network.ip.address: string]
+        [@param network.ip.gateway: string]
+        [@param network.ip.netmask: string]
+        [@param network.display: boolean]
+        [@param network.stp: boolean]
+
         @return Network:
         '''
 
@@ -2054,6 +2164,12 @@ class Role(params.Role, Base):
 
     def update(self):
         '''
+        [@param role.permits.permit: collection]
+        {
+          [@ivar id: string]
+        }
+        [@param role.description: string]
+
         @return Role:
         '''
 
@@ -2160,7 +2276,7 @@ class Roles(Base):
         @type Role:
 
         @param role.name: string
-        @param role.permits: collection
+        @param role.permits.permit: collection
         {
           @ivar permit.id: string
         }
@@ -2226,7 +2342,7 @@ class StorageDomain(params.StorageDomain, Base):
         obj.__init__(storagedomain)
         return obj
 
-    def delete(self, storagedomain, async=None):
+    def delete(self, storagedomain=params.StorageDomain(), async=None):
         '''
         @type StorageDomain:
 
@@ -2244,6 +2360,8 @@ class StorageDomain(params.StorageDomain, Base):
 
     def update(self):
         '''
+        [@param storagdomain.name: string]
+
         @return StorageDomain:
         '''
 
@@ -2572,7 +2690,7 @@ class StorageDomains(Base):
           @param storagdomain.type: string
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_units: collection]
+          [@param storagdomain.storage.logical_unit: collection]
           {
             [@ivar logical_unit.address: string]
             [@ivar logical_unit.port: int]
@@ -2595,7 +2713,7 @@ class StorageDomains(Base):
           @param storagdomain.type: string
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_units: collection]
+          [@param storagdomain.storage.logical_unit: collection]
           {
             [@ivar logical_unit.address: string]
             [@ivar logical_unit.port: int]
@@ -2617,7 +2735,7 @@ class StorageDomains(Base):
           @param storagdomain.type: string
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_units: collection]
+          [@param storagdomain.storage.logical_unit: collection]
           {
             [@ivar logical_unit.address: string]
             [@ivar logical_unit.port: int]
@@ -2703,6 +2821,10 @@ class Tag(params.Tag, Base):
 
     def update(self):
         '''
+        [@param tag.name: string]
+        [@param tag.description: string]
+        [@param tag.parent.name: string]
+
         @return Tag:
         '''
 
@@ -2817,6 +2939,33 @@ class Template(params.Template, Base):
 
     def update(self):
         '''
+        [@param template.name: string]
+        [@param template.memory: long]
+        [@param template.cpu.topology.cores: int]
+        [@param template.high_availability.enabled: boolean]
+        [@param template.os.cmdline: string]
+        [@param template.origin: string]
+        [@param template.high_availability.priority: int]
+        [@param template.timezone: string]
+        [@param template.domain.name: string]
+        [@param template.type: string]
+        [@param template.stateless: boolean]
+        [@param template.placement_policy.affinity: string]
+        [@param template.description: string]
+        [@param template.custom_properties.custom_property: collection]
+        {
+          [@ivar name: string]
+          [@ivar value: string]
+        }
+        [@param template.os.type: string]
+        [@param template.os.boot.dev: string]
+        [@param template.cpu.topology.sockets: int]
+        [@param template.os.kernel: string]
+        [@param template.display.type: string]
+        [@param template.display.monitors: int]
+        [@param template.os.initRd: string]
+        [@param template.usb.enabled: boolean]
+
         @return Template:
         '''
 
@@ -3102,17 +3251,17 @@ class Templates(Base):
         @param template.name: string
         [@param template.memory: long]
         [@param template.cpu.topology.cores: int]
-        [@param template.high_availability.enabled:  boolean]
+        [@param template.high_availability.enabled: boolean]
         [@param template.os.cmdline: string]
         [@param template.origin: string]
-        [@param template.high_availability.priority:  int]
+        [@param template.high_availability.priority: int]
         [@param template.timezone: string]
         [@param template.domain.name: string]
         [@param template.type: string]
-        [@param template.stateless:  boolean]
+        [@param template.stateless: boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
-        [@param template.custom_properties: collection]
+        [@param template.custom_properties.custom_property: collection]
         {
           [@ivar custom_property.name: string]
           [@ivar custom_property.value: string]
@@ -3581,8 +3730,11 @@ class VM(params.VM, Base):
         obj.__init__(vm)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, action=params.Action(), async=None):
         '''
+        @type Action:
+
+        [@param action.force: boolean]
         [@param async: true|false]
 
         @return None:
@@ -3592,7 +3744,7 @@ class VM(params.VM, Base):
                                 {'{vm:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       body=ParseHelper.toXml(action))
 
     def shutdown(self, action=params.Action()):
         '''
@@ -3772,6 +3924,34 @@ class VM(params.VM, Base):
 
     def update(self):
         '''
+        [@param vm.name: string]
+        [@param vm.cluster.id|name: string]
+        [@param vm.timezone: string]
+        [@param vm.os.boot.dev: string]
+        [@param vm.custom_properties.custom_property: collection]
+        {
+          [@ivar name: string]
+          [@ivar value: string]
+        }
+        [@param vm.os.type: string]
+        [@param vm.usb.enabled: boolean]
+        [@param vm.type: string]
+        [@param vm.os.initRd: string]
+        [@param vm.display.monitors: int]
+        [@param vm.display.type: string]
+        [@param vm.os.cmdline: string]
+        [@param vm.cpu.topology.cores: int]
+        [@param vm.memory: long]
+        [@param vm.high_availability.priority: int]
+        [@param vm.high_availability.enabled: boolean]
+        [@param vm.domain.name: string]
+        [@param vm.description: string]
+        [@param vm.stateless: boolean]
+        [@param vm.cpu.topology.sockets: int]
+        [@param vm.placement_policy.affinity: string]
+        [@param vm.origin: string]
+        [@param vm.os.kernel: string]
+
         @return VM:
         '''
 
@@ -3808,6 +3988,8 @@ class VMCdRom(params.CdRom, Base):
 
     def update(self):
         '''
+        [@param cdrom.file.id: string]
+
         @return CdRom:
         '''
 
@@ -3909,6 +4091,15 @@ class VMDisk(params.Disk, Base):
 
     def update(self):
         '''
+        [@param size: int]
+        [@param disk.type: string]
+        [@param disk.interface: string]
+        [@param disk.format: string]
+        [@param disk.sparse: boolean]
+        [@param disk.bootable: boolean]
+        [@param disk.propagate_errors: boolean]
+        [@param disk.wipe_after_delete: boolean]
+
         @return Disk:
         '''
 
@@ -4017,6 +4208,11 @@ class VMNic(params.NIC, Base):
 
     def update(self):
         '''
+        [@param nic.network.id|name: string]
+        [@param nic.name: string]
+        [@param nic.mac.address: string]
+        [@param nic.interface: string]
+
         @return NIC:
         '''
 
@@ -4450,7 +4646,7 @@ class VMs(Base):
         @param vm.cluster.id|name: string
         [@param vm.timezone: string]
         [@param vm.os.boot.dev: string]
-        [@param vm.custom_properties: collection]
+        [@param vm.custom_properties.custom_property: collection]
         {
           [@ivar custom_property.name: string]
           [@ivar custom_property.value: string]
@@ -4464,15 +4660,16 @@ class VMs(Base):
         [@param vm.os.cmdline: string]
         [@param vm.cpu.topology.cores: int]
         [@param vm.memory: long]
-        [@param vm.high_availability.priority:  int]
-        [@param vm.high_availability.enabled:  boolean]
+        [@param vm.high_availability.priority: int]
+        [@param vm.high_availability.enabled: boolean]
         [@param vm.domain.name: string]
         [@param vm.description: string]
-        [@param vm.stateless:  boolean]
+        [@param vm.stateless: boolean]
         [@param vm.cpu.topology.sockets: int]
         [@param vm.placement_policy.affinity: string]
         [@param vm.origin: string]
         [@param vm.os.kernel: string]
+        [@param vm.disks.clone: boolean]
 
         @return VM:
         '''
@@ -4546,6 +4743,10 @@ class VmPool(params.VmPool, Base):
 
     def update(self):
         '''
+        [@param vmpool.cluster.id|name: string]
+        [@param vmpool.template.id|name: string]
+        [@param vmpool.name: string]
+
         @return VmPool:
         '''
 
