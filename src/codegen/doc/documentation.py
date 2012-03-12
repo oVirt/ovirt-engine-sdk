@@ -139,18 +139,21 @@ class Documentation():
                         opt_params += offset + parameters_set_offset + '{\n'
 
                     for collection_parameter in parameter.parameters_set.parameter:
+                        if parameter.required == True:
+                            mand_params += offset + \
+                                           parameters_set_offset + collection_parameters_set_offset + \
+                                           mand_ivar_doc_template % (collection_parameter.name,
+                                                                      collection_parameter.type_.replace('xs:', ''))
+                        else:
+                            opt_params += offset + \
+                                          parameters_set_offset + collection_parameters_set_offset + \
+                                          opt_ivar_doc_template % (collection_parameter.name,
+                                                                    collection_parameter.type_.replace('xs:', ''))
+
                         if collection_parameter.type_ == 'collection':
                             if parameter.required == True:
-                                mand_params += offset + \
-                                               parameters_set_offset + collection_parameters_set_offset + \
-                                               mand_ivar_doc_template % (collection_parameter.name,
-                                                                          collection_parameter.type_.replace('xs:', ''))
                                 mand_params += offset + collection_parameters_set_offset + parameters_set_offset + '{\n'
                             else:
-                                opt_params += offset + \
-                                              parameters_set_offset + collection_parameters_set_offset + \
-                                              opt_ivar_doc_template % (collection_parameter.name,
-                                                                        collection_parameter.type_.replace('xs:', ''))
                                 opt_params += offset + collection_parameters_set_offset + parameters_set_offset + '{\n'
 
                             mand_params, opt_params = Documentation._do_doc_sub_resource(mand_params, opt_params,
@@ -166,17 +169,6 @@ class Documentation():
                             else:
                                 opt_params += offset + collection_parameters_set_offset + parameters_set_offset + '}\n'
 
-                        else:
-                            if parameter.required == True:
-                                mand_params += offset + \
-                                               parameters_set_offset + collection_parameters_set_offset + \
-                                               mand_ivar_doc_template % (collection_parameter.name,
-                                                                          collection_parameter.type_.replace('xs:', ''))
-                            else:
-                                opt_params += offset + \
-                                              parameters_set_offset + collection_parameters_set_offset + \
-                                              opt_ivar_doc_template % (collection_parameter.name,
-                                                                        collection_parameter.type_.replace('xs:', ''))
                     if parameter.required == True:
                         mand_params += offset + parameters_set_offset + '}\n'
                     else:
@@ -212,18 +204,19 @@ class Documentation():
                                                                 parameter.type_.replace('xs:', ''))
                         opt_params += offset + '{\n'
                     for collection_parameter in parameter.parameters_set.parameter:
+                        if parameter.required == True:
+                            mand_params += offset + collection_parameters_set_offset + \
+                                           mand_ivar_doc_template % (collection_parameter.name,
+                                                                      collection_parameter.type_.replace('xs:', ''))
+                        else:
+                            opt_params += offset + collection_parameters_set_offset + \
+                                          opt_ivar_doc_template % (collection_parameter.name,
+                                                                    collection_parameter.type_.replace('xs:', ''))
+
                         if collection_parameter.type_ == 'collection':
                             if parameter.required == True:
-                                mand_params += offset + collection_parameters_set_offset + \
-                                               mand_ivar_doc_template % (collection_parameter.name,
-                                                                          collection_parameter.type_.replace('xs:', ''))
-
                                 mand_params += offset + collection_parameters_set_offset + '{\n'
                             else:
-                                opt_params += offset + collection_parameters_set_offset + \
-                                              opt_ivar_doc_template % (collection_parameter.name,
-                                                                        collection_parameter.type_.replace('xs:', ''))
-
                                 opt_params += offset + collection_parameters_set_offset + '{\n'
 
                             mand_params, opt_params = Documentation._do_doc_resource(collection_parameter.parameters_set,
@@ -237,16 +230,6 @@ class Documentation():
                                 mand_params += offset + collection_parameters_set_offset + '}\n'
                             else:
                                 opt_params += offset + collection_parameters_set_offset + '}\n'
-
-                        else:
-                            if parameter.required == True:
-                                mand_params += offset + collection_parameters_set_offset + \
-                                               mand_ivar_doc_template % (collection_parameter.name,
-                                                                          collection_parameter.type_.replace('xs:', ''))
-                            else:
-                                opt_params += offset + collection_parameters_set_offset + \
-                                              opt_ivar_doc_template % (collection_parameter.name,
-                                                                        collection_parameter.type_.replace('xs:', ''))
 
                     if parameter.required == True:
                         mand_params += offset + '}\n'
