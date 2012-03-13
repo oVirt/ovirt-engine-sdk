@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-03-11 20:25:34.116543
+Generated at: 2012-03-13 11:23:24.407280
 
 @author: mpastern@redhat.com
 '''
@@ -1602,12 +1602,12 @@ class HostNics(Base):
         '''
         @type HostNIC:
 
-        @param hostnic.bonding.slaves.host_nic: collection
-        {
-          @ivar host_nic.id|name: string
-        }
         @param hostnic.network.id|name: string
         @param hostnic.name: string
+        [@param hostnic.bonding.slaves.host_nic: collection]
+        {
+          [@ivar host_nic.id|name: string]
+        }
         [@param hostnic.bonding.options.option: collection]
         {
           [@ivar option.name: string]
@@ -2698,66 +2698,37 @@ class StorageDomains(Base):
           @param storagdomain.type: string
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_unit: collection]
+          @param storagdomain.storage.address: string
+          @param storagdomain.storage.logical_unit: collection
           {
-            [@ivar logical_unit.address: string]
-            [@ivar logical_unit.port: int]
-            [@ivar logical_unit.target: string]
-            [@ivar logical_unit.username: string]
-            [@ivar logical_unit.password: string]
-            [@ivar logical_unit.serial: string]
-            [@ivar logical_unit.vendor_id: string]
-            [@ivar logical_unit.product_id: string]
-            [@ivar logical_unit.lun_mapping: int]
-            [@ivar logical_unit.portal: string]
-            [@ivar logical_unit.paths: int]
-            [@ivar logical_unit.id: string]
+            @ivar logical_unit.address: string
+            @ivar logical_unit.port: int
+            @ivar logical_unit.target: string
+            @ivar logical_unit.username: string
+            @ivar logical_unit.password: string
+            @ivar logical_unit.serial: string
+            @ivar logical_unit.vendor_id: string
+            @ivar logical_unit.product_id: string
+            @ivar logical_unit.lun_mapping: int
+            @ivar logical_unit.portal: string
+            @ivar logical_unit.paths: int
+            @ivar logical_unit.id: string
           }
         Overload 2:
-          @param storagdomain.storage.path: string
           @param storagdomain.name: string
+          @param storagdomain.host.id|name: string
+          @param storagdomain.type: string
+          @param storagdomain.storage.type: string
+          @param storagdomain.format: boolean
           @param storagdomain.storage.address: string
-          @param storagdomain.host.id|name: string
-          @param storagdomain.type: string
-          @param storagdomain.storage.type: string
-          @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_unit: collection]
-          {
-            [@ivar logical_unit.address: string]
-            [@ivar logical_unit.port: int]
-            [@ivar logical_unit.target: string]
-            [@ivar logical_unit.username: string]
-            [@ivar logical_unit.password: string]
-            [@ivar logical_unit.serial: string]
-            [@ivar logical_unit.vendor_id: string]
-            [@ivar logical_unit.product_id: string]
-            [@ivar logical_unit.lun_mapping: int]
-            [@ivar logical_unit.portal: string]
-            [@ivar logical_unit.paths: int]
-            [@ivar logical_unit.id: string]
-          }
-        Overload 3:
           @param storagdomain.storage.path: string
+        Overload 3:
           @param storagdomain.name: string
           @param storagdomain.host.id|name: string
           @param storagdomain.type: string
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
-          [@param storagdomain.storage.logical_unit: collection]
-          {
-            [@ivar logical_unit.address: string]
-            [@ivar logical_unit.port: int]
-            [@ivar logical_unit.target: string]
-            [@ivar logical_unit.username: string]
-            [@ivar logical_unit.password: string]
-            [@ivar logical_unit.serial: string]
-            [@ivar logical_unit.vendor_id: string]
-            [@ivar logical_unit.product_id: string]
-            [@ivar logical_unit.lun_mapping: int]
-            [@ivar logical_unit.portal: string]
-            [@ivar logical_unit.paths: int]
-            [@ivar logical_unit.id: string]
-          }
+          @param storagdomain.storage.path: string
 
         @return StorageDomain:
         '''
