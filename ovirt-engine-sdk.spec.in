@@ -38,6 +38,28 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Tue Mar 13 2012 Michael Pasternak <mpastern@redhat.com> - 1.6.1
+- rebase to latest api
+  - refactored storage.create() parameters sets
+  - added documentation for UPDATE methods arguments
+  - implemented ars-doc support for collection based arguments
+  - added vm.delete(Action) signature, to force vm removal
+  - implemented support for collection based actions
+  - added setupnetworks action on collection of HostNics
+  - added prestarted_vms property to vmpool
+  - added support for new rsdl section describing url parameters
+  - added 'reboot' property in host (used to disable reboot after installation)
+  - added 'plugged' property in vm disk (to plug/unplug the disk at runtime)
+- implement support for documentation of netsed collection based args
+- support actions on collection
+- refactor documentation for collection based arguments
+- implement support for collection based parameters
+- implement url matrix parameters support
+- Cluster with NULL DC cannot be attached to DC #782828
+- use secured connection if no protocol specified
+- add documentation for api proxy arguments
+- add debugging capabilities
+
 * Wed Feb 15 2012 Michael Pasternak <mpastern@redhat.com> - 1.5
 - several minor improvements
 
