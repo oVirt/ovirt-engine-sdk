@@ -28,7 +28,7 @@ setup(
     package_dir={ '': 'src' },
     packages=[ 'ovirtsdk.infrastructure', 'ovirtsdk.utils', 'ovirtsdk.web', 'ovirtsdk.xml'],
     py_modules=['ovirtsdk.api'],
-    install_requires=['lxml >= 2.2.8'],
+    install_requires=['lxml >= 2.2.8', 'papyon >= 0.5.2'],
     entry_points={},
     **version_info
 )
