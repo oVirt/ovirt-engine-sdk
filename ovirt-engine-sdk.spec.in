@@ -39,6 +39,9 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Wed Mar 14 2012 Michael Pasternak <mpastern@redhat.com> - 1.6.2
+- add papyon dependency (needed for odict)
+
 * Tue Mar 13 2012 Michael Pasternak <mpastern@redhat.com> - 1.6.1
 - rebase to latest api
   - refactored storage.create() parameters sets
