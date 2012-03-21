@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-03-13 11:23:24.407280
+Generated at: 2012-03-21 16:16:25.153717
 
 @author: mpastern@redhat.com
 '''
@@ -1430,6 +1430,8 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
+        @param action.iscsi.address: string
+        @param action.iscsi.target: string
 
         @return Response:
         '''
@@ -1445,6 +1447,7 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
+        @param action.iscsi.address: string
 
         @return Response:
         '''
@@ -1982,6 +1985,7 @@ class Hosts(Base):
           [@ivar option.name: string]
           [@ivar option.value: string]
         }
+        [@param host.reboot_after_installation: boolean]
 
         @return Host:
         '''
@@ -3746,12 +3750,12 @@ class VM(params.VM, Base):
 
         [@param action.vm.os.initRd: string]
         [@param action.vm.domain.name: string]
-        [@param action.host.id|name: string]
+        [@param action.vm.placement_policy.host.id|name: string]
+        [@param action.vm.placement_policy.affinity: string]
         [@param action.async: boolean]
-        [@param action.vm.display.type: string]
         [@param action.vm.os.kernel: string]
         [@param action.grace_period.expiry: long]
-        [@param action.display.type: string]
+        [@param action.vm.display.type: string]
         [@param action.vm.stateless: boolean]
         [@param action.vm.os.cmdline: string]
         [@param action.vm.domain.user.username: string]
@@ -3928,6 +3932,7 @@ class VM(params.VM, Base):
         [@param vm.stateless: boolean]
         [@param vm.cpu.topology.sockets: int]
         [@param vm.placement_policy.affinity: string]
+        [@param vm.placement_policy.host.id|name: string]
         [@param vm.origin: string]
         [@param vm.os.kernel: string]
 
@@ -4108,6 +4113,10 @@ class VMDisks(Base):
         [@param disk.bootable: boolean]
         [@param disk.propagate_errors: boolean]
         [@param disk.wipe_after_delete: boolean]
+        [@param disk.storage_domains: collection]
+        {
+          [@ivar storage_domain.id|name: string]
+        }
 
         @return Disk:
         '''
@@ -4646,6 +4655,7 @@ class VMs(Base):
         [@param vm.stateless: boolean]
         [@param vm.cpu.topology.sockets: int]
         [@param vm.placement_policy.affinity: string]
+        [@param vm.placement_policy.host.id|name: string]
         [@param vm.origin: string]
         [@param vm.os.kernel: string]
         [@param vm.disks.clone: boolean]
