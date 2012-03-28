@@ -38,6 +38,11 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Wed Mar 28 2012 Michael Pasternak <mpastern@redhat.com> - 1.6.4
+- get rid of papyon dep.
+- implement ordereddict
+- lower lxml dep.
+
 * Wed Mar 21 2012 Michael Pasternak <mpastern@redhat.com> - 1.6.3
 - few methods argumets documentation fixes
 
