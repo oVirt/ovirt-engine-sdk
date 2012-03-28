@@ -15,20 +15,20 @@
 #
 
 from codegen.infrastructure.staticdataholder import PRESERVED_NAMES
-from papyon.util.odict import odict
+from ovirtsdk.utils.ordereddict import OrderedDict
 
 class ParamUtils():
     @staticmethod
     def getMethodParamsByUrlParamsMeta(link):
         method_parameters = ''
-        method_params = odict()
-        url_params = odict()
+        method_params = OrderedDict()
+        url_params = OrderedDict()
 
         if link.request and link.request.url and link.request.url.parameters_set \
            and len(link.request.url.parameters_set) > 0:
             for parameters_set in link.request.url.parameters_set:
                 for param in parameters_set.parameter:
-                    url_params[param.name+':'+param.context] = param.value
+                    url_params[param.name + ':' + param.context] = param.value
                     if param.name in PRESERVED_NAMES:
                         name_candidate = param.name + '_' + param.value
                     else:

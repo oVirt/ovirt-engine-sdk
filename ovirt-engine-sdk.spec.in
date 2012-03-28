@@ -13,7 +13,6 @@ BuildArch: noarch
 
 Requires: python
 Requires: python-lxml
-Requires: papyon
 
 %description
 This package contains The oVirt-Engine Software Development Kit.
