@@ -19,11 +19,10 @@ from ovirtsdk.infrastructure import contextmanager
 class Base(object):
     ''' Returns the proxy to connections pool '''
     def _getProxy(self):
-#FIXME: consider creating new proxy for each call so it will be executed
-        #on separate thread heap space
-
 #FIXME: manage cache peer API instance  
         return contextmanager.get('proxy')
 
     def __getattr__(self, item):
+        if not self.__dict__.has_key('superclass'):
+            return self.__getattribute__(item)
         return self.superclass.__getattribute__(item)
