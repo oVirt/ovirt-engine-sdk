@@ -24,13 +24,13 @@ class Connection(object):
     The oVirt api connection proxy
     '''
     def __init__(self, url, port, key_file, cert_file, strict, timeout, username, password, manager, debug=False):
-        self.__connetcion = self.__createConnection(url=url,
+        self.__connection = self.__createConnection(url=url,
                                                     port=port,
                                                     key_file=key_file,
                                                     cert_file=cert_file,
                                                     strict=strict,
                                                     timeout=timeout)
-        self.__connetcion.set_debuglevel(int(debug))
+        self.__connection.set_debuglevel(int(debug))
         self.__headers = self.__createHeaders(username, password)
         self.__manager = manager
         self.__id = id(self)
@@ -45,7 +45,7 @@ class Connection(object):
         return self.__headers.copy()
 
     def doRequest(self, method, url, body=urllib.urlencode({}), headers={}):
-        return self.__connetcion.request(method, url, body, self.getHeaders(headers))
+        return self.__connection.request(method, url, body, self.getHeaders(headers))
 
     def getHeaders(self, headers):
         extended_headers = self.getDefaultHeaders()
@@ -57,7 +57,7 @@ class Connection(object):
         return extended_headers
 
     def getResponse(self):
-        return self.__connetcion.getresponse()
+        return self.__connection.getresponse()
 
     def setDebugLevel(self, level):
         self.__connection.set_debuglevel(level)
@@ -66,13 +66,13 @@ class Connection(object):
         self.__connection.set_tunnel(host, port, headers)
 
     def close(self):
-        self.__connetcion.close()
+        self.__connection.close()
 #FIXME: create connection watchdog to close it on idle-ttl expiration, rather than after the call
         if (self.__manager is not None):
             self.__manager._freeResource(self)
 
     def state(self):
-        return self.__connetcion.__state
+        return self.__connection.__state
 
 
     def __parse_url(self, url):
