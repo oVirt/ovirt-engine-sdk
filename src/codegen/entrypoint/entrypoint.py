@@ -56,6 +56,18 @@ class EntryPoint(object):
 """
     def disconnect(self):
         ''' terminates server connection/s '''
+        proxy = contextmanager.get('proxy')
+
+        # If persistent authentication is enabled then we need to
+        # send a last request as a hint to the server to close the
+        # session:
+        if proxy and self._persistent_auth:
+            try:
+                proxy.request(method='GET', url='/api', last=True)
+            except Exception, e:
+                pass
+
+        # Remove the proxy:
         contextmanager._remove('proxy', force=True)
 
     def test(self, throw_exception=False):
@@ -93,7 +105,7 @@ class EntryPoint(object):
         api_template = EntryPoint.entryPointImports() + \
         EntryPoint.entryPointCustomImports(types) + \
 """class API():
-    def __init__(self, url, username, password, key_file=None, cert_file=None, port=None, timeout=None, debug=False):
+    def __init__(self, url, username, password, key_file=None, cert_file=None, port=None, timeout=None, persistent_auth=True, debug=False):
 
         \"""
         @param url: server url (format "http/s://server[:port]/api")
@@ -103,20 +115,31 @@ class EntryPoint(object):
         [@param cert_file: cert_file for ssl enabled connection] 
         [@param port: port to use (if not specified in url)]
         [@param timeout: request timeout]
+        [@param persistent_auth: enable persistent authentication (format True|False)]
         [@param debug: debug (format True|False)]
         \"""
 
-        contextmanager.add('proxy',
-                           Proxy(ConnectionsPool(url=url,
-                                                 username=username,
-                                                 password=password,
-                                                 key_file=key_file,
-                                                 cert_file=cert_file,
-                                                 port=port,
-                                                 strict=False,
-                                                 timeout=timeout,
-                                                 debug=debug)),
-                           Mode.R)
+        # We need to remember if persistent auth is enabled:
+        self._persistent_auth = persistent_auth
+
+        # Create the connection pool:
+        pool = ConnectionsPool(
+            url=url,
+            username=username,
+            password=password,
+            key_file=key_file,
+            cert_file=cert_file,
+            port=port,
+            strict=False,
+            timeout=timeout,
+            debug=debug
+        )
+
+        # Create the proxy:
+        proxy = Proxy(pool, persistent_auth)
+
+        # Add the proxy to the context:
+        contextmanager.add('proxy', proxy, Mode.R)
 
 """
 
