@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #
 # Copyright (c) 2010 Red Hat, Inc.
 #
@@ -31,9 +32,9 @@ from codegen.utils.typeutil import TypeUtil
 from codegen.subcollection.subcollection import SubCollection
 from ovirtsdk.utils.reflectionhelper import ReflectionHelper
 
-SERVER = 'http://server:port'
-USER = 'user@domain'
-PASSWORD = 'password'
+SERVER = 'http://localhost:8080'
+USER = 'admin@internal'
+PASSWORD = 'letmein!'
 
 BROKERS_FILE = '../ovirtsdk/infrastructure/brokers.py'
 ENTRY_POINT_FILE = '../ovirtsdk/api.py'
@@ -199,7 +200,7 @@ class CodeGen():
                         else:
                             self.__createAction(root_coll, sub_coll, v, url, rel, http_method, body_type, link, response_type, collectionsHolder, collection_action=True)
                     else:
-                        self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
+                        self.__extendSubResource(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
             elif(ln is 3): #/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate
                 if (i is 1): #vms/xxx
                     #root_coll = k
@@ -213,11 +214,11 @@ class CodeGen():
                         self.__createAction(root_coll, None, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
                     else:
                         if(resources.values()[i] is None):
-                            self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
+                            self.__extendSubResource(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
                 if (i is 3 and v is None and not self.__isCollection(k)):
                     self.__createAction(root_coll, sub_coll, k, url, rel, http_method, body_type, link, response_type, collectionsHolder)
                 elif(i is 3 and resources.values()[2] is not None):
-                    self.__extnedSubResource(root_coll + self.__toResourceType(resources.keys()[1]),
+                    self.__extendSubResource(root_coll + self.__toResourceType(resources.keys()[1]),
                                              self.__toResourceType(resources.keys()[2]), url, rel, http_method, body_type, link, response_type, collectionsHolder)
             elif(ln > 3):  #vms/xxx/disks/yyy/snapshots/zzz or deeper
                 if(DEBUG): print 'WARNING: unsupported deep(' + str(len(resources)) + "): url: " + url
@@ -284,10 +285,10 @@ class CodeGen():
             nested_resource = nested_collection[:len(nested_collection) - 1] if not collection_action else nested_collection
 
             if (not collectionsHolder.has_key(nested_collection)):
-                self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
+                self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
 
             if (not collectionsHolder.has_key(nested_resource)):
-                self.__extnedSubResource(root_coll, sub_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
+                self.__extendSubResource(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
 
             action_body = SubResource.action(url, link, action_name, resource, body_type, sub_resource, http_method, {}, collection_action)
             collectionsHolder[nested_resource]['body'] += action_body
@@ -356,7 +357,7 @@ class CodeGen():
             collectionsHolder[sub_coll_type]['body'] += add_method
             if(DEBUG): print 'adding to sub-collection: ' + sub_coll_type + ', url: ' + url + ', add() method:\n' + add_method
 
-    def __extnedSubResource(self, root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder):
+    def __extendSubResource(self, root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder):
         root_res = root_coll[:len(root_coll) - 1]
         sub_res = sub_coll[:len(sub_coll) - 1] if self.__isCollection(sub_coll) else sub_coll
         sub_res_type = root_res + sub_res
