@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-03-21 16:16:25.153717
+Generated at: 2012-05-09 12:17:12.449852
 
 @author: mpastern@redhat.com
 '''
@@ -151,6 +151,10 @@ class ClusterNetwork(params.Network, Base):
     def update(self):
         '''
         [@param network.display: boolean]
+        [@param network.usages: collection]
+        {
+          [@ivar usage: string]
+        }
 
         @return Network:
         '''
@@ -1583,6 +1587,7 @@ class HostNIC(params.HostNIC, Base):
         [@param hostnic.mac: string]
         [@param hostnic.ip.address: string]
         [@param hostnic.ip.netmask: string]
+        [@param hostnic.ip.mtu: int]
 
         @return HostNIC:
         '''
@@ -2076,6 +2081,7 @@ class Network(params.Network, Base):
         [@param network.ip.netmask: string]
         [@param network.display: boolean]
         [@param network.stp: boolean]
+        [@param network.mtu: int]
 
         @return Network:
         '''
@@ -2103,6 +2109,7 @@ class Networks(Base):
         [@param network.ip.netmask: string]
         [@param network.display: boolean]
         [@param network.stp: boolean]
+        [@param network.mtu: int]
 
         @return Network:
         '''
@@ -2552,7 +2559,11 @@ class StorageDomainTemplate(params.Template, Base):
         @type Action:
 
         @param action.cluster.id|name: string
-        @param action.storagedomain.id|name: string
+        [@param action.storagedomain.id|name: string]
+        [@param action.vm.disks.disk: collection]
+        {
+          [@ivar id: string]
+        }
 
         @return Response:
         '''
@@ -2628,7 +2639,11 @@ class StorageDomainVM(params.VM, Base):
         @type Action:
 
         @param action.cluster.id|name: string
-        @param action.storagedomain.id|name: string
+        [@param action.storagedomain.id|name: string]
+        [@param action.vm.disks.disk: collection]
+        {
+          [@ivar id: string]
+        }
 
         @return Response:
         '''
@@ -2733,6 +2748,16 @@ class StorageDomains(Base):
           @param storagdomain.storage.type: string
           @param storagdomain.format: boolean
           @param storagdomain.storage.path: string
+        Overload 4:
+          @param storagdomain.name: string
+          @param storagdomain.host.id|name: string
+          @param storagdomain.type: string
+          @param storagdomain.storage.type: string
+          @param storagdomain.format: boolean
+          @param storagdomain.storage.path: string
+          @param storagedomain.storage.vfs_type: string
+          [@param storagdomain.storage.address: string]
+          [@param storagdomain.storage.mount_options: string]
 
         @return StorageDomain:
         '''
@@ -2946,6 +2971,7 @@ class Template(params.Template, Base):
         [@param template.os.kernel: string]
         [@param template.display.type: string]
         [@param template.display.monitors: int]
+        [@param template.display.allow_reconnect: boolean]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
 
@@ -3255,8 +3281,17 @@ class Templates(Base):
         [@param template.os.kernel: string]
         [@param template.display.type: string]
         [@param template.display.monitors: int]
+        [@param template.display.allow_reconnect: boolean]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
+        [@param template.vm.disks.disk: collection]
+        {
+          [@ivar id: string]
+          [@ivar storage_domains.storage_domain: collection]
+          {
+            [@param id: string]
+          }
+        }
 
         @return Template:
         '''
@@ -3922,6 +3957,7 @@ class VM(params.VM, Base):
         [@param vm.os.initRd: string]
         [@param vm.display.monitors: int]
         [@param vm.display.type: string]
+        [@param vm.display.allow_reconnect: boolean]
         [@param vm.os.cmdline: string]
         [@param vm.cpu.topology.cores: int]
         [@param vm.memory: long]
@@ -4059,20 +4095,6 @@ class VMDisk(params.Disk, Base):
         obj.__init__(vm, disk)
         return obj
 
-    def delete(self, async=None):
-        '''
-        [@param async: true|false]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace('/api/vms/{vm:id}/disks/{disk:id}',
-                                {'{vm:id}' : self.parentclass.get_id(),
-                                 '{disk:id}': self.get_id()})
-
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
-
     def update(self):
         '''
         [@param size: int]
@@ -4094,6 +4116,54 @@ class VMDisk(params.Disk, Base):
                                          body=ParseHelper.toXml(self.superclass))
 
         return VMDisk(self.parentclass, result)
+
+    def activate(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
+        url = '/api/vms/{vm:id}/disks/{disk:id}/activate'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                     '{disk:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+
+        return result
+
+    def deactivate(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
+        url = '/api/vms/{vm:id}/disks/{disk:id}/deactivate'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                     '{disk:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+
+        return result
+
+    def delete(self, async=None):
+        '''
+        [@param async: true|false]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace('/api/vms/{vm:id}/disks/{disk:id}',
+                                {'{vm:id}' : self.parentclass.get_id(),
+                                 '{disk:id}': self.get_id()})
+
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                       headers={'Content-type':None})
 
 class VMDisks(Base):
  
@@ -4155,6 +4225,7 @@ class VMDisks(Base):
             return VMDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
+
         '''
         [@param **kwargs: dict (property based filtering)"]
 
@@ -4180,20 +4251,6 @@ class VMNic(params.NIC, Base):
         obj.__init__(vm, nic)
         return obj
 
-    def delete(self, async=None):
-        '''
-        [@param async: true|false]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace('/api/vms/{vm:id}/nics/{nic:id}',
-                                {'{vm:id}' : self.parentclass.get_id(),
-                                 '{nic:id}': self.get_id()})
-
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
-
     def update(self):
         '''
         [@param nic.network.id|name: string]
@@ -4211,6 +4268,54 @@ class VMNic(params.NIC, Base):
                                          body=ParseHelper.toXml(self.superclass))
 
         return VMNic(self.parentclass, result)
+
+    def activate(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
+        url = '/api/vms/{vm:id}/nics/{nic:id}/activate'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                     '{nic:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+
+        return result
+
+    def deactivate(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
+        url = '/api/vms/{vm:id}/nics/{nic:id}/deactivate'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                     '{nic:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+
+        return result
+
+    def delete(self, async=None):
+        '''
+        [@param async: true|false]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace('/api/vms/{vm:id}/nics/{nic:id}',
+                                {'{vm:id}' : self.parentclass.get_id(),
+                                 '{nic:id}': self.get_id()})
+
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                       headers={'Content-type':None})
 
 class VMNics(Base):
  
@@ -4645,6 +4750,7 @@ class VMs(Base):
         [@param vm.os.initRd: string]
         [@param vm.display.monitors: int]
         [@param vm.display.type: string]
+        [@param vm.display.allow_reconnect: boolean]
         [@param vm.os.cmdline: string]
         [@param vm.cpu.topology.cores: int]
         [@param vm.memory: long]
@@ -4704,6 +4810,61 @@ class VMs(Base):
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_vm()
         return ParseHelper.toCollection(VM,
                                         FilterHelper.filter(result, kwargs))
+
+class VMsDiskStatistic(params.Statistic, Base):
+    def __init__(self, vmsdisk, statistic):
+        self.parentclass = vmsdisk
+        self.superclass  =  statistic
+
+    def __new__(cls, vmsdisk, statistic):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmsdisk, statistic)
+        return obj
+
+class VMsNicStatistic(params.Statistic, Base):
+    def __init__(self, vmsnic, statistic):
+        self.parentclass = vmsnic
+        self.superclass  =  statistic
+
+    def __new__(cls, vmsnic, statistic):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmsnic, statistic)
+        return obj
+
+class VMsSnapshotCdrom(params.CdRom, Base):
+    def __init__(self, vmssnapshot, cdrom):
+        self.parentclass = vmssnapshot
+        self.superclass  =  cdrom
+
+    def __new__(cls, vmssnapshot, cdrom):
+        if cdrom is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmssnapshot, cdrom)
+        return obj
+
+class VMsSnapshotDisk(params.Disk, Base):
+    def __init__(self, vmssnapshot, disk):
+        self.parentclass = vmssnapshot
+        self.superclass  =  disk
+
+    def __new__(cls, vmssnapshot, disk):
+        if disk is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmssnapshot, disk)
+        return obj
+
+class VMsSnapshotNic(params.NIC, Base):
+    def __init__(self, vmssnapshot, nic):
+        self.parentclass = vmssnapshot
+        self.superclass  =  nic
+
+    def __new__(cls, vmssnapshot, nic):
+        if nic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmssnapshot, nic)
+        return obj
 
 class VmPool(params.VmPool, Base):
     def __init__(self, vmpool):
