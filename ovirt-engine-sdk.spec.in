@@ -38,6 +38,35 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Thu May 10 2012 Michael Pasternak <mpastern@redhat.com> - 1.6.5
+- Added session based auth. support
+- Infinite recursion when calling non-existent method #808124
+- at Network/.add() added [@param network.usages: collection]
+- at HostNIC/.add() added [@param hostnic.ip.mtu: int]
+- at StorageDomainTemplate/StorageDomainVM.import() added:
+  [@param action.storagedomain.id|name: string]
+  [@param action.vm.disks.disk: collection]
+- at StorageDomains.add() method added:
+  Overload 4:
+    @param storagdomain.name: string
+    @param storagdomain.host.id|name: string
+    @param storagdomain.type: string
+    @param storagdomain.storage.type: string
+    @param storagdomain.format: boolean
+    @param storagdomain.storage.path: string
+    @param storagedomain.storage.vfs_type: string
+    [@param storagdomain.storage.address: string]
+    [@param storagdomain.storage.mount_options: string]
+- at Template/VM added:
+  [@param template/vm.display.allow_reconnect: boolean]
+-at Template/VM.add() added:
+  [@param template/vm.display.allow_reconnect: boolean]
+  [@param template/vm.vm.disks.disk: collection]
+-added VMDisk.activate() method
+-added VMDisk.deactivate() method
+-added VMNic.activate() method
+-added VMNic.deactivate() method
+
 * Wed Mar 28 2012 Michael Pasternak <mpastern@redhat.com> - 1.6.4
 - get rid of papyon dep.
 - implement ordereddict
