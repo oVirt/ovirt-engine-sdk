@@ -275,7 +275,7 @@ class CodeGen():
                                                                        else resource)
         if (sub_coll is None or sub_coll == ''):
             if (not collectionsHolder.has_key(resource)):
-                self.__extendCollection(root_coll, url, rel, http_method, body_type, response_type, collectionsHolder)
+                self.__extendCollection(root_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
             action_body = Resource.action(url, body_type, link, action_name, resource, http_method, {})
             collectionsHolder[resource]['body'] += action_body
             if(DEBUG): print '[act] creating action: ' + action_name + '() on resource: ' + resource + ', for url: ' + url
