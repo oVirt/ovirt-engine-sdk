@@ -38,6 +38,10 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Wed May 16 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.1-1alpha
+- Version format refactoring to align with oVirt version schema 
+- Alpha release
+
 * Thu May 10 2012 Michael Pasternak <mpastern@redhat.com> - 1.6.5
 - Added session based auth. support
 - Infinite recursion when calling non-existent method #808124

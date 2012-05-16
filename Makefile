@@ -1,7 +1,7 @@
 all: rpm
 
-rpmrelease:=1
-rpmversion=1.6.5
+rpmrelease:=1alpha
+rpmversion=3.1.0.1
 RPMTOP=$(shell bash -c "pwd -P")/rpmtop
 SPEC=ovirt-engine-sdk.spec
 
