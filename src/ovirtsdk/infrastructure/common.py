@@ -15,6 +15,7 @@
 #
 
 from ovirtsdk.infrastructure import contextmanager
+from ovirtsdk.utils.comperator import Comparator
 
 class Base(object):
     ''' Returns the proxy to connections pool '''
@@ -28,8 +29,7 @@ class Base(object):
         return self.superclass.__getattribute__(item)
 
     def __eq__(self, other):
-        return (isinstance(other, self.__class__)
-            and self.__dict__ == other.__dict__)
+        return Comparator.compare(self, other)
 
     def __ne__(self, other):
         return not self.__eq__(other)

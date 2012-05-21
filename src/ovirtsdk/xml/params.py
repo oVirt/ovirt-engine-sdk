@@ -16,6 +16,7 @@ import re as re_
 
 # Begin NOT_GENERATED
 from ovirtsdk.utils.reflectionhelper import ReflectionHelper
+from ovirtsdk.utils.comperator import Comparator
 # End NOT_GENERATED
 
 etree_ = None
@@ -202,6 +203,12 @@ except ImportError, exp:
                 object.__setattr__(self, item, parsed_list)
             else:
                 object.__setattr__(self, item, value)
+
+        def __eq__(self, other):
+            return Comparator.compare(self, other)
+
+        def __ne__(self, other):
+            return not self.__eq__(other)
 # End NOT_GENERATED 
 
 #
