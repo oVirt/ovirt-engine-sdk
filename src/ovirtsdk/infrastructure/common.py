@@ -26,3 +26,10 @@ class Base(object):
         if not self.__dict__.has_key('superclass'):
             return self.__getattribute__(item)
         return self.superclass.__getattribute__(item)
+
+    def __eq__(self, other):
+        return (isinstance(other, self.__class__)
+            and self.__dict__ == other.__dict__)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
