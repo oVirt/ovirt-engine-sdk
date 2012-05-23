@@ -92,7 +92,7 @@ class RequestError(Exception):
         res = response.read()
         if res is not None and str(res) is not '' and str(res).find('Error report') != -1:
             self.detail = res
-        elif res is not None:
+        elif res:
             f_detail = params.parseString(res)
             if isinstance(f_detail, params.Action) and f_detail.fault is not None:
                 #self.reason = f_detail.fault.reason
