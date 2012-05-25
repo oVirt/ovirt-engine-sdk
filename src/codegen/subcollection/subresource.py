@@ -19,6 +19,7 @@ from codegen.utils.typeutil import TypeUtil
 from codegen.collection.resource import Resource
 from codegen.doc.documentation import Documentation
 from codegen.utils.paramutils import ParamUtils
+from ovirtsdk.utils.parsehelper import ParseHelper
 
 
 #============================================================
@@ -29,11 +30,14 @@ class SubResource(object):
     @staticmethod
     def resource(sub_res_type, encapsulating_entity, parent, KNOWN_WRAPPER_TYPES={}):
         actual_xml_entity = TypeUtil.getValueByKeyOrNone(encapsulating_entity.lower(), KNOWN_WRAPPER_TYPES)
+        actual_xml_type = ParseHelper.getXmlType(encapsulating_entity)
         actual_sub_res_type = TypeUtil.getValueByKeyOrNone(sub_res_type.lower(), KNOWN_WRAPPER_TYPES)
 
         sub_collection_resource_template_values = {'encapsulating_entity':actual_sub_res_type if actual_sub_res_type is not None else sub_res_type,
                                                    'sub_res_type': actual_sub_res_type if actual_sub_res_type is not None else \
                                                                                        actual_xml_entity if actual_xml_entity is not None else\
+                                                                                       actual_xml_type.__name__ if \
+                                                                                       actual_xml_type is not None else \
                                                                                        encapsulating_entity,
                                                    'parent':parent.lower(),
                                                    'encapsulated_entity':encapsulating_entity.lower()}

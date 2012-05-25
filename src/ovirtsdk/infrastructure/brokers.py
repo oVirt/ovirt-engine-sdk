@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-05-09 12:17:12.449852
+Generated at: 2012-05-25 22:10:30.574588
 
 @author: mpastern@redhat.com
 '''
@@ -75,6 +75,7 @@ class Capabilities(Base):
 
 class Cluster(params.Cluster, Base):
     def __init__(self, cluster):
+        self.glustervolumes = ClusterGlusterVolumes(cluster)
         self.networks = ClusterNetworks(cluster)
         self.permissions = ClusterPermissions(cluster)
 
@@ -122,6 +123,212 @@ class Cluster(params.Cluster, Base):
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass))
         return Cluster(result)
+
+class ClusterGlusterVolume(params.GlusterVolume, Base):
+    def __init__(self, cluster, glustervolume):
+        self.parentclass = cluster
+        self.superclass  =  glustervolume
+
+    def __new__(cls, cluster, glustervolume):
+        if glustervolume is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(cluster, glustervolume)
+        return obj
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}'
+
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                   '{glustervolume:id}': self.get_id()}),
+                                       headers={'Content-type':None})
+
+    def start(self, action=params.Action()):
+        '''
+        @type Action:
+
+        [@param action.force: boolean]
+
+        @return Response:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/start'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                     '{glustervolume:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+
+        return result
+
+    def stop(self, action=params.Action()):
+        '''
+        @type Action:
+
+        [@param action.force: boolean]
+
+        @return Response:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stop'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                     '{glustervolume:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+
+        return result
+
+    def setOption(self, action=params.Action()):
+        '''
+        @type Action:
+
+        @param action.option.name: string
+        @param action.option.value: string
+
+        @return Response:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/setOption'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                     '{glustervolume:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+
+        return result
+
+    def rebalance(self, action=params.Action()):
+        '''
+        @type Action:
+
+        [@param action.fix_layout: boolean]
+        [@param action.force: boolean]
+
+        @return Response:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/rebalance'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                     '{glustervolume:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+
+        return result
+
+    def resetOption(self, action=params.Action()):
+        '''
+        @type Action:
+
+        @param action.option.name: string
+        @param action.force: boolean
+
+        @return Response:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetOption'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                     '{glustervolume:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+
+        return result
+
+class ClusterGlusterVolumes(Base):
+ 
+    def __init__(self, cluster):
+        self.parentclass = cluster
+
+    def add(self, glustervolume):
+
+        '''
+        @type GlusterVolume:
+
+        @param gluster_volume.name: string
+        @param gluster_volume.volume_type: string
+        @param gluster_volume.bricks: collection
+        {
+          @ivar brick.server_id: string
+          @ivar brick.brick_dir: string
+        }
+        [@param gluster_volume.transport_types: collection]
+        {
+          [@ivar transport_type: string]
+        }
+        [@param gluster_volume.replica_count: unsignedShort]
+        [@param gluster_volume.stripe_count: unsignedShort]
+        [@param gluster_volume.access_protocols: collection]
+        {
+          [@ivar access_protocol: string]
+        }
+        [@param gluster_volume.access_control_list: collection]
+        {
+          [@ivar ip: string]
+        }
+        [@param gluster_volume.options: collection]
+        {
+          [@ivar option.name: string]
+          [@ivar option.value: string]
+        }
+
+        @return GlusterVolume:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes'
+
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(glustervolume))
+
+        return ClusterGlusterVolume(self.parentclass, result)
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return GlusterVolumes:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return ClusterGlusterVolume(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_gluster_volume()
+
+            return ClusterGlusterVolume(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, query=None, case_sensitive=True, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
+
+        @return GlusterVolumes:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes'
+
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{cluster:id}': self.parentclass.get_id()}),
+                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive})).get_gluster_volume()
+        return ParseHelper.toSubCollection(ClusterGlusterVolume,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
 
 class ClusterNetwork(params.Network, Base):
     def __init__(self, cluster, network):
@@ -390,9 +597,32 @@ class Clusters(Base):
         return ParseHelper.toCollection(Cluster,
                                         FilterHelper.filter(result, kwargs))
 
+class ClustersGlustervolumeBrick(params.GlusterBrick, Base):
+    def __init__(self, clustersglustervolume, brick):
+        self.parentclass = clustersglustervolume
+        self.superclass  =  brick
+
+    def __new__(cls, clustersglustervolume, brick):
+        if brick is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(clustersglustervolume, brick)
+        return obj
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
+
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{clustersglustervolume:id}' : self.parentclass.get_id(),
+                                                                   '{brick:id}': self.get_id()}),
+                                       headers={'Content-type':None})
+
 class DataCenter(params.DataCenter, Base):
     def __init__(self, datacenter):
         self.storagedomains = DataCenterStorageDomains(datacenter)
+        self.quotas = DataCenterQuotas(datacenter)
         self.permissions = DataCenterPermissions(datacenter)
 
         self.superclass = datacenter
@@ -524,6 +754,90 @@ class DataCenterPermissions(Base):
         result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_permission()
 
         return ParseHelper.toSubCollection(DataCenterPermission,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
+
+class DataCenterQuota(params.Quota, Base):
+    def __init__(self, datacenter, quota):
+        self.parentclass = datacenter
+        self.superclass  =  quota
+
+    def __new__(cls, datacenter, quota):
+        if quota is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenter, quota)
+        return obj
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/quotas/{quota:id}'
+
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+                                                                   '{quota:id}': self.get_id()}),
+                                       headers={'Content-type':None})
+
+class DataCenterQuotas(Base):
+ 
+    def __init__(self, datacenter):
+        self.parentclass = datacenter
+
+    def add(self, quota):
+
+        '''
+        @type Quota:
+
+
+        @return Quota:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/quotas'
+
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(quota))
+
+        return DataCenterQuota(self.parentclass, result)
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return Quotas:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/quotas'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return DataCenterQuota(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_quota()
+
+            return DataCenterQuota(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Quotas:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/quotas'
+
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_quota()
+
+        return ParseHelper.toSubCollection(DataCenterQuota,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
 
@@ -707,6 +1021,177 @@ class DataCenters(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_data_center()
         return ParseHelper.toCollection(DataCenter,
+                                        FilterHelper.filter(result, kwargs))
+
+class Disk(params.Disk, Base):
+    def __init__(self, disk):
+        self.statistics = DiskStatistics(disk)
+
+        self.superclass = disk
+
+    def __new__(cls, disk):
+        if disk is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(disk)
+        return obj
+
+    def update(self):
+        '''
+        [@param size: int]
+        [@param disk.type: string]
+        [@param disk.interface: string]
+        [@param disk.format: string]
+        [@param disk.sparse: boolean]
+        [@param disk.bootable: boolean]
+        [@param disk.shareable: boolean]
+        [@param disk.allow_snapshot: boolean]
+        [@param disk.propagate_errors: boolean]
+        [@param disk.wipe_after_delete: boolean]
+
+        @return Disk:
+        '''
+
+        url = '/api/disks/{disk:id}'
+
+        result = self._getProxy().update(url=UrlHelper.replace(url, {'{disk:id}': self.get_id()}),
+                                         body=ParseHelper.toXml(self.superclass))
+        return Disk(result)
+
+    def delete(self, async=None):
+        '''
+        [@param async: true|false]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace('/api/disks/{disk:id}',
+                                {'{disk:id}': self.get_id()})
+
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                       headers={'Content-type':None})
+
+class DiskStatistic(params.Statistic, Base):
+    def __init__(self, disk, statistic):
+        self.parentclass = disk
+        self.superclass  =  statistic
+
+    def __new__(cls, disk, statistic):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(disk, statistic)
+        return obj
+
+class DiskStatistics(Base):
+ 
+    def __init__(self, disk):
+        self.parentclass = disk
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return Statistics:
+        '''
+
+        url = '/api/disks/{disk:id}/statistics'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return DiskStatistic(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()})).get_statistic()
+
+            return DiskStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Statistics:
+        '''
+
+        url = '/api/disks/{disk:id}/statistics'
+
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()})).get_statistic()
+
+        return ParseHelper.toSubCollection(DiskStatistic,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
+
+class Disks(Base):
+    def __init__(self):
+        """Constructor."""
+
+    def add(self, disk):
+        '''
+        @type Disk:
+
+        @param size: int
+        @param disk.type: string
+        @param disk.interface: string
+        @param disk.format: string
+        [@param disk.sparse: boolean]
+        [@param disk.bootable: boolean]
+        [@param disk.shareable: boolean]
+        [@param disk.allow_snapshot: boolean]
+        [@param disk.propagate_errors: boolean]
+        [@param disk.wipe_after_delete: boolean]
+        [@param disk.storage_domains: collection]
+        {
+          [@ivar storage_domain.id|name: string]
+        }
+
+        @return Disk:
+        '''
+
+        url = '/api/disks'
+
+        result = self._getProxy().add(url=url,
+                                      body=ParseHelper.toXml(disk))
+        return Disk(result)
+
+    def get(self, name='*', **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param name: string (the name of the entity)]
+
+        @return BaseDevices:
+        '''
+
+        url = '/api/disks'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                return Disk(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            result = self._getProxy().get(url=url).get_basedevice()
+            if name != '*': kwargs['name']=name
+            return Disk(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return BaseDevices:
+        '''
+
+        url='/api/disks'
+
+        result = self._getProxy().get(url=url).get_basedevice()
+        return ParseHelper.toCollection(Disks,
                                         FilterHelper.filter(result, kwargs))
 
 class Domain(params.Domain, Base):
@@ -2559,7 +3044,7 @@ class StorageDomainTemplate(params.Template, Base):
         @type Action:
 
         @param action.cluster.id|name: string
-        [@param action.storagedomain.id|name: string]
+        [@param action.storage_domain.id|name: string]
         [@param action.vm.disks.disk: collection]
         {
           [@ivar id: string]
@@ -2639,7 +3124,7 @@ class StorageDomainVM(params.VM, Base):
         @type Action:
 
         @param action.cluster.id|name: string
-        [@param action.storagedomain.id|name: string]
+        [@param action.storage_domain.id|name: string]
         [@param action.vm.disks.disk: collection]
         {
           [@ivar id: string]
@@ -2974,6 +3459,7 @@ class Template(params.Template, Base):
         [@param template.display.allow_reconnect: boolean]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
+        [@param template.usb.type: string]
 
         @return Template:
         '''
@@ -3051,6 +3537,28 @@ class TemplateDisk(params.Disk, Base):
         obj = object.__new__(cls)
         obj.__init__(template, disk)
         return obj
+
+    def delete(self, action, async=None):
+        '''
+        @type Action:
+
+        Overload 1:
+          [@param action.storage_domain.id: string]
+          [@param action.force: boolean]
+        Overload 2:
+          [@param action.force: boolean]
+        Overload 3:
+        [@param async: true|false]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace('/api/templates/{template:id}/disks/{disk:id}',
+                                {'{template:id}' : self.parentclass.get_id(),
+                                 '{disk:id}': self.get_id()})
+
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                       body=ParseHelper.toXml(action))
 
 class TemplateDisks(Base):
  
@@ -3284,6 +3792,7 @@ class Templates(Base):
         [@param template.display.allow_reconnect: boolean]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
+        [@param template.usb.type: string]
         [@param template.vm.disks.disk: collection]
         {
           [@ivar id: string]
@@ -3953,6 +4462,7 @@ class VM(params.VM, Base):
         }
         [@param vm.os.type: string]
         [@param vm.usb.enabled: boolean]
+        [@param vm.usb.type: string]
         [@param vm.type: string]
         [@param vm.os.initRd: string]
         [@param vm.display.monitors: int]
@@ -3971,6 +4481,12 @@ class VM(params.VM, Base):
         [@param vm.placement_policy.host.id|name: string]
         [@param vm.origin: string]
         [@param vm.os.kernel: string]
+        [@param vm.payloads.payload: collection]
+        {
+          [@ivar payload.type: string]
+          [@ivar payload.file.name: string]
+          [@ivar payload.file.content: string]
+        }
 
         @return VM:
         '''
@@ -4095,27 +4611,24 @@ class VMDisk(params.Disk, Base):
         obj.__init__(vm, disk)
         return obj
 
-    def update(self):
+    def delete(self, action, async=None):
         '''
-        [@param size: int]
-        [@param disk.type: string]
-        [@param disk.interface: string]
-        [@param disk.format: string]
-        [@param disk.sparse: boolean]
-        [@param disk.bootable: boolean]
-        [@param disk.propagate_errors: boolean]
-        [@param disk.wipe_after_delete: boolean]
+        @type Action:
 
-        @return Disk:
+        Overload 1:
+        Overload 2:
+          @param action.detach: boolean
+        [@param async: true|false]
+
+        @return None:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}'
+        url = UrlHelper.replace('/api/vms/{vm:id}/disks/{disk:id}',
+                                {'{vm:id}' : self.parentclass.get_id(),
+                                 '{disk:id}': self.get_id()})
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                     '{disk:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
-
-        return VMDisk(self.parentclass, result)
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                       body=ParseHelper.toXml(action))
 
     def activate(self, action=params.Action()):
         '''
@@ -4151,19 +4664,29 @@ class VMDisk(params.Disk, Base):
 
         return result
 
-    def delete(self, async=None):
+    def update(self):
         '''
-        [@param async: true|false]
+        [@param size: int]
+        [@param disk.type: string]
+        [@param disk.interface: string]
+        [@param disk.format: string]
+        [@param disk.sparse: boolean]
+        [@param disk.bootable: boolean]
+        [@param disk.shareable: boolean]
+        [@param disk.allow_snapshot: boolean]
+        [@param disk.propagate_errors: boolean]
+        [@param disk.wipe_after_delete: boolean]
 
-        @return None:
+        @return Disk:
         '''
 
-        url = UrlHelper.replace('/api/vms/{vm:id}/disks/{disk:id}',
-                                {'{vm:id}' : self.parentclass.get_id(),
-                                 '{disk:id}': self.get_id()})
+        url = '/api/vms/{vm:id}/disks/{disk:id}'
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+        result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                     '{disk:id}': self.get_id()}),
+                                         body=ParseHelper.toXml(self.superclass))
+
+        return VMDisk(self.parentclass, result)
 
 class VMDisks(Base):
  
@@ -4175,18 +4698,24 @@ class VMDisks(Base):
         '''
         @type Disk:
 
-        @param size: int
-        @param disk.type: string
-        @param disk.interface: string
-        @param disk.format: string
-        [@param disk.sparse: boolean]
-        [@param disk.bootable: boolean]
-        [@param disk.propagate_errors: boolean]
-        [@param disk.wipe_after_delete: boolean]
-        [@param disk.storage_domains: collection]
-        {
-          [@ivar storage_domain.id|name: string]
-        }
+        Overload 1:
+          @param size: int
+          @param disk.type: string
+          @param disk.interface: string
+          @param disk.format: string
+          [@param disk.sparse: boolean]
+          [@param disk.bootable: boolean]
+          [@param disk.shareable: boolean]
+          [@param disk.allow_snapshot: boolean]
+          [@param disk.propagate_errors: boolean]
+          [@param disk.wipe_after_delete: boolean]
+          [@param disk.storage_domains: collection]
+          {
+            [@ivar storage_domain.id|name: string]
+          }
+        Overload 2:
+          @param disk.id: string
+          [@param disk.active: boolean]
 
         @return Disk:
         '''
@@ -4225,7 +4754,6 @@ class VMDisks(Base):
             return VMDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
-
         '''
         [@param **kwargs: dict (property based filtering)"]
 
@@ -4737,6 +5265,7 @@ class VMs(Base):
         @param vm.name: string
         @param vm.template.id|name: string
         @param vm.cluster.id|name: string
+        [@param vm.quota.id: string]
         [@param vm.timezone: string]
         [@param vm.os.boot.dev: string]
         [@param vm.custom_properties.custom_property: collection]
@@ -4746,6 +5275,7 @@ class VMs(Base):
         }
         [@param vm.os.type: string]
         [@param vm.usb.enabled: boolean]
+        [@param vm.usb.type: string]
         [@param vm.type: string]
         [@param vm.os.initRd: string]
         [@param vm.display.monitors: int]
@@ -4765,6 +5295,12 @@ class VMs(Base):
         [@param vm.origin: string]
         [@param vm.os.kernel: string]
         [@param vm.disks.clone: boolean]
+        [@param vm.payloads.payload: collection]
+        {
+          [@ivar payload.type: string]
+          [@ivar payload.file.name: string]
+          [@ivar payload.file.content: string]
+        }
 
         @return VM:
         '''

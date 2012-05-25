@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-03-11 15:11:18.231558
+Generated at: 2012-05-24 19:42:28.885611
 
 @author: mpastern@redhat.com
 '''
@@ -32,6 +32,7 @@ from ovirtsdk.infrastructure.contextmanager import Mode
 from ovirtsdk.infrastructure.brokers import Capabilities
 from ovirtsdk.infrastructure.brokers import Clusters
 from ovirtsdk.infrastructure.brokers import DataCenters
+from ovirtsdk.infrastructure.brokers import Disks
 from ovirtsdk.infrastructure.brokers import Domains
 from ovirtsdk.infrastructure.brokers import Events
 from ovirtsdk.infrastructure.brokers import Groups
@@ -54,7 +55,7 @@ class API():
         @param username: user (format user@domain)
         @param password: password
         [@param key_file: key_file for ssl enabled connection]
-        [@param cert_file: cert_file for ssl enabled connection]
+        [@param cert_file: cert_file for ssl enabled connection] 
         [@param port: port to use (if not specified in url)]
         [@param timeout: request timeout]
         [@param persistent_auth: enable persistent authentication (format True|False)]
@@ -86,6 +87,7 @@ class API():
         self.capabilities = Capabilities()
         self.clusters = Clusters()
         self.datacenters = DataCenters()
+        self.disks = Disks()
         self.domains = Domains()
         self.events = Events()
         self.groups = Groups()
@@ -98,6 +100,7 @@ class API():
         self.users = Users()
         self.vms = VMs()
         self.vmpools = VmPools()
+
 
     def disconnect(self):
         ''' terminates server connection/s '''
