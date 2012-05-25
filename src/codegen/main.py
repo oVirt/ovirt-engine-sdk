@@ -218,8 +218,10 @@ class CodeGen():
                 if (i is 3 and v is None and not self.__isCollection(k)):
                     self.__createAction(root_coll, sub_coll, k, url, rel, http_method, body_type, link, response_type, collectionsHolder)
                 elif(i is 3 and resources.values()[2] is not None):
-                    self.__extendSubResource(root_coll + self.__toResourceType(resources.keys()[1]),
-                                             self.__toResourceType(resources.keys()[2]), url, rel, http_method, body_type, link, response_type, collectionsHolder)
+                    if(DEBUG): print 'WARNING: unsupported deep(' + str(len(resources)) + "): url: " + url
+#TODO: implement 3+ deep URI support
+#                    self.__extendSubResource(root_coll + self.__toResourceType(resources.keys()[1]),
+#                                             self.__toResourceType(resources.keys()[2]), url, rel, http_method, body_type, link, response_type, collectionsHolder)
             elif(ln > 3):  #vms/xxx/disks/yyy/snapshots/zzz or deeper
                 if(DEBUG): print 'WARNING: unsupported deep(' + str(len(resources)) + "): url: " + url
 

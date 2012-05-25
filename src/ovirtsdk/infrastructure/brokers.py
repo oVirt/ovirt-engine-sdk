@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-05-25 22:10:30.574588
+Generated at: 2012-05-25 22:31:40.144957
 
 @author: mpastern@redhat.com
 '''
@@ -596,28 +596,6 @@ class Clusters(Base):
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_cluster()
         return ParseHelper.toCollection(Cluster,
                                         FilterHelper.filter(result, kwargs))
-
-class ClustersGlustervolumeBrick(params.GlusterBrick, Base):
-    def __init__(self, clustersglustervolume, brick):
-        self.parentclass = clustersglustervolume
-        self.superclass  =  brick
-
-    def __new__(cls, clustersglustervolume, brick):
-        if brick is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(clustersglustervolume, brick)
-        return obj
-
-    def delete(self):
-        '''
-        @return None:
-        '''
-
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
-
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{clustersglustervolume:id}' : self.parentclass.get_id(),
-                                                                   '{brick:id}': self.get_id()}),
-                                       headers={'Content-type':None})
 
 class DataCenter(params.DataCenter, Base):
     def __init__(self, datacenter):
@@ -1784,31 +1762,6 @@ class Groups(Base):
         return ParseHelper.toCollection(Group,
                                         FilterHelper.filter(result, kwargs))
 
-class GroupsRolePermit(params.Permit, Base):
-    def __init__(self, groupsrole, permit):
-        self.parentclass = groupsrole
-        self.superclass  =  permit
-
-    def __new__(cls, groupsrole, permit):
-        if permit is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(groupsrole, permit)
-        return obj
-
-    def delete(self, async=None):
-        '''
-        [@param async: true|false]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace('/api/groups/{group:id}/roles/{role:id}/permits/{permit:id}',
-                                {'{groupsrole:id}' : self.parentclass.get_id(),
-                                 '{permit:id}': self.get_id()})
-
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
-
 class Host(params.Host, Base):
     def __init__(self, host):
         self.nics = HostNics(host)
@@ -2521,17 +2474,6 @@ class Hosts(Base):
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_host()
         return ParseHelper.toCollection(Host,
                                         FilterHelper.filter(result, kwargs))
-
-class HostsNicStatistic(params.Statistic, Base):
-    def __init__(self, hostsnic, statistic):
-        self.parentclass = hostsnic
-        self.superclass  =  statistic
-
-    def __new__(cls, hostsnic, statistic):
-        if statistic is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(hostsnic, statistic)
-        return obj
 
 class Network(params.Network, Base):
     def __init__(self, network):
@@ -4214,31 +4156,6 @@ class Users(Base):
         return ParseHelper.toCollection(User,
                                         FilterHelper.filter(result, kwargs))
 
-class UsersRolePermit(params.Permit, Base):
-    def __init__(self, usersrole, permit):
-        self.parentclass = usersrole
-        self.superclass  =  permit
-
-    def __new__(cls, usersrole, permit):
-        if permit is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(usersrole, permit)
-        return obj
-
-    def delete(self, async=None):
-        '''
-        [@param async: true|false]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace('/api/users/{user:id}/roles/{role:id}/permits/{permit:id}',
-                                {'{usersrole:id}' : self.parentclass.get_id(),
-                                 '{permit:id}': self.get_id()})
-
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
-
 class VM(params.VM, Base):
     def __init__(self, vm):
         self.cdroms = VMCdRoms(vm)
@@ -5346,61 +5263,6 @@ class VMs(Base):
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_vm()
         return ParseHelper.toCollection(VM,
                                         FilterHelper.filter(result, kwargs))
-
-class VMsDiskStatistic(params.Statistic, Base):
-    def __init__(self, vmsdisk, statistic):
-        self.parentclass = vmsdisk
-        self.superclass  =  statistic
-
-    def __new__(cls, vmsdisk, statistic):
-        if statistic is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vmsdisk, statistic)
-        return obj
-
-class VMsNicStatistic(params.Statistic, Base):
-    def __init__(self, vmsnic, statistic):
-        self.parentclass = vmsnic
-        self.superclass  =  statistic
-
-    def __new__(cls, vmsnic, statistic):
-        if statistic is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vmsnic, statistic)
-        return obj
-
-class VMsSnapshotCdrom(params.CdRom, Base):
-    def __init__(self, vmssnapshot, cdrom):
-        self.parentclass = vmssnapshot
-        self.superclass  =  cdrom
-
-    def __new__(cls, vmssnapshot, cdrom):
-        if cdrom is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vmssnapshot, cdrom)
-        return obj
-
-class VMsSnapshotDisk(params.Disk, Base):
-    def __init__(self, vmssnapshot, disk):
-        self.parentclass = vmssnapshot
-        self.superclass  =  disk
-
-    def __new__(cls, vmssnapshot, disk):
-        if disk is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vmssnapshot, disk)
-        return obj
-
-class VMsSnapshotNic(params.NIC, Base):
-    def __init__(self, vmssnapshot, nic):
-        self.parentclass = vmssnapshot
-        self.superclass  =  nic
-
-    def __new__(cls, vmssnapshot, nic):
-        if nic is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vmssnapshot, nic)
-        return obj
 
 class VmPool(params.VmPool, Base):
     def __init__(self, vmpool):
