@@ -17,20 +17,15 @@
 
 from collections import OrderedDict
 
-from ovirtsdk.infrastructure import contextmanager
 
-from ovirtsdk.xml import params
-
-from ovirtsdk.utils.parsehelper import ParseHelper
 from codegen.imp.imprt import Import
 from codegen.collection.resource import Resource
 from codegen.entrypoint.entrypoint import EntryPoint
-from codegen.collection.collection import Collection
-from codegen.subcollection.subresource import SubResource
 from codegen.utils.typeutil import TypeUtil
-from codegen.subcollection.subcollection import SubCollection
 from ovirtsdk.utils.reflectionhelper import ReflectionHelper
-from ovirtsdk.api import API
+from ovirtsdk.web.connection import Connection
+from genparams import paramsHandle
+from ovirtsdk.infrastructure.errors import RequestError
 
 SERVER = 'http://localhost:8080'
 USER = 'admin@internal'
@@ -38,6 +33,9 @@ PASSWORD = 'letmein!'
 
 BROKERS_FILE = '../ovirtsdk/infrastructure/brokers.py'
 ENTRY_POINT_FILE = '../ovirtsdk/api.py'
+XML_PARAMS_FILE = '../ovirtsdk/xml/params.py'
+XML_PARAMS_TMP_FILE = '/tmp/params.py'
+SCHEMA_FILE = '/tmp/api.py'
 
 KNOWN_ACTIONS = ['get', 'add', 'delete', 'update']
 
@@ -405,5 +403,33 @@ class CodeGen():
             if(DEBUG): print 'WARNING: found deep dependency (' + str(dlen) + '): ' + 'rel: ' + rel + ', url: ' + url + ', method: ' + http_method + ', for url: ' + url
 
 if __name__ == "__main__":
+    schemaConn = Connection(url=SERVER,
+                            port=None,
+                            key_file=None,
+                            cert_file=None,
+                            strict=False,
+                            timeout=None,
+                            username=USER,
+                            password=PASSWORD,
+                            manager=None,
+                            debug=False)
+    schemaConn.doRequest(method='GET', url='/api?schema', body=None, headers={})
+    response = schemaConn.getResponse()
+    if response.status >= 400:
+        raise RequestError, response
+    with open(SCHEMA_FILE, 'w') as f:
+        f.write('%s' % response.read())
+    paramsHandle(SCHEMA_FILE, XML_PARAMS_FILE, XML_PARAMS_TMP_FILE)
+
+    from ovirtsdk.xml import params
+
+    from ovirtsdk.infrastructure import contextmanager
+    from ovirtsdk.utils.parsehelper import ParseHelper
+    from codegen.collection.collection import Collection
+    from codegen.subcollection.subresource import SubResource
+    from codegen.subcollection.subcollection import SubCollection
+    from ovirtsdk.api import API
+
     KNOWN_WRAPPER_TYPES = ReflectionHelper.getClassNames(params)
+
     CodeGen().gen()
