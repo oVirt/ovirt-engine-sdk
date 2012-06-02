@@ -38,8 +38,8 @@ class Resource(object):
         ("class %(xml_entity)s(params.%(xml_entity)s, Base):\n" + \
         "    def __init__(self, %(xml_entity_lc)s):\n" + \
         #Resource.__addSubCollectionInstances(xml_entity.lower(), sub_collections)+\
-        Resource.SUB_COLLECTIONS_FIXME + "\n" + \
         "        self.superclass = %(xml_entity_lc)s\n\n" + \
+        Resource.SUB_COLLECTIONS_FIXME + "\n" + \
         "    def __new__(cls, %(xml_entity_lc)s):\n" + \
         "        if %(xml_entity_lc)s is None: return None\n" + \
         "        obj = object.__new__(cls)\n" + \
@@ -68,9 +68,6 @@ class Resource(object):
                                            'resource_name_lc':resource_name_lc.lower(),
                                            'method_params': Resource._addMethodParams(action_params.keys()),
                                            'action_params':Resource._addActionParams(action_params)}
-
-        #FIXME: check if there are more params to put to Action
-        #"      action = params.Action(vm=self.superclass)"
 
         resource_action_template = \
         ("    def %(action_name)s(self%(method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \

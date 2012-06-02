@@ -20,6 +20,7 @@ from codegen.collection.resource import Resource
 from codegen.doc.documentation import Documentation
 from codegen.utils.paramutils import ParamUtils
 from ovirtsdk.utils.parsehelper import ParseHelper
+from codegen.utils.urlutils import UrlUtils
 
 
 #============================================================
@@ -47,6 +48,7 @@ class SubResource(object):
         "    def __init__(self, %(parent)s, %(encapsulated_entity)s):\n" + \
         "        self.parentclass = %(parent)s\n" + \
         "        self.superclass  =  %(encapsulated_entity)s\n\n" + \
+        Resource.SUB_COLLECTIONS_FIXME + "\n" + \
         "    def __new__(cls, %(parent)s, %(encapsulated_entity)s):\n" + \
         "        if %(encapsulated_entity)s is None: return None\n" + \
         "        obj = object.__new__(cls)\n" + \
@@ -74,6 +76,7 @@ class SubResource(object):
             "        url = '%(url)s'\n\n" + \
             "        result = self._getProxy().request(method='%(method)s',\n" + \
             "                                          url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id()}),\n" + \
+#TODO: support action on sub-collection
             "                                          body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
             "        return result\n\n"
             ) % sub_collection_resource_action_template_values
@@ -83,18 +86,22 @@ class SubResource(object):
             Documentation.document(link) +
             "        url = '%(url)s'\n\n" + \
             "        result = self._getProxy().request(method='%(method)s',\n" + \
-            "                                          url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
-            "                                                                     '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
+			"                                          url=UrlHelper.replace(url, " + \
+            UrlUtils.generate_url_identifiers_replacments(link,
+                                                           offset="                                                                    ",
+                                                           continues=True) + \
+            "),\n" + \
             "                                          body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
             "        return result\n\n"
             ) % sub_collection_resource_action_template_values
 
+#            "                                                                {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
+#            "                                                                 '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
         return sub_collection_resource_action_template
 
     @staticmethod
     def update(url, link, parent_resource_name_lc, resource_name, returned_type, KNOWN_WRAPPER_TYPES):
         actual_xml_entity = TypeUtil.getValueByKeyOrNone(returned_type.lower(), KNOWN_WRAPPER_TYPES)
-
         sub_collection_resource_update_template_values = {'url':url,
                                                           'parent_resource_name_lc':parent_resource_name_lc.lower(),
                                                           'resource_name':resource_name,
@@ -105,10 +112,14 @@ class SubResource(object):
         ("    def update(self):\n" + \
          Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
-        "        result = self._getProxy().update(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
-        "                                                                     '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
+        "        result = self._getProxy().update(url=UrlHelper.replace(url, " + \
+        UrlUtils.generate_url_identifiers_replacments(link,
+                                                           offset="                                                                    ",
+                                                           continues=True) + \
+		"),\n" + \
         "                                         body=ParseHelper.toXml(self.superclass))\n\n" + \
         "        return %(returned_type)s(self.parentclass, result)\n\n") % sub_collection_resource_update_template_values
+
 
         return sub_collection_resource_update_template
 
@@ -127,8 +138,9 @@ class SubResource(object):
             ("    def delete(self, " + prms_str + "):\n" + \
              Documentation.document(link, {}, method_params) +
              "        url = UrlHelper.replace('%(url)s',\n" + \
-             "                                {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
-             "                                 '{%(resource_name_lc)s:id}': self.get_id()})\n\n" + \
+            UrlUtils.generate_url_identifiers_replacments(link,
+                                                           offset="                                ") + \
+             ")\n\n" + \
              "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
                                                                                                                 method_params.copy().keys()) +
                                                                                     "),\n" +
@@ -139,8 +151,9 @@ class SubResource(object):
             ("    def delete(self, %(body_type_lc)s, " + prms_str + "):\n" + \
              Documentation.document(link, {}, method_params) +
              "        url = UrlHelper.replace('%(url)s',\n" + \
-             "                                {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
-             "                                 '{%(resource_name_lc)s:id}': self.get_id()})\n\n" + \
+            UrlUtils.generate_url_identifiers_replacments(link,
+                                                           offset="                                ") + \
+             ")\n\n" + \
              "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
                                                                                                                 method_params.copy().keys()) +
                                                                                     "),\n" + \
@@ -151,8 +164,11 @@ class SubResource(object):
             ("    def delete(self):\n" + \
              Documentation.document(link) +
              "        url = '%(url)s'\n\n" + \
-             "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
-             "                                                                   '{%(resource_name_lc)s:id}': self.get_id()}),\n" +
+             "        return self._getProxy().delete(url=UrlHelper.replace(url, " + \
+            UrlUtils.generate_url_identifiers_replacments(link,
+                                                           offset="                                                                  ",
+                                                           continues=True) + \
+             "),\n" + \
              "                                       headers={'Content-type':None})\n\n"
              ) % sub_collection_resource_delete_template_values
 
@@ -160,8 +176,10 @@ class SubResource(object):
             ("    def delete(self, %(body_type_lc)s):\n" + \
              Documentation.document(link) +
              "        url = '%(url)s'\n\n" + \
-             "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id(),\n" + \
-             "                                                                   '{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
+             "        return self._getProxy().delete(url=UrlHelper.replace(url,\n" + \
+            UrlUtils.generate_url_identifiers_replacments(link,
+                                                           offset="                                                             ") + \
+             "),\n" + \
              "                                       body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
              ) % sub_collection_resource_delete_template_values
 

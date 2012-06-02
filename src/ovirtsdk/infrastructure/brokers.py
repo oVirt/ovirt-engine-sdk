@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-05-25 22:31:40.144957
+Generated at: 2012-06-02 20:42:13.437346
 
 @author: mpastern@redhat.com
 '''
@@ -75,11 +75,11 @@ class Capabilities(Base):
 
 class Cluster(params.Cluster, Base):
     def __init__(self, cluster):
-        self.glustervolumes = ClusterGlusterVolumes(cluster)
-        self.networks = ClusterNetworks(cluster)
-        self.permissions = ClusterPermissions(cluster)
-
         self.superclass = cluster
+
+        self.glustervolumes = ClusterGlusterVolumes(self)
+        self.networks = ClusterNetworks(self)
+        self.permissions = ClusterPermissions(self)
 
     def __new__(cls, cluster):
         if cluster is None: return None
@@ -128,6 +128,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
     def __init__(self, cluster, glustervolume):
         self.parentclass = cluster
         self.superclass  =  glustervolume
+
+        self.bricks = ClusterGlusterVolumeBricks(self)
 
     def __new__(cls, cluster, glustervolume):
         if glustervolume is None: return None
@@ -239,8 +241,120 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
+    def resetAllOptions(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Response:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetAllOptions'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                                                     '{glustervolume:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action))
+
+        return result
+
+class ClusterGlusterVolumeBrick(params.GlusterBrick, Base):
+    def __init__(self, clusterglustervolume, brick):
+        self.parentclass = clusterglustervolume
+        self.superclass  =  brick
+
+        #SUB_COLLECTIONS
+    def __new__(cls, clusterglustervolume, brick):
+        if brick is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(clusterglustervolume, brick)
+        return obj
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
+
+        return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                                                                   '{glustervolume:id}': self.parentclass.get_id(),
+                                                                   '{brick:id}': self.get_id()}),
+                                       headers={'Content-type':None})
+
+class ClusterGlusterVolumeBricks(Base):
+
+    def __init__(self, clusterglustervolume):
+        self.parentclass = clusterglustervolume
+
+    def add(self, glusterbricks):
+
+        '''
+        @type GlusterBricks:
+
+        @param bricks: collection
+        {
+          @ivar brick.server_id: string
+          @ivar brick.brick_dir: string
+        }
+
+        @return GlusterBricks:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{glustervolume:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(glusterbricks))
+
+        return ClusterGlusterVolumeBrick(self.parentclass, result)
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return GlusterBricks:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                                                                                           '{glustervolume:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return ClusterGlusterVolumeBrick(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                                                                      '{glustervolume:id}': self.parentclass.get_id()})).get_brick()
+
+            return ClusterGlusterVolumeBrick(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return GlusterBricks:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{glustervolume:id}': self.parentclass.get_id()})).get_brick()
+
+        return ParseHelper.toSubCollection(ClusterGlusterVolumeBrick,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
+
 class ClusterGlusterVolumes(Base):
- 
+
     def __init__(self, cluster):
         self.parentclass = cluster
 
@@ -335,6 +449,7 @@ class ClusterNetwork(params.Network, Base):
         self.parentclass = cluster
         self.superclass  =  network
 
+        #SUB_COLLECTIONS
     def __new__(cls, cluster, network):
         if network is None: return None
         obj = object.__new__(cls)
@@ -375,7 +490,7 @@ class ClusterNetwork(params.Network, Base):
         return ClusterNetwork(self.parentclass, result)
 
 class ClusterNetworks(Base):
- 
+
     def __init__(self, cluster):
         self.parentclass = cluster
 
@@ -442,6 +557,7 @@ class ClusterPermission(params.Permission, Base):
         self.parentclass = cluster
         self.superclass  =  permission
 
+        #SUB_COLLECTIONS
     def __new__(cls, cluster, permission):
         if permission is None: return None
         obj = object.__new__(cls)
@@ -463,7 +579,7 @@ class ClusterPermission(params.Permission, Base):
                                        headers={'Content-type':None})
 
 class ClusterPermissions(Base):
- 
+
     def __init__(self, cluster):
         self.parentclass = cluster
 
@@ -599,11 +715,11 @@ class Clusters(Base):
 
 class DataCenter(params.DataCenter, Base):
     def __init__(self, datacenter):
-        self.storagedomains = DataCenterStorageDomains(datacenter)
-        self.quotas = DataCenterQuotas(datacenter)
-        self.permissions = DataCenterPermissions(datacenter)
-
         self.superclass = datacenter
+
+        self.storagedomains = DataCenterStorageDomains(self)
+        self.quotas = DataCenterQuotas(self)
+        self.permissions = DataCenterPermissions(self)
 
     def __new__(cls, datacenter):
         if datacenter is None: return None
@@ -647,6 +763,7 @@ class DataCenterPermission(params.Permission, Base):
         self.parentclass = datacenter
         self.superclass  =  permission
 
+        #SUB_COLLECTIONS
     def __new__(cls, datacenter, permission):
         if permission is None: return None
         obj = object.__new__(cls)
@@ -668,7 +785,7 @@ class DataCenterPermission(params.Permission, Base):
                                        headers={'Content-type':None})
 
 class DataCenterPermissions(Base):
- 
+
     def __init__(self, datacenter):
         self.parentclass = datacenter
 
@@ -740,6 +857,7 @@ class DataCenterQuota(params.Quota, Base):
         self.parentclass = datacenter
         self.superclass  =  quota
 
+        #SUB_COLLECTIONS
     def __new__(cls, datacenter, quota):
         if quota is None: return None
         obj = object.__new__(cls)
@@ -758,7 +876,7 @@ class DataCenterQuota(params.Quota, Base):
                                        headers={'Content-type':None})
 
 class DataCenterQuotas(Base):
- 
+
     def __init__(self, datacenter):
         self.parentclass = datacenter
 
@@ -824,6 +942,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         self.parentclass = datacenter
         self.superclass  =  storagedomain
 
+        #SUB_COLLECTIONS
     def __new__(cls, datacenter, storagedomain):
         if storagedomain is None: return None
         obj = object.__new__(cls)
@@ -879,7 +998,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         return result
 
 class DataCenterStorageDomains(Base):
- 
+
     def __init__(self, datacenter):
         self.parentclass = datacenter
 
@@ -1003,9 +1122,9 @@ class DataCenters(Base):
 
 class Disk(params.Disk, Base):
     def __init__(self, disk):
-        self.statistics = DiskStatistics(disk)
-
         self.superclass = disk
+
+        self.statistics = DiskStatistics(self)
 
     def __new__(cls, disk):
         if disk is None: return None
@@ -1053,6 +1172,7 @@ class DiskStatistic(params.Statistic, Base):
         self.parentclass = disk
         self.superclass  =  statistic
 
+        #SUB_COLLECTIONS
     def __new__(cls, disk, statistic):
         if statistic is None: return None
         obj = object.__new__(cls)
@@ -1060,7 +1180,7 @@ class DiskStatistic(params.Statistic, Base):
         return obj
 
 class DiskStatistics(Base):
- 
+
     def __init__(self, disk):
         self.parentclass = disk
 
@@ -1109,6 +1229,41 @@ class Disks(Base):
     def __init__(self):
         """Constructor."""
 
+    def get(self, name='*', **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param name: string (the name of the entity)]
+
+        @return Disks:
+        '''
+
+        url = '/api/disks'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                return Disk(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            result = self._getProxy().get(url=url).get_disk()
+            if name != '*': kwargs['name']=name
+            return Disk(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Disks:
+        '''
+
+        url='/api/disks'
+
+        result = self._getProxy().get(url=url).get_disk()
+        return ParseHelper.toCollection(Disk,
+                                        FilterHelper.filter(result, kwargs))
+
     def add(self, disk):
         '''
         @type Disk:
@@ -1137,47 +1292,12 @@ class Disks(Base):
                                       body=ParseHelper.toXml(disk))
         return Disk(result)
 
-    def get(self, name='*', **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-        [@param name: string (the name of the entity)]
-
-        @return BaseDevices:
-        '''
-
-        url = '/api/disks'
-
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
-            try :
-                return Disk(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        else:
-            result = self._getProxy().get(url=url).get_basedevice()
-            if name != '*': kwargs['name']=name
-            return Disk(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
-
-    def list(self, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-
-        @return BaseDevices:
-        '''
-
-        url='/api/disks'
-
-        result = self._getProxy().get(url=url).get_basedevice()
-        return ParseHelper.toCollection(Disks,
-                                        FilterHelper.filter(result, kwargs))
-
 class Domain(params.Domain, Base):
     def __init__(self, domain):
-        self.users = DomainUsers(domain)
-        self.groups = DomainGroups(domain)
-
         self.superclass = domain
+
+        self.users = DomainUsers(self)
+        self.groups = DomainGroups(self)
 
     def __new__(cls, domain):
         if domain is None: return None
@@ -1190,6 +1310,7 @@ class DomainGroup(params.Group, Base):
         self.parentclass = domain
         self.superclass  =  group
 
+        #SUB_COLLECTIONS
     def __new__(cls, domain, group):
         if group is None: return None
         obj = object.__new__(cls)
@@ -1197,7 +1318,7 @@ class DomainGroup(params.Group, Base):
         return obj
 
 class DomainGroups(Base):
- 
+
     def __init__(self, domain):
         self.parentclass = domain
 
@@ -1250,6 +1371,7 @@ class DomainUser(params.User, Base):
         self.parentclass = domain
         self.superclass  =  user
 
+        #SUB_COLLECTIONS
     def __new__(cls, domain, user):
         if user is None: return None
         obj = object.__new__(cls)
@@ -1257,7 +1379,7 @@ class DomainUser(params.User, Base):
         return obj
 
 class DomainUsers(Base):
- 
+
     def __init__(self, domain):
         self.parentclass = domain
 
@@ -1346,9 +1468,9 @@ class Domains(Base):
 
 class Event(params.Event, Base):
     def __init__(self, event):
-        #SUB_COLLECTIONS
         self.superclass = event
 
+        #SUB_COLLECTIONS
     def __new__(cls, event):
         if event is None: return None
         obj = object.__new__(cls)
@@ -1398,11 +1520,11 @@ class Events(Base):
 
 class Group(params.Group, Base):
     def __init__(self, group):
-        self.permissions = GroupPermissions(group)
-        self.roles = GroupRoles(group)
-        self.tags = GroupTags(group)
-
         self.superclass = group
+
+        self.permissions = GroupPermissions(self)
+        self.roles = GroupRoles(self)
+        self.tags = GroupTags(self)
 
     def __new__(cls, group):
         if group is None: return None
@@ -1428,6 +1550,7 @@ class GroupPermission(params.Permission, Base):
         self.parentclass = group
         self.superclass  =  permission
 
+        #SUB_COLLECTIONS
     def __new__(cls, group, permission):
         if permission is None: return None
         obj = object.__new__(cls)
@@ -1449,7 +1572,7 @@ class GroupPermission(params.Permission, Base):
                                        headers={'Content-type':None})
 
 class GroupPermissions(Base):
- 
+
     def __init__(self, group):
         self.parentclass = group
 
@@ -1536,6 +1659,8 @@ class GroupRole(params.Role, Base):
         self.parentclass = group
         self.superclass  =  role
 
+        self.permits = GroupRolePermits(self)
+
     def __new__(cls, group, role):
         if role is None: return None
         obj = object.__new__(cls)
@@ -1556,8 +1681,102 @@ class GroupRole(params.Role, Base):
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
+class GroupRolePermit(params.Permit, Base):
+    def __init__(self, grouprole, permit):
+        self.parentclass = grouprole
+        self.superclass  =  permit
+
+        #SUB_COLLECTIONS
+    def __new__(cls, grouprole, permit):
+        if permit is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(grouprole, permit)
+        return obj
+
+    def delete(self, async=None):
+        '''
+        [@param async: true|false]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace('/api/groups/{group:id}/roles/{role:id}/permits/{permit:id}',
+                                {'{group:id}' : self.parentclass.parentclass.get_id(),
+                                 '{role:id}': self.parentclass.get_id(),
+                                 '{permit:id}': self.get_id()})
+
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                       headers={'Content-type':None})
+
+class GroupRolePermits(Base):
+
+    def __init__(self, grouprole):
+        self.parentclass = grouprole
+
+    def add(self, permit):
+
+        '''
+        @type Permit:
+
+        @param permit.id|name: string
+
+        @return Permit:
+        '''
+
+        url = '/api/groups/{group:id}/roles/{role:id}/permits'
+
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{role:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permit))
+
+        return GroupRolePermit(self.parentclass, result)
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return Permits:
+        '''
+
+        url = '/api/groups/{group:id}/roles/{role:id}/permits'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
+                                                                                           '{role:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return GroupRolePermit(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
+                                                                      '{role:id}': self.parentclass.get_id()})).get_permit()
+
+            return GroupRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Permits:
+        '''
+
+        url = '/api/groups/{group:id}/roles/{role:id}/permits'
+
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{role:id}': self.parentclass.get_id()})).get_permit()
+
+        return ParseHelper.toSubCollection(GroupRolePermit,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
+
 class GroupRoles(Base):
- 
+
     def __init__(self, group):
         self.parentclass = group
 
@@ -1624,6 +1843,7 @@ class GroupTag(params.Tag, Base):
         self.parentclass = group
         self.superclass  =  tag
 
+        #SUB_COLLECTIONS
     def __new__(cls, group, tag):
         if tag is None: return None
         obj = object.__new__(cls)
@@ -1645,7 +1865,7 @@ class GroupTag(params.Tag, Base):
                                        headers={'Content-type':None})
 
 class GroupTags(Base):
- 
+
     def __init__(self, group):
         self.parentclass = group
 
@@ -1764,12 +1984,12 @@ class Groups(Base):
 
 class Host(params.Host, Base):
     def __init__(self, host):
-        self.nics = HostNics(host)
-        self.permissions = HostPermissions(host)
-        self.statistics = HostStatistics(host)
-        self.tags = HostTags(host)
-
         self.superclass = host
+
+        self.nics = HostNics(self)
+        self.permissions = HostPermissions(self)
+        self.statistics = HostStatistics(self)
+        self.tags = HostTags(self)
 
     def __new__(cls, host):
         if host is None: return None
@@ -1949,6 +2169,8 @@ class HostNIC(params.HostNIC, Base):
         self.parentclass = host
         self.superclass  =  nic
 
+        self.statistics = HostNicStatistics(self)
+
     def __new__(cls, host, nic):
         if nic is None: return None
         obj = object.__new__(cls)
@@ -2038,8 +2260,69 @@ class HostNIC(params.HostNIC, Base):
 
         return HostNIC(self.parentclass, result)
 
+class HostNicStatistic(params.Statistic, Base):
+    def __init__(self, hostnic, statistic):
+        self.parentclass = hostnic
+        self.superclass  =  statistic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, hostnic, statistic):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(hostnic, statistic)
+        return obj
+
+class HostNicStatistics(Base):
+
+    def __init__(self, hostnic):
+        self.parentclass = hostnic
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return Statistics:
+        '''
+
+        url = '/api/hosts/{host:id}/nics/{nic:id}/statistics'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
+                                                                                           '{nic:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return HostNicStatistic(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
+                                                                      '{nic:id}': self.parentclass.get_id()})).get_statistic()
+
+            return HostNicStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Statistics:
+        '''
+
+        url = '/api/hosts/{host:id}/nics/{nic:id}/statistics'
+
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{nic:id}': self.parentclass.get_id()})).get_statistic()
+
+        return ParseHelper.toSubCollection(HostNicStatistic,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
+
 class HostNics(Base):
- 
+
     def __init__(self, host):
         self.parentclass = host
 
@@ -2161,6 +2444,7 @@ class HostPermission(params.Permission, Base):
         self.parentclass = host
         self.superclass  =  permission
 
+        #SUB_COLLECTIONS
     def __new__(cls, host, permission):
         if permission is None: return None
         obj = object.__new__(cls)
@@ -2182,7 +2466,7 @@ class HostPermission(params.Permission, Base):
                                        headers={'Content-type':None})
 
 class HostPermissions(Base):
- 
+
     def __init__(self, host):
         self.parentclass = host
 
@@ -2254,6 +2538,7 @@ class HostStatistic(params.Statistic, Base):
         self.parentclass = host
         self.superclass  =  statistic
 
+        #SUB_COLLECTIONS
     def __new__(cls, host, statistic):
         if statistic is None: return None
         obj = object.__new__(cls)
@@ -2261,7 +2546,7 @@ class HostStatistic(params.Statistic, Base):
         return obj
 
 class HostStatistics(Base):
- 
+
     def __init__(self, host):
         self.parentclass = host
 
@@ -2311,6 +2596,7 @@ class HostStorage(params.HostStorage, Base):
         self.parentclass = host
         self.superclass  =  storage
 
+        #SUB_COLLECTIONS
     def __new__(cls, host, storage):
         if storage is None: return None
         obj = object.__new__(cls)
@@ -2322,6 +2608,7 @@ class HostTag(params.Tag, Base):
         self.parentclass = host
         self.superclass  =  tag
 
+        #SUB_COLLECTIONS
     def __new__(cls, host, tag):
         if tag is None: return None
         obj = object.__new__(cls)
@@ -2343,7 +2630,7 @@ class HostTag(params.Tag, Base):
                                        headers={'Content-type':None})
 
 class HostTags(Base):
- 
+
     def __init__(self, host):
         self.parentclass = host
 
@@ -2477,9 +2764,9 @@ class Hosts(Base):
 
 class Network(params.Network, Base):
     def __init__(self, network):
-        #SUB_COLLECTIONS
         self.superclass = network
 
+        #SUB_COLLECTIONS
     def __new__(cls, network):
         if network is None: return None
         obj = object.__new__(cls)
@@ -2585,9 +2872,9 @@ class Networks(Base):
 
 class Role(params.Role, Base):
     def __init__(self, role):
-        self.permits = RolePermits(role)
-
         self.superclass = role
+
+        self.permits = RolePermits(self)
 
     def __new__(cls, role):
         if role is None: return None
@@ -2630,6 +2917,7 @@ class RolePermit(params.Permit, Base):
         self.parentclass = role
         self.superclass  =  permit
 
+        #SUB_COLLECTIONS
     def __new__(cls, role, permit):
         if permit is None: return None
         obj = object.__new__(cls)
@@ -2651,7 +2939,7 @@ class RolePermit(params.Permit, Base):
                                        headers={'Content-type':None})
 
 class RolePermits(Base):
- 
+
     def __init__(self, role):
         self.parentclass = role
 
@@ -2775,12 +3063,12 @@ class Roles(Base):
 
 class StorageDomain(params.StorageDomain, Base):
     def __init__(self, storagedomain):
-        self.files = StorageDomainFiles(storagedomain)
-        self.templates = StorageDomainTemplates(storagedomain)
-        self.vms = StorageDomainVMs(storagedomain)
-        self.permissions = StorageDomainPermissions(storagedomain)
-
         self.superclass = storagedomain
+
+        self.files = StorageDomainFiles(self)
+        self.templates = StorageDomainTemplates(self)
+        self.vms = StorageDomainVMs(self)
+        self.permissions = StorageDomainPermissions(self)
 
     def __new__(cls, storagedomain):
         if storagedomain is None: return None
@@ -2822,6 +3110,7 @@ class StorageDomainFile(params.File, Base):
         self.parentclass = storagedomain
         self.superclass  =  file
 
+        #SUB_COLLECTIONS
     def __new__(cls, storagedomain, file):
         if file is None: return None
         obj = object.__new__(cls)
@@ -2829,7 +3118,7 @@ class StorageDomainFile(params.File, Base):
         return obj
 
 class StorageDomainFiles(Base):
- 
+
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
@@ -2882,6 +3171,7 @@ class StorageDomainPermission(params.Permission, Base):
         self.parentclass = storagedomain
         self.superclass  =  permission
 
+        #SUB_COLLECTIONS
     def __new__(cls, storagedomain, permission):
         if permission is None: return None
         obj = object.__new__(cls)
@@ -2903,7 +3193,7 @@ class StorageDomainPermission(params.Permission, Base):
                                        headers={'Content-type':None})
 
 class StorageDomainPermissions(Base):
- 
+
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
@@ -2975,6 +3265,7 @@ class StorageDomainTemplate(params.Template, Base):
         self.parentclass = storagedomain
         self.superclass  =  template
 
+        #SUB_COLLECTIONS
     def __new__(cls, storagedomain, template):
         if template is None: return None
         obj = object.__new__(cls)
@@ -3005,7 +3296,7 @@ class StorageDomainTemplate(params.Template, Base):
         return result
 
 class StorageDomainTemplates(Base):
- 
+
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
@@ -3055,6 +3346,7 @@ class StorageDomainVM(params.VM, Base):
         self.parentclass = storagedomain
         self.superclass  =  vm
 
+        #SUB_COLLECTIONS
     def __new__(cls, storagedomain, vm):
         if vm is None: return None
         obj = object.__new__(cls)
@@ -3085,7 +3377,7 @@ class StorageDomainVM(params.VM, Base):
         return result
 
 class StorageDomainVMs(Base):
- 
+
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
@@ -3232,9 +3524,9 @@ class StorageDomains(Base):
 
 class Tag(params.Tag, Base):
     def __init__(self, tag):
-        #SUB_COLLECTIONS
         self.superclass = tag
 
+        #SUB_COLLECTIONS
     def __new__(cls, tag):
         if tag is None: return None
         obj = object.__new__(cls)
@@ -3327,12 +3619,12 @@ class Tags(Base):
 
 class Template(params.Template, Base):
     def __init__(self, template):
-        self.nics = TemplateNics(template)
-        self.cdroms = TemplateCdRoms(template)
-        self.disks = TemplateDisks(template)
-        self.permissions = TemplatePermissions(template)
-
         self.superclass = template
+
+        self.nics = TemplateNics(self)
+        self.cdroms = TemplateCdRoms(self)
+        self.disks = TemplateDisks(self)
+        self.permissions = TemplatePermissions(self)
 
     def __new__(cls, template):
         if template is None: return None
@@ -3417,6 +3709,7 @@ class TemplateCdRom(params.CdRom, Base):
         self.parentclass = template
         self.superclass  =  cdrom
 
+        #SUB_COLLECTIONS
     def __new__(cls, template, cdrom):
         if cdrom is None: return None
         obj = object.__new__(cls)
@@ -3424,7 +3717,7 @@ class TemplateCdRom(params.CdRom, Base):
         return obj
 
 class TemplateCdRoms(Base):
- 
+
     def __init__(self, template):
         self.parentclass = template
 
@@ -3474,6 +3767,7 @@ class TemplateDisk(params.Disk, Base):
         self.parentclass = template
         self.superclass  =  disk
 
+        #SUB_COLLECTIONS
     def __new__(cls, template, disk):
         if disk is None: return None
         obj = object.__new__(cls)
@@ -3503,7 +3797,7 @@ class TemplateDisk(params.Disk, Base):
                                        body=ParseHelper.toXml(action))
 
 class TemplateDisks(Base):
- 
+
     def __init__(self, template):
         self.parentclass = template
 
@@ -3553,6 +3847,7 @@ class TemplateNic(params.NIC, Base):
         self.parentclass = template
         self.superclass  =  nic
 
+        #SUB_COLLECTIONS
     def __new__(cls, template, nic):
         if nic is None: return None
         obj = object.__new__(cls)
@@ -3560,7 +3855,7 @@ class TemplateNic(params.NIC, Base):
         return obj
 
 class TemplateNics(Base):
- 
+
     def __init__(self, template):
         self.parentclass = template
 
@@ -3610,6 +3905,7 @@ class TemplatePermission(params.Permission, Base):
         self.parentclass = template
         self.superclass  =  permission
 
+        #SUB_COLLECTIONS
     def __new__(cls, template, permission):
         if permission is None: return None
         obj = object.__new__(cls)
@@ -3631,7 +3927,7 @@ class TemplatePermission(params.Permission, Base):
                                        headers={'Content-type':None})
 
 class TemplatePermissions(Base):
- 
+
     def __init__(self, template):
         self.parentclass = template
 
@@ -3791,11 +4087,11 @@ class Templates(Base):
 
 class User(params.User, Base):
     def __init__(self, user):
-        self.permissions = UserPermissions(user)
-        self.roles = UserRoles(user)
-        self.tags = UserTags(user)
-
         self.superclass = user
+
+        self.permissions = UserPermissions(self)
+        self.roles = UserRoles(self)
+        self.tags = UserTags(self)
 
     def __new__(cls, user):
         if user is None: return None
@@ -3821,6 +4117,7 @@ class UserPermission(params.Permission, Base):
         self.parentclass = user
         self.superclass  =  permission
 
+        #SUB_COLLECTIONS
     def __new__(cls, user, permission):
         if permission is None: return None
         obj = object.__new__(cls)
@@ -3842,7 +4139,7 @@ class UserPermission(params.Permission, Base):
                                        headers={'Content-type':None})
 
 class UserPermissions(Base):
- 
+
     def __init__(self, user):
         self.parentclass = user
 
@@ -3929,6 +4226,8 @@ class UserRole(params.Role, Base):
         self.parentclass = user
         self.superclass  =  role
 
+        self.permits = UserRolePermits(self)
+
     def __new__(cls, user, role):
         if role is None: return None
         obj = object.__new__(cls)
@@ -3949,8 +4248,102 @@ class UserRole(params.Role, Base):
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
+class UserRolePermit(params.Permit, Base):
+    def __init__(self, userrole, permit):
+        self.parentclass = userrole
+        self.superclass  =  permit
+
+        #SUB_COLLECTIONS
+    def __new__(cls, userrole, permit):
+        if permit is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(userrole, permit)
+        return obj
+
+    def delete(self, async=None):
+        '''
+        [@param async: true|false]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace('/api/users/{user:id}/roles/{role:id}/permits/{permit:id}',
+                                {'{user:id}' : self.parentclass.parentclass.get_id(),
+                                 '{role:id}': self.parentclass.get_id(),
+                                 '{permit:id}': self.get_id()})
+
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                       headers={'Content-type':None})
+
+class UserRolePermits(Base):
+
+    def __init__(self, userrole):
+        self.parentclass = userrole
+
+    def add(self, permit):
+
+        '''
+        @type Permit:
+
+        @param permit.id|name: string
+
+        @return Permit:
+        '''
+
+        url = '/api/users/{user:id}/roles/{role:id}/permits'
+
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{role:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(permit))
+
+        return UserRolePermit(self.parentclass, result)
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return Permits:
+        '''
+
+        url = '/api/users/{user:id}/roles/{role:id}/permits'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
+                                                                                           '{role:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return UserRolePermit(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
+                                                                      '{role:id}': self.parentclass.get_id()})).get_permit()
+
+            return UserRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Permits:
+        '''
+
+        url = '/api/users/{user:id}/roles/{role:id}/permits'
+
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{role:id}': self.parentclass.get_id()})).get_permit()
+
+        return ParseHelper.toSubCollection(UserRolePermit,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
+
 class UserRoles(Base):
- 
+
     def __init__(self, user):
         self.parentclass = user
 
@@ -4017,6 +4410,7 @@ class UserTag(params.Tag, Base):
         self.parentclass = user
         self.superclass  =  tag
 
+        #SUB_COLLECTIONS
     def __new__(cls, user, tag):
         if tag is None: return None
         obj = object.__new__(cls)
@@ -4038,7 +4432,7 @@ class UserTag(params.Tag, Base):
                                        headers={'Content-type':None})
 
 class UserTags(Base):
- 
+
     def __init__(self, user):
         self.parentclass = user
 
@@ -4158,15 +4552,15 @@ class Users(Base):
 
 class VM(params.VM, Base):
     def __init__(self, vm):
-        self.cdroms = VMCdRoms(vm)
-        self.statistics = VMStatistics(vm)
-        self.tags = VMTags(vm)
-        self.nics = VMNics(vm)
-        self.disks = VMDisks(vm)
-        self.snapshots = VMSnapshots(vm)
-        self.permissions = VMPermissions(vm)
-
         self.superclass = vm
+
+        self.cdroms = VMCdRoms(self)
+        self.statistics = VMStatistics(self)
+        self.tags = VMTags(self)
+        self.nics = VMNics(self)
+        self.disks = VMDisks(self)
+        self.snapshots = VMSnapshots(self)
+        self.permissions = VMPermissions(self)
 
     def __new__(cls, vm):
         if vm is None: return None
@@ -4419,6 +4813,7 @@ class VMCdRom(params.CdRom, Base):
         self.parentclass = vm
         self.superclass  =  cdrom
 
+        #SUB_COLLECTIONS
     def __new__(cls, vm, cdrom):
         if cdrom is None: return None
         obj = object.__new__(cls)
@@ -4455,7 +4850,7 @@ class VMCdRom(params.CdRom, Base):
         return VMCdRom(self.parentclass, result)
 
 class VMCdRoms(Base):
- 
+
     def __init__(self, vm):
         self.parentclass = vm
 
@@ -4521,6 +4916,8 @@ class VMDisk(params.Disk, Base):
     def __init__(self, vm, disk):
         self.parentclass = vm
         self.superclass  =  disk
+
+        self.statistics = VMDiskStatistics(self)
 
     def __new__(cls, vm, disk):
         if disk is None: return None
@@ -4605,44 +5002,71 @@ class VMDisk(params.Disk, Base):
 
         return VMDisk(self.parentclass, result)
 
+class VMDiskStatistic(params.Statistic, Base):
+    def __init__(self, vmdisk, statistic):
+        self.parentclass = vmdisk
+        self.superclass  =  statistic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vmdisk, statistic):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmdisk, statistic)
+        return obj
+
+class VMDiskStatistics(Base):
+
+    def __init__(self, vmdisk):
+        self.parentclass = vmdisk
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return Statistics:
+        '''
+
+        url = '/api/vms/{vm:id}/disks/{disk:id}/statistics'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                                           '{disk:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMDiskStatistic(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                      '{disk:id}': self.parentclass.get_id()})).get_statistic()
+
+            return VMDiskStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Statistics:
+        '''
+
+        url = '/api/vms/{vm:id}/disks/{disk:id}/statistics'
+
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{disk:id}': self.parentclass.get_id()})).get_statistic()
+
+        return ParseHelper.toSubCollection(VMDiskStatistic,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
+
 class VMDisks(Base):
- 
+
     def __init__(self, vm):
         self.parentclass = vm
-
-    def add(self, disk):
-
-        '''
-        @type Disk:
-
-        Overload 1:
-          @param size: int
-          @param disk.type: string
-          @param disk.interface: string
-          @param disk.format: string
-          [@param disk.sparse: boolean]
-          [@param disk.bootable: boolean]
-          [@param disk.shareable: boolean]
-          [@param disk.allow_snapshot: boolean]
-          [@param disk.propagate_errors: boolean]
-          [@param disk.wipe_after_delete: boolean]
-          [@param disk.storage_domains: collection]
-          {
-            [@ivar storage_domain.id|name: string]
-          }
-        Overload 2:
-          @param disk.id: string
-          [@param disk.active: boolean]
-
-        @return Disk:
-        '''
-
-        url = '/api/vms/{vm:id}/disks'
-
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(disk))
-
-        return VMDisk(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
 
@@ -4685,10 +5109,46 @@ class VMDisks(Base):
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
 
+    def add(self, disk):
+
+        '''
+        @type Disk:
+
+        Overload 1:
+          @param size: int
+          @param disk.type: string
+          @param disk.interface: string
+          @param disk.format: string
+          [@param disk.sparse: boolean]
+          [@param disk.bootable: boolean]
+          [@param disk.shareable: boolean]
+          [@param disk.allow_snapshot: boolean]
+          [@param disk.propagate_errors: boolean]
+          [@param disk.wipe_after_delete: boolean]
+          [@param disk.storage_domains: collection]
+          {
+            [@ivar storage_domain.id|name: string]
+          }
+        Overload 2:
+          @param disk.id: string
+          [@param disk.active: boolean]
+
+        @return Disk:
+        '''
+
+        url = '/api/vms/{vm:id}/disks'
+
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(disk))
+
+        return VMDisk(self.parentclass, result)
+
 class VMNic(params.NIC, Base):
     def __init__(self, vm, nic):
         self.parentclass = vm
         self.superclass  =  nic
+
+        self.statistics = VMNicStatistics(self)
 
     def __new__(cls, vm, nic):
         if nic is None: return None
@@ -4762,30 +5222,71 @@ class VMNic(params.NIC, Base):
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={'Content-type':None})
 
+class VMNicStatistic(params.Statistic, Base):
+    def __init__(self, vmnic, statistic):
+        self.parentclass = vmnic
+        self.superclass  =  statistic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vmnic, statistic):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmnic, statistic)
+        return obj
+
+class VMNicStatistics(Base):
+
+    def __init__(self, vmnic):
+        self.parentclass = vmnic
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return Statistics:
+        '''
+
+        url = '/api/vms/{vm:id}/nics/{nic:id}/statistics'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                                           '{nic:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMNicStatistic(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                      '{nic:id}': self.parentclass.get_id()})).get_statistic()
+
+            return VMNicStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Statistics:
+        '''
+
+        url = '/api/vms/{vm:id}/nics/{nic:id}/statistics'
+
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{nic:id}': self.parentclass.get_id()})).get_statistic()
+
+        return ParseHelper.toSubCollection(VMNicStatistic,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
+
 class VMNics(Base):
- 
+
     def __init__(self, vm):
         self.parentclass = vm
-
-    def add(self, nic):
-
-        '''
-        @type NIC:
-
-        @param nic.network.id|name: string
-        @param nic.name: string
-        [@param nic.mac.address: string]
-        [@param nic.interface: string]
-
-        @return NIC:
-        '''
-
-        url = '/api/vms/{vm:id}/nics'
-
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(nic))
-
-        return VMNic(self.parentclass, result)
 
     def get(self, name=None, **kwargs):
 
@@ -4828,11 +5329,32 @@ class VMNics(Base):
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
 
+    def add(self, nic):
+
+        '''
+        @type NIC:
+
+        @param nic.network.id|name: string
+        @param nic.name: string
+        [@param nic.mac.address: string]
+        [@param nic.interface: string]
+
+        @return NIC:
+        '''
+
+        url = '/api/vms/{vm:id}/nics'
+
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(nic))
+
+        return VMNic(self.parentclass, result)
+
 class VMPermission(params.Permission, Base):
     def __init__(self, vm, permission):
         self.parentclass = vm
         self.superclass  =  permission
 
+        #SUB_COLLECTIONS
     def __new__(cls, vm, permission):
         if permission is None: return None
         obj = object.__new__(cls)
@@ -4854,7 +5376,7 @@ class VMPermission(params.Permission, Base):
                                        headers={'Content-type':None})
 
 class VMPermissions(Base):
- 
+
     def __init__(self, vm):
         self.parentclass = vm
 
@@ -4926,6 +5448,10 @@ class VMSnapshot(params.Snapshot, Base):
         self.parentclass = vm
         self.superclass  =  snapshot
 
+        self.nics = VMSnapshotNics(self)
+        self.cdroms = VMSnapshotCdroms(self)
+        self.disks = VMSnapshotDisks(self)
+
     def __new__(cls, vm, snapshot):
         if snapshot is None: return None
         obj = object.__new__(cls)
@@ -4963,8 +5489,191 @@ class VMSnapshot(params.Snapshot, Base):
 
         return result
 
+class VMSnapshotCdrom(params.CdRom, Base):
+    def __init__(self, vmsnapshot, cdrom):
+        self.parentclass = vmsnapshot
+        self.superclass  =  cdrom
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vmsnapshot, cdrom):
+        if cdrom is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmsnapshot, cdrom)
+        return obj
+
+class VMSnapshotCdroms(Base):
+
+    def __init__(self, vmsnapshot):
+        self.parentclass = vmsnapshot
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return CdRoms:
+        '''
+
+        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                                           '{snapshot:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMSnapshotCdrom(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                      '{snapshot:id}': self.parentclass.get_id()})).get_cdrom()
+
+            return VMSnapshotCdrom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return CdRoms:
+        '''
+
+        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
+
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{snapshot:id}': self.parentclass.get_id()})).get_cdrom()
+
+        return ParseHelper.toSubCollection(VMSnapshotCdrom,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
+
+class VMSnapshotDisk(params.Disk, Base):
+    def __init__(self, vmsnapshot, disk):
+        self.parentclass = vmsnapshot
+        self.superclass  =  disk
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vmsnapshot, disk):
+        if disk is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmsnapshot, disk)
+        return obj
+
+class VMSnapshotDisks(Base):
+
+    def __init__(self, vmsnapshot):
+        self.parentclass = vmsnapshot
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return Disks:
+        '''
+
+        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/disks'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                                           '{snapshot:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMSnapshotDisk(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                      '{snapshot:id}': self.parentclass.get_id()})).get_disk()
+
+            return VMSnapshotDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Disks:
+        '''
+
+        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/disks'
+
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{snapshot:id}': self.parentclass.get_id()})).get_disk()
+
+        return ParseHelper.toSubCollection(VMSnapshotDisk,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
+
+class VMSnapshotNic(params.NIC, Base):
+    def __init__(self, vmsnapshot, nic):
+        self.parentclass = vmsnapshot
+        self.superclass  =  nic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vmsnapshot, nic):
+        if nic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmsnapshot, nic)
+        return obj
+
+class VMSnapshotNics(Base):
+
+    def __init__(self, vmsnapshot):
+        self.parentclass = vmsnapshot
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return Nics:
+        '''
+
+        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/nics'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                                           '{snapshot:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return VMSnapshotNic(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                      '{snapshot:id}': self.parentclass.get_id()})).get_nic()
+
+            return VMSnapshotNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Nics:
+        '''
+
+        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/nics'
+
+        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{snapshot:id}': self.parentclass.get_id()})).get_nic()
+
+        return ParseHelper.toSubCollection(VMSnapshotNic,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
+
 class VMSnapshots(Base):
- 
+
     def __init__(self, vm):
         self.parentclass = vm
 
@@ -5031,6 +5740,7 @@ class VMStatistic(params.Statistic, Base):
         self.parentclass = vm
         self.superclass  =  statistic
 
+        #SUB_COLLECTIONS
     def __new__(cls, vm, statistic):
         if statistic is None: return None
         obj = object.__new__(cls)
@@ -5038,7 +5748,7 @@ class VMStatistic(params.Statistic, Base):
         return obj
 
 class VMStatistics(Base):
- 
+
     def __init__(self, vm):
         self.parentclass = vm
 
@@ -5088,6 +5798,7 @@ class VMTag(params.Tag, Base):
         self.parentclass = vm
         self.superclass  =  tag
 
+        #SUB_COLLECTIONS
     def __new__(cls, vm, tag):
         if tag is None: return None
         obj = object.__new__(cls)
@@ -5109,7 +5820,7 @@ class VMTag(params.Tag, Base):
                                        headers={'Content-type':None})
 
 class VMTags(Base):
- 
+
     def __init__(self, vm):
         self.parentclass = vm
 
@@ -5266,9 +5977,9 @@ class VMs(Base):
 
 class VmPool(params.VmPool, Base):
     def __init__(self, vmpool):
-        self.permissions = VmPoolPermissions(vmpool)
-
         self.superclass = vmpool
+
+        self.permissions = VmPoolPermissions(self)
 
     def __new__(cls, vmpool):
         if vmpool is None: return None
@@ -5309,6 +6020,7 @@ class VmPoolPermission(params.Permission, Base):
         self.parentclass = vmpool
         self.superclass  =  permission
 
+        #SUB_COLLECTIONS
     def __new__(cls, vmpool, permission):
         if permission is None: return None
         obj = object.__new__(cls)
@@ -5330,7 +6042,7 @@ class VmPoolPermission(params.Permission, Base):
                                        headers={'Content-type':None})
 
 class VmPoolPermissions(Base):
- 
+
     def __init__(self, vmpool):
         self.parentclass = vmpool
 
