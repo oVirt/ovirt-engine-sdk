@@ -142,10 +142,9 @@ class Proxy():
             conn.doRequest(method=method, url=url, body=body, headers=headers)
             response = conn.getResponse()
 
-            # Read the response body and headers (there is always a response,
+            # Read the response headers (there is always a response,
             # even for error responses):
             headers = dict(response.getheaders())
-            body = response.read()
 
             # Parse the received body only if there are no errors reported by
             # the server (this needs review, as less than 400 doesn't garantee
@@ -159,7 +158,9 @@ class Proxy():
             self._cookies_jar.extract_cookies(response_adapter, request_adapter)
 
             # Parse the body:
-            return params.parseString(body) if body else body
+            response_body = response.read()
+            return params.parseString(response_body) if response_body is not None and response_body is not '' \
+                                                     else response_body
         except socket.error, e:
             raise ConnectionError, str(e)
         finally:
