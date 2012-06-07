@@ -38,6 +38,21 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Thu Jun 7 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.2-1alpha
+- prevent stack overflow caused by comparisons creating infinite loops
+- fix error handling regression
+- implement support for 3+ period based URLs, new capabilities:    
+    - vm.snapshot.disks/nics collections support
+    - host/vm.nics.statistics collections support
+    - collection/resource.permits support
+- rebase to latest api, new capabilities:
+    - gluster collections/resources
+    - quota support
+    - remove template disk (by storage domain)
+    - vm.payload support
+    - floating disk support
+- add __eqals__ to business entities #782891
+
 * Wed May 16 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.1-1alpha
 - Version format refactoring to align with oVirt version schema 
 - Alpha release
