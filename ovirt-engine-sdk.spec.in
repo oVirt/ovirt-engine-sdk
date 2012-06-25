@@ -38,6 +38,16 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Mon Jun 25 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.3-1
+- to all collection added optional /max/ param. which is signals engine
+  to override default amount of returned objects with user defined value
+- to Disk type added provisioned_size property and removed /type/ (not supported in 3.1)
+- to StorageDomainTemplate/VM import candidates params added clone, name
+  properties for clonging imported object.
+- to StorageDomainTemplate/VM import candidates params added 
+  collapse_snapshots property
+- to VM added vcpu_pin collection for vm cpu pinning
+
 * Thu Jun 7 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.2-1alpha
 - prevent stack overflow caused by comparisons creating infinite loops
 - fix error handling regression
