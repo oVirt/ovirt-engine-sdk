@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-06-02 20:42:13.437346
+Generated at: 2012-06-25 14:33:59.864199
 
 @author: mpastern@redhat.com
 '''
@@ -114,6 +114,8 @@ class Cluster(params.Cluster, Base):
         [@param cluster.scheduling_policy.thresholds.high: int]
         [@param cluster.scheduling_policy.thresholds.duration: int]
         [@param cluster.error_handling.on_error: string]
+        [@param cluster.virt_service: boolean]
+        [@param cluster.gluster_service: boolean]
 
         @return Cluster:
         '''
@@ -292,10 +294,15 @@ class ClusterGlusterVolumeBricks(Base):
         '''
         @type GlusterBricks:
 
-        @param bricks: collection
+        @param bricks.brick: collection
         {
           @ivar brick.server_id: string
           @ivar brick.brick_dir: string
+        }
+        [@param bricks.brick: collection]
+        {
+          [@ivar brick.replica_count: unsignedShort]
+          [@ivar brick.stripe_count: unsignedShort]
         }
 
         @return GlusterBricks:
@@ -365,7 +372,7 @@ class ClusterGlusterVolumes(Base):
 
         @param gluster_volume.name: string
         @param gluster_volume.volume_type: string
-        @param gluster_volume.bricks: collection
+        @param gluster_volume.bricks.brick: collection
         {
           @ivar brick.server_id: string
           @ivar brick.brick_dir: string
@@ -384,7 +391,7 @@ class ClusterGlusterVolumes(Base):
         {
           [@ivar ip: string]
         }
-        [@param gluster_volume.options: collection]
+        [@param gluster_volume.options.option: collection]
         {
           [@ivar option.name: string]
           [@ivar option.value: string]
@@ -473,7 +480,7 @@ class ClusterNetwork(params.Network, Base):
     def update(self):
         '''
         [@param network.display: boolean]
-        [@param network.usages: collection]
+        [@param network.usages.usage: collection]
         {
           [@ivar usage: string]
         }
@@ -537,17 +544,19 @@ class ClusterNetworks(Base):
 
             return ClusterNetwork(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Networks:
         '''
 
         url = '/api/clusters/{cluster:id}/networks'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_network()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{cluster:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_network()
         return ParseHelper.toSubCollection(ClusterNetwork,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -631,17 +640,19 @@ class ClusterPermissions(Base):
 
             return ClusterPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Permissions:
         '''
 
         url = '/api/clusters/{cluster:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_permission()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{cluster:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_permission()
         return ParseHelper.toSubCollection(ClusterPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -667,6 +678,8 @@ class Clusters(Base):
         [@param cluster.scheduling_policy.thresholds.high: int]
         [@param cluster.scheduling_policy.thresholds.duration: int]
         [@param cluster.error_handling.on_error: string]
+        [@param cluster.virt_service: boolean]
+        [@param cluster.gluster_service: boolean]
 
         @return Cluster:
         '''
@@ -698,18 +711,19 @@ class Clusters(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_cluster()
             return Cluster(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return Clusters:
         '''
 
         url='/api/clusters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_cluster()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_cluster()
         return ParseHelper.toCollection(Cluster,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1045,17 +1059,19 @@ class DataCenterStorageDomains(Base):
 
             return DataCenterStorageDomain(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return StorageDomains:
         '''
 
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_storage_domain()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{datacenter:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_storage_domain()
         return ParseHelper.toSubCollection(DataCenterStorageDomain,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1105,18 +1121,19 @@ class DataCenters(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_data_center()
             return DataCenter(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return DataCenters:
         '''
 
         url='/api/datacenters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_data_center()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_data_center()
         return ParseHelper.toCollection(DataCenter,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1135,7 +1152,7 @@ class Disk(params.Disk, Base):
     def update(self):
         '''
         [@param size: int]
-        [@param disk.type: string]
+        [@param provisioned_size: int]
         [@param disk.interface: string]
         [@param disk.format: string]
         [@param disk.sparse: boolean]
@@ -1229,10 +1246,38 @@ class Disks(Base):
     def __init__(self):
         """Constructor."""
 
-    def get(self, name='*', **kwargs):
+    def add(self, disk):
         '''
-        [@param **kwargs: dict (property based filtering)"]
-        [@param name: string (the name of the entity)]
+        @type Disk:
+
+        @param provisioned_size: int
+        @param disk.interface: string
+        @param disk.format: string
+        [@param disk.size: int]
+        [@param disk.sparse: boolean]
+        [@param disk.bootable: boolean]
+        [@param disk.shareable: boolean]
+        [@param disk.allow_snapshot: boolean]
+        [@param disk.propagate_errors: boolean]
+        [@param disk.wipe_after_delete: boolean]
+        [@param disk.storage_domains.storage_domain: collection]
+        {
+          [@ivar storage_domain.id|name: string]
+        }
+
+        @return Disk:
+        '''
+
+        url = '/api/disks'
+
+        result = self._getProxy().add(url=url,
+                                      body=ParseHelper.toXml(disk))
+        return Disk(result)
+
+    def get(self, name='name', **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return Disks:
         '''
@@ -1247,50 +1292,24 @@ class Disks(Base):
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=url).get_disk()
-            if name != '*': kwargs['name']=name
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_disk()
             return Disk(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return Disks:
         '''
 
         url='/api/disks'
 
-        result = self._getProxy().get(url=url).get_disk()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_disk()
         return ParseHelper.toCollection(Disk,
                                         FilterHelper.filter(result, kwargs))
-
-    def add(self, disk):
-        '''
-        @type Disk:
-
-        @param size: int
-        @param disk.type: string
-        @param disk.interface: string
-        @param disk.format: string
-        [@param disk.sparse: boolean]
-        [@param disk.bootable: boolean]
-        [@param disk.shareable: boolean]
-        [@param disk.allow_snapshot: boolean]
-        [@param disk.propagate_errors: boolean]
-        [@param disk.wipe_after_delete: boolean]
-        [@param disk.storage_domains: collection]
-        {
-          [@ivar storage_domain.id|name: string]
-        }
-
-        @return Disk:
-        '''
-
-        url = '/api/disks'
-
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(disk))
-        return Disk(result)
 
 class Domain(params.Domain, Base):
     def __init__(self, domain):
@@ -1348,11 +1367,12 @@ class DomainGroups(Base):
 
             return DomainGroup(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return Groups:
         '''
@@ -1361,7 +1381,7 @@ class DomainGroups(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{domain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive})).get_group()
+                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_group()
         return ParseHelper.toSubCollection(DomainGroup,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1409,11 +1429,12 @@ class DomainUsers(Base):
 
             return DomainUser(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return Users:
         '''
@@ -1422,7 +1443,7 @@ class DomainUsers(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{domain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive})).get_user()
+                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_user()
         return ParseHelper.toSubCollection(DomainUser,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1453,16 +1474,17 @@ class Domains(Base):
             if name != '*': kwargs['name']=name
             return Domain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Domains:
         '''
 
         url='/api/domains'
 
-        result = self._getProxy().get(url=url).get_domain()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max})).get_domain()
         return ParseHelper.toCollection(Domain,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1502,19 +1524,20 @@ class Events(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_event()
             return Event(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, from_event_id=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, from_event_id=None, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
         [@param from_event_id: event_id]
+        [@param max: max results]
 
         @return Events:
         '''
 
         url='/api/events'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'from:matrix':from_event_id})).get_event()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'from:matrix':from_event_id,'max:matrix':max})).get_event()
         return ParseHelper.toCollection(Event,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1639,17 +1662,19 @@ class GroupPermissions(Base):
 
             return GroupPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Permissions:
         '''
 
         url = '/api/groups/{group:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_permission()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{group:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_permission()
         return ParseHelper.toSubCollection(GroupPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1759,18 +1784,20 @@ class GroupRolePermits(Base):
 
             return GroupRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Permits:
         '''
 
         url = '/api/groups/{group:id}/roles/{role:id}/permits'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
-                                                                  '{role:id}': self.parentclass.get_id()})).get_permit()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{group:id}' : self.parentclass.parentclass.get_id(),
+                                                                                               '{role:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_permit()
         return ParseHelper.toSubCollection(GroupRolePermit,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1823,17 +1850,19 @@ class GroupRoles(Base):
 
             return GroupRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Roles:
         '''
 
         url = '/api/groups/{group:id}/roles'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_role()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{group:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_role()
         return ParseHelper.toSubCollection(GroupRole,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1912,17 +1941,19 @@ class GroupTags(Base):
 
             return GroupTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Tags:
         '''
 
         url = '/api/groups/{group:id}/tags'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_tag()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{group:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_tag()
         return ParseHelper.toSubCollection(GroupTag,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1967,18 +1998,19 @@ class Groups(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_group()
             return Group(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return Groups:
         '''
 
         url='/api/groups'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_group()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_group()
         return ParseHelper.toCollection(Group,
                                         FilterHelper.filter(result, kwargs))
 
@@ -2151,8 +2183,8 @@ class Host(params.Host, Base):
         [@param host.power_management.password: string]
         [@param host.power_management.options.option: collection]
         {
-          [@ivar name: string]
-          [@ivar value: string]
+          [@ivar option.name: string]
+          [@ivar option.value: string]
         }
 
         @return Host:
@@ -2305,18 +2337,20 @@ class HostNicStatistics(Base):
 
             return HostNicStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Statistics:
         '''
 
         url = '/api/hosts/{host:id}/nics/{nic:id}/statistics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
-                                                                  '{nic:id}': self.parentclass.get_id()})).get_statistic()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{host:id}' : self.parentclass.parentclass.get_id(),
+                                                                                               '{nic:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_statistic()
         return ParseHelper.toSubCollection(HostNicStatistic,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2385,17 +2419,19 @@ class HostNics(Base):
 
             return HostNIC(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return HostNics:
         '''
 
         url = '/api/hosts/{host:id}/nics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_host_nic()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{host:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_host_nic()
         return ParseHelper.toSubCollection(HostNIC,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2518,17 +2554,19 @@ class HostPermissions(Base):
 
             return HostPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Permissions:
         '''
 
         url = '/api/hosts/{host:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_permission()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{host:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_permission()
         return ParseHelper.toSubCollection(HostPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2576,17 +2614,19 @@ class HostStatistics(Base):
 
             return HostStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Statistics:
         '''
 
         url = '/api/hosts/{host:id}/statistics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_statistic()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{host:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_statistic()
         return ParseHelper.toSubCollection(HostStatistic,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2676,17 +2716,19 @@ class HostTags(Base):
 
             return HostTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Tags:
         '''
 
         url = '/api/hosts/{host:id}/tags'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_tag()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{host:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_tag()
         return ParseHelper.toSubCollection(HostTag,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2747,18 +2789,19 @@ class Hosts(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_host()
             return Host(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return Hosts:
         '''
 
         url='/api/hosts'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_host()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_host()
         return ParseHelper.toCollection(Host,
                                         FilterHelper.filter(result, kwargs))
 
@@ -2855,18 +2898,19 @@ class Networks(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_network()
             return Network(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return Networks:
         '''
 
         url='/api/networks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_network()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_network()
         return ParseHelper.toCollection(Network,
                                         FilterHelper.filter(result, kwargs))
 
@@ -2899,7 +2943,7 @@ class Role(params.Role, Base):
         '''
         [@param role.permits.permit: collection]
         {
-          [@ivar id: string]
+          [@ivar permit.id: string]
         }
         [@param role.description: string]
 
@@ -2986,17 +3030,19 @@ class RolePermits(Base):
 
             return RolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Permits:
         '''
 
         url = '/api/roles/{role:id}/permits'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()})).get_permit()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{role:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_permit()
         return ParseHelper.toSubCollection(RolePermit,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3048,16 +3094,17 @@ class Roles(Base):
             if name != '*': kwargs['name']=name
             return Role(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Roles:
         '''
 
         url='/api/roles'
 
-        result = self._getProxy().get(url=url).get_role()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max})).get_role()
         return ParseHelper.toCollection(Role,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3148,11 +3195,12 @@ class StorageDomainFiles(Base):
 
             return StorageDomainFile(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return Files:
         '''
@@ -3161,7 +3209,7 @@ class StorageDomainFiles(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive})).get_file()
+                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_file()
         return ParseHelper.toSubCollection(StorageDomainFile,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3245,17 +3293,19 @@ class StorageDomainPermissions(Base):
 
             return StorageDomainPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Permissions:
         '''
 
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_permission()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_permission()
         return ParseHelper.toSubCollection(StorageDomainPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3278,9 +3328,11 @@ class StorageDomainTemplate(params.Template, Base):
 
         @param action.cluster.id|name: string
         [@param action.storage_domain.id|name: string]
+        [@param action.clone: boolen]
+        [@param action.template.name: string]
         [@param action.vm.disks.disk: collection]
         {
-          [@ivar id: string]
+          [@ivar disk.id: string]
         }
 
         @return Response:
@@ -3326,17 +3378,19 @@ class StorageDomainTemplates(Base):
 
             return StorageDomainTemplate(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Templates:
         '''
 
         url = '/api/storagedomains/{storagedomain:id}/templates'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_template()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_template()
         return ParseHelper.toSubCollection(StorageDomainTemplate,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3359,9 +3413,12 @@ class StorageDomainVM(params.VM, Base):
 
         @param action.cluster.id|name: string
         [@param action.storage_domain.id|name: string]
+        [@param action.vm.snapshots.collapse_snapshots: boolean]
+        [@param action.clone: boolen]
+        [@param action.vm.name: string]
         [@param action.vm.disks.disk: collection]
         {
-          [@ivar id: string]
+          [@ivar disk.id: string]
         }
 
         @return Response:
@@ -3407,17 +3464,19 @@ class StorageDomainVMs(Base):
 
             return StorageDomainVM(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return VMs:
         '''
 
         url = '/api/storagedomains/{storagedomain:id}/vms'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_vm()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_vm()
         return ParseHelper.toSubCollection(StorageDomainVM,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3509,16 +3568,17 @@ class StorageDomains(Base):
             if name != '*': kwargs['name']=name
             return StorageDomain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return StorageDomains:
         '''
 
         url='/api/storagedomains'
 
-        result = self._getProxy().get(url=url).get_storage_domain()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max})).get_storage_domain()
         return ParseHelper.toCollection(StorageDomain,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3604,16 +3664,17 @@ class Tags(Base):
             if name != '*': kwargs['name']=name
             return Tag(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Tags:
         '''
 
         url='/api/tags'
 
-        result = self._getProxy().get(url=url).get_tag()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max})).get_tag()
         return ParseHelper.toCollection(Tag,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3681,8 +3742,8 @@ class Template(params.Template, Base):
         [@param template.description: string]
         [@param template.custom_properties.custom_property: collection]
         {
-          [@ivar name: string]
-          [@ivar value: string]
+          [@ivar custom_property.name: string]
+          [@ivar custom_property.value: string]
         }
         [@param template.os.type: string]
         [@param template.os.boot.dev: string]
@@ -3747,17 +3808,19 @@ class TemplateCdRoms(Base):
 
             return TemplateCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return CdRoms:
         '''
 
         url = '/api/templates/{template:id}/cdroms'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_cdrom()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{template:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_cdrom()
         return ParseHelper.toSubCollection(TemplateCdRom,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3827,17 +3890,19 @@ class TemplateDisks(Base):
 
             return TemplateDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Disks:
         '''
 
         url = '/api/templates/{template:id}/disks'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_disk()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{template:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_disk()
         return ParseHelper.toSubCollection(TemplateDisk,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3885,17 +3950,19 @@ class TemplateNics(Base):
 
             return TemplateNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Nics:
         '''
 
         url = '/api/templates/{template:id}/nics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_nic()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{template:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_nic()
         return ParseHelper.toSubCollection(TemplateNic,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3979,17 +4046,19 @@ class TemplatePermissions(Base):
 
             return TemplatePermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Permissions:
         '''
 
         url = '/api/templates/{template:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_permission()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{template:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_permission()
         return ParseHelper.toSubCollection(TemplatePermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4033,10 +4102,10 @@ class Templates(Base):
         [@param template.usb.type: string]
         [@param template.vm.disks.disk: collection]
         {
-          [@ivar id: string]
+          [@ivar disk.id: string]
           [@ivar storage_domains.storage_domain: collection]
           {
-            [@param id: string]
+            [@param storage_domain.id: string]
           }
         }
 
@@ -4070,18 +4139,19 @@ class Templates(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_template()
             return Template(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return Templates:
         '''
 
         url='/api/templates'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_template()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_template()
         return ParseHelper.toCollection(Template,
                                         FilterHelper.filter(result, kwargs))
 
@@ -4206,17 +4276,19 @@ class UserPermissions(Base):
 
             return UserPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Permissions:
         '''
 
         url = '/api/users/{user:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_permission()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{user:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_permission()
         return ParseHelper.toSubCollection(UserPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4326,18 +4398,20 @@ class UserRolePermits(Base):
 
             return UserRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Permits:
         '''
 
         url = '/api/users/{user:id}/roles/{role:id}/permits'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
-                                                                  '{role:id}': self.parentclass.get_id()})).get_permit()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{user:id}' : self.parentclass.parentclass.get_id(),
+                                                                                               '{role:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_permit()
         return ParseHelper.toSubCollection(UserRolePermit,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4390,17 +4464,19 @@ class UserRoles(Base):
 
             return UserRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Roles:
         '''
 
         url = '/api/users/{user:id}/roles'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_role()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{user:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_role()
         return ParseHelper.toSubCollection(UserRole,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4479,17 +4555,19 @@ class UserTags(Base):
 
             return UserTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Tags:
         '''
 
         url = '/api/users/{user:id}/tags'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_tag()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{user:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_tag()
         return ParseHelper.toSubCollection(UserTag,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4535,18 +4613,19 @@ class Users(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_user()
             return User(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return Users:
         '''
 
         url='/api/users'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_user()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_user()
         return ParseHelper.toCollection(User,
                                         FilterHelper.filter(result, kwargs))
 
@@ -4768,8 +4847,8 @@ class VM(params.VM, Base):
         [@param vm.os.boot.dev: string]
         [@param vm.custom_properties.custom_property: collection]
         {
-          [@ivar name: string]
-          [@ivar value: string]
+          [@ivar custom_property.name: string]
+          [@ivar custom_property.value: string]
         }
         [@param vm.os.type: string]
         [@param vm.usb.enabled: boolean]
@@ -4797,6 +4876,11 @@ class VM(params.VM, Base):
           [@ivar payload.type: string]
           [@ivar payload.file.name: string]
           [@ivar payload.file.content: string]
+        }
+        [@param vm.cpu.cpu_tune.vcpu_pin: collection]
+        {
+          [@ivar vcpu_pin.vcpu: int]
+          [@ivar vcpu_pin.cpu_set: string]
         }
 
         @return VM:
@@ -4897,17 +4981,19 @@ class VMCdRoms(Base):
 
             return VMCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return CdRoms:
         '''
 
         url = '/api/vms/{vm:id}/cdroms'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_cdrom()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_cdrom()
         return ParseHelper.toSubCollection(VMCdRom,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4981,7 +5067,7 @@ class VMDisk(params.Disk, Base):
     def update(self):
         '''
         [@param size: int]
-        [@param disk.type: string]
+        [@param provisioned_size: int]
         [@param disk.interface: string]
         [@param disk.format: string]
         [@param disk.sparse: boolean]
@@ -5068,6 +5154,40 @@ class VMDisks(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
+    def add(self, disk):
+
+        '''
+        @type Disk:
+
+        Overload 1:
+          @param provisioned_size: int
+          @param disk.interface: string
+          @param disk.format: string
+          [@param disk.size: int]
+          [@param disk.sparse: boolean]
+          [@param disk.bootable: boolean]
+          [@param disk.shareable: boolean]
+          [@param disk.allow_snapshot: boolean]
+          [@param disk.propagate_errors: boolean]
+          [@param disk.wipe_after_delete: boolean]
+          [@param disk.storage_domains.storage_domain: collection]
+          {
+            [@ivar storage_domain.id|name: string]
+          }
+        Overload 2:
+          @param disk.id: string
+          [@param disk.active: boolean]
+
+        @return Disk:
+        '''
+
+        url = '/api/vms/{vm:id}/disks'
+
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(disk))
+
+        return VMDisk(self.parentclass, result)
+
     def get(self, name=None, **kwargs):
 
         '''
@@ -5094,54 +5214,22 @@ class VMDisks(Base):
 
             return VMDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Disks:
         '''
 
         url = '/api/vms/{vm:id}/disks'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_disk()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_disk()
         return ParseHelper.toSubCollection(VMDisk,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
-
-    def add(self, disk):
-
-        '''
-        @type Disk:
-
-        Overload 1:
-          @param size: int
-          @param disk.type: string
-          @param disk.interface: string
-          @param disk.format: string
-          [@param disk.sparse: boolean]
-          [@param disk.bootable: boolean]
-          [@param disk.shareable: boolean]
-          [@param disk.allow_snapshot: boolean]
-          [@param disk.propagate_errors: boolean]
-          [@param disk.wipe_after_delete: boolean]
-          [@param disk.storage_domains: collection]
-          {
-            [@ivar storage_domain.id|name: string]
-          }
-        Overload 2:
-          @param disk.id: string
-          [@param disk.active: boolean]
-
-        @return Disk:
-        '''
-
-        url = '/api/vms/{vm:id}/disks'
-
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(disk))
-
-        return VMDisk(self.parentclass, result)
 
 class VMNic(params.NIC, Base):
     def __init__(self, vm, nic):
@@ -5162,6 +5250,10 @@ class VMNic(params.NIC, Base):
         [@param nic.name: string]
         [@param nic.mac.address: string]
         [@param nic.interface: string]
+        [@param nic.port_mirroring.networks.network: collection]
+        {
+          [@ivar network.id: string]
+        }
 
         @return NIC:
         '''
@@ -5288,6 +5380,30 @@ class VMNics(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
+    def add(self, nic):
+
+        '''
+        @type NIC:
+
+        @param nic.network.id|name: string
+        @param nic.name: string
+        [@param nic.mac.address: string]
+        [@param nic.interface: string]
+        [@param nic.port_mirroring.networks.network: collection]
+        {
+          [@ivar network.id: string]
+        }
+
+        @return NIC:
+        '''
+
+        url = '/api/vms/{vm:id}/nics'
+
+        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                      body=ParseHelper.toXml(nic))
+
+        return VMNic(self.parentclass, result)
+
     def get(self, name=None, **kwargs):
 
         '''
@@ -5314,40 +5430,22 @@ class VMNics(Base):
 
             return VMNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Nics:
         '''
 
         url = '/api/vms/{vm:id}/nics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_nic()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_nic()
         return ParseHelper.toSubCollection(VMNic,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
-
-    def add(self, nic):
-
-        '''
-        @type NIC:
-
-        @param nic.network.id|name: string
-        @param nic.name: string
-        [@param nic.mac.address: string]
-        [@param nic.interface: string]
-
-        @return NIC:
-        '''
-
-        url = '/api/vms/{vm:id}/nics'
-
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(nic))
-
-        return VMNic(self.parentclass, result)
 
 class VMPermission(params.Permission, Base):
     def __init__(self, vm, permission):
@@ -5428,17 +5526,19 @@ class VMPermissions(Base):
 
             return VMPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Permissions:
         '''
 
         url = '/api/vms/{vm:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_permission()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_permission()
         return ParseHelper.toSubCollection(VMPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -5720,17 +5820,19 @@ class VMSnapshots(Base):
 
             return VMSnapshot(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Snapshots:
         '''
 
         url = '/api/vms/{vm:id}/snapshots'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_snapshot()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_snapshot()
         return ParseHelper.toSubCollection(VMSnapshot,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -5778,17 +5880,19 @@ class VMStatistics(Base):
 
             return VMStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Statistics:
         '''
 
         url = '/api/vms/{vm:id}/statistics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_statistic()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_statistic()
         return ParseHelper.toSubCollection(VMStatistic,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -5867,17 +5971,19 @@ class VMTags(Base):
 
             return VMTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Tags:
         '''
 
         url = '/api/vms/{vm:id}/tags'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_tag()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_tag()
         return ParseHelper.toSubCollection(VMTag,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -5960,20 +6066,32 @@ class VMs(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vm()
             return VM(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return VMs:
         '''
 
         url='/api/vms'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_vm()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_vm()
         return ParseHelper.toCollection(VM,
                                         FilterHelper.filter(result, kwargs))
+
+class VersionCaps(params.VersionCaps, Base):
+    def __init__(self, versioncaps):
+        self.superclass = versioncaps
+
+        #SUB_COLLECTIONS
+    def __new__(cls, versioncaps):
+        if versioncaps is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(versioncaps)
+        return obj
 
 class VmPool(params.VmPool, Base):
     def __init__(self, vmpool):
@@ -6094,17 +6212,19 @@ class VmPoolPermissions(Base):
 
             return VmPoolPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
 
         @return Permissions:
         '''
 
         url = '/api/vmpools/{vmpool:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()})).get_permission()
-
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{vmpool:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_permission()
         return ParseHelper.toSubCollection(VmPoolPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -6151,18 +6271,19 @@ class VmPools(Base):
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vmpool()
             return VmPool(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: true|false]
+        [@param max: max results]
 
         @return VmPools:
         '''
 
         url='/api/vmpools'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive})).get_vmpool()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_vmpool()
         return ParseHelper.toCollection(VmPool,
                                         FilterHelper.filter(result, kwargs))
 

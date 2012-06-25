@@ -42,7 +42,7 @@ ENTRY_POINT_FILE = '../ovirtsdk/api.py'
 KNOWN_ACTIONS = ['get', 'add', 'delete', 'update']
 
 #TODO:should be fixed on server side
-COLLECTION_TO_ENTITY_EXCEPTIONS = ['Capabilities', 'Storage']
+COLLECTION_TO_ENTITY_EXCEPTIONS = ['Capabilities', 'Storage', 'VersionCaps']
 
 #names that should not be used as method/s names
 PRESERVED_NAMES = ['import', 'from']
