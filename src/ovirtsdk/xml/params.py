@@ -19588,7 +19588,7 @@ _rootClassMap = {
                     "user"                          : User,
                     "values"                        : Values,
                     "value"                         : Value,
-                    "version"                       : Version,
+                    "version"                       : VersionCaps,
                     "vlan"                          : VLAN,
                     "vm_affinities"                 : VmAffinities,
                     "vm_pause_details"              : VmPauseDetails,

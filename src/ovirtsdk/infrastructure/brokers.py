@@ -38,39 +38,40 @@ class Capabilities(Base):
     def __init__(self):
         """Constructor."""
 
-    def get(self, name='*', **kwargs):
+    def get(self, id=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
-        [@param name: string (the name of the entity)]
+        [@param id: string (the id of the entity)]
+        [@param **kwargs: dict (property based filtering)]        
 
-        @return Capabilities:
+        @return VersionCaps:
         '''
 
         url = '/api/capabilities'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id or (kwargs and kwargs.has_key('id') and kwargs['id'] <> None):
             try :
-                return Capabilities(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return VersionCaps(self._getProxy().get(url=UrlHelper.append(url,
+                                                                             id if id
+                                                                                else kwargs['id'])))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=url).get_capabilities()
-            if name != '*': kwargs['name']=name
-            return Capabilities(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            result = self._getProxy().get(url=url).version
+            return VersionCaps(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
 
-        @return Capabilities:
+        @return [VersionCaps]:
         '''
 
         url='/api/capabilities'
 
-        result = self._getProxy().get(url=url).get_capabilities()
-        return ParseHelper.toCollection(Capabilities,
+        result = self._getProxy().get(url=url).version
+        return ParseHelper.toCollection(VersionCaps,
                                         FilterHelper.filter(result, kwargs))
 
 class Cluster(params.Cluster, Base):

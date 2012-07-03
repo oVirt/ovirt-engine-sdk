@@ -47,6 +47,36 @@ class Collection(object):
 
         prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
 
+        #Capabilities resource has unique structure which is not
+        #fully comply with RESTful collection pattern, but preserved
+        #in sake of backward compatibility
+        if url == '/api/capabilities':
+            return \
+"""
+    def get(self, id=None, **kwargs):
+        '''
+        [@param id: string (the id of the entity)]
+        [@param **kwargs: dict (property based filtering)]
+
+        @return VersionCaps:
+        '''
+
+        url = '/api/capabilities'
+
+        if id or (kwargs and kwargs.has_key('id') and kwargs['id'] <> None):
+            try :
+                return VersionCaps(self._getProxy().get(url=UrlHelper.append(url,
+                                                                             id if id
+                                                                                else kwargs['id'])))
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            result = self._getProxy().get(url=url).version
+            return VersionCaps(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+"""
+
         if 'search:query' in url_params:
             return \
             ("    def get(self, name='name', **kwargs):\n" + \
@@ -96,6 +126,25 @@ class Collection(object):
         method_params_copy = method_params.copy()
         method_params['**kwargs'] = '**kwargs'
 
+        #Capabilities resource has unique structure which is not
+        #fully comply with RESTful collection pattern, but preserved
+        #in sake of backward compatibility
+        if url == '/api/capabilities':
+            return \
+"""
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return [VersionCaps]:
+        '''
+
+        url='/api/capabilities'
+
+        result = self._getProxy().get(url=url).version
+        return ParseHelper.toCollection(VersionCaps,
+                                        FilterHelper.filter(result, kwargs))
+"""
         if prms_str != '':
             return \
             ("    def list(self, " + prms_str + ", **kwargs):\n" + \
