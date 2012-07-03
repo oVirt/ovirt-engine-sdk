@@ -19465,6 +19465,7 @@ _rootClassMap = {
                     "cpu_tune"                      : CpuTune,
                     "creation"                      : Creation,
                     "creation_states"               : CreationStates,
+                    "creation_status"               : Status,
                     "custom_properties"             : CustomProperties,
                     "custom_property"               : CustomProperty,
                     "data_center"                   : DataCenter,
@@ -19494,6 +19495,7 @@ _rootClassMap = {
                     "group"                         : Group,
                     "groups"                        : Groups,
                     "guest_info"                    : GuestInfo,
+                    "grace_period"                  : GracePeriod,
                     "brick"                         : GlusterBrick,
                     "bricks"                        : GlusterBricks,
                     "gluster_volume_states"         : GlusterStates,
@@ -19581,6 +19583,7 @@ _rootClassMap = {
                     "template"                      : Template,
                     "transparent_hugepages"         : TransparentHugePages,
                     "transport_types"               : TransportTypes,
+                    "topology"                      : CpuTopology,
                     "url"                           : Url,
                     "usb"                           : Usb,
                     "users"                         : Users,
@@ -19605,20 +19608,11 @@ _rootClassMap = {
                     "payload"                       : Payload,
                     "payload_file"                  : PayloadFile,
                     "payloads"                      : Payloads,
+                    "parent"                        : TagParent,
                     "preview_vms"                   : PreviewVMs,
                     "usages"                        : Usages,
                     "vm_device_types"               : VmDeviceTypes
                 }
-
-
-_elementToClassMap = {
-                    "grace_period"                  : GracePeriod,
-                    "iscsi"                         : IscsiDetails,
-                    "storage_domain"                : StorageDomain,
-                    "topology"                      : CpuTopology,
-                    "creation_status"               : Status,      
-                    "parent"                        : TagParent                 
-                 }
 
 def findRootClass(rootTag):
     """
@@ -19628,7 +19622,5 @@ def findRootClass(rootTag):
     which one it actually is.  This function will map the first
     tag in the XML (i.e. the root) to an internal class.
     """
-    res = _rootClassMap.get(rootTag)
-    if res: return res
-    return _elementToClassMap.get(rootTag)
+    return _rootClassMap.get(rootTag)
 # End NOT_GENERATED
