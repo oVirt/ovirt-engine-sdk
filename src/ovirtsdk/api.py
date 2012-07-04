@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-06-25 13:39:18.571560
+Generated at: 2012-07-04 11:00:19.006841
 
 @author: mpastern@redhat.com
 '''
@@ -83,6 +83,9 @@ class API():
 
         # Add the proxy to the context:
         contextmanager.add('proxy', proxy, Mode.R)
+
+        # Verify credentials
+        self.test(throw_exception=True)
 
         self.capabilities = Capabilities()
         self.clusters = Clusters()

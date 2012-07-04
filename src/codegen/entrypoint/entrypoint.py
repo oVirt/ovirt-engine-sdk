@@ -141,6 +141,9 @@ class EntryPoint(object):
         # Add the proxy to the context:
         contextmanager.add('proxy', proxy, Mode.R)
 
+        # Verify credentials
+        self.test(throw_exception=True)
+
 """
 
         return (api_template + rootCollections + EntryPoint.instanceMethods())
