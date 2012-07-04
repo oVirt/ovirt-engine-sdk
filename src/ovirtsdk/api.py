@@ -134,6 +134,17 @@ class API():
         return False
 
     def get_product_info(self):
-        if self.test():
-            proxy = contextmanager.get('proxy')
-            return proxy.request(method='GET', url='/api').product_info
+        proxy = contextmanager.get('proxy')
+        return proxy.request(method='GET', url='/api').product_info
+
+    def get_special_objects(self):
+        proxy = contextmanager.get('proxy')
+        return proxy.request(method='GET', url='/api').special_objects
+
+    def get_summary(self):
+        proxy = contextmanager.get('proxy')
+        return proxy.request(method='GET', url='/api').summary
+
+    def get_time(self):
+        proxy = contextmanager.get('proxy')
+        return proxy.request(method='GET', url='/api').time
