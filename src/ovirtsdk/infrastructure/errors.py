@@ -90,20 +90,29 @@ class RequestError(Exception):
         self.status = None
         self.reason = None
         res = response.read()
+        detail = ''
+
         if res is not None and str(res) is not '' and str(res).find('Error report') != -1:
-            self.detail = res
+            detail = res
         elif res:
             f_detail = params.parseString(res)
             if isinstance(f_detail, params.Action) and f_detail.fault is not None:
                 #self.reason = f_detail.fault.reason
-                self.detail = f_detail.fault.detail
+                detail = f_detail.fault.detail
             else:
                 #self.reason = response.reason
                 if f_detail is not None:
-                    self.detail = f_detail.detail
+                    detail = f_detail.detail
+
+        if detail.startswith('[') and detail.endswith(']'):
+            detail = detail[1:len(detail) - 1]
+
+        self.detail = detail
         self.reason = response.reason
         self.status = response.status
+
         Exception.__init__(self, '[ERROR]::oVirt API request failure.' + self.__str__())
+
     def __str__(self):
         return '\r\nstatus: ' + str(self.status) + '\r\nreason: ' + self.reason + '\r\ndetail: ' + str(self.detail)
 
