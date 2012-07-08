@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-06-25 14:33:59.864199
+Generated at: 2012-07-08 16:25:50.741257
 
 @author: mpastern@redhat.com
 '''
@@ -38,10 +38,11 @@ class Capabilities(Base):
     def __init__(self):
         """Constructor."""
 
+
     def get(self, id=None, **kwargs):
         '''
         [@param id: string (the id of the entity)]
-        [@param **kwargs: dict (property based filtering)]        
+        [@param **kwargs: dict (property based filtering)]
 
         @return VersionCaps:
         '''
@@ -73,7 +74,6 @@ class Capabilities(Base):
         result = self._getProxy().get(url=url).version
         return ParseHelper.toCollection(VersionCaps,
                                         FilterHelper.filter(result, kwargs))
-
 class Cluster(params.Cluster, Base):
     def __init__(self, cluster):
         self.superclass = cluster
@@ -742,8 +742,11 @@ class DataCenter(params.DataCenter, Base):
         obj.__init__(datacenter)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, action=params.Action(), async=None):
         '''
+        @type Action:
+
+        [@param action.force: boolean]
         [@param async: true|false]
 
         @return None:
@@ -753,7 +756,7 @@ class DataCenter(params.DataCenter, Base):
                                 {'{datacenter:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       body=ParseHelper.toXml(action))
 
     def update(self):
         '''
@@ -2878,10 +2881,10 @@ class Networks(Base):
                                       body=ParseHelper.toXml(network))
         return Network(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name='*', **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param **kwargs: dict (property based filtering)"]
+        [@param name: string (the name of the entity)]
 
         @return Networks:
         '''
@@ -2896,14 +2899,13 @@ class Networks(Base):
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_network()
+            result = self._getProxy().get(url=url).get_network()
+            if name != '*': kwargs['name']=name
             return Network(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
         [@param max: max results]
 
         @return Networks:
@@ -2911,7 +2913,7 @@ class Networks(Base):
 
         url='/api/networks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_network()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max})).get_network()
         return ParseHelper.toCollection(Network,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3512,6 +3514,7 @@ class StorageDomains(Base):
             @ivar logical_unit.paths: int
             @ivar logical_unit.id: string
           }
+          [@param storagdomain.storage.override_luns: boolean]
         Overload 2:
           @param storagdomain.name: string
           @param storagdomain.host.id|name: string
@@ -3842,12 +3845,8 @@ class TemplateDisk(params.Disk, Base):
         '''
         @type Action:
 
-        Overload 1:
-          [@param action.storage_domain.id: string]
-          [@param action.force: boolean]
-        Overload 2:
-          [@param action.force: boolean]
-        Overload 3:
+        [@param action.storage_domain.id: string]
+        [@param action.force: boolean]
         [@param async: true|false]
 
         @return None:
@@ -5016,9 +5015,7 @@ class VMDisk(params.Disk, Base):
         '''
         @type Action:
 
-        Overload 1:
-        Overload 2:
-          @param action.detach: boolean
+        @param action.detach: boolean
         [@param async: true|false]
 
         @return None:
