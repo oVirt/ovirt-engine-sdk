@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-07-08 16:25:50.741257
+Generated at: 2012-07-08 16:31:13.363470
 
 @author: mpastern@redhat.com
 '''
@@ -2024,6 +2024,7 @@ class Host(params.Host, Base):
 
         self.nics = HostNics(self)
         self.permissions = HostPermissions(self)
+        self.storage = HostStorage(self)
         self.statistics = HostStatistics(self)
         self.tags = HostTags(self)
 
@@ -2635,17 +2636,53 @@ class HostStatistics(Base):
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
 
-class HostStorage(params.HostStorage, Base):
-    def __init__(self, host, storage):
-        self.parentclass = host
-        self.superclass  =  storage
+class HostStorage(Base):
 
-        #SUB_COLLECTIONS
-    def __new__(cls, host, storage):
-        if storage is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(host, storage)
-        return obj
+    def __init__(self, host):
+        self.parentclass = host
+
+    def get(self, name=None, **kwargs):
+
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (the name of the entity)]
+
+        @return HostStorage:
+        '''
+
+        url = '/api/hosts/{host:id}/storage'
+
+        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+            try :
+                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                                                   kwargs['id']))
+                return HostStorage(self.parentclass, result)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        else:
+            if(name is not None): kwargs['name']=name
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_storage()
+
+            return HostStorage(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: max results]
+
+        @return HostStorage:
+        '''
+
+        url = '/api/hosts/{host:id}/storage'
+
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                         args={'{host:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max})).get_storage()
+        return ParseHelper.toSubCollection(HostStorage,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs))
 
 class HostTag(params.Tag, Base):
     def __init__(self, host, tag):

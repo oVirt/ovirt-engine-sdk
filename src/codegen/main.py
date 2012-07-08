@@ -44,6 +44,9 @@ KNOWN_ACTIONS = ['get', 'add', 'delete', 'update']
 #TODO:should be fixed on server side
 COLLECTION_TO_ENTITY_EXCEPTIONS = ['Capabilities', 'Storage', 'VersionCaps']
 
+#TODO:should be fixed on server side (naming inconsistency)
+NAMING_ENTITY_EXCEPTIONS = {'host_storage':'storage'}
+
 #names that should not be used as method/s names
 PRESERVED_NAMES = ['import', 'from']
 
@@ -308,7 +311,8 @@ class CodeGen():
 
     @staticmethod
     def __isCollection(link):
-        return link.href.endswith('s') and not CodeGen.__isAction(link)
+        return (link.href.endswith('s') or link.href.split('/')[-1].capitalize() in COLLECTION_TO_ENTITY_EXCEPTIONS) \
+                and not CodeGen.__isAction(link)
 
     @staticmethod
     def __isAction(link):
@@ -339,7 +343,7 @@ class CodeGen():
         sub_res = response_type if response_type is not None \
                                 else sub_coll[:len(sub_coll) - 1]
         sub_coll_type = root_res + sub_coll
-        sub_res_type = sub_coll_type[:len(sub_coll_type) - 1]
+        sub_res_type = self.__toSingular(sub_coll_type)
 
         if (not collectionsHolder.has_key(sub_coll_type)):
             sub_coll_body = SubCollection.collection(sub_coll_type, root_res)
@@ -358,11 +362,11 @@ class CodeGen():
 
         #['get', 'add']
         if (rel == 'get'):
-            get_method_body = SubCollection.get(url, link, root_res, self.__toResourceType(sub_res_type), sub_res, KNOWN_WRAPPER_TYPES)
+            get_method_body = SubCollection.get(url, link, root_res, self.__toResourceType(sub_res_type), sub_res, KNOWN_WRAPPER_TYPES, NAMING_ENTITY_EXCEPTIONS)
             collectionsHolder[sub_coll_type]['body'] += get_method_body
             if(DEBUG): print 'adding to sub-collection: ' + sub_coll_type + ', url: ' + url + ', get() method:\n' + get_method_body
 
-            list_method = SubCollection.list(url, link, root_res, self.__toResourceType(sub_res_type), sub_res, KNOWN_WRAPPER_TYPES)
+            list_method = SubCollection.list(url, link, root_res, self.__toResourceType(sub_res_type), sub_res, KNOWN_WRAPPER_TYPES, NAMING_ENTITY_EXCEPTIONS)
             collectionsHolder[sub_coll_type]['body'] += list_method
             if(DEBUG): print 'adding to sub-collection: ' + sub_coll_type + ', url: ' + url + ', list() method:\n' + list_method
 

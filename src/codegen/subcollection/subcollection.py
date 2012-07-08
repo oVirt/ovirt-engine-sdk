@@ -42,10 +42,13 @@ class SubCollection(object):
         return sub_collection_get_template
 
     @staticmethod
-    def get(url, link, parent_resource_name_lc, encapsulating_resource, actual_resource_name_candidate, KNOWN_WRAPPER_TYPES={}):
+    def get(url, link, parent_resource_name_lc, encapsulating_resource, actual_resource_name_candidate, KNOWN_WRAPPER_TYPES={}, NAMING_ENTITY_EXCEPTIONS={}):
         actual_encapsulating_resource = TypeUtil.getValueByKeyOrNone(encapsulating_resource.lower(), KNOWN_WRAPPER_TYPES)
         actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(actual_encapsulating_resource if actual_encapsulating_resource is not None \
                                                                   else actual_resource_name_candidate.lower())).lower()
+
+        if NAMING_ENTITY_EXCEPTIONS.has_key(actual_resource_name_lc):
+            actual_resource_name_lc = NAMING_ENTITY_EXCEPTIONS[actual_resource_name_lc]
 
         sub_collection_get_template_values = {'url':url,
                                               'parent_resource_name_lc':parent_resource_name_lc.lower(),
@@ -85,10 +88,13 @@ class SubCollection(object):
         return sub_collection_get_template
 
     @staticmethod
-    def list(url, link, parent_resource_name_lc, encapsulating_resource, actual_resource_name_candidate, KNOWN_WRAPPER_TYPES={}):
+    def list(url, link, parent_resource_name_lc, encapsulating_resource, actual_resource_name_candidate, KNOWN_WRAPPER_TYPES={}, NAMING_ENTITY_EXCEPTIONS={}):
         actual_encapsulating_resource = TypeUtil.getValueByKeyOrNone(encapsulating_resource.lower(), KNOWN_WRAPPER_TYPES)
         actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(actual_encapsulating_resource if actual_encapsulating_resource is not None \
                                                                   else actual_resource_name_candidate.lower())).lower()
+
+        if NAMING_ENTITY_EXCEPTIONS.has_key(actual_resource_name_lc):
+            actual_resource_name_lc = NAMING_ENTITY_EXCEPTIONS[actual_resource_name_lc]
 
         sub_collection_list_template_values = {'url':url,
                                                'encapsulating_resource':actual_encapsulating_resource if actual_encapsulating_resource is not None
