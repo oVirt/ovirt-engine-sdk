@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-07-08 16:31:13.363470
+Generated at: 2012-07-09 13:57:11.211797
 
 @author: mpastern@redhat.com
 '''
@@ -3167,7 +3167,7 @@ class StorageDomain(params.StorageDomain, Base):
         '''
         @type StorageDomain:
 
-        @param storagdomain.host.id|name: string
+        @param storagedomain.host.id|name: string
         [@param async: true|false]
 
         @return None:
@@ -3181,7 +3181,7 @@ class StorageDomain(params.StorageDomain, Base):
 
     def update(self):
         '''
-        [@param storagdomain.name: string]
+        [@param storagedomain.name: string]
 
         @return StorageDomain:
         '''
@@ -3530,13 +3530,12 @@ class StorageDomains(Base):
         @type StorageDomain:
 
         Overload 1:
-          @param storagdomain.name: string
-          @param storagdomain.host.id|name: string
-          @param storagdomain.type: string
-          @param storagdomain.storage.type: string
-          @param storagdomain.format: boolean
-          @param storagdomain.storage.address: string
-          @param storagdomain.storage.logical_unit: collection
+          @param storagedomain.host.id|name: string
+          @param storagedomain.type: string
+          @param storagedomain.storage.type: string
+          @param storagedomain.format: boolean
+          @param storagedomain.storage.address: string
+          @param storagedomain.storage.logical_unit: collection
           {
             @ivar logical_unit.address: string
             @ivar logical_unit.port: int
@@ -3551,32 +3550,33 @@ class StorageDomains(Base):
             @ivar logical_unit.paths: int
             @ivar logical_unit.id: string
           }
-          [@param storagdomain.storage.override_luns: boolean]
+          [@param storagedomain.name: string]
+          [@param storagedomain.storage.override_luns: boolean]
         Overload 2:
-          @param storagdomain.name: string
-          @param storagdomain.host.id|name: string
-          @param storagdomain.type: string
-          @param storagdomain.storage.type: string
-          @param storagdomain.format: boolean
-          @param storagdomain.storage.address: string
-          @param storagdomain.storage.path: string
+          @param storagedomain.host.id|name: string
+          @param storagedomain.type: string
+          @param storagedomain.storage.type: string
+          @param storagedomain.format: boolean
+          @param storagedomain.storage.address: string
+          @param storagedomain.storage.path: string
+          [@param storagedomain.name: string]
         Overload 3:
-          @param storagdomain.name: string
-          @param storagdomain.host.id|name: string
-          @param storagdomain.type: string
-          @param storagdomain.storage.type: string
-          @param storagdomain.format: boolean
-          @param storagdomain.storage.path: string
+          @param storagedomain.host.id|name: string
+          @param storagedomain.type: string
+          @param storagedomain.storage.type: string
+          @param storagedomain.format: boolean
+          @param storagedomain.storage.path: string
+          [@param storagedomain.name: string]
         Overload 4:
-          @param storagdomain.name: string
-          @param storagdomain.host.id|name: string
-          @param storagdomain.type: string
-          @param storagdomain.storage.type: string
-          @param storagdomain.format: boolean
-          @param storagdomain.storage.path: string
+          @param storagedomain.host.id|name: string
+          @param storagedomain.type: string
+          @param storagedomain.storage.type: string
+          @param storagedomain.format: boolean
+          @param storagedomain.storage.path: string
           @param storagedomain.storage.vfs_type: string
-          [@param storagdomain.storage.address: string]
-          [@param storagdomain.storage.mount_options: string]
+          [@param storagedomain.name: string]
+          [@param storagedomain.storage.address: string]
+          [@param storagedomain.storage.mount_options: string]
 
         @return StorageDomain:
         '''
@@ -3587,10 +3587,10 @@ class StorageDomains(Base):
                                       body=ParseHelper.toXml(storagedomain))
         return StorageDomain(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name='name', **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
-        [@param name: string (the name of the entity)]
+        [@param **kwargs: dict (property based filtering)]
+        [@param name: string (string the name of the entity)]
 
         @return StorageDomains:
         '''
@@ -3605,13 +3605,14 @@ class StorageDomains(Base):
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=url).get_storage_domain()
-            if name != '*': kwargs['name']=name
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_storage_domain()
             return StorageDomain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: true|false]
         [@param max: max results]
 
         @return StorageDomains:
@@ -3619,7 +3620,7 @@ class StorageDomains(Base):
 
         url='/api/storagedomains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max})).get_storage_domain()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_storage_domain()
         return ParseHelper.toCollection(StorageDomain,
                                         FilterHelper.filter(result, kwargs))
 
