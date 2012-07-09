@@ -38,6 +38,21 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Mon Jul 9 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.4-1
+- fix typo in 'storage' based args documentation
+- make 'name' optional in storagedomains.add() to allow importing existent SD
+- make api.storagedomains collection searchable
+- Host object doesnt expose storage collection #838269
+- to DC.delete() method added [@param action.force: boolean]
+- api.networks no longer searchable collection
+- to create SD added [@param storagdomain.storage.override_luns: boolean]
+- VM.delete() no longer requires Action() parameter as mandatory
+- SDK should expose api root resource /api #830513
+- perform get() request on proxy construction to validate user credentials #827878
+- extract error body <h1>xxx</h1> from detail produced by application server #827881
+- do not show brackets in error.detail
+- fix api.capabilities get/list methods
+
 * Mon Jun 25 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.3-1
 - to all collection added optional /max/ param. which is signals engine
   to override default amount of returned objects with user defined value
