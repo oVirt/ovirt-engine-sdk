@@ -2,15 +2,8 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Sun Jul  8 13:29:28 2012 by generateDS.py version 2.7b.
+# Generated Tue Jul 10 10:46:07 2012 by generateDS.py version 2.7b.
 #
-## IMPORTANT!!!
-
-# This file was created by generateDS.  It has been modified
-# in a few places as denoted by the NOT_GENERATED comments
-
-#FIXME: fix xsd so no manual modifications will be needed
-
 
 import sys
 import getopt
@@ -173,32 +166,48 @@ except ImportError, exp:
             return class_obj1
         def gds_build_any(self, node, type_name=None):
             return None
-
-# Begin NOT_GENERATED
+        # Begin NOT_GENERATED
         def __setattr__(self, item, value):
-            if value is not None and not isinstance(value, list) and \
-               ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'], type(value)) and \
-               not ReflectionHelper.isModuleMember(sys.modules[__name__], type(value)) and \
-               value.__dict__.has_key('superclass') and value.superclass is not None and \
-               value.superclass != BaseResource:
-                if ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'], type(self)) and \
-                   self.__dict__.has_key('superclass') and self.superclass is not None:
+            if (value is not None and
+                not isinstance(value, list) and
+                ReflectionHelper.isModuleMember(
+                    sys.modules['ovirtsdk.infrastructure.brokers'],
+                    type(value)) and
+                not ReflectionHelper.isModuleMember(sys.modules[__name__],
+                    type(value)) and
+                value.__dict__.has_key('superclass') and
+                value.superclass is not None and
+                value.superclass != BaseResource):
+                if (ReflectionHelper.isModuleMember(
+                        sys.modules['ovirtsdk.infrastructure.brokers'],
+                        type(self)) and
+                   self.__dict__.has_key('superclass') and
+                   self.superclass is not None):
                     object.__setattr__(self.superclass, item, value.superclass)
                 else:
                     object.__setattr__(self, item, value.superclass)
-            elif not isinstance(value, list) and  \
-                 ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'], type(self)) and \
-                 self.__dict__.has_key('superclass') and self.superclass is not None and \
-                 not ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'], type(value)) and\
-                  item is not 'superclass' and \
-                  item is not 'parentclass' :
+            elif (not isinstance(value, list) and
+                 ReflectionHelper.isModuleMember(
+                         sys.modules['ovirtsdk.infrastructure.brokers'],
+                         type(self)) and
+                 self.__dict__.has_key('superclass') and
+                 self.superclass is not None and
+                 not ReflectionHelper.isModuleMember(
+                         sys.modules['ovirtsdk.infrastructure.brokers'],
+                         type(value)) and
+                 item is not 'superclass' and
+                 item is not 'parentclass'):
                 object.__setattr__(self.superclass, item, value)
             elif isinstance(value, list):
                 parsed_list = []
                 for obj in value:
-                    if ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'], type(obj)) and \
-                       obj.__dict__.has_key('superclass') and obj.superclass is not None and \
-                       item is not 'superclass' and item is not 'parentclass' :
+                    if (ReflectionHelper.isModuleMember(
+                            sys.modules['ovirtsdk.infrastructure.brokers'],
+                            type(obj)) and
+                       obj.__dict__.has_key('superclass') and
+                       obj.superclass is not None and
+                       item is not 'superclass' and
+                       item is not 'parentclass'):
                         parsed_list.append(obj.superclass)
                     else:
                         parsed_list.append(obj)
@@ -211,7 +220,8 @@ except ImportError, exp:
 
         def __ne__(self, other):
             return not self.__eq__(other)
-# End NOT_GENERATED 
+        # End NOT_GENERATED
+
 
 #
 # If you have installed IPython you can uncomment and use the following.
@@ -232,7 +242,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'UTF-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -19350,9 +19360,9 @@ def parseString(inString):
     # Begin NOT_GENERATED
     # Let's shut up the echoing of the received XML
     # to stdout.
-#    sys.stdout.write('<?xml version="1.0" ?>\n')
-#    rootObj.export(sys.stdout, 0, name_="link",
-#        namespacedef_='')
+    #sys.stdout.write('<?xml version="1.0" ?>\n')
+    #rootObj.export(sys.stdout, 0, name_="link",
+    #    namespacedef_='')
     # End NOT_GENERATED
     return rootObj
 
@@ -19562,43 +19572,45 @@ __all__ = [
     "VolumeGroup"
     ]
 
-
 # Begin NOT_GENERATED
+
 _rootClassMap = {
-                    "action"                        : Action,
-                    "actions"                       : Actions,
                     "access_control_list"           : AccessControlList,
                     "access_protocols"              : AccessProtocols,
+                    "action"                        : Action,
+                    "actions"                       : Actions,
                     "api"                           : API,
                     "body"                          : Body,
                     "bonding"                       : Bonding,
                     "boot"                          : Boot,
                     "boot_devices"                  : BootDevices,
                     "boot_protocols"                : BootProtocols,
+                    "brick"                         : GlusterBrick,
+                    "brick_states"                  : GlusterStates,
+                    "bricks"                        : GlusterBricks,
                     "capabilities"                  : Capabilities,
                     "cdrom"                         : CdRom,
                     "cdroms"                        : CdRoms,
+                    "certificate"                   : Certificate,
                     "cluster"                       : Cluster,
                     "clusters"                      : Clusters,
                     "cpu"                           : CPU,
-                    "cpus"                          : CPUs,
-                    "certificate"                   : Certificate,
                     "cpu_tune"                      : CpuTune,
+                    "cpus"                          : CPUs,
                     "creation"                      : Creation,
                     "creation_states"               : CreationStates,
                     "creation_status"               : Status,
                     "custom_properties"             : CustomProperties,
                     "custom_property"               : CustomProperty,
                     "data_center"                   : DataCenter,
-                    "data_centers"                  : DataCenters,
                     "data_center_states"            : DataCenterStates,
-                    "detailedLink"                  : DetailedLink,
+                    "data_centers"                  : DataCenters,
                     "detailedLinks"                 : DetailedLinks,
                     "disk"                          : Disk,
-                    "disks"                         : Disks,
                     "disk_formats"                  : DiskFormats,
                     "disk_interfaces"               : DiskInterfaces,
                     "disk_states"                   : DiskStates,
+                    "disks"                         : Disks,
                     "display"                       : Display,
                     "display_types"                 : DisplayTypes,
                     "domain"                        : Domain,
@@ -19613,58 +19625,65 @@ _rootClassMap = {
                     "files"                         : Files,
                     "floppies"                      : Floppies,
                     "floppy"                        : Floppy,
+                    "gluster_volume"                : GlusterVolume,
+                    "gluster_volume_states"         : GlusterStates,
+                    "gluster_volume_types"          : GlusterVolumeTypes,
+                    "gluster_volumes"               : GlusterVolumes,
+                    "grace_period"                  : GracePeriod,
                     "group"                         : Group,
                     "groups"                        : Groups,
                     "guest_info"                    : GuestInfo,
-                    "grace_period"                  : GracePeriod,
-                    "brick"                         : GlusterBrick,
-                    "bricks"                        : GlusterBricks,
-                    "gluster_volume_states"         : GlusterStates,
-                    "gluster_volume"                : GlusterVolume,
-                    "gluster_volume_types"          : GlusterVolumeTypes,
-                    "gluster_volumes"               : GlusterVolumes,
-                    "high_availability"             : HighAvailability,
                     "header"                        : Header,
                     "headers"                       : Headers,
+                    "high_availability"             : HighAvailability,
                     "host"                          : Host,
-                    "hosts"                         : Hosts,
                     "host_nic"                      : HostNIC,
-                    "host_nics"                     : HostNics,
                     "host_nic_states"               : HostNICStates,
+                    "host_nics"                     : HostNics,
                     "host_non_operational_details"  : HostNonOperationalDetails,
                     "host_states"                   : HostStates,
                     "host_storage"                  : HostStorage,
+                    "hosts"                         : Hosts,
                     "ip"                            : IP,
                     "ips"                           : IPs,
                     "iscsi"                         : IscsiDetails,
                     "keyValuePair"                  : KeyValuePair,
                     "ksm"                           : KSM,
-                    "linkCapabilities"              : LinkCapabilities,
                     "link"                          : Link,
+                    "linkCapabilities"              : LinkCapabilities,
+                    "links"                         : DetailedLinks,
                     "logical_unit"                  : LogicalUnit,
+                    "lunStorage"                    : Storage,
                     "mac"                           : MAC,
-                    "overcommit"                    : MemoryOverCommit,
                     "memory_policy"                 : MemoryPolicy,
                     "network"                       : Network,
-                    "networks"                      : Networks,
                     "network_states"                : NetworkStates,
-                    "nic_interfaces"                : NicInterfaces,
+                    "networks"                      : Networks,
                     "nic"                           : NIC,
+                    "nic_interfaces"                : NicInterfaces,
                     "nics"                          : Nics,
-                    "os"                            : OperatingSystem,
                     "option"                        : Option,
                     "options"                       : Options,
+                    "os"                            : OperatingSystem,
                     "os_types"                      : OsTypes,
+                    "overcommit"                    : MemoryOverCommit,
                     "parameter"                     : Parameter,
                     "parameters_set"                : ParametersSet,
+                    "parent"                        : TagParent,
+                    "payload"                       : Payload,
+                    "payload_file"                  : PayloadFile,
+                    "payloads"                      : Payloads,
                     "permission"                    : Permission,
                     "permissions"                   : Permissions,
                     "permit"                        : Permit,
                     "permits"                       : Permits,
+                    "placement_policy"              : VmPlacementPolicy,
                     "port_mirroring"                : PortMirroring,
                     "power_management"              : PowerManagement,
                     "power_management_states"       : PowerManagementStates,
                     "power_managers"                : PowerManagers,
+                    "preview_vm"                    : VM,
+                    "preview_vms"                   : PreviewVMs,
                     "product_info"                  : ProductInfo,
                     "quota"                         : Quota,
                     "quotas"                        : Quotas,
@@ -19675,65 +19694,57 @@ _rootClassMap = {
                     "rsdl"                          : RSDL,
                     "scheduling_policies"           : SchedulingPolicies,
                     "scheduling_policy"             : SchedulingPolicy,
-                    "thresholds"                    : SchedulingPolicyThresholds,
                     "schema"                        : Schema,
                     "slaves"                        : Slaves,
                     "snapshot"                      : Snapshot,
                     "snapshots"                     : Snapshots,
                     "special_objects"               : SpecialObjects,
-                    "statistics"                    : Statistics,
                     "statistic"                     : Statistic,
+                    "statistics"                    : Statistics,
                     "status"                        : Status,
                     "storage"                       : Storage,
                     "storage_domain"                : StorageDomain,
-                    "storage_domains"               : StorageDomains,
                     "storage_domain_states"         : StorageDomainStates,
                     "storage_domain_types"          : StorageDomainTypes,
+                    "storage_domains"               : StorageDomains,
                     "storage_formats"               : StorageFormats,
                     "storage_manager"               : StorageManager,
-                    "storage"                       : Storage,
                     "storage_types"                 : StorageTypes,
-                    "supported_versions"            : SupportedVersions,
-                    "product_info"                  : ProductInfo,
                     "summary"                       : ApiSummary,
-                    "tags"                          : Tags,
+                    "supported_versions"            : SupportedVersions,
+                    "system_version"                : Version,
                     "tag"                           : Tag,
-                    "template_states"               : TemplateStates,
-                    "ticket"                        : Ticket,
-                    "templates"                     : Templates,
+                    "tags"                          : Tags,
                     "template"                      : Template,
+                    "template_states"               : TemplateStates,
+                    "templates"                     : Templates,
+                    "thresholds"                    : SchedulingPolicyThresholds,
+                    "ticket"                        : Ticket,
+                    "topology"                      : CpuTopology,
                     "transparent_hugepages"         : TransparentHugePages,
                     "transport_types"               : TransportTypes,
-                    "topology"                      : CpuTopology,
                     "url"                           : Url,
+                    "usages"                        : Usages,
                     "usb"                           : Usb,
-                    "users"                         : Users,
-                    "vcpu_pin"                      : VCpuPin,
                     "user"                          : User,
-                    "values"                        : Values,
+                    "users"                         : Users,
                     "value"                         : Value,
+                    "values"                        : Values,
+                    "vcpu_pin"                      : VCpuPin,
                     "version"                       : VersionCaps,
                     "vlan"                          : VLAN,
-                    "vm_affinities"                 : VmAffinities,
-                    "vm_pause_details"              : VmPauseDetails,
-                    "placement_policy"              : VmPlacementPolicy,
-                    "vmpools"                       : VmPools,
-                    "vmpool"                        : VmPool,
-                    "vm_states"                     : VmStates,
-                    "summary"                       : VmSummary,
-                    "vms"                           : VMs,
                     "vm"                            : VM,
+                    "vm_affinities"                 : VmAffinities,
+                    "vm_device_types"               : VmDeviceTypes,
+                    "vm_pause_details"              : VmPauseDetails,
+                    "vm_states"                     : VmStates,
                     "vm_types"                      : VmTypes,
-                    "vm_pause_detail"               : VmPauseDetails,
+                    "vmpool"                        : VmPool,
+                    "vmpools"                       : VmPools,
+                    "vms"                           : VMs,
                     "volume_group"                  : VolumeGroup,
-                    "payload"                       : Payload,
-                    "payload_file"                  : PayloadFile,
-                    "payloads"                      : Payloads,
-                    "parent"                        : TagParent,
-                    "preview_vms"                   : PreviewVMs,
-                    "usages"                        : Usages,
-                    "vm_device_types"               : VmDeviceTypes
                 }
+
 
 def findRootClass(rootTag):
     """
@@ -19744,4 +19755,5 @@ def findRootClass(rootTag):
     tag in the XML (i.e. the root) to an internal class.
     """
     return _rootClassMap.get(rootTag)
+
 # End NOT_GENERATED

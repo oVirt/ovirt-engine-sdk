@@ -93,7 +93,7 @@ def __ne__(self, other):
 addfunctionlist = {
         "GeneratedsSuper": _generatedsSuperAttribute}
 
-_findRootClass="""
+_findRootClass = """
 def findRootClass(rootTag):
     \"\"\"
     Helper function that enables the generated code to locate the
@@ -108,7 +108,7 @@ def findRootClass(rootTag):
 # function list which will be added to the params.py
 globalfunctionlist = [_findRootClass]
 
-_getRootTag=r"""
+_getRootTag = r"""
 def get_root_tag(node):
     tag = Tag_pattern_.match(node.tag).groups()[-1]
     #rootClass = globals().get(tag)
@@ -122,7 +122,7 @@ def get_root_tag(node):
     return tag, rootClass
 """
 #there is a '\n' in this docstring, so should use raw string
-_parseString=r"""
+_parseString = r"""
 def parseString(inString):
     from StringIO import StringIO
     doc = parsexml_(StringIO(inString))
@@ -163,10 +163,6 @@ excludeInRootClassMap = [
     "BaseDevices",
     "BaseResource",
     "BaseResources",
-    "CpuTopology",
     "ErrorHandlingOptions",
-    "GracePeriod",
-    "TagParent",
-    "VersionCaps",
     "DetailedLink"
     ]
