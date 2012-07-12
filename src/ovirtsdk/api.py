@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-07-04 11:00:19.006841
+Generated at: 2012-07-12 11:43:32.953962
 
 @author: mpastern@redhat.com
 '''
@@ -81,11 +81,14 @@ class API():
         # Create the proxy:
         proxy = Proxy(pool, persistent_auth)
 
-        # Add the proxy to the context:
+        # Store proxy to the context:
         contextmanager.add('proxy', proxy, Mode.R)
 
-        # Verify credentials
-        self.test(throw_exception=True)
+        # Store entry point to the context
+        contextmanager.add('entry_point',
+                           proxy.request(method='GET',
+                                         url='/api'),
+                           Mode.R)
 
         self.capabilities = Capabilities()
         self.clusters = Clusters()
@@ -133,18 +136,26 @@ class API():
             return True
         return False
 
-    def get_product_info(self):
-        proxy = contextmanager.get('proxy')
-        return proxy.request(method='GET', url='/api').product_info
 
     def get_special_objects(self):
-        proxy = contextmanager.get('proxy')
-        return proxy.request(method='GET', url='/api').special_objects
+        entry_point = contextmanager.get('entry_point')
+        if entry_point:
+            return entry_point.special_objects
+        return None
+
 
     def get_summary(self):
         proxy = contextmanager.get('proxy')
         return proxy.request(method='GET', url='/api').summary
 
+
     def get_time(self):
         proxy = contextmanager.get('proxy')
         return proxy.request(method='GET', url='/api').time
+
+
+    def get_product_info(self):
+        entry_point = contextmanager.get('entry_point')
+        if entry_point:
+            return entry_point.product_info
+        return None

@@ -54,11 +54,28 @@ KNOWN_WRAPPER_TYPES = {}
 DEBUG = False
 
 class CodeGen():
-    def gen(self):
+
+    def __init__(self):
+        self.conn = Connection(url=SERVER,
+                               port=None,
+                               key_file=None,
+                               cert_file=None,
+                               strict=False,
+                               timeout=None,
+                               username=USER,
+                               password=PASSWORD,
+                               manager=None,
+                               debug=False)
+
+
+    def generate_code(self):
+        """Generates decorators"""
+
         API(url=SERVER, username=USER, password=PASSWORD)
 
         collectionsHolder = {}
         usedRels = []
+
         for link in contextmanager.get('proxy').request('GET', '/api?rsdl').links.link:
 
             response_type = None
@@ -402,27 +419,30 @@ class CodeGen():
         if (dlen > 4 and (dlen % 2 is 0)):#and rel is not in ['get']):
             if(DEBUG): print 'WARNING: found deep dependency (' + str(dlen) + '): ' + 'rel: ' + rel + ', url: ' + url + ', method: ' + http_method + ', for url: ' + url
 
+
+    def __do_request(self, method, url, body=None, headers={}):
+        self.conn.doRequest(method=method, url=url, body=body, headers=headers)
+        response = self.conn.getResponse()
+        if response.status >= 400:
+            raise RequestError, response
+        return response.read()
+
+    def generate_python_bindings(self):
+        schema = self.__do_request(method='GET', url='/api?schema')
+        with open(SCHEMA_FILE, 'w') as f:
+            f.write('%s' % schema)
+        paramsHandle(SCHEMA_FILE, XML_PARAMS_FILE, XML_PARAMS_TMP_FILE)
+
 if __name__ == "__main__":
-    schemaConn = Connection(url=SERVER,
-                            port=None,
-                            key_file=None,
-                            cert_file=None,
-                            strict=False,
-                            timeout=None,
-                            username=USER,
-                            password=PASSWORD,
-                            manager=None,
-                            debug=False)
-    schemaConn.doRequest(method='GET', url='/api?schema', body=None, headers={})
-    response = schemaConn.getResponse()
-    if response.status >= 400:
-        raise RequestError, response
-    with open(SCHEMA_FILE, 'w') as f:
-        f.write('%s' % response.read())
-    paramsHandle(SCHEMA_FILE, XML_PARAMS_FILE, XML_PARAMS_TMP_FILE)
 
+    # CodeGen instance
+    codegen = CodeGen()
+
+    # generate python2xml bindings
+    codegen.generate_python_bindings()
+
+    #import modules required for generate_code()
     from ovirtsdk.xml import params
-
     from ovirtsdk.infrastructure import contextmanager
     from ovirtsdk.utils.parsehelper import ParseHelper
     from codegen.collection.collection import Collection
@@ -430,6 +450,8 @@ if __name__ == "__main__":
     from codegen.subcollection.subcollection import SubCollection
     from ovirtsdk.api import API
 
+    # cache known python2xml bindings types
     KNOWN_WRAPPER_TYPES = ReflectionHelper.getClassNames(params)
 
-    CodeGen().gen()
+    # generate decorators
+    codegen.generate_code()

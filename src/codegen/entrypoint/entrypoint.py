@@ -51,9 +51,23 @@ class EntryPoint(object):
 
 
     @staticmethod
-    def instanceMethods():
+    def instanceMethods(exclude=['actions', 'href', 'link', 'extensiontype_', 'creation_status', 'id', 'name', 'description'],
+                        static_methods=['special_objects', 'product_info']):
 
-#FIXME: Implement get_X() methods for /api attributes programmatically
+        static_methods_template = "\n" + \
+"""
+    def get_%(attr)s(self):
+        entry_point = contextmanager.get('entry_point')
+        if entry_point:
+            return entry_point.%(attr)s
+        return None
+"""
+        dinamic_methods_template = "\n" + \
+"""
+    def get_%(attr)s(self):
+        proxy = contextmanager.get('proxy')
+        return proxy.request(method='GET', url='/api').%(attr)s
+"""
 
         methods_template = "\n" + \
 """
@@ -84,23 +98,17 @@ class EntryPoint(object):
                 else: return False
             return True
         return False
-
-    def get_product_info(self):
-        proxy = contextmanager.get('proxy')
-        return proxy.request(method='GET', url='/api').product_info
-
-    def get_special_objects(self):
-        proxy = contextmanager.get('proxy')
-        return proxy.request(method='GET', url='/api').special_objects
-
-    def get_summary(self):
-        proxy = contextmanager.get('proxy')
-        return proxy.request(method='GET', url='/api').summary
-
-    def get_time(self):
-        proxy = contextmanager.get('proxy')
-        return proxy.request(method='GET', url='/api').time
 """
+        from ovirtsdk.infrastructure import contextmanager
+        entry_point_resource = contextmanager.get('proxy').request('GET', '/api')
+        for attr in entry_point_resource.__dict__.keys():
+            if attr not in exclude:
+                if attr in static_methods:
+                    methods_template += \
+                        static_methods_template % {'attr':attr}
+                else:
+                    methods_template += \
+                        dinamic_methods_template % {'attr':attr}
 
         return methods_template
 
@@ -152,11 +160,14 @@ class EntryPoint(object):
         # Create the proxy:
         proxy = Proxy(pool, persistent_auth)
 
-        # Add the proxy to the context:
+        # Store proxy to the context:
         contextmanager.add('proxy', proxy, Mode.R)
 
-        # Verify credentials
-        self.test(throw_exception=True)
+        # Store entry point to the context
+        contextmanager.add('entry_point',
+                           proxy.request(method='GET',
+                                         url='/api'),
+                           Mode.R)
 
 """
 
