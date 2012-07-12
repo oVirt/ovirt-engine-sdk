@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-07-12 11:43:32.953962
+Generated at: 2012-07-12 12:04:39.927723
 
 @author: mpastern@redhat.com
 '''
@@ -62,9 +62,6 @@ class API():
         [@param debug: debug (format True|False)]
         """
 
-        # We need to remember if persistent auth is enabled:
-        self._persistent_auth = persistent_auth
-
         # Create the connection pool:
         pool = ConnectionsPool(
             url=url,
@@ -90,6 +87,11 @@ class API():
                                          url='/api'),
                            Mode.R)
 
+        # We need to remember if persistent auth is enabled:
+        contextmanager.add('persistent_auth',
+                           persistent_auth,
+                           Mode.R)
+
         self.capabilities = Capabilities()
         self.clusters = Clusters()
         self.datacenters = DataCenters()
@@ -111,14 +113,15 @@ class API():
     def disconnect(self):
         ''' terminates server connection/s '''
         proxy = contextmanager.get('proxy')
+        persistent_auth = contextmanager.get('persistent_auth')
 
         # If persistent authentication is enabled then we need to
         # send a last request as a hint to the server to close the
-        # session:
-        if proxy and self._persistent_auth:
+        # session:        
+        if proxy and persistent_auth:
             try:
                 proxy.request(method='GET', url='/api', last=True)
-            except Exception, e:
+            except Exception:
                 pass
 
         # Remove the proxy:

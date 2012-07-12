@@ -74,14 +74,15 @@ class EntryPoint(object):
     def disconnect(self):
         ''' terminates server connection/s '''
         proxy = contextmanager.get('proxy')
+        persistent_auth = contextmanager.get('persistent_auth')
 
         # If persistent authentication is enabled then we need to
         # send a last request as a hint to the server to close the
-        # session:
-        if proxy and self._persistent_auth:
+        # session:        
+        if proxy and persistent_auth:
             try:
                 proxy.request(method='GET', url='/api', last=True)
-            except Exception, e:
+            except Exception:
                 pass
 
         # Remove the proxy:
@@ -141,9 +142,6 @@ class EntryPoint(object):
         [@param debug: debug (format True|False)]
         \"""
 
-        # We need to remember if persistent auth is enabled:
-        self._persistent_auth = persistent_auth
-
         # Create the connection pool:
         pool = ConnectionsPool(
             url=url,
@@ -167,6 +165,11 @@ class EntryPoint(object):
         contextmanager.add('entry_point',
                            proxy.request(method='GET',
                                          url='/api'),
+                           Mode.R)
+
+        # We need to remember if persistent auth is enabled:
+        contextmanager.add('persistent_auth',
+                           persistent_auth,
                            Mode.R)
 
 """
