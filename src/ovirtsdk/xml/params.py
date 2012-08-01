@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Tue Jul 10 10:46:07 2012 by generateDS.py version 2.7b.
+# Generated Thu Aug  2 10:06:16 2012 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -7640,11 +7640,12 @@ class Domains(BaseResources):
 class Event(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, code=None, severity=None, time=None, user=None, vm=None, storage_domain=None, host=None, template=None, cluster=None, data_center=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, code=None, severity=None, time=None, correlation_id=None, user=None, vm=None, storage_domain=None, host=None, template=None, cluster=None, data_center=None):
         super(Event, self).__init__(href, id, name, description, actions, creation_status, link, )
         self.code = code
         self.severity = severity
         self.time = time
+        self.correlation_id = correlation_id
         self.user = user
         self.vm = vm
         self.storage_domain = storage_domain
@@ -7664,6 +7665,8 @@ class Event(BaseResource):
     def set_severity(self, severity): self.severity = severity
     def get_time(self): return self.time
     def set_time(self, time): self.time = time
+    def get_correlation_id(self): return self.correlation_id
+    def set_correlation_id(self, correlation_id): self.correlation_id = correlation_id
     def get_user(self): return self.user
     def set_user(self, user): self.user = user
     def get_vm(self): return self.vm
@@ -7703,6 +7706,9 @@ class Event(BaseResource):
         if self.time is not None:
             showIndent(outfile, level)
             outfile.write('<%stime>%s</%stime>\n' % (namespace_, self.gds_format_string(quote_xml(self.time).encode(ExternalEncoding), input_name='time'), namespace_))
+        if self.correlation_id is not None:
+            showIndent(outfile, level)
+            outfile.write('<%scorrelation_id>%s</%scorrelation_id>\n' % (namespace_, self.gds_format_string(quote_xml(self.correlation_id).encode(ExternalEncoding), input_name='correlation_id'), namespace_))
         if self.user is not None:
             self.user.export(outfile, level, namespace_, name_='user')
         if self.vm is not None:
@@ -7722,6 +7728,7 @@ class Event(BaseResource):
             self.code is not None or
             self.severity is not None or
             self.time is not None or
+            self.correlation_id is not None or
             self.user is not None or
             self.vm is not None or
             self.storage_domain is not None or
@@ -7752,6 +7759,9 @@ class Event(BaseResource):
         if self.time is not None:
             showIndent(outfile, level)
             outfile.write('time=%s,\n' % quote_python(self.time).encode(ExternalEncoding))
+        if self.correlation_id is not None:
+            showIndent(outfile, level)
+            outfile.write('correlation_id=%s,\n' % quote_python(self.correlation_id).encode(ExternalEncoding))
         if self.user is not None:
             showIndent(outfile, level)
             outfile.write('user=model_.user(\n')
@@ -7818,6 +7828,10 @@ class Event(BaseResource):
             time_ = child_.text
             time_ = self.gds_validate_string(time_, node, 'time')
             self.time = time_
+        elif nodeName_ == 'correlation_id':
+            correlation_id_ = child_.text
+            correlation_id_ = self.gds_validate_string(correlation_id_, node, 'correlation_id')
+            self.correlation_id = correlation_id_
         elif nodeName_ == 'user':
             obj_ = User.factory()
             obj_.build(child_)
@@ -13047,7 +13061,7 @@ class Floppies(BaseDevices):
 class Disk(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, vm=None, template=None, image_id=None, storage_domains=None, size=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, allow_snapshot=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, quota=None, lunStorage=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, vm=None, template=None, image_id=None, storage_domains=None, size=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, quota=None, lunStorage=None):
         super(Disk, self).__init__(href, id, name, description, actions, creation_status, link, vm, template, )
         self.image_id = image_id
         self.storage_domains = storage_domains
@@ -13060,7 +13074,6 @@ class Disk(BaseDevice):
         self.sparse = sparse
         self.bootable = bootable
         self.shareable = shareable
-        self.allow_snapshot = allow_snapshot
         self.wipe_after_delete = wipe_after_delete
         self.propagate_errors = propagate_errors
         self.statistics = statistics
@@ -13095,8 +13108,6 @@ class Disk(BaseDevice):
     def set_bootable(self, bootable): self.bootable = bootable
     def get_shareable(self): return self.shareable
     def set_shareable(self, shareable): self.shareable = shareable
-    def get_allow_snapshot(self): return self.allow_snapshot
-    def set_allow_snapshot(self, allow_snapshot): self.allow_snapshot = allow_snapshot
     def get_wipe_after_delete(self): return self.wipe_after_delete
     def set_wipe_after_delete(self, wipe_after_delete): self.wipe_after_delete = wipe_after_delete
     def get_propagate_errors(self): return self.propagate_errors
@@ -13156,9 +13167,6 @@ class Disk(BaseDevice):
         if self.shareable is not None:
             showIndent(outfile, level)
             outfile.write('<%sshareable>%s</%sshareable>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.shareable)), input_name='shareable'), namespace_))
-        if self.allow_snapshot is not None:
-            showIndent(outfile, level)
-            outfile.write('<%sallow_snapshot>%s</%sallow_snapshot>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.allow_snapshot)), input_name='allow_snapshot'), namespace_))
         if self.wipe_after_delete is not None:
             showIndent(outfile, level)
             outfile.write('<%swipe_after_delete>%s</%swipe_after_delete>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.wipe_after_delete)), input_name='wipe_after_delete'), namespace_))
@@ -13187,7 +13195,6 @@ class Disk(BaseDevice):
             self.sparse is not None or
             self.bootable is not None or
             self.shareable is not None or
-            self.allow_snapshot is not None or
             self.wipe_after_delete is not None or
             self.propagate_errors is not None or
             self.statistics is not None or
@@ -13247,9 +13254,6 @@ class Disk(BaseDevice):
         if self.shareable is not None:
             showIndent(outfile, level)
             outfile.write('shareable=%s,\n' % self.shareable)
-        if self.allow_snapshot is not None:
-            showIndent(outfile, level)
-            outfile.write('allow_snapshot=%s,\n' % self.allow_snapshot)
         if self.wipe_after_delete is not None:
             showIndent(outfile, level)
             outfile.write('wipe_after_delete=%s,\n' % self.wipe_after_delete)
@@ -13359,16 +13363,6 @@ class Disk(BaseDevice):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'shareable')
             self.shareable = ival_
-        elif nodeName_ == 'allow_snapshot':
-            sval_ = child_.text
-            if sval_ in ('true', '1'):
-                ival_ = True
-            elif sval_ in ('false', '0'):
-                ival_ = False
-            else:
-                raise_parse_error(child_, 'requires boolean')
-            ival_ = self.gds_validate_boolean(ival_, node, 'allow_snapshot')
-            self.allow_snapshot = ival_
         elif nodeName_ == 'wipe_after_delete':
             sval_ = child_.text
             if sval_ in ('true', '1'):
@@ -15834,10 +15828,10 @@ class Parameter(BaseResource):
 class Header(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, value=None, mandatory=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, required=None, value=None):
         super(Header, self).__init__(href, id, name, description, actions, creation_status, link, )
+        self.required = _cast(bool, required)
         self.value = value
-        self.mandatory = mandatory
     def factory(*args_, **kwargs_):
         if Header.subclass:
             return Header.subclass(*args_, **kwargs_)
@@ -15846,8 +15840,8 @@ class Header(BaseResource):
     factory = staticmethod(factory)
     def get_value(self): return self.value
     def set_value(self, value): self.value = value
-    def get_mandatory(self): return self.mandatory
-    def set_mandatory(self, mandatory): self.mandatory = mandatory
+    def get_required(self): return self.required
+    def set_required(self, required): self.required = required
     def export(self, outfile, level, namespace_='', name_='Header', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -15862,18 +15856,17 @@ class Header(BaseResource):
             outfile.write('/>\n')
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Header'):
         super(Header, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Header')
+        if self.required is not None and 'required' not in already_processed:
+            already_processed.append('required')
+            outfile.write(' required="%s"' % self.gds_format_boolean(self.gds_str_lower(str(self.required)), input_name='required'))
     def exportChildren(self, outfile, level, namespace_='', name_='Header', fromsubclass_=False):
         super(Header, self).exportChildren(outfile, level, namespace_, name_, True)
         if self.value is not None:
             showIndent(outfile, level)
             outfile.write('<%svalue>%s</%svalue>\n' % (namespace_, self.gds_format_string(quote_xml(self.value).encode(ExternalEncoding), input_name='value'), namespace_))
-        if self.mandatory is not None:
-            showIndent(outfile, level)
-            outfile.write('<%smandatory>%s</%smandatory>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.mandatory)), input_name='mandatory'), namespace_))
     def hasContent_(self):
         if (
             self.value is not None or
-            self.mandatory is not None or
             super(Header, self).hasContent_()
             ):
             return True
@@ -15885,37 +15878,37 @@ class Header(BaseResource):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        if self.required is not None and 'required' not in already_processed:
+            already_processed.append('required')
+            showIndent(outfile, level)
+            outfile.write('required = %s,\n' % (self.required,))
         super(Header, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
         super(Header, self).exportLiteralChildren(outfile, level, name_)
         if self.value is not None:
             showIndent(outfile, level)
             outfile.write('value=%s,\n' % quote_python(self.value).encode(ExternalEncoding))
-        if self.mandatory is not None:
-            showIndent(outfile, level)
-            outfile.write('mandatory=%s,\n' % self.mandatory)
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('required', node)
+        if value is not None and 'required' not in already_processed:
+            already_processed.append('required')
+            if value in ('true', '1'):
+                self.required = True
+            elif value in ('false', '0'):
+                self.required = False
+            else:
+                raise_parse_error(node, 'Bad boolean attribute')
         super(Header, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'value':
             value_ = child_.text
             value_ = self.gds_validate_string(value_, node, 'value')
             self.value = value_
-        elif nodeName_ == 'mandatory':
-            sval_ = child_.text
-            if sval_ in ('true', '1'):
-                ival_ = True
-            elif sval_ in ('false', '0'):
-                ival_ = False
-            else:
-                raise_parse_error(child_, 'requires boolean')
-            ival_ = self.gds_validate_boolean(ival_, node, 'mandatory')
-            self.mandatory = ival_
         super(Header, self).buildChildren(child_, node, nodeName_, True)
 # end class Header
 

@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-07-09 13:57:11.211797
+Generated at: 2012-08-01 14:26:01.255053
 
 @author: mpastern@redhat.com
 '''
@@ -1162,7 +1162,6 @@ class Disk(params.Disk, Base):
         [@param disk.sparse: boolean]
         [@param disk.bootable: boolean]
         [@param disk.shareable: boolean]
-        [@param disk.allow_snapshot: boolean]
         [@param disk.propagate_errors: boolean]
         [@param disk.wipe_after_delete: boolean]
 
@@ -1261,7 +1260,6 @@ class Disks(Base):
         [@param disk.sparse: boolean]
         [@param disk.bootable: boolean]
         [@param disk.shareable: boolean]
-        [@param disk.allow_snapshot: boolean]
         [@param disk.propagate_errors: boolean]
         [@param disk.wipe_after_delete: boolean]
         [@param disk.storage_domains.storage_domain: collection]
@@ -2872,6 +2870,7 @@ class Network(params.Network, Base):
 
     def update(self):
         '''
+        [@param network.name: string]
         [@param network.description: string]
         [@param network.vlan.id: string]
         [@param network.ip.address: string]
@@ -3788,7 +3787,10 @@ class Template(params.Template, Base):
           [@ivar custom_property.value: string]
         }
         [@param template.os.type: string]
-        [@param template.os.boot.dev: string]
+        [@param template.os.boot: collection]
+        {
+          [@ivar boot.dev: string]
+        }
         [@param template.cpu.topology.sockets: int]
         [@param template.os.kernel: string]
         [@param template.display.type: string]
@@ -4129,7 +4131,10 @@ class Templates(Base):
           [@ivar custom_property.value: string]
         }
         [@param template.os.type: string]
-        [@param template.os.boot.dev: string]
+        [@param template.os.boot: collection]
+        {
+          [@ivar boot.dev: string]
+        }
         [@param template.cpu.topology.sockets: int]
         [@param template.os.kernel: string]
         [@param template.display.type: string]
@@ -4732,7 +4737,10 @@ class VM(params.VM, Base):
         [@param action.vm.os.cmdline: string]
         [@param action.vm.domain.user.username: string]
         [@param action.pause: boolean]
-        [@param action.vm.os.boot.dev: string]
+        [@param action.vm.os.boot: collection]
+        {
+          [@ivar boot.dev: string]
+        }
         [@param action.vm.domain.user.password: string]
 
         @return Response:
@@ -4882,7 +4890,10 @@ class VM(params.VM, Base):
         [@param vm.name: string]
         [@param vm.cluster.id|name: string]
         [@param vm.timezone: string]
-        [@param vm.os.boot.dev: string]
+        [@param vm.os.boot: collection]
+        {
+          [@ivar boot.dev: string]
+        }
         [@param vm.custom_properties.custom_property: collection]
         {
           [@ivar custom_property.name: string]
@@ -5109,7 +5120,6 @@ class VMDisk(params.Disk, Base):
         [@param disk.sparse: boolean]
         [@param disk.bootable: boolean]
         [@param disk.shareable: boolean]
-        [@param disk.allow_snapshot: boolean]
         [@param disk.propagate_errors: boolean]
         [@param disk.wipe_after_delete: boolean]
 
@@ -5203,7 +5213,6 @@ class VMDisks(Base):
           [@param disk.sparse: boolean]
           [@param disk.bootable: boolean]
           [@param disk.shareable: boolean]
-          [@param disk.allow_snapshot: boolean]
           [@param disk.propagate_errors: boolean]
           [@param disk.wipe_after_delete: boolean]
           [@param disk.storage_domains.storage_domain: collection]
@@ -6037,7 +6046,10 @@ class VMs(Base):
         @param vm.cluster.id|name: string
         [@param vm.quota.id: string]
         [@param vm.timezone: string]
-        [@param vm.os.boot.dev: string]
+        [@param vm.os.boot: collection]
+        {
+          [@ivar boot.dev: string]
+        }
         [@param vm.custom_properties.custom_property: collection]
         {
           [@ivar custom_property.name: string]
