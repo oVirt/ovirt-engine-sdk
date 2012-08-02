@@ -20,6 +20,7 @@ from codegen.utils.typeutil import TypeUtil
 from codegen.doc.documentation import Documentation
 from codegen.utils.paramutils import ParamUtils
 from codegen.utils.urlutils import UrlUtils
+from codegen.utils.headerutils import HeaderUtils
 
 #============================================================
 #======================SUB COLLECTION========================
@@ -56,9 +57,13 @@ class SubCollection(object):
                                               'actual_resource_name_lc':actual_resource_name_lc,
                                               'encapsulating_resource':actual_encapsulating_resource if actual_encapsulating_resource is not None
                                                                                                      else encapsulating_resource}
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        headers_method_params_str = headers_method_params_str + ', ' \
+                                    if headers_method_params_str != '' \
+                                    else headers_method_params_str
 
         sub_collection_get_template = \
-        ("    def get(self, name=None, **kwargs):\n\n" + \
+        ("    def get(self, name=None, " + headers_method_params_str + "**kwargs):\n\n" + \
          Documentation.document(link, {'name: string (the name of the entity)':False,
                                        '**kwargs: dict (property based filtering)': False}) +
         "        url = '%(url)s'\n\n" + \
@@ -70,7 +75,8 @@ class SubCollection(object):
                                                        "                                                                                          ",
                                                        continues=True, is_collection=True) + \
         "),\n" +
-        "                                                                   kwargs['id']))\n" +
+        "                                                                   kwargs['id']),\n"
+        "                                              headers=" + headers_map_params_str + ")\n" +
         "                return %(encapsulating_resource)s(self.parentclass, result)\n" +
         "            except RequestError, err:\n" + \
         "                if err.status and err.status == 404:\n" + \
@@ -82,13 +88,17 @@ class SubCollection(object):
         UrlUtils.generate_url_identifiers_replacments(link,
                                                        "                                                                     ",
                                                        continues=True, is_collection=True) + \
-        ")).get_%(actual_resource_name_lc)s()\n\n" + \
+        "),\n"
+        "                                          headers=" + headers_map_params_str + ").get_%(actual_resource_name_lc)s()\n\n" + \
         "            return %(encapsulating_resource)s(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % sub_collection_get_template_values
 
         return sub_collection_get_template
 
     @staticmethod
-    def list(url, link, parent_resource_name_lc, encapsulating_resource, actual_resource_name_candidate, KNOWN_WRAPPER_TYPES={}, NAMING_ENTITY_EXCEPTIONS={}):
+    def list(url, link, parent_resource_name_lc, encapsulating_resource,
+             actual_resource_name_candidate, KNOWN_WRAPPER_TYPES={},
+             NAMING_ENTITY_EXCEPTIONS={}):
+
         actual_encapsulating_resource = TypeUtil.getValueByKeyOrNone(encapsulating_resource.lower(), KNOWN_WRAPPER_TYPES)
         actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(actual_encapsulating_resource if actual_encapsulating_resource is not None \
                                                                   else actual_resource_name_candidate.lower())).lower()
@@ -97,18 +107,24 @@ class SubCollection(object):
             actual_resource_name_lc = NAMING_ENTITY_EXCEPTIONS[actual_resource_name_lc]
 
         sub_collection_list_template_values = {'url':url,
-                                               'encapsulating_resource':actual_encapsulating_resource if actual_encapsulating_resource is not None
-                                                                                                      else encapsulating_resource,
+                                               'encapsulating_resource':actual_encapsulating_resource
+                                                        if actual_encapsulating_resource is not None
+                                                        else encapsulating_resource,
                                                'parent_resource_name_lc':parent_resource_name_lc.lower(),
                                                'actual_resource_name_lc':actual_resource_name_lc}
 
         prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        combined_method_params = prms_str + \
+                                 (', ' if prms_str != '' and headers_method_params_str != '' else '') + \
+                                 headers_method_params_str
+
         method_params_copy = method_params.copy()
         method_params['**kwargs'] = '**kwargs'
 
-        if prms_str != '':
+        if prms_str != '' or headers_method_params_str != '':
             return \
-            ("    def list(self, " + prms_str + ", **kwargs):\n" + \
+            ("    def list(self, " + combined_method_params + ", **kwargs):\n" + \
              Documentation.document(link, {'**kwargs: dict (property based filtering)"': False,
                                            'query: string (oVirt engine search dialect query)':False},
                                     method_params) +
@@ -120,7 +136,8 @@ class SubCollection(object):
                                                           continues=True, is_collection=True) + \
              "),\n" + \
             "                                                                   qargs=" + ParamUtils.toDictStr(url_params.keys(), method_params_copy.keys()) +
-            ")).get_%(actual_resource_name_lc)s()\n" + \
+            "),\n"
+            "                                      headers=" + headers_map_params_str + ").get_%(actual_resource_name_lc)s()\n" + \
             "        return ParseHelper.toSubCollection(%(encapsulating_resource)s,\n" + \
             "                                           self.parentclass,\n" + \
             "                                           FilterHelper.filter(result, kwargs))\n\n") % sub_collection_list_template_values
@@ -146,9 +163,11 @@ class SubCollection(object):
                                               'parent_resource_name_lc':parent_resource_name_lc.lower(),
                                               'encapsulating_entity':actual_encapsulating_entity if actual_encapsulating_entity is not None \
                                                                                                  else encapsulating_entity}
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        headers_method_params_str = ', ' + headers_method_params_str if headers_method_params_str != '' else headers_method_params_str
 
         sub_collection_add_template = \
-        ("    def add(self, %(resource_to_add)s):\n\n" + \
+        ("    def add(self, %(resource_to_add)s" + headers_method_params_str + "):\n\n" + \
          Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().add(url=UrlHelper.replace(url, " + \
@@ -156,7 +175,8 @@ class SubCollection(object):
                                                            "                                                                 ",
                                                            continues=True, is_collection=True) + \
         "),\n" + \
-        "                                      body=ParseHelper.toXml(%(resource_to_add)s))\n\n" + \
+        "                                      body=ParseHelper.toXml(%(resource_to_add)s),\n"
+        "                                      headers=" + headers_map_params_str + ")\n\n" + \
         "        return %(encapsulating_entity)s(self.parentclass, result)\n\n") % sub_collection_add_template_values
 
         return sub_collection_add_template

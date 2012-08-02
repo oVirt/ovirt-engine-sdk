@@ -21,6 +21,7 @@ from codegen.doc.documentation import Documentation
 from codegen.utils.paramutils import ParamUtils
 from ovirtsdk.utils.parsehelper import ParseHelper
 from codegen.utils.urlutils import UrlUtils
+from codegen.utils.headerutils import HeaderUtils
 
 
 #============================================================
@@ -68,21 +69,24 @@ class SubResource(object):
                                                           'resource_name_lc':resource_name_lc.lower(),
                                                           'add_method_params' : Resource._addMethodParams(action_params.keys()),
                                                           'add_action_parans' : Resource._addActionParams(action_params)}
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        headers_method_params_str = ', ' + headers_method_params_str if headers_method_params_str != '' else headers_method_params_str
 
         if collection_action == True:
             sub_collection_resource_action_template = \
-            ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \
+            ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()" + headers_method_params_str + "):\n" + \
             Documentation.document(link) +
             "        url = '%(url)s'\n\n" + \
             "        result = self._getProxy().request(method='%(method)s',\n" + \
             "                                          url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id()}),\n" + \
 #TODO: support action on sub-collection
-            "                                          body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+            "                                          body=ParseHelper.toXml(%(body_type_lc)s),\n"
+            "                                          headers=" + headers_map_params_str + ")\n\n"
             "        return result\n\n"
             ) % sub_collection_resource_action_template_values
         else:
             sub_collection_resource_action_template = \
-            ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \
+            ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()" + headers_method_params_str + "):\n" + \
             Documentation.document(link) +
             "        url = '%(url)s'\n\n" + \
             "        result = self._getProxy().request(method='%(method)s',\n" + \
@@ -91,7 +95,8 @@ class SubResource(object):
                                                            offset="                                                                    ",
                                                            continues=True) + \
             "),\n" + \
-            "                                          body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+            "                                          body=ParseHelper.toXml(%(body_type_lc)s),\n"
+            "                                          headers=" + headers_map_params_str + ")\n\n"
             "        return result\n\n"
             ) % sub_collection_resource_action_template_values
 
@@ -107,9 +112,11 @@ class SubResource(object):
                                                           'resource_name':resource_name,
                                                           'resource_name_lc':resource_name.lower(),
                                                           'returned_type':actual_xml_entity if actual_xml_entity is not None else returned_type}
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        headers_method_params_str = ', ' + headers_method_params_str if headers_method_params_str != '' else headers_method_params_str
 
         sub_collection_resource_update_template = \
-        ("    def update(self):\n" + \
+        ("    def update(self" + headers_method_params_str + "):\n" + \
          Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().update(url=UrlHelper.replace(url, " + \
@@ -117,7 +124,8 @@ class SubResource(object):
                                                            offset="                                                                    ",
                                                            continues=True) + \
 		"),\n" + \
-        "                                         body=ParseHelper.toXml(self.superclass))\n\n" + \
+        "                                         body=ParseHelper.toXml(self.superclass),\n"
+        "                                         headers=" + headers_map_params_str + ")\n\n" + \
         "        return %(returned_type)s(self.parentclass, result)\n\n") % sub_collection_resource_update_template_values
 
 
@@ -132,10 +140,19 @@ class SubResource(object):
                                                           'resource_name_lc':resource_name_lc.lower()}
 
         prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        combined_method_params = prms_str + \
+                                 (', ' if prms_str != '' and headers_method_params_str != '' else '') + \
+                                 headers_method_params_str
+        headers_map_params_str_with_no_ct = headers_map_params_str.replace('}',
+                                                                          ',"Content-type":None}') \
+                                                                 if headers_map_params_str != '{}' \
+                                                                 else '{"Content-type":None}'
 
-        if prms_str != '':
+
+        if prms_str != '' or headers_method_params_str != '':
             sub_collection_resource_delete_template = \
-            ("    def delete(self, " + prms_str + "):\n" + \
+            ("    def delete(self, " + combined_method_params + "):\n" + \
              Documentation.document(link, {}, method_params) +
              "        url = UrlHelper.replace('%(url)s',\n" + \
             UrlUtils.generate_url_identifiers_replacments(link,
@@ -144,11 +161,11 @@ class SubResource(object):
              "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
                                                                                                                 method_params.copy().keys()) +
                                                                                     "),\n" +
-             "                                       headers={'Content-type':None})\n\n"
+             "                                       headers=" + headers_map_params_str_with_no_ct + ")\n\n"
              ) % sub_collection_resource_delete_template_values
 
             body_sub_collection_resource_delete_template = \
-            ("    def delete(self, %(body_type_lc)s, " + prms_str + "):\n" + \
+            ("    def delete(self, %(body_type_lc)s, " + combined_method_params + "):\n" + \
              Documentation.document(link, {}, method_params) +
              "        url = UrlHelper.replace('%(url)s',\n" + \
             UrlUtils.generate_url_identifiers_replacments(link,
@@ -157,7 +174,8 @@ class SubResource(object):
              "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
                                                                                                                 method_params.copy().keys()) +
                                                                                     "),\n" + \
-             "                                       body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+             "                                       body=ParseHelper.toXml(%(body_type_lc)s),\n"
+             "                                       headers=" + headers_map_params_str + ")\n\n"
              ) % sub_collection_resource_delete_template_values
         else:
             sub_collection_resource_delete_template = \

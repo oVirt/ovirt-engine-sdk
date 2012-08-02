@@ -22,6 +22,7 @@ from ovirtsdk.utils.parsehelper import ParseHelper
 from codegen.utils.typeutil import TypeUtil
 from codegen.doc.documentation import Documentation
 from codegen.utils.paramutils import ParamUtils
+from codegen.utils.headerutils import HeaderUtils
 
 class Collection(object):
 
@@ -46,6 +47,8 @@ class Collection(object):
                                           'resource_type' : actual_resource_type if actual_resource_type is not None else resource_type}
 
         prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        headers_method_params_str = headers_method_params_str + ', ' if headers_method_params_str != '' else headers_method_params_str
 
         #Capabilities resource has unique structure which is not
         #fully comply with RESTful collection pattern, but preserved
@@ -79,37 +82,40 @@ class Collection(object):
 
         if 'search:query' in url_params:
             return \
-            ("    def get(self, name='name', **kwargs):\n" + \
+            ("    def get(self, name='name', " + headers_method_params_str + "**kwargs):\n" + \
              Documentation.document(link, {'name: string (string the name of the entity)':False,
                                            '**kwargs: dict (property based filtering)': False}) +
             "        url = '%(url)s'\n\n" + \
 
             "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
             "            try :\n" + \
-            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))\n" +
+            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),\n"
+            "                                                              headers=" + headers_map_params_str + "))\n" +
             "            except RequestError, err:\n" + \
             "                if err.status and err.status == 404:\n" + \
             "                    return None\n" + \
             "                raise err\n" + \
             "        else:\n" +
-            "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_%(resource_name_lc)s()\n" + \
+            "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),\n"
+            "                                          headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
             "            return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
 
 
         return \
-            ("    def get(self, name='*', **kwargs):\n" + \
+            ("    def get(self, name='*', " + headers_method_params_str + "**kwargs):\n" + \
              Documentation.document(link, {'name: string (the name of the entity)':False,
                                            '**kwargs: dict (property based filtering)"': False}) +
             "        url = '%(url)s'\n\n" + \
             "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
             "            try :\n" + \
-            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))\n" +
+            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']), headers=" + headers_map_params_str + "))\n" +
             "            except RequestError, err:\n" + \
             "                if err.status and err.status == 404:\n" + \
             "                    return None\n" + \
             "                raise err\n" + \
             "        else:\n" +
-            "            result = self._getProxy().get(url=url).get_%(resource_name_lc)s()\n" + \
+            "            result = self._getProxy().get(url=url,\n"
+            "                                          headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
             "            if name != '*': kwargs['name']=name\n"
             "            return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
 
@@ -123,6 +129,7 @@ class Collection(object):
                                            'resource_type' : actual_resource_type if actual_resource_type is not None else resource_type}
 
         prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
         method_params_copy = method_params.copy()
         method_params['**kwargs'] = '**kwargs'
 
@@ -145,21 +152,25 @@ class Collection(object):
         return ParseHelper.toCollection(VersionCaps,
                                         FilterHelper.filter(result, kwargs))
 """
-        if prms_str != '':
+        if prms_str != '' or headers_method_params_str != '':
+            combined_method_params = prms_str + \
+                                     (', ' if prms_str != '' and headers_method_params_str != '' else '') + \
+                                     headers_method_params_str
             return \
-            ("    def list(self, " + prms_str + ", **kwargs):\n" + \
-             Documentation.document(link, {'**kwargs: dict (property based filtering)"': False,
+            ("    def list(self, " + combined_method_params + ", **kwargs):\n" + \
+             Documentation.document(link, {'**kwargs: dict (property based filtering)': False,
                                            'query: string (oVirt engine search dialect query)':False},
                                     method_params) +
             "        url='%(url)s'\n\n" + \
             "        result = self._getProxy().get(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
                                                                                                               method_params_copy.keys()) +
-                                                                                ")).get_%(resource_name_lc)s()\n" + \
+                                                                                "),\n"
+            "                                      headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
             "        return ParseHelper.toCollection(%(resource_type)s,\n" + \
             "                                        FilterHelper.filter(result, kwargs))\n\n") % collection_list_template_values
         return \
         ("    def list(self, **kwargs):\n" + \
-         Documentation.document(link, {'**kwargs: dict (property based filtering)"': False}) +
+         Documentation.document(link, {'**kwargs: dict (property based filtering)': False}) +
         "        url='%(url)s'\n\n" + \
         "        result = self._getProxy().get(url=url).get_%(resource_name_lc)s()\n" + \
         "        return ParseHelper.toCollection(%(resource_type)s,\n" + \
@@ -171,15 +182,18 @@ class Collection(object):
 
         collection_add_template_values = {'url':url,
                                           'resource_to_add_lc':body_type.lower(),
-                                          'resource_type' : actual_resource_type if actual_resource_type is not None else response_type}
+                                          'resource_type' : actual_resource_type if actual_resource_type is not None
+                                                                                 else response_type}
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        headers_method_params_str = ', ' + headers_method_params_str if headers_method_params_str != '' else headers_method_params_str
 
         collection_add_template = \
-        ("    def add(self, %(resource_to_add_lc)s):\n" + \
+        ("    def add(self, %(resource_to_add_lc)s" + headers_method_params_str + "):\n" + \
          Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().add(url=url,\n" + \
-        "                                      body=ParseHelper.toXml(%(resource_to_add_lc)s))\n" + \
+        "                                      body=ParseHelper.toXml(%(resource_to_add_lc)s),\n"
+        "                                      headers=" + headers_map_params_str + ")\n" + \
         "        return %(resource_type)s(result)\n\n") % collection_add_template_values
 
         return collection_add_template
-

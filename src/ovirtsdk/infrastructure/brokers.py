@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-08-02 10:59:56.389796
+Generated at: 2012-08-02 15:32:55.164345
 
 @author: mpastern@redhat.com
 '''
@@ -99,7 +99,7 @@ class Cluster(params.Cluster, Base):
                                 {'{cluster:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def update(self):
         '''
@@ -124,7 +124,8 @@ class Cluster(params.Cluster, Base):
         url = '/api/clusters/{cluster:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
         return Cluster(result)
 
 class ClusterGlusterVolume(params.GlusterVolume, Base):
@@ -165,7 +166,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -183,7 +185,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -202,7 +205,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -221,7 +225,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -240,7 +245,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -257,7 +263,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -290,7 +297,7 @@ class ClusterGlusterVolumeBricks(Base):
     def __init__(self, clusterglustervolume):
         self.parentclass = clusterglustervolume
 
-    def add(self, glusterbricks):
+    def add(self, glusterbricks, expect=None):
 
         '''
         @type GlusterBricks:
@@ -305,6 +312,7 @@ class ClusterGlusterVolumeBricks(Base):
           [@ivar brick.replica_count: unsignedShort]
           [@ivar brick.stripe_count: unsignedShort]
         }
+        [@param expect: 201-created]
 
         @return GlusterBricks:
         '''
@@ -313,7 +321,8 @@ class ClusterGlusterVolumeBricks(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{glustervolume:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(glusterbricks))
+                                      body=ParseHelper.toXml(glusterbricks),
+                                      headers={"Expect":expect})
 
         return ClusterGlusterVolumeBrick(self.parentclass, result)
 
@@ -332,7 +341,8 @@ class ClusterGlusterVolumeBricks(Base):
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{glustervolume:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return ClusterGlusterVolumeBrick(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -341,7 +351,8 @@ class ClusterGlusterVolumeBricks(Base):
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{glustervolume:id}': self.parentclass.get_id()})).get_brick()
+                                                                      '{glustervolume:id}': self.parentclass.get_id()}),
+                                          headers={}).get_brick()
 
             return ClusterGlusterVolumeBrick(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -366,7 +377,7 @@ class ClusterGlusterVolumes(Base):
     def __init__(self, cluster):
         self.parentclass = cluster
 
-    def add(self, glustervolume):
+    def add(self, glustervolume, expect=None):
 
         '''
         @type GlusterVolume:
@@ -397,6 +408,7 @@ class ClusterGlusterVolumes(Base):
           [@ivar option.name: string]
           [@ivar option.value: string]
         }
+        [@param expect: 201-created]
 
         @return GlusterVolume:
         '''
@@ -404,7 +416,8 @@ class ClusterGlusterVolumes(Base):
         url = '/api/clusters/{cluster:id}/glustervolumes'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(glustervolume))
+                                      body=ParseHelper.toXml(glustervolume),
+                                      headers={"Expect":expect})
 
         return ClusterGlusterVolume(self.parentclass, result)
 
@@ -422,7 +435,8 @@ class ClusterGlusterVolumes(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return ClusterGlusterVolume(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -430,7 +444,8 @@ class ClusterGlusterVolumes(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_gluster_volume()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                          headers={}).get_gluster_volume()
 
             return ClusterGlusterVolume(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -447,7 +462,8 @@ class ClusterGlusterVolumes(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{cluster:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive})).get_gluster_volume()
+                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive}),
+                                      headers={}).get_gluster_volume()
         return ParseHelper.toSubCollection(ClusterGlusterVolume,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -476,7 +492,7 @@ class ClusterNetwork(params.Network, Base):
                                  '{network:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def update(self):
         '''
@@ -493,7 +509,8 @@ class ClusterNetwork(params.Network, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{network:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
 
         return ClusterNetwork(self.parentclass, result)
 
@@ -502,12 +519,13 @@ class ClusterNetworks(Base):
     def __init__(self, cluster):
         self.parentclass = cluster
 
-    def add(self, network):
+    def add(self, network, expect=None):
 
         '''
         @type Network:
 
         @param network.id|name: string
+        [@param expect: 201-created]
 
         @return Network:
         '''
@@ -515,7 +533,8 @@ class ClusterNetworks(Base):
         url = '/api/clusters/{cluster:id}/networks'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(network))
+                                      body=ParseHelper.toXml(network),
+                                      headers={"Expect":expect})
 
         return ClusterNetwork(self.parentclass, result)
 
@@ -533,7 +552,8 @@ class ClusterNetworks(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return ClusterNetwork(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -541,7 +561,8 @@ class ClusterNetworks(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_network()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                          headers={}).get_network()
 
             return ClusterNetwork(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -557,7 +578,8 @@ class ClusterNetworks(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{cluster:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_network()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_network()
         return ParseHelper.toSubCollection(ClusterNetwork,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -586,14 +608,14 @@ class ClusterPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class ClusterPermissions(Base):
 
     def __init__(self, cluster):
         self.parentclass = cluster
 
-    def add(self, permission):
+    def add(self, permission, expect=None):
 
         '''
         @type Permission:
@@ -604,6 +626,7 @@ class ClusterPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -611,7 +634,8 @@ class ClusterPermissions(Base):
         url = '/api/clusters/{cluster:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission))
+                                      body=ParseHelper.toXml(permission),
+                                      headers={"Expect":expect})
 
         return ClusterPermission(self.parentclass, result)
 
@@ -629,7 +653,8 @@ class ClusterPermissions(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return ClusterPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -637,7 +662,8 @@ class ClusterPermissions(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()})).get_permission()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permission()
 
             return ClusterPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -653,7 +679,8 @@ class ClusterPermissions(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{cluster:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_permission()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permission()
         return ParseHelper.toSubCollection(ClusterPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -662,7 +689,7 @@ class Clusters(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, cluster):
+    def add(self, cluster, expect=None):
         '''
         @type Cluster:
 
@@ -681,6 +708,7 @@ class Clusters(Base):
         [@param cluster.error_handling.on_error: string]
         [@param cluster.virt_service: boolean]
         [@param cluster.gluster_service: boolean]
+        [@param expect: 201-created]
 
         @return Cluster:
         '''
@@ -688,13 +716,15 @@ class Clusters(Base):
         url = '/api/clusters'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(cluster))
+                                      body=ParseHelper.toXml(cluster),
+                                      headers={"Expect":expect})
         return Cluster(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name='name', filter=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
+        [@param filter: true|false]
 
         @return Clusters:
         '''
@@ -703,28 +733,32 @@ class Clusters(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return Cluster(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return Cluster(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                                                              headers={"Filter":filter}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_cluster()
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+                                          headers={"Filter":filter}).get_cluster()
             return Cluster(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
+        [@param filter: true|false]
 
         @return Clusters:
         '''
 
         url='/api/clusters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_cluster()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={"Filter":filter}).get_cluster()
         return ParseHelper.toCollection(Cluster,
                                         FilterHelper.filter(result, kwargs))
 
@@ -756,7 +790,8 @@ class DataCenter(params.DataCenter, Base):
                                 {'{datacenter:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       body=ParseHelper.toXml(action))
+                                       body=ParseHelper.toXml(action),
+                                       headers={})
 
     def update(self):
         '''
@@ -773,7 +808,8 @@ class DataCenter(params.DataCenter, Base):
         url = '/api/datacenters/{datacenter:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
         return DataCenter(result)
 
 class DataCenterPermission(params.Permission, Base):
@@ -800,14 +836,14 @@ class DataCenterPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class DataCenterPermissions(Base):
 
     def __init__(self, datacenter):
         self.parentclass = datacenter
 
-    def add(self, permission):
+    def add(self, permission, expect=None):
 
         '''
         @type Permission:
@@ -818,6 +854,7 @@ class DataCenterPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -825,7 +862,8 @@ class DataCenterPermissions(Base):
         url = '/api/datacenters/{datacenter:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission))
+                                      body=ParseHelper.toXml(permission),
+                                      headers={"Expect":expect})
 
         return DataCenterPermission(self.parentclass, result)
 
@@ -843,7 +881,8 @@ class DataCenterPermissions(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return DataCenterPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -851,7 +890,8 @@ class DataCenterPermissions(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_permission()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permission()
 
             return DataCenterPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -910,7 +950,8 @@ class DataCenterQuotas(Base):
         url = '/api/datacenters/{datacenter:id}/quotas'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(quota))
+                                      body=ParseHelper.toXml(quota),
+                                      headers={})
 
         return DataCenterQuota(self.parentclass, result)
 
@@ -928,7 +969,8 @@ class DataCenterQuotas(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return DataCenterQuota(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -936,7 +978,8 @@ class DataCenterQuotas(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_quota()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                          headers={}).get_quota()
 
             return DataCenterQuota(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -979,7 +1022,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
                                  '{storagedomain:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def activate(self, action=params.Action()):
         '''
@@ -994,7 +1037,8 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
                                                                      '{storagedomain:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -1011,7 +1055,8 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
                                                                      '{storagedomain:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -1020,12 +1065,13 @@ class DataCenterStorageDomains(Base):
     def __init__(self, datacenter):
         self.parentclass = datacenter
 
-    def add(self, storagedomain):
+    def add(self, storagedomain, expect=None):
 
         '''
         @type StorageDomain:
 
         @param storagedomain.id|name: string
+        [@param expect: 201-created]
 
         @return StorageDomain:
         '''
@@ -1033,7 +1079,8 @@ class DataCenterStorageDomains(Base):
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(storagedomain))
+                                      body=ParseHelper.toXml(storagedomain),
+                                      headers={"Expect":expect})
 
         return DataCenterStorageDomain(self.parentclass, result)
 
@@ -1051,7 +1098,8 @@ class DataCenterStorageDomains(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return DataCenterStorageDomain(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -1059,7 +1107,8 @@ class DataCenterStorageDomains(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_storage_domain()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                          headers={}).get_storage_domain()
 
             return DataCenterStorageDomain(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -1075,7 +1124,8 @@ class DataCenterStorageDomains(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{datacenter:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_storage_domain()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_storage_domain()
         return ParseHelper.toSubCollection(DataCenterStorageDomain,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1084,7 +1134,7 @@ class DataCenters(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, datacenter):
+    def add(self, datacenter, expect=None):
         '''
         @type DataCenter:
 
@@ -1094,6 +1144,7 @@ class DataCenters(Base):
         @param datacenter.version.minor: int
         [@param datacenter.description: string]
         [@param datacenter.storage_format: string]
+        [@param expect: 201-created]
 
         @return DataCenter:
         '''
@@ -1101,13 +1152,15 @@ class DataCenters(Base):
         url = '/api/datacenters'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(datacenter))
+                                      body=ParseHelper.toXml(datacenter),
+                                      headers={"Expect":expect})
         return DataCenter(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name='name', filter=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
+        [@param filter: true|false]
 
         @return DataCenters:
         '''
@@ -1116,28 +1169,32 @@ class DataCenters(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return DataCenter(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return DataCenter(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                                                              headers={"Filter":filter}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_data_center()
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+                                          headers={"Filter":filter}).get_data_center()
             return DataCenter(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
+        [@param filter: true|false]
 
         @return DataCenters:
         '''
 
         url='/api/datacenters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_data_center()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={"Filter":filter}).get_data_center()
         return ParseHelper.toCollection(DataCenter,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1171,7 +1228,8 @@ class Disk(params.Disk, Base):
         url = '/api/disks/{disk:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{disk:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
         return Disk(result)
 
     def delete(self, async=None):
@@ -1185,7 +1243,7 @@ class Disk(params.Disk, Base):
                                 {'{disk:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class DiskStatistic(params.Statistic, Base):
     def __init__(self, disk, statistic):
@@ -1218,7 +1276,8 @@ class DiskStatistics(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return DiskStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -1226,7 +1285,8 @@ class DiskStatistics(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()})).get_statistic()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
+                                          headers={}).get_statistic()
 
             return DiskStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -1249,7 +1309,7 @@ class Disks(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, disk):
+    def add(self, disk, expect=None):
         '''
         @type Disk:
 
@@ -1266,6 +1326,7 @@ class Disks(Base):
         {
           [@ivar storage_domain.id|name: string]
         }
+        [@param expect: 201-created]
 
         @return Disk:
         '''
@@ -1273,7 +1334,8 @@ class Disks(Base):
         url = '/api/disks'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(disk))
+                                      body=ParseHelper.toXml(disk),
+                                      headers={"Expect":expect})
         return Disk(result)
 
     def get(self, name='name', **kwargs):
@@ -1288,18 +1350,20 @@ class Disks(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return Disk(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return Disk(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_disk()
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+                                          headers={}).get_disk()
             return Disk(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
@@ -1309,7 +1373,8 @@ class Disks(Base):
 
         url='/api/disks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_disk()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={}).get_disk()
         return ParseHelper.toCollection(Disk,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1357,7 +1422,8 @@ class DomainGroups(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return DomainGroup(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -1365,7 +1431,8 @@ class DomainGroups(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_group()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
+                                          headers={}).get_group()
 
             return DomainGroup(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -1383,7 +1450,8 @@ class DomainGroups(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{domain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_group()
+                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={}).get_group()
         return ParseHelper.toSubCollection(DomainGroup,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1419,7 +1487,8 @@ class DomainUsers(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return DomainUser(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -1427,7 +1496,8 @@ class DomainUsers(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()})).get_user()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
+                                          headers={}).get_user()
 
             return DomainUser(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -1445,7 +1515,8 @@ class DomainUsers(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{domain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_user()
+                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={}).get_user()
         return ParseHelper.toSubCollection(DomainUser,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1466,19 +1537,20 @@ class Domains(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return Domain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return Domain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']), headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=url).get_domain()
+            result = self._getProxy().get(url=url,
+                                          headers={}).get_domain()
             if name != '*': kwargs['name']=name
             return Domain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, max=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param max: int (max results)]
 
         @return Domains:
@@ -1486,7 +1558,8 @@ class Domains(Base):
 
         url='/api/domains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max})).get_domain()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+                                      headers={}).get_domain()
         return ParseHelper.toCollection(Domain,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1517,18 +1590,20 @@ class Events(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return Event(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return Event(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_event()
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+                                          headers={}).get_event()
             return Event(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, case_sensitive=True, from_event_id=None, max=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param from_event_id: string (event_id)]
@@ -1539,7 +1614,8 @@ class Events(Base):
 
         url='/api/events'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'from:matrix':from_event_id,'max:matrix':max})).get_event()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'from:matrix':from_event_id,'max:matrix':max}),
+                                      headers={}).get_event()
         return ParseHelper.toCollection(Event,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1568,7 +1644,7 @@ class Group(params.Group, Base):
                                 {'{group:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class GroupPermission(params.Permission, Base):
     def __init__(self, group, permission):
@@ -1594,14 +1670,14 @@ class GroupPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class GroupPermissions(Base):
 
     def __init__(self, group):
         self.parentclass = group
 
-    def add(self, permission):
+    def add(self, permission, expect=None):
 
         '''
         @type Permission:
@@ -1627,6 +1703,7 @@ class GroupPermissions(Base):
         Overload 7:
           @param permission.role.id: string
           @param permission.template.id: string
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -1634,7 +1711,8 @@ class GroupPermissions(Base):
         url = '/api/groups/{group:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission))
+                                      body=ParseHelper.toXml(permission),
+                                      headers={"Expect":expect})
 
         return GroupPermission(self.parentclass, result)
 
@@ -1652,7 +1730,8 @@ class GroupPermissions(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return GroupPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -1660,7 +1739,8 @@ class GroupPermissions(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_permission()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permission()
 
             return GroupPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -1676,7 +1756,8 @@ class GroupPermissions(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{group:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_permission()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permission()
         return ParseHelper.toSubCollection(GroupPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1706,7 +1787,7 @@ class GroupRole(params.Role, Base):
                                  '{role:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class GroupRolePermit(params.Permit, Base):
     def __init__(self, grouprole, permit):
@@ -1733,19 +1814,20 @@ class GroupRolePermit(params.Permit, Base):
                                  '{permit:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class GroupRolePermits(Base):
 
     def __init__(self, grouprole):
         self.parentclass = grouprole
 
-    def add(self, permit):
+    def add(self, permit, expect=None):
 
         '''
         @type Permit:
 
         @param permit.id|name: string
+        [@param expect: 201-created]
 
         @return Permit:
         '''
@@ -1754,7 +1836,8 @@ class GroupRolePermits(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{role:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permit))
+                                      body=ParseHelper.toXml(permit),
+                                      headers={"Expect":expect})
 
         return GroupRolePermit(self.parentclass, result)
 
@@ -1773,7 +1856,8 @@ class GroupRolePermits(Base):
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{role:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return GroupRolePermit(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -1782,7 +1866,8 @@ class GroupRolePermits(Base):
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{role:id}': self.parentclass.get_id()})).get_permit()
+                                                                      '{role:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permit()
 
             return GroupRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -1799,7 +1884,8 @@ class GroupRolePermits(Base):
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{group:id}' : self.parentclass.parentclass.get_id(),
                                                                                                '{role:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_permit()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permit()
         return ParseHelper.toSubCollection(GroupRolePermit,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1809,12 +1895,13 @@ class GroupRoles(Base):
     def __init__(self, group):
         self.parentclass = group
 
-    def add(self, role):
+    def add(self, role, expect=None):
 
         '''
         @type Role:
 
         @param role.id: string
+        [@param expect: 201-created]
 
         @return Role:
         '''
@@ -1822,7 +1909,8 @@ class GroupRoles(Base):
         url = '/api/groups/{group:id}/roles'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(role))
+                                      body=ParseHelper.toXml(role),
+                                      headers={"Expect":expect})
 
         return GroupRole(self.parentclass, result)
 
@@ -1840,7 +1928,8 @@ class GroupRoles(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return GroupRole(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -1848,7 +1937,8 @@ class GroupRoles(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_role()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                          headers={}).get_role()
 
             return GroupRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -1864,7 +1954,8 @@ class GroupRoles(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{group:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_role()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_role()
         return ParseHelper.toSubCollection(GroupRole,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1893,19 +1984,20 @@ class GroupTag(params.Tag, Base):
                                  '{tag:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class GroupTags(Base):
 
     def __init__(self, group):
         self.parentclass = group
 
-    def add(self, tag):
+    def add(self, tag, expect=None):
 
         '''
         @type Tag:
 
         @param tag.id|name: string
+        [@param expect: 201-created]
 
         @return Tag:
         '''
@@ -1913,7 +2005,8 @@ class GroupTags(Base):
         url = '/api/groups/{group:id}/tags'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(tag))
+                                      body=ParseHelper.toXml(tag),
+                                      headers={"Expect":expect})
 
         return GroupTag(self.parentclass, result)
 
@@ -1931,7 +2024,8 @@ class GroupTags(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return GroupTag(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -1939,7 +2033,8 @@ class GroupTags(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()})).get_tag()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                          headers={}).get_tag()
 
             return GroupTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -1955,7 +2050,8 @@ class GroupTags(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{group:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_tag()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_tag()
         return ParseHelper.toSubCollection(GroupTag,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -1976,7 +2072,8 @@ class Groups(Base):
         url = '/api/groups'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(group))
+                                      body=ParseHelper.toXml(group),
+                                      headers={})
         return Group(result)
 
     def get(self, name='name', **kwargs):
@@ -1991,18 +2088,20 @@ class Groups(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return Group(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return Group(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_group()
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+                                          headers={}).get_group()
             return Group(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
@@ -2012,7 +2111,8 @@ class Groups(Base):
 
         url='/api/groups'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_group()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={}).get_group()
         return ParseHelper.toCollection(Group,
                                         FilterHelper.filter(result, kwargs))
 
@@ -2043,7 +2143,7 @@ class Host(params.Host, Base):
                                 {'{host:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def fence(self, action=params.Action()):
         '''
@@ -2057,7 +2157,8 @@ class Host(params.Host, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def install(self, action=params.Action()):
@@ -2072,7 +2173,8 @@ class Host(params.Host, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def activate(self, action=params.Action()):
@@ -2087,7 +2189,8 @@ class Host(params.Host, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def deactivate(self, action=params.Action()):
@@ -2102,7 +2205,8 @@ class Host(params.Host, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def approve(self, action=params.Action()):
@@ -2120,7 +2224,8 @@ class Host(params.Host, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def iscsilogin(self, action=params.Action()):
@@ -2137,7 +2242,8 @@ class Host(params.Host, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def iscsidiscover(self, action=params.Action()):
@@ -2153,7 +2259,8 @@ class Host(params.Host, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def commitnetconfig(self, action=params.Action()):
@@ -2168,7 +2275,8 @@ class Host(params.Host, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def update(self):
@@ -2196,7 +2304,8 @@ class Host(params.Host, Base):
         url = '/api/hosts/{host:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
         return Host(result)
 
 class HostNIC(params.HostNIC, Base):
@@ -2224,7 +2333,7 @@ class HostNIC(params.HostNIC, Base):
                                  '{nic:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def attach(self, action=params.Action()):
         '''
@@ -2242,7 +2351,8 @@ class HostNIC(params.HostNIC, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -2259,7 +2369,8 @@ class HostNIC(params.HostNIC, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -2291,7 +2402,8 @@ class HostNIC(params.HostNIC, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
 
         return HostNIC(self.parentclass, result)
 
@@ -2327,7 +2439,8 @@ class HostNicStatistics(Base):
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{nic:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return HostNicStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -2336,7 +2449,8 @@ class HostNicStatistics(Base):
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{nic:id}': self.parentclass.get_id()})).get_statistic()
+                                                                      '{nic:id}': self.parentclass.get_id()}),
+                                          headers={}).get_statistic()
 
             return HostNicStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -2353,7 +2467,8 @@ class HostNicStatistics(Base):
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{host:id}' : self.parentclass.parentclass.get_id(),
                                                                                                '{nic:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_statistic()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_statistic()
         return ParseHelper.toSubCollection(HostNicStatistic,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2363,7 +2478,7 @@ class HostNics(Base):
     def __init__(self, host):
         self.parentclass = host
 
-    def add(self, hostnic):
+    def add(self, hostnic, expect=None):
 
         '''
         @type HostNIC:
@@ -2385,6 +2500,7 @@ class HostNics(Base):
         [@param hostnic.mac: string]
         [@param hostnic.ip.address: string]
         [@param hostnic.ip.netmask: string]
+        [@param expect: 201-created]
 
         @return HostNIC:
         '''
@@ -2392,7 +2508,8 @@ class HostNics(Base):
         url = '/api/hosts/{host:id}/nics'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(hostnic))
+                                      body=ParseHelper.toXml(hostnic),
+                                      headers={"Expect":expect})
 
         return HostNIC(self.parentclass, result)
 
@@ -2410,7 +2527,8 @@ class HostNics(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return HostNIC(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -2418,7 +2536,8 @@ class HostNics(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_host_nic()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                          headers={}).get_host_nic()
 
             return HostNIC(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -2434,7 +2553,8 @@ class HostNics(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{host:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_host_nic()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_host_nic()
         return ParseHelper.toSubCollection(HostNIC,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2474,7 +2594,8 @@ class HostNics(Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -2502,14 +2623,14 @@ class HostPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class HostPermissions(Base):
 
     def __init__(self, host):
         self.parentclass = host
 
-    def add(self, permission):
+    def add(self, permission, expect=None):
 
         '''
         @type Permission:
@@ -2520,6 +2641,7 @@ class HostPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -2527,7 +2649,8 @@ class HostPermissions(Base):
         url = '/api/hosts/{host:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission))
+                                      body=ParseHelper.toXml(permission),
+                                      headers={"Expect":expect})
 
         return HostPermission(self.parentclass, result)
 
@@ -2545,7 +2668,8 @@ class HostPermissions(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return HostPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -2553,7 +2677,8 @@ class HostPermissions(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_permission()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permission()
 
             return HostPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -2569,7 +2694,8 @@ class HostPermissions(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{host:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_permission()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permission()
         return ParseHelper.toSubCollection(HostPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2605,7 +2731,8 @@ class HostStatistics(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return HostStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -2613,7 +2740,8 @@ class HostStatistics(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_statistic()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                          headers={}).get_statistic()
 
             return HostStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -2629,7 +2757,8 @@ class HostStatistics(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{host:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_statistic()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_statistic()
         return ParseHelper.toSubCollection(HostStatistic,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2653,7 +2782,8 @@ class HostStorage(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return HostStorage(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -2661,7 +2791,8 @@ class HostStorage(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_storage()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                          headers={}).get_storage()
 
             return HostStorage(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -2677,7 +2808,8 @@ class HostStorage(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{host:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_storage()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_storage()
         return ParseHelper.toSubCollection(HostStorage,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2706,7 +2838,7 @@ class HostTag(params.Tag, Base):
                                  '{tag:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class HostTags(Base):
 
@@ -2725,7 +2857,8 @@ class HostTags(Base):
         url = '/api/hosts/{host:id}/tags'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(tag))
+                                      body=ParseHelper.toXml(tag),
+                                      headers={})
 
         return HostTag(self.parentclass, result)
 
@@ -2743,7 +2876,8 @@ class HostTags(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return HostTag(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -2751,7 +2885,8 @@ class HostTags(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_tag()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                          headers={}).get_tag()
 
             return HostTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -2767,7 +2902,8 @@ class HostTags(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{host:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_tag()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_tag()
         return ParseHelper.toSubCollection(HostTag,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -2776,7 +2912,7 @@ class Hosts(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, host):
+    def add(self, host, expect=None):
         '''
         @type Host:
 
@@ -2797,6 +2933,7 @@ class Hosts(Base):
           [@ivar option.value: string]
         }
         [@param host.reboot_after_installation: boolean]
+        [@param expect: 201-created]
 
         @return Host:
         '''
@@ -2804,13 +2941,15 @@ class Hosts(Base):
         url = '/api/hosts'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(host))
+                                      body=ParseHelper.toXml(host),
+                                      headers={"Expect":expect})
         return Host(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name='name', filter=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
+        [@param filter: true|false]
 
         @return Hosts:
         '''
@@ -2819,28 +2958,32 @@ class Hosts(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return Host(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return Host(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                                                              headers={"Filter":filter}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_host()
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+                                          headers={"Filter":filter}).get_host()
             return Host(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
+        [@param filter: true|false]
 
         @return Hosts:
         '''
 
         url='/api/hosts'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_host()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={"Filter":filter}).get_host()
         return ParseHelper.toCollection(Host,
                                         FilterHelper.filter(result, kwargs))
 
@@ -2866,7 +3009,7 @@ class Network(params.Network, Base):
                                 {'{network:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def update(self):
         '''
@@ -2886,14 +3029,15 @@ class Network(params.Network, Base):
         url = '/api/networks/{network:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
         return Network(result)
 
 class Networks(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, network):
+    def add(self, network, expect=None):
         '''
         @type Network:
 
@@ -2907,6 +3051,7 @@ class Networks(Base):
         [@param network.display: boolean]
         [@param network.stp: boolean]
         [@param network.mtu: int]
+        [@param expect: 201-created]
 
         @return Network:
         '''
@@ -2914,7 +3059,8 @@ class Networks(Base):
         url = '/api/networks'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(network))
+                                      body=ParseHelper.toXml(network),
+                                      headers={"Expect":expect})
         return Network(result)
 
     def get(self, name='*', **kwargs):
@@ -2929,19 +3075,20 @@ class Networks(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return Network(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return Network(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']), headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=url).get_network()
+            result = self._getProxy().get(url=url,
+                                          headers={}).get_network()
             if name != '*': kwargs['name']=name
             return Network(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, max=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param max: int (max results)]
 
         @return Networks:
@@ -2949,7 +3096,8 @@ class Networks(Base):
 
         url='/api/networks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max})).get_network()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+                                      headers={}).get_network()
         return ParseHelper.toCollection(Network,
                                         FilterHelper.filter(result, kwargs))
 
@@ -2976,7 +3124,7 @@ class Role(params.Role, Base):
                                 {'{role:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def update(self):
         '''
@@ -2992,7 +3140,8 @@ class Role(params.Role, Base):
         url = '/api/roles/{role:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
         return Role(result)
 
 class RolePermit(params.Permit, Base):
@@ -3019,19 +3168,20 @@ class RolePermit(params.Permit, Base):
                                  '{permit:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class RolePermits(Base):
 
     def __init__(self, role):
         self.parentclass = role
 
-    def add(self, permit):
+    def add(self, permit, expect=None):
 
         '''
         @type Permit:
 
         @param permit.id|name: string
+        [@param expect: 201-created]
 
         @return Permit:
         '''
@@ -3039,7 +3189,8 @@ class RolePermits(Base):
         url = '/api/roles/{role:id}/permits'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permit))
+                                      body=ParseHelper.toXml(permit),
+                                      headers={"Expect":expect})
 
         return RolePermit(self.parentclass, result)
 
@@ -3057,7 +3208,8 @@ class RolePermits(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return RolePermit(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -3065,7 +3217,8 @@ class RolePermits(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()})).get_permit()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permit()
 
             return RolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -3081,7 +3234,8 @@ class RolePermits(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{role:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_permit()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permit()
         return ParseHelper.toSubCollection(RolePermit,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3090,7 +3244,7 @@ class Roles(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, role):
+    def add(self, role, expect=None):
         '''
         @type Role:
 
@@ -3101,6 +3255,7 @@ class Roles(Base):
         }
         [@param role.description: string]
         [@param role.administrative: boolean]
+        [@param expect: 201-created]
 
         @return Role:
         '''
@@ -3108,7 +3263,8 @@ class Roles(Base):
         url = '/api/roles'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(role))
+                                      body=ParseHelper.toXml(role),
+                                      headers={"Expect":expect})
         return Role(result)
 
     def get(self, name='*', **kwargs):
@@ -3123,19 +3279,20 @@ class Roles(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return Role(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return Role(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']), headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=url).get_role()
+            result = self._getProxy().get(url=url,
+                                          headers={}).get_role()
             if name != '*': kwargs['name']=name
             return Role(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, max=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param max: int (max results)]
 
         @return Roles:
@@ -3143,7 +3300,8 @@ class Roles(Base):
 
         url='/api/roles'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max})).get_role()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+                                      headers={}).get_role()
         return ParseHelper.toCollection(Role,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3176,7 +3334,8 @@ class StorageDomain(params.StorageDomain, Base):
                                 {'{storagedomain:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       body=ParseHelper.toXml(storagedomain))
+                                       body=ParseHelper.toXml(storagedomain),
+                                       headers={})
 
     def update(self):
         '''
@@ -3188,7 +3347,8 @@ class StorageDomain(params.StorageDomain, Base):
         url = '/api/storagedomains/{storagedomain:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
         return StorageDomain(result)
 
 class StorageDomainFile(params.File, Base):
@@ -3222,7 +3382,8 @@ class StorageDomainFiles(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return StorageDomainFile(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -3230,7 +3391,8 @@ class StorageDomainFiles(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_file()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                          headers={}).get_file()
 
             return StorageDomainFile(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -3248,7 +3410,8 @@ class StorageDomainFiles(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_file()
+                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={}).get_file()
         return ParseHelper.toSubCollection(StorageDomainFile,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3277,14 +3440,14 @@ class StorageDomainPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class StorageDomainPermissions(Base):
 
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
-    def add(self, permission):
+    def add(self, permission, expect=None):
 
         '''
         @type Permission:
@@ -3295,6 +3458,7 @@ class StorageDomainPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -3302,7 +3466,8 @@ class StorageDomainPermissions(Base):
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission))
+                                      body=ParseHelper.toXml(permission),
+                                      headers={"Expect":expect})
 
         return StorageDomainPermission(self.parentclass, result)
 
@@ -3320,7 +3485,8 @@ class StorageDomainPermissions(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return StorageDomainPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -3328,7 +3494,8 @@ class StorageDomainPermissions(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_permission()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permission()
 
             return StorageDomainPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -3344,7 +3511,8 @@ class StorageDomainPermissions(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_permission()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permission()
         return ParseHelper.toSubCollection(StorageDomainPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3382,7 +3550,8 @@ class StorageDomainTemplate(params.Template, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
                                                                      '{template:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -3405,7 +3574,8 @@ class StorageDomainTemplates(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return StorageDomainTemplate(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -3413,7 +3583,8 @@ class StorageDomainTemplates(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_template()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                          headers={}).get_template()
 
             return StorageDomainTemplate(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -3429,7 +3600,8 @@ class StorageDomainTemplates(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_template()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_template()
         return ParseHelper.toSubCollection(StorageDomainTemplate,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3468,7 +3640,8 @@ class StorageDomainVM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
                                                                      '{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -3491,7 +3664,8 @@ class StorageDomainVMs(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return StorageDomainVM(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -3499,7 +3673,8 @@ class StorageDomainVMs(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()})).get_vm()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                          headers={}).get_vm()
 
             return StorageDomainVM(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -3515,7 +3690,8 @@ class StorageDomainVMs(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_vm()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_vm()
         return ParseHelper.toSubCollection(StorageDomainVM,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3524,7 +3700,7 @@ class StorageDomains(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, storagedomain):
+    def add(self, storagedomain, expect=None):
         '''
         @type StorageDomain:
 
@@ -3576,6 +3752,7 @@ class StorageDomains(Base):
           [@param storagedomain.name: string]
           [@param storagedomain.storage.address: string]
           [@param storagedomain.storage.mount_options: string]
+        [@param expect: 201-created]
 
         @return StorageDomain:
         '''
@@ -3583,13 +3760,15 @@ class StorageDomains(Base):
         url = '/api/storagedomains'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(storagedomain))
+                                      body=ParseHelper.toXml(storagedomain),
+                                      headers={"Expect":expect})
         return StorageDomain(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name='name', filter=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
+        [@param filter: true|false]
 
         @return StorageDomains:
         '''
@@ -3598,28 +3777,32 @@ class StorageDomains(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return StorageDomain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return StorageDomain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                                                              headers={"Filter":filter}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_storage_domain()
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+                                          headers={"Filter":filter}).get_storage_domain()
             return StorageDomain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
+        [@param filter: true|false]
 
         @return StorageDomains:
         '''
 
         url='/api/storagedomains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_storage_domain()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={"Filter":filter}).get_storage_domain()
         return ParseHelper.toCollection(StorageDomain,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3645,7 +3828,7 @@ class Tag(params.Tag, Base):
                                 {'{tag:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def update(self):
         '''
@@ -3659,7 +3842,8 @@ class Tag(params.Tag, Base):
         url = '/api/tags/{tag:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
         return Tag(result)
 
 class Tags(Base):
@@ -3680,7 +3864,8 @@ class Tags(Base):
         url = '/api/tags'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(tag))
+                                      body=ParseHelper.toXml(tag),
+                                      headers={})
         return Tag(result)
 
     def get(self, name='*', **kwargs):
@@ -3695,19 +3880,20 @@ class Tags(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return Tag(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return Tag(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']), headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=url).get_tag()
+            result = self._getProxy().get(url=url,
+                                          headers={}).get_tag()
             if name != '*': kwargs['name']=name
             return Tag(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, max=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param max: int (max results)]
 
         @return Tags:
@@ -3715,7 +3901,8 @@ class Tags(Base):
 
         url='/api/tags'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max})).get_tag()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+                                      headers={}).get_tag()
         return ParseHelper.toCollection(Tag,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3745,7 +3932,7 @@ class Template(params.Template, Base):
                                 {'{template:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def export(self, action=params.Action()):
         '''
@@ -3763,7 +3950,8 @@ class Template(params.Template, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def update(self):
@@ -3806,7 +3994,8 @@ class Template(params.Template, Base):
         url = '/api/templates/{template:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
         return Template(result)
 
 class TemplateCdRom(params.CdRom, Base):
@@ -3840,7 +4029,8 @@ class TemplateCdRoms(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return TemplateCdRom(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -3848,7 +4038,8 @@ class TemplateCdRoms(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_cdrom()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                          headers={}).get_cdrom()
 
             return TemplateCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -3864,7 +4055,8 @@ class TemplateCdRoms(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{template:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_cdrom()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_cdrom()
         return ParseHelper.toSubCollection(TemplateCdRom,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3897,7 +4089,8 @@ class TemplateDisk(params.Disk, Base):
                                  '{disk:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       body=ParseHelper.toXml(action))
+                                       body=ParseHelper.toXml(action),
+                                       headers={})
 
 class TemplateDisks(Base):
 
@@ -3918,7 +4111,8 @@ class TemplateDisks(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return TemplateDisk(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -3926,7 +4120,8 @@ class TemplateDisks(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_disk()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                          headers={}).get_disk()
 
             return TemplateDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -3942,7 +4137,8 @@ class TemplateDisks(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{template:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_disk()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_disk()
         return ParseHelper.toSubCollection(TemplateDisk,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -3978,7 +4174,8 @@ class TemplateNics(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return TemplateNic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -3986,7 +4183,8 @@ class TemplateNics(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_nic()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                          headers={}).get_nic()
 
             return TemplateNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -4002,7 +4200,8 @@ class TemplateNics(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{template:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_nic()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_nic()
         return ParseHelper.toSubCollection(TemplateNic,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4031,14 +4230,14 @@ class TemplatePermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class TemplatePermissions(Base):
 
     def __init__(self, template):
         self.parentclass = template
 
-    def add(self, permission):
+    def add(self, permission, expect=None):
 
         '''
         @type Permission:
@@ -4049,6 +4248,7 @@ class TemplatePermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -4056,7 +4256,8 @@ class TemplatePermissions(Base):
         url = '/api/templates/{template:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission))
+                                      body=ParseHelper.toXml(permission),
+                                      headers={"Expect":expect})
 
         return TemplatePermission(self.parentclass, result)
 
@@ -4074,7 +4275,8 @@ class TemplatePermissions(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return TemplatePermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -4082,7 +4284,8 @@ class TemplatePermissions(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()})).get_permission()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permission()
 
             return TemplatePermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -4098,7 +4301,8 @@ class TemplatePermissions(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{template:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_permission()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permission()
         return ParseHelper.toSubCollection(TemplatePermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4107,7 +4311,7 @@ class Templates(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, template):
+    def add(self, template, expect=None):
         '''
         @type Template:
 
@@ -4151,6 +4355,7 @@ class Templates(Base):
             [@param storage_domain.id: string]
           }
         }
+        [@param expect: 201-created]
 
         @return Template:
         '''
@@ -4158,13 +4363,15 @@ class Templates(Base):
         url = '/api/templates'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(template))
+                                      body=ParseHelper.toXml(template),
+                                      headers={"Expect":expect})
         return Template(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name='name', filter=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
+        [@param filter: true|false]
 
         @return Templates:
         '''
@@ -4173,28 +4380,32 @@ class Templates(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return Template(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return Template(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                                                              headers={"Filter":filter}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_template()
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+                                          headers={"Filter":filter}).get_template()
             return Template(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
+        [@param filter: true|false]
 
         @return Templates:
         '''
 
         url='/api/templates'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_template()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={"Filter":filter}).get_template()
         return ParseHelper.toCollection(Template,
                                         FilterHelper.filter(result, kwargs))
 
@@ -4223,7 +4434,7 @@ class User(params.User, Base):
                                 {'{user:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class UserPermission(params.Permission, Base):
     def __init__(self, user, permission):
@@ -4249,14 +4460,14 @@ class UserPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class UserPermissions(Base):
 
     def __init__(self, user):
         self.parentclass = user
 
-    def add(self, permission):
+    def add(self, permission, expect=None):
 
         '''
         @type Permission:
@@ -4282,6 +4493,7 @@ class UserPermissions(Base):
         Overload 7:
           @param permission.role.id: string
           @param permission.template.id: string
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -4289,7 +4501,8 @@ class UserPermissions(Base):
         url = '/api/users/{user:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission))
+                                      body=ParseHelper.toXml(permission),
+                                      headers={"Expect":expect})
 
         return UserPermission(self.parentclass, result)
 
@@ -4307,7 +4520,8 @@ class UserPermissions(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return UserPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -4315,7 +4529,8 @@ class UserPermissions(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_permission()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permission()
 
             return UserPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -4331,7 +4546,8 @@ class UserPermissions(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{user:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_permission()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permission()
         return ParseHelper.toSubCollection(UserPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4361,7 +4577,7 @@ class UserRole(params.Role, Base):
                                  '{role:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class UserRolePermit(params.Permit, Base):
     def __init__(self, userrole, permit):
@@ -4388,19 +4604,20 @@ class UserRolePermit(params.Permit, Base):
                                  '{permit:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class UserRolePermits(Base):
 
     def __init__(self, userrole):
         self.parentclass = userrole
 
-    def add(self, permit):
+    def add(self, permit, expect=None):
 
         '''
         @type Permit:
 
         @param permit.id|name: string
+        [@param expect: 201-created]
 
         @return Permit:
         '''
@@ -4409,7 +4626,8 @@ class UserRolePermits(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{role:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permit))
+                                      body=ParseHelper.toXml(permit),
+                                      headers={"Expect":expect})
 
         return UserRolePermit(self.parentclass, result)
 
@@ -4428,7 +4646,8 @@ class UserRolePermits(Base):
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{role:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return UserRolePermit(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -4437,7 +4656,8 @@ class UserRolePermits(Base):
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{role:id}': self.parentclass.get_id()})).get_permit()
+                                                                      '{role:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permit()
 
             return UserRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -4454,7 +4674,8 @@ class UserRolePermits(Base):
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{user:id}' : self.parentclass.parentclass.get_id(),
                                                                                                '{role:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_permit()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permit()
         return ParseHelper.toSubCollection(UserRolePermit,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4464,12 +4685,13 @@ class UserRoles(Base):
     def __init__(self, user):
         self.parentclass = user
 
-    def add(self, role):
+    def add(self, role, expect=None):
 
         '''
         @type Role:
 
         @param role.id: string
+        [@param expect: 201-created]
 
         @return Role:
         '''
@@ -4477,7 +4699,8 @@ class UserRoles(Base):
         url = '/api/users/{user:id}/roles'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(role))
+                                      body=ParseHelper.toXml(role),
+                                      headers={"Expect":expect})
 
         return UserRole(self.parentclass, result)
 
@@ -4495,7 +4718,8 @@ class UserRoles(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return UserRole(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -4503,7 +4727,8 @@ class UserRoles(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_role()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                          headers={}).get_role()
 
             return UserRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -4519,7 +4744,8 @@ class UserRoles(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{user:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_role()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_role()
         return ParseHelper.toSubCollection(UserRole,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4548,19 +4774,20 @@ class UserTag(params.Tag, Base):
                                  '{tag:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class UserTags(Base):
 
     def __init__(self, user):
         self.parentclass = user
 
-    def add(self, tag):
+    def add(self, tag, expect=None):
 
         '''
         @type Tag:
 
         @param tag.id|name: string
+        [@param expect: 201-created]
 
         @return Tag:
         '''
@@ -4568,7 +4795,8 @@ class UserTags(Base):
         url = '/api/users/{user:id}/tags'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(tag))
+                                      body=ParseHelper.toXml(tag),
+                                      headers={"Expect":expect})
 
         return UserTag(self.parentclass, result)
 
@@ -4586,7 +4814,8 @@ class UserTags(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return UserTag(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -4594,7 +4823,8 @@ class UserTags(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()})).get_tag()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                          headers={}).get_tag()
 
             return UserTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -4610,7 +4840,8 @@ class UserTags(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{user:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_tag()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_tag()
         return ParseHelper.toSubCollection(UserTag,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -4632,7 +4863,8 @@ class Users(Base):
         url = '/api/users'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(user))
+                                      body=ParseHelper.toXml(user),
+                                      headers={})
         return User(result)
 
     def get(self, name='name', **kwargs):
@@ -4647,18 +4879,20 @@ class Users(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return User(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return User(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_user()
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+                                          headers={}).get_user()
             return User(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
@@ -4668,7 +4902,8 @@ class Users(Base):
 
         url='/api/users'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_user()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={}).get_user()
         return ParseHelper.toCollection(User,
                                         FilterHelper.filter(result, kwargs))
 
@@ -4704,7 +4939,8 @@ class VM(params.VM, Base):
                                 {'{vm:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       body=ParseHelper.toXml(action))
+                                       body=ParseHelper.toXml(action),
+                                       headers={})
 
     def shutdown(self, action=params.Action()):
         '''
@@ -4718,7 +4954,8 @@ class VM(params.VM, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def start(self, action=params.Action()):
@@ -4750,7 +4987,8 @@ class VM(params.VM, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def stop(self, action=params.Action()):
@@ -4765,7 +5003,8 @@ class VM(params.VM, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def suspend(self, action=params.Action()):
@@ -4780,7 +5019,8 @@ class VM(params.VM, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def export(self, action=params.Action()):
@@ -4800,7 +5040,8 @@ class VM(params.VM, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def detach(self, action=params.Action()):
@@ -4815,7 +5056,8 @@ class VM(params.VM, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def move(self, action=params.Action()):
@@ -4833,7 +5075,8 @@ class VM(params.VM, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def ticket(self, action=params.Action()):
@@ -4848,7 +5091,8 @@ class VM(params.VM, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def migrate(self, action=params.Action()):
@@ -4867,7 +5111,8 @@ class VM(params.VM, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def cancelmigration(self, action=params.Action()):
@@ -4882,7 +5127,8 @@ class VM(params.VM, Base):
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
         return result
 
     def update(self):
@@ -4938,7 +5184,8 @@ class VM(params.VM, Base):
         url = '/api/vms/{vm:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
         return VM(result)
 
 class VMCdRom(params.CdRom, Base):
@@ -4965,7 +5212,7 @@ class VMCdRom(params.CdRom, Base):
                                  '{cdrom:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def update(self):
         '''
@@ -4978,7 +5225,8 @@ class VMCdRom(params.CdRom, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{cdrom:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
 
         return VMCdRom(self.parentclass, result)
 
@@ -4987,12 +5235,13 @@ class VMCdRoms(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, cdrom):
+    def add(self, cdrom, expect=None):
 
         '''
         @type CdRom:
 
         @param cdrom.file.id: string
+        [@param expect: 201-created]
 
         @return CdRom:
         '''
@@ -5000,7 +5249,8 @@ class VMCdRoms(Base):
         url = '/api/vms/{vm:id}/cdroms'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(cdrom))
+                                      body=ParseHelper.toXml(cdrom),
+                                      headers={"Expect":expect})
 
         return VMCdRom(self.parentclass, result)
 
@@ -5018,7 +5268,8 @@ class VMCdRoms(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMCdRom(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -5026,7 +5277,8 @@ class VMCdRoms(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_cdrom()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                          headers={}).get_cdrom()
 
             return VMCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -5042,7 +5294,8 @@ class VMCdRoms(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_cdrom()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_cdrom()
         return ParseHelper.toSubCollection(VMCdRom,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -5075,7 +5328,8 @@ class VMDisk(params.Disk, Base):
                                  '{disk:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       body=ParseHelper.toXml(action))
+                                       body=ParseHelper.toXml(action),
+                                       headers={})
 
     def activate(self, action=params.Action()):
         '''
@@ -5090,7 +5344,8 @@ class VMDisk(params.Disk, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{disk:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -5107,7 +5362,8 @@ class VMDisk(params.Disk, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{disk:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -5130,7 +5386,8 @@ class VMDisk(params.Disk, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{disk:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
 
         return VMDisk(self.parentclass, result)
 
@@ -5166,7 +5423,8 @@ class VMDiskStatistics(Base):
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{disk:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMDiskStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -5175,7 +5433,8 @@ class VMDiskStatistics(Base):
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{disk:id}': self.parentclass.get_id()})).get_statistic()
+                                                                      '{disk:id}': self.parentclass.get_id()}),
+                                          headers={}).get_statistic()
 
             return VMDiskStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -5200,7 +5459,7 @@ class VMDisks(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, disk):
+    def add(self, disk, expect=None):
 
         '''
         @type Disk:
@@ -5222,6 +5481,7 @@ class VMDisks(Base):
         Overload 2:
           @param disk.id: string
           [@param disk.active: boolean]
+        [@param expect: 201-created]
 
         @return Disk:
         '''
@@ -5229,7 +5489,8 @@ class VMDisks(Base):
         url = '/api/vms/{vm:id}/disks'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(disk))
+                                      body=ParseHelper.toXml(disk),
+                                      headers={"Expect":expect})
 
         return VMDisk(self.parentclass, result)
 
@@ -5247,7 +5508,8 @@ class VMDisks(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMDisk(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -5255,7 +5517,8 @@ class VMDisks(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_disk()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                          headers={}).get_disk()
 
             return VMDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -5271,7 +5534,8 @@ class VMDisks(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_disk()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_disk()
         return ParseHelper.toSubCollection(VMDisk,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -5307,7 +5571,8 @@ class VMNic(params.NIC, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
 
         return VMNic(self.parentclass, result)
 
@@ -5324,7 +5589,8 @@ class VMNic(params.NIC, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -5341,7 +5607,8 @@ class VMNic(params.NIC, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -5357,7 +5624,7 @@ class VMNic(params.NIC, Base):
                                  '{nic:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class VMNicStatistic(params.Statistic, Base):
     def __init__(self, vmnic, statistic):
@@ -5391,7 +5658,8 @@ class VMNicStatistics(Base):
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{nic:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMNicStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -5400,7 +5668,8 @@ class VMNicStatistics(Base):
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{nic:id}': self.parentclass.get_id()})).get_statistic()
+                                                                      '{nic:id}': self.parentclass.get_id()}),
+                                          headers={}).get_statistic()
 
             return VMNicStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -5425,7 +5694,7 @@ class VMNics(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, nic):
+    def add(self, nic, expect=None):
 
         '''
         @type NIC:
@@ -5438,6 +5707,7 @@ class VMNics(Base):
         {
           [@ivar network.id: string]
         }
+        [@param expect: 201-created]
 
         @return NIC:
         '''
@@ -5445,7 +5715,8 @@ class VMNics(Base):
         url = '/api/vms/{vm:id}/nics'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(nic))
+                                      body=ParseHelper.toXml(nic),
+                                      headers={"Expect":expect})
 
         return VMNic(self.parentclass, result)
 
@@ -5463,7 +5734,8 @@ class VMNics(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMNic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -5471,7 +5743,8 @@ class VMNics(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_nic()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                          headers={}).get_nic()
 
             return VMNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -5487,7 +5760,8 @@ class VMNics(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_nic()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_nic()
         return ParseHelper.toSubCollection(VMNic,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -5516,14 +5790,14 @@ class VMPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class VMPermissions(Base):
 
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, permission):
+    def add(self, permission, expect=None):
 
         '''
         @type Permission:
@@ -5534,6 +5808,7 @@ class VMPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -5541,7 +5816,8 @@ class VMPermissions(Base):
         url = '/api/vms/{vm:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission))
+                                      body=ParseHelper.toXml(permission),
+                                      headers={"Expect":expect})
 
         return VMPermission(self.parentclass, result)
 
@@ -5559,7 +5835,8 @@ class VMPermissions(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -5567,7 +5844,8 @@ class VMPermissions(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_permission()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permission()
 
             return VMPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -5583,7 +5861,8 @@ class VMPermissions(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_permission()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permission()
         return ParseHelper.toSubCollection(VMPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -5615,7 +5894,7 @@ class VMSnapshot(params.Snapshot, Base):
                                  '{snapshot:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def restore(self, action=params.Action()):
         '''
@@ -5630,7 +5909,8 @@ class VMSnapshot(params.Snapshot, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{snapshot:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action))
+                                          body=ParseHelper.toXml(action),
+                                          headers={})
 
         return result
 
@@ -5666,7 +5946,8 @@ class VMSnapshotCdroms(Base):
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMSnapshotCdrom(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -5675,7 +5956,8 @@ class VMSnapshotCdroms(Base):
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{snapshot:id}': self.parentclass.get_id()})).get_cdrom()
+                                                                      '{snapshot:id}': self.parentclass.get_id()}),
+                                          headers={}).get_cdrom()
 
             return VMSnapshotCdrom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -5727,7 +6009,8 @@ class VMSnapshotDisks(Base):
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMSnapshotDisk(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -5736,7 +6019,8 @@ class VMSnapshotDisks(Base):
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{snapshot:id}': self.parentclass.get_id()})).get_disk()
+                                                                      '{snapshot:id}': self.parentclass.get_id()}),
+                                          headers={}).get_disk()
 
             return VMSnapshotDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -5788,7 +6072,8 @@ class VMSnapshotNics(Base):
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMSnapshotNic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -5797,7 +6082,8 @@ class VMSnapshotNics(Base):
         else:
             if(name is not None): kwargs['name']=name
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{snapshot:id}': self.parentclass.get_id()})).get_nic()
+                                                                      '{snapshot:id}': self.parentclass.get_id()}),
+                                          headers={}).get_nic()
 
             return VMSnapshotNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -5822,12 +6108,13 @@ class VMSnapshots(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, snapshot):
+    def add(self, snapshot, expect=None):
 
         '''
         @type Snapshot:
 
         @param snapshot.description: string
+        [@param expect: 201-created]
 
         @return Snapshot:
         '''
@@ -5835,7 +6122,8 @@ class VMSnapshots(Base):
         url = '/api/vms/{vm:id}/snapshots'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(snapshot))
+                                      body=ParseHelper.toXml(snapshot),
+                                      headers={"Expect":expect})
 
         return VMSnapshot(self.parentclass, result)
 
@@ -5853,7 +6141,8 @@ class VMSnapshots(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMSnapshot(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -5861,7 +6150,8 @@ class VMSnapshots(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_snapshot()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                          headers={}).get_snapshot()
 
             return VMSnapshot(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -5877,7 +6167,8 @@ class VMSnapshots(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_snapshot()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_snapshot()
         return ParseHelper.toSubCollection(VMSnapshot,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -5913,7 +6204,8 @@ class VMStatistics(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -5921,7 +6213,8 @@ class VMStatistics(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_statistic()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                          headers={}).get_statistic()
 
             return VMStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -5937,7 +6230,8 @@ class VMStatistics(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_statistic()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_statistic()
         return ParseHelper.toSubCollection(VMStatistic,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -5966,19 +6260,20 @@ class VMTag(params.Tag, Base):
                                  '{tag:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class VMTags(Base):
 
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, tag):
+    def add(self, tag, expect=None):
 
         '''
         @type Tag:
 
         @param tag.id|name: string
+        [@param expect: 201-created]
 
         @return Tag:
         '''
@@ -5986,7 +6281,8 @@ class VMTags(Base):
         url = '/api/vms/{vm:id}/tags'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(tag))
+                                      body=ParseHelper.toXml(tag),
+                                      headers={"Expect":expect})
 
         return VMTag(self.parentclass, result)
 
@@ -6004,7 +6300,8 @@ class VMTags(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VMTag(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -6012,7 +6309,8 @@ class VMTags(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_tag()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                          headers={}).get_tag()
 
             return VMTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -6028,7 +6326,8 @@ class VMTags(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_tag()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_tag()
         return ParseHelper.toSubCollection(VMTag,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -6090,13 +6389,15 @@ class VMs(Base):
         url = '/api/vms'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(vm))
+                                      body=ParseHelper.toXml(vm),
+                                      headers={})
         return VM(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name='name', filter=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
+        [@param filter: true|false]
 
         @return VMs:
         '''
@@ -6105,28 +6406,32 @@ class VMs(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return VM(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return VM(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                                                              headers={"Filter":filter}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vm()
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+                                          headers={"Filter":filter}).get_vm()
             return VM(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
+        [@param filter: true|false]
 
         @return VMs:
         '''
 
         url='/api/vms'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_vm()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={"Filter":filter}).get_vm()
         return ParseHelper.toCollection(VM,
                                         FilterHelper.filter(result, kwargs))
 
@@ -6164,7 +6469,7 @@ class VmPool(params.VmPool, Base):
                                 {'{vmpool:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
     def update(self):
         '''
@@ -6178,7 +6483,8 @@ class VmPool(params.VmPool, Base):
         url = '/api/vmpools/{vmpool:id}'
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass))
+                                         body=ParseHelper.toXml(self.superclass),
+                                         headers={})
         return VmPool(result)
 
 class VmPoolPermission(params.Permission, Base):
@@ -6205,14 +6511,14 @@ class VmPoolPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={'Content-type':None})
+                                       headers={"Content-type":None})
 
 class VmPoolPermissions(Base):
 
     def __init__(self, vmpool):
         self.parentclass = vmpool
 
-    def add(self, permission):
+    def add(self, permission, expect=None):
 
         '''
         @type Permission:
@@ -6223,6 +6529,7 @@ class VmPoolPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -6230,7 +6537,8 @@ class VmPoolPermissions(Base):
         url = '/api/vmpools/{vmpool:id}/permissions'
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission))
+                                      body=ParseHelper.toXml(permission),
+                                      headers={"Expect":expect})
 
         return VmPoolPermission(self.parentclass, result)
 
@@ -6248,7 +6556,8 @@ class VmPoolPermissions(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']))
+                                                                   kwargs['id']),
+                                              headers={})
                 return VmPoolPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
@@ -6256,7 +6565,8 @@ class VmPoolPermissions(Base):
                 raise err
         else:
             if(name is not None): kwargs['name']=name
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()})).get_permission()
+            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
+                                          headers={}).get_permission()
 
             return VmPoolPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
@@ -6272,7 +6582,8 @@ class VmPoolPermissions(Base):
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
                                                                                          args={'{vmpool:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max})).get_permission()
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permission()
         return ParseHelper.toSubCollection(VmPoolPermission,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
@@ -6281,13 +6592,14 @@ class VmPools(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, vmpool):
+    def add(self, vmpool, expect=None):
         '''
         @type VmPool:
 
         @param vmpool.cluster.id|name: string
         @param vmpool.template.id|name: string
         @param vmpool.name: string
+        [@param expect: 201-created]
 
         @return VmPool:
         '''
@@ -6295,13 +6607,15 @@ class VmPools(Base):
         url = '/api/vmpools'
 
         result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(vmpool))
+                                      body=ParseHelper.toXml(vmpool),
+                                      headers={"Expect":expect})
         return VmPool(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name='name', filter=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
+        [@param filter: true|false]
 
         @return VmPools:
         '''
@@ -6310,28 +6624,32 @@ class VmPools(Base):
 
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
-                return VmPool(self._getProxy().get(url=UrlHelper.append(url, kwargs['id'])))
+                return VmPool(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                                                              headers={"Filter":filter}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name})).get_vmpool()
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+                                          headers={"Filter":filter}).get_vmpool()
             return VmPool(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
+        [@param filter: true|false]
 
         @return VmPools:
         '''
 
         url='/api/vmpools'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max})).get_vmpool()
+        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                      headers={"Filter":filter}).get_vmpool()
         return ParseHelper.toCollection(VmPool,
                                         FilterHelper.filter(result, kwargs))
 

@@ -18,6 +18,7 @@
 from codegen.utils.typeutil import TypeUtil
 from codegen.doc.documentation import Documentation
 from codegen.utils.paramutils import ParamUtils
+from codegen.utils.headerutils import HeaderUtils
 
 #============================================================
 #===========================RESOURCE=========================
@@ -68,14 +69,17 @@ class Resource(object):
                                            'resource_name_lc':resource_name_lc.lower(),
                                            'method_params': Resource._addMethodParams(action_params.keys()),
                                            'action_params':Resource._addActionParams(action_params)}
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        headers_method_params_str = ', ' + headers_method_params_str if headers_method_params_str != '' else headers_method_params_str
 
         resource_action_template = \
-        ("    def %(action_name)s(self%(method_params)s, %(body_type_lc)s=params.%(body_type)s()):\n" + \
+        ("    def %(action_name)s(self%(method_params)s, %(body_type_lc)s=params.%(body_type)s()" + headers_method_params_str + "):\n" + \
          Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().request(method='%(method)s',\n" + \
         "                                          url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
-        "                                          body=ParseHelper.toXml(%(body_type_lc)s))\n" + \
+        "                                          body=ParseHelper.toXml(%(body_type_lc)s),\n"
+        "                                          headers=" + headers_map_params_str + ")\n" + \
         "        return result\n\n"
         ) % resource_action_template_values
 
@@ -103,31 +107,39 @@ class Resource(object):
                                                                             else None,
                                            'resource_name_lc':resource_name.lower()}
 
-
         prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        combined_method_params = prms_str + \
+                         (', ' if prms_str != '' and headers_method_params_str != '' else '') + \
+                         headers_method_params_str
+        headers_map_params_str_with_no_ct = headers_map_params_str.replace('}',
+                                                                          ',"Content-type":None}') \
+                                                                 if headers_map_params_str != '{}' \
+                                                                 else '{"Content-type":None}'
 
-        if prms_str != '':
+        if prms_str != '' or headers_method_params_str != '':
             resource_delete_template = \
-            ("    def delete(self, " + prms_str + "):\n" + \
+            ("    def delete(self, " + combined_method_params + "):\n" + \
              Documentation.document(link, {}, method_params) +
             "        url = UrlHelper.replace('%(url)s',\n" + \
             "                                {'{%(resource_name_lc)s:id}': self.get_id()})\n\n" + \
-            "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
-                                                                                                               method_params.copy().keys()) +
+            "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " +
+            ParamUtils.toDictStr(url_params.keys(), method_params.copy().keys()) +
                                                                                 "),\n" +
-            "                                       headers={'Content-type':None})\n\n"
+            "                                       headers=" + headers_map_params_str_with_no_ct + ")\n\n"
             ) % resource_delete_template_values
 
 
             body_resource_delete_template = \
-            ("    def delete(self, %(body_type_lc)s=params.%(body_type)s(), " + prms_str + "):\n" + \
+            ("    def delete(self, %(body_type_lc)s=params.%(body_type)s(), " + combined_method_params + "):\n" + \
              Documentation.document(link, {}, method_params) +
             "        url = UrlHelper.replace('%(url)s',\n" + \
             "                                {'{%(resource_name_lc)s:id}': self.get_id()})\n\n" + \
             "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
                                                                                                                method_params.copy().keys()) +
                                                                                 "),\n" + \
-            "                                       body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+            "                                       body=ParseHelper.toXml(%(body_type_lc)s),\n" +
+            "                                       headers=" + headers_map_params_str + ")\n\n"
             ) % resource_delete_template_values
         else:
             resource_delete_template = \
@@ -160,13 +172,16 @@ class Resource(object):
         resource_update_template_values = {'url':url,
                                            'resource_name_lc':resource_name.lower(),
                                            'actual_self_name':actual_xml_entity if actual_xml_entity is not None else resource_name}
+        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        headers_method_params_str = ', ' + headers_method_params_str if headers_method_params_str != '' else headers_method_params_str
 
         resource_update_template = \
-        ("    def update(self):\n" + \
+        ("    def update(self" + headers_method_params_str + "):\n" + \
          Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
         "        result = self._getProxy().update(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
-        "                                         body=ParseHelper.toXml(self.superclass))\n" + \
+        "                                         body=ParseHelper.toXml(self.superclass),\n" +
+        "                                         headers=" + headers_map_params_str + ")\n" + \
         "        return %(actual_self_name)s(result)\n\n") % resource_update_template_values
 
         return resource_update_template
