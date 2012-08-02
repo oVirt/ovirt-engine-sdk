@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-08-01 14:26:01.255053
+Generated at: 2012-08-02 10:59:56.389796
 
 @author: mpastern@redhat.com
 '''
@@ -90,7 +90,7 @@ class Cluster(params.Cluster, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -438,7 +438,7 @@ class ClusterGlusterVolumes(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
+        [@param case_sensitive: boolean (true|false)]
 
         @return GlusterVolumes:
         '''
@@ -466,7 +466,7 @@ class ClusterNetwork(params.Network, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -548,7 +548,7 @@ class ClusterNetworks(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Networks:
         '''
@@ -576,7 +576,7 @@ class ClusterPermission(params.Permission, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -644,7 +644,7 @@ class ClusterPermissions(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -716,8 +716,8 @@ class Clusters(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Clusters:
         '''
@@ -747,7 +747,7 @@ class DataCenter(params.DataCenter, Base):
         @type Action:
 
         [@param action.force: boolean]
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -790,7 +790,7 @@ class DataCenterPermission(params.Permission, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -969,7 +969,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -1066,7 +1066,7 @@ class DataCenterStorageDomains(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return StorageDomains:
         '''
@@ -1129,8 +1129,8 @@ class DataCenters(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return DataCenters:
         '''
@@ -1176,7 +1176,7 @@ class Disk(params.Disk, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -1301,8 +1301,8 @@ class Disks(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Disks:
         '''
@@ -1373,8 +1373,8 @@ class DomainGroups(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Groups:
         '''
@@ -1435,8 +1435,8 @@ class DomainUsers(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Users:
         '''
@@ -1479,7 +1479,7 @@ class Domains(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Domains:
         '''
@@ -1530,9 +1530,9 @@ class Events(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param from_event_id: event_id]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param from_event_id: string (event_id)]
+        [@param max: int (max results)]
 
         @return Events:
         '''
@@ -1559,7 +1559,7 @@ class Group(params.Group, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -1584,7 +1584,7 @@ class GroupPermission(params.Permission, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -1667,7 +1667,7 @@ class GroupPermissions(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -1696,7 +1696,7 @@ class GroupRole(params.Role, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -1722,7 +1722,7 @@ class GroupRolePermit(params.Permit, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -1789,7 +1789,7 @@ class GroupRolePermits(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Permits:
         '''
@@ -1855,7 +1855,7 @@ class GroupRoles(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Roles:
         '''
@@ -1883,7 +1883,7 @@ class GroupTag(params.Tag, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -1946,7 +1946,7 @@ class GroupTags(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Tags:
         '''
@@ -2004,8 +2004,8 @@ class Groups(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Groups:
         '''
@@ -2034,7 +2034,7 @@ class Host(params.Host, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -2214,7 +2214,7 @@ class HostNIC(params.HostNIC, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -2343,7 +2343,7 @@ class HostNicStatistics(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Statistics:
         '''
@@ -2425,7 +2425,7 @@ class HostNics(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return HostNics:
         '''
@@ -2492,7 +2492,7 @@ class HostPermission(params.Permission, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -2560,7 +2560,7 @@ class HostPermissions(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -2620,7 +2620,7 @@ class HostStatistics(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Statistics:
         '''
@@ -2668,7 +2668,7 @@ class HostStorage(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return HostStorage:
         '''
@@ -2696,7 +2696,7 @@ class HostTag(params.Tag, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -2758,7 +2758,7 @@ class HostTags(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Tags:
         '''
@@ -2832,8 +2832,8 @@ class Hosts(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Hosts:
         '''
@@ -2857,7 +2857,7 @@ class Network(params.Network, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -2942,7 +2942,7 @@ class Networks(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Networks:
         '''
@@ -2967,7 +2967,7 @@ class Role(params.Role, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -3009,7 +3009,7 @@ class RolePermit(params.Permit, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -3072,7 +3072,7 @@ class RolePermits(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Permits:
         '''
@@ -3136,7 +3136,7 @@ class Roles(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Roles:
         '''
@@ -3167,7 +3167,7 @@ class StorageDomain(params.StorageDomain, Base):
         @type StorageDomain:
 
         @param storagedomain.host.id|name: string
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -3238,8 +3238,8 @@ class StorageDomainFiles(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Files:
         '''
@@ -3267,7 +3267,7 @@ class StorageDomainPermission(params.Permission, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -3335,7 +3335,7 @@ class StorageDomainPermissions(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -3420,7 +3420,7 @@ class StorageDomainTemplates(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Templates:
         '''
@@ -3506,7 +3506,7 @@ class StorageDomainVMs(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return VMs:
         '''
@@ -3611,8 +3611,8 @@ class StorageDomains(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return StorageDomains:
         '''
@@ -3636,7 +3636,7 @@ class Tag(params.Tag, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -3708,7 +3708,7 @@ class Tags(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Tags:
         '''
@@ -3736,7 +3736,7 @@ class Template(params.Template, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -3855,7 +3855,7 @@ class TemplateCdRoms(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return CdRoms:
         '''
@@ -3887,7 +3887,7 @@ class TemplateDisk(params.Disk, Base):
 
         [@param action.storage_domain.id: string]
         [@param action.force: boolean]
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -3933,7 +3933,7 @@ class TemplateDisks(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Disks:
         '''
@@ -3993,7 +3993,7 @@ class TemplateNics(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Nics:
         '''
@@ -4021,7 +4021,7 @@ class TemplatePermission(params.Permission, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -4089,7 +4089,7 @@ class TemplatePermissions(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -4186,8 +4186,8 @@ class Templates(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Templates:
         '''
@@ -4214,7 +4214,7 @@ class User(params.User, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -4239,7 +4239,7 @@ class UserPermission(params.Permission, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -4322,7 +4322,7 @@ class UserPermissions(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -4351,7 +4351,7 @@ class UserRole(params.Role, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -4377,7 +4377,7 @@ class UserRolePermit(params.Permit, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -4444,7 +4444,7 @@ class UserRolePermits(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Permits:
         '''
@@ -4510,7 +4510,7 @@ class UserRoles(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Roles:
         '''
@@ -4538,7 +4538,7 @@ class UserTag(params.Tag, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -4601,7 +4601,7 @@ class UserTags(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Tags:
         '''
@@ -4660,8 +4660,8 @@ class Users(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Users:
         '''
@@ -4695,7 +4695,7 @@ class VM(params.VM, Base):
         @type Action:
 
         [@param action.force: boolean]
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -4955,7 +4955,7 @@ class VMCdRom(params.CdRom, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -5033,7 +5033,7 @@ class VMCdRoms(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return CdRoms:
         '''
@@ -5065,7 +5065,7 @@ class VMDisk(params.Disk, Base):
         @type Action:
 
         @param action.detach: boolean
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -5262,7 +5262,7 @@ class VMDisks(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Disks:
         '''
@@ -5347,7 +5347,7 @@ class VMNic(params.NIC, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -5478,7 +5478,7 @@ class VMNics(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Nics:
         '''
@@ -5506,7 +5506,7 @@ class VMPermission(params.Permission, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -5574,7 +5574,7 @@ class VMPermissions(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -5605,7 +5605,7 @@ class VMSnapshot(params.Snapshot, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -5868,7 +5868,7 @@ class VMSnapshots(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Snapshots:
         '''
@@ -5928,7 +5928,7 @@ class VMStatistics(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Statistics:
         '''
@@ -5956,7 +5956,7 @@ class VMTag(params.Tag, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -6019,7 +6019,7 @@ class VMTags(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Tags:
         '''
@@ -6118,8 +6118,8 @@ class VMs(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return VMs:
         '''
@@ -6155,7 +6155,7 @@ class VmPool(params.VmPool, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -6195,7 +6195,7 @@ class VmPoolPermission(params.Permission, Base):
 
     def delete(self, async=None):
         '''
-        [@param async: true|false]
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
@@ -6263,7 +6263,7 @@ class VmPoolPermissions(Base):
     def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: max results]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -6323,8 +6323,8 @@ class VmPools(Base):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: true|false]
-        [@param max: max results]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return VmPools:
         '''

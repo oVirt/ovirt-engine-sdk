@@ -41,7 +41,11 @@ class ParamUtils():
                             method_parameters += name_candidate + '=True, '
                         else:
                             method_parameters += name_candidate + '=None, '
-                        method_params[name_candidate] = param.value
+                        if hasattr(param, 'type_'):
+                            method_params[name_candidate] = param.type_.replace('xs:', '') + \
+                                                                           ' (' + param.value + ')'
+                        else:
+                            method_params[name_candidate] = param.value
 
         return method_parameters[0:len(method_parameters) - 2], method_params, url_params
 
