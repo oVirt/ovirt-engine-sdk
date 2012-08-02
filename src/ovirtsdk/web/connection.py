@@ -52,7 +52,7 @@ class Connection(object):
         for k in headers.keys():
             if (headers[k] is None and extended_headers.has_key(k)):
                 extended_headers.pop(k)
-            else:
+            elif headers[k] != None:
                 extended_headers[k] = headers[k]
         return extended_headers
 
