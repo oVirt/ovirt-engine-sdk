@@ -27,10 +27,10 @@ class HeaderUtils(object):
             for header_parameter in link.request.headers.header:
                 if header_parameter.name not in HEADERS_EXCLUDE:
                     if header_parameter.required:
-                        params_str += header_parameter.name.lower() + ', '
+                        params_str += header_parameter.name.lower().replace('-', '_') + ', '
                     else:
-                        params_str += header_parameter.name.lower() + '=None, '
-                    headers_str += ', "' + header_parameter.name + '":' + header_parameter.name.lower()
+                        params_str += header_parameter.name.lower().replace('-', '_') + '=None, '
+                    headers_str += ', "' + header_parameter.name + '":' + header_parameter.name.lower().replace('-', '_')
             headers_str = headers_str[2:] if headers_str != '' else headers_str
         return params_str[:len(params_str) - 2] if params_str != '' else params_str, '{' + headers_str + '}'
 

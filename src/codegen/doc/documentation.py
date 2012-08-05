@@ -97,11 +97,11 @@ class Documentation():
                 if header_parameter.name not in HEADERS_EXCLUDE:
                     if header_parameter.required:
                         doc_str += Documentation.DOC_OFFSET + mand_param_doc_template % \
-                                                              (header_parameter.name.lower(),
+                                                              (header_parameter.name.lower().replace('-', '_'),
                                                                header_parameter.value)
                     else:
                         doc_str += Documentation.DOC_OFFSET + opt_param_doc_template % \
-                                                              (header_parameter.name.lower(),
+                                                              (header_parameter.name.lower().replace('-', '_'),
                                                                header_parameter.value)
 
         doc_str += (('\n' + return_doc) if doc_str != offset + "'''\n"
