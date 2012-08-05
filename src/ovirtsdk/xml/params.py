@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Thu Aug  2 10:06:16 2012 by generateDS.py version 2.7b.
+# Generated Sun Aug  5 11:02:47 2012 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -14092,7 +14092,7 @@ class Snapshots(BaseResources):
 class HostNIC(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, host=None, network=None, mac=None, ip=None, vlan=None, bonding=None, boot_protocol=None, statistics=None, check_connectivity=None, speed=None, status=None, mtu=None, bridged=None):
+    def __init__(self, href=None, id=None, name=None, description=None, actions=None, creation_status=None, link=None, host=None, network=None, mac=None, ip=None, vlan=None, bonding=None, boot_protocol=None, statistics=None, check_connectivity=None, speed=None, status=None, mtu=None, bridged=None, custom_configuration=None, override_configuration=None):
         super(HostNIC, self).__init__(href, id, name, description, actions, creation_status, link, )
         self.host = host
         self.network = network
@@ -14107,6 +14107,8 @@ class HostNIC(BaseResource):
         self.status = status
         self.mtu = mtu
         self.bridged = bridged
+        self.custom_configuration = custom_configuration
+        self.override_configuration = override_configuration
     def factory(*args_, **kwargs_):
         if HostNIC.subclass:
             return HostNIC.subclass(*args_, **kwargs_)
@@ -14139,6 +14141,10 @@ class HostNIC(BaseResource):
     def set_mtu(self, mtu): self.mtu = mtu
     def get_bridged(self): return self.bridged
     def set_bridged(self, bridged): self.bridged = bridged
+    def get_custom_configuration(self): return self.custom_configuration
+    def set_custom_configuration(self, custom_configuration): self.custom_configuration = custom_configuration
+    def get_override_configuration(self): return self.override_configuration
+    def set_override_configuration(self, override_configuration): self.override_configuration = override_configuration
     def export(self, outfile, level, namespace_='', name_='HostNIC', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -14186,6 +14192,12 @@ class HostNIC(BaseResource):
         if self.bridged is not None:
             showIndent(outfile, level)
             outfile.write('<%sbridged>%s</%sbridged>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.bridged)), input_name='bridged'), namespace_))
+        if self.custom_configuration is not None:
+            showIndent(outfile, level)
+            outfile.write('<%scustom_configuration>%s</%scustom_configuration>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.custom_configuration)), input_name='custom_configuration'), namespace_))
+        if self.override_configuration is not None:
+            showIndent(outfile, level)
+            outfile.write('<%soverride_configuration>%s</%soverride_configuration>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.override_configuration)), input_name='override_configuration'), namespace_))
     def hasContent_(self):
         if (
             self.host is not None or
@@ -14201,6 +14213,8 @@ class HostNIC(BaseResource):
             self.status is not None or
             self.mtu is not None or
             self.bridged is not None or
+            self.custom_configuration is not None or
+            self.override_configuration is not None or
             super(HostNIC, self).hasContent_()
             ):
             return True
@@ -14278,6 +14292,12 @@ class HostNIC(BaseResource):
         if self.bridged is not None:
             showIndent(outfile, level)
             outfile.write('bridged=%s,\n' % self.bridged)
+        if self.custom_configuration is not None:
+            showIndent(outfile, level)
+            outfile.write('custom_configuration=%s,\n' % self.custom_configuration)
+        if self.override_configuration is not None:
+            showIndent(outfile, level)
+            outfile.write('override_configuration=%s,\n' % self.override_configuration)
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -14358,6 +14378,26 @@ class HostNIC(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'bridged')
             self.bridged = ival_
+        elif nodeName_ == 'custom_configuration':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'custom_configuration')
+            self.custom_configuration = ival_
+        elif nodeName_ == 'override_configuration':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'override_configuration')
+            self.override_configuration = ival_
         super(HostNIC, self).buildChildren(child_, node, nodeName_, True)
 # end class HostNIC
 

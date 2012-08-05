@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-08-02 15:32:55.164345
+Generated at: 2012-08-05 11:02:40.693705
 
 @author: mpastern@redhat.com
 '''
@@ -88,9 +88,10 @@ class Cluster(params.Cluster, Base):
         obj.__init__(cluster)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -99,9 +100,9 @@ class Cluster(params.Cluster, Base):
                                 {'{cluster:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param cluster.name: string]
         [@param cluster.description: string]
@@ -117,6 +118,7 @@ class Cluster(params.Cluster, Base):
         [@param cluster.error_handling.on_error: string]
         [@param cluster.virt_service: boolean]
         [@param cluster.gluster_service: boolean]
+        [@param correlation_id: any string]
 
         @return Cluster:
         '''
@@ -125,7 +127,7 @@ class Cluster(params.Cluster, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
         return Cluster(result)
 
 class ClusterGlusterVolume(params.GlusterVolume, Base):
@@ -152,11 +154,12 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
                                                                    '{glustervolume:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
-    def start(self, action=params.Action()):
+    def start(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
         [@param action.force: boolean]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -167,15 +170,16 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
-    def stop(self, action=params.Action()):
+    def stop(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
         [@param action.force: boolean]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -186,16 +190,17 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
-    def setOption(self, action=params.Action()):
+    def setOption(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
         @param action.option.name: string
         @param action.option.value: string
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -206,16 +211,17 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
-    def rebalance(self, action=params.Action()):
+    def rebalance(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
         [@param action.fix_layout: boolean]
         [@param action.force: boolean]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -226,16 +232,17 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
-    def resetOption(self, action=params.Action()):
+    def resetOption(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
         @param action.option.name: string
         @param action.force: boolean
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -246,14 +253,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
-    def resetAllOptions(self, action=params.Action()):
+    def resetAllOptions(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -264,7 +272,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -297,7 +305,7 @@ class ClusterGlusterVolumeBricks(Base):
     def __init__(self, clusterglustervolume):
         self.parentclass = clusterglustervolume
 
-    def add(self, glusterbricks, expect=None):
+    def add(self, glusterbricks, expect=None, correlation_id=None):
 
         '''
         @type GlusterBricks:
@@ -313,6 +321,7 @@ class ClusterGlusterVolumeBricks(Base):
           [@ivar brick.stripe_count: unsignedShort]
         }
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return GlusterBricks:
         '''
@@ -322,7 +331,7 @@ class ClusterGlusterVolumeBricks(Base):
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{glustervolume:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(glusterbricks),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return ClusterGlusterVolumeBrick(self.parentclass, result)
 
@@ -377,7 +386,7 @@ class ClusterGlusterVolumes(Base):
     def __init__(self, cluster):
         self.parentclass = cluster
 
-    def add(self, glustervolume, expect=None):
+    def add(self, glustervolume, expect=None, correlation_id=None):
 
         '''
         @type GlusterVolume:
@@ -409,6 +418,7 @@ class ClusterGlusterVolumes(Base):
           [@ivar option.value: string]
         }
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return GlusterVolume:
         '''
@@ -417,7 +427,7 @@ class ClusterGlusterVolumes(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(glustervolume),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return ClusterGlusterVolume(self.parentclass, result)
 
@@ -480,9 +490,10 @@ class ClusterNetwork(params.Network, Base):
         obj.__init__(cluster, network)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -492,15 +503,16 @@ class ClusterNetwork(params.Network, Base):
                                  '{network:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param network.display: boolean]
         [@param network.usages.usage: collection]
         {
           [@ivar usage: string]
         }
+        [@param correlation_id: any string]
 
         @return Network:
         '''
@@ -510,7 +522,7 @@ class ClusterNetwork(params.Network, Base):
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{network:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
 
         return ClusterNetwork(self.parentclass, result)
 
@@ -519,13 +531,14 @@ class ClusterNetworks(Base):
     def __init__(self, cluster):
         self.parentclass = cluster
 
-    def add(self, network, expect=None):
+    def add(self, network, expect=None, correlation_id=None):
 
         '''
         @type Network:
 
         @param network.id|name: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Network:
         '''
@@ -534,7 +547,7 @@ class ClusterNetworks(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(network),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return ClusterNetwork(self.parentclass, result)
 
@@ -596,9 +609,10 @@ class ClusterPermission(params.Permission, Base):
         obj.__init__(cluster, permission)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -608,14 +622,14 @@ class ClusterPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class ClusterPermissions(Base):
 
     def __init__(self, cluster):
         self.parentclass = cluster
 
-    def add(self, permission, expect=None):
+    def add(self, permission, expect=None, correlation_id=None):
 
         '''
         @type Permission:
@@ -627,6 +641,7 @@ class ClusterPermissions(Base):
           @param permission.role.id: string
           @param permission.group.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permission:
         '''
@@ -635,7 +650,7 @@ class ClusterPermissions(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return ClusterPermission(self.parentclass, result)
 
@@ -689,7 +704,7 @@ class Clusters(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, cluster, expect=None):
+    def add(self, cluster, expect=None, correlation_id=None):
         '''
         @type Cluster:
 
@@ -709,6 +724,7 @@ class Clusters(Base):
         [@param cluster.virt_service: boolean]
         [@param cluster.gluster_service: boolean]
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Cluster:
         '''
@@ -717,7 +733,7 @@ class Clusters(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(cluster),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Cluster(result)
 
     def get(self, name='name', filter=None, **kwargs):
@@ -776,12 +792,13 @@ class DataCenter(params.DataCenter, Base):
         obj.__init__(datacenter)
         return obj
 
-    def delete(self, action=params.Action(), async=None):
+    def delete(self, action=params.Action(), async=None, correlation_id=None):
         '''
         @type Action:
 
         [@param action.force: boolean]
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -791,9 +808,9 @@ class DataCenter(params.DataCenter, Base):
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        body=ParseHelper.toXml(action),
-                                       headers={})
+                                       headers={"Correlation-Id":correlation_id})
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param datacenter.name: string]
         [@param datacenter.storage_type: string]
@@ -801,6 +818,7 @@ class DataCenter(params.DataCenter, Base):
         [@param datacenter.version.minor: int]
         [@param datacenter.description: string]
         [@param datacenter.storage_format: string]
+        [@param correlation_id: any string]
 
         @return DataCenter:
         '''
@@ -809,7 +827,7 @@ class DataCenter(params.DataCenter, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
         return DataCenter(result)
 
 class DataCenterPermission(params.Permission, Base):
@@ -824,9 +842,10 @@ class DataCenterPermission(params.Permission, Base):
         obj.__init__(datacenter, permission)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -836,14 +855,14 @@ class DataCenterPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class DataCenterPermissions(Base):
 
     def __init__(self, datacenter):
         self.parentclass = datacenter
 
-    def add(self, permission, expect=None):
+    def add(self, permission, expect=None, correlation_id=None):
 
         '''
         @type Permission:
@@ -855,6 +874,7 @@ class DataCenterPermissions(Base):
           @param permission.role.id: string
           @param permission.group.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permission:
         '''
@@ -863,7 +883,7 @@ class DataCenterPermissions(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return DataCenterPermission(self.parentclass, result)
 
@@ -1010,9 +1030,10 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         obj.__init__(datacenter, storagedomain)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -1022,12 +1043,13 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
                                  '{storagedomain:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def activate(self, action=params.Action()):
+    def activate(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -1038,14 +1060,15 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
                                                                      '{storagedomain:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
-    def deactivate(self, action=params.Action()):
+    def deactivate(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -1056,7 +1079,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
                                                                      '{storagedomain:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -1065,13 +1088,14 @@ class DataCenterStorageDomains(Base):
     def __init__(self, datacenter):
         self.parentclass = datacenter
 
-    def add(self, storagedomain, expect=None):
+    def add(self, storagedomain, expect=None, correlation_id=None):
 
         '''
         @type StorageDomain:
 
         @param storagedomain.id|name: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return StorageDomain:
         '''
@@ -1080,7 +1104,7 @@ class DataCenterStorageDomains(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(storagedomain),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return DataCenterStorageDomain(self.parentclass, result)
 
@@ -1134,7 +1158,7 @@ class DataCenters(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, datacenter, expect=None):
+    def add(self, datacenter, expect=None, correlation_id=None):
         '''
         @type DataCenter:
 
@@ -1145,6 +1169,7 @@ class DataCenters(Base):
         [@param datacenter.description: string]
         [@param datacenter.storage_format: string]
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return DataCenter:
         '''
@@ -1153,7 +1178,7 @@ class DataCenters(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(datacenter),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
         return DataCenter(result)
 
     def get(self, name='name', filter=None, **kwargs):
@@ -1210,7 +1235,7 @@ class Disk(params.Disk, Base):
         obj.__init__(disk)
         return obj
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param size: int]
         [@param provisioned_size: int]
@@ -1221,6 +1246,7 @@ class Disk(params.Disk, Base):
         [@param disk.shareable: boolean]
         [@param disk.propagate_errors: boolean]
         [@param disk.wipe_after_delete: boolean]
+        [@param correlation_id: any string]
 
         @return Disk:
         '''
@@ -1229,12 +1255,13 @@ class Disk(params.Disk, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{disk:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
         return Disk(result)
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -1243,7 +1270,7 @@ class Disk(params.Disk, Base):
                                 {'{disk:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class DiskStatistic(params.Statistic, Base):
     def __init__(self, disk, statistic):
@@ -1309,7 +1336,7 @@ class Disks(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, disk, expect=None):
+    def add(self, disk, expect=None, correlation_id=None):
         '''
         @type Disk:
 
@@ -1327,6 +1354,7 @@ class Disks(Base):
           [@ivar storage_domain.id|name: string]
         }
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Disk:
         '''
@@ -1335,7 +1363,7 @@ class Disks(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(disk),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Disk(result)
 
     def get(self, name='name', **kwargs):
@@ -1633,9 +1661,10 @@ class Group(params.Group, Base):
         obj.__init__(group)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -1644,7 +1673,7 @@ class Group(params.Group, Base):
                                 {'{group:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class GroupPermission(params.Permission, Base):
     def __init__(self, group, permission):
@@ -1658,9 +1687,10 @@ class GroupPermission(params.Permission, Base):
         obj.__init__(group, permission)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -1670,14 +1700,14 @@ class GroupPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class GroupPermissions(Base):
 
     def __init__(self, group):
         self.parentclass = group
 
-    def add(self, permission, expect=None):
+    def add(self, permission, expect=None, correlation_id=None):
 
         '''
         @type Permission:
@@ -1704,6 +1734,7 @@ class GroupPermissions(Base):
           @param permission.role.id: string
           @param permission.template.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permission:
         '''
@@ -1712,7 +1743,7 @@ class GroupPermissions(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return GroupPermission(self.parentclass, result)
 
@@ -1775,9 +1806,10 @@ class GroupRole(params.Role, Base):
         obj.__init__(group, role)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -1787,7 +1819,7 @@ class GroupRole(params.Role, Base):
                                  '{role:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class GroupRolePermit(params.Permit, Base):
     def __init__(self, grouprole, permit):
@@ -1801,9 +1833,10 @@ class GroupRolePermit(params.Permit, Base):
         obj.__init__(grouprole, permit)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -1814,20 +1847,21 @@ class GroupRolePermit(params.Permit, Base):
                                  '{permit:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class GroupRolePermits(Base):
 
     def __init__(self, grouprole):
         self.parentclass = grouprole
 
-    def add(self, permit, expect=None):
+    def add(self, permit, expect=None, correlation_id=None):
 
         '''
         @type Permit:
 
         @param permit.id|name: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permit:
         '''
@@ -1837,7 +1871,7 @@ class GroupRolePermits(Base):
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{role:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permit),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return GroupRolePermit(self.parentclass, result)
 
@@ -1895,13 +1929,14 @@ class GroupRoles(Base):
     def __init__(self, group):
         self.parentclass = group
 
-    def add(self, role, expect=None):
+    def add(self, role, expect=None, correlation_id=None):
 
         '''
         @type Role:
 
         @param role.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Role:
         '''
@@ -1910,7 +1945,7 @@ class GroupRoles(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(role),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return GroupRole(self.parentclass, result)
 
@@ -1972,9 +2007,10 @@ class GroupTag(params.Tag, Base):
         obj.__init__(group, tag)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -1984,20 +2020,21 @@ class GroupTag(params.Tag, Base):
                                  '{tag:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class GroupTags(Base):
 
     def __init__(self, group):
         self.parentclass = group
 
-    def add(self, tag, expect=None):
+    def add(self, tag, expect=None, correlation_id=None):
 
         '''
         @type Tag:
 
         @param tag.id|name: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Tag:
         '''
@@ -2006,7 +2043,7 @@ class GroupTags(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(tag),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return GroupTag(self.parentclass, result)
 
@@ -2060,11 +2097,12 @@ class Groups(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, group):
+    def add(self, group, correlation_id=None):
         '''
         @type Group:
 
         @param group.name: string
+        [@param correlation_id: any string]
 
         @return Group:
         '''
@@ -2073,7 +2111,7 @@ class Groups(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(group),
-                                      headers={})
+                                      headers={"Correlation-Id":correlation_id})
         return Group(result)
 
     def get(self, name='name', **kwargs):
@@ -2132,9 +2170,10 @@ class Host(params.Host, Base):
         obj.__init__(host)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -2143,12 +2182,13 @@ class Host(params.Host, Base):
                                 {'{host:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def fence(self, action=params.Action()):
+    def fence(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -2158,13 +2198,14 @@ class Host(params.Host, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def install(self, action=params.Action()):
+    def install(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -2174,13 +2215,14 @@ class Host(params.Host, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def activate(self, action=params.Action()):
+    def activate(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -2190,13 +2232,14 @@ class Host(params.Host, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def deactivate(self, action=params.Action()):
+    def deactivate(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -2206,16 +2249,17 @@ class Host(params.Host, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def approve(self, action=params.Action()):
+    def approve(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
         [@param action.cluster.id|name: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -2225,15 +2269,16 @@ class Host(params.Host, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def iscsilogin(self, action=params.Action()):
+    def iscsilogin(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
         @param action.iscsi.address: string
         @param action.iscsi.target: string
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -2243,14 +2288,15 @@ class Host(params.Host, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def iscsidiscover(self, action=params.Action()):
+    def iscsidiscover(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
         @param action.iscsi.address: string
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -2260,13 +2306,14 @@ class Host(params.Host, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def commitnetconfig(self, action=params.Action()):
+    def commitnetconfig(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -2276,10 +2323,10 @@ class Host(params.Host, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param host.name: string]
         [@param host.address: string]
@@ -2297,6 +2344,7 @@ class Host(params.Host, Base):
           [@ivar option.name: string]
           [@ivar option.value: string]
         }
+        [@param correlation_id: any string]
 
         @return Host:
         '''
@@ -2305,7 +2353,7 @@ class Host(params.Host, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
         return Host(result)
 
 class HostNIC(params.HostNIC, Base):
@@ -2321,9 +2369,10 @@ class HostNIC(params.HostNIC, Base):
         obj.__init__(host, nic)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -2333,15 +2382,16 @@ class HostNIC(params.HostNIC, Base):
                                  '{nic:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def attach(self, action=params.Action()):
+    def attach(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
         @param action.network.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -2352,7 +2402,7 @@ class HostNIC(params.HostNIC, Base):
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -2374,7 +2424,7 @@ class HostNIC(params.HostNIC, Base):
 
         return result
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param hostnic.bonding.slaves.host_nic: collection]
         {
@@ -2394,6 +2444,7 @@ class HostNIC(params.HostNIC, Base):
         [@param hostnic.ip.address: string]
         [@param hostnic.ip.netmask: string]
         [@param hostnic.ip.mtu: int]
+        [@param correlation_id: any string]
 
         @return HostNIC:
         '''
@@ -2403,7 +2454,7 @@ class HostNIC(params.HostNIC, Base):
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
 
         return HostNIC(self.parentclass, result)
 
@@ -2478,7 +2529,7 @@ class HostNics(Base):
     def __init__(self, host):
         self.parentclass = host
 
-    def add(self, hostnic, expect=None):
+    def add(self, hostnic, expect=None, correlation_id=None):
 
         '''
         @type HostNIC:
@@ -2501,6 +2552,7 @@ class HostNics(Base):
         [@param hostnic.ip.address: string]
         [@param hostnic.ip.netmask: string]
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return HostNIC:
         '''
@@ -2509,7 +2561,7 @@ class HostNics(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(hostnic),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return HostNIC(self.parentclass, result)
 
@@ -2559,7 +2611,7 @@ class HostNics(Base):
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs))
 
-    def setupnetworks(self, action=params.Action()):
+    def setupnetworks(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
@@ -2582,10 +2634,12 @@ class HostNics(Base):
           {
             [@param host_nic.name|id: string]
           }
+          [@ivar host_nic.override_configuration: boolean]
         }
         [@param action.checkConnectivity: boolean]
         [@param action.connectivityTimeout: int]
         [@param action.force: boolean]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -2595,7 +2649,7 @@ class HostNics(Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -2611,9 +2665,10 @@ class HostPermission(params.Permission, Base):
         obj.__init__(host, permission)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -2623,14 +2678,14 @@ class HostPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class HostPermissions(Base):
 
     def __init__(self, host):
         self.parentclass = host
 
-    def add(self, permission, expect=None):
+    def add(self, permission, expect=None, correlation_id=None):
 
         '''
         @type Permission:
@@ -2642,6 +2697,7 @@ class HostPermissions(Base):
           @param permission.role.id: string
           @param permission.group.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permission:
         '''
@@ -2650,7 +2706,7 @@ class HostPermissions(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return HostPermission(self.parentclass, result)
 
@@ -2826,9 +2882,10 @@ class HostTag(params.Tag, Base):
         obj.__init__(host, tag)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -2838,7 +2895,7 @@ class HostTag(params.Tag, Base):
                                  '{tag:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class HostTags(Base):
 
@@ -2912,7 +2969,7 @@ class Hosts(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, host, expect=None):
+    def add(self, host, expect=None, correlation_id=None):
         '''
         @type Host:
 
@@ -2934,6 +2991,7 @@ class Hosts(Base):
         }
         [@param host.reboot_after_installation: boolean]
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Host:
         '''
@@ -2942,7 +3000,7 @@ class Hosts(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(host),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Host(result)
 
     def get(self, name='name', filter=None, **kwargs):
@@ -2998,9 +3056,10 @@ class Network(params.Network, Base):
         obj.__init__(network)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -3009,9 +3068,9 @@ class Network(params.Network, Base):
                                 {'{network:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param network.name: string]
         [@param network.description: string]
@@ -3022,6 +3081,7 @@ class Network(params.Network, Base):
         [@param network.display: boolean]
         [@param network.stp: boolean]
         [@param network.mtu: int]
+        [@param correlation_id: any string]
 
         @return Network:
         '''
@@ -3030,14 +3090,14 @@ class Network(params.Network, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
         return Network(result)
 
 class Networks(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, network, expect=None):
+    def add(self, network, expect=None, correlation_id=None):
         '''
         @type Network:
 
@@ -3052,6 +3112,7 @@ class Networks(Base):
         [@param network.stp: boolean]
         [@param network.mtu: int]
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Network:
         '''
@@ -3060,7 +3121,7 @@ class Networks(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(network),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Network(result)
 
     def get(self, name='*', **kwargs):
@@ -3113,9 +3174,10 @@ class Role(params.Role, Base):
         obj.__init__(role)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -3124,15 +3186,16 @@ class Role(params.Role, Base):
                                 {'{role:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param role.permits.permit: collection]
         {
           [@ivar permit.id: string]
         }
         [@param role.description: string]
+        [@param correlation_id: any string]
 
         @return Role:
         '''
@@ -3141,7 +3204,7 @@ class Role(params.Role, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
         return Role(result)
 
 class RolePermit(params.Permit, Base):
@@ -3156,9 +3219,10 @@ class RolePermit(params.Permit, Base):
         obj.__init__(role, permit)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -3168,20 +3232,21 @@ class RolePermit(params.Permit, Base):
                                  '{permit:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class RolePermits(Base):
 
     def __init__(self, role):
         self.parentclass = role
 
-    def add(self, permit, expect=None):
+    def add(self, permit, expect=None, correlation_id=None):
 
         '''
         @type Permit:
 
         @param permit.id|name: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permit:
         '''
@@ -3190,7 +3255,7 @@ class RolePermits(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permit),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return RolePermit(self.parentclass, result)
 
@@ -3244,7 +3309,7 @@ class Roles(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, role, expect=None):
+    def add(self, role, expect=None, correlation_id=None):
         '''
         @type Role:
 
@@ -3256,6 +3321,7 @@ class Roles(Base):
         [@param role.description: string]
         [@param role.administrative: boolean]
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Role:
         '''
@@ -3264,7 +3330,7 @@ class Roles(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(role),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Role(result)
 
     def get(self, name='*', **kwargs):
@@ -3320,12 +3386,13 @@ class StorageDomain(params.StorageDomain, Base):
         obj.__init__(storagedomain)
         return obj
 
-    def delete(self, storagedomain=params.StorageDomain(), async=None):
+    def delete(self, storagedomain=params.StorageDomain(), async=None, correlation_id=None):
         '''
         @type StorageDomain:
 
         @param storagedomain.host.id|name: string
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -3335,11 +3402,12 @@ class StorageDomain(params.StorageDomain, Base):
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        body=ParseHelper.toXml(storagedomain),
-                                       headers={})
+                                       headers={"Correlation-Id":correlation_id})
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param storagedomain.name: string]
+        [@param correlation_id: any string]
 
         @return StorageDomain:
         '''
@@ -3348,7 +3416,7 @@ class StorageDomain(params.StorageDomain, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
         return StorageDomain(result)
 
 class StorageDomainFile(params.File, Base):
@@ -3428,9 +3496,10 @@ class StorageDomainPermission(params.Permission, Base):
         obj.__init__(storagedomain, permission)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -3440,14 +3509,14 @@ class StorageDomainPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class StorageDomainPermissions(Base):
 
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
-    def add(self, permission, expect=None):
+    def add(self, permission, expect=None, correlation_id=None):
 
         '''
         @type Permission:
@@ -3459,6 +3528,7 @@ class StorageDomainPermissions(Base):
           @param permission.role.id: string
           @param permission.group.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permission:
         '''
@@ -3467,7 +3537,7 @@ class StorageDomainPermissions(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return StorageDomainPermission(self.parentclass, result)
 
@@ -3529,7 +3599,7 @@ class StorageDomainTemplate(params.Template, Base):
         obj.__init__(storagedomain, template)
         return obj
 
-    def import_template(self, action=params.Action()):
+    def import_template(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
@@ -3541,6 +3611,7 @@ class StorageDomainTemplate(params.Template, Base):
         {
           [@ivar disk.id: string]
         }
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -3551,7 +3622,7 @@ class StorageDomainTemplate(params.Template, Base):
                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
                                                                      '{template:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -3618,7 +3689,7 @@ class StorageDomainVM(params.VM, Base):
         obj.__init__(storagedomain, vm)
         return obj
 
-    def import_vm(self, action=params.Action()):
+    def import_vm(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
@@ -3631,6 +3702,7 @@ class StorageDomainVM(params.VM, Base):
         {
           [@ivar disk.id: string]
         }
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -3641,7 +3713,7 @@ class StorageDomainVM(params.VM, Base):
                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
                                                                      '{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -3700,7 +3772,7 @@ class StorageDomains(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, storagedomain, expect=None):
+    def add(self, storagedomain, expect=None, correlation_id=None):
         '''
         @type StorageDomain:
 
@@ -3753,6 +3825,7 @@ class StorageDomains(Base):
           [@param storagedomain.storage.address: string]
           [@param storagedomain.storage.mount_options: string]
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return StorageDomain:
         '''
@@ -3761,7 +3834,7 @@ class StorageDomains(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(storagedomain),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
         return StorageDomain(result)
 
     def get(self, name='name', filter=None, **kwargs):
@@ -3817,9 +3890,10 @@ class Tag(params.Tag, Base):
         obj.__init__(tag)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -3828,13 +3902,14 @@ class Tag(params.Tag, Base):
                                 {'{tag:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param tag.name: string]
         [@param tag.description: string]
         [@param tag.parent.name: string]
+        [@param correlation_id: any string]
 
         @return Tag:
         '''
@@ -3843,20 +3918,21 @@ class Tag(params.Tag, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
         return Tag(result)
 
 class Tags(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, tag):
+    def add(self, tag, correlation_id=None):
         '''
         @type Tag:
 
         @param tag.name: string
         [@param tag.description: string]
         [@param tag.parent.name: string]
+        [@param correlation_id: any string]
 
         @return Tag:
         '''
@@ -3865,7 +3941,7 @@ class Tags(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(tag),
-                                      headers={})
+                                      headers={"Correlation-Id":correlation_id})
         return Tag(result)
 
     def get(self, name='*', **kwargs):
@@ -3921,9 +3997,10 @@ class Template(params.Template, Base):
         obj.__init__(template)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -3932,9 +4009,9 @@ class Template(params.Template, Base):
                                 {'{template:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def export(self, action=params.Action()):
+    def export(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
@@ -3942,6 +4019,7 @@ class Template(params.Template, Base):
         [@param action.async: boolean]
         [@param action.exclusive: boolean]
         [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -3951,10 +4029,10 @@ class Template(params.Template, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param template.name: string]
         [@param template.memory: long]
@@ -3987,6 +4065,7 @@ class Template(params.Template, Base):
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
+        [@param correlation_id: any string]
 
         @return Template:
         '''
@@ -3995,7 +4074,7 @@ class Template(params.Template, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
         return Template(result)
 
 class TemplateCdRom(params.CdRom, Base):
@@ -4073,13 +4152,14 @@ class TemplateDisk(params.Disk, Base):
         obj.__init__(template, disk)
         return obj
 
-    def delete(self, action, async=None):
+    def delete(self, action, async=None, correlation_id=None):
         '''
         @type Action:
 
         [@param action.storage_domain.id: string]
         [@param action.force: boolean]
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -4090,7 +4170,7 @@ class TemplateDisk(params.Disk, Base):
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        body=ParseHelper.toXml(action),
-                                       headers={})
+                                       headers={"Correlation-Id":correlation_id})
 
 class TemplateDisks(Base):
 
@@ -4218,9 +4298,10 @@ class TemplatePermission(params.Permission, Base):
         obj.__init__(template, permission)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -4230,14 +4311,14 @@ class TemplatePermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class TemplatePermissions(Base):
 
     def __init__(self, template):
         self.parentclass = template
 
-    def add(self, permission, expect=None):
+    def add(self, permission, expect=None, correlation_id=None):
 
         '''
         @type Permission:
@@ -4249,6 +4330,7 @@ class TemplatePermissions(Base):
           @param permission.role.id: string
           @param permission.group.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permission:
         '''
@@ -4257,7 +4339,7 @@ class TemplatePermissions(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return TemplatePermission(self.parentclass, result)
 
@@ -4311,7 +4393,7 @@ class Templates(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, template, expect=None):
+    def add(self, template, expect=None, correlation_id=None):
         '''
         @type Template:
 
@@ -4356,6 +4438,7 @@ class Templates(Base):
           }
         }
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Template:
         '''
@@ -4364,7 +4447,7 @@ class Templates(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(template),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Template(result)
 
     def get(self, name='name', filter=None, **kwargs):
@@ -4423,9 +4506,10 @@ class User(params.User, Base):
         obj.__init__(user)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -4434,7 +4518,7 @@ class User(params.User, Base):
                                 {'{user:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class UserPermission(params.Permission, Base):
     def __init__(self, user, permission):
@@ -4448,9 +4532,10 @@ class UserPermission(params.Permission, Base):
         obj.__init__(user, permission)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -4460,14 +4545,14 @@ class UserPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class UserPermissions(Base):
 
     def __init__(self, user):
         self.parentclass = user
 
-    def add(self, permission, expect=None):
+    def add(self, permission, expect=None, correlation_id=None):
 
         '''
         @type Permission:
@@ -4494,6 +4579,7 @@ class UserPermissions(Base):
           @param permission.role.id: string
           @param permission.template.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permission:
         '''
@@ -4502,7 +4588,7 @@ class UserPermissions(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return UserPermission(self.parentclass, result)
 
@@ -4565,9 +4651,10 @@ class UserRole(params.Role, Base):
         obj.__init__(user, role)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -4577,7 +4664,7 @@ class UserRole(params.Role, Base):
                                  '{role:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class UserRolePermit(params.Permit, Base):
     def __init__(self, userrole, permit):
@@ -4591,9 +4678,10 @@ class UserRolePermit(params.Permit, Base):
         obj.__init__(userrole, permit)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -4604,20 +4692,21 @@ class UserRolePermit(params.Permit, Base):
                                  '{permit:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class UserRolePermits(Base):
 
     def __init__(self, userrole):
         self.parentclass = userrole
 
-    def add(self, permit, expect=None):
+    def add(self, permit, expect=None, correlation_id=None):
 
         '''
         @type Permit:
 
         @param permit.id|name: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permit:
         '''
@@ -4627,7 +4716,7 @@ class UserRolePermits(Base):
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{role:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permit),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return UserRolePermit(self.parentclass, result)
 
@@ -4685,13 +4774,14 @@ class UserRoles(Base):
     def __init__(self, user):
         self.parentclass = user
 
-    def add(self, role, expect=None):
+    def add(self, role, expect=None, correlation_id=None):
 
         '''
         @type Role:
 
         @param role.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Role:
         '''
@@ -4700,7 +4790,7 @@ class UserRoles(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(role),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return UserRole(self.parentclass, result)
 
@@ -4762,9 +4852,10 @@ class UserTag(params.Tag, Base):
         obj.__init__(user, tag)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -4774,20 +4865,21 @@ class UserTag(params.Tag, Base):
                                  '{tag:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class UserTags(Base):
 
     def __init__(self, user):
         self.parentclass = user
 
-    def add(self, tag, expect=None):
+    def add(self, tag, expect=None, correlation_id=None):
 
         '''
         @type Tag:
 
         @param tag.id|name: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Tag:
         '''
@@ -4796,7 +4888,7 @@ class UserTags(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(tag),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return UserTag(self.parentclass, result)
 
@@ -4850,12 +4942,14 @@ class Users(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, user):
+    def add(self, user, expect=None, correlation_id=None):
         '''
         @type User:
 
         @param user.user_name: string
         @param user.domain.id|name: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return User:
         '''
@@ -4864,7 +4958,7 @@ class Users(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(user),
-                                      headers={})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
         return User(result)
 
     def get(self, name='name', **kwargs):
@@ -4925,12 +5019,13 @@ class VM(params.VM, Base):
         obj.__init__(vm)
         return obj
 
-    def delete(self, action=params.Action(), async=None):
+    def delete(self, action=params.Action(), async=None, correlation_id=None):
         '''
         @type Action:
 
         [@param action.force: boolean]
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -4940,12 +5035,13 @@ class VM(params.VM, Base):
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        body=ParseHelper.toXml(action),
-                                       headers={})
+                                       headers={"Correlation-Id":correlation_id})
 
-    def shutdown(self, action=params.Action()):
+    def shutdown(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -4955,10 +5051,10 @@ class VM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def start(self, action=params.Action()):
+    def start(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
@@ -4979,6 +5075,7 @@ class VM(params.VM, Base):
           [@ivar boot.dev: string]
         }
         [@param action.vm.domain.user.password: string]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -4988,13 +5085,14 @@ class VM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def stop(self, action=params.Action()):
+    def stop(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -5004,13 +5102,14 @@ class VM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def suspend(self, action=params.Action()):
+    def suspend(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -5020,10 +5119,10 @@ class VM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def export(self, action=params.Action()):
+    def export(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
@@ -5032,6 +5131,7 @@ class VM(params.VM, Base):
         [@param action.discard_snapshots: boolean]
         [@param action.storage_domain.id|name: string]
         [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -5041,13 +5141,14 @@ class VM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def detach(self, action=params.Action()):
+    def detach(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -5057,16 +5158,17 @@ class VM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def move(self, action=params.Action()):
+    def move(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
         @param action.storage_domain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -5076,13 +5178,14 @@ class VM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def ticket(self, action=params.Action()):
+    def ticket(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -5092,10 +5195,10 @@ class VM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
-    def migrate(self, action=params.Action()):
+    def migrate(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
@@ -5103,6 +5206,7 @@ class VM(params.VM, Base):
         [@param action.async: boolean]
         [@param action.force: boolean]
         [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -5112,7 +5216,7 @@ class VM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
     def cancelmigration(self, action=params.Action()):
@@ -5131,7 +5235,7 @@ class VM(params.VM, Base):
                                           headers={})
         return result
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param vm.name: string]
         [@param vm.cluster.id|name: string]
@@ -5177,6 +5281,7 @@ class VM(params.VM, Base):
           [@ivar vcpu_pin.vcpu: int]
           [@ivar vcpu_pin.cpu_set: string]
         }
+        [@param correlation_id: any string]
 
         @return VM:
         '''
@@ -5185,7 +5290,7 @@ class VM(params.VM, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
         return VM(result)
 
 class VMCdRom(params.CdRom, Base):
@@ -5200,9 +5305,10 @@ class VMCdRom(params.CdRom, Base):
         obj.__init__(vm, cdrom)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -5212,11 +5318,12 @@ class VMCdRom(params.CdRom, Base):
                                  '{cdrom:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param cdrom.file.id: string]
+        [@param correlation_id: any string]
 
         @return CdRom:
         '''
@@ -5226,7 +5333,7 @@ class VMCdRom(params.CdRom, Base):
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{cdrom:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
 
         return VMCdRom(self.parentclass, result)
 
@@ -5235,13 +5342,14 @@ class VMCdRoms(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, cdrom, expect=None):
+    def add(self, cdrom, expect=None, correlation_id=None):
 
         '''
         @type CdRom:
 
         @param cdrom.file.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return CdRom:
         '''
@@ -5250,7 +5358,7 @@ class VMCdRoms(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(cdrom),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return VMCdRom(self.parentclass, result)
 
@@ -5313,12 +5421,13 @@ class VMDisk(params.Disk, Base):
         obj.__init__(vm, disk)
         return obj
 
-    def delete(self, action, async=None):
+    def delete(self, action, async=None, correlation_id=None):
         '''
         @type Action:
 
         @param action.detach: boolean
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -5329,7 +5438,7 @@ class VMDisk(params.Disk, Base):
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        body=ParseHelper.toXml(action),
-                                       headers={})
+                                       headers={"Correlation-Id":correlation_id})
 
     def activate(self, action=params.Action()):
         '''
@@ -5367,7 +5476,7 @@ class VMDisk(params.Disk, Base):
 
         return result
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param size: int]
         [@param provisioned_size: int]
@@ -5378,6 +5487,7 @@ class VMDisk(params.Disk, Base):
         [@param disk.shareable: boolean]
         [@param disk.propagate_errors: boolean]
         [@param disk.wipe_after_delete: boolean]
+        [@param correlation_id: any string]
 
         @return Disk:
         '''
@@ -5387,7 +5497,7 @@ class VMDisk(params.Disk, Base):
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{disk:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
 
         return VMDisk(self.parentclass, result)
 
@@ -5459,7 +5569,7 @@ class VMDisks(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, disk, expect=None):
+    def add(self, disk, expect=None, correlation_id=None):
 
         '''
         @type Disk:
@@ -5482,6 +5592,7 @@ class VMDisks(Base):
           @param disk.id: string
           [@param disk.active: boolean]
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Disk:
         '''
@@ -5490,7 +5601,7 @@ class VMDisks(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(disk),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return VMDisk(self.parentclass, result)
 
@@ -5553,7 +5664,7 @@ class VMNic(params.NIC, Base):
         obj.__init__(vm, nic)
         return obj
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param nic.network.id|name: string]
         [@param nic.name: string]
@@ -5563,6 +5674,7 @@ class VMNic(params.NIC, Base):
         {
           [@ivar network.id: string]
         }
+        [@param correlation_id: any string]
 
         @return NIC:
         '''
@@ -5572,7 +5684,7 @@ class VMNic(params.NIC, Base):
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
 
         return VMNic(self.parentclass, result)
 
@@ -5612,9 +5724,10 @@ class VMNic(params.NIC, Base):
 
         return result
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -5624,7 +5737,7 @@ class VMNic(params.NIC, Base):
                                  '{nic:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class VMNicStatistic(params.Statistic, Base):
     def __init__(self, vmnic, statistic):
@@ -5694,7 +5807,7 @@ class VMNics(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, nic, expect=None):
+    def add(self, nic, expect=None, correlation_id=None):
 
         '''
         @type NIC:
@@ -5708,6 +5821,7 @@ class VMNics(Base):
           [@ivar network.id: string]
         }
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return NIC:
         '''
@@ -5716,7 +5830,7 @@ class VMNics(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(nic),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return VMNic(self.parentclass, result)
 
@@ -5778,9 +5892,10 @@ class VMPermission(params.Permission, Base):
         obj.__init__(vm, permission)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -5790,14 +5905,14 @@ class VMPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class VMPermissions(Base):
 
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, permission, expect=None):
+    def add(self, permission, expect=None, correlation_id=None):
 
         '''
         @type Permission:
@@ -5809,6 +5924,7 @@ class VMPermissions(Base):
           @param permission.role.id: string
           @param permission.group.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permission:
         '''
@@ -5817,7 +5933,7 @@ class VMPermissions(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return VMPermission(self.parentclass, result)
 
@@ -5882,9 +5998,10 @@ class VMSnapshot(params.Snapshot, Base):
         obj.__init__(vm, snapshot)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -5894,7 +6011,7 @@ class VMSnapshot(params.Snapshot, Base):
                                  '{snapshot:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def restore(self, action=params.Action()):
         '''
@@ -6108,13 +6225,14 @@ class VMSnapshots(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, snapshot, expect=None):
+    def add(self, snapshot, expect=None, correlation_id=None):
 
         '''
         @type Snapshot:
 
         @param snapshot.description: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Snapshot:
         '''
@@ -6123,7 +6241,7 @@ class VMSnapshots(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(snapshot),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return VMSnapshot(self.parentclass, result)
 
@@ -6248,9 +6366,10 @@ class VMTag(params.Tag, Base):
         obj.__init__(vm, tag)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -6260,20 +6379,21 @@ class VMTag(params.Tag, Base):
                                  '{tag:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class VMTags(Base):
 
     def __init__(self, vm):
         self.parentclass = vm
 
-    def add(self, tag, expect=None):
+    def add(self, tag, expect=None, correlation_id=None):
 
         '''
         @type Tag:
 
         @param tag.id|name: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Tag:
         '''
@@ -6282,7 +6402,7 @@ class VMTags(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(tag),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return VMTag(self.parentclass, result)
 
@@ -6336,7 +6456,7 @@ class VMs(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, vm):
+    def add(self, vm, correlation_id=None, expect=None):
         '''
         @type VM:
 
@@ -6382,6 +6502,8 @@ class VMs(Base):
           [@ivar payload.file.name: string]
           [@ivar payload.file.content: string]
         }
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return VM:
         '''
@@ -6390,7 +6512,7 @@ class VMs(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(vm),
-                                      headers={})
+                                      headers={"Correlation-Id":correlation_id, "Expect":expect})
         return VM(result)
 
     def get(self, name='name', filter=None, **kwargs):
@@ -6458,9 +6580,10 @@ class VmPool(params.VmPool, Base):
         obj.__init__(vmpool)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -6469,13 +6592,14 @@ class VmPool(params.VmPool, Base):
                                 {'{vmpool:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
         [@param vmpool.cluster.id|name: string]
         [@param vmpool.template.id|name: string]
         [@param vmpool.name: string]
+        [@param correlation_id: any string]
 
         @return VmPool:
         '''
@@ -6484,7 +6608,7 @@ class VmPool(params.VmPool, Base):
 
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
         return VmPool(result)
 
 class VmPoolPermission(params.Permission, Base):
@@ -6499,9 +6623,10 @@ class VmPoolPermission(params.Permission, Base):
         obj.__init__(vmpool, permission)
         return obj
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -6511,14 +6636,14 @@ class VmPoolPermission(params.Permission, Base):
                                  '{permission:id}': self.get_id()})
 
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Content-type":None})
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class VmPoolPermissions(Base):
 
     def __init__(self, vmpool):
         self.parentclass = vmpool
 
-    def add(self, permission, expect=None):
+    def add(self, permission, expect=None, correlation_id=None):
 
         '''
         @type Permission:
@@ -6530,6 +6655,7 @@ class VmPoolPermissions(Base):
           @param permission.role.id: string
           @param permission.group.id: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Permission:
         '''
@@ -6538,7 +6664,7 @@ class VmPoolPermissions(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return VmPoolPermission(self.parentclass, result)
 
@@ -6592,7 +6718,7 @@ class VmPools(Base):
     def __init__(self):
         """Constructor."""
 
-    def add(self, vmpool, expect=None):
+    def add(self, vmpool, expect=None, correlation_id=None):
         '''
         @type VmPool:
 
@@ -6600,6 +6726,7 @@ class VmPools(Base):
         @param vmpool.template.id|name: string
         @param vmpool.name: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return VmPool:
         '''
@@ -6608,7 +6735,7 @@ class VmPools(Base):
 
         result = self._getProxy().add(url=url,
                                       body=ParseHelper.toXml(vmpool),
-                                      headers={"Expect":expect})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
         return VmPool(result)
 
     def get(self, name='name', filter=None, **kwargs):
