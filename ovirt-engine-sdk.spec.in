@@ -38,6 +38,17 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Sun Aug  5 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.5-1
+- implemented http header support
+- added custom_configuration flag to host NIC
+- added override_configuration flag for setupnetworks action
+- added Correlation-Id header params
+- do not allow sending empty headers
+- refactor url params documentation
+- removed disk.allow_snapshot param documentation
+- to network.update() added [@param network.name: string]
+- fixed vm/template os.boot documentation
+
 * Mon Jul 9 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.4-1
 - fix typo in 'storage' based args documentation
 - make 'name' optional in storagedomains.add() to allow importing existent SD
