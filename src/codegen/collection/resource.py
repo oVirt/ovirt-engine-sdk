@@ -116,6 +116,8 @@ class Resource(object):
                                                                           ',"Content-type":None}') \
                                                                  if headers_map_params_str != '{}' \
                                                                  else '{"Content-type":None}'
+        body_instance = ParamUtils.getBodyInstance(link)
+        body_instance_str = '=' + body_instance if body_instance else ''
 
         if prms_str != '' or headers_method_params_str != '':
             resource_delete_template = \
@@ -131,7 +133,7 @@ class Resource(object):
 
 
             body_resource_delete_template = \
-            ("    def delete(self, %(body_type_lc)s=params.%(body_type)s(), " + combined_method_params + "):\n" + \
+            ("    def delete(self, %(body_type_lc)s" + body_instance_str + ", " + combined_method_params + "):\n" + \
              Documentation.document(link, {}, method_params) +
             "        url = UrlHelper.replace('%(url)s',\n" + \
             "                                {'{%(resource_name_lc)s:id}': self.get_id()})\n\n" + \
@@ -152,7 +154,7 @@ class Resource(object):
 
 
             body_resource_delete_template = \
-            ("    def delete(self, %(body_type_lc)s):\n" + \
+            ("    def delete(self, %(body_type_lc)s" + body_instance_str + "):\n" + \
              Documentation.document(link) +
             "        url = '%(url)s'\n\n" + \
             "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \

@@ -149,6 +149,8 @@ class SubResource(object):
                                                                  if headers_map_params_str != '{}' \
                                                                  else '{"Content-type":None}'
 
+        body_instance = ParamUtils.getBodyInstance(link)
+        body_instance_str = '=' + body_instance if body_instance else ''
 
         if prms_str != '' or headers_method_params_str != '':
             sub_collection_resource_delete_template = \
@@ -165,7 +167,7 @@ class SubResource(object):
              ) % sub_collection_resource_delete_template_values
 
             body_sub_collection_resource_delete_template = \
-            ("    def delete(self, %(body_type_lc)s, " + combined_method_params + "):\n" + \
+            ("    def delete(self, %(body_type_lc)s" + body_instance_str + ", " + combined_method_params + "):\n" + \
              Documentation.document(link, {}, method_params) +
              "        url = UrlHelper.replace('%(url)s',\n" + \
             UrlUtils.generate_url_identifiers_replacments(link,
@@ -191,7 +193,7 @@ class SubResource(object):
              ) % sub_collection_resource_delete_template_values
 
             body_sub_collection_resource_delete_template = \
-            ("    def delete(self, %(body_type_lc)s):\n" + \
+            ("    def delete(self, %(body_type_lc)s" + body_instance_str + "):\n" + \
              Documentation.document(link) +
              "        url = '%(url)s'\n\n" + \
              "        return self._getProxy().delete(url=UrlHelper.replace(url,\n" + \

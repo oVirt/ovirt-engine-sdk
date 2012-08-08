@@ -57,3 +57,15 @@ class ParamUtils():
             output += '\'' + names[i] + '\'' + ':' + values[i] + ','
 
         return output[0: len(output) - 1] + '}'
+
+
+    @staticmethod
+    def getBodyInstance(link):
+        '''Returns body instance if param is optional'''
+        if hasattr(link, 'request') and \
+           hasattr(link.request, 'body') and \
+           hasattr(link.request.body, 'required') and \
+           hasattr(link.request.body, 'type_'):
+            if link.request.body.required == False:
+                return 'params.' + link.request.body.type_ + '()'
+        return ''

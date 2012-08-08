@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-08-05 11:02:40.693705
+Generated at: 2012-08-08 18:56:55.492124
 
 @author: mpastern@redhat.com
 '''
@@ -3386,7 +3386,7 @@ class StorageDomain(params.StorageDomain, Base):
         obj.__init__(storagedomain)
         return obj
 
-    def delete(self, storagedomain=params.StorageDomain(), async=None, correlation_id=None):
+    def delete(self, storagedomain, async=None, correlation_id=None):
         '''
         @type StorageDomain:
 
@@ -4152,7 +4152,7 @@ class TemplateDisk(params.Disk, Base):
         obj.__init__(template, disk)
         return obj
 
-    def delete(self, action, async=None, correlation_id=None):
+    def delete(self, action=params.Action(), async=None, correlation_id=None):
         '''
         @type Action:
 
@@ -5421,7 +5421,7 @@ class VMDisk(params.Disk, Base):
         obj.__init__(vm, disk)
         return obj
 
-    def delete(self, action, async=None, correlation_id=None):
+    def delete(self, action=params.Action(), async=None, correlation_id=None):
         '''
         @type Action:
 
