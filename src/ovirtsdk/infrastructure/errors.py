@@ -20,66 +20,6 @@ class ERROR(Exception):
     def __init__(self, content):
         Exception.__init__(self, content)
 
-class UnsupportedArgument(Exception):
-    def __init__(self, arg):
-        Exception.__init__(self, '[ERROR]:: Argument [%s] is NOT supported!' % arg)
-
-class AmbiguousParameterException(Exception):
-    def __init__(self, method, param):
-        Exception.__init__(self, '[ERROR]:: Parameter [\'-%s\'] at method [\'%s\'] is ambiguous,\nplease specify more specific path to argument or use \'root\' argumentProcessingAlgorithm!' % (param, method))
-
-class ServiceMetadataEndPointLocationFailure(Exception):
-    def __init__(self, url):
-        Exception.__init__(self, '[ERROR]:: Service metadata endpoint [\'%s\'] cannot be found!' % (url))
-
-class ServiceMetadataRetrievalFailure(Exception):
-    def __init__(self, url):
-        Exception.__init__(self, '[ERROR]:: Service [\'%s\'] metadata retrieval failure' % (url))
-
-class AccessRuleValidation(Exception):
-    def __init__(self, module, fName):
-        Exception.__init__(self, '[ERROR]:: \'%s\' is not accessible member of \'%s\'!' % (fName, module))
-
-class WrongArgumentFormat(Exception):
-    def __init__(self, arg):
-        Exception.__init__(self, '[ERROR]:: Wrong argument format [%s], argument must start with \'-\' or \'--\'!' % arg)
-
-class NoFurtherEntries(Exception):
-    def __init__(self, name):
-        Exception.__init__(self, "[ERROR]:: No further entries of \'%s\' can be created!" % name)
-
-class ServiceNotFound(Exception):
-    def __init__(self, name):
-        Exception.__init__(self, "[ERROR]:: Service not found: '%s'!" % name)
-
-class TypeNotFound(Exception):
-    def __init__(self, name):
-        Exception.__init__(self, "[ERROR]:: Type not found: '%s'!" % (name))
-
-class NotValidArgumentForMethod(Exception):
-    def __init__(self, method, key):
-        Exception.__init__(self, '[ERROR]:: NOT valid argument \'-%s\' for method \'%s\', please review help!' % (key, method))
-
-class MethodShouldHaveNoArgs(Exception):
-    def __init__(self, methodName, arg):
-        Exception.__init__(self, '[ERROR]:: Method \'%s\' should have no args, wile specified \'%s\'!' % (methodName, arg))
-
-class NoArgumentsSpecified(Exception):
-    def __init__(self):
-        Exception.__init__(self, '[ERROR]:: No arguments specified!')
-
-class ConfigurationFileNotFound(Exception):
-    def __init__(self, curdir, file_path):
-        Exception.__init__(self, '[ERROR]:: Curr. dir. is: %s,\nConfiguration file NOT found at \'%s\' or not accessible!' % (curdir, file_path))
-
-class RhevmClientHandlerInitiationTimeout(Exception):
-    def __init__(self, ttl):
-        Exception.__init__(self, '[ERROR]:: oVirt ClientHandler Initiation Timed Out [%s seconds]!' % (ttl))
-
-class ExpectationError(Exception):
-    def __init__(self, expect):
-        Exception.__init__(self, '[ERROR]:: %s' % expect)
-
 class ConnectionError(Exception):
     def __init__(self, expect):
         Exception.__init__(self, '[ERROR]::oVirt API connection failure, %s' % expect)
