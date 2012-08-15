@@ -84,6 +84,10 @@ class ConnectionError(Exception):
     def __init__(self, expect):
         Exception.__init__(self, '[ERROR]::oVirt API connection failure, %s' % expect)
 
+class NoCertificatesError(Exception):
+    def __init__(self):
+        Exception.__init__(self, '[ERROR]::key_file, cert_file, ca_file must be specified for SSL connection.')
+
 class RequestError(Exception):
     def __init__(self, response):
         self.detail = None

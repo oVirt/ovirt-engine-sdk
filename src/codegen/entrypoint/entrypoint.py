@@ -128,7 +128,7 @@ class EntryPoint(object):
         api_template = EntryPoint.entryPointImports() + \
         EntryPoint.entryPointCustomImports(types) + \
 """class API():
-    def __init__(self, url, username, password, key_file=None, cert_file=None, ca_file=None, port=None, timeout=None, persistent_auth=True, debug=False):
+    def __init__(self, url, username, password, key_file=None, cert_file=None, ca_file=None, port=None, timeout=None, persistent_auth=True, insecure=False, debug=False):
 
         \"""
         @param url: server url (format "http/s://server[:port]/api")
@@ -140,6 +140,7 @@ class EntryPoint(object):
         [@param port: port to use (if not specified in url)]
         [@param timeout: request timeout]
         [@param persistent_auth: enable persistent authentication (format True|False)]
+        [@param insecure: signals to not demand site trustworthiness for ssl enabled connection (format True|False)]
         [@param debug: debug (format True|False)]
         \"""
 
@@ -154,6 +155,7 @@ class EntryPoint(object):
             port=port,
             strict=False,
             timeout=timeout,
+            insecure=insecure,
             debug=debug
         )
 

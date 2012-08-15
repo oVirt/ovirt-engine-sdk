@@ -19,23 +19,27 @@ from httplib import HTTPConnection
 import urllib
 import urlparse
 from ovirtsdk.web.httpsconnection import HTTPSConnection
+from ovirtsdk.infrastructure.errors import NoCertificatesError
 
 class Connection(object):
     '''
     The oVirt api connection proxy
     '''
-    def __init__(self, url, port, key_file, cert_file, ca_file, strict, timeout, username, password, manager, debug=False):
+    def __init__(self, url, port, key_file, cert_file, ca_file, strict, timeout, username, password, manager, insecure=False, debug=False):
         self.__connection = self.__createConnection(url=url,
                                                     port=port,
                                                     key_file=key_file,
                                                     cert_file=cert_file,
                                                     ca_file=ca_file,
+                                                    insecure=insecure,
                                                     strict=strict,
                                                     timeout=timeout)
+
         self.__connection.set_debuglevel(int(debug))
         self.__headers = self.__createHeaders(username, password)
         self.__manager = manager
         self.__id = id(self)
+        self.__insecure = insecure
 
     def get_id(self):
         return self.__id
@@ -83,10 +87,13 @@ class Connection(object):
         return urlparse.urlparse(url)
 
 
-    def __createConnection(self, url, key_file=None, cert_file=None, ca_file=None, port=None, strict=None, timeout=None):
+    def __createConnection(self, url, key_file=None, cert_file=None, ca_file=None, insecure=False, port=None, strict=None, timeout=None):
         u = self.__parse_url(url)
 
         if(u.scheme == 'https'):
+            if not insecure and (not ca_file or not key_file or not cert_file):
+                raise NoCertificatesError
+
             return HTTPSConnection(host=u.hostname,
                                    port=u.port,
                                    key_file=key_file,
@@ -94,6 +101,7 @@ class Connection(object):
                                    ca_file=ca_file,
                                    strict=strict,
                                    timeout=timeout)
+
         return HTTPConnection(host=u.hostname,
                               port=u.port,
                               strict=strict,
