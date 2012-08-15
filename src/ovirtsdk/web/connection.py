@@ -15,19 +15,21 @@
 #
 
 import base64
-from httplib import HTTPConnection, HTTPSConnection
+from httplib import HTTPConnection
 import urllib
 import urlparse
+from ovirtsdk.web.httpsconnection import HTTPSConnection
 
 class Connection(object):
     '''
     The oVirt api connection proxy
     '''
-    def __init__(self, url, port, key_file, cert_file, strict, timeout, username, password, manager, debug=False):
+    def __init__(self, url, port, key_file, cert_file, ca_file, strict, timeout, username, password, manager, debug=False):
         self.__connection = self.__createConnection(url=url,
                                                     port=port,
                                                     key_file=key_file,
                                                     cert_file=cert_file,
+                                                    ca_file=ca_file,
                                                     strict=strict,
                                                     timeout=timeout)
         self.__connection.set_debuglevel(int(debug))
@@ -81,7 +83,7 @@ class Connection(object):
         return urlparse.urlparse(url)
 
 
-    def __createConnection(self, url, key_file=None, cert_file=None, port=None, strict=None, timeout=None):
+    def __createConnection(self, url, key_file=None, cert_file=None, ca_file=None, port=None, strict=None, timeout=None):
         u = self.__parse_url(url)
 
         if(u.scheme == 'https'):
@@ -89,6 +91,7 @@ class Connection(object):
                                    port=u.port,
                                    key_file=key_file,
                                    cert_file=cert_file,
+                                   ca_file=ca_file,
                                    strict=strict,
                                    timeout=timeout)
         return HTTPConnection(host=u.hostname,

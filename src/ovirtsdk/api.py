@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-07-12 12:04:39.927723
+Generated at: 2012-08-15 13:34:35.546882
 
 @author: mpastern@redhat.com
 '''
@@ -48,14 +48,15 @@ from ovirtsdk.infrastructure.brokers import VmPools
 
 
 class API():
-    def __init__(self, url, username, password, key_file=None, cert_file=None, port=None, timeout=None, persistent_auth=True, debug=False):
+    def __init__(self, url, username, password, key_file=None, cert_file=None, ca_file=None, port=None, timeout=None, persistent_auth=True, debug=False):
 
         """
         @param url: server url (format "http/s://server[:port]/api")
         @param username: user (format user@domain)
         @param password: password
-        [@param key_file: key_file for ssl enabled connection]
-        [@param cert_file: cert_file for ssl enabled connection] 
+        [@param key_file: client PEM key_file for ssl enabled connection]
+        [@param cert_file: client PEM cert_file for ssl enabled connection]
+        [@param ca_file: server ca_file for ssl enabled connection]
         [@param port: port to use (if not specified in url)]
         [@param timeout: request timeout]
         [@param persistent_auth: enable persistent authentication (format True|False)]
@@ -69,6 +70,7 @@ class API():
             password=password,
             key_file=key_file,
             cert_file=cert_file,
+            ca_file=ca_file,
             port=port,
             strict=False,
             timeout=timeout,

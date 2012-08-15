@@ -60,6 +60,7 @@ class CodeGen():
                                port=None,
                                key_file=None,
                                cert_file=None,
+                               ca_file=None,
                                strict=False,
                                timeout=None,
                                username=USER,
