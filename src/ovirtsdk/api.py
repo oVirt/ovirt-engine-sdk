@@ -82,14 +82,14 @@ class API():
         # Create the proxy:
         proxy = Proxy(pool, persistent_auth)
 
-        # Store proxy to the context:
-        contextmanager.add('proxy', proxy, Mode.R)
-
         # Store entry point to the context
         contextmanager.add('entry_point',
                            proxy.request(method='GET',
                                          url='/api'),
                            Mode.R)
+
+        # Store proxy to the context:
+        contextmanager.add('proxy', proxy, Mode.R)
 
         # We need to remember if persistent auth is enabled:
         contextmanager.add('persistent_auth',
