@@ -15,6 +15,7 @@
 #
 
 from ovirtsdk.xml import params
+import types
 
 class ERROR(Exception):
     def __init__(self, content):
@@ -35,31 +36,40 @@ class RequestError(Exception):
         self.reason = None
         res = response.read()
         detail = ''
+        RESPONSE_FORMAT = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+        RESPONSE_FAULT_BODY = '<fault>'
 
-        if res is not None and str(res) is not '' and str(res).find('Error report') != -1:
-            detail = res.lstrip()
-        elif res:
-            f_detail = params.parseString(res)
-            if isinstance(f_detail, params.Action) and f_detail.fault is not None:
-                #self.reason = f_detail.fault.reason
-                detail = f_detail.fault.detail.lstrip()
+        if res and res.startswith(RESPONSE_FORMAT) and res.find(RESPONSE_FAULT_BODY) != -1:
+            try:
+                f_detail = params.parseString(res)
+            except:
+                f_detail = ''
+
+            if types.StringType != type(f_detail):
+                if isinstance(f_detail, params.Action) and f_detail.fault is not None:
+                    #self.reason = f_detail.fault.reason
+                    detail = f_detail.fault.detail.lstrip()
+                else:
+                    #self.reason = response.reason
+                    if f_detail is not None:
+                        detail = f_detail.detail.lstrip()
+
+                #engine returns can-do-action error messages with brackets
+                if detail.startswith('[') and detail.endswith(']'):
+                    detail = detail[1:len(detail) - 1]
+
+                #application server error
+                if detail.startswith('<html>'):
+                    start = detail.find('<h1>')
+                    end = detail.find('</h1>')
+                    if start != -1 and end != -1:
+                        detail = detail[start:end].replace('<h1>', '').replace('</h1>', '')
+                        if detail and detail.endswith(' - '):
+                            detail = detail[:len(detail) - 3]
             else:
-                #self.reason = response.reason
-                if f_detail is not None:
-                    detail = f_detail.detail.lstrip()
-
-        #engine returns can-do-action error messages with brackets
-        if detail.startswith('[') and detail.endswith(']'):
-            detail = detail[1:len(detail) - 1]
-
-        #application server error
-        if detail.startswith('<html>'):
-            start = detail.find('<h1>')
-            end = detail.find('</h1>')
-            if start != -1 and end != -1:
-                detail = detail[start:end].replace('<h1>', '').replace('</h1>', '')
-                if detail and detail.endswith(' - '):
-                    detail = detail[:len(detail) - 3]
+                detail = '\n' + res if res else ''
+        else:
+            detail = '\n' + res if res else ''
 
         self.detail = detail
         self.reason = response.reason
