@@ -38,6 +38,13 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Tue Aug  21 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.6-1
+- make request error being capable to handle any type of response
+- verify credentials before storing proxy in cache
+- implement insecure flag #848046
+- implement server identity check
+- do not require optional params
+
 * Sun Aug  5 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.5-1
 - implemented http header support
 - added custom_configuration flag to host NIC
