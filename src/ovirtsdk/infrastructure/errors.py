@@ -38,7 +38,9 @@ class RequestError(Exception):
         detail = ''
         RESPONSE_FORMAT = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
         RESPONSE_FAULT_BODY = '<fault>'
+        APP_SERVER_RESPONSE_FORMAT = '<html><head><title>JBoss Web'
 
+        #REST error
         if res and res.startswith(RESPONSE_FORMAT) and res.find(RESPONSE_FAULT_BODY) != -1:
             try:
                 f_detail = params.parseString(res)
@@ -58,16 +60,15 @@ class RequestError(Exception):
                 if detail.startswith('[') and detail.endswith(']'):
                     detail = detail[1:len(detail) - 1]
 
-                #application server error
-                if detail.startswith('<html>'):
-                    start = detail.find('<h1>')
-                    end = detail.find('</h1>')
-                    if start != -1 and end != -1:
-                        detail = detail[start:end].replace('<h1>', '').replace('</h1>', '')
-                        if detail and detail.endswith(' - '):
-                            detail = detail[:len(detail) - 3]
-            else:
-                detail = '\n' + res if res else ''
+        #application server error
+        elif res.startswith(APP_SERVER_RESPONSE_FORMAT):
+            detail = res
+            start = detail.find('<h1>')
+            end = detail.find('</h1>')
+            if start != -1 and end != -1:
+                detail = detail[start:end].replace('<h1>', '').replace('</h1>', '')
+                if detail and detail.endswith(' - '):
+                    detail = detail[:len(detail) - 3]
         else:
             detail = '\n' + res if res else ''
 
