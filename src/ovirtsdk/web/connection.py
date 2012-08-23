@@ -20,6 +20,7 @@ import urllib
 import urlparse
 from ovirtsdk.web.httpsconnection import HTTPSConnection
 from ovirtsdk.infrastructure.errors import NoCertificatesError
+import types
 
 class Connection(object):
     '''
@@ -59,7 +60,10 @@ class Connection(object):
             if (headers[k] is None and extended_headers.has_key(k)):
                 extended_headers.pop(k)
             elif headers[k] != None:
-                extended_headers[k] = headers[k]
+                if type(headers[k]) != types.StringType:
+                    extended_headers[k] = str(headers[k])
+                else:
+                    extended_headers[k] = headers[k]
         return extended_headers
 
     def getResponse(self):

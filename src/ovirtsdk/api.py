@@ -19,11 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''
-Generated at: 2012-08-15 15:14:36.711730
-
-@author: mpastern@redhat.com
-'''
+'''Generated at: 2012-08-23 14:04:09.405861'''
 
 from ovirtsdk.infrastructure import contextmanager
 from ovirtsdk.infrastructure.connectionspool import ConnectionsPool
@@ -48,7 +44,7 @@ from ovirtsdk.infrastructure.brokers import VmPools
 
 
 class API():
-    def __init__(self, url, username, password, key_file=None, cert_file=None, ca_file=None, port=None, timeout=None, persistent_auth=True, insecure=False, debug=False):
+    def __init__(self, url, username, password, key_file=None, cert_file=None, ca_file=None, port=None, timeout=None, persistent_auth=True, insecure=False, filter=False, debug=False):
 
         """
         @param url: server url (format "http/s://server[:port]/api")
@@ -61,6 +57,7 @@ class API():
         [@param timeout: request timeout]
         [@param persistent_auth: enable persistent authentication (format True|False)]
         [@param insecure: signals to not demand site trustworthiness for ssl enabled connection (format True|False)]
+        [@param filter: signals if user permission based filtering should be turned on/off (format True|False)]
         [@param debug: debug (format True|False)]
         """
 
@@ -85,7 +82,8 @@ class API():
         # Store entry point to the context
         contextmanager.add('entry_point',
                            proxy.request(method='GET',
-                                         url='/api'),
+                                         url='/api',
+                                         headers={'Filter': filter}),
                            Mode.R)
 
         # Store proxy to the context:
@@ -95,6 +93,9 @@ class API():
         contextmanager.add('persistent_auth',
                            persistent_auth,
                            Mode.R)
+
+        # Store filter to the context:
+        contextmanager.add('filter', filter)
 
         self.capabilities = Capabilities()
         self.clusters = Clusters()
@@ -116,15 +117,20 @@ class API():
 
     def disconnect(self):
         ''' terminates server connection/s '''
+
         proxy = contextmanager.get('proxy')
         persistent_auth = contextmanager.get('persistent_auth')
+        filter_header = contextmanager.get('filter')
 
         # If persistent authentication is enabled then we need to
         # send a last request as a hint to the server to close the
         # session:        
         if proxy and persistent_auth:
             try:
-                proxy.request(method='GET', url='/api', last=True)
+                proxy.request(method='GET', 
+                              url='/api',
+                              headers={'Filter': filter_header},
+                              last=True)
             except Exception:
                 pass
 
@@ -133,15 +139,23 @@ class API():
 
     def test(self, throw_exception=False):
         ''' test server connectivity '''
+
         proxy = contextmanager.get('proxy')
+        filter_header = contextmanager.get('filter')
+
         if proxy:
             try :
-                proxy.request(method='GET', url='/api')
+                proxy.request(method='GET', 
+                              url='/api',
+                              headers={'Filter': filter_header})
             except Exception, e:
                 if throw_exception: raise e
                 else: return False
             return True
         return False
+
+    def set_filter(self, filter):
+        contextmanager.add('filter', filter)
 
 
     def get_special_objects(self):
@@ -153,12 +167,20 @@ class API():
 
     def get_summary(self):
         proxy = contextmanager.get('proxy')
-        return proxy.request(method='GET', url='/api').summary
+        filter_header = contextmanager.get('filter')
+
+        return proxy.request(method='GET',
+                             url='/api',
+                             headers={'Filter': filter_header}).summary
 
 
     def get_time(self):
         proxy = contextmanager.get('proxy')
-        return proxy.request(method='GET', url='/api').time
+        filter_header = contextmanager.get('filter')
+
+        return proxy.request(method='GET',
+                             url='/api',
+                             headers={'Filter': filter_header}).time
 
 
     def get_product_info(self):
