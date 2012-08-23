@@ -86,15 +86,15 @@ class EntryPoint(object):
         # session:        
         if proxy and persistent_auth:
             try:
-                proxy.request(method='GET', 
+                proxy.request(method='GET',
                               url='/api',
                               headers={'Filter': filter_header},
                               last=True)
             except Exception:
                 pass
 
-        # Remove the proxy:
-        contextmanager._remove('proxy', force=True)
+        # Clear context
+        contextmanager._clear(force=True)
 
     def test(self, throw_exception=False):
         ''' test server connectivity '''
@@ -104,7 +104,7 @@ class EntryPoint(object):
 
         if proxy:
             try :
-                proxy.request(method='GET', 
+                proxy.request(method='GET',
                               url='/api',
                               headers={'Filter': filter_header})
             except Exception, e:

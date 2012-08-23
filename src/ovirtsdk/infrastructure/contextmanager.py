@@ -82,6 +82,17 @@ def get(key, remove=False):
             else: return cache[key].val
         return None
 
+def _clear(force=False):
+    ''' 
+    removes all items from the cache
+    
+    @param force: force remove regardless cache mode
+    '''
+    with lock:
+        from ovirtsdk.infrastructure import contextmanager
+        for item in cache.keys():
+            contextmanager._remove(key=item, force=force)
+
 def _remove(key, force=False):
     ''' 
     removes the value from cache

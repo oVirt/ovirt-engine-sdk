@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-08-23 14:04:09.405861'''
+'''Generated at: 2012-08-23 18:08:16.950916'''
 
 from ovirtsdk.infrastructure import contextmanager
 from ovirtsdk.infrastructure.connectionspool import ConnectionsPool
@@ -127,15 +127,15 @@ class API():
         # session:        
         if proxy and persistent_auth:
             try:
-                proxy.request(method='GET', 
+                proxy.request(method='GET',
                               url='/api',
                               headers={'Filter': filter_header},
                               last=True)
             except Exception:
                 pass
 
-        # Remove the proxy:
-        contextmanager._remove('proxy', force=True)
+        # Clear context
+        contextmanager._clear(force=True)
 
     def test(self, throw_exception=False):
         ''' test server connectivity '''
@@ -145,7 +145,7 @@ class API():
 
         if proxy:
             try :
-                proxy.request(method='GET', 
+                proxy.request(method='GET',
                               url='/api',
                               headers={'Filter': filter_header})
             except Exception, e:
