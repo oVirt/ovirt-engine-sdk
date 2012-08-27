@@ -21,7 +21,7 @@ class Documentation():
     OVERLOAD_TEMPLATE = 'Overload'
 
     @staticmethod
-    def document(link, custom_params={}, mapper={}):
+    def document(link, custom_params={}, mapper={}, HEADERS_EXCLUDE = ['Content-Type', 'Filter']):
         '''
         @param body: request body
         @param custom_params: custom params to add {param:required=true|false}
@@ -51,8 +51,6 @@ class Documentation():
 
         custom_mand_param_doc_template = "@param %s\n"
         custom_opt_param_doc_template = "[@param %s]\n"
-
-        HEADERS_EXCLUDE = ['Content-Type']
 
         doc_str += doc_str_in
         doc_str += type_doc if type_doc.find('@type None:') == -1 else ''
@@ -94,14 +92,15 @@ class Documentation():
         if hasattr(link, 'request') and hasattr(link.request, 'headers') and \
            link.request.headers:
             for header_parameter in link.request.headers.header:
+                header_name = header_parameter.name.lower().replace('-', '_')
                 if header_parameter.name not in HEADERS_EXCLUDE:
                     if header_parameter.required:
                         doc_str += Documentation.DOC_OFFSET + mand_param_doc_template % \
-                                                              (header_parameter.name.lower().replace('-', '_'),
+                                                              (header_name,
                                                                header_parameter.value)
                     else:
                         doc_str += Documentation.DOC_OFFSET + opt_param_doc_template % \
-                                                              (header_parameter.name.lower().replace('-', '_'),
+                                                              (header_name,
                                                                header_parameter.value)
 
         doc_str += (('\n' + return_doc) if doc_str != offset + "'''\n"

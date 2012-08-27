@@ -19,18 +19,22 @@ from ovirtsdk.utils.ordereddict import OrderedDict
 class HeaderUtils(object):
 
     @staticmethod
-    def generate_method_params(link, HEADERS_EXCLUDE=['Content-Type']):
+    def generate_method_params(link, HEADERS_EXCLUDE=['Content-Type'], CACHED_HEADERS={'filter':'contextmanager.get(\'filter\')'}):
         params_str = ''
         headers_str = ''
         if hasattr(link, 'request') and hasattr(link.request, 'headers') and \
            link.request.headers:
             for header_parameter in link.request.headers.header:
                 if header_parameter.name not in HEADERS_EXCLUDE:
-                    if header_parameter.required:
-                        params_str += header_parameter.name.lower().replace('-', '_') + ', '
+                    header_name = header_parameter.name.lower().replace('-', '_')
+                    if header_name not in CACHED_HEADERS.keys():
+                        if header_parameter.required:
+                            params_str += header_name  + ', '
+                        else:
+                            params_str += header_name + '=None, '
+                        headers_str += ', "' + header_parameter.name + '":' + header_parameter.name.lower().replace('-', '_')
                     else:
-                        params_str += header_parameter.name.lower().replace('-', '_') + '=None, '
-                    headers_str += ', "' + header_parameter.name + '":' + header_parameter.name.lower().replace('-', '_')
+                        headers_str += ', "' + header_parameter.name + '":' + CACHED_HEADERS[header_name]
             headers_str = headers_str[2:] if headers_str != '' else headers_str
         return params_str[:len(params_str) - 2] if params_str != '' else params_str, '{' + headers_str + '}'
 

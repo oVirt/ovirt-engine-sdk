@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-08-27 11:32:04.178111
+Generated at: 2012-08-27 13:20:10.463361
 
 @author: mpastern@redhat.com
 '''
@@ -31,6 +31,7 @@ from ovirtsdk.utils.filterhelper import FilterHelper
 from ovirtsdk.utils.parsehelper import ParseHelper
 from ovirtsdk.utils.searchhelper import SearchHelper
 from ovirtsdk.infrastructure.common import Base
+from ovirtsdk.infrastructure import contextmanager
 from ovirtsdk.infrastructure.errors import RequestError
 
 
@@ -736,11 +737,10 @@ class Clusters(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Cluster(result)
 
-    def get(self, name='name', filter=None, **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
-        [@param filter: true|false]
 
         @return Clusters:
         '''
@@ -750,23 +750,22 @@ class Clusters(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return Cluster(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":filter}))
+                                                              headers={"Filter":contextmanager.get('filter')}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":filter}).get_cluster()
+                                          headers={"Filter":contextmanager.get('filter')}).get_cluster()
             return Cluster(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
-        [@param filter: true|false]
 
         @return Clusters:
         '''
@@ -774,7 +773,7 @@ class Clusters(Base):
         url='/api/clusters'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":filter}).get_cluster()
+                                      headers={"Filter":contextmanager.get('filter')}).get_cluster()
         return ParseHelper.toCollection(Cluster,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1181,11 +1180,10 @@ class DataCenters(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return DataCenter(result)
 
-    def get(self, name='name', filter=None, **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
-        [@param filter: true|false]
 
         @return DataCenters:
         '''
@@ -1195,23 +1193,22 @@ class DataCenters(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return DataCenter(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":filter}))
+                                                              headers={"Filter":contextmanager.get('filter')}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":filter}).get_data_center()
+                                          headers={"Filter":contextmanager.get('filter')}).get_data_center()
             return DataCenter(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
-        [@param filter: true|false]
 
         @return DataCenters:
         '''
@@ -1219,7 +1216,7 @@ class DataCenters(Base):
         url='/api/datacenters'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":filter}).get_data_center()
+                                      headers={"Filter":contextmanager.get('filter')}).get_data_center()
         return ParseHelper.toCollection(DataCenter,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3000,11 +2997,10 @@ class Hosts(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Host(result)
 
-    def get(self, name='name', filter=None, **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
-        [@param filter: true|false]
 
         @return Hosts:
         '''
@@ -3014,23 +3010,22 @@ class Hosts(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return Host(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":filter}))
+                                                              headers={"Filter":contextmanager.get('filter')}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":filter}).get_host()
+                                          headers={"Filter":contextmanager.get('filter')}).get_host()
             return Host(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
-        [@param filter: true|false]
 
         @return Hosts:
         '''
@@ -3038,7 +3033,7 @@ class Hosts(Base):
         url='/api/hosts'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":filter}).get_host()
+                                      headers={"Filter":contextmanager.get('filter')}).get_host()
         return ParseHelper.toCollection(Host,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3834,11 +3829,10 @@ class StorageDomains(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return StorageDomain(result)
 
-    def get(self, name='name', filter=None, **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
-        [@param filter: true|false]
 
         @return StorageDomains:
         '''
@@ -3848,23 +3842,22 @@ class StorageDomains(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return StorageDomain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":filter}))
+                                                              headers={"Filter":contextmanager.get('filter')}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":filter}).get_storage_domain()
+                                          headers={"Filter":contextmanager.get('filter')}).get_storage_domain()
             return StorageDomain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
-        [@param filter: true|false]
 
         @return StorageDomains:
         '''
@@ -3872,7 +3865,7 @@ class StorageDomains(Base):
         url='/api/storagedomains'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":filter}).get_storage_domain()
+                                      headers={"Filter":contextmanager.get('filter')}).get_storage_domain()
         return ParseHelper.toCollection(StorageDomain,
                                         FilterHelper.filter(result, kwargs))
 
@@ -4499,11 +4492,10 @@ class Templates(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Template(result)
 
-    def get(self, name='name', filter=None, **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
-        [@param filter: true|false]
 
         @return Templates:
         '''
@@ -4513,23 +4505,22 @@ class Templates(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return Template(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":filter}))
+                                                              headers={"Filter":contextmanager.get('filter')}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":filter}).get_template()
+                                          headers={"Filter":contextmanager.get('filter')}).get_template()
             return Template(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
-        [@param filter: true|false]
 
         @return Templates:
         '''
@@ -4537,7 +4528,7 @@ class Templates(Base):
         url='/api/templates'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":filter}).get_template()
+                                      headers={"Filter":contextmanager.get('filter')}).get_template()
         return ParseHelper.toCollection(Template,
                                         FilterHelper.filter(result, kwargs))
 
@@ -6565,11 +6556,10 @@ class VMs(Base):
                                       headers={"Correlation-Id":correlation_id, "Expect":expect})
         return VM(result)
 
-    def get(self, name='name', filter=None, **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
-        [@param filter: true|false]
 
         @return VMs:
         '''
@@ -6579,23 +6569,22 @@ class VMs(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return VM(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":filter}))
+                                                              headers={"Filter":contextmanager.get('filter')}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":filter}).get_vm()
+                                          headers={"Filter":contextmanager.get('filter')}).get_vm()
             return VM(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
-        [@param filter: true|false]
 
         @return VMs:
         '''
@@ -6603,7 +6592,7 @@ class VMs(Base):
         url='/api/vms'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":filter}).get_vm()
+                                      headers={"Filter":contextmanager.get('filter')}).get_vm()
         return ParseHelper.toCollection(VM,
                                         FilterHelper.filter(result, kwargs))
 
@@ -6788,11 +6777,10 @@ class VmPools(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return VmPool(result)
 
-    def get(self, name='name', filter=None, **kwargs):
+    def get(self, name='name', **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param name: string (string the name of the entity)]
-        [@param filter: true|false]
 
         @return VmPools:
         '''
@@ -6802,23 +6790,22 @@ class VmPools(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return VmPool(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":filter}))
+                                                              headers={"Filter":contextmanager.get('filter')}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":filter}).get_vmpool()
+                                          headers={"Filter":contextmanager.get('filter')}).get_vmpool()
             return VmPool(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
-    def list(self, query=None, case_sensitive=True, max=None, filter=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
-        [@param filter: true|false]
 
         @return VmPools:
         '''
@@ -6826,7 +6813,7 @@ class VmPools(Base):
         url='/api/vmpools'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":filter}).get_vmpool()
+                                      headers={"Filter":contextmanager.get('filter')}).get_vmpool()
         return ParseHelper.toCollection(VmPool,
                                         FilterHelper.filter(result, kwargs))
 
