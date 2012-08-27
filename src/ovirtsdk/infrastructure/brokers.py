@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-08-23 18:07:45.463392
+Generated at: 2012-08-27 11:32:04.178111
 
 @author: mpastern@redhat.com
 '''
@@ -2440,10 +2440,12 @@ class HostNIC(params.HostNIC, Base):
 
         return result
 
-    def detach(self, action=params.Action()):
+    def detach(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -2454,7 +2456,7 @@ class HostNIC(params.HostNIC, Base):
                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -6060,10 +6062,11 @@ class VMSnapshot(params.Snapshot, Base):
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def restore(self, action=params.Action()):
+    def restore(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -6074,7 +6077,7 @@ class VMSnapshot(params.Snapshot, Base):
                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{snapshot:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={})
+                                          headers={"Correlation-Id":correlation_id})
 
         return result
 
