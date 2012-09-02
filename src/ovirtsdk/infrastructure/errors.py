@@ -27,7 +27,7 @@ class ConnectionError(Exception):
 
 class NoCertificatesError(Exception):
     def __init__(self):
-        Exception.__init__(self, '[ERROR]::key_file, cert_file, ca_file must be specified for SSL connection.')
+        Exception.__init__(self, '[ERROR]::ca_file (CA certificate) must be specified for SSL connection.')
 
 class RequestError(Exception):
     def __init__(self, response):

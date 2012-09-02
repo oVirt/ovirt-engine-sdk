@@ -95,7 +95,7 @@ class Connection(object):
         u = self.__parse_url(url)
 
         if(u.scheme == 'https'):
-            if not insecure and (not ca_file or not key_file or not cert_file):
+            if not insecure and not ca_file:
                 raise NoCertificatesError
 
             return HTTPSConnection(host=u.hostname,
