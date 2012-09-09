@@ -38,6 +38,23 @@ With this package, custom software can be built for oVirt-Engine.
 
 %changelog
 
+* Sun Sep  9 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.1-1
+- to Disks.add() added /name arg
+- to disk.install() added r/oot_password arg
+- to Template.delete() added async/correlation_id args
+- to Template.update added documentation
+- to HostTags.add() added expect/correlation_id args
+- to VM.start added /filter header
+- raise NoCertificatesError only when no ca_file
+- use cached /filter argument rather than demanding it in methods
+- added correlation_id to:
+  - restore snapshot
+  - detach HostNIC
+  - added create/update/delete methods to template.nics
+- clean context on disconnect
+- add filter parameter to proxy ctr.
+- support app. server errors
+
 * Tue Aug  21 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.6-1
 - make request error being capable to handle any type of response
 - verify credentials before storing proxy in cache
