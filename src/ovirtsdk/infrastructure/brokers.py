@@ -20,7 +20,7 @@
 ########################################
 
 '''
-Generated at: 2012-08-27 13:20:10.463361
+Generated at: 2012-09-09 12:10:50.827376
 
 @author: mpastern@redhat.com
 '''
@@ -1340,6 +1340,7 @@ class Disks(Base):
         @param provisioned_size: int
         @param disk.interface: string
         @param disk.format: string
+        [@param disk.name: string]
         [@param disk.size: int]
         [@param disk.sparse: boolean]
         [@param disk.bootable: boolean]
@@ -2303,6 +2304,7 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
+        [@param action.root_password: string]
         [@param correlation_id: any string]
 
         @return Response:
@@ -2896,11 +2898,14 @@ class HostTags(Base):
     def __init__(self, host):
         self.parentclass = host
 
-    def add(self, tag):
+    def add(self, tag, expect=None, correlation_id=None):
 
         '''
         @type Tag:
 
+        @param tag.id|name: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Tag:
         '''
@@ -2909,7 +2914,7 @@ class HostTags(Base):
 
         result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                       body=ParseHelper.toXml(tag),
-                                      headers={})
+                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
 
         return HostTag(self.parentclass, result)
 
@@ -4225,19 +4230,33 @@ class TemplateNic(params.NIC, Base):
         obj.__init__(template, nic)
         return obj
 
-    def delete(self):
+    def delete(self, async=None, correlation_id=None):
         '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
         @return None:
         '''
 
-        url = '/api/templates/{template:id}/nics/{nic:id}'
+        url = UrlHelper.replace('/api/templates/{template:id}/nics/{nic:id}',
+                                {'{template:id}' : self.parentclass.get_id(),
+                                 '{nic:id}': self.get_id()})
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
-                                                                   '{nic:id}': self.get_id()}),
-                                       headers={'Content-type':None})
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def update(self):
+    def update(self, correlation_id=None):
         '''
+        [@param nic.network.id|name: string]
+        [@param nic.name: string]
+        [@param nic.mac.address: string]
+        [@param nic.interface: string]
+        [@param nic.port_mirroring.networks.network: collection]
+        {
+          [@ivar network.id: string]
+        }
+        [@param correlation_id: any string]
+
         @return NIC:
         '''
 
@@ -4246,7 +4265,7 @@ class TemplateNic(params.NIC, Base):
         result = self._getProxy().update(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
                                          body=ParseHelper.toXml(self.superclass),
-                                         headers={})
+                                         headers={"Correlation-Id":correlation_id})
 
         return TemplateNic(self.parentclass, result)
 
@@ -5279,7 +5298,7 @@ class VM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                          headers={"Correlation-Id":correlation_id, "Filter":contextmanager.get('filter')})
         return result
 
     def stop(self, action=params.Action(), correlation_id=None):
@@ -5618,6 +5637,7 @@ class VMDisks(Base):
           @param provisioned_size: int
           @param disk.interface: string
           @param disk.format: string
+          [@param disk.name: string]
           [@param disk.size: int]
           [@param disk.sparse: boolean]
           [@param disk.bootable: boolean]

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Mon Aug 27 11:32:06 2012 by generateDS.py version 2.7b.
+# Generated Sun Sep  9 12:10:52 2012 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -2562,16 +2562,21 @@ class SchedulingPolicies(GeneratedsSuper):
 class Features(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, transparent_hugepages=None):
-        self.transparent_hugepages = transparent_hugepages
+    def __init__(self, feature=None):
+        if feature is None:
+            self.feature = []
+        else:
+            self.feature = feature
     def factory(*args_, **kwargs_):
         if Features.subclass:
             return Features.subclass(*args_, **kwargs_)
         else:
             return Features(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_transparent_hugepages(self): return self.transparent_hugepages
-    def set_transparent_hugepages(self, transparent_hugepages): self.transparent_hugepages = transparent_hugepages
+    def get_feature(self): return self.feature
+    def set_feature(self, feature): self.feature = feature
+    def add_feature(self, value): self.feature.append(value)
+    def insert_feature(self, index, value): self.feature[index] = value
     def export(self, outfile, level, namespace_='', name_='Features', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -2587,11 +2592,11 @@ class Features(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Features'):
         pass
     def exportChildren(self, outfile, level, namespace_='', name_='Features', fromsubclass_=False):
-        if self.transparent_hugepages is not None:
-            self.transparent_hugepages.export(outfile, level, namespace_, name_='transparent_hugepages')
+        for feature_ in self.feature:
+            feature_.export(outfile, level, namespace_, name_='feature')
     def hasContent_(self):
         if (
-            self.transparent_hugepages is not None
+            self.feature
             ):
             return True
         else:
@@ -2604,12 +2609,18 @@ class Features(GeneratedsSuper):
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
         pass
     def exportLiteralChildren(self, outfile, level, name_):
-        if self.transparent_hugepages is not None:
+        showIndent(outfile, level)
+        outfile.write('feature=[\n')
+        level += 1
+        for feature_ in self.feature:
             showIndent(outfile, level)
-            outfile.write('transparent_hugepages=model_.transparent_hugepages(\n')
-            self.transparent_hugepages.exportLiteral(outfile, level)
+            outfile.write('model_.feature(\n')
+            feature_.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -2618,10 +2629,10 @@ class Features(GeneratedsSuper):
     def buildAttributes(self, node, attrs, already_processed):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'transparent_hugepages':
-            obj_ = TransparentHugePages.factory()
+        if nodeName_ == 'feature':
+            obj_ = Feature.factory()
             obj_.build(child_)
-            self.set_transparent_hugepages(obj_)
+            self.feature.append(obj_)
 # end class Features
 
 
@@ -13135,11 +13146,12 @@ class Floppies(BaseDevices):
 class Disk(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, template=None, image_id=None, storage_domains=None, size=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, quota=None, lunStorage=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, template=None, image_id=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, quota=None, lunStorage=None):
         super(Disk, self).__init__(actions, href, id, name, description, creation_status, link, vm, template, )
         self.image_id = image_id
         self.storage_domains = storage_domains
         self.size = size
+        self.type_ = type_
         self.provisioned_size = provisioned_size
         self.actual_size = actual_size
         self.status = status
@@ -13166,6 +13178,8 @@ class Disk(BaseDevice):
     def set_storage_domains(self, storage_domains): self.storage_domains = storage_domains
     def get_size(self): return self.size
     def set_size(self, size): self.size = size
+    def get_type(self): return self.type_
+    def set_type(self, type_): self.type_ = type_
     def get_provisioned_size(self): return self.provisioned_size
     def set_provisioned_size(self, provisioned_size): self.provisioned_size = provisioned_size
     def get_actual_size(self): return self.actual_size
@@ -13218,6 +13232,9 @@ class Disk(BaseDevice):
         if self.size is not None:
             showIndent(outfile, level)
             outfile.write('<%ssize>%s</%ssize>\n' % (namespace_, self.gds_format_integer(self.size, input_name='size'), namespace_))
+        if self.type_ is not None:
+            showIndent(outfile, level)
+            outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
         if self.provisioned_size is not None:
             showIndent(outfile, level)
             outfile.write('<%sprovisioned_size>%s</%sprovisioned_size>\n' % (namespace_, self.gds_format_integer(self.provisioned_size, input_name='provisioned_size'), namespace_))
@@ -13261,6 +13278,7 @@ class Disk(BaseDevice):
             self.image_id is not None or
             self.storage_domains is not None or
             self.size is not None or
+            self.type_ is not None or
             self.provisioned_size is not None or
             self.actual_size is not None or
             self.status is not None or
@@ -13301,6 +13319,9 @@ class Disk(BaseDevice):
         if self.size is not None:
             showIndent(outfile, level)
             outfile.write('size=%d,\n' % self.size)
+        if self.type_ is not None:
+            showIndent(outfile, level)
+            outfile.write('type_=%s,\n' % quote_python(self.type_).encode(ExternalEncoding))
         if self.provisioned_size is not None:
             showIndent(outfile, level)
             outfile.write('provisioned_size=%d,\n' % self.provisioned_size)
@@ -13379,6 +13400,10 @@ class Disk(BaseDevice):
                 raise_parse_error(child_, 'requires integer: %s' % exp)
             ival_ = self.gds_validate_integer(ival_, node, 'size')
             self.size = ival_
+        elif nodeName_ == 'type':
+            type_ = child_.text
+            type_ = self.gds_validate_string(type_, node, 'type')
+            self.type_ = type_
         elif nodeName_ == 'provisioned_size':
             sval_ = child_.text
             try:
@@ -16405,7 +16430,7 @@ class RSDL(GeneratedsSuper):
 class GlusterVolume(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, cluster=None, volume_type=None, transport_types=None, replica_count=None, stripe_count=None, bricks=None, access_protocols=None, access_control_list=None, options=None, state=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, cluster=None, volume_type=None, transport_types=None, replica_count=None, stripe_count=None, bricks=None, access_protocols=None, access_control_list=None, options=None, status=None):
         super(GlusterVolume, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.cluster = cluster
         self.volume_type = volume_type
@@ -16416,7 +16441,7 @@ class GlusterVolume(BaseResource):
         self.access_protocols = access_protocols
         self.access_control_list = access_control_list
         self.options = options
-        self.state = state
+        self.status = status
     def factory(*args_, **kwargs_):
         if GlusterVolume.subclass:
             return GlusterVolume.subclass(*args_, **kwargs_)
@@ -16441,8 +16466,8 @@ class GlusterVolume(BaseResource):
     def set_access_control_list(self, access_control_list): self.access_control_list = access_control_list
     def get_options(self): return self.options
     def set_options(self, options): self.options = options
-    def get_state(self): return self.state
-    def set_state(self, state): self.state = state
+    def get_status(self): return self.status
+    def set_status(self, status): self.status = status
     def export(self, outfile, level, namespace_='', name_='GlusterVolume', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -16480,9 +16505,8 @@ class GlusterVolume(BaseResource):
             self.access_control_list.export(outfile, level, namespace_, name_='access_control_list')
         if self.options is not None:
             self.options.export(outfile, level, namespace_, name_='options')
-        if self.state is not None:
-            showIndent(outfile, level)
-            outfile.write('<%sstate>%s</%sstate>\n' % (namespace_, self.gds_format_string(quote_xml(self.state).encode(ExternalEncoding), input_name='state'), namespace_))
+        if self.status is not None:
+            self.status.export(outfile, level, namespace_, name_='status')
     def hasContent_(self):
         if (
             self.cluster is not None or
@@ -16494,7 +16518,7 @@ class GlusterVolume(BaseResource):
             self.access_protocols is not None or
             self.access_control_list is not None or
             self.options is not None or
-            self.state is not None or
+            self.status is not None or
             super(GlusterVolume, self).hasContent_()
             ):
             return True
@@ -16554,9 +16578,12 @@ class GlusterVolume(BaseResource):
             self.options.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
-        if self.state is not None:
+        if self.status is not None:
             showIndent(outfile, level)
-            outfile.write('state=%s,\n' % quote_python(self.state).encode(ExternalEncoding))
+            outfile.write('status=model_.status(\n')
+            self.status.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -16609,10 +16636,10 @@ class GlusterVolume(BaseResource):
             obj_ = Options.factory()
             obj_.build(child_)
             self.set_options(obj_)
-        elif nodeName_ == 'state':
-            state_ = child_.text
-            state_ = self.gds_validate_string(state_, node, 'state')
-            self.state = state_
+        elif nodeName_ == 'status':
+            obj_ = Status.factory()
+            obj_.build(child_)
+            self.set_status(obj_)
         super(GlusterVolume, self).buildChildren(child_, node, nodeName_, True)
 # end class GlusterVolume
 
@@ -17077,12 +17104,12 @@ class GlusterVolumes(BaseResources):
 class GlusterBrick(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, gluster_volume=None, server_id=None, brick_dir=None, state=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, gluster_volume=None, server_id=None, brick_dir=None, status=None):
         super(GlusterBrick, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.gluster_volume = gluster_volume
         self.server_id = server_id
         self.brick_dir = brick_dir
-        self.state = state
+        self.status = status
     def factory(*args_, **kwargs_):
         if GlusterBrick.subclass:
             return GlusterBrick.subclass(*args_, **kwargs_)
@@ -17095,8 +17122,8 @@ class GlusterBrick(BaseResource):
     def set_server_id(self, server_id): self.server_id = server_id
     def get_brick_dir(self): return self.brick_dir
     def set_brick_dir(self, brick_dir): self.brick_dir = brick_dir
-    def get_state(self): return self.state
-    def set_state(self, state): self.state = state
+    def get_status(self): return self.status
+    def set_status(self, status): self.status = status
     def export(self, outfile, level, namespace_='', name_='GlusterBrick', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -17121,15 +17148,14 @@ class GlusterBrick(BaseResource):
         if self.brick_dir is not None:
             showIndent(outfile, level)
             outfile.write('<%sbrick_dir>%s</%sbrick_dir>\n' % (namespace_, self.gds_format_string(quote_xml(self.brick_dir).encode(ExternalEncoding), input_name='brick_dir'), namespace_))
-        if self.state is not None:
-            showIndent(outfile, level)
-            outfile.write('<%sstate>%s</%sstate>\n' % (namespace_, self.gds_format_string(quote_xml(self.state).encode(ExternalEncoding), input_name='state'), namespace_))
+        if self.status is not None:
+            self.status.export(outfile, level, namespace_, name_='status')
     def hasContent_(self):
         if (
             self.gluster_volume is not None or
             self.server_id is not None or
             self.brick_dir is not None or
-            self.state is not None or
+            self.status is not None or
             super(GlusterBrick, self).hasContent_()
             ):
             return True
@@ -17156,9 +17182,12 @@ class GlusterBrick(BaseResource):
         if self.brick_dir is not None:
             showIndent(outfile, level)
             outfile.write('brick_dir=%s,\n' % quote_python(self.brick_dir).encode(ExternalEncoding))
-        if self.state is not None:
+        if self.status is not None:
             showIndent(outfile, level)
-            outfile.write('state=%s,\n' % quote_python(self.state).encode(ExternalEncoding))
+            outfile.write('status=model_.status(\n')
+            self.status.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -17179,10 +17208,10 @@ class GlusterBrick(BaseResource):
             brick_dir_ = child_.text
             brick_dir_ = self.gds_validate_string(brick_dir_, node, 'brick_dir')
             self.brick_dir = brick_dir_
-        elif nodeName_ == 'state':
-            state_ = child_.text
-            state_ = self.gds_validate_string(state_, node, 'state')
-            self.state = state_
+        elif nodeName_ == 'status':
+            obj_ = Status.factory()
+            obj_.build(child_)
+            self.set_status(obj_)
         super(GlusterBrick, self).buildChildren(child_, node, nodeName_, True)
 # end class GlusterBrick
 
@@ -17298,6 +17327,221 @@ class GlusterBricks(GeneratedsSuper):
             obj_.build(child_)
             self.brick.append(obj_)
 # end class GlusterBricks
+
+
+class Feature(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, transparent_hugepages=None, gluster_volumes=None, vm_device_types=None, storage_types=None, storage_domain=None, nic=None, api=None, host=None, url=None, headers=None):
+        super(Feature, self).__init__(actions, href, id, name, description, creation_status, link, )
+        self.transparent_hugepages = transparent_hugepages
+        self.gluster_volumes = gluster_volumes
+        self.vm_device_types = vm_device_types
+        self.storage_types = storage_types
+        self.storage_domain = storage_domain
+        self.nic = nic
+        self.api = api
+        self.host = host
+        self.url = url
+        self.headers = headers
+    def factory(*args_, **kwargs_):
+        if Feature.subclass:
+            return Feature.subclass(*args_, **kwargs_)
+        else:
+            return Feature(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_transparent_hugepages(self): return self.transparent_hugepages
+    def set_transparent_hugepages(self, transparent_hugepages): self.transparent_hugepages = transparent_hugepages
+    def get_gluster_volumes(self): return self.gluster_volumes
+    def set_gluster_volumes(self, gluster_volumes): self.gluster_volumes = gluster_volumes
+    def get_vm_device_types(self): return self.vm_device_types
+    def set_vm_device_types(self, vm_device_types): self.vm_device_types = vm_device_types
+    def get_storage_types(self): return self.storage_types
+    def set_storage_types(self, storage_types): self.storage_types = storage_types
+    def get_storage_domain(self): return self.storage_domain
+    def set_storage_domain(self, storage_domain): self.storage_domain = storage_domain
+    def get_nic(self): return self.nic
+    def set_nic(self, nic): self.nic = nic
+    def get_api(self): return self.api
+    def set_api(self, api): self.api = api
+    def get_host(self): return self.host
+    def set_host(self, host): self.host = host
+    def get_url(self): return self.url
+    def set_url(self, url): self.url = url
+    def get_headers(self): return self.headers
+    def set_headers(self, headers): self.headers = headers
+    def export(self, outfile, level, namespace_='', name_='Feature', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Feature')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Feature'):
+        super(Feature, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Feature')
+    def exportChildren(self, outfile, level, namespace_='', name_='Feature', fromsubclass_=False):
+        super(Feature, self).exportChildren(outfile, level, namespace_, name_, True)
+        if self.transparent_hugepages is not None:
+            self.transparent_hugepages.export(outfile, level, namespace_, name_='transparent_hugepages')
+        if self.gluster_volumes is not None:
+            self.gluster_volumes.export(outfile, level, namespace_, name_='gluster_volumes')
+        if self.vm_device_types is not None:
+            self.vm_device_types.export(outfile, level, namespace_, name_='vm_device_types')
+        if self.storage_types is not None:
+            self.storage_types.export(outfile, level, namespace_, name_='storage_types')
+        if self.storage_domain is not None:
+            self.storage_domain.export(outfile, level, namespace_, name_='storage_domain')
+        if self.nic is not None:
+            self.nic.export(outfile, level, namespace_, name_='nic')
+        if self.api is not None:
+            self.api.export(outfile, level, namespace_, name_='api')
+        if self.host is not None:
+            self.host.export(outfile, level, namespace_, name_='host')
+        if self.url is not None:
+            self.url.export(outfile, level, namespace_, name_='url')
+        if self.headers is not None:
+            self.headers.export(outfile, level, namespace_, name_='headers')
+    def hasContent_(self):
+        if (
+            self.transparent_hugepages is not None or
+            self.gluster_volumes is not None or
+            self.vm_device_types is not None or
+            self.storage_types is not None or
+            self.storage_domain is not None or
+            self.nic is not None or
+            self.api is not None or
+            self.host is not None or
+            self.url is not None or
+            self.headers is not None or
+            super(Feature, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='Feature'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(Feature, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(Feature, self).exportLiteralChildren(outfile, level, name_)
+        if self.transparent_hugepages is not None:
+            showIndent(outfile, level)
+            outfile.write('transparent_hugepages=model_.transparent_hugepages(\n')
+            self.transparent_hugepages.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.gluster_volumes is not None:
+            showIndent(outfile, level)
+            outfile.write('gluster_volumes=model_.gluster_volumes(\n')
+            self.gluster_volumes.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.vm_device_types is not None:
+            showIndent(outfile, level)
+            outfile.write('vm_device_types=model_.vm_device_types(\n')
+            self.vm_device_types.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.storage_types is not None:
+            showIndent(outfile, level)
+            outfile.write('storage_types=model_.storage_types(\n')
+            self.storage_types.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.storage_domain is not None:
+            showIndent(outfile, level)
+            outfile.write('storage_domain=model_.storage_domain(\n')
+            self.storage_domain.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.nic is not None:
+            showIndent(outfile, level)
+            outfile.write('nic=model_.nic(\n')
+            self.nic.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.api is not None:
+            showIndent(outfile, level)
+            outfile.write('api=model_.api(\n')
+            self.api.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.host is not None:
+            showIndent(outfile, level)
+            outfile.write('host=model_.host(\n')
+            self.host.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.url is not None:
+            showIndent(outfile, level)
+            outfile.write('url=model_.url(\n')
+            self.url.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.headers is not None:
+            showIndent(outfile, level)
+            outfile.write('headers=model_.headers(\n')
+            self.headers.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(Feature, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'transparent_hugepages':
+            obj_ = TransparentHugePages.factory()
+            obj_.build(child_)
+            self.set_transparent_hugepages(obj_)
+        elif nodeName_ == 'gluster_volumes':
+            obj_ = GlusterVolumes.factory()
+            obj_.build(child_)
+            self.set_gluster_volumes(obj_)
+        elif nodeName_ == 'vm_device_types':
+            obj_ = VmDeviceTypes.factory()
+            obj_.build(child_)
+            self.set_vm_device_types(obj_)
+        elif nodeName_ == 'storage_types':
+            obj_ = StorageTypes.factory()
+            obj_.build(child_)
+            self.set_storage_types(obj_)
+        elif nodeName_ == 'storage_domain':
+            obj_ = StorageDomain.factory()
+            obj_.build(child_)
+            self.set_storage_domain(obj_)
+        elif nodeName_ == 'nic':
+            obj_ = NIC.factory()
+            obj_.build(child_)
+            self.set_nic(obj_)
+        elif nodeName_ == 'api':
+            obj_ = API.factory()
+            obj_.build(child_)
+            self.set_api(obj_)
+        elif nodeName_ == 'host':
+            obj_ = Host.factory()
+            obj_.build(child_)
+            self.set_host(obj_)
+        elif nodeName_ == 'url':
+            obj_ = Url.factory()
+            obj_.build(child_)
+            self.set_url(obj_)
+        elif nodeName_ == 'headers':
+            obj_ = Headers.factory()
+            obj_.build(child_)
+            self.set_headers(obj_)
+        super(Feature, self).buildChildren(child_, node, nodeName_, True)
+# end class Feature
 
 
 class ProductInfo(BaseResource):
@@ -19572,6 +19816,7 @@ __all__ = [
     "Event",
     "Events",
     "Fault",
+    "Feature",
     "Features",
     "FenceTypes",
     "File",
@@ -19743,6 +19988,7 @@ _rootClassMap = {
                     "event"                         : Event,
                     "events"                        : Events,
                     "fault"                         : Fault,
+                    "feature"                       : Feature,
                     "features"                      : Features,
                     "fence_types"                   : FenceTypes,
                     "file"                          : File,
