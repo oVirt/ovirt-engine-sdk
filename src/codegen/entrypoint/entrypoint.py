@@ -41,6 +41,8 @@ class EntryPoint(object):
         "############ GENERATED CODE ############\n" + \
         "########################################\n\n" + \
         "'''Generated at: " + str(datetime.datetime.now()) + "'''\n\n" + \
+        "import types\n" + \
+        "from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError\n" + \
         "from ovirtsdk.infrastructure import contextmanager\n" + \
         "from ovirtsdk.infrastructure.connectionspool import ConnectionsPool\n" + \
         "from ovirtsdk.infrastructure.proxy import Proxy\n" + \
@@ -179,12 +181,18 @@ class EntryPoint(object):
         # Create the proxy:
         proxy = Proxy(pool, persistent_auth)
 
+        # Get entry point
+        entry_point = proxy.request(method='GET',
+                                    url='/api',
+                                    headers={'Filter': filter})
+
+        # If server returns no response for the root resource, this is sign
+        # that used http protocol against SSL secured site
+        if type(entry_point) == types.StringType and entry_point == '':
+            raise UnsecuredConnectionAttemptError
+
         # Store entry point to the context
-        contextmanager.add('entry_point',
-                           proxy.request(method='GET',
-                                         url='/api',
-                                         headers={'Filter': filter}),
-                           Mode.R)
+        contextmanager.add('entry_point', entry_point, Mode.R)
 
         # Store proxy to the context:
         contextmanager.add('proxy', proxy, Mode.R)

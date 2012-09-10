@@ -29,6 +29,11 @@ class NoCertificatesError(Exception):
     def __init__(self):
         Exception.__init__(self, '[ERROR]::ca_file (CA certificate) must be specified for SSL connection.')
 
+class UnsecuredConnectionAttemptError(Exception):
+    def __init__(self):
+        Exception.__init__(self, "[ERROR]::No response returned from server. If you're using HTTP protocol\n" + \
+                                 "against a SSL secured server, then try using HTTPS instead.")
+
 class RequestError(Exception):
     def __init__(self, response):
         self.detail = None

@@ -19,8 +19,10 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-08-23 18:08:16.950916'''
+'''Generated at: 2012-09-10 16:40:27.979965'''
 
+import types
+from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError
 from ovirtsdk.infrastructure import contextmanager
 from ovirtsdk.infrastructure.connectionspool import ConnectionsPool
 from ovirtsdk.infrastructure.proxy import Proxy
@@ -79,12 +81,18 @@ class API():
         # Create the proxy:
         proxy = Proxy(pool, persistent_auth)
 
+        # Get entry point
+        entry_point = proxy.request(method='GET',
+                                    url='/api',
+                                    headers={'Filter': filter})
+
+        # If server returns no response for the root resource, this is sign
+        # that used http protocol against SSL secured site
+        if type(entry_point) == types.StringType and entry_point == '':
+            raise UnsecuredConnectionAttemptError
+
         # Store entry point to the context
-        contextmanager.add('entry_point',
-                           proxy.request(method='GET',
-                                         url='/api',
-                                         headers={'Filter': filter}),
-                           Mode.R)
+        contextmanager.add('entry_point', entry_point, Mode.R)
 
         # Store proxy to the context:
         contextmanager.add('proxy', proxy, Mode.R)
