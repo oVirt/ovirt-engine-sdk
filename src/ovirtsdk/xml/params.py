@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Sun Sep  9 12:10:52 2012 by generateDS.py version 2.7b.
+# Generated Thu Sep 20 09:30:31 2012 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -5677,7 +5677,7 @@ class Certificate(GeneratedsSuper):
 class Host(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, statistics=None, cpu=None, memory=None, summary=None, override_iptables=None, reboot_after_installation=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, reboot_after_installation=None):
         super(Host, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.address = address
         self.certificate = certificate
@@ -5695,6 +5695,7 @@ class Host(BaseResource):
         self.statistics = statistics
         self.cpu = cpu
         self.memory = memory
+        self.max_scheduling_memory = max_scheduling_memory
         self.summary = summary
         self.override_iptables = override_iptables
         self.reboot_after_installation = reboot_after_installation
@@ -5736,6 +5737,8 @@ class Host(BaseResource):
     def set_cpu(self, cpu): self.cpu = cpu
     def get_memory(self): return self.memory
     def set_memory(self, memory): self.memory = memory
+    def get_max_scheduling_memory(self): return self.max_scheduling_memory
+    def set_max_scheduling_memory(self, max_scheduling_memory): self.max_scheduling_memory = max_scheduling_memory
     def get_summary(self): return self.summary
     def set_summary(self, summary): self.summary = summary
     def get_override_iptables(self): return self.override_iptables
@@ -5795,6 +5798,9 @@ class Host(BaseResource):
         if self.memory is not None:
             showIndent(outfile, level)
             outfile.write('<%smemory>%s</%smemory>\n' % (namespace_, self.gds_format_integer(self.memory, input_name='memory'), namespace_))
+        if self.max_scheduling_memory is not None:
+            showIndent(outfile, level)
+            outfile.write('<%smax_scheduling_memory>%s</%smax_scheduling_memory>\n' % (namespace_, self.gds_format_integer(self.max_scheduling_memory, input_name='max_scheduling_memory'), namespace_))
         if self.summary is not None:
             self.summary.export(outfile, level, namespace_, name_='summary')
         if self.override_iptables is not None:
@@ -5821,6 +5827,7 @@ class Host(BaseResource):
             self.statistics is not None or
             self.cpu is not None or
             self.memory is not None or
+            self.max_scheduling_memory is not None or
             self.summary is not None or
             self.override_iptables is not None or
             self.reboot_after_installation is not None or
@@ -5919,6 +5926,9 @@ class Host(BaseResource):
         if self.memory is not None:
             showIndent(outfile, level)
             outfile.write('memory=%d,\n' % self.memory)
+        if self.max_scheduling_memory is not None:
+            showIndent(outfile, level)
+            outfile.write('max_scheduling_memory=%d,\n' % self.max_scheduling_memory)
         if self.summary is not None:
             showIndent(outfile, level)
             outfile.write('summary=model_.VmSummary(\n')
@@ -6012,6 +6022,14 @@ class Host(BaseResource):
                 raise_parse_error(child_, 'requires integer: %s' % exp)
             ival_ = self.gds_validate_integer(ival_, node, 'memory')
             self.memory = ival_
+        elif nodeName_ == 'max_scheduling_memory':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'max_scheduling_memory')
+            self.max_scheduling_memory = ival_
         elif nodeName_ == 'summary':
             obj_ = VmSummary.factory()
             obj_.build(child_)
