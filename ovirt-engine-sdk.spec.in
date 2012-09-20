@@ -37,6 +37,10 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
+* Thu Sep  20 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.2-1
+- make /filter header global rather than method driven #857018
+- to host added max_scheduling_memory property
+- throw error when connecting to ssl site using http protocol
 
 * Sun Sep  9 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.1-1
 - to Disks.add() added /name arg
