@@ -21,6 +21,7 @@ import urlparse
 from ovirtsdk.web.httpsconnection import HTTPSConnection
 from ovirtsdk.infrastructure.errors import NoCertificatesError
 import types
+from ovirtsdk.infrastructure import contextmanager
 
 class Connection(object):
     '''
@@ -37,7 +38,7 @@ class Connection(object):
                                                     timeout=timeout)
 
         self.__connection.set_debuglevel(int(debug))
-        self.__headers = self.__createHeaders(username, password)
+        self.__headers = self.__createStaticHeaders(username, password)
         self.__manager = manager
         self.__id = id(self)
         self.__insecure = insecure
@@ -49,7 +50,9 @@ class Connection(object):
         return self.__connection
 
     def getDefaultHeaders(self):
-        return self.__headers.copy()
+        headers = self.__headers.copy()
+        headers.update(self.__createDynamicHeaders())
+        return headers
 
     def doRequest(self, method, url, body=urllib.urlencode({}), headers={}):
         return self.__connection.request(method, url, body, self.getHeaders(headers))
@@ -111,8 +114,12 @@ class Connection(object):
                               strict=strict,
                               timeout=timeout)
 
-    def __createHeaders(self, username, password):
+    def __createStaticHeaders(self, username, password):
         auth = base64.encodestring("%s:%s" % (username, password)).strip()
-        return {"Content-type": "application/xml", "Authorization": "Basic %s" % auth}
+        return {"Content-type" : "application/xml", 
+                "Authorization": "Basic %s" % auth}
+
+    def __createDynamicHeaders(self):
+        return {'Filter' : str(contextmanager.get('filter'))}
 
     id = property(get_id, None, None, None)

@@ -19,11 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''
-Generated at: 2012-09-09 12:10:50.827376
-
-@author: mpastern@redhat.com
-'''
+'''Generated at: 2012-09-20 10:34:16.323199'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -31,7 +27,6 @@ from ovirtsdk.utils.filterhelper import FilterHelper
 from ovirtsdk.utils.parsehelper import ParseHelper
 from ovirtsdk.utils.searchhelper import SearchHelper
 from ovirtsdk.infrastructure.common import Base
-from ovirtsdk.infrastructure import contextmanager
 from ovirtsdk.infrastructure.errors import RequestError
 
 
@@ -750,14 +745,14 @@ class Clusters(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return Cluster(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":contextmanager.get('filter')}))
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":contextmanager.get('filter')}).get_cluster()
+                                          headers={}).get_cluster()
             return Cluster(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
@@ -773,7 +768,7 @@ class Clusters(Base):
         url='/api/clusters'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":contextmanager.get('filter')}).get_cluster()
+                                      headers={}).get_cluster()
         return ParseHelper.toCollection(Cluster,
                                         FilterHelper.filter(result, kwargs))
 
@@ -1193,14 +1188,14 @@ class DataCenters(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return DataCenter(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":contextmanager.get('filter')}))
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":contextmanager.get('filter')}).get_data_center()
+                                          headers={}).get_data_center()
             return DataCenter(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
@@ -1216,7 +1211,7 @@ class DataCenters(Base):
         url='/api/datacenters'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":contextmanager.get('filter')}).get_data_center()
+                                      headers={}).get_data_center()
         return ParseHelper.toCollection(DataCenter,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3015,14 +3010,14 @@ class Hosts(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return Host(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":contextmanager.get('filter')}))
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":contextmanager.get('filter')}).get_host()
+                                          headers={}).get_host()
             return Host(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
@@ -3038,7 +3033,7 @@ class Hosts(Base):
         url='/api/hosts'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":contextmanager.get('filter')}).get_host()
+                                      headers={}).get_host()
         return ParseHelper.toCollection(Host,
                                         FilterHelper.filter(result, kwargs))
 
@@ -3847,14 +3842,14 @@ class StorageDomains(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return StorageDomain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":contextmanager.get('filter')}))
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":contextmanager.get('filter')}).get_storage_domain()
+                                          headers={}).get_storage_domain()
             return StorageDomain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
@@ -3870,7 +3865,7 @@ class StorageDomains(Base):
         url='/api/storagedomains'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":contextmanager.get('filter')}).get_storage_domain()
+                                      headers={}).get_storage_domain()
         return ParseHelper.toCollection(StorageDomain,
                                         FilterHelper.filter(result, kwargs))
 
@@ -4524,14 +4519,14 @@ class Templates(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return Template(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":contextmanager.get('filter')}))
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":contextmanager.get('filter')}).get_template()
+                                          headers={}).get_template()
             return Template(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
@@ -4547,7 +4542,7 @@ class Templates(Base):
         url='/api/templates'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":contextmanager.get('filter')}).get_template()
+                                      headers={}).get_template()
         return ParseHelper.toCollection(Template,
                                         FilterHelper.filter(result, kwargs))
 
@@ -5298,7 +5293,7 @@ class VM(params.VM, Base):
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
                                           body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id, "Filter":contextmanager.get('filter')})
+                                          headers={"Correlation-Id":correlation_id})
         return result
 
     def stop(self, action=params.Action(), correlation_id=None):
@@ -6589,14 +6584,14 @@ class VMs(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return VM(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":contextmanager.get('filter')}))
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":contextmanager.get('filter')}).get_vm()
+                                          headers={}).get_vm()
             return VM(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
@@ -6612,7 +6607,7 @@ class VMs(Base):
         url='/api/vms'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":contextmanager.get('filter')}).get_vm()
+                                      headers={}).get_vm()
         return ParseHelper.toCollection(VM,
                                         FilterHelper.filter(result, kwargs))
 
@@ -6810,14 +6805,14 @@ class VmPools(Base):
         if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
             try :
                 return VmPool(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
-                                                              headers={"Filter":contextmanager.get('filter')}))
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         else:
             result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
-                                          headers={"Filter":contextmanager.get('filter')}).get_vmpool()
+                                          headers={}).get_vmpool()
             return VmPool(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
@@ -6833,7 +6828,7 @@ class VmPools(Base):
         url='/api/vmpools'
 
         result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-                                      headers={"Filter":contextmanager.get('filter')}).get_vmpool()
+                                      headers={}).get_vmpool()
         return ParseHelper.toCollection(VmPool,
                                         FilterHelper.filter(result, kwargs))
 

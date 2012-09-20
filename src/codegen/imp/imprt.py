@@ -42,8 +42,7 @@ intro = \
         "########################################\n\n"
 
 stamp = \
-"'''\nGenerated at: " + str(datetime.datetime.now()) + "\n\n" + \
-"@author: mpastern@redhat.com\n'''\n\n"
+"'''Generated at: " + str(datetime.datetime.now()) + "'''\n\n"
 
 imports = intro + stamp + \
 "from ovirtsdk.xml import params\n" + \
@@ -52,7 +51,6 @@ imports = intro + stamp + \
 "from ovirtsdk.utils.parsehelper import ParseHelper\n" + \
 "from ovirtsdk.utils.searchhelper import SearchHelper\n" + \
 "from ovirtsdk.infrastructure.common import Base\n" + \
-"from ovirtsdk.infrastructure import contextmanager\n" + \
 "from ovirtsdk.infrastructure.errors import RequestError\n\n\n"
 
 class Import(object):

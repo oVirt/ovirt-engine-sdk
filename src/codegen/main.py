@@ -429,6 +429,8 @@ class CodeGen():
         return response.read()
 
     def generate_python_bindings(self):
+        from ovirtsdk.infrastructure import contextmanager
+        contextmanager.add('filter', False)
         schema = self.__do_request(method='GET', url='/api?schema')
         with open(SCHEMA_FILE, 'w') as f:
             f.write('%s' % schema)

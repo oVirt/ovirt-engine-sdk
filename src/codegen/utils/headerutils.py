@@ -19,7 +19,7 @@ from ovirtsdk.utils.ordereddict import OrderedDict
 class HeaderUtils(object):
 
     @staticmethod
-    def generate_method_params(link, HEADERS_EXCLUDE=['Content-Type'], CACHED_HEADERS={'filter':'contextmanager.get(\'filter\')'}):
+    def generate_method_params(link, HEADERS_EXCLUDE=['Content-Type', 'Filter'], CACHED_HEADERS={}):
         params_str = ''
         headers_str = ''
         if hasattr(link, 'request') and hasattr(link.request, 'headers') and \

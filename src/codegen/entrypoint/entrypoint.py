@@ -70,8 +70,7 @@ class EntryPoint(object):
         filter_header = contextmanager.get('filter')
 
         return proxy.request(method='GET',
-                             url='/api',
-                             headers={'Filter': filter_header}).%(attr)s
+                             url='/api').%(attr)s
 """
 
         methods_template = "\n" + \
@@ -90,7 +89,6 @@ class EntryPoint(object):
             try:
                 proxy.request(method='GET',
                               url='/api',
-                              headers={'Filter': filter_header},
                               last=True)
             except Exception:
                 pass
@@ -107,8 +105,7 @@ class EntryPoint(object):
         if proxy:
             try :
                 proxy.request(method='GET',
-                              url='/api',
-                              headers={'Filter': filter_header})
+                              url='/api')
             except Exception, e:
                 if throw_exception: raise e
                 else: return False
@@ -181,10 +178,12 @@ class EntryPoint(object):
         # Create the proxy:
         proxy = Proxy(pool, persistent_auth)
 
+        # Store filter to the context:
+        contextmanager.add('filter', filter)
+
         # Get entry point
         entry_point = proxy.request(method='GET',
-                                    url='/api',
-                                    headers={'Filter': filter})
+                                    url='/api')
 
         # If server returns no response for the root resource, this is sign
         # that used http protocol against SSL secured site
@@ -201,9 +200,6 @@ class EntryPoint(object):
         contextmanager.add('persistent_auth',
                            persistent_auth,
                            Mode.R)
-
-        # Store filter to the context:
-        contextmanager.add('filter', filter)
 
 """
 

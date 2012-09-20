@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-09-10 16:40:27.979965'''
+'''Generated at: 2012-09-20 10:34:54.692539'''
 
 import types
 from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError
@@ -81,10 +81,12 @@ class API():
         # Create the proxy:
         proxy = Proxy(pool, persistent_auth)
 
+        # Store filter to the context:
+        contextmanager.add('filter', filter)
+
         # Get entry point
         entry_point = proxy.request(method='GET',
-                                    url='/api',
-                                    headers={'Filter': filter})
+                                    url='/api')
 
         # If server returns no response for the root resource, this is sign
         # that used http protocol against SSL secured site
@@ -101,9 +103,6 @@ class API():
         contextmanager.add('persistent_auth',
                            persistent_auth,
                            Mode.R)
-
-        # Store filter to the context:
-        contextmanager.add('filter', filter)
 
         self.capabilities = Capabilities()
         self.clusters = Clusters()
@@ -137,7 +136,6 @@ class API():
             try:
                 proxy.request(method='GET',
                               url='/api',
-                              headers={'Filter': filter_header},
                               last=True)
             except Exception:
                 pass
@@ -154,8 +152,7 @@ class API():
         if proxy:
             try :
                 proxy.request(method='GET',
-                              url='/api',
-                              headers={'Filter': filter_header})
+                              url='/api')
             except Exception, e:
                 if throw_exception: raise e
                 else: return False
@@ -178,8 +175,7 @@ class API():
         filter_header = contextmanager.get('filter')
 
         return proxy.request(method='GET',
-                             url='/api',
-                             headers={'Filter': filter_header}).summary
+                             url='/api').summary
 
 
     def get_time(self):
@@ -187,8 +183,7 @@ class API():
         filter_header = contextmanager.get('filter')
 
         return proxy.request(method='GET',
-                             url='/api',
-                             headers={'Filter': filter_header}).time
+                             url='/api').time
 
 
     def get_product_info(self):
