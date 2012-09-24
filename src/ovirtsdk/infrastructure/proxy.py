@@ -20,6 +20,7 @@ import urlparse
 
 from ovirtsdk.infrastructure.errors import RequestError, ConnectionError
 from ovirtsdk.xml import params
+from cookielib import DefaultCookiePolicy
 
 class CookieJarAdapter():
     """
@@ -131,6 +132,9 @@ class Proxy():
         try:
             # Add cookie headers as needed:
             request_adapter = CookieJarAdapter(self._url, headers)
+            self._cookies_jar.set_policy(
+                     cookielib.DefaultCookiePolicy(
+                           strict_ns_domain=DefaultCookiePolicy.DomainStrictNoDots))
             self._cookies_jar.add_cookie_header(request_adapter)
 
             # Every request except the last one should indicate that we prefer
