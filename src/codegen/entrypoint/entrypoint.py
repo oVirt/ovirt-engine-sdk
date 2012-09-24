@@ -67,8 +67,6 @@ class EntryPoint(object):
 """
     def get_%(attr)s(self):
         proxy = contextmanager.get('proxy')
-        filter_header = contextmanager.get('filter')
-
         return proxy.request(method='GET',
                              url='/api').%(attr)s
 """
@@ -80,7 +78,6 @@ class EntryPoint(object):
 
         proxy = contextmanager.get('proxy')
         persistent_auth = contextmanager.get('persistent_auth')
-        filter_header = contextmanager.get('filter')
 
         # If persistent authentication is enabled then we need to
         # send a last request as a hint to the server to close the
@@ -100,7 +97,6 @@ class EntryPoint(object):
         ''' test server connectivity '''
 
         proxy = contextmanager.get('proxy')
-        filter_header = contextmanager.get('filter')
 
         if proxy:
             try :

@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-09-20 10:34:54.692539'''
+'''Generated at: 2012-09-24 17:26:55.655065'''
 
 import types
 from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError
@@ -127,7 +127,6 @@ class API():
 
         proxy = contextmanager.get('proxy')
         persistent_auth = contextmanager.get('persistent_auth')
-        filter_header = contextmanager.get('filter')
 
         # If persistent authentication is enabled then we need to
         # send a last request as a hint to the server to close the
@@ -147,7 +146,6 @@ class API():
         ''' test server connectivity '''
 
         proxy = contextmanager.get('proxy')
-        filter_header = contextmanager.get('filter')
 
         if proxy:
             try :
@@ -172,16 +170,12 @@ class API():
 
     def get_summary(self):
         proxy = contextmanager.get('proxy')
-        filter_header = contextmanager.get('filter')
-
         return proxy.request(method='GET',
                              url='/api').summary
 
 
     def get_time(self):
         proxy = contextmanager.get('proxy')
-        filter_header = contextmanager.get('filter')
-
         return proxy.request(method='GET',
                              url='/api').time
 
