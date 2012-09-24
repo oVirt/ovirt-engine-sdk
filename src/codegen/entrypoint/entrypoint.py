@@ -41,12 +41,13 @@ class EntryPoint(object):
         "############ GENERATED CODE ############\n" + \
         "########################################\n\n" + \
         "'''Generated at: " + str(datetime.datetime.now()) + "'''\n\n" + \
-        "import types\n" + \
+        "import types\n\n" + \
         "from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError\n" + \
-        "from ovirtsdk.infrastructure import contextmanager\n" + \
         "from ovirtsdk.infrastructure.connectionspool import ConnectionsPool\n" + \
-        "from ovirtsdk.infrastructure.proxy import Proxy\n" + \
-        "from ovirtsdk.infrastructure.contextmanager import Mode\n"
+        "from ovirtsdk.infrastructure.errors import DisconnectedError\n" + \
+        "from ovirtsdk.infrastructure.contextmanager import Mode\n" + \
+        "from ovirtsdk.infrastructure import contextmanager\n" + \
+        "from ovirtsdk.infrastructure.proxy import Proxy\n\n"
 
         return entry_point_imports_template
 
@@ -61,15 +62,16 @@ class EntryPoint(object):
         entry_point = contextmanager.get('entry_point')
         if entry_point:
             return entry_point.%(attr)s
-        return None
-"""
+        raise DisconnectedError"""
+
         dinamic_methods_template = "\n" + \
 """
     def get_%(attr)s(self):
         proxy = contextmanager.get('proxy')
-        return proxy.request(method='GET',
-                             url='/api').%(attr)s
-"""
+        if proxy:
+            return proxy.request(method='GET',
+                                 url='/api').%(attr)s
+        raise DisconnectedError"""
 
         methods_template = "\n" + \
 """
@@ -81,14 +83,17 @@ class EntryPoint(object):
 
         # If persistent authentication is enabled then we need to
         # send a last request as a hint to the server to close the
-        # session:        
-        if proxy and persistent_auth:
-            try:
-                proxy.request(method='GET',
-                              url='/api',
-                              last=True)
-            except Exception:
-                pass
+        # session:
+        if proxy:
+            if persistent_auth:
+                try:
+                    proxy.request(method='GET',
+                                  url='/api',
+                                  last=True)
+                except Exception:
+                    pass
+        else:
+            raise DisconnectedError
 
         # Clear context
         contextmanager._clear(force=True)
@@ -97,20 +102,19 @@ class EntryPoint(object):
         ''' test server connectivity '''
 
         proxy = contextmanager.get('proxy')
-
         if proxy:
             try :
                 proxy.request(method='GET',
                               url='/api')
             except Exception, e:
                 if throw_exception: raise e
-                else: return False
+                return False
             return True
-        return False
+        raise DisconnectedError
 
     def set_filter(self, filter):
-        contextmanager.add('filter', filter)
-"""
+        contextmanager.add('filter', filter)"""
+
         from ovirtsdk.infrastructure import contextmanager
         entry_point_resource = contextmanager.get('proxy').request('GET', '/api')
         for attr in entry_point_resource.__dict__.keys():

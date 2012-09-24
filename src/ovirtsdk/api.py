@@ -19,14 +19,17 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-09-24 17:26:55.655065'''
+'''Generated at: 2012-09-27 09:26:52.672435'''
 
 import types
+
 from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError
-from ovirtsdk.infrastructure import contextmanager
 from ovirtsdk.infrastructure.connectionspool import ConnectionsPool
-from ovirtsdk.infrastructure.proxy import Proxy
+from ovirtsdk.infrastructure.errors import DisconnectedError
 from ovirtsdk.infrastructure.contextmanager import Mode
+from ovirtsdk.infrastructure import contextmanager
+from ovirtsdk.infrastructure.proxy import Proxy
+
 from ovirtsdk.infrastructure.brokers import Capabilities
 from ovirtsdk.infrastructure.brokers import Clusters
 from ovirtsdk.infrastructure.brokers import DataCenters
@@ -130,14 +133,17 @@ class API():
 
         # If persistent authentication is enabled then we need to
         # send a last request as a hint to the server to close the
-        # session:        
-        if proxy and persistent_auth:
-            try:
-                proxy.request(method='GET',
-                              url='/api',
-                              last=True)
-            except Exception:
-                pass
+        # session:
+        if proxy:
+            if persistent_auth:
+                try:
+                    proxy.request(method='GET',
+                                  url='/api',
+                                  last=True)
+                except Exception:
+                    pass
+        else:
+            raise DisconnectedError
 
         # Clear context
         contextmanager._clear(force=True)
@@ -146,42 +152,41 @@ class API():
         ''' test server connectivity '''
 
         proxy = contextmanager.get('proxy')
-
         if proxy:
             try :
                 proxy.request(method='GET',
                               url='/api')
             except Exception, e:
                 if throw_exception: raise e
-                else: return False
+                return False
             return True
-        return False
+        raise DisconnectedError
 
     def set_filter(self, filter):
         contextmanager.add('filter', filter)
-
 
     def get_special_objects(self):
         entry_point = contextmanager.get('entry_point')
         if entry_point:
             return entry_point.special_objects
-        return None
-
+        raise DisconnectedError
 
     def get_summary(self):
         proxy = contextmanager.get('proxy')
-        return proxy.request(method='GET',
-                             url='/api').summary
-
+        if proxy:
+            return proxy.request(method='GET',
+                                 url='/api').summary
+        raise DisconnectedError
 
     def get_time(self):
         proxy = contextmanager.get('proxy')
-        return proxy.request(method='GET',
-                             url='/api').time
-
+        if proxy:
+            return proxy.request(method='GET',
+                                 url='/api').time
+        raise DisconnectedError
 
     def get_product_info(self):
         entry_point = contextmanager.get('entry_point')
         if entry_point:
             return entry_point.product_info
-        return None
+        raise DisconnectedError

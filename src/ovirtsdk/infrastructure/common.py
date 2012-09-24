@@ -16,12 +16,19 @@
 
 from ovirtsdk.infrastructure import contextmanager
 from ovirtsdk.utils.comperator import Comparator
+from ovirtsdk.infrastructure.errors import DisconnectedError
 
 class Base(object):
     ''' Returns the proxy to connections pool '''
     def _getProxy(self):
 #FIXME: manage cache peer API instance  
-        return contextmanager.get('proxy')
+        proxy = contextmanager.get('proxy')
+        if proxy:
+            return proxy
+        #This may happen if sdk got explicitly disconnected
+        #using .disconnect() method, but resource instance is
+        #still available at client's code.
+        raise DisconnectedError
 
     def __getattr__(self, item):
         if not self.__dict__.has_key('superclass'):

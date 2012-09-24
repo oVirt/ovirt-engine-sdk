@@ -29,6 +29,10 @@ class NoCertificatesError(Exception):
     def __init__(self):
         Exception.__init__(self, '[ERROR]::ca_file (CA certificate) must be specified for SSL connection.')
 
+class DisconnectedError(Exception):
+    def __init__(self):
+        Exception.__init__(self, '[ERROR]::oVirt sdk is disconnected from the server.')
+
 class UnsecuredConnectionAttemptError(Exception):
     def __init__(self):
         Exception.__init__(self, "[ERROR]::No response returned from server. If you're using HTTP protocol\n" + \
