@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-09-20 10:34:16.323199'''
+'''Generated at: 2012-09-27 09:26:22.320894'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -400,14 +400,6 @@ class ClusterGlusterVolumes(Base):
         }
         [@param gluster_volume.replica_count: unsignedShort]
         [@param gluster_volume.stripe_count: unsignedShort]
-        [@param gluster_volume.access_protocols: collection]
-        {
-          [@ivar access_protocol: string]
-        }
-        [@param gluster_volume.access_control_list: collection]
-        {
-          [@ivar ip: string]
-        }
         [@param gluster_volume.options.option: collection]
         {
           [@ivar option.name: string]

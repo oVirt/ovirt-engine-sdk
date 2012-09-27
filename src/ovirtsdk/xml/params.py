@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Thu Sep 20 09:30:31 2012 by generateDS.py version 2.7b.
+# Generated Thu Sep 27 13:38:42 2012 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -11784,9 +11784,9 @@ class VM(BaseResource):
         if self.memory_policy is not None:
             self.memory_policy.export(outfile, level, namespace_, name_='memory_policy')
         if self.guest_info is not None:
-            self.guest_info.export(outfile, level, namespace_, name_='guest_info')
+            self.guest_info.export(outfile, level, namespace_, name_='guest_info', )
         if self.quota is not None:
-            self.quota.export(outfile, level, namespace_, name_='quota')
+            self.quota.export(outfile, level, namespace_, name_='quota', )
         if self.usb is not None:
             self.usb.export(outfile, level, namespace_, name_='usb')
         if self.vmpool is not None:
@@ -16448,7 +16448,7 @@ class RSDL(GeneratedsSuper):
 class GlusterVolume(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, cluster=None, volume_type=None, transport_types=None, replica_count=None, stripe_count=None, bricks=None, access_protocols=None, access_control_list=None, options=None, status=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, cluster=None, volume_type=None, transport_types=None, replica_count=None, stripe_count=None, bricks=None, options=None, status=None):
         super(GlusterVolume, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.cluster = cluster
         self.volume_type = volume_type
@@ -16456,8 +16456,6 @@ class GlusterVolume(BaseResource):
         self.replica_count = replica_count
         self.stripe_count = stripe_count
         self.bricks = bricks
-        self.access_protocols = access_protocols
-        self.access_control_list = access_control_list
         self.options = options
         self.status = status
     def factory(*args_, **kwargs_):
@@ -16478,10 +16476,6 @@ class GlusterVolume(BaseResource):
     def set_stripe_count(self, stripe_count): self.stripe_count = stripe_count
     def get_bricks(self): return self.bricks
     def set_bricks(self, bricks): self.bricks = bricks
-    def get_access_protocols(self): return self.access_protocols
-    def set_access_protocols(self, access_protocols): self.access_protocols = access_protocols
-    def get_access_control_list(self): return self.access_control_list
-    def set_access_control_list(self, access_control_list): self.access_control_list = access_control_list
     def get_options(self): return self.options
     def set_options(self, options): self.options = options
     def get_status(self): return self.status
@@ -16517,10 +16511,6 @@ class GlusterVolume(BaseResource):
             outfile.write('<%sstripe_count>%s</%sstripe_count>\n' % (namespace_, self.gds_format_integer(self.stripe_count, input_name='stripe_count'), namespace_))
         if self.bricks is not None:
             self.bricks.export(outfile, level, namespace_, name_='bricks')
-        if self.access_protocols is not None:
-            self.access_protocols.export(outfile, level, namespace_, name_='access_protocols')
-        if self.access_control_list is not None:
-            self.access_control_list.export(outfile, level, namespace_, name_='access_control_list')
         if self.options is not None:
             self.options.export(outfile, level, namespace_, name_='options')
         if self.status is not None:
@@ -16533,8 +16523,6 @@ class GlusterVolume(BaseResource):
             self.replica_count is not None or
             self.stripe_count is not None or
             self.bricks is not None or
-            self.access_protocols is not None or
-            self.access_control_list is not None or
             self.options is not None or
             self.status is not None or
             super(GlusterVolume, self).hasContent_()
@@ -16576,18 +16564,6 @@ class GlusterVolume(BaseResource):
             showIndent(outfile, level)
             outfile.write('bricks=model_.bricks(\n')
             self.bricks.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        if self.access_protocols is not None:
-            showIndent(outfile, level)
-            outfile.write('access_protocols=model_.access_protocols(\n')
-            self.access_protocols.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        if self.access_control_list is not None:
-            showIndent(outfile, level)
-            outfile.write('access_control_list=model_.access_control_list(\n')
-            self.access_control_list.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.options is not None:
@@ -16642,14 +16618,6 @@ class GlusterVolume(BaseResource):
             obj_ = GlusterBricks.factory()
             obj_.build(child_)
             self.set_bricks(obj_)
-        elif nodeName_ == 'access_protocols':
-            obj_ = AccessProtocols.factory()
-            obj_.build(child_)
-            self.set_access_protocols(obj_)
-        elif nodeName_ == 'access_control_list':
-            obj_ = AccessControlList.factory()
-            obj_.build(child_)
-            self.set_access_control_list(obj_)
         elif nodeName_ == 'options':
             obj_ = Options.factory()
             obj_.build(child_)
@@ -16660,81 +16628,6 @@ class GlusterVolume(BaseResource):
             self.set_status(obj_)
         super(GlusterVolume, self).buildChildren(child_, node, nodeName_, True)
 # end class GlusterVolume
-
-
-class AccessControlList(GeneratedsSuper):
-    subclass = None
-    superclass = None
-    def __init__(self, ip=None):
-        if ip is None:
-            self.ip = []
-        else:
-            self.ip = ip
-    def factory(*args_, **kwargs_):
-        if AccessControlList.subclass:
-            return AccessControlList.subclass(*args_, **kwargs_)
-        else:
-            return AccessControlList(*args_, **kwargs_)
-    factory = staticmethod(factory)
-    def get_ip(self): return self.ip
-    def set_ip(self, ip): self.ip = ip
-    def add_ip(self, value): self.ip.append(value)
-    def insert_ip(self, index, value): self.ip[index] = value
-    def export(self, outfile, level, namespace_='', name_='AccessControlList', namespacedef_=''):
-        showIndent(outfile, level)
-        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
-        already_processed = []
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='AccessControlList')
-        if self.hasContent_():
-            outfile.write('>\n')
-            self.exportChildren(outfile, level + 1, namespace_, name_)
-            showIndent(outfile, level)
-            outfile.write('</%s%s>\n' % (namespace_, name_))
-        else:
-            outfile.write('/>\n')
-    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='AccessControlList'):
-        pass
-    def exportChildren(self, outfile, level, namespace_='', name_='AccessControlList', fromsubclass_=False):
-        for ip_ in self.ip:
-            showIndent(outfile, level)
-            outfile.write('<%sip>%s</%sip>\n' % (namespace_, self.gds_format_string(quote_xml(ip_).encode(ExternalEncoding), input_name='ip'), namespace_))
-    def hasContent_(self):
-        if (
-            self.ip
-            ):
-            return True
-        else:
-            return False
-    def exportLiteral(self, outfile, level, name_='AccessControlList'):
-        level += 1
-        self.exportLiteralAttributes(outfile, level, [], name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('ip=[\n')
-        level += 1
-        for ip_ in self.ip:
-            showIndent(outfile, level)
-            outfile.write('%s,\n' % quote_python(ip_).encode(ExternalEncoding))
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-    def build(self, node):
-        self.buildAttributes(node, node.attrib, [])
-        for child in node:
-            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
-            self.buildChildren(child, node, nodeName_)
-    def buildAttributes(self, node, attrs, already_processed):
-        pass
-    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'ip':
-            ip_ = child_.text
-            ip_ = self.gds_validate_string(ip_, node, 'ip')
-            self.ip.append(ip_)
-# end class AccessControlList
 
 
 class GlusterVolumeTypes(GeneratedsSuper):
@@ -16810,81 +16703,6 @@ class GlusterVolumeTypes(GeneratedsSuper):
             gluster_volume_type_ = self.gds_validate_string(gluster_volume_type_, node, 'gluster_volume_type')
             self.gluster_volume_type.append(gluster_volume_type_)
 # end class GlusterVolumeTypes
-
-
-class AccessProtocols(GeneratedsSuper):
-    subclass = None
-    superclass = None
-    def __init__(self, access_protocol=None):
-        if access_protocol is None:
-            self.access_protocol = []
-        else:
-            self.access_protocol = access_protocol
-    def factory(*args_, **kwargs_):
-        if AccessProtocols.subclass:
-            return AccessProtocols.subclass(*args_, **kwargs_)
-        else:
-            return AccessProtocols(*args_, **kwargs_)
-    factory = staticmethod(factory)
-    def get_access_protocol(self): return self.access_protocol
-    def set_access_protocol(self, access_protocol): self.access_protocol = access_protocol
-    def add_access_protocol(self, value): self.access_protocol.append(value)
-    def insert_access_protocol(self, index, value): self.access_protocol[index] = value
-    def export(self, outfile, level, namespace_='', name_='AccessProtocols', namespacedef_=''):
-        showIndent(outfile, level)
-        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
-        already_processed = []
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='AccessProtocols')
-        if self.hasContent_():
-            outfile.write('>\n')
-            self.exportChildren(outfile, level + 1, namespace_, name_)
-            showIndent(outfile, level)
-            outfile.write('</%s%s>\n' % (namespace_, name_))
-        else:
-            outfile.write('/>\n')
-    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='AccessProtocols'):
-        pass
-    def exportChildren(self, outfile, level, namespace_='', name_='AccessProtocols', fromsubclass_=False):
-        for access_protocol_ in self.access_protocol:
-            showIndent(outfile, level)
-            outfile.write('<%saccess_protocol>%s</%saccess_protocol>\n' % (namespace_, self.gds_format_string(quote_xml(access_protocol_).encode(ExternalEncoding), input_name='access_protocol'), namespace_))
-    def hasContent_(self):
-        if (
-            self.access_protocol
-            ):
-            return True
-        else:
-            return False
-    def exportLiteral(self, outfile, level, name_='AccessProtocols'):
-        level += 1
-        self.exportLiteralAttributes(outfile, level, [], name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('access_protocol=[\n')
-        level += 1
-        for access_protocol_ in self.access_protocol:
-            showIndent(outfile, level)
-            outfile.write('%s,\n' % quote_python(access_protocol_).encode(ExternalEncoding))
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-    def build(self, node):
-        self.buildAttributes(node, node.attrib, [])
-        for child in node:
-            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
-            self.buildChildren(child, node, nodeName_)
-    def buildAttributes(self, node, attrs, already_processed):
-        pass
-    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'access_protocol':
-            access_protocol_ = child_.text
-            access_protocol_ = self.gds_validate_string(access_protocol_, node, 'access_protocol')
-            self.access_protocol.append(access_protocol_)
-# end class AccessProtocols
 
 
 class TransportTypes(GeneratedsSuper):
@@ -18995,7 +18813,7 @@ class DetailedLink(Link):
 class VersionCaps(Version):
     subclass = None
     superclass = Version
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, gluster_volume_types=None, transport_types=None, access_protocols=None, gluster_volume_states=None, brick_states=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None):
         super(VersionCaps, self).__init__(actions, href, id, name, description, creation_status, link, major, full_version, build_, minor, revision, )
         self.current = current
         self.features = features
@@ -19034,7 +18852,6 @@ class VersionCaps(Version):
         self.usages = usages
         self.gluster_volume_types = gluster_volume_types
         self.transport_types = transport_types
-        self.access_protocols = access_protocols
         self.gluster_volume_states = gluster_volume_states
         self.brick_states = brick_states
     def factory(*args_, **kwargs_):
@@ -19117,8 +18934,6 @@ class VersionCaps(Version):
     def set_gluster_volume_types(self, gluster_volume_types): self.gluster_volume_types = gluster_volume_types
     def get_transport_types(self): return self.transport_types
     def set_transport_types(self, transport_types): self.transport_types = transport_types
-    def get_access_protocols(self): return self.access_protocols
-    def set_access_protocols(self, access_protocols): self.access_protocols = access_protocols
     def get_gluster_volume_states(self): return self.gluster_volume_states
     def set_gluster_volume_states(self, gluster_volume_states): self.gluster_volume_states = gluster_volume_states
     def get_brick_states(self): return self.brick_states
@@ -19214,8 +19029,6 @@ class VersionCaps(Version):
             self.gluster_volume_types.export(outfile, level, namespace_, name_='gluster_volume_types')
         if self.transport_types is not None:
             self.transport_types.export(outfile, level, namespace_, name_='transport_types')
-        if self.access_protocols is not None:
-            self.access_protocols.export(outfile, level, namespace_, name_='access_protocols')
         if self.gluster_volume_states is not None:
             self.gluster_volume_states.export(outfile, level, namespace_, name_='gluster_volume_states')
         if self.brick_states is not None:
@@ -19259,7 +19072,6 @@ class VersionCaps(Version):
             self.usages is not None or
             self.gluster_volume_types is not None or
             self.transport_types is not None or
-            self.access_protocols is not None or
             self.gluster_volume_states is not None or
             self.brick_states is not None or
             super(VersionCaps, self).hasContent_()
@@ -19495,12 +19307,6 @@ class VersionCaps(Version):
             self.transport_types.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
-        if self.access_protocols is not None:
-            showIndent(outfile, level)
-            outfile.write('access_protocols=model_.access_protocols(\n')
-            self.access_protocols.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
         if self.gluster_volume_states is not None:
             showIndent(outfile, level)
             outfile.write('gluster_volume_states=model_.gluster_volume_states(\n')
@@ -19675,10 +19481,6 @@ class VersionCaps(Version):
             obj_ = TransportTypes.factory()
             obj_.build(child_)
             self.set_transport_types(obj_)
-        elif nodeName_ == 'access_protocols':
-            obj_ = AccessProtocols.factory()
-            obj_.build(child_)
-            self.set_access_protocols(obj_)
         elif nodeName_ == 'gluster_volume_states':
             obj_ = GlusterStates.factory()
             obj_.build(child_)
@@ -19786,8 +19588,6 @@ if __name__ == '__main__':
 
 __all__ = [
     "API",
-    "AccessControlList",
-    "AccessProtocols",
     "Action",
     "ActionableResource",
     "Actions",
@@ -19962,8 +19762,6 @@ __all__ = [
 # Begin NOT_GENERATED
 
 _rootClassMap = {
-                    "access_control_list"           : AccessControlList,
-                    "access_protocols"              : AccessProtocols,
                     "action"                        : Action,
                     "actions"                       : Actions,
                     "api"                           : API,
