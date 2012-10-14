@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Thu Sep 27 13:38:42 2012 by generateDS.py version 2.7b.
+# Generated Sun Oct 14 16:00:29 2012 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -10743,13 +10743,13 @@ class HighAvailability(GeneratedsSuper):
 class Display(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, type_=None, address=None, port=None, secure_port=None, monitors=None, allow_reconnect=None):
+    def __init__(self, type_=None, address=None, port=None, secure_port=None, monitors=None, allow_override=None):
         self.type_ = type_
         self.address = address
         self.port = port
         self.secure_port = secure_port
         self.monitors = monitors
-        self.allow_reconnect = allow_reconnect
+        self.allow_override = allow_override
     def factory(*args_, **kwargs_):
         if Display.subclass:
             return Display.subclass(*args_, **kwargs_)
@@ -10766,8 +10766,8 @@ class Display(GeneratedsSuper):
     def set_secure_port(self, secure_port): self.secure_port = secure_port
     def get_monitors(self): return self.monitors
     def set_monitors(self, monitors): self.monitors = monitors
-    def get_allow_reconnect(self): return self.allow_reconnect
-    def set_allow_reconnect(self, allow_reconnect): self.allow_reconnect = allow_reconnect
+    def get_allow_override(self): return self.allow_override
+    def set_allow_override(self, allow_override): self.allow_override = allow_override
     def export(self, outfile, level, namespace_='', name_='Display', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -10798,9 +10798,9 @@ class Display(GeneratedsSuper):
         if self.monitors is not None:
             showIndent(outfile, level)
             outfile.write('<%smonitors>%s</%smonitors>\n' % (namespace_, self.gds_format_integer(self.monitors, input_name='monitors'), namespace_))
-        if self.allow_reconnect is not None:
+        if self.allow_override is not None:
             showIndent(outfile, level)
-            outfile.write('<%sallow_reconnect>%s</%sallow_reconnect>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.allow_reconnect)), input_name='allow_reconnect'), namespace_))
+            outfile.write('<%sallow_override>%s</%sallow_override>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.allow_override)), input_name='allow_override'), namespace_))
     def hasContent_(self):
         if (
             self.type_ is not None or
@@ -10808,7 +10808,7 @@ class Display(GeneratedsSuper):
             self.port is not None or
             self.secure_port is not None or
             self.monitors is not None or
-            self.allow_reconnect is not None
+            self.allow_override is not None
             ):
             return True
         else:
@@ -10836,9 +10836,9 @@ class Display(GeneratedsSuper):
         if self.monitors is not None:
             showIndent(outfile, level)
             outfile.write('monitors=%d,\n' % self.monitors)
-        if self.allow_reconnect is not None:
+        if self.allow_override is not None:
             showIndent(outfile, level)
-            outfile.write('allow_reconnect=%s,\n' % self.allow_reconnect)
+            outfile.write('allow_override=%s,\n' % self.allow_override)
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -10879,7 +10879,7 @@ class Display(GeneratedsSuper):
                 raise_parse_error(child_, 'requires integer: %s' % exp)
             ival_ = self.gds_validate_integer(ival_, node, 'monitors')
             self.monitors = ival_
-        elif nodeName_ == 'allow_reconnect':
+        elif nodeName_ == 'allow_override':
             sval_ = child_.text
             if sval_ in ('true', '1'):
                 ival_ = True
@@ -10887,8 +10887,8 @@ class Display(GeneratedsSuper):
                 ival_ = False
             else:
                 raise_parse_error(child_, 'requires boolean')
-            ival_ = self.gds_validate_boolean(ival_, node, 'allow_reconnect')
-            self.allow_reconnect = ival_
+            ival_ = self.gds_validate_boolean(ival_, node, 'allow_override')
+            self.allow_override = ival_
 # end class Display
 
 
@@ -11784,9 +11784,9 @@ class VM(BaseResource):
         if self.memory_policy is not None:
             self.memory_policy.export(outfile, level, namespace_, name_='memory_policy')
         if self.guest_info is not None:
-            self.guest_info.export(outfile, level, namespace_, name_='guest_info', )
+            self.guest_info.export(outfile, level, namespace_, name_='guest_info')
         if self.quota is not None:
-            self.quota.export(outfile, level, namespace_, name_='quota', )
+            self.quota.export(outfile, level, namespace_, name_='quota')
         if self.usb is not None:
             self.usb.export(outfile, level, namespace_, name_='usb')
         if self.vmpool is not None:
@@ -13164,8 +13164,9 @@ class Floppies(BaseDevices):
 class Disk(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, template=None, image_id=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, quota=None, lunStorage=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, template=None, alias=None, image_id=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, quota=None, lunStorage=None):
         super(Disk, self).__init__(actions, href, id, name, description, creation_status, link, vm, template, )
+        self.alias = alias
         self.image_id = image_id
         self.storage_domains = storage_domains
         self.size = size
@@ -13190,6 +13191,8 @@ class Disk(BaseDevice):
         else:
             return Disk(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def get_alias(self): return self.alias
+    def set_alias(self, alias): self.alias = alias
     def get_image_id(self): return self.image_id
     def set_image_id(self, image_id): self.image_id = image_id
     def get_storage_domains(self): return self.storage_domains
@@ -13242,6 +13245,9 @@ class Disk(BaseDevice):
         super(Disk, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Disk')
     def exportChildren(self, outfile, level, namespace_='', name_='Disk', fromsubclass_=False):
         super(Disk, self).exportChildren(outfile, level, namespace_, name_, True)
+        if self.alias is not None:
+            showIndent(outfile, level)
+            outfile.write('<%salias>%s</%salias>\n' % (namespace_, self.gds_format_string(quote_xml(self.alias).encode(ExternalEncoding), input_name='alias'), namespace_))
         if self.image_id is not None:
             showIndent(outfile, level)
             outfile.write('<%simage_id>%s</%simage_id>\n' % (namespace_, self.gds_format_string(quote_xml(self.image_id).encode(ExternalEncoding), input_name='image_id'), namespace_))
@@ -13293,6 +13299,7 @@ class Disk(BaseDevice):
             self.lunStorage.export(outfile, level, namespace_, name_='lunStorage')
     def hasContent_(self):
         if (
+            self.alias is not None or
             self.image_id is not None or
             self.storage_domains is not None or
             self.size is not None or
@@ -13325,6 +13332,9 @@ class Disk(BaseDevice):
         super(Disk, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
         super(Disk, self).exportLiteralChildren(outfile, level, name_)
+        if self.alias is not None:
+            showIndent(outfile, level)
+            outfile.write('alias=%s,\n' % quote_python(self.alias).encode(ExternalEncoding))
         if self.image_id is not None:
             showIndent(outfile, level)
             outfile.write('image_id=%s,\n' % quote_python(self.image_id).encode(ExternalEncoding))
@@ -13402,7 +13412,11 @@ class Disk(BaseDevice):
     def buildAttributes(self, node, attrs, already_processed):
         super(Disk, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'image_id':
+        if nodeName_ == 'alias':
+            alias_ = child_.text
+            alias_ = self.gds_validate_string(alias_, node, 'alias')
+            self.alias = alias_
+        elif nodeName_ == 'image_id':
             image_id_ = child_.text
             image_id_ = self.gds_validate_string(image_id_, node, 'image_id')
             self.image_id = image_id_
@@ -18630,11 +18644,11 @@ class API(BaseResource):
     def exportChildren(self, outfile, level, namespace_='', name_='API', fromsubclass_=False):
         super(API, self).exportChildren(outfile, level, namespace_, name_, True)
         if self.special_objects is not None:
-            self.special_objects.export(outfile, level, namespace_, name_='special_objects', )
+            self.special_objects.export(outfile, level, namespace_, name_='special_objects')
         if self.product_info is not None:
-            self.product_info.export(outfile, level, namespace_, name_='product_info', )
+            self.product_info.export(outfile, level, namespace_, name_='product_info')
         if self.summary is not None:
-            self.summary.export(outfile, level, namespace_, name_='summary', )
+            self.summary.export(outfile, level, namespace_, name_='summary')
         if self.time is not None:
             showIndent(outfile, level)
             outfile.write('<%stime>%s</%stime>\n' % (namespace_, self.gds_format_string(quote_xml(self.time).encode(ExternalEncoding), input_name='time'), namespace_))

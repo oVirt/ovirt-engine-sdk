@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-09-27 09:26:22.320894'''
+'''Generated at: 2012-10-14 16:00:27.065995'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -171,7 +171,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def resetAllOptions(self, action=params.Action(), correlation_id=None):
+    def resetalloptions(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
@@ -180,7 +180,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @return Response:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetAllOptions'
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetalloptions'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
@@ -190,7 +190,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def resetOption(self, action=params.Action(), correlation_id=None):
+    def resetoption(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
@@ -201,7 +201,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @return Response:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetOption'
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetoption'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
@@ -211,7 +211,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def setOption(self, action=params.Action(), correlation_id=None):
+    def setoption(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
@@ -222,7 +222,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @return Response:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/setOption'
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/setoption'
 
         result = self._getProxy().request(method='POST',
                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
@@ -1327,6 +1327,7 @@ class Disks(Base):
         @param provisioned_size: int
         @param disk.interface: string
         @param disk.format: string
+        [@param disk.alias: string]
         [@param disk.name: string]
         [@param disk.size: int]
         [@param disk.sparse: boolean]
@@ -3583,6 +3584,21 @@ class StorageDomainTemplate(params.Template, Base):
         obj.__init__(storagedomain, template)
         return obj
 
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace('/api/storagedomains/{storagedomain:id}/templates/{template:id}',
+                                {'{storagedomain:id}' : self.parentclass.get_id(),
+                                 '{template:id}': self.get_id()})
+
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+
     def import_template(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
@@ -3672,6 +3688,21 @@ class StorageDomainVM(params.VM, Base):
         obj = object.__new__(cls)
         obj.__init__(storagedomain, vm)
         return obj
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace('/api/storagedomains/{storagedomain:id}/vms/{vm:id}',
+                                {'{storagedomain:id}' : self.parentclass.get_id(),
+                                 '{vm:id}': self.get_id()})
+
+        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def import_vm(self, action=params.Action(), correlation_id=None):
         '''
@@ -4022,7 +4053,7 @@ class Template(params.Template, Base):
         [@param template.os.kernel: string]
         [@param template.display.type: string]
         [@param template.display.monitors: int]
-        [@param template.display.allow_reconnect: boolean]
+        [@param template.display.allow_override: boolean]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
@@ -4153,6 +4184,27 @@ class TemplateDisk(params.Disk, Base):
         return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        body=ParseHelper.toXml(action),
                                        headers={"Correlation-Id":correlation_id})
+
+    def copy(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param storagedomain.host.id|name: string
+        [@param action.async: boolean]
+        [@param correlation_id: any string]
+
+        @return Response:
+        '''
+
+        url = '/api/templates/{template:id}/disks/{disk:id}/copy'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
+                                                                     '{disk:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action),
+                                          headers={"Correlation-Id":correlation_id})
+
+        return result
 
 class TemplateDisks(Base):
 
@@ -4473,7 +4525,7 @@ class Templates(Base):
         [@param template.os.kernel: string]
         [@param template.display.type: string]
         [@param template.display.monitors: int]
-        [@param template.display.allow_reconnect: boolean]
+        [@param template.display.allow_override: boolean]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
@@ -4484,6 +4536,11 @@ class Templates(Base):
           {
             [@param storage_domain.id: string]
           }
+        }
+        [@param template.cpu.cpu_tune.vcpu_pin: collection]
+        {
+          [@ivar vcpu_pin.vcpu: int]
+          [@ivar vcpu_pin.cpu_set: string]
         }
         [@param expect: 201-created]
         [@param correlation_id: any string]
@@ -5104,7 +5161,7 @@ class VM(params.VM, Base):
         [@param vm.os.initRd: string]
         [@param vm.display.monitors: int]
         [@param vm.display.type: string]
-        [@param vm.display.allow_reconnect: boolean]
+        [@param vm.display.allow_override: boolean]
         [@param vm.os.cmdline: string]
         [@param vm.cpu.topology.cores: int]
         [@param vm.memory: long]
@@ -5624,6 +5681,7 @@ class VMDisks(Base):
           @param provisioned_size: int
           @param disk.interface: string
           @param disk.format: string
+          [@param disk.alias: string]
           [@param disk.name: string]
           [@param disk.size: int]
           [@param disk.sparse: boolean]
@@ -6529,7 +6587,7 @@ class VMs(Base):
         [@param vm.os.initRd: string]
         [@param vm.display.monitors: int]
         [@param vm.display.type: string]
-        [@param vm.display.allow_reconnect: boolean]
+        [@param vm.display.allow_override: boolean]
         [@param vm.os.cmdline: string]
         [@param vm.cpu.topology.cores: int]
         [@param vm.memory: long]
@@ -6549,6 +6607,11 @@ class VMs(Base):
           [@ivar payload.type: string]
           [@ivar payload.file.name: string]
           [@ivar payload.file.content: string]
+        }
+        [@param vm.cpu.cpu_tune.vcpu_pin: collection]
+        {
+          [@ivar vcpu_pin.vcpu: int]
+          [@ivar vcpu_pin.cpu_set: string]
         }
         [@param correlation_id: any string]
         [@param expect: 201-created]
@@ -6645,6 +6708,7 @@ class VmPool(params.VmPool, Base):
         [@param vmpool.cluster.id|name: string]
         [@param vmpool.template.id|name: string]
         [@param vmpool.name: string]
+        [@param vmpool.size: int]
         [@param correlation_id: any string]
 
         @return VmPool:
@@ -6656,6 +6720,24 @@ class VmPool(params.VmPool, Base):
                                          body=ParseHelper.toXml(self.superclass),
                                          headers={"Correlation-Id":correlation_id})
         return VmPool(result)
+
+    def allocatevm(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param action.async: boolean]
+        [@param correlation_id: any string]
+
+        @return Response:
+        '''
+
+        url = '/api/vmpools/{vmpool:id}/allocatevm'
+
+        result = self._getProxy().request(method='POST',
+                                          url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(action),
+                                          headers={"Correlation-Id":correlation_id})
+        return result
 
 class VmPoolPermission(params.Permission, Base):
     def __init__(self, vmpool, permission):
@@ -6771,6 +6853,7 @@ class VmPools(Base):
         @param vmpool.cluster.id|name: string
         @param vmpool.template.id|name: string
         @param vmpool.name: string
+        [@param vmpool.size: int]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
