@@ -25,4 +25,4 @@ class FilterHelper():
     @staticmethod
     def getItem(result=[]):
         '''Returns first item in collection if exist, otherwise None'''
-        return result[0] if(result is not None and len(result) > 0) else None
+        return result[0] if result else None

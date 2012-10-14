@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-10-14 16:00:27.065995'''
+'''Generated at: 2012-10-15 09:39:53.954481'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -27,6 +27,7 @@ from ovirtsdk.utils.filterhelper import FilterHelper
 from ovirtsdk.utils.parsehelper import ParseHelper
 from ovirtsdk.utils.searchhelper import SearchHelper
 from ovirtsdk.infrastructure.common import Base
+from ovirtsdk.infrastructure.errors import MissingParametersError
 from ovirtsdk.infrastructure.errors import RequestError
 
 
@@ -45,18 +46,18 @@ class Capabilities(Base):
 
         url = '/api/capabilities'
 
-        if id or (kwargs and kwargs.has_key('id') and kwargs['id'] <> None):
+        if id:
             try :
-                return VersionCaps(self._getProxy().get(url=UrlHelper.append(url,
-                                                                             id if id
-                                                                                else kwargs['id'])))
+                return VersionCaps(self._getProxy().get(url=UrlHelper.append(url, id)))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
-                raise err
-        else:
+                raise err        
+        elif kwargs:
             result = self._getProxy().get(url=url).version
             return VersionCaps(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        else:
+            raise MissingParametersError(['id', 'kwargs'])
 
     def list(self, **kwargs):
         '''
@@ -331,10 +332,10 @@ class ClusterGlusterVolumeBricks(Base):
 
         return ClusterGlusterVolumeBrick(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return GlusterBricks:
@@ -342,24 +343,25 @@ class ClusterGlusterVolumeBricks(Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{glustervolume:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return ClusterGlusterVolumeBrick(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{glustervolume:id}': self.parentclass.get_id()}),
                                           headers={}).get_brick()
 
-            return ClusterGlusterVolumeBrick(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return ClusterGlusterVolumeBrick(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, **kwargs):
         '''
@@ -419,10 +421,10 @@ class ClusterGlusterVolumes(Base):
 
         return ClusterGlusterVolume(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return GlusterVolumes:
@@ -430,22 +432,23 @@ class ClusterGlusterVolumes(Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return ClusterGlusterVolume(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
                                           headers={}).get_gluster_volume()
 
-            return ClusterGlusterVolume(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return ClusterGlusterVolume(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, **kwargs):
         '''
@@ -539,10 +542,10 @@ class ClusterNetworks(Base):
 
         return ClusterNetwork(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Networks:
@@ -550,22 +553,23 @@ class ClusterNetworks(Base):
 
         url = '/api/clusters/{cluster:id}/networks'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return ClusterNetwork(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
                                           headers={}).get_network()
 
-            return ClusterNetwork(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return ClusterNetwork(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -642,10 +646,10 @@ class ClusterPermissions(Base):
 
         return ClusterPermission(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permissions:
@@ -653,22 +657,23 @@ class ClusterPermissions(Base):
 
         url = '/api/clusters/{cluster:id}/permissions'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return ClusterPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
                                           headers={}).get_permission()
 
-            return ClusterPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return ClusterPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -724,28 +729,30 @@ class Clusters(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Cluster(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
 
         @return Clusters:
         '''
 
         url = '/api/clusters'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return Cluster(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                return Cluster(self._getProxy().get(url=UrlHelper.append(url, id),
                                                               headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+        elif name:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
                                           headers={}).get_cluster()
-            return Cluster(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return Cluster(FilterHelper.getItem(result))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -873,10 +880,10 @@ class DataCenterPermissions(Base):
 
         return DataCenterPermission(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permissions:
@@ -884,22 +891,23 @@ class DataCenterPermissions(Base):
 
         url = '/api/datacenters/{datacenter:id}/permissions'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return DataCenterPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
                                           headers={}).get_permission()
 
-            return DataCenterPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return DataCenterPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, **kwargs):
         '''
@@ -961,10 +969,10 @@ class DataCenterQuotas(Base):
 
         return DataCenterQuota(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Quotas:
@@ -972,22 +980,23 @@ class DataCenterQuotas(Base):
 
         url = '/api/datacenters/{datacenter:id}/quotas'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return DataCenterQuota(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
                                           headers={}).get_quota()
 
-            return DataCenterQuota(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return DataCenterQuota(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, **kwargs):
         '''
@@ -1094,10 +1103,10 @@ class DataCenterStorageDomains(Base):
 
         return DataCenterStorageDomain(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return StorageDomains:
@@ -1105,22 +1114,23 @@ class DataCenterStorageDomains(Base):
 
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return DataCenterStorageDomain(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
                                           headers={}).get_storage_domain()
 
-            return DataCenterStorageDomain(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return DataCenterStorageDomain(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -1167,28 +1177,30 @@ class DataCenters(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return DataCenter(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
 
         @return DataCenters:
         '''
 
         url = '/api/datacenters'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return DataCenter(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                return DataCenter(self._getProxy().get(url=UrlHelper.append(url, id),
                                                               headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+        elif name:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
                                           headers={}).get_data_center()
-            return DataCenter(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return DataCenter(FilterHelper.getItem(result))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -1273,10 +1285,10 @@ class DiskStatistics(Base):
     def __init__(self, disk):
         self.parentclass = disk
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Statistics:
@@ -1284,22 +1296,23 @@ class DiskStatistics(Base):
 
         url = '/api/disks/{disk:id}/statistics'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return DiskStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
                                           headers={}).get_statistic()
 
-            return DiskStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return DiskStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, **kwargs):
         '''
@@ -1352,28 +1365,30 @@ class Disks(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Disk(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
 
         @return Disks:
         '''
 
         url = '/api/disks'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return Disk(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                return Disk(self._getProxy().get(url=UrlHelper.append(url, id),
                                                               headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+        elif name:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
                                           headers={}).get_disk()
-            return Disk(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return Disk(FilterHelper.getItem(result))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -1422,10 +1437,10 @@ class DomainGroups(Base):
     def __init__(self, domain):
         self.parentclass = domain
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Groups:
@@ -1433,22 +1448,23 @@ class DomainGroups(Base):
 
         url = '/api/domains/{domain:id}/groups'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return DomainGroup(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
                                           headers={}).get_group()
 
-            return DomainGroup(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return DomainGroup(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -1487,10 +1503,10 @@ class DomainUsers(Base):
     def __init__(self, domain):
         self.parentclass = domain
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Users:
@@ -1498,22 +1514,23 @@ class DomainUsers(Base):
 
         url = '/api/domains/{domain:id}/users'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return DomainUser(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
                                           headers={}).get_user()
 
-            return DomainUser(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return DomainUser(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -1539,9 +1556,9 @@ class Domains(Base):
     def __init__(self):
         """Constructor."""
 
-    def get(self, name='*', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Domains:
@@ -1549,18 +1566,20 @@ class Domains(Base):
 
         url = '/api/domains'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return Domain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']), headers={}))
+                return Domain(self._getProxy().get(url=UrlHelper.append(url, id),
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
+        elif name:
             result = self._getProxy().get(url=url,
                                           headers={}).get_domain()
-            if name != '*': kwargs['name']=name
-            return Domain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return Domain(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -1592,28 +1611,30 @@ class Events(Base):
     def __init__(self):
         """Constructor."""
 
-    def get(self, name='name', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
 
         @return Events:
         '''
 
         url = '/api/events'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return Event(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                return Event(self._getProxy().get(url=UrlHelper.append(url, id),
                                                               headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+        elif name:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
                                           headers={}).get_event()
-            return Event(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return Event(FilterHelper.getItem(result))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, from_event_id=None, max=None, **kwargs):
         '''
@@ -1733,10 +1754,10 @@ class GroupPermissions(Base):
 
         return GroupPermission(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permissions:
@@ -1744,22 +1765,23 @@ class GroupPermissions(Base):
 
         url = '/api/groups/{group:id}/permissions'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return GroupPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
                                           headers={}).get_permission()
 
-            return GroupPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return GroupPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -1861,10 +1883,10 @@ class GroupRolePermits(Base):
 
         return GroupRolePermit(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permits:
@@ -1872,24 +1894,25 @@ class GroupRolePermits(Base):
 
         url = '/api/groups/{group:id}/roles/{role:id}/permits'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{role:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return GroupRolePermit(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{role:id}': self.parentclass.get_id()}),
                                           headers={}).get_permit()
 
-            return GroupRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return GroupRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -1935,10 +1958,10 @@ class GroupRoles(Base):
 
         return GroupRole(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Roles:
@@ -1946,22 +1969,23 @@ class GroupRoles(Base):
 
         url = '/api/groups/{group:id}/roles'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return GroupRole(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
                                           headers={}).get_role()
 
-            return GroupRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return GroupRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -2033,10 +2057,10 @@ class GroupTags(Base):
 
         return GroupTag(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Tags:
@@ -2044,22 +2068,23 @@ class GroupTags(Base):
 
         url = '/api/groups/{group:id}/tags'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return GroupTag(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
                                           headers={}).get_tag()
 
-            return GroupTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return GroupTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -2100,28 +2125,30 @@ class Groups(Base):
                                       headers={"Correlation-Id":correlation_id})
         return Group(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
 
         @return Groups:
         '''
 
         url = '/api/groups'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return Group(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                return Group(self._getProxy().get(url=UrlHelper.append(url, id),
                                                               headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+        elif name:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
                                           headers={}).get_group()
-            return Group(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return Group(FilterHelper.getItem(result))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -2464,10 +2491,10 @@ class HostNicStatistics(Base):
     def __init__(self, hostnic):
         self.parentclass = hostnic
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Statistics:
@@ -2475,24 +2502,25 @@ class HostNicStatistics(Base):
 
         url = '/api/hosts/{host:id}/nics/{nic:id}/statistics'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{nic:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return HostNicStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{nic:id}': self.parentclass.get_id()}),
                                           headers={}).get_statistic()
 
-            return HostNicStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return HostNicStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -2549,10 +2577,10 @@ class HostNics(Base):
 
         return HostNIC(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return HostNics:
@@ -2560,22 +2588,23 @@ class HostNics(Base):
 
         url = '/api/hosts/{host:id}/nics'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return HostNIC(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                           headers={}).get_host_nic()
 
-            return HostNIC(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return HostNIC(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -2694,10 +2723,10 @@ class HostPermissions(Base):
 
         return HostPermission(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permissions:
@@ -2705,22 +2734,23 @@ class HostPermissions(Base):
 
         url = '/api/hosts/{host:id}/permissions'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return HostPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                           headers={}).get_permission()
 
-            return HostPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return HostPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -2757,10 +2787,10 @@ class HostStatistics(Base):
     def __init__(self, host):
         self.parentclass = host
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Statistics:
@@ -2768,22 +2798,23 @@ class HostStatistics(Base):
 
         url = '/api/hosts/{host:id}/statistics'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return HostStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                           headers={}).get_statistic()
 
-            return HostStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return HostStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -2808,10 +2839,10 @@ class HostStorage(Base):
     def __init__(self, host):
         self.parentclass = host
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return HostStorage:
@@ -2819,22 +2850,23 @@ class HostStorage(Base):
 
         url = '/api/hosts/{host:id}/storage'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return HostStorage(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                           headers={}).get_storage()
 
-            return HostStorage(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return HostStorage(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -2906,10 +2938,10 @@ class HostTags(Base):
 
         return HostTag(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Tags:
@@ -2917,22 +2949,23 @@ class HostTags(Base):
 
         url = '/api/hosts/{host:id}/tags'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return HostTag(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                           headers={}).get_tag()
 
-            return HostTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return HostTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -2990,28 +3023,30 @@ class Hosts(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Host(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
 
         @return Hosts:
         '''
 
         url = '/api/hosts'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return Host(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                return Host(self._getProxy().get(url=UrlHelper.append(url, id),
                                                               headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+        elif name:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
                                           headers={}).get_host()
-            return Host(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return Host(FilterHelper.getItem(result))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -3109,9 +3144,9 @@ class Networks(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Network(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Networks:
@@ -3119,18 +3154,20 @@ class Networks(Base):
 
         url = '/api/networks'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return Network(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']), headers={}))
+                return Network(self._getProxy().get(url=UrlHelper.append(url, id),
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
+        elif name:
             result = self._getProxy().get(url=url,
                                           headers={}).get_network()
-            if name != '*': kwargs['name']=name
-            return Network(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return Network(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -3244,10 +3281,10 @@ class RolePermits(Base):
 
         return RolePermit(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permits:
@@ -3255,22 +3292,23 @@ class RolePermits(Base):
 
         url = '/api/roles/{role:id}/permits'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return RolePermit(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
                                           headers={}).get_permit()
 
-            return RolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return RolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -3318,9 +3356,9 @@ class Roles(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Role(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Roles:
@@ -3328,18 +3366,20 @@ class Roles(Base):
 
         url = '/api/roles'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return Role(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']), headers={}))
+                return Role(self._getProxy().get(url=UrlHelper.append(url, id),
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
+        elif name:
             result = self._getProxy().get(url=url,
                                           headers={}).get_role()
-            if name != '*': kwargs['name']=name
-            return Role(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return Role(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -3421,10 +3461,10 @@ class StorageDomainFiles(Base):
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Files:
@@ -3432,22 +3472,23 @@ class StorageDomainFiles(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/files'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return StorageDomainFile(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
                                           headers={}).get_file()
 
-            return StorageDomainFile(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return StorageDomainFile(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -3526,10 +3567,10 @@ class StorageDomainPermissions(Base):
 
         return StorageDomainPermission(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permissions:
@@ -3537,22 +3578,23 @@ class StorageDomainPermissions(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return StorageDomainPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
                                           headers={}).get_permission()
 
-            return StorageDomainPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return StorageDomainPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -3631,10 +3673,10 @@ class StorageDomainTemplates(Base):
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Templates:
@@ -3642,22 +3684,23 @@ class StorageDomainTemplates(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/templates'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return StorageDomainTemplate(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
                                           headers={}).get_template()
 
-            return StorageDomainTemplate(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return StorageDomainTemplate(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -3737,10 +3780,10 @@ class StorageDomainVMs(Base):
     def __init__(self, storagedomain):
         self.parentclass = storagedomain
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return VMs:
@@ -3748,22 +3791,23 @@ class StorageDomainVMs(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/vms'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return StorageDomainVM(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
                                           headers={}).get_vm()
 
-            return StorageDomainVM(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return StorageDomainVM(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -3852,28 +3896,30 @@ class StorageDomains(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return StorageDomain(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
 
         @return StorageDomains:
         '''
 
         url = '/api/storagedomains'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return StorageDomain(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                return StorageDomain(self._getProxy().get(url=UrlHelper.append(url, id),
                                                               headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+        elif name:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
                                           headers={}).get_storage_domain()
-            return StorageDomain(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return StorageDomain(FilterHelper.getItem(result))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -3957,9 +4003,9 @@ class Tags(Base):
                                       headers={"Correlation-Id":correlation_id})
         return Tag(result)
 
-    def get(self, name='*', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)"]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Tags:
@@ -3967,18 +4013,20 @@ class Tags(Base):
 
         url = '/api/tags'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return Tag(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']), headers={}))
+                return Tag(self._getProxy().get(url=UrlHelper.append(url, id),
+                                                              headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
+        elif name:
             result = self._getProxy().get(url=url,
                                           headers={}).get_tag()
-            if name != '*': kwargs['name']=name
-            return Tag(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return Tag(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -4107,10 +4155,10 @@ class TemplateCdRoms(Base):
     def __init__(self, template):
         self.parentclass = template
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return CdRoms:
@@ -4118,22 +4166,23 @@ class TemplateCdRoms(Base):
 
         url = '/api/templates/{template:id}/cdroms'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return TemplateCdRom(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
                                           headers={}).get_cdrom()
 
-            return TemplateCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return TemplateCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -4211,10 +4260,10 @@ class TemplateDisks(Base):
     def __init__(self, template):
         self.parentclass = template
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Disks:
@@ -4222,22 +4271,23 @@ class TemplateDisks(Base):
 
         url = '/api/templates/{template:id}/disks'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return TemplateDisk(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
                                           headers={}).get_disk()
 
-            return TemplateDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return TemplateDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -4340,10 +4390,10 @@ class TemplateNics(Base):
 
         return TemplateNic(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Nics:
@@ -4351,22 +4401,23 @@ class TemplateNics(Base):
 
         url = '/api/templates/{template:id}/nics'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return TemplateNic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
                                           headers={}).get_nic()
 
-            return TemplateNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return TemplateNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -4443,10 +4494,10 @@ class TemplatePermissions(Base):
 
         return TemplatePermission(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permissions:
@@ -4454,22 +4505,23 @@ class TemplatePermissions(Base):
 
         url = '/api/templates/{template:id}/permissions'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return TemplatePermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
                                           headers={}).get_permission()
 
-            return TemplatePermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return TemplatePermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -4555,28 +4607,30 @@ class Templates(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Template(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
 
         @return Templates:
         '''
 
         url = '/api/templates'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return Template(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                return Template(self._getProxy().get(url=UrlHelper.append(url, id),
                                                               headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+        elif name:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
                                           headers={}).get_template()
-            return Template(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return Template(FilterHelper.getItem(result))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -4695,10 +4749,10 @@ class UserPermissions(Base):
 
         return UserPermission(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permissions:
@@ -4706,22 +4760,23 @@ class UserPermissions(Base):
 
         url = '/api/users/{user:id}/permissions'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return UserPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
                                           headers={}).get_permission()
 
-            return UserPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return UserPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -4823,10 +4878,10 @@ class UserRolePermits(Base):
 
         return UserRolePermit(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permits:
@@ -4834,24 +4889,25 @@ class UserRolePermits(Base):
 
         url = '/api/users/{user:id}/roles/{role:id}/permits'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{role:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return UserRolePermit(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{role:id}': self.parentclass.get_id()}),
                                           headers={}).get_permit()
 
-            return UserRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return UserRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -4897,10 +4953,10 @@ class UserRoles(Base):
 
         return UserRole(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Roles:
@@ -4908,22 +4964,23 @@ class UserRoles(Base):
 
         url = '/api/users/{user:id}/roles'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return UserRole(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
                                           headers={}).get_role()
 
-            return UserRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return UserRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -4995,10 +5052,10 @@ class UserTags(Base):
 
         return UserTag(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Tags:
@@ -5006,22 +5063,23 @@ class UserTags(Base):
 
         url = '/api/users/{user:id}/tags'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return UserTag(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
                                           headers={}).get_tag()
 
-            return UserTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return UserTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -5064,28 +5122,30 @@ class Users(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return User(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
 
         @return Users:
         '''
 
         url = '/api/users'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return User(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                return User(self._getProxy().get(url=UrlHelper.append(url, id),
                                                               headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+        elif name:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
                                           headers={}).get_user()
-            return User(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return User(FilterHelper.getItem(result))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -5465,10 +5525,10 @@ class VMCdRoms(Base):
 
         return VMCdRom(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return CdRoms:
@@ -5476,22 +5536,23 @@ class VMCdRoms(Base):
 
         url = '/api/vms/{vm:id}/cdroms'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMCdRom(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                           headers={}).get_cdrom()
 
-            return VMCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -5621,10 +5682,10 @@ class VMDiskStatistics(Base):
     def __init__(self, vmdisk):
         self.parentclass = vmdisk
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Statistics:
@@ -5632,24 +5693,25 @@ class VMDiskStatistics(Base):
 
         url = '/api/vms/{vm:id}/disks/{disk:id}/statistics'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{disk:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMDiskStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{disk:id}': self.parentclass.get_id()}),
                                           headers={}).get_statistic()
 
-            return VMDiskStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMDiskStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, **kwargs):
         '''
@@ -5710,10 +5772,10 @@ class VMDisks(Base):
 
         return VMDisk(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Disks:
@@ -5721,22 +5783,23 @@ class VMDisks(Base):
 
         url = '/api/vms/{vm:id}/disks'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMDisk(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                           headers={}).get_disk()
 
-            return VMDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -5861,10 +5924,10 @@ class VMNicStatistics(Base):
     def __init__(self, vmnic):
         self.parentclass = vmnic
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Statistics:
@@ -5872,24 +5935,25 @@ class VMNicStatistics(Base):
 
         url = '/api/vms/{vm:id}/nics/{nic:id}/statistics'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{nic:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMNicStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{nic:id}': self.parentclass.get_id()}),
                                           headers={}).get_statistic()
 
-            return VMNicStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMNicStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, **kwargs):
         '''
@@ -5939,10 +6003,10 @@ class VMNics(Base):
 
         return VMNic(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Nics:
@@ -5950,22 +6014,23 @@ class VMNics(Base):
 
         url = '/api/vms/{vm:id}/nics'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMNic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                           headers={}).get_nic()
 
-            return VMNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -6042,10 +6107,10 @@ class VMPermissions(Base):
 
         return VMPermission(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permissions:
@@ -6053,22 +6118,23 @@ class VMPermissions(Base):
 
         url = '/api/vms/{vm:id}/permissions'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                           headers={}).get_permission()
 
-            return VMPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -6154,10 +6220,10 @@ class VMSnapshotCdroms(Base):
     def __init__(self, vmsnapshot):
         self.parentclass = vmsnapshot
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return CdRoms:
@@ -6165,24 +6231,25 @@ class VMSnapshotCdroms(Base):
 
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMSnapshotCdrom(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{snapshot:id}': self.parentclass.get_id()}),
                                           headers={}).get_cdrom()
 
-            return VMSnapshotCdrom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMSnapshotCdrom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, **kwargs):
         '''
@@ -6217,10 +6284,10 @@ class VMSnapshotDisks(Base):
     def __init__(self, vmsnapshot):
         self.parentclass = vmsnapshot
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Disks:
@@ -6228,24 +6295,25 @@ class VMSnapshotDisks(Base):
 
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/disks'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMSnapshotDisk(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{snapshot:id}': self.parentclass.get_id()}),
                                           headers={}).get_disk()
 
-            return VMSnapshotDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMSnapshotDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, **kwargs):
         '''
@@ -6280,10 +6348,10 @@ class VMSnapshotNics(Base):
     def __init__(self, vmsnapshot):
         self.parentclass = vmsnapshot
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Nics:
@@ -6291,24 +6359,25 @@ class VMSnapshotNics(Base):
 
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/nics'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMSnapshotNic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{snapshot:id}': self.parentclass.get_id()}),
                                           headers={}).get_nic()
 
-            return VMSnapshotNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMSnapshotNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, **kwargs):
         '''
@@ -6351,10 +6420,10 @@ class VMSnapshots(Base):
 
         return VMSnapshot(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Snapshots:
@@ -6362,22 +6431,23 @@ class VMSnapshots(Base):
 
         url = '/api/vms/{vm:id}/snapshots'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMSnapshot(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                           headers={}).get_snapshot()
 
-            return VMSnapshot(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMSnapshot(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -6414,10 +6484,10 @@ class VMStatistics(Base):
     def __init__(self, vm):
         self.parentclass = vm
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Statistics:
@@ -6425,22 +6495,23 @@ class VMStatistics(Base):
 
         url = '/api/vms/{vm:id}/statistics'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMStatistic(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                           headers={}).get_statistic()
 
-            return VMStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -6512,10 +6583,10 @@ class VMTags(Base):
 
         return VMTag(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Tags:
@@ -6523,22 +6594,23 @@ class VMTags(Base):
 
         url = '/api/vms/{vm:id}/tags'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VMTag(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                           headers={}).get_tag()
 
-            return VMTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VMTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -6626,28 +6698,30 @@ class VMs(Base):
                                       headers={"Correlation-Id":correlation_id, "Expect":expect})
         return VM(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
 
         @return VMs:
         '''
 
         url = '/api/vms'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return VM(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                return VM(self._getProxy().get(url=UrlHelper.append(url, id),
                                                               headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+        elif name:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
                                           headers={}).get_vm()
-            return VM(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VM(FilterHelper.getItem(result))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
@@ -6796,10 +6870,10 @@ class VmPoolPermissions(Base):
 
         return VmPoolPermission(self.parentclass, result)
 
-    def get(self, name=None, **kwargs):
+    def get(self, name=None, id=None):
 
         '''
-        [@param **kwargs: dict (property based filtering)]
+        [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
         @return Permissions:
@@ -6807,22 +6881,23 @@ class VmPoolPermissions(Base):
 
         url = '/api/vmpools/{vmpool:id}/permissions'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
                 result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
-                                                                   kwargs['id']),
+                                                                   id),
                                               headers={})
                 return VmPoolPermission(self.parentclass, result)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            if(name is not None): kwargs['name']=name
+        elif name:
             result = self._getProxy().get(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
                                           headers={}).get_permission()
 
-            return VmPoolPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VmPoolPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, max=None, **kwargs):
         '''
@@ -6867,28 +6942,30 @@ class VmPools(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return VmPool(result)
 
-    def get(self, name='name', **kwargs):
+    def get(self, name=None, id=None):
         '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param name: string (string the name of the entity)]
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
 
         @return VmPools:
         '''
 
         url = '/api/vmpools'
 
-        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:
+        if id:
             try :
-                return VmPool(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),
+                return VmPool(self._getProxy().get(url=UrlHelper.append(url, id),
                                                               headers={}))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
-        else:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),
+        elif name:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
                                           headers={}).get_vmpool()
-            return VmPool(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            return VmPool(FilterHelper.getItem(result))
+        else:
+            raise MissingParametersError(['id', 'name'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''

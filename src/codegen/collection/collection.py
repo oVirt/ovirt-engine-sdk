@@ -66,58 +66,62 @@ class Collection(object):
 
         url = '/api/capabilities'
 
-        if id or (kwargs and kwargs.has_key('id') and kwargs['id'] <> None):
+        if id:
             try :
-                return VersionCaps(self._getProxy().get(url=UrlHelper.append(url,
-                                                                             id if id
-                                                                                else kwargs['id'])))
+                return VersionCaps(self._getProxy().get(url=UrlHelper.append(url, id)))
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
-                raise err
-        else:
+                raise err        
+        elif kwargs:
             result = self._getProxy().get(url=url).version
             return VersionCaps(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+        else:
+            raise MissingParametersError(['id', 'kwargs'])
 """
 
         if 'search:query' in url_params:
             return \
-            ("    def get(self, name='name', " + headers_method_params_str + "**kwargs):\n" + \
-             Documentation.document(link, {'name: string (string the name of the entity)':False,
-                                           '**kwargs: dict (property based filtering)': False}) +
+            ("    def get(self, name=None, " + headers_method_params_str + "id=None):\n" + \
+             Documentation.document(link, {'name: string (the name of the entity)': False,
+                                           'id  : string (the id of the entity)'  : False}) +
             "        url = '%(url)s'\n\n" + \
 
-            "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
+            "        if id:\n" +
             "            try :\n" + \
-            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']),\n"
+            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, id),\n"
             "                                                              headers=" + headers_map_params_str + "))\n" +
             "            except RequestError, err:\n" + \
             "                if err.status and err.status == 404:\n" + \
             "                    return None\n" + \
             "                raise err\n" + \
-            "        else:\n" +
-            "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search':'name='+name}),\n"
+            "        elif name:\n" +
+            "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),\n"
             "                                          headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
-            "            return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
+            "            return %(resource_type)s(FilterHelper.getItem(result))\n" + \
+            "        else:\n" + \
+            "            raise MissingParametersError(['id', 'name'])\n\n") % collection_get_template_values
 
 
         return \
-            ("    def get(self, name='*', " + headers_method_params_str + "**kwargs):\n" + \
-             Documentation.document(link, {'name: string (the name of the entity)':False,
-                                           '**kwargs: dict (property based filtering)"': False}) +
+            ("    def get(self, name=None, " + headers_method_params_str + "id=None):\n" + \
+             Documentation.document(link, {'name: string (the name of the entity)': False,
+                                           'id  : string (the id of the entity)'  : False}) +
             "        url = '%(url)s'\n\n" + \
-            "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
+            "        if id:\n" +
             "            try :\n" + \
-            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, kwargs['id']), headers=" + headers_map_params_str + "))\n" +
+            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, id),\n" + \
+            "                                                              headers=" + headers_map_params_str + "))\n" +
             "            except RequestError, err:\n" + \
             "                if err.status and err.status == 404:\n" + \
             "                    return None\n" + \
             "                raise err\n" + \
-            "        else:\n" +
+            "        elif name:\n" +
             "            result = self._getProxy().get(url=url,\n"
             "                                          headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
-            "            if name != '*': kwargs['name']=name\n"
-            "            return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % collection_get_template_values
+            "            return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))\n" + \
+            "        else:\n" + \
+            "            raise MissingParametersError(['id', 'name'])\n\n") % collection_get_template_values
 
     @staticmethod
     def list(url, resource_type, link, KNOWN_WRAPPER_TYPES={}):

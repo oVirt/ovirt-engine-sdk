@@ -38,6 +38,10 @@ class UnsecuredConnectionAttemptError(Exception):
         Exception.__init__(self, "[ERROR]::No response returned from server. If you're using HTTP protocol\n" + \
                                  "against a SSL secured server, then try using HTTPS instead.")
 
+class MissingParametersError(Exception):
+    def __init__(self, params):
+        Exception.__init__(self, "[ERROR]::One of the following parameters has to be specified: %s." % params)
+
 class RequestError(Exception):
     def __init__(self, response):
         self.detail = None

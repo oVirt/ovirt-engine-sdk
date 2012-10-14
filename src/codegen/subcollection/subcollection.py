@@ -63,11 +63,11 @@ class SubCollection(object):
                                     else headers_method_params_str
 
         sub_collection_get_template = \
-        ("    def get(self, name=None, " + headers_method_params_str + "**kwargs):\n\n" + \
-         Documentation.document(link, {'name: string (the name of the entity)':False,
-                                       '**kwargs: dict (property based filtering)': False}) +
+        ("    def get(self, name=None, " + headers_method_params_str + "id=None):\n\n" + \
+         Documentation.document(link, {'name: string (the name of the entity)': False,
+                                       'id  : string (the id of the entity)'  : False}) +
         "        url = '%(url)s'\n\n" + \
-        "        if kwargs and kwargs.has_key('id') and kwargs['id'] <> None:\n" +
+        "        if id:\n" +
 
         "            try :\n" + \
         "                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, " + \
@@ -75,22 +75,23 @@ class SubCollection(object):
                                                        "                                                                                          ",
                                                        continues=True, is_collection=True) + \
         "),\n" +
-        "                                                                   kwargs['id']),\n"
+        "                                                                   id),\n"
         "                                              headers=" + headers_map_params_str + ")\n" +
         "                return %(encapsulating_resource)s(self.parentclass, result)\n" +
         "            except RequestError, err:\n" + \
         "                if err.status and err.status == 404:\n" + \
         "                    return None\n" + \
         "                raise err\n" + \
-        "        else:\n" +
-        "            if(name is not None): kwargs['name']=name\n" + \
+        "        elif name:\n" +
         "            result = self._getProxy().get(url=UrlHelper.replace(url, " + \
         UrlUtils.generate_url_identifiers_replacments(link,
                                                        "                                                                     ",
                                                        continues=True, is_collection=True) + \
         "),\n"
         "                                          headers=" + headers_map_params_str + ").get_%(actual_resource_name_lc)s()\n\n" + \
-        "            return %(encapsulating_resource)s(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, kwargs)))\n\n") % sub_collection_get_template_values
+        "            return %(encapsulating_resource)s(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))\n" + \
+        "        else:\n" + \
+        "            raise MissingParametersError(['id', 'name'])\n\n") % sub_collection_get_template_values
 
         return sub_collection_get_template
 
