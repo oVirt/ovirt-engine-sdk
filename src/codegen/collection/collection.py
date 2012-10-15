@@ -23,6 +23,7 @@ from codegen.utils.typeutil import TypeUtil
 from codegen.doc.documentation import Documentation
 from codegen.utils.paramutils import ParamUtils
 from codegen.utils.headerutils import HeaderUtils
+from codegen.collection.collectionexceptions import CollectionExceptions
 
 class Collection(object):
 
@@ -54,31 +55,16 @@ class Collection(object):
         #fully comply with RESTful collection pattern, but preserved
         #in sake of backward compatibility
         if url == '/api/capabilities':
-            return \
-"""
-    def get(self, id=None, **kwargs):
-        '''
-        [@param id: string (the id of the entity)]
-        [@param **kwargs: dict (property based filtering)]
+            return CollectionExceptions.get(url, link, prms_str, method_params, url_params,
+                                            headers_method_params_str, headers_map_params_str,
+                                            collection_get_template_values)
 
-        @return VersionCaps:
-        '''
-
-        url = '/api/capabilities'
-
-        if id:
-            try :
-                return VersionCaps(self._getProxy().get(url=UrlHelper.append(url, id)))
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err        
-        elif kwargs:
-            result = self._getProxy().get(url=url).version
-            return VersionCaps(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
-        else:
-            raise MissingParametersError(['id', 'kwargs'])
-"""
+        #/api/disks search-by-name paradigm was broken by the engine
+        #should be fixed later on
+        if url == '/api/disks':
+            return CollectionExceptions.get(url, link, prms_str, method_params, url_params,
+                                            headers_method_params_str, headers_map_params_str,
+                                            collection_get_template_values)
 
         if 'search:query' in url_params:
             return \

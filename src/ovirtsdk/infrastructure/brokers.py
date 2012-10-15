@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-10-15 09:39:53.954481'''
+'''Generated at: 2012-10-15 12:52:57.174268'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -1365,10 +1365,10 @@ class Disks(Base):
                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
         return Disk(result)
 
-    def get(self, name=None, id=None):
+    def get(self, alias=None, id=None):
         '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
+        [@param id   : string (the id of the entity)]
+        [@param alias: string (the alias of the entity)]
 
         @return Disks:
         '''
@@ -1383,12 +1383,12 @@ class Disks(Base):
                 if err.status and err.status == 404:
                     return None
                 raise err
-        elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
+        elif alias:
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'alias='+alias,'max:matrix':-1}),
                                           headers={}).get_disk()
             return Disk(FilterHelper.getItem(result))
         else:
-            raise MissingParametersError(['id', 'name'])
+            raise MissingParametersError(['id', 'alias'])
 
     def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
