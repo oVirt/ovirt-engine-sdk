@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-10-15 12:52:57.174268'''
+'''Generated at: 2012-10-15 14:10:51.064936'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -52,7 +52,7 @@ class Capabilities(Base):
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
-                raise err        
+                raise err
         elif kwargs:
             result = self._getProxy().get(url=url).version
             return VersionCaps(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
@@ -748,7 +748,7 @@ class Clusters(Base):
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                                           headers={}).get_cluster()
             return Cluster(FilterHelper.getItem(result))
         else:
@@ -1196,7 +1196,7 @@ class DataCenters(Base):
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                                           headers={}).get_data_center()
             return DataCenter(FilterHelper.getItem(result))
         else:
@@ -1384,7 +1384,7 @@ class Disks(Base):
                     return None
                 raise err
         elif alias:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'alias='+alias,'max:matrix':-1}),
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'alias='+alias}),
                                           headers={}).get_disk()
             return Disk(FilterHelper.getItem(result))
         else:
@@ -1630,7 +1630,7 @@ class Events(Base):
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                                           headers={}).get_event()
             return Event(FilterHelper.getItem(result))
         else:
@@ -2144,7 +2144,7 @@ class Groups(Base):
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                                           headers={}).get_group()
             return Group(FilterHelper.getItem(result))
         else:
@@ -3042,7 +3042,7 @@ class Hosts(Base):
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                                           headers={}).get_host()
             return Host(FilterHelper.getItem(result))
         else:
@@ -3915,7 +3915,7 @@ class StorageDomains(Base):
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                                           headers={}).get_storage_domain()
             return StorageDomain(FilterHelper.getItem(result))
         else:
@@ -4626,7 +4626,7 @@ class Templates(Base):
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                                           headers={}).get_template()
             return Template(FilterHelper.getItem(result))
         else:
@@ -5141,7 +5141,7 @@ class Users(Base):
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                                           headers={}).get_user()
             return User(FilterHelper.getItem(result))
         else:
@@ -6717,7 +6717,7 @@ class VMs(Base):
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                                           headers={}).get_vm()
             return VM(FilterHelper.getItem(result))
         else:
@@ -6961,7 +6961,7 @@ class VmPools(Base):
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),
+            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                                           headers={}).get_vmpool()
             return VmPool(FilterHelper.getItem(result))
         else:

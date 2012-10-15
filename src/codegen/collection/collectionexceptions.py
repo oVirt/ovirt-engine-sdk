@@ -73,7 +73,7 @@ class CollectionExceptions(object):
             "                    return None\n" + \
             "                raise err\n" + \
             "        elif alias:\n" +
-            "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'alias='+alias,'max:matrix':-1}),\n"
+            "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'alias='+alias}),\n"
             "                                          headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
             "            return %(resource_type)s(FilterHelper.getItem(result))\n" + \
             "        else:\n" + \

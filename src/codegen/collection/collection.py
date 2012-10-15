@@ -82,7 +82,7 @@ class Collection(object):
             "                    return None\n" + \
             "                raise err\n" + \
             "        elif name:\n" +
-            "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name,'max:matrix':-1}),\n"
+            "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),\n"
             "                                          headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
             "            return %(resource_type)s(FilterHelper.getItem(result))\n" + \
             "        else:\n" + \
