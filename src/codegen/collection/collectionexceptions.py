@@ -45,14 +45,16 @@ class CollectionExceptions(object):
 
         if id:
             try :
-                return VersionCaps(self._getProxy().get(url=UrlHelper.append(url, id)))
+                return VersionCaps(self.__getProxy().get(url=UrlHelper.append(url, id)),
+                                   self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif kwargs:
-            result = self._getProxy().get(url=url).version
-            return VersionCaps(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            result = self.__getProxy().get(url=url).version
+            return VersionCaps(FilterHelper.getItem(FilterHelper.filter(result, kwargs)),
+                               self.context)
         else:
             raise MissingParametersError(['id', 'kwargs'])
 """
@@ -66,15 +68,17 @@ class CollectionExceptions(object):
 
             "        if id:\n" +
             "            try :\n" + \
-            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, id),\n"
-            "                                                              headers=" + headers_map_params_str + "))\n" +
+            "                return %(resource_type)s(self.__getProxy().get(url=UrlHelper.append(url, id),\n"
+            "                                                               headers=" + headers_map_params_str + "),\n" + \
+            "                                         self.context)\n" +
             "            except RequestError, err:\n" + \
             "                if err.status and err.status == 404:\n" + \
             "                    return None\n" + \
             "                raise err\n" + \
             "        elif alias:\n" +
-            "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'alias='+alias}),\n"
-            "                                          headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
-            "            return %(resource_type)s(FilterHelper.getItem(result))\n" + \
+            "            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'alias='+alias}),\n"
+            "                                           headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
+            "            return %(resource_type)s(FilterHelper.getItem(result),\n" + \
+            "                                     self.context)\n" + \
             "        else:\n" + \
             "            raise MissingParametersError(['id', 'alias'])\n\n") % collection_get_template_values

@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-10-15 14:10:51.064936'''
+'''Generated at: 2012-10-18 13:45:20.305626'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -27,13 +27,24 @@ from ovirtsdk.utils.filterhelper import FilterHelper
 from ovirtsdk.utils.parsehelper import ParseHelper
 from ovirtsdk.utils.searchhelper import SearchHelper
 from ovirtsdk.infrastructure.common import Base
+from ovirtsdk.infrastructure.context import context
 from ovirtsdk.infrastructure.errors import MissingParametersError
+from ovirtsdk.infrastructure.errors import DisconnectedError
 from ovirtsdk.infrastructure.errors import RequestError
 
 
 class Capabilities(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 
     def get(self, id=None, **kwargs):
@@ -48,14 +59,16 @@ class Capabilities(Base):
 
         if id:
             try :
-                return VersionCaps(self._getProxy().get(url=UrlHelper.append(url, id)))
+                return VersionCaps(self.__getProxy().get(url=UrlHelper.append(url, id)),
+                                   self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif kwargs:
-            result = self._getProxy().get(url=url).version
-            return VersionCaps(FilterHelper.getItem(FilterHelper.filter(result, kwargs)))
+            result = self.__getProxy().get(url=url).version
+            return VersionCaps(FilterHelper.getItem(FilterHelper.filter(result, kwargs)),
+                               self.context)
         else:
             raise MissingParametersError(['id', 'kwargs'])
 
@@ -68,22 +81,33 @@ class Capabilities(Base):
 
         url='/api/capabilities'
 
-        result = self._getProxy().get(url=url).version
+        result = self.__getProxy().get(url=url).version
         return ParseHelper.toCollection(VersionCaps,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 class Cluster(params.Cluster, Base):
-    def __init__(self, cluster):
+    def __init__(self, cluster, context):
+        Base.__init__(self, context)
         self.superclass = cluster
 
-        self.permissions = ClusterPermissions(self)
-        self.glustervolumes = ClusterGlusterVolumes(self)
-        self.networks = ClusterNetworks(self)
+        self.permissions = ClusterPermissions(self, context)
+        self.glustervolumes = ClusterGlusterVolumes(self, context)
+        self.networks = ClusterNetworks(self, context)
 
-    def __new__(cls, cluster):
+    def __new__(cls, cluster, context):
         if cluster is None: return None
         obj = object.__new__(cls)
-        obj.__init__(cluster)
+        obj.__init__(cluster, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -96,7 +120,7 @@ class Cluster(params.Cluster, Base):
         url = UrlHelper.replace('/api/clusters/{cluster:id}',
                                 {'{cluster:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
@@ -122,23 +146,33 @@ class Cluster(params.Cluster, Base):
 
         url = '/api/clusters/{cluster:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
-        return Cluster(result)
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
+        return Cluster(result, self.context)
 
 class ClusterGlusterVolume(params.GlusterVolume, Base):
-    def __init__(self, cluster, glustervolume):
+    def __init__(self, cluster, glustervolume, context):
+        Base.__init__(self, context)
         self.parentclass = cluster
         self.superclass  =  glustervolume
 
-        self.bricks = ClusterGlusterVolumeBricks(self)
+        self.bricks = ClusterGlusterVolumeBricks(self, context)
 
-    def __new__(cls, cluster, glustervolume):
+    def __new__(cls, cluster, glustervolume, context):
         if glustervolume is None: return None
         obj = object.__new__(cls)
-        obj.__init__(cluster, glustervolume)
+        obj.__init__(cluster, glustervolume, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self):
         '''
@@ -147,7 +181,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}'
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+        return self.__getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                    '{glustervolume:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
@@ -164,11 +198,11 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/rebalance'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -183,11 +217,11 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetalloptions'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -204,11 +238,11 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetoption'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -225,11 +259,11 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/setoption'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -245,11 +279,11 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/start'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -265,25 +299,35 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stop'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{glustervolume:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
 class ClusterGlusterVolumeBrick(params.GlusterBrick, Base):
-    def __init__(self, clusterglustervolume, brick):
+    def __init__(self, clusterglustervolume, brick, context):
+        Base.__init__(self, context)
         self.parentclass = clusterglustervolume
         self.superclass  =  brick
 
         #SUB_COLLECTIONS
-    def __new__(cls, clusterglustervolume, brick):
+    def __new__(cls, clusterglustervolume, brick, context):
         if brick is None: return None
         obj = object.__new__(cls)
-        obj.__init__(clusterglustervolume, brick)
+        obj.__init__(clusterglustervolume, brick, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self):
         '''
@@ -292,15 +336,25 @@ class ClusterGlusterVolumeBrick(params.GlusterBrick, Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+        return self.__getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
                                                                    '{glustervolume:id}': self.parentclass.get_id(),
                                                                    '{brick:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
 class ClusterGlusterVolumeBricks(Base):
 
-    def __init__(self, clusterglustervolume):
+    def __init__(self, clusterglustervolume , context):
+        Base.__init__(self, context)
         self.parentclass = clusterglustervolume
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, glusterbricks, expect=None, correlation_id=None):
 
@@ -325,12 +379,12 @@ class ClusterGlusterVolumeBricks(Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{glustervolume:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(glusterbricks),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+                                       body=ParseHelper.toXml(glusterbricks),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return ClusterGlusterVolumeBrick(self.parentclass, result)
+        return ClusterGlusterVolumeBrick(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -345,21 +399,23 @@ class ClusterGlusterVolumeBricks(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{glustervolume:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return ClusterGlusterVolumeBrick(self.parentclass, result)
+                                               headers={})
+                return ClusterGlusterVolumeBrick(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{glustervolume:id}': self.parentclass.get_id()}),
-                                          headers={}).get_brick()
+                                           headers={}).get_brick()
 
-            return ClusterGlusterVolumeBrick(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return ClusterGlusterVolumeBrick(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -372,17 +428,28 @@ class ClusterGlusterVolumeBricks(Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{glustervolume:id}': self.parentclass.get_id()})).get_brick()
 
         return ParseHelper.toSubCollection(ClusterGlusterVolumeBrick,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class ClusterGlusterVolumes(Base):
 
-    def __init__(self, cluster):
+    def __init__(self, cluster , context):
+        Base.__init__(self, context)
         self.parentclass = cluster
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, glustervolume, expect=None, correlation_id=None):
 
@@ -415,11 +482,11 @@ class ClusterGlusterVolumes(Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(glustervolume),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(glustervolume),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return ClusterGlusterVolume(self.parentclass, result)
+        return ClusterGlusterVolume(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -434,19 +501,21 @@ class ClusterGlusterVolumes(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return ClusterGlusterVolume(self.parentclass, result)
+                                               headers={})
+                return ClusterGlusterVolume(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                          headers={}).get_gluster_volume()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                           headers={}).get_gluster_volume()
 
-            return ClusterGlusterVolume(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return ClusterGlusterVolume(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -461,25 +530,36 @@ class ClusterGlusterVolumes(Base):
 
         url = '/api/clusters/{cluster:id}/glustervolumes'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{cluster:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{cluster:id}': self.parentclass.get_id()}),
                                                                    qargs={'search:query':query,'case_sensitive:matrix':case_sensitive}),
                                       headers={}).get_gluster_volume()
         return ParseHelper.toSubCollection(ClusterGlusterVolume,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class ClusterNetwork(params.Network, Base):
-    def __init__(self, cluster, network):
+    def __init__(self, cluster, network, context):
+        Base.__init__(self, context)
         self.parentclass = cluster
         self.superclass  =  network
 
         #SUB_COLLECTIONS
-    def __new__(cls, cluster, network):
+    def __new__(cls, cluster, network, context):
         if network is None: return None
         obj = object.__new__(cls)
-        obj.__init__(cluster, network)
+        obj.__init__(cluster, network, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -493,8 +573,8 @@ class ClusterNetwork(params.Network, Base):
                                 {'{cluster:id}' : self.parentclass.get_id(),
                                  '{network:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
         '''
@@ -510,17 +590,27 @@ class ClusterNetwork(params.Network, Base):
 
         url = '/api/clusters/{cluster:id}/networks/{network:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
                                                                      '{network:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
 
-        return ClusterNetwork(self.parentclass, result)
+        return ClusterNetwork(self.parentclass, result, self.context)
 
 class ClusterNetworks(Base):
 
-    def __init__(self, cluster):
+    def __init__(self, cluster , context):
+        Base.__init__(self, context)
         self.parentclass = cluster
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, network, expect=None, correlation_id=None):
 
@@ -536,11 +626,11 @@ class ClusterNetworks(Base):
 
         url = '/api/clusters/{cluster:id}/networks'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(network),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(network),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return ClusterNetwork(self.parentclass, result)
+        return ClusterNetwork(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -555,19 +645,21 @@ class ClusterNetworks(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return ClusterNetwork(self.parentclass, result)
+                                               headers={})
+                return ClusterNetwork(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                          headers={}).get_network()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                           headers={}).get_network()
 
-            return ClusterNetwork(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return ClusterNetwork(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -581,25 +673,36 @@ class ClusterNetworks(Base):
 
         url = '/api/clusters/{cluster:id}/networks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{cluster:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{cluster:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_network()
         return ParseHelper.toSubCollection(ClusterNetwork,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class ClusterPermission(params.Permission, Base):
-    def __init__(self, cluster, permission):
+    def __init__(self, cluster, permission, context):
+        Base.__init__(self, context)
         self.parentclass = cluster
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, cluster, permission):
+    def __new__(cls, cluster, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(cluster, permission)
+        obj.__init__(cluster, permission, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -613,13 +716,23 @@ class ClusterPermission(params.Permission, Base):
                                 {'{cluster:id}' : self.parentclass.get_id(),
                                  '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class ClusterPermissions(Base):
 
-    def __init__(self, cluster):
+    def __init__(self, cluster , context):
+        Base.__init__(self, context)
         self.parentclass = cluster
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permission, expect=None, correlation_id=None):
 
@@ -640,11 +753,11 @@ class ClusterPermissions(Base):
 
         url = '/api/clusters/{cluster:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return ClusterPermission(self.parentclass, result)
+        return ClusterPermission(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -659,19 +772,21 @@ class ClusterPermissions(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return ClusterPermission(self.parentclass, result)
+                                               headers={})
+                return ClusterPermission(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permission()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
 
-            return ClusterPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return ClusterPermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -685,17 +800,27 @@ class ClusterPermissions(Base):
 
         url = '/api/clusters/{cluster:id}/permissions'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{cluster:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{cluster:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(ClusterPermission,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class Clusters(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, cluster, expect=None, correlation_id=None):
         '''
@@ -724,10 +849,10 @@ class Clusters(Base):
 
         url = '/api/clusters'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(cluster),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
-        return Cluster(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(cluster),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+        return Cluster(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -741,16 +866,18 @@ class Clusters(Base):
 
         if id:
             try :
-                return Cluster(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return Cluster(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                                          headers={}).get_cluster()
-            return Cluster(FilterHelper.getItem(result))
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                                           headers={}).get_cluster()
+            return Cluster(FilterHelper.getItem(result),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -766,24 +893,35 @@ class Clusters(Base):
 
         url='/api/clusters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_cluster()
         return ParseHelper.toCollection(Cluster,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class DataCenter(params.DataCenter, Base):
-    def __init__(self, datacenter):
+    def __init__(self, datacenter, context):
+        Base.__init__(self, context)
         self.superclass = datacenter
 
-        self.storagedomains = DataCenterStorageDomains(self)
-        self.quotas = DataCenterQuotas(self)
-        self.permissions = DataCenterPermissions(self)
+        self.storagedomains = DataCenterStorageDomains(self, context)
+        self.quotas = DataCenterQuotas(self, context)
+        self.permissions = DataCenterPermissions(self, context)
 
-    def __new__(cls, datacenter):
+    def __new__(cls, datacenter, context):
         if datacenter is None: return None
         obj = object.__new__(cls)
-        obj.__init__(datacenter)
+        obj.__init__(datacenter, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, action=params.Action(), async=None, correlation_id=None):
         '''
@@ -799,9 +937,9 @@ class DataCenter(params.DataCenter, Base):
         url = UrlHelper.replace('/api/datacenters/{datacenter:id}',
                                 {'{datacenter:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       body=ParseHelper.toXml(action),
-                                       headers={"Correlation-Id":correlation_id})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        body=ParseHelper.toXml(action),
+                                        headers={"Correlation-Id":correlation_id})
 
     def update(self, correlation_id=None):
         '''
@@ -818,22 +956,32 @@ class DataCenter(params.DataCenter, Base):
 
         url = '/api/datacenters/{datacenter:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
-        return DataCenter(result)
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{datacenter:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
+        return DataCenter(result, self.context)
 
 class DataCenterPermission(params.Permission, Base):
-    def __init__(self, datacenter, permission):
+    def __init__(self, datacenter, permission, context):
+        Base.__init__(self, context)
         self.parentclass = datacenter
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, datacenter, permission):
+    def __new__(cls, datacenter, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(datacenter, permission)
+        obj.__init__(datacenter, permission, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -847,13 +995,23 @@ class DataCenterPermission(params.Permission, Base):
                                 {'{datacenter:id}' : self.parentclass.get_id(),
                                  '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class DataCenterPermissions(Base):
 
-    def __init__(self, datacenter):
+    def __init__(self, datacenter , context):
+        Base.__init__(self, context)
         self.parentclass = datacenter
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permission, expect=None, correlation_id=None):
 
@@ -874,11 +1032,11 @@ class DataCenterPermissions(Base):
 
         url = '/api/datacenters/{datacenter:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return DataCenterPermission(self.parentclass, result)
+        return DataCenterPermission(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -893,19 +1051,21 @@ class DataCenterPermissions(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return DataCenterPermission(self.parentclass, result)
+                                               headers={})
+                return DataCenterPermission(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permission()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
 
-            return DataCenterPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return DataCenterPermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -918,23 +1078,34 @@ class DataCenterPermissions(Base):
 
         url = '/api/datacenters/{datacenter:id}/permissions'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_permission()
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_permission()
 
         return ParseHelper.toSubCollection(DataCenterPermission,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class DataCenterQuota(params.Quota, Base):
-    def __init__(self, datacenter, quota):
+    def __init__(self, datacenter, quota, context):
+        Base.__init__(self, context)
         self.parentclass = datacenter
         self.superclass  =  quota
 
         #SUB_COLLECTIONS
-    def __new__(cls, datacenter, quota):
+    def __new__(cls, datacenter, quota, context):
         if quota is None: return None
         obj = object.__new__(cls)
-        obj.__init__(datacenter, quota)
+        obj.__init__(datacenter, quota, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self):
         '''
@@ -943,14 +1114,24 @@ class DataCenterQuota(params.Quota, Base):
 
         url = '/api/datacenters/{datacenter:id}/quotas/{quota:id}'
 
-        return self._getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+        return self.__getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
                                                                    '{quota:id}': self.get_id()}),
                                        headers={'Content-type':None})
 
 class DataCenterQuotas(Base):
 
-    def __init__(self, datacenter):
+    def __init__(self, datacenter , context):
+        Base.__init__(self, context)
         self.parentclass = datacenter
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, quota):
 
@@ -963,11 +1144,11 @@ class DataCenterQuotas(Base):
 
         url = '/api/datacenters/{datacenter:id}/quotas'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(quota),
-                                      headers={})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(quota),
+                                       headers={})
 
-        return DataCenterQuota(self.parentclass, result)
+        return DataCenterQuota(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -982,19 +1163,21 @@ class DataCenterQuotas(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return DataCenterQuota(self.parentclass, result)
+                                               headers={})
+                return DataCenterQuota(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                          headers={}).get_quota()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                           headers={}).get_quota()
 
-            return DataCenterQuota(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return DataCenterQuota(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -1007,23 +1190,34 @@ class DataCenterQuotas(Base):
 
         url = '/api/datacenters/{datacenter:id}/quotas'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_quota()
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()})).get_quota()
 
         return ParseHelper.toSubCollection(DataCenterQuota,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class DataCenterStorageDomain(params.StorageDomain, Base):
-    def __init__(self, datacenter, storagedomain):
+    def __init__(self, datacenter, storagedomain, context):
+        Base.__init__(self, context)
         self.parentclass = datacenter
         self.superclass  =  storagedomain
 
         #SUB_COLLECTIONS
-    def __new__(cls, datacenter, storagedomain):
+    def __new__(cls, datacenter, storagedomain, context):
         if storagedomain is None: return None
         obj = object.__new__(cls)
-        obj.__init__(datacenter, storagedomain)
+        obj.__init__(datacenter, storagedomain, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -1037,8 +1231,8 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
                                 {'{datacenter:id}' : self.parentclass.get_id(),
                                  '{storagedomain:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def activate(self, action=params.Action(), correlation_id=None):
         '''
@@ -1051,11 +1245,11 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
                                                                      '{storagedomain:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -1070,18 +1264,28 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/deactivate'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
                                                                      '{storagedomain:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
 class DataCenterStorageDomains(Base):
 
-    def __init__(self, datacenter):
+    def __init__(self, datacenter , context):
+        Base.__init__(self, context)
         self.parentclass = datacenter
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, storagedomain, expect=None, correlation_id=None):
 
@@ -1097,11 +1301,11 @@ class DataCenterStorageDomains(Base):
 
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(storagedomain),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(storagedomain),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return DataCenterStorageDomain(self.parentclass, result)
+        return DataCenterStorageDomain(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -1116,19 +1320,21 @@ class DataCenterStorageDomains(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return DataCenterStorageDomain(self.parentclass, result)
+                                               headers={})
+                return DataCenterStorageDomain(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                          headers={}).get_storage_domain()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
+                                           headers={}).get_storage_domain()
 
-            return DataCenterStorageDomain(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return DataCenterStorageDomain(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -1142,17 +1348,27 @@ class DataCenterStorageDomains(Base):
 
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{datacenter:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{datacenter:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_storage_domain()
         return ParseHelper.toSubCollection(DataCenterStorageDomain,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class DataCenters(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, datacenter, expect=None, correlation_id=None):
         '''
@@ -1172,10 +1388,10 @@ class DataCenters(Base):
 
         url = '/api/datacenters'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(datacenter),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
-        return DataCenter(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(datacenter),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+        return DataCenter(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -1189,16 +1405,18 @@ class DataCenters(Base):
 
         if id:
             try :
-                return DataCenter(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return DataCenter(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                                          headers={}).get_data_center()
-            return DataCenter(FilterHelper.getItem(result))
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                                           headers={}).get_data_center()
+            return DataCenter(FilterHelper.getItem(result),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -1214,22 +1432,33 @@ class DataCenters(Base):
 
         url='/api/datacenters'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_data_center()
         return ParseHelper.toCollection(DataCenter,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class Disk(params.Disk, Base):
-    def __init__(self, disk):
+    def __init__(self, disk, context):
+        Base.__init__(self, context)
         self.superclass = disk
 
-        self.statistics = DiskStatistics(self)
+        self.statistics = DiskStatistics(self, context)
 
-    def __new__(cls, disk):
+    def __new__(cls, disk, context):
         if disk is None: return None
         obj = object.__new__(cls)
-        obj.__init__(disk)
+        obj.__init__(disk, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -1242,7 +1471,7 @@ class Disk(params.Disk, Base):
         url = UrlHelper.replace('/api/disks/{disk:id}',
                                 {'{disk:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
@@ -1263,27 +1492,47 @@ class Disk(params.Disk, Base):
 
         url = '/api/disks/{disk:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{disk:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
-        return Disk(result)
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{disk:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
+        return Disk(result, self.context)
 
 class DiskStatistic(params.Statistic, Base):
-    def __init__(self, disk, statistic):
+    def __init__(self, disk, statistic, context):
+        Base.__init__(self, context)
         self.parentclass = disk
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, disk, statistic):
+    def __new__(cls, disk, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(disk, statistic)
+        obj.__init__(disk, statistic, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class DiskStatistics(Base):
 
-    def __init__(self, disk):
+    def __init__(self, disk , context):
+        Base.__init__(self, context)
         self.parentclass = disk
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -1298,19 +1547,21 @@ class DiskStatistics(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return DiskStatistic(self.parentclass, result)
+                                               headers={})
+                return DiskStatistic(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
-                                          headers={}).get_statistic()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
+                                           headers={}).get_statistic()
 
-            return DiskStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return DiskStatistic(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -1323,15 +1574,25 @@ class DiskStatistics(Base):
 
         url = '/api/disks/{disk:id}/statistics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()})).get_statistic()
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()})).get_statistic()
 
         return ParseHelper.toSubCollection(DiskStatistic,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class Disks(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, disk, expect=None, correlation_id=None):
         '''
@@ -1360,10 +1621,10 @@ class Disks(Base):
 
         url = '/api/disks'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(disk),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
-        return Disk(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(disk),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+        return Disk(result, self.context)
 
     def get(self, alias=None, id=None):
         '''
@@ -1377,16 +1638,18 @@ class Disks(Base):
 
         if id:
             try :
-                return Disk(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return Disk(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif alias:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'alias='+alias}),
-                                          headers={}).get_disk()
-            return Disk(FilterHelper.getItem(result))
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'alias='+alias}),
+                                           headers={}).get_disk()
+            return Disk(FilterHelper.getItem(result),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'alias'])
 
@@ -1402,40 +1665,71 @@ class Disks(Base):
 
         url='/api/disks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_disk()
         return ParseHelper.toCollection(Disk,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class Domain(params.Domain, Base):
-    def __init__(self, domain):
+    def __init__(self, domain, context):
+        Base.__init__(self, context)
         self.superclass = domain
 
-        self.users = DomainUsers(self)
-        self.groups = DomainGroups(self)
+        self.users = DomainUsers(self, context)
+        self.groups = DomainGroups(self, context)
 
-    def __new__(cls, domain):
+    def __new__(cls, domain, context):
         if domain is None: return None
         obj = object.__new__(cls)
-        obj.__init__(domain)
+        obj.__init__(domain, context)
         return obj
 
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
 class DomainGroup(params.Group, Base):
-    def __init__(self, domain, group):
+    def __init__(self, domain, group, context):
+        Base.__init__(self, context)
         self.parentclass = domain
         self.superclass  =  group
 
         #SUB_COLLECTIONS
-    def __new__(cls, domain, group):
+    def __new__(cls, domain, group, context):
         if group is None: return None
         obj = object.__new__(cls)
-        obj.__init__(domain, group)
+        obj.__init__(domain, group, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class DomainGroups(Base):
 
-    def __init__(self, domain):
+    def __init__(self, domain , context):
+        Base.__init__(self, context)
         self.parentclass = domain
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -1450,19 +1744,21 @@ class DomainGroups(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return DomainGroup(self.parentclass, result)
+                                               headers={})
+                return DomainGroup(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
-                                          headers={}).get_group()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
+                                           headers={}).get_group()
 
-            return DomainGroup(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return DomainGroup(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -1478,30 +1774,51 @@ class DomainGroups(Base):
 
         url = '/api/domains/{domain:id}/groups'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{domain:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{domain:id}': self.parentclass.get_id()}),
                                                                    qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_group()
         return ParseHelper.toSubCollection(DomainGroup,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class DomainUser(params.User, Base):
-    def __init__(self, domain, user):
+    def __init__(self, domain, user, context):
+        Base.__init__(self, context)
         self.parentclass = domain
         self.superclass  =  user
 
         #SUB_COLLECTIONS
-    def __new__(cls, domain, user):
+    def __new__(cls, domain, user, context):
         if user is None: return None
         obj = object.__new__(cls)
-        obj.__init__(domain, user)
+        obj.__init__(domain, user, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class DomainUsers(Base):
 
-    def __init__(self, domain):
+    def __init__(self, domain , context):
+        Base.__init__(self, context)
         self.parentclass = domain
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -1516,19 +1833,21 @@ class DomainUsers(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return DomainUser(self.parentclass, result)
+                                               headers={})
+                return DomainUser(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
-                                          headers={}).get_user()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
+                                           headers={}).get_user()
 
-            return DomainUser(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return DomainUser(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -1544,17 +1863,27 @@ class DomainUsers(Base):
 
         url = '/api/domains/{domain:id}/users'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{domain:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{domain:id}': self.parentclass.get_id()}),
                                                                    qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_user()
         return ParseHelper.toSubCollection(DomainUser,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class Domains(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
         '''
@@ -1568,16 +1897,18 @@ class Domains(Base):
 
         if id:
             try :
-                return Domain(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return Domain(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=url,
-                                          headers={}).get_domain()
-            return Domain(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            result = self.__getProxy().get(url=url,
+                                           headers={}).get_domain()
+            return Domain(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -1591,25 +1922,45 @@ class Domains(Base):
 
         url='/api/domains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
                                       headers={}).get_domain()
         return ParseHelper.toCollection(Domain,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class Event(params.Event, Base):
-    def __init__(self, event):
+    def __init__(self, event, context):
+        Base.__init__(self, context)
         self.superclass = event
 
         #SUB_COLLECTIONS
-    def __new__(cls, event):
+    def __new__(cls, event, context):
         if event is None: return None
         obj = object.__new__(cls)
-        obj.__init__(event)
+        obj.__init__(event, context)
         return obj
 
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
 class Events(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
         '''
@@ -1623,16 +1974,18 @@ class Events(Base):
 
         if id:
             try :
-                return Event(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return Event(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                                          headers={}).get_event()
-            return Event(FilterHelper.getItem(result))
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                                           headers={}).get_event()
+            return Event(FilterHelper.getItem(result),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -1649,24 +2002,35 @@ class Events(Base):
 
         url='/api/events'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'from:matrix':from_event_id,'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'from:matrix':from_event_id,'max:matrix':max}),
                                       headers={}).get_event()
         return ParseHelper.toCollection(Event,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class Group(params.Group, Base):
-    def __init__(self, group):
+    def __init__(self, group, context):
+        Base.__init__(self, context)
         self.superclass = group
 
-        self.tags = GroupTags(self)
-        self.roles = GroupRoles(self)
-        self.permissions = GroupPermissions(self)
+        self.tags = GroupTags(self, context)
+        self.roles = GroupRoles(self, context)
+        self.permissions = GroupPermissions(self, context)
 
-    def __new__(cls, group):
+    def __new__(cls, group, context):
         if group is None: return None
         obj = object.__new__(cls)
-        obj.__init__(group)
+        obj.__init__(group, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -1679,20 +2043,30 @@ class Group(params.Group, Base):
         url = UrlHelper.replace('/api/groups/{group:id}',
                                 {'{group:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class GroupPermission(params.Permission, Base):
-    def __init__(self, group, permission):
+    def __init__(self, group, permission, context):
+        Base.__init__(self, context)
         self.parentclass = group
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, group, permission):
+    def __new__(cls, group, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(group, permission)
+        obj.__init__(group, permission, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -1706,13 +2080,23 @@ class GroupPermission(params.Permission, Base):
                                 {'{group:id}' : self.parentclass.get_id(),
                                  '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class GroupPermissions(Base):
 
-    def __init__(self, group):
+    def __init__(self, group , context):
+        Base.__init__(self, context)
         self.parentclass = group
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permission, expect=None, correlation_id=None):
 
@@ -1748,11 +2132,11 @@ class GroupPermissions(Base):
 
         url = '/api/groups/{group:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return GroupPermission(self.parentclass, result)
+        return GroupPermission(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -1767,19 +2151,21 @@ class GroupPermissions(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return GroupPermission(self.parentclass, result)
+                                               headers={})
+                return GroupPermission(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permission()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
 
-            return GroupPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return GroupPermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -1793,26 +2179,37 @@ class GroupPermissions(Base):
 
         url = '/api/groups/{group:id}/permissions'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{group:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{group:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(GroupPermission,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class GroupRole(params.Role, Base):
-    def __init__(self, group, role):
+    def __init__(self, group, role, context):
+        Base.__init__(self, context)
         self.parentclass = group
         self.superclass  =  role
 
-        self.permits = GroupRolePermits(self)
+        self.permits = GroupRolePermits(self, context)
 
-    def __new__(cls, group, role):
+    def __new__(cls, group, role, context):
         if role is None: return None
         obj = object.__new__(cls)
-        obj.__init__(group, role)
+        obj.__init__(group, role, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -1826,20 +2223,30 @@ class GroupRole(params.Role, Base):
                                 {'{group:id}' : self.parentclass.get_id(),
                                  '{role:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class GroupRolePermit(params.Permit, Base):
-    def __init__(self, grouprole, permit):
+    def __init__(self, grouprole, permit, context):
+        Base.__init__(self, context)
         self.parentclass = grouprole
         self.superclass  =  permit
 
         #SUB_COLLECTIONS
-    def __new__(cls, grouprole, permit):
+    def __new__(cls, grouprole, permit, context):
         if permit is None: return None
         obj = object.__new__(cls)
-        obj.__init__(grouprole, permit)
+        obj.__init__(grouprole, permit, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -1854,13 +2261,23 @@ class GroupRolePermit(params.Permit, Base):
                                  '{role:id}': self.parentclass.get_id(),
                                  '{permit:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class GroupRolePermits(Base):
 
-    def __init__(self, grouprole):
+    def __init__(self, grouprole , context):
+        Base.__init__(self, context)
         self.parentclass = grouprole
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permit, expect=None, correlation_id=None):
 
@@ -1876,12 +2293,12 @@ class GroupRolePermits(Base):
 
         url = '/api/groups/{group:id}/roles/{role:id}/permits'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{role:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permit),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+                                       body=ParseHelper.toXml(permit),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return GroupRolePermit(self.parentclass, result)
+        return GroupRolePermit(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -1896,21 +2313,23 @@ class GroupRolePermits(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{role:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return GroupRolePermit(self.parentclass, result)
+                                               headers={})
+                return GroupRolePermit(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{role:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permit()
+                                           headers={}).get_permit()
 
-            return GroupRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return GroupRolePermit(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -1924,19 +2343,30 @@ class GroupRolePermits(Base):
 
         url = '/api/groups/{group:id}/roles/{role:id}/permits'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{group:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{group:id}' : self.parentclass.parentclass.get_id(),
                                                                                                '{role:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permit()
         return ParseHelper.toSubCollection(GroupRolePermit,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class GroupRoles(Base):
 
-    def __init__(self, group):
+    def __init__(self, group , context):
+        Base.__init__(self, context)
         self.parentclass = group
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, role, expect=None, correlation_id=None):
 
@@ -1952,11 +2382,11 @@ class GroupRoles(Base):
 
         url = '/api/groups/{group:id}/roles'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(role),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(role),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return GroupRole(self.parentclass, result)
+        return GroupRole(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -1971,19 +2401,21 @@ class GroupRoles(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return GroupRole(self.parentclass, result)
+                                               headers={})
+                return GroupRole(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                          headers={}).get_role()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                           headers={}).get_role()
 
-            return GroupRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return GroupRole(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -1997,25 +2429,36 @@ class GroupRoles(Base):
 
         url = '/api/groups/{group:id}/roles'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{group:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{group:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_role()
         return ParseHelper.toSubCollection(GroupRole,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class GroupTag(params.Tag, Base):
-    def __init__(self, group, tag):
+    def __init__(self, group, tag, context):
+        Base.__init__(self, context)
         self.parentclass = group
         self.superclass  =  tag
 
         #SUB_COLLECTIONS
-    def __new__(cls, group, tag):
+    def __new__(cls, group, tag, context):
         if tag is None: return None
         obj = object.__new__(cls)
-        obj.__init__(group, tag)
+        obj.__init__(group, tag, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -2029,13 +2472,23 @@ class GroupTag(params.Tag, Base):
                                 {'{group:id}' : self.parentclass.get_id(),
                                  '{tag:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class GroupTags(Base):
 
-    def __init__(self, group):
+    def __init__(self, group , context):
+        Base.__init__(self, context)
         self.parentclass = group
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, tag, expect=None, correlation_id=None):
 
@@ -2051,11 +2504,11 @@ class GroupTags(Base):
 
         url = '/api/groups/{group:id}/tags'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(tag),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(tag),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return GroupTag(self.parentclass, result)
+        return GroupTag(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -2070,19 +2523,21 @@ class GroupTags(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return GroupTag(self.parentclass, result)
+                                               headers={})
+                return GroupTag(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                          headers={}).get_tag()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
+                                           headers={}).get_tag()
 
-            return GroupTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return GroupTag(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -2096,17 +2551,27 @@ class GroupTags(Base):
 
         url = '/api/groups/{group:id}/tags'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{group:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{group:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_tag()
         return ParseHelper.toSubCollection(GroupTag,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class Groups(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, group, correlation_id=None):
         '''
@@ -2120,10 +2585,10 @@ class Groups(Base):
 
         url = '/api/groups'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(group),
-                                      headers={"Correlation-Id":correlation_id})
-        return Group(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(group),
+                                       headers={"Correlation-Id":correlation_id})
+        return Group(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -2137,16 +2602,18 @@ class Groups(Base):
 
         if id:
             try :
-                return Group(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return Group(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                                          headers={}).get_group()
-            return Group(FilterHelper.getItem(result))
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                                           headers={}).get_group()
+            return Group(FilterHelper.getItem(result),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -2162,26 +2629,37 @@ class Groups(Base):
 
         url='/api/groups'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_group()
         return ParseHelper.toCollection(Group,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class Host(params.Host, Base):
-    def __init__(self, host):
+    def __init__(self, host, context):
+        Base.__init__(self, context)
         self.superclass = host
 
-        self.nics = HostNics(self)
-        self.statistics = HostStatistics(self)
-        self.storage = HostStorage(self)
-        self.tags = HostTags(self)
-        self.permissions = HostPermissions(self)
+        self.nics = HostNics(self, context)
+        self.statistics = HostStatistics(self, context)
+        self.storage = HostStorage(self, context)
+        self.tags = HostTags(self, context)
+        self.permissions = HostPermissions(self, context)
 
-    def __new__(cls, host):
+    def __new__(cls, host, context):
         if host is None: return None
         obj = object.__new__(cls)
-        obj.__init__(host)
+        obj.__init__(host, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -2194,7 +2672,7 @@ class Host(params.Host, Base):
         url = UrlHelper.replace('/api/hosts/{host:id}',
                                 {'{host:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
@@ -2222,10 +2700,10 @@ class Host(params.Host, Base):
 
         url = '/api/hosts/{host:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
-        return Host(result)
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
+        return Host(result, self.context)
 
     def activate(self, action=params.Action(), correlation_id=None):
         '''
@@ -2238,10 +2716,10 @@ class Host(params.Host, Base):
 
         url = '/api/hosts/{host:id}/activate'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def approve(self, action=params.Action(), correlation_id=None):
@@ -2258,10 +2736,10 @@ class Host(params.Host, Base):
 
         url = '/api/hosts/{host:id}/approve'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def commitnetconfig(self, action=params.Action(), correlation_id=None):
@@ -2275,10 +2753,10 @@ class Host(params.Host, Base):
 
         url = '/api/hosts/{host:id}/commitnetconfig'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def deactivate(self, action=params.Action(), correlation_id=None):
@@ -2292,10 +2770,10 @@ class Host(params.Host, Base):
 
         url = '/api/hosts/{host:id}/deactivate'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def fence(self, action=params.Action(), correlation_id=None):
@@ -2309,10 +2787,10 @@ class Host(params.Host, Base):
 
         url = '/api/hosts/{host:id}/fence'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def install(self, action=params.Action(), correlation_id=None):
@@ -2327,10 +2805,10 @@ class Host(params.Host, Base):
 
         url = '/api/hosts/{host:id}/install'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def iscsidiscover(self, action=params.Action(), correlation_id=None):
@@ -2345,10 +2823,10 @@ class Host(params.Host, Base):
 
         url = '/api/hosts/{host:id}/iscsidiscover'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def iscsilogin(self, action=params.Action(), correlation_id=None):
@@ -2364,24 +2842,34 @@ class Host(params.Host, Base):
 
         url = '/api/hosts/{host:id}/iscsilogin'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
 class HostNIC(params.HostNIC, Base):
-    def __init__(self, host, nic):
+    def __init__(self, host, nic, context):
+        Base.__init__(self, context)
         self.parentclass = host
         self.superclass  =  nic
 
-        self.statistics = HostNicStatistics(self)
+        self.statistics = HostNicStatistics(self, context)
 
-    def __new__(cls, host, nic):
+    def __new__(cls, host, nic, context):
         if nic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(host, nic)
+        obj.__init__(host, nic, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -2395,8 +2883,8 @@ class HostNIC(params.HostNIC, Base):
                                 {'{host:id}' : self.parentclass.get_id(),
                                  '{nic:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
         '''
@@ -2425,12 +2913,12 @@ class HostNIC(params.HostNIC, Base):
 
         url = '/api/hosts/{host:id}/nics/{nic:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
 
-        return HostNIC(self.parentclass, result)
+        return HostNIC(self.parentclass, result, self.context)
 
     def attach(self, action=params.Action(), correlation_id=None):
         '''
@@ -2446,11 +2934,11 @@ class HostNIC(params.HostNIC, Base):
 
         url = '/api/hosts/{host:id}/nics/{nic:id}/attach'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -2466,30 +2954,50 @@ class HostNIC(params.HostNIC, Base):
 
         url = '/api/hosts/{host:id}/nics/{nic:id}/detach'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
 class HostNicStatistic(params.Statistic, Base):
-    def __init__(self, hostnic, statistic):
+    def __init__(self, hostnic, statistic, context):
+        Base.__init__(self, context)
         self.parentclass = hostnic
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, hostnic, statistic):
+    def __new__(cls, hostnic, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(hostnic, statistic)
+        obj.__init__(hostnic, statistic, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class HostNicStatistics(Base):
 
-    def __init__(self, hostnic):
+    def __init__(self, hostnic , context):
+        Base.__init__(self, context)
         self.parentclass = hostnic
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -2504,21 +3012,23 @@ class HostNicStatistics(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{nic:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return HostNicStatistic(self.parentclass, result)
+                                               headers={})
+                return HostNicStatistic(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{nic:id}': self.parentclass.get_id()}),
-                                          headers={}).get_statistic()
+                                           headers={}).get_statistic()
 
-            return HostNicStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return HostNicStatistic(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -2532,19 +3042,30 @@ class HostNicStatistics(Base):
 
         url = '/api/hosts/{host:id}/nics/{nic:id}/statistics'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{host:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{host:id}' : self.parentclass.parentclass.get_id(),
                                                                                                '{nic:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_statistic()
         return ParseHelper.toSubCollection(HostNicStatistic,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class HostNics(Base):
 
-    def __init__(self, host):
+    def __init__(self, host , context):
+        Base.__init__(self, context)
         self.parentclass = host
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, hostnic, expect=None, correlation_id=None):
 
@@ -2571,11 +3092,11 @@ class HostNics(Base):
 
         url = '/api/hosts/{host:id}/nics'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(hostnic),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(hostnic),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return HostNIC(self.parentclass, result)
+        return HostNIC(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -2590,19 +3111,21 @@ class HostNics(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return HostNIC(self.parentclass, result)
+                                               headers={})
+                return HostNIC(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                          headers={}).get_host_nic()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                           headers={}).get_host_nic()
 
-            return HostNIC(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return HostNIC(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -2616,13 +3139,14 @@ class HostNics(Base):
 
         url = '/api/hosts/{host:id}/nics'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{host:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{host:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_host_nic()
         return ParseHelper.toSubCollection(HostNIC,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
     def setupnetworks(self, action=params.Action(), correlation_id=None):
         '''
@@ -2659,24 +3183,34 @@ class HostNics(Base):
 
         url = '/api/hosts/{host:id}/nics/setupnetworks'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
 class HostPermission(params.Permission, Base):
-    def __init__(self, host, permission):
+    def __init__(self, host, permission, context):
+        Base.__init__(self, context)
         self.parentclass = host
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, host, permission):
+    def __new__(cls, host, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(host, permission)
+        obj.__init__(host, permission, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -2690,13 +3224,23 @@ class HostPermission(params.Permission, Base):
                                 {'{host:id}' : self.parentclass.get_id(),
                                  '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class HostPermissions(Base):
 
-    def __init__(self, host):
+    def __init__(self, host , context):
+        Base.__init__(self, context)
         self.parentclass = host
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permission, expect=None, correlation_id=None):
 
@@ -2717,11 +3261,11 @@ class HostPermissions(Base):
 
         url = '/api/hosts/{host:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return HostPermission(self.parentclass, result)
+        return HostPermission(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -2736,19 +3280,21 @@ class HostPermissions(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return HostPermission(self.parentclass, result)
+                                               headers={})
+                return HostPermission(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permission()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
 
-            return HostPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return HostPermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -2762,30 +3308,51 @@ class HostPermissions(Base):
 
         url = '/api/hosts/{host:id}/permissions'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{host:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{host:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(HostPermission,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class HostStatistic(params.Statistic, Base):
-    def __init__(self, host, statistic):
+    def __init__(self, host, statistic, context):
+        Base.__init__(self, context)
         self.parentclass = host
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, host, statistic):
+    def __new__(cls, host, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(host, statistic)
+        obj.__init__(host, statistic, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class HostStatistics(Base):
 
-    def __init__(self, host):
+    def __init__(self, host , context):
+        Base.__init__(self, context)
         self.parentclass = host
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -2800,19 +3367,21 @@ class HostStatistics(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return HostStatistic(self.parentclass, result)
+                                               headers={})
+                return HostStatistic(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                          headers={}).get_statistic()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                           headers={}).get_statistic()
 
-            return HostStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return HostStatistic(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -2826,18 +3395,29 @@ class HostStatistics(Base):
 
         url = '/api/hosts/{host:id}/statistics'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{host:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{host:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_statistic()
         return ParseHelper.toSubCollection(HostStatistic,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class HostStorage(Base):
 
-    def __init__(self, host):
+    def __init__(self, host , context):
+        Base.__init__(self, context)
         self.parentclass = host
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -2852,19 +3432,21 @@ class HostStorage(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return HostStorage(self.parentclass, result)
+                                               headers={})
+                return HostStorage(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                          headers={}).get_storage()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                           headers={}).get_storage()
 
-            return HostStorage(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return HostStorage(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -2878,25 +3460,36 @@ class HostStorage(Base):
 
         url = '/api/hosts/{host:id}/storage'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{host:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{host:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_storage()
         return ParseHelper.toSubCollection(HostStorage,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class HostTag(params.Tag, Base):
-    def __init__(self, host, tag):
+    def __init__(self, host, tag, context):
+        Base.__init__(self, context)
         self.parentclass = host
         self.superclass  =  tag
 
         #SUB_COLLECTIONS
-    def __new__(cls, host, tag):
+    def __new__(cls, host, tag, context):
         if tag is None: return None
         obj = object.__new__(cls)
-        obj.__init__(host, tag)
+        obj.__init__(host, tag, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -2910,13 +3503,23 @@ class HostTag(params.Tag, Base):
                                 {'{host:id}' : self.parentclass.get_id(),
                                  '{tag:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class HostTags(Base):
 
-    def __init__(self, host):
+    def __init__(self, host , context):
+        Base.__init__(self, context)
         self.parentclass = host
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, tag, expect=None, correlation_id=None):
 
@@ -2932,11 +3535,11 @@ class HostTags(Base):
 
         url = '/api/hosts/{host:id}/tags'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(tag),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(tag),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return HostTag(self.parentclass, result)
+        return HostTag(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -2951,19 +3554,21 @@ class HostTags(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return HostTag(self.parentclass, result)
+                                               headers={})
+                return HostTag(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                          headers={}).get_tag()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                           headers={}).get_tag()
 
-            return HostTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return HostTag(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -2977,17 +3582,27 @@ class HostTags(Base):
 
         url = '/api/hosts/{host:id}/tags'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{host:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{host:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_tag()
         return ParseHelper.toSubCollection(HostTag,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class Hosts(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, host, expect=None, correlation_id=None):
         '''
@@ -3018,10 +3633,10 @@ class Hosts(Base):
 
         url = '/api/hosts'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(host),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
-        return Host(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(host),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+        return Host(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -3035,16 +3650,18 @@ class Hosts(Base):
 
         if id:
             try :
-                return Host(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return Host(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                                          headers={}).get_host()
-            return Host(FilterHelper.getItem(result))
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                                           headers={}).get_host()
+            return Host(FilterHelper.getItem(result),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -3060,21 +3677,32 @@ class Hosts(Base):
 
         url='/api/hosts'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_host()
         return ParseHelper.toCollection(Host,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class Network(params.Network, Base):
-    def __init__(self, network):
+    def __init__(self, network, context):
+        Base.__init__(self, context)
         self.superclass = network
 
         #SUB_COLLECTIONS
-    def __new__(cls, network):
+    def __new__(cls, network, context):
         if network is None: return None
         obj = object.__new__(cls)
-        obj.__init__(network)
+        obj.__init__(network, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -3087,7 +3715,7 @@ class Network(params.Network, Base):
         url = UrlHelper.replace('/api/networks/{network:id}',
                                 {'{network:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
@@ -3108,14 +3736,23 @@ class Network(params.Network, Base):
 
         url = '/api/networks/{network:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
-        return Network(result)
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{network:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
+        return Network(result, self.context)
 
 class Networks(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, network, expect=None, correlation_id=None):
         '''
@@ -3139,10 +3776,10 @@ class Networks(Base):
 
         url = '/api/networks'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(network),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
-        return Network(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(network),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+        return Network(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -3156,16 +3793,18 @@ class Networks(Base):
 
         if id:
             try :
-                return Network(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return Network(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=url,
-                                          headers={}).get_network()
-            return Network(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            result = self.__getProxy().get(url=url,
+                                           headers={}).get_network()
+            return Network(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -3179,22 +3818,33 @@ class Networks(Base):
 
         url='/api/networks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
                                       headers={}).get_network()
         return ParseHelper.toCollection(Network,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class Role(params.Role, Base):
-    def __init__(self, role):
+    def __init__(self, role, context):
+        Base.__init__(self, context)
         self.superclass = role
 
-        self.permits = RolePermits(self)
+        self.permits = RolePermits(self, context)
 
-    def __new__(cls, role):
+    def __new__(cls, role, context):
         if role is None: return None
         obj = object.__new__(cls)
-        obj.__init__(role)
+        obj.__init__(role, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -3207,7 +3857,7 @@ class Role(params.Role, Base):
         url = UrlHelper.replace('/api/roles/{role:id}',
                                 {'{role:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
@@ -3224,22 +3874,32 @@ class Role(params.Role, Base):
 
         url = '/api/roles/{role:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
-        return Role(result)
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{role:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
+        return Role(result, self.context)
 
 class RolePermit(params.Permit, Base):
-    def __init__(self, role, permit):
+    def __init__(self, role, permit, context):
+        Base.__init__(self, context)
         self.parentclass = role
         self.superclass  =  permit
 
         #SUB_COLLECTIONS
-    def __new__(cls, role, permit):
+    def __new__(cls, role, permit, context):
         if permit is None: return None
         obj = object.__new__(cls)
-        obj.__init__(role, permit)
+        obj.__init__(role, permit, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -3253,13 +3913,23 @@ class RolePermit(params.Permit, Base):
                                 {'{role:id}' : self.parentclass.get_id(),
                                  '{permit:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class RolePermits(Base):
 
-    def __init__(self, role):
+    def __init__(self, role , context):
+        Base.__init__(self, context)
         self.parentclass = role
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permit, expect=None, correlation_id=None):
 
@@ -3275,11 +3945,11 @@ class RolePermits(Base):
 
         url = '/api/roles/{role:id}/permits'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permit),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permit),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return RolePermit(self.parentclass, result)
+        return RolePermit(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -3294,19 +3964,21 @@ class RolePermits(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return RolePermit(self.parentclass, result)
+                                               headers={})
+                return RolePermit(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permit()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permit()
 
-            return RolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return RolePermit(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -3320,17 +3992,27 @@ class RolePermits(Base):
 
         url = '/api/roles/{role:id}/permits'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{role:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{role:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permit()
         return ParseHelper.toSubCollection(RolePermit,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class Roles(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, role, expect=None, correlation_id=None):
         '''
@@ -3351,10 +4033,10 @@ class Roles(Base):
 
         url = '/api/roles'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(role),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
-        return Role(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(role),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+        return Role(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -3368,16 +4050,18 @@ class Roles(Base):
 
         if id:
             try :
-                return Role(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return Role(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=url,
-                                          headers={}).get_role()
-            return Role(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            result = self.__getProxy().get(url=url,
+                                           headers={}).get_role()
+            return Role(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -3391,25 +4075,36 @@ class Roles(Base):
 
         url='/api/roles'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
                                       headers={}).get_role()
         return ParseHelper.toCollection(Role,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class StorageDomain(params.StorageDomain, Base):
-    def __init__(self, storagedomain):
+    def __init__(self, storagedomain, context):
+        Base.__init__(self, context)
         self.superclass = storagedomain
 
-        self.files = StorageDomainFiles(self)
-        self.templates = StorageDomainTemplates(self)
-        self.vms = StorageDomainVMs(self)
-        self.permissions = StorageDomainPermissions(self)
+        self.files = StorageDomainFiles(self, context)
+        self.templates = StorageDomainTemplates(self, context)
+        self.vms = StorageDomainVMs(self, context)
+        self.permissions = StorageDomainPermissions(self, context)
 
-    def __new__(cls, storagedomain):
+    def __new__(cls, storagedomain, context):
         if storagedomain is None: return None
         obj = object.__new__(cls)
-        obj.__init__(storagedomain)
+        obj.__init__(storagedomain, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, storagedomain, async=None, correlation_id=None):
         '''
@@ -3425,9 +4120,9 @@ class StorageDomain(params.StorageDomain, Base):
         url = UrlHelper.replace('/api/storagedomains/{storagedomain:id}',
                                 {'{storagedomain:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       body=ParseHelper.toXml(storagedomain),
-                                       headers={"Correlation-Id":correlation_id})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        body=ParseHelper.toXml(storagedomain),
+                                        headers={"Correlation-Id":correlation_id})
 
     def update(self, correlation_id=None):
         '''
@@ -3439,27 +4134,47 @@ class StorageDomain(params.StorageDomain, Base):
 
         url = '/api/storagedomains/{storagedomain:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
-        return StorageDomain(result)
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
+        return StorageDomain(result, self.context)
 
 class StorageDomainFile(params.File, Base):
-    def __init__(self, storagedomain, file):
+    def __init__(self, storagedomain, file, context):
+        Base.__init__(self, context)
         self.parentclass = storagedomain
         self.superclass  =  file
 
         #SUB_COLLECTIONS
-    def __new__(cls, storagedomain, file):
+    def __new__(cls, storagedomain, file, context):
         if file is None: return None
         obj = object.__new__(cls)
-        obj.__init__(storagedomain, file)
+        obj.__init__(storagedomain, file, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class StorageDomainFiles(Base):
 
-    def __init__(self, storagedomain):
+    def __init__(self, storagedomain , context):
+        Base.__init__(self, context)
         self.parentclass = storagedomain
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -3474,19 +4189,21 @@ class StorageDomainFiles(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return StorageDomainFile(self.parentclass, result)
+                                               headers={})
+                return StorageDomainFile(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                          headers={}).get_file()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                           headers={}).get_file()
 
-            return StorageDomainFile(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return StorageDomainFile(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -3502,25 +4219,36 @@ class StorageDomainFiles(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/files'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{storagedomain:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{storagedomain:id}': self.parentclass.get_id()}),
                                                                    qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_file()
         return ParseHelper.toSubCollection(StorageDomainFile,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class StorageDomainPermission(params.Permission, Base):
-    def __init__(self, storagedomain, permission):
+    def __init__(self, storagedomain, permission, context):
+        Base.__init__(self, context)
         self.parentclass = storagedomain
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, storagedomain, permission):
+    def __new__(cls, storagedomain, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(storagedomain, permission)
+        obj.__init__(storagedomain, permission, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -3534,13 +4262,23 @@ class StorageDomainPermission(params.Permission, Base):
                                 {'{storagedomain:id}' : self.parentclass.get_id(),
                                  '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class StorageDomainPermissions(Base):
 
-    def __init__(self, storagedomain):
+    def __init__(self, storagedomain , context):
+        Base.__init__(self, context)
         self.parentclass = storagedomain
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permission, expect=None, correlation_id=None):
 
@@ -3561,11 +4299,11 @@ class StorageDomainPermissions(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return StorageDomainPermission(self.parentclass, result)
+        return StorageDomainPermission(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -3580,19 +4318,21 @@ class StorageDomainPermissions(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return StorageDomainPermission(self.parentclass, result)
+                                               headers={})
+                return StorageDomainPermission(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permission()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
 
-            return StorageDomainPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return StorageDomainPermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -3606,25 +4346,36 @@ class StorageDomainPermissions(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{storagedomain:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{storagedomain:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(StorageDomainPermission,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class StorageDomainTemplate(params.Template, Base):
-    def __init__(self, storagedomain, template):
+    def __init__(self, storagedomain, template, context):
+        Base.__init__(self, context)
         self.parentclass = storagedomain
         self.superclass  =  template
 
         #SUB_COLLECTIONS
-    def __new__(cls, storagedomain, template):
+    def __new__(cls, storagedomain, template, context):
         if template is None: return None
         obj = object.__new__(cls)
-        obj.__init__(storagedomain, template)
+        obj.__init__(storagedomain, template, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -3638,8 +4389,8 @@ class StorageDomainTemplate(params.Template, Base):
                                 {'{storagedomain:id}' : self.parentclass.get_id(),
                                  '{template:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def import_template(self, action=params.Action(), correlation_id=None):
         '''
@@ -3660,18 +4411,28 @@ class StorageDomainTemplate(params.Template, Base):
 
         url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/import'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
                                                                      '{template:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
 class StorageDomainTemplates(Base):
 
-    def __init__(self, storagedomain):
+    def __init__(self, storagedomain , context):
+        Base.__init__(self, context)
         self.parentclass = storagedomain
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -3686,19 +4447,21 @@ class StorageDomainTemplates(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return StorageDomainTemplate(self.parentclass, result)
+                                               headers={})
+                return StorageDomainTemplate(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                          headers={}).get_template()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                           headers={}).get_template()
 
-            return StorageDomainTemplate(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return StorageDomainTemplate(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -3712,25 +4475,36 @@ class StorageDomainTemplates(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/templates'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{storagedomain:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{storagedomain:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_template()
         return ParseHelper.toSubCollection(StorageDomainTemplate,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class StorageDomainVM(params.VM, Base):
-    def __init__(self, storagedomain, vm):
+    def __init__(self, storagedomain, vm, context):
+        Base.__init__(self, context)
         self.parentclass = storagedomain
         self.superclass  =  vm
 
         #SUB_COLLECTIONS
-    def __new__(cls, storagedomain, vm):
+    def __new__(cls, storagedomain, vm, context):
         if vm is None: return None
         obj = object.__new__(cls)
-        obj.__init__(storagedomain, vm)
+        obj.__init__(storagedomain, vm, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -3744,8 +4518,8 @@ class StorageDomainVM(params.VM, Base):
                                 {'{storagedomain:id}' : self.parentclass.get_id(),
                                  '{vm:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def import_vm(self, action=params.Action(), correlation_id=None):
         '''
@@ -3767,18 +4541,28 @@ class StorageDomainVM(params.VM, Base):
 
         url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/import'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
                                                                      '{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
 class StorageDomainVMs(Base):
 
-    def __init__(self, storagedomain):
+    def __init__(self, storagedomain , context):
+        Base.__init__(self, context)
         self.parentclass = storagedomain
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -3793,19 +4577,21 @@ class StorageDomainVMs(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return StorageDomainVM(self.parentclass, result)
+                                               headers={})
+                return StorageDomainVM(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                          headers={}).get_vm()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
+                                           headers={}).get_vm()
 
-            return StorageDomainVM(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return StorageDomainVM(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -3819,17 +4605,27 @@ class StorageDomainVMs(Base):
 
         url = '/api/storagedomains/{storagedomain:id}/vms'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{storagedomain:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{storagedomain:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_vm()
         return ParseHelper.toSubCollection(StorageDomainVM,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class StorageDomains(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, storagedomain, expect=None, correlation_id=None):
         '''
@@ -3891,10 +4687,10 @@ class StorageDomains(Base):
 
         url = '/api/storagedomains'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(storagedomain),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
-        return StorageDomain(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(storagedomain),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+        return StorageDomain(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -3908,16 +4704,18 @@ class StorageDomains(Base):
 
         if id:
             try :
-                return StorageDomain(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return StorageDomain(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                                          headers={}).get_storage_domain()
-            return StorageDomain(FilterHelper.getItem(result))
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                                           headers={}).get_storage_domain()
+            return StorageDomain(FilterHelper.getItem(result),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -3933,21 +4731,32 @@ class StorageDomains(Base):
 
         url='/api/storagedomains'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_storage_domain()
         return ParseHelper.toCollection(StorageDomain,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class Tag(params.Tag, Base):
-    def __init__(self, tag):
+    def __init__(self, tag, context):
+        Base.__init__(self, context)
         self.superclass = tag
 
         #SUB_COLLECTIONS
-    def __new__(cls, tag):
+    def __new__(cls, tag, context):
         if tag is None: return None
         obj = object.__new__(cls)
-        obj.__init__(tag)
+        obj.__init__(tag, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -3960,7 +4769,7 @@ class Tag(params.Tag, Base):
         url = UrlHelper.replace('/api/tags/{tag:id}',
                                 {'{tag:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
@@ -3975,14 +4784,23 @@ class Tag(params.Tag, Base):
 
         url = '/api/tags/{tag:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
-        return Tag(result)
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{tag:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
+        return Tag(result, self.context)
 
 class Tags(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, tag, correlation_id=None):
         '''
@@ -3998,10 +4816,10 @@ class Tags(Base):
 
         url = '/api/tags'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(tag),
-                                      headers={"Correlation-Id":correlation_id})
-        return Tag(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(tag),
+                                       headers={"Correlation-Id":correlation_id})
+        return Tag(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -4015,16 +4833,18 @@ class Tags(Base):
 
         if id:
             try :
-                return Tag(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return Tag(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=url,
-                                          headers={}).get_tag()
-            return Tag(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            result = self.__getProxy().get(url=url,
+                                           headers={}).get_tag()
+            return Tag(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -4038,25 +4858,36 @@ class Tags(Base):
 
         url='/api/tags'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
                                       headers={}).get_tag()
         return ParseHelper.toCollection(Tag,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class Template(params.Template, Base):
-    def __init__(self, template):
+    def __init__(self, template, context):
+        Base.__init__(self, context)
         self.superclass = template
 
-        self.nics = TemplateNics(self)
-        self.cdroms = TemplateCdRoms(self)
-        self.disks = TemplateDisks(self)
-        self.permissions = TemplatePermissions(self)
+        self.nics = TemplateNics(self, context)
+        self.cdroms = TemplateCdRoms(self, context)
+        self.disks = TemplateDisks(self, context)
+        self.permissions = TemplatePermissions(self, context)
 
-    def __new__(cls, template):
+    def __new__(cls, template, context):
         if template is None: return None
         obj = object.__new__(cls)
-        obj.__init__(template)
+        obj.__init__(template, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -4069,7 +4900,7 @@ class Template(params.Template, Base):
         url = UrlHelper.replace('/api/templates/{template:id}',
                                 {'{template:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
@@ -4112,10 +4943,10 @@ class Template(params.Template, Base):
 
         url = '/api/templates/{template:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
-        return Template(result)
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
+        return Template(result, self.context)
 
     def export(self, action=params.Action(), correlation_id=None):
         '''
@@ -4132,28 +4963,48 @@ class Template(params.Template, Base):
 
         url = '/api/templates/{template:id}/export'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
 class TemplateCdRom(params.CdRom, Base):
-    def __init__(self, template, cdrom):
+    def __init__(self, template, cdrom, context):
+        Base.__init__(self, context)
         self.parentclass = template
         self.superclass  =  cdrom
 
         #SUB_COLLECTIONS
-    def __new__(cls, template, cdrom):
+    def __new__(cls, template, cdrom, context):
         if cdrom is None: return None
         obj = object.__new__(cls)
-        obj.__init__(template, cdrom)
+        obj.__init__(template, cdrom, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class TemplateCdRoms(Base):
 
-    def __init__(self, template):
+    def __init__(self, template , context):
+        Base.__init__(self, context)
         self.parentclass = template
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -4168,19 +5019,21 @@ class TemplateCdRoms(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return TemplateCdRom(self.parentclass, result)
+                                               headers={})
+                return TemplateCdRom(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                          headers={}).get_cdrom()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                           headers={}).get_cdrom()
 
-            return TemplateCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return TemplateCdRom(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -4194,25 +5047,36 @@ class TemplateCdRoms(Base):
 
         url = '/api/templates/{template:id}/cdroms'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{template:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{template:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_cdrom()
         return ParseHelper.toSubCollection(TemplateCdRom,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class TemplateDisk(params.Disk, Base):
-    def __init__(self, template, disk):
+    def __init__(self, template, disk, context):
+        Base.__init__(self, context)
         self.parentclass = template
         self.superclass  =  disk
 
         #SUB_COLLECTIONS
-    def __new__(cls, template, disk):
+    def __new__(cls, template, disk, context):
         if disk is None: return None
         obj = object.__new__(cls)
-        obj.__init__(template, disk)
+        obj.__init__(template, disk, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, action=params.Action(), async=None, correlation_id=None):
         '''
@@ -4230,9 +5094,9 @@ class TemplateDisk(params.Disk, Base):
                                 {'{template:id}' : self.parentclass.get_id(),
                                  '{disk:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       body=ParseHelper.toXml(action),
-                                       headers={"Correlation-Id":correlation_id})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        body=ParseHelper.toXml(action),
+                                        headers={"Correlation-Id":correlation_id})
 
     def copy(self, action=params.Action(), correlation_id=None):
         '''
@@ -4247,18 +5111,28 @@ class TemplateDisk(params.Disk, Base):
 
         url = '/api/templates/{template:id}/disks/{disk:id}/copy'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
                                                                      '{disk:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
 class TemplateDisks(Base):
 
-    def __init__(self, template):
+    def __init__(self, template , context):
+        Base.__init__(self, context)
         self.parentclass = template
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -4273,19 +5147,21 @@ class TemplateDisks(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return TemplateDisk(self.parentclass, result)
+                                               headers={})
+                return TemplateDisk(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                          headers={}).get_disk()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                           headers={}).get_disk()
 
-            return TemplateDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return TemplateDisk(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -4299,25 +5175,36 @@ class TemplateDisks(Base):
 
         url = '/api/templates/{template:id}/disks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{template:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{template:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_disk()
         return ParseHelper.toSubCollection(TemplateDisk,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class TemplateNic(params.NIC, Base):
-    def __init__(self, template, nic):
+    def __init__(self, template, nic, context):
+        Base.__init__(self, context)
         self.parentclass = template
         self.superclass  =  nic
 
         #SUB_COLLECTIONS
-    def __new__(cls, template, nic):
+    def __new__(cls, template, nic, context):
         if nic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(template, nic)
+        obj.__init__(template, nic, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -4331,8 +5218,8 @@ class TemplateNic(params.NIC, Base):
                                 {'{template:id}' : self.parentclass.get_id(),
                                  '{nic:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
         '''
@@ -4351,17 +5238,27 @@ class TemplateNic(params.NIC, Base):
 
         url = '/api/templates/{template:id}/nics/{nic:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
 
-        return TemplateNic(self.parentclass, result)
+        return TemplateNic(self.parentclass, result, self.context)
 
 class TemplateNics(Base):
 
-    def __init__(self, template):
+    def __init__(self, template , context):
+        Base.__init__(self, context)
         self.parentclass = template
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, nic, expect=None, correlation_id=None):
 
@@ -4384,11 +5281,11 @@ class TemplateNics(Base):
 
         url = '/api/templates/{template:id}/nics'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(nic),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(nic),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return TemplateNic(self.parentclass, result)
+        return TemplateNic(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -4403,19 +5300,21 @@ class TemplateNics(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return TemplateNic(self.parentclass, result)
+                                               headers={})
+                return TemplateNic(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                          headers={}).get_nic()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                           headers={}).get_nic()
 
-            return TemplateNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return TemplateNic(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -4429,25 +5328,36 @@ class TemplateNics(Base):
 
         url = '/api/templates/{template:id}/nics'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{template:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{template:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_nic()
         return ParseHelper.toSubCollection(TemplateNic,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class TemplatePermission(params.Permission, Base):
-    def __init__(self, template, permission):
+    def __init__(self, template, permission, context):
+        Base.__init__(self, context)
         self.parentclass = template
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, template, permission):
+    def __new__(cls, template, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(template, permission)
+        obj.__init__(template, permission, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -4461,13 +5371,23 @@ class TemplatePermission(params.Permission, Base):
                                 {'{template:id}' : self.parentclass.get_id(),
                                  '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class TemplatePermissions(Base):
 
-    def __init__(self, template):
+    def __init__(self, template , context):
+        Base.__init__(self, context)
         self.parentclass = template
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permission, expect=None, correlation_id=None):
 
@@ -4488,11 +5408,11 @@ class TemplatePermissions(Base):
 
         url = '/api/templates/{template:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return TemplatePermission(self.parentclass, result)
+        return TemplatePermission(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -4507,19 +5427,21 @@ class TemplatePermissions(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return TemplatePermission(self.parentclass, result)
+                                               headers={})
+                return TemplatePermission(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permission()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
 
-            return TemplatePermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return TemplatePermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -4533,17 +5455,27 @@ class TemplatePermissions(Base):
 
         url = '/api/templates/{template:id}/permissions'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{template:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{template:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(TemplatePermission,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class Templates(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, template, expect=None, correlation_id=None):
         '''
@@ -4602,10 +5534,10 @@ class Templates(Base):
 
         url = '/api/templates'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(template),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
-        return Template(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(template),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+        return Template(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -4619,16 +5551,18 @@ class Templates(Base):
 
         if id:
             try :
-                return Template(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return Template(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                                          headers={}).get_template()
-            return Template(FilterHelper.getItem(result))
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                                           headers={}).get_template()
+            return Template(FilterHelper.getItem(result),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -4644,24 +5578,35 @@ class Templates(Base):
 
         url='/api/templates'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_template()
         return ParseHelper.toCollection(Template,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class User(params.User, Base):
-    def __init__(self, user):
+    def __init__(self, user, context):
+        Base.__init__(self, context)
         self.superclass = user
 
-        self.tags = UserTags(self)
-        self.roles = UserRoles(self)
-        self.permissions = UserPermissions(self)
+        self.tags = UserTags(self, context)
+        self.roles = UserRoles(self, context)
+        self.permissions = UserPermissions(self, context)
 
-    def __new__(cls, user):
+    def __new__(cls, user, context):
         if user is None: return None
         obj = object.__new__(cls)
-        obj.__init__(user)
+        obj.__init__(user, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -4674,20 +5619,30 @@ class User(params.User, Base):
         url = UrlHelper.replace('/api/users/{user:id}',
                                 {'{user:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class UserPermission(params.Permission, Base):
-    def __init__(self, user, permission):
+    def __init__(self, user, permission, context):
+        Base.__init__(self, context)
         self.parentclass = user
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, user, permission):
+    def __new__(cls, user, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(user, permission)
+        obj.__init__(user, permission, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -4701,13 +5656,23 @@ class UserPermission(params.Permission, Base):
                                 {'{user:id}' : self.parentclass.get_id(),
                                  '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class UserPermissions(Base):
 
-    def __init__(self, user):
+    def __init__(self, user , context):
+        Base.__init__(self, context)
         self.parentclass = user
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permission, expect=None, correlation_id=None):
 
@@ -4743,11 +5708,11 @@ class UserPermissions(Base):
 
         url = '/api/users/{user:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return UserPermission(self.parentclass, result)
+        return UserPermission(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -4762,19 +5727,21 @@ class UserPermissions(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return UserPermission(self.parentclass, result)
+                                               headers={})
+                return UserPermission(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permission()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
 
-            return UserPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return UserPermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -4788,26 +5755,37 @@ class UserPermissions(Base):
 
         url = '/api/users/{user:id}/permissions'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{user:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{user:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(UserPermission,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class UserRole(params.Role, Base):
-    def __init__(self, user, role):
+    def __init__(self, user, role, context):
+        Base.__init__(self, context)
         self.parentclass = user
         self.superclass  =  role
 
-        self.permits = UserRolePermits(self)
+        self.permits = UserRolePermits(self, context)
 
-    def __new__(cls, user, role):
+    def __new__(cls, user, role, context):
         if role is None: return None
         obj = object.__new__(cls)
-        obj.__init__(user, role)
+        obj.__init__(user, role, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -4821,20 +5799,30 @@ class UserRole(params.Role, Base):
                                 {'{user:id}' : self.parentclass.get_id(),
                                  '{role:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class UserRolePermit(params.Permit, Base):
-    def __init__(self, userrole, permit):
+    def __init__(self, userrole, permit, context):
+        Base.__init__(self, context)
         self.parentclass = userrole
         self.superclass  =  permit
 
         #SUB_COLLECTIONS
-    def __new__(cls, userrole, permit):
+    def __new__(cls, userrole, permit, context):
         if permit is None: return None
         obj = object.__new__(cls)
-        obj.__init__(userrole, permit)
+        obj.__init__(userrole, permit, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -4849,13 +5837,23 @@ class UserRolePermit(params.Permit, Base):
                                  '{role:id}': self.parentclass.get_id(),
                                  '{permit:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class UserRolePermits(Base):
 
-    def __init__(self, userrole):
+    def __init__(self, userrole , context):
+        Base.__init__(self, context)
         self.parentclass = userrole
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permit, expect=None, correlation_id=None):
 
@@ -4871,12 +5869,12 @@ class UserRolePermits(Base):
 
         url = '/api/users/{user:id}/roles/{role:id}/permits'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{role:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permit),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+                                       body=ParseHelper.toXml(permit),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return UserRolePermit(self.parentclass, result)
+        return UserRolePermit(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -4891,21 +5889,23 @@ class UserRolePermits(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{role:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return UserRolePermit(self.parentclass, result)
+                                               headers={})
+                return UserRolePermit(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{role:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permit()
+                                           headers={}).get_permit()
 
-            return UserRolePermit(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return UserRolePermit(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -4919,19 +5919,30 @@ class UserRolePermits(Base):
 
         url = '/api/users/{user:id}/roles/{role:id}/permits'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{user:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{user:id}' : self.parentclass.parentclass.get_id(),
                                                                                                '{role:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permit()
         return ParseHelper.toSubCollection(UserRolePermit,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class UserRoles(Base):
 
-    def __init__(self, user):
+    def __init__(self, user , context):
+        Base.__init__(self, context)
         self.parentclass = user
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, role, expect=None, correlation_id=None):
 
@@ -4947,11 +5958,11 @@ class UserRoles(Base):
 
         url = '/api/users/{user:id}/roles'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(role),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(role),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return UserRole(self.parentclass, result)
+        return UserRole(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -4966,19 +5977,21 @@ class UserRoles(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return UserRole(self.parentclass, result)
+                                               headers={})
+                return UserRole(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                          headers={}).get_role()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                           headers={}).get_role()
 
-            return UserRole(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return UserRole(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -4992,25 +6005,36 @@ class UserRoles(Base):
 
         url = '/api/users/{user:id}/roles'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{user:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{user:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_role()
         return ParseHelper.toSubCollection(UserRole,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class UserTag(params.Tag, Base):
-    def __init__(self, user, tag):
+    def __init__(self, user, tag, context):
+        Base.__init__(self, context)
         self.parentclass = user
         self.superclass  =  tag
 
         #SUB_COLLECTIONS
-    def __new__(cls, user, tag):
+    def __new__(cls, user, tag, context):
         if tag is None: return None
         obj = object.__new__(cls)
-        obj.__init__(user, tag)
+        obj.__init__(user, tag, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -5024,13 +6048,23 @@ class UserTag(params.Tag, Base):
                                 {'{user:id}' : self.parentclass.get_id(),
                                  '{tag:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class UserTags(Base):
 
-    def __init__(self, user):
+    def __init__(self, user , context):
+        Base.__init__(self, context)
         self.parentclass = user
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, tag, expect=None, correlation_id=None):
 
@@ -5046,11 +6080,11 @@ class UserTags(Base):
 
         url = '/api/users/{user:id}/tags'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(tag),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(tag),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return UserTag(self.parentclass, result)
+        return UserTag(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -5065,19 +6099,21 @@ class UserTags(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return UserTag(self.parentclass, result)
+                                               headers={})
+                return UserTag(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                          headers={}).get_tag()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
+                                           headers={}).get_tag()
 
-            return UserTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return UserTag(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -5091,17 +6127,27 @@ class UserTags(Base):
 
         url = '/api/users/{user:id}/tags'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{user:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{user:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_tag()
         return ParseHelper.toSubCollection(UserTag,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class Users(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, user, expect=None, correlation_id=None):
         '''
@@ -5117,10 +6163,10 @@ class Users(Base):
 
         url = '/api/users'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(user),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
-        return User(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(user),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+        return User(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -5134,16 +6180,18 @@ class Users(Base):
 
         if id:
             try :
-                return User(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return User(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                                          headers={}).get_user()
-            return User(FilterHelper.getItem(result))
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                                           headers={}).get_user()
+            return User(FilterHelper.getItem(result),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -5159,28 +6207,39 @@ class Users(Base):
 
         url='/api/users'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_user()
         return ParseHelper.toCollection(User,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class VM(params.VM, Base):
-    def __init__(self, vm):
+    def __init__(self, vm, context):
+        Base.__init__(self, context)
         self.superclass = vm
 
-        self.cdroms = VMCdRoms(self)
-        self.statistics = VMStatistics(self)
-        self.tags = VMTags(self)
-        self.nics = VMNics(self)
-        self.disks = VMDisks(self)
-        self.snapshots = VMSnapshots(self)
-        self.permissions = VMPermissions(self)
+        self.cdroms = VMCdRoms(self, context)
+        self.statistics = VMStatistics(self, context)
+        self.tags = VMTags(self, context)
+        self.nics = VMNics(self, context)
+        self.disks = VMDisks(self, context)
+        self.snapshots = VMSnapshots(self, context)
+        self.permissions = VMPermissions(self, context)
 
-    def __new__(cls, vm):
+    def __new__(cls, vm, context):
         if vm is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vm)
+        obj.__init__(vm, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, action=params.Action(), async=None, correlation_id=None):
         '''
@@ -5196,9 +6255,9 @@ class VM(params.VM, Base):
         url = UrlHelper.replace('/api/vms/{vm:id}',
                                 {'{vm:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       body=ParseHelper.toXml(action),
-                                       headers={"Correlation-Id":correlation_id})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        body=ParseHelper.toXml(action),
+                                        headers={"Correlation-Id":correlation_id})
 
     def update(self, correlation_id=None):
         '''
@@ -5253,10 +6312,10 @@ class VM(params.VM, Base):
 
         url = '/api/vms/{vm:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
-        return VM(result)
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
+        return VM(result, self.context)
 
     def cancelmigration(self, action=params.Action()):
         '''
@@ -5268,10 +6327,10 @@ class VM(params.VM, Base):
 
         url = '/api/vms/{vm:id}/cancelmigration'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={})
         return result
 
     def detach(self, action=params.Action(), correlation_id=None):
@@ -5285,10 +6344,10 @@ class VM(params.VM, Base):
 
         url = '/api/vms/{vm:id}/detach'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def export(self, action=params.Action(), correlation_id=None):
@@ -5307,10 +6366,10 @@ class VM(params.VM, Base):
 
         url = '/api/vms/{vm:id}/export'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def migrate(self, action=params.Action(), correlation_id=None):
@@ -5328,10 +6387,10 @@ class VM(params.VM, Base):
 
         url = '/api/vms/{vm:id}/migrate'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def move(self, action=params.Action(), correlation_id=None):
@@ -5348,10 +6407,10 @@ class VM(params.VM, Base):
 
         url = '/api/vms/{vm:id}/move'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def shutdown(self, action=params.Action(), correlation_id=None):
@@ -5365,10 +6424,10 @@ class VM(params.VM, Base):
 
         url = '/api/vms/{vm:id}/shutdown'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def start(self, action=params.Action(), correlation_id=None):
@@ -5399,10 +6458,10 @@ class VM(params.VM, Base):
 
         url = '/api/vms/{vm:id}/start'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def stop(self, action=params.Action(), correlation_id=None):
@@ -5416,10 +6475,10 @@ class VM(params.VM, Base):
 
         url = '/api/vms/{vm:id}/stop'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def suspend(self, action=params.Action(), correlation_id=None):
@@ -5433,10 +6492,10 @@ class VM(params.VM, Base):
 
         url = '/api/vms/{vm:id}/suspend'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
     def ticket(self, action=params.Action(), correlation_id=None):
@@ -5450,23 +6509,33 @@ class VM(params.VM, Base):
 
         url = '/api/vms/{vm:id}/ticket'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
 class VMCdRom(params.CdRom, Base):
-    def __init__(self, vm, cdrom):
+    def __init__(self, vm, cdrom, context):
+        Base.__init__(self, context)
         self.parentclass = vm
         self.superclass  =  cdrom
 
         #SUB_COLLECTIONS
-    def __new__(cls, vm, cdrom):
+    def __new__(cls, vm, cdrom, context):
         if cdrom is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vm, cdrom)
+        obj.__init__(vm, cdrom, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -5480,8 +6549,8 @@ class VMCdRom(params.CdRom, Base):
                                 {'{vm:id}' : self.parentclass.get_id(),
                                  '{cdrom:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
         '''
@@ -5493,17 +6562,27 @@ class VMCdRom(params.CdRom, Base):
 
         url = '/api/vms/{vm:id}/cdroms/{cdrom:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{cdrom:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
 
-        return VMCdRom(self.parentclass, result)
+        return VMCdRom(self.parentclass, result, self.context)
 
 class VMCdRoms(Base):
 
-    def __init__(self, vm):
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
         self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, cdrom, expect=None, correlation_id=None):
 
@@ -5519,11 +6598,11 @@ class VMCdRoms(Base):
 
         url = '/api/vms/{vm:id}/cdroms'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(cdrom),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(cdrom),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return VMCdRom(self.parentclass, result)
+        return VMCdRom(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -5538,19 +6617,21 @@ class VMCdRoms(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMCdRom(self.parentclass, result)
+                                               headers={})
+                return VMCdRom(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                          headers={}).get_cdrom()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                           headers={}).get_cdrom()
 
-            return VMCdRom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMCdRom(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -5564,26 +6645,37 @@ class VMCdRoms(Base):
 
         url = '/api/vms/{vm:id}/cdroms'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_cdrom()
         return ParseHelper.toSubCollection(VMCdRom,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMDisk(params.Disk, Base):
-    def __init__(self, vm, disk):
+    def __init__(self, vm, disk, context):
+        Base.__init__(self, context)
         self.parentclass = vm
         self.superclass  =  disk
 
-        self.statistics = VMDiskStatistics(self)
+        self.statistics = VMDiskStatistics(self, context)
 
-    def __new__(cls, vm, disk):
+    def __new__(cls, vm, disk, context):
         if disk is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vm, disk)
+        obj.__init__(vm, disk, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, action=params.Action(), async=None, correlation_id=None):
         '''
@@ -5600,9 +6692,9 @@ class VMDisk(params.Disk, Base):
                                 {'{vm:id}' : self.parentclass.get_id(),
                                  '{disk:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       body=ParseHelper.toXml(action),
-                                       headers={"Correlation-Id":correlation_id})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        body=ParseHelper.toXml(action),
+                                        headers={"Correlation-Id":correlation_id})
 
     def update(self, correlation_id=None):
         '''
@@ -5622,12 +6714,12 @@ class VMDisk(params.Disk, Base):
 
         url = '/api/vms/{vm:id}/disks/{disk:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{disk:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
 
-        return VMDisk(self.parentclass, result)
+        return VMDisk(self.parentclass, result, self.context)
 
     def activate(self, action=params.Action()):
         '''
@@ -5639,11 +6731,11 @@ class VMDisk(params.Disk, Base):
 
         url = '/api/vms/{vm:id}/disks/{disk:id}/activate'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{disk:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={})
+                                           body=ParseHelper.toXml(action),
+                                           headers={})
 
         return result
 
@@ -5657,30 +6749,50 @@ class VMDisk(params.Disk, Base):
 
         url = '/api/vms/{vm:id}/disks/{disk:id}/deactivate'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{disk:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={})
+                                           body=ParseHelper.toXml(action),
+                                           headers={})
 
         return result
 
 class VMDiskStatistic(params.Statistic, Base):
-    def __init__(self, vmdisk, statistic):
+    def __init__(self, vmdisk, statistic, context):
+        Base.__init__(self, context)
         self.parentclass = vmdisk
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, vmdisk, statistic):
+    def __new__(cls, vmdisk, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vmdisk, statistic)
+        obj.__init__(vmdisk, statistic, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class VMDiskStatistics(Base):
 
-    def __init__(self, vmdisk):
+    def __init__(self, vmdisk , context):
+        Base.__init__(self, context)
         self.parentclass = vmdisk
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -5695,21 +6807,23 @@ class VMDiskStatistics(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{disk:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMDiskStatistic(self.parentclass, result)
+                                               headers={})
+                return VMDiskStatistic(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{disk:id}': self.parentclass.get_id()}),
-                                          headers={}).get_statistic()
+                                           headers={}).get_statistic()
 
-            return VMDiskStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMDiskStatistic(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -5722,17 +6836,28 @@ class VMDiskStatistics(Base):
 
         url = '/api/vms/{vm:id}/disks/{disk:id}/statistics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{disk:id}': self.parentclass.get_id()})).get_statistic()
 
         return ParseHelper.toSubCollection(VMDiskStatistic,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMDisks(Base):
 
-    def __init__(self, vm):
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
         self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, disk, expect=None, correlation_id=None):
 
@@ -5766,11 +6891,11 @@ class VMDisks(Base):
 
         url = '/api/vms/{vm:id}/disks'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(disk),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(disk),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return VMDisk(self.parentclass, result)
+        return VMDisk(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -5785,19 +6910,21 @@ class VMDisks(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMDisk(self.parentclass, result)
+                                               headers={})
+                return VMDisk(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                          headers={}).get_disk()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                           headers={}).get_disk()
 
-            return VMDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMDisk(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -5811,26 +6938,37 @@ class VMDisks(Base):
 
         url = '/api/vms/{vm:id}/disks'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_disk()
         return ParseHelper.toSubCollection(VMDisk,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMNic(params.NIC, Base):
-    def __init__(self, vm, nic):
+    def __init__(self, vm, nic, context):
+        Base.__init__(self, context)
         self.parentclass = vm
         self.superclass  =  nic
 
-        self.statistics = VMNicStatistics(self)
+        self.statistics = VMNicStatistics(self, context)
 
-    def __new__(cls, vm, nic):
+    def __new__(cls, vm, nic, context):
         if nic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vm, nic)
+        obj.__init__(vm, nic, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -5844,8 +6982,8 @@ class VMNic(params.NIC, Base):
                                 {'{vm:id}' : self.parentclass.get_id(),
                                  '{nic:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
         '''
@@ -5864,12 +7002,12 @@ class VMNic(params.NIC, Base):
 
         url = '/api/vms/{vm:id}/nics/{nic:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
 
-        return VMNic(self.parentclass, result)
+        return VMNic(self.parentclass, result, self.context)
 
     def activate(self, action=params.Action()):
         '''
@@ -5881,11 +7019,11 @@ class VMNic(params.NIC, Base):
 
         url = '/api/vms/{vm:id}/nics/{nic:id}/activate'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={})
+                                           body=ParseHelper.toXml(action),
+                                           headers={})
 
         return result
 
@@ -5899,30 +7037,50 @@ class VMNic(params.NIC, Base):
 
         url = '/api/vms/{vm:id}/nics/{nic:id}/deactivate'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={})
+                                           body=ParseHelper.toXml(action),
+                                           headers={})
 
         return result
 
 class VMNicStatistic(params.Statistic, Base):
-    def __init__(self, vmnic, statistic):
+    def __init__(self, vmnic, statistic, context):
+        Base.__init__(self, context)
         self.parentclass = vmnic
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, vmnic, statistic):
+    def __new__(cls, vmnic, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vmnic, statistic)
+        obj.__init__(vmnic, statistic, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class VMNicStatistics(Base):
 
-    def __init__(self, vmnic):
+    def __init__(self, vmnic , context):
+        Base.__init__(self, context)
         self.parentclass = vmnic
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -5937,21 +7095,23 @@ class VMNicStatistics(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{nic:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMNicStatistic(self.parentclass, result)
+                                               headers={})
+                return VMNicStatistic(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{nic:id}': self.parentclass.get_id()}),
-                                          headers={}).get_statistic()
+                                           headers={}).get_statistic()
 
-            return VMNicStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMNicStatistic(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -5964,17 +7124,28 @@ class VMNicStatistics(Base):
 
         url = '/api/vms/{vm:id}/nics/{nic:id}/statistics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{nic:id}': self.parentclass.get_id()})).get_statistic()
 
         return ParseHelper.toSubCollection(VMNicStatistic,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMNics(Base):
 
-    def __init__(self, vm):
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
         self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, nic, expect=None, correlation_id=None):
 
@@ -5997,11 +7168,11 @@ class VMNics(Base):
 
         url = '/api/vms/{vm:id}/nics'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(nic),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(nic),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return VMNic(self.parentclass, result)
+        return VMNic(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -6016,19 +7187,21 @@ class VMNics(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMNic(self.parentclass, result)
+                                               headers={})
+                return VMNic(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                          headers={}).get_nic()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                           headers={}).get_nic()
 
-            return VMNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMNic(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -6042,25 +7215,36 @@ class VMNics(Base):
 
         url = '/api/vms/{vm:id}/nics'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_nic()
         return ParseHelper.toSubCollection(VMNic,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMPermission(params.Permission, Base):
-    def __init__(self, vm, permission):
+    def __init__(self, vm, permission, context):
+        Base.__init__(self, context)
         self.parentclass = vm
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, vm, permission):
+    def __new__(cls, vm, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vm, permission)
+        obj.__init__(vm, permission, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -6074,13 +7258,23 @@ class VMPermission(params.Permission, Base):
                                 {'{vm:id}' : self.parentclass.get_id(),
                                  '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class VMPermissions(Base):
 
-    def __init__(self, vm):
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
         self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permission, expect=None, correlation_id=None):
 
@@ -6101,11 +7295,11 @@ class VMPermissions(Base):
 
         url = '/api/vms/{vm:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return VMPermission(self.parentclass, result)
+        return VMPermission(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -6120,19 +7314,21 @@ class VMPermissions(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMPermission(self.parentclass, result)
+                                               headers={})
+                return VMPermission(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permission()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
 
-            return VMPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMPermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -6146,28 +7342,39 @@ class VMPermissions(Base):
 
         url = '/api/vms/{vm:id}/permissions'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(VMPermission,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMSnapshot(params.Snapshot, Base):
-    def __init__(self, vm, snapshot):
+    def __init__(self, vm, snapshot, context):
+        Base.__init__(self, context)
         self.parentclass = vm
         self.superclass  =  snapshot
 
-        self.nics = VMSnapshotNics(self)
-        self.cdroms = VMSnapshotCdroms(self)
-        self.disks = VMSnapshotDisks(self)
+        self.nics = VMSnapshotNics(self, context)
+        self.cdroms = VMSnapshotCdroms(self, context)
+        self.disks = VMSnapshotDisks(self, context)
 
-    def __new__(cls, vm, snapshot):
+    def __new__(cls, vm, snapshot, context):
         if snapshot is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vm, snapshot)
+        obj.__init__(vm, snapshot, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -6181,8 +7388,8 @@ class VMSnapshot(params.Snapshot, Base):
                                 {'{vm:id}' : self.parentclass.get_id(),
                                  '{snapshot:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def restore(self, action=params.Action(), correlation_id=None):
         '''
@@ -6195,30 +7402,50 @@ class VMSnapshot(params.Snapshot, Base):
 
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/restore'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{snapshot:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
 class VMSnapshotCdrom(params.CdRom, Base):
-    def __init__(self, vmsnapshot, cdrom):
+    def __init__(self, vmsnapshot, cdrom, context):
+        Base.__init__(self, context)
         self.parentclass = vmsnapshot
         self.superclass  =  cdrom
 
         #SUB_COLLECTIONS
-    def __new__(cls, vmsnapshot, cdrom):
+    def __new__(cls, vmsnapshot, cdrom, context):
         if cdrom is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vmsnapshot, cdrom)
+        obj.__init__(vmsnapshot, cdrom, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class VMSnapshotCdroms(Base):
 
-    def __init__(self, vmsnapshot):
+    def __init__(self, vmsnapshot , context):
+        Base.__init__(self, context)
         self.parentclass = vmsnapshot
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -6233,21 +7460,23 @@ class VMSnapshotCdroms(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMSnapshotCdrom(self.parentclass, result)
+                                               headers={})
+                return VMSnapshotCdrom(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{snapshot:id}': self.parentclass.get_id()}),
-                                          headers={}).get_cdrom()
+                                           headers={}).get_cdrom()
 
-            return VMSnapshotCdrom(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMSnapshotCdrom(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -6260,29 +7489,50 @@ class VMSnapshotCdroms(Base):
 
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{snapshot:id}': self.parentclass.get_id()})).get_cdrom()
 
         return ParseHelper.toSubCollection(VMSnapshotCdrom,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMSnapshotDisk(params.Disk, Base):
-    def __init__(self, vmsnapshot, disk):
+    def __init__(self, vmsnapshot, disk, context):
+        Base.__init__(self, context)
         self.parentclass = vmsnapshot
         self.superclass  =  disk
 
         #SUB_COLLECTIONS
-    def __new__(cls, vmsnapshot, disk):
+    def __new__(cls, vmsnapshot, disk, context):
         if disk is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vmsnapshot, disk)
+        obj.__init__(vmsnapshot, disk, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class VMSnapshotDisks(Base):
 
-    def __init__(self, vmsnapshot):
+    def __init__(self, vmsnapshot , context):
+        Base.__init__(self, context)
         self.parentclass = vmsnapshot
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -6297,21 +7547,23 @@ class VMSnapshotDisks(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMSnapshotDisk(self.parentclass, result)
+                                               headers={})
+                return VMSnapshotDisk(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{snapshot:id}': self.parentclass.get_id()}),
-                                          headers={}).get_disk()
+                                           headers={}).get_disk()
 
-            return VMSnapshotDisk(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMSnapshotDisk(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -6324,29 +7576,50 @@ class VMSnapshotDisks(Base):
 
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/disks'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{snapshot:id}': self.parentclass.get_id()})).get_disk()
 
         return ParseHelper.toSubCollection(VMSnapshotDisk,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMSnapshotNic(params.NIC, Base):
-    def __init__(self, vmsnapshot, nic):
+    def __init__(self, vmsnapshot, nic, context):
+        Base.__init__(self, context)
         self.parentclass = vmsnapshot
         self.superclass  =  nic
 
         #SUB_COLLECTIONS
-    def __new__(cls, vmsnapshot, nic):
+    def __new__(cls, vmsnapshot, nic, context):
         if nic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vmsnapshot, nic)
+        obj.__init__(vmsnapshot, nic, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class VMSnapshotNics(Base):
 
-    def __init__(self, vmsnapshot):
+    def __init__(self, vmsnapshot , context):
+        Base.__init__(self, context)
         self.parentclass = vmsnapshot
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -6361,21 +7634,23 @@ class VMSnapshotNics(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMSnapshotNic(self.parentclass, result)
+                                               headers={})
+                return VMSnapshotNic(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                       '{snapshot:id}': self.parentclass.get_id()}),
-                                          headers={}).get_nic()
+                                           headers={}).get_nic()
 
-            return VMSnapshotNic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMSnapshotNic(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -6388,17 +7663,28 @@ class VMSnapshotNics(Base):
 
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/nics'
 
-        result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
                                                                   '{snapshot:id}': self.parentclass.get_id()})).get_nic()
 
         return ParseHelper.toSubCollection(VMSnapshotNic,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMSnapshots(Base):
 
-    def __init__(self, vm):
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
         self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, snapshot, expect=None, correlation_id=None):
 
@@ -6414,11 +7700,11 @@ class VMSnapshots(Base):
 
         url = '/api/vms/{vm:id}/snapshots'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(snapshot),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(snapshot),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return VMSnapshot(self.parentclass, result)
+        return VMSnapshot(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -6433,19 +7719,21 @@ class VMSnapshots(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMSnapshot(self.parentclass, result)
+                                               headers={})
+                return VMSnapshot(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                          headers={}).get_snapshot()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                           headers={}).get_snapshot()
 
-            return VMSnapshot(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMSnapshot(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -6459,30 +7747,51 @@ class VMSnapshots(Base):
 
         url = '/api/vms/{vm:id}/snapshots'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_snapshot()
         return ParseHelper.toSubCollection(VMSnapshot,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMStatistic(params.Statistic, Base):
-    def __init__(self, vm, statistic):
+    def __init__(self, vm, statistic, context):
+        Base.__init__(self, context)
         self.parentclass = vm
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, vm, statistic):
+    def __new__(cls, vm, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vm, statistic)
+        obj.__init__(vm, statistic, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class VMStatistics(Base):
 
-    def __init__(self, vm):
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
         self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -6497,19 +7806,21 @@ class VMStatistics(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMStatistic(self.parentclass, result)
+                                               headers={})
+                return VMStatistic(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                          headers={}).get_statistic()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                           headers={}).get_statistic()
 
-            return VMStatistic(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMStatistic(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -6523,25 +7834,36 @@ class VMStatistics(Base):
 
         url = '/api/vms/{vm:id}/statistics'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_statistic()
         return ParseHelper.toSubCollection(VMStatistic,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMTag(params.Tag, Base):
-    def __init__(self, vm, tag):
+    def __init__(self, vm, tag, context):
+        Base.__init__(self, context)
         self.parentclass = vm
         self.superclass  =  tag
 
         #SUB_COLLECTIONS
-    def __new__(cls, vm, tag):
+    def __new__(cls, vm, tag, context):
         if tag is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vm, tag)
+        obj.__init__(vm, tag, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -6555,13 +7877,23 @@ class VMTag(params.Tag, Base):
                                 {'{vm:id}' : self.parentclass.get_id(),
                                  '{tag:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class VMTags(Base):
 
-    def __init__(self, vm):
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
         self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, tag, expect=None, correlation_id=None):
 
@@ -6577,11 +7909,11 @@ class VMTags(Base):
 
         url = '/api/vms/{vm:id}/tags'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(tag),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(tag),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return VMTag(self.parentclass, result)
+        return VMTag(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -6596,19 +7928,21 @@ class VMTags(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VMTag(self.parentclass, result)
+                                               headers={})
+                return VMTag(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                          headers={}).get_tag()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                           headers={}).get_tag()
 
-            return VMTag(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VMTag(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -6622,17 +7956,27 @@ class VMTags(Base):
 
         url = '/api/vms/{vm:id}/tags'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{vm:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_tag()
         return ParseHelper.toSubCollection(VMTag,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMs(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, vm, correlation_id=None, expect=None):
         '''
@@ -6693,10 +8037,10 @@ class VMs(Base):
 
         url = '/api/vms'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(vm),
-                                      headers={"Correlation-Id":correlation_id, "Expect":expect})
-        return VM(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(vm),
+                                       headers={"Correlation-Id":correlation_id, "Expect":expect})
+        return VM(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -6710,16 +8054,18 @@ class VMs(Base):
 
         if id:
             try :
-                return VM(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return VM(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                                          headers={}).get_vm()
-            return VM(FilterHelper.getItem(result))
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                                           headers={}).get_vm()
+            return VM(FilterHelper.getItem(result),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -6735,33 +8081,54 @@ class VMs(Base):
 
         url='/api/vms'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_vm()
         return ParseHelper.toCollection(VM,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 
 class VersionCaps(params.VersionCaps, Base):
-    def __init__(self, versioncaps):
+    def __init__(self, versioncaps, context):
+        Base.__init__(self, context)
         self.superclass = versioncaps
 
         #SUB_COLLECTIONS
-    def __new__(cls, versioncaps):
+    def __new__(cls, versioncaps, context):
         if versioncaps is None: return None
         obj = object.__new__(cls)
-        obj.__init__(versioncaps)
+        obj.__init__(versioncaps, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class VmPool(params.VmPool, Base):
-    def __init__(self, vmpool):
+    def __init__(self, vmpool, context):
+        Base.__init__(self, context)
         self.superclass = vmpool
 
-        self.permissions = VmPoolPermissions(self)
+        self.permissions = VmPoolPermissions(self, context)
 
-    def __new__(cls, vmpool):
+    def __new__(cls, vmpool, context):
         if vmpool is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vmpool)
+        obj.__init__(vmpool, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -6774,7 +8141,7 @@ class VmPool(params.VmPool, Base):
         url = UrlHelper.replace('/api/vmpools/{vmpool:id}',
                                 {'{vmpool:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
@@ -6790,10 +8157,10 @@ class VmPool(params.VmPool, Base):
 
         url = '/api/vmpools/{vmpool:id}'
 
-        result = self._getProxy().update(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
-                                         body=ParseHelper.toXml(self.superclass),
-                                         headers={"Correlation-Id":correlation_id})
-        return VmPool(result)
+        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
+                                          body=ParseHelper.toXml(self.superclass),
+                                          headers={"Correlation-Id":correlation_id})
+        return VmPool(result, self.context)
 
     def allocatevm(self, action=params.Action(), correlation_id=None):
         '''
@@ -6807,23 +8174,33 @@ class VmPool(params.VmPool, Base):
 
         url = '/api/vmpools/{vmpool:id}/allocatevm'
 
-        result = self._getProxy().request(method='POST',
-                                          url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(action),
-                                          headers={"Correlation-Id":correlation_id})
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
         return result
 
 class VmPoolPermission(params.Permission, Base):
-    def __init__(self, vmpool, permission):
+    def __init__(self, vmpool, permission, context):
+        Base.__init__(self, context)
         self.parentclass = vmpool
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, vmpool, permission):
+    def __new__(cls, vmpool, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vmpool, permission)
+        obj.__init__(vmpool, permission, context)
         return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def delete(self, async=None, correlation_id=None):
         '''
@@ -6837,13 +8214,23 @@ class VmPoolPermission(params.Permission, Base):
                                 {'{vmpool:id}' : self.parentclass.get_id(),
                                  '{permission:id}': self.get_id()})
 
-        return self._getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class VmPoolPermissions(Base):
 
-    def __init__(self, vmpool):
+    def __init__(self, vmpool , context):
+        Base.__init__(self, context)
         self.parentclass = vmpool
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, permission, expect=None, correlation_id=None):
 
@@ -6864,11 +8251,11 @@ class VmPoolPermissions(Base):
 
         url = '/api/vmpools/{vmpool:id}/permissions'
 
-        result = self._getProxy().add(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
-                                      body=ParseHelper.toXml(permission),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
 
-        return VmPoolPermission(self.parentclass, result)
+        return VmPoolPermission(self.parentclass, result, self.context)
 
     def get(self, name=None, id=None):
 
@@ -6883,19 +8270,21 @@ class VmPoolPermissions(Base):
 
         if id:
             try :
-                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
                                                                    id),
-                                              headers={})
-                return VmPoolPermission(self.parentclass, result)
+                                               headers={})
+                return VmPoolPermission(self.parentclass, result, self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
-                                          headers={}).get_permission()
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
 
-            return VmPoolPermission(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))
+            return VmPoolPermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -6909,17 +8298,27 @@ class VmPoolPermissions(Base):
 
         url = '/api/vmpools/{vmpool:id}/permissions'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                         args={'{vmpool:id}': self.parentclass.get_id()}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{vmpool:id}': self.parentclass.get_id()}),
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(VmPoolPermission,
                                            self.parentclass,
-                                           FilterHelper.filter(result, kwargs))
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VmPools(Base):
-    def __init__(self):
-        """Constructor."""
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def add(self, vmpool, expect=None, correlation_id=None):
         '''
@@ -6937,10 +8336,10 @@ class VmPools(Base):
 
         url = '/api/vmpools'
 
-        result = self._getProxy().add(url=url,
-                                      body=ParseHelper.toXml(vmpool),
-                                      headers={"Expect":expect, "Correlation-Id":correlation_id})
-        return VmPool(result)
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(vmpool),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+        return VmPool(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -6954,16 +8353,18 @@ class VmPools(Base):
 
         if id:
             try :
-                return VmPool(self._getProxy().get(url=UrlHelper.append(url, id),
-                                                              headers={}))
+                return VmPool(self.__getProxy().get(url=UrlHelper.append(url, id),
+                                                               headers={}),
+                                         self.context)
             except RequestError, err:
                 if err.status and err.status == 404:
                     return None
                 raise err
         elif name:
-            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                                          headers={}).get_vmpool()
-            return VmPool(FilterHelper.getItem(result))
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                                           headers={}).get_vmpool()
+            return VmPool(FilterHelper.getItem(result),
+                                     self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
@@ -6979,8 +8380,9 @@ class VmPools(Base):
 
         url='/api/vmpools'
 
-        result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_vmpool()
         return ParseHelper.toCollection(VmPool,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 

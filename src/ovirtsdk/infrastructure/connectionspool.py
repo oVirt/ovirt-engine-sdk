@@ -17,12 +17,13 @@
 from Queue import Queue
 import thread
 from ovirtsdk.web.connection import Connection
+from ovirtsdk.infrastructure.errors import ImmutableError
 
 class ConnectionsPool(object):
     '''
     ConnectionsManager used to manage pool of web connections
     '''
-    def __init__(self, url, port, key_file, cert_file, ca_file, strict, timeout, username, password, count=20, insecure=False, debug=False):
+    def __init__(self, url, port, key_file, cert_file, ca_file, strict, timeout, username, password, context, count=20, insecure=False, debug=False):
 
         self.__free_connections = Queue(0)
         self.__busy_connections = {}
@@ -31,6 +32,7 @@ class ConnectionsPool(object):
         self.__rlock = thread.allocate_lock()
 
         self.__url = url
+        self.__context = context
 
         for _ in range(count):
             self.__free_connections.put(item=Connection(url=url, \
@@ -66,3 +68,13 @@ class ConnectionsPool(object):
 
     def get_url(self):
         return self.__url
+
+    @property
+    def context(self):
+        return self.__context
+
+    def __setattr__(self, name, value):
+        if name in ['__context', 'context']:
+            raise ImmutableError(name)
+        else:
+            super(ConnectionsPool, self).__setattr__(name, value)

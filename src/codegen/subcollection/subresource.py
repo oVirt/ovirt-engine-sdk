@@ -45,16 +45,29 @@ class SubResource(object):
                                                    'encapsulated_entity':encapsulating_entity.lower()}
 
         sub_resource_template = \
-        ("class %(encapsulating_entity)s(params.%(sub_res_type)s, Base):\n" + \
-        "    def __init__(self, %(parent)s, %(encapsulated_entity)s):\n" + \
+        (
+        "class %(encapsulating_entity)s(params.%(sub_res_type)s, Base):\n" + \
+        "    def __init__(self, %(parent)s, %(encapsulated_entity)s, context):\n" + \
+        "        Base.__init__(self, context)\n"
         "        self.parentclass = %(parent)s\n" + \
         "        self.superclass  =  %(encapsulated_entity)s\n\n" + \
         Resource.SUB_COLLECTIONS_FIXME + "\n" + \
-        "    def __new__(cls, %(parent)s, %(encapsulated_entity)s):\n" + \
+
+        "    def __new__(cls, %(parent)s, %(encapsulated_entity)s, context):\n" + \
         "        if %(encapsulated_entity)s is None: return None\n" + \
         "        obj = object.__new__(cls)\n" + \
-        "        obj.__init__(%(parent)s, %(encapsulated_entity)s)\n" + \
-        "        return obj\n\n") % sub_collection_resource_template_values
+        "        obj.__init__(%(parent)s, %(encapsulated_entity)s, context)\n" + \
+        "        return obj\n\n" + \
+
+        "    def __getProxy(self):\n" + \
+        "        proxy = context.manager[self.context].get('proxy')\n" + \
+        "        if proxy:\n" + \
+        "            return proxy\n" + \
+        "        #This may happen only if sdk was explicitly disconnected\n" + \
+        "        #using .disconnect() method, but resource instance ref. is\n" + \
+        "        #still available at client's code.\n" + \
+        "        raise DisconnectedError\n\n"
+        ) % sub_collection_resource_template_values
 
         return sub_resource_template
 
@@ -77,11 +90,11 @@ class SubResource(object):
             ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()" + headers_method_params_str + "):\n" + \
             Documentation.document(link) +
             "        url = '%(url)s'\n\n" + \
-            "        result = self._getProxy().request(method='%(method)s',\n" + \
-            "                                          url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id()}),\n" + \
+            "        result = self.__getProxy().request(method='%(method)s',\n" + \
+            "                                           url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id()}),\n" + \
 #TODO: support action on sub-collection
-            "                                          body=ParseHelper.toXml(%(body_type_lc)s),\n"
-            "                                          headers=" + headers_map_params_str + ")\n\n"
+            "                                           body=ParseHelper.toXml(%(body_type_lc)s),\n"
+            "                                           headers=" + headers_map_params_str + ")\n\n"
             "        return result\n\n"
             ) % sub_collection_resource_action_template_values
         else:
@@ -89,14 +102,14 @@ class SubResource(object):
             ("    def %(action_name)s(self%(add_method_params)s, %(body_type_lc)s=params.%(body_type)s()" + headers_method_params_str + "):\n" + \
             Documentation.document(link) +
             "        url = '%(url)s'\n\n" + \
-            "        result = self._getProxy().request(method='%(method)s',\n" + \
-			"                                          url=UrlHelper.replace(url, " + \
+            "        result = self.__getProxy().request(method='%(method)s',\n" + \
+			"                                           url=UrlHelper.replace(url, " + \
             UrlUtils.generate_url_identifiers_replacments(link,
                                                            offset="                                                                    ",
                                                            continues=True) + \
             "),\n" + \
-            "                                          body=ParseHelper.toXml(%(body_type_lc)s),\n"
-            "                                          headers=" + headers_map_params_str + ")\n\n"
+            "                                           body=ParseHelper.toXml(%(body_type_lc)s),\n"
+            "                                           headers=" + headers_map_params_str + ")\n\n"
             "        return result\n\n"
             ) % sub_collection_resource_action_template_values
 
@@ -119,14 +132,14 @@ class SubResource(object):
         ("    def update(self" + headers_method_params_str + "):\n" + \
          Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
-        "        result = self._getProxy().update(url=UrlHelper.replace(url, " + \
+        "        result = self.__getProxy().update(url=UrlHelper.replace(url, " + \
         UrlUtils.generate_url_identifiers_replacments(link,
                                                            offset="                                                                    ",
                                                            continues=True) + \
 		"),\n" + \
-        "                                         body=ParseHelper.toXml(self.superclass),\n"
-        "                                         headers=" + headers_map_params_str + ")\n\n" + \
-        "        return %(returned_type)s(self.parentclass, result)\n\n") % sub_collection_resource_update_template_values
+        "                                          body=ParseHelper.toXml(self.superclass),\n"
+        "                                          headers=" + headers_map_params_str + ")\n\n" + \
+        "        return %(returned_type)s(self.parentclass, result, self.context)\n\n") % sub_collection_resource_update_template_values
 
 
         return sub_collection_resource_update_template
@@ -160,10 +173,10 @@ class SubResource(object):
             UrlUtils.generate_url_identifiers_replacments(link,
                                                            offset="                                ") + \
              ")\n\n" + \
-             "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
+             "        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
                                                                                                                 method_params.copy().keys()) +
                                                                                     "),\n" +
-             "                                       headers=" + headers_map_params_str_with_no_ct + ")\n\n"
+             "                                        headers=" + headers_map_params_str_with_no_ct + ")\n\n"
              ) % sub_collection_resource_delete_template_values
 
             body_sub_collection_resource_delete_template = \
@@ -173,18 +186,18 @@ class SubResource(object):
             UrlUtils.generate_url_identifiers_replacments(link,
                                                            offset="                                ") + \
              ")\n\n" + \
-             "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
+             "        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
                                                                                                                 method_params.copy().keys()) +
                                                                                     "),\n" + \
-             "                                       body=ParseHelper.toXml(%(body_type_lc)s),\n"
-             "                                       headers=" + headers_map_params_str + ")\n\n"
+             "                                        body=ParseHelper.toXml(%(body_type_lc)s),\n"
+             "                                        headers=" + headers_map_params_str + ")\n\n"
              ) % sub_collection_resource_delete_template_values
         else:
             sub_collection_resource_delete_template = \
             ("    def delete(self):\n" + \
              Documentation.document(link) +
              "        url = '%(url)s'\n\n" + \
-             "        return self._getProxy().delete(url=UrlHelper.replace(url, " + \
+             "        return self.__getProxy().delete(url=UrlHelper.replace(url, " + \
             UrlUtils.generate_url_identifiers_replacments(link,
                                                            offset="                                                                  ",
                                                            continues=True) + \
@@ -196,11 +209,11 @@ class SubResource(object):
             ("    def delete(self, %(body_type_lc)s" + body_instance_str + "):\n" + \
              Documentation.document(link) +
              "        url = '%(url)s'\n\n" + \
-             "        return self._getProxy().delete(url=UrlHelper.replace(url,\n" + \
+             "        return self.__getProxy().delete(url=UrlHelper.replace(url,\n" + \
             UrlUtils.generate_url_identifiers_replacments(link,
                                                            offset="                                                             ") + \
              "),\n" + \
-             "                                       body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+             "                                        body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
              ) % sub_collection_resource_delete_template_values
 
         if not body_type:

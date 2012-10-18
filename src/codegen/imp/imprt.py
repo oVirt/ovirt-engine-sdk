@@ -51,7 +51,9 @@ imports = intro + stamp + \
 "from ovirtsdk.utils.parsehelper import ParseHelper\n" + \
 "from ovirtsdk.utils.searchhelper import SearchHelper\n" + \
 "from ovirtsdk.infrastructure.common import Base\n" + \
+"from ovirtsdk.infrastructure.context import context\n" + \
 "from ovirtsdk.infrastructure.errors import MissingParametersError\n" + \
+"from ovirtsdk.infrastructure.errors import DisconnectedError\n" + \
 "from ovirtsdk.infrastructure.errors import RequestError\n\n\n"
 
 class Import(object):

@@ -14,21 +14,19 @@
 # limitations under the License.
 #
 
-from ovirtsdk.infrastructure import contextmanager
 from ovirtsdk.utils.comperator import Comparator
-from ovirtsdk.infrastructure.errors import DisconnectedError
+from ovirtsdk.infrastructure.errors import ImmutableError, DisconnectedError
+from ovirtsdk.infrastructure.context import context
 
 class Base(object):
-    ''' Returns the proxy to connections pool '''
-    def _getProxy(self):
-#FIXME: manage cache peer API instance  
-        proxy = contextmanager.get('proxy')
-        if proxy:
-            return proxy
-        #This may happen if sdk got explicitly disconnected
-        #using .disconnect() method, but resource instance is
-        #still available at client's code.
-        raise DisconnectedError
+    ''' Decorator base class '''
+
+    def __init__(self, context):
+        self.__context = context
+
+    @property
+    def context(self):
+        return self.__context
 
     def __getattr__(self, item):
         if not self.__dict__.has_key('superclass'):
@@ -40,3 +38,9 @@ class Base(object):
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def __setattr__(self, name, value):
+        if name in ['__context', 'context']:
+            raise ImmutableError(name)
+        else:
+            super(Base, self).__setattr__(name, value)

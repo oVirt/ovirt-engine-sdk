@@ -19,9 +19,9 @@ from httplib import HTTPConnection
 import urllib
 import urlparse
 from ovirtsdk.web.httpsconnection import HTTPSConnection
-from ovirtsdk.infrastructure.errors import NoCertificatesError
+from ovirtsdk.infrastructure.errors import NoCertificatesError, ImmutableError
 import types
-from ovirtsdk.infrastructure import contextmanager
+from ovirtsdk.infrastructure.context import context
 
 class Connection(object):
     '''
@@ -42,6 +42,7 @@ class Connection(object):
         self.__manager = manager
         self.__id = id(self)
         self.__insecure = insecure
+        self.__context = manager.context
 
     def get_id(self):
         return self.__id
@@ -87,6 +88,9 @@ class Connection(object):
     def state(self):
         return self.__connection.__state
 
+    @property
+    def context(self):
+        return self.__context
 
     def __parse_url(self, url):
         if not url.startswith('http'):
@@ -116,10 +120,16 @@ class Connection(object):
 
     def __createStaticHeaders(self, username, password):
         auth = base64.encodestring("%s:%s" % (username, password)).strip()
-        return {"Content-type" : "application/xml", 
+        return {"Content-type" : "application/xml",
                 "Authorization": "Basic %s" % auth}
 
     def __createDynamicHeaders(self):
-        return {'Filter' : str(contextmanager.get('filter'))}
+        return {'Filter' : str(context.manager[self.context].get('filter'))}
+
+    def __setattr__(self, name, value):
+        if name in ['__context', 'context']:
+            raise ImmutableError(name)
+        else:
+            super(Connection, self).__setattr__(name, value)
 
     id = property(get_id, None, None, None)

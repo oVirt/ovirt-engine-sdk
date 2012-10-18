@@ -34,10 +34,22 @@ class SubCollection(object):
                                               'parent_resource_name_lc': parent_resource_name_lc.lower()}
 
         sub_collection_get_template = \
-        ("class %(sub_collection_name)s(Base):\n" + \
+        (
+        "class %(sub_collection_name)s(Base):\n" + \
         "\n" + \
-        "    def __init__(self, %(parent_resource_name_lc)s):\n" + \
-        "        self.parentclass = %(parent_resource_name_lc)s\n\n") % sub_collection_get_template_values
+        "    def __init__(self, %(parent_resource_name_lc)s , context):\n" + \
+        "        Base.__init__(self, context)\n"
+        "        self.parentclass = %(parent_resource_name_lc)s\n\n" + \
+
+        "    def __getProxy(self):\n" + \
+        "        proxy = context.manager[self.context].get('proxy')\n" + \
+        "        if proxy:\n" + \
+        "            return proxy\n" + \
+        "        #This may happen only if sdk was explicitly disconnected\n" + \
+        "        #using .disconnect() method, but resource instance ref. is\n" + \
+        "        #still available at client's code.\n" + \
+        "        raise DisconnectedError\n\n"
+        ) % sub_collection_get_template_values
 
 
         return sub_collection_get_template
@@ -70,26 +82,28 @@ class SubCollection(object):
         "        if id:\n" +
 
         "            try :\n" + \
-        "                result = self._getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, " + \
+        "                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, " + \
         UrlUtils.generate_url_identifiers_replacments(link,
                                                        "                                                                                          ",
                                                        continues=True, is_collection=True) + \
         "),\n" +
         "                                                                   id),\n"
-        "                                              headers=" + headers_map_params_str + ")\n" +
-        "                return %(encapsulating_resource)s(self.parentclass, result)\n" +
+        "                                               headers=" + headers_map_params_str + ")\n" +
+        "                return %(encapsulating_resource)s(self.parentclass, result, self.context)\n" +
         "            except RequestError, err:\n" + \
         "                if err.status and err.status == 404:\n" + \
         "                    return None\n" + \
         "                raise err\n" + \
         "        elif name:\n" +
-        "            result = self._getProxy().get(url=UrlHelper.replace(url, " + \
+        "            result = self.__getProxy().get(url=UrlHelper.replace(url, " + \
         UrlUtils.generate_url_identifiers_replacments(link,
                                                        "                                                                     ",
                                                        continues=True, is_collection=True) + \
         "),\n"
-        "                                          headers=" + headers_map_params_str + ").get_%(actual_resource_name_lc)s()\n\n" + \
-        "            return %(encapsulating_resource)s(self.parentclass, FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))\n" + \
+        "                                           headers=" + headers_map_params_str + ").get_%(actual_resource_name_lc)s()\n\n" + \
+        "            return %(encapsulating_resource)s(self.parentclass,\n" + \
+        "                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),\n" + \
+        "                                              self.context)\n" + \
         "        else:\n" + \
         "            raise MissingParametersError(['id', 'name'])\n\n") % sub_collection_get_template_values
 
@@ -130,8 +144,8 @@ class SubCollection(object):
                                            'query: string (oVirt engine search dialect query)':False},
                                     method_params) +
             "        url = '%(url)s'\n\n" + \
-            "        result = self._getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,\n " +
-            "                                                                                        args=" +
+            "        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,\n " +
+            "                                                                                          args=" +
             UrlUtils.generate_url_identifiers_replacments(link,
                                                           "                                                                                              ",
                                                           continues=True, is_collection=True) + \
@@ -141,19 +155,21 @@ class SubCollection(object):
             "                                      headers=" + headers_map_params_str + ").get_%(actual_resource_name_lc)s()\n" + \
             "        return ParseHelper.toSubCollection(%(encapsulating_resource)s,\n" + \
             "                                           self.parentclass,\n" + \
-            "                                           FilterHelper.filter(result, kwargs))\n\n") % sub_collection_list_template_values
+            "                                           FilterHelper.filter(result, kwargs),\n" + \
+            "                                           context=self.context)\n\n") % sub_collection_list_template_values
         return \
             ("    def list(self, **kwargs):\n" + \
              Documentation.document(link, {'**kwargs: dict (property based filtering)"': False}) +
             "        url = '%(url)s'\n\n" + \
-            "        result = self._getProxy().get(url=UrlHelper.replace(url, " + \
+            "        result = self.__getProxy().get(url=UrlHelper.replace(url, " + \
             UrlUtils.generate_url_identifiers_replacments(link,
                                                            "                                                                 ",
                                                            continues=True, is_collection=True) + \
              ")).get_%(actual_resource_name_lc)s()\n\n" + \
             "        return ParseHelper.toSubCollection(%(encapsulating_resource)s,\n" + \
             "                                           self.parentclass,\n" + \
-            "                                           FilterHelper.filter(result, kwargs))\n\n") % sub_collection_list_template_values
+            "                                           FilterHelper.filter(result, kwargs),\n" + \
+            "                                           context=self.context)\n\n") % sub_collection_list_template_values
 
     @staticmethod
     def add(url, link, body_type, parent_resource_name_lc, encapsulating_entity, KNOWN_WRAPPER_TYPES={}):
@@ -171,13 +187,13 @@ class SubCollection(object):
         ("    def add(self, %(resource_to_add)s" + headers_method_params_str + "):\n\n" + \
          Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
-        "        result = self._getProxy().add(url=UrlHelper.replace(url, " + \
+        "        result = self.__getProxy().add(url=UrlHelper.replace(url, " + \
         UrlUtils.generate_url_identifiers_replacments(link,
                                                            "                                                                 ",
                                                            continues=True, is_collection=True) + \
         "),\n" + \
-        "                                      body=ParseHelper.toXml(%(resource_to_add)s),\n"
-        "                                      headers=" + headers_map_params_str + ")\n\n" + \
-        "        return %(encapsulating_entity)s(self.parentclass, result)\n\n") % sub_collection_add_template_values
+        "                                       body=ParseHelper.toXml(%(resource_to_add)s),\n"
+        "                                       headers=" + headers_map_params_str + ")\n\n" + \
+        "        return %(encapsulating_entity)s(self.parentclass, result, self.context)\n\n") % sub_collection_add_template_values
 
         return sub_collection_add_template

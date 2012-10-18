@@ -36,22 +36,34 @@ class Resource(object):
                                     'sub_collections':sub_collections}
 
         resource_template = \
-        ("class %(xml_entity)s(params.%(xml_entity)s, Base):\n" + \
-        "    def __init__(self, %(xml_entity_lc)s):\n" + \
-        #Resource.__addSubCollectionInstances(xml_entity.lower(), sub_collections)+\
+        (
+        "class %(xml_entity)s(params.%(xml_entity)s, Base):\n" + \
+        "    def __init__(self, %(xml_entity_lc)s, context):\n" + \
+        "        Base.__init__(self, context)\n" + \
         "        self.superclass = %(xml_entity_lc)s\n\n" + \
         Resource.SUB_COLLECTIONS_FIXME + "\n" + \
-        "    def __new__(cls, %(xml_entity_lc)s):\n" + \
+
+        "    def __new__(cls, %(xml_entity_lc)s, context):\n" + \
         "        if %(xml_entity_lc)s is None: return None\n" + \
         "        obj = object.__new__(cls)\n" + \
-        "        obj.__init__(%(xml_entity_lc)s)\n" + \
-        "        return obj\n\n") % resource_template_values
+        "        obj.__init__(%(xml_entity_lc)s, context)\n" + \
+        "        return obj\n\n" + \
+
+        "    def __getProxy(self):\n" + \
+        "        proxy = context.manager[self.context].get('proxy')\n" + \
+        "        if proxy:\n" + \
+        "            return proxy\n" + \
+        "        #This may happen only if sdk was explicitly disconnected\n" + \
+        "        #using .disconnect() method, but resource instance ref. is\n" + \
+        "        #still available at client's code.\n" + \
+        "        raise DisconnectedError\n\n"
+        ) % resource_template_values
 
         return resource_template
 
     @staticmethod
     def addSubCollectionInstances(parent, sub_collections={}):
-        tmpl = "        self.%s = %s(%s)\n"
+        tmpl = "        self.%s = %s(%s, context)\n"
 
         new_tmpl = ''
         for k, v in sub_collections.items():
@@ -76,10 +88,10 @@ class Resource(object):
         ("    def %(action_name)s(self%(method_params)s, %(body_type_lc)s=params.%(body_type)s()" + headers_method_params_str + "):\n" + \
          Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
-        "        result = self._getProxy().request(method='%(method)s',\n" + \
-        "                                          url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
-        "                                          body=ParseHelper.toXml(%(body_type_lc)s),\n"
-        "                                          headers=" + headers_map_params_str + ")\n" + \
+        "        result = self.__getProxy().request(method='%(method)s',\n" + \
+        "                                           url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
+        "                                           body=ParseHelper.toXml(%(body_type_lc)s),\n"
+        "                                           headers=" + headers_map_params_str + ")\n" + \
         "        return result\n\n"
         ) % resource_action_template_values
 
@@ -125,7 +137,7 @@ class Resource(object):
              Documentation.document(link, {}, method_params) +
             "        url = UrlHelper.replace('%(url)s',\n" + \
             "                                {'{%(resource_name_lc)s:id}': self.get_id()})\n\n" + \
-            "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " +
+            "        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, " +
             ParamUtils.toDictStr(url_params.keys(), method_params.copy().keys()) +
                                                                                 "),\n" +
             "                                       headers=" + headers_map_params_str_with_no_ct + ")\n\n"
@@ -137,19 +149,19 @@ class Resource(object):
              Documentation.document(link, {}, method_params) +
             "        url = UrlHelper.replace('%(url)s',\n" + \
             "                                {'{%(resource_name_lc)s:id}': self.get_id()})\n\n" + \
-            "        return self._getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
+            "        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
                                                                                                                method_params.copy().keys()) +
                                                                                 "),\n" + \
-            "                                       body=ParseHelper.toXml(%(body_type_lc)s),\n" +
-            "                                       headers=" + headers_map_params_str + ")\n\n"
+            "                                        body=ParseHelper.toXml(%(body_type_lc)s),\n" +
+            "                                        headers=" + headers_map_params_str + ")\n\n"
             ) % resource_delete_template_values
         else:
             resource_delete_template = \
             ("    def delete(self):\n" + \
              Documentation.document(link) +
             "        url = '%(url)s'\n\n" + \
-            "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" +
-            "                                       headers={'Content-type':None})\n\n"
+            "        return self.__getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" +
+            "                                        headers={'Content-type':None})\n\n"
             ) % resource_delete_template_values
 
 
@@ -157,8 +169,8 @@ class Resource(object):
             ("    def delete(self, %(body_type_lc)s" + body_instance_str + "):\n" + \
              Documentation.document(link) +
             "        url = '%(url)s'\n\n" + \
-            "        return self._getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
-            "                                       body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
+            "        return self.__getProxy().delete(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
+            "                                        body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
             ) % resource_delete_template_values
 
         if not body_type:
@@ -181,9 +193,9 @@ class Resource(object):
         ("    def update(self" + headers_method_params_str + "):\n" + \
          Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
-        "        result = self._getProxy().update(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
-        "                                         body=ParseHelper.toXml(self.superclass),\n" +
-        "                                         headers=" + headers_map_params_str + ")\n" + \
-        "        return %(actual_self_name)s(result)\n\n") % resource_update_template_values
+        "        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),\n" + \
+        "                                          body=ParseHelper.toXml(self.superclass),\n" +
+        "                                          headers=" + headers_map_params_str + ")\n" + \
+        "        return %(actual_self_name)s(result, self.context)\n\n") % resource_update_template_values
 
         return resource_update_template

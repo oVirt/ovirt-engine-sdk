@@ -15,9 +15,7 @@
 # limitations under the License.
 #
 
-from collections import OrderedDict
-
-
+from ovirtsdk.api import API
 from codegen.imp.imprt import Import
 from codegen.collection.resource import Resource
 from codegen.entrypoint.entrypoint import EntryPoint
@@ -26,6 +24,8 @@ from ovirtsdk.utils.reflectionhelper import ReflectionHelper
 from ovirtsdk.web.connection import Connection
 from genparams import paramsHandle
 from ovirtsdk.infrastructure.errors import RequestError
+from ovirtsdk.infrastructure.context import context
+from ovirtsdk.utils.ordereddict import OrderedDict
 
 SERVER = 'http://localhost:8080'
 USER = 'admin@internal'
@@ -54,9 +54,12 @@ KNOWN_WRAPPER_TYPES = {}
 DEBUG = False
 
 class CodeGen():
+    """ Generates oVirt python bindings based on api RSDL meta """
 
     def __init__(self):
-        self.conn = Connection(url=SERVER,
+        self.__api = API(url=SERVER, username=USER, password=PASSWORD)
+        self.context = self.__api.id
+        self.__conn = Connection(url=SERVER,
                                port=None,
                                key_file=None,
                                cert_file=None,
@@ -65,19 +68,19 @@ class CodeGen():
                                timeout=None,
                                username=USER,
                                password=PASSWORD,
-                               manager=None,
+                               manager=self,
                                debug=False)
 
-
     def generate_code(self):
-        """Generates decorators"""
-
-        API(url=SERVER, username=USER, password=PASSWORD)
+        """ Generates resources brokers """
 
         collectionsHolder = {}
         usedRels = []
 
-        for link in contextmanager.get('proxy').request('GET', '/api?rsdl').links.link:
+        for link in context.manager[self.context].get('proxy') \
+                                                 .request('GET', '/api?rsdl') \
+                                                 .links \
+                                                 .link:
 
             response_type = None
             body_type = None
@@ -148,11 +151,11 @@ class CodeGen():
                     coll_candidates += coll_candidate
                     root_coll_candidates.append(k)
 
-            f_api.write(EntryPoint.entryPoint(root_coll_candidates, coll_candidates))
+            f_api.write(EntryPoint.entryPoint(self.__api, root_coll_candidates, coll_candidates))
             f_api.flush()
         finally:
-            f.close()
-            f_api.close()
+            if f: f.close()
+            if f_api: f_api.close()
 
     def __toMap(self, rel, resources=[]):
         dct = OrderedDict()
@@ -422,15 +425,14 @@ class CodeGen():
 
 
     def __do_request(self, method, url, body=None, headers={}):
-        self.conn.doRequest(method=method, url=url, body=body, headers=headers)
-        response = self.conn.getResponse()
+        self.__conn.doRequest(method=method, url=url, body=body, headers=headers)
+        response = self.__conn.getResponse()
         if response.status >= 400:
             raise RequestError, response
         return response.read()
 
     def generate_python_bindings(self):
-        from ovirtsdk.infrastructure import contextmanager
-        contextmanager.add('filter', False)
+        context.manager[self.context].add('filter', False)
         schema = self.__do_request(method='GET', url='/api?schema')
         with open(SCHEMA_FILE, 'w') as f:
             f.write('%s' % schema)
@@ -446,15 +448,13 @@ if __name__ == "__main__":
 
     #import modules required for generate_code()
     from ovirtsdk.xml import params
-    from ovirtsdk.infrastructure import contextmanager
     from ovirtsdk.utils.parsehelper import ParseHelper
     from codegen.collection.collection import Collection
     from codegen.subcollection.subresource import SubResource
     from codegen.subcollection.subcollection import SubCollection
-    from ovirtsdk.api import API
 
     # cache known python2xml bindings types
     KNOWN_WRAPPER_TYPES = ReflectionHelper.getClassNames(params)
 
-    # generate decorators
+    # generate resources brokers
     codegen.generate_code()

@@ -32,9 +32,20 @@ class Collection(object):
         collection_resource_template_values = {'collection_name':collection_name}
 
         collection_resource_template = \
-        ("class %(collection_name)s(Base):\n" + \
-        "    def __init__(self):\n" + \
-        "        \"\"\"Constructor.\"\"\"\n\n") % collection_resource_template_values
+        (
+        "class %(collection_name)s(Base):\n" + \
+        "    def __init__(self, context):\n" + \
+        "        Base.__init__(self, context)\n\n" + \
+
+        "    def __getProxy(self):\n" + \
+        "        proxy = context.manager[self.context].get('proxy')\n" + \
+        "        if proxy:\n" + \
+        "            return proxy\n" + \
+        "        #This may happen only if sdk was explicitly disconnected\n" + \
+        "        #using .disconnect() method, but resource instance ref. is\n" + \
+        "        #still available at client's code.\n" + \
+        "        raise DisconnectedError\n\n"
+        ) % collection_resource_template_values
 
         return collection_resource_template
 
@@ -75,16 +86,18 @@ class Collection(object):
 
             "        if id:\n" +
             "            try :\n" + \
-            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, id),\n"
-            "                                                              headers=" + headers_map_params_str + "))\n" +
+            "                return %(resource_type)s(self.__getProxy().get(url=UrlHelper.append(url, id),\n"
+            "                                                               headers=" + headers_map_params_str + "),\n" + \
+            "                                         self.context)\n" +
             "            except RequestError, err:\n" + \
             "                if err.status and err.status == 404:\n" + \
             "                    return None\n" + \
             "                raise err\n" + \
             "        elif name:\n" +
-            "            result = self._getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),\n"
-            "                                          headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
-            "            return %(resource_type)s(FilterHelper.getItem(result))\n" + \
+            "            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),\n"
+            "                                           headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
+            "            return %(resource_type)s(FilterHelper.getItem(result),\n" + \
+            "                                     self.context)\n" + \
             "        else:\n" + \
             "            raise MissingParametersError(['id', 'name'])\n\n") % collection_get_template_values
 
@@ -96,16 +109,18 @@ class Collection(object):
             "        url = '%(url)s'\n\n" + \
             "        if id:\n" +
             "            try :\n" + \
-            "                return %(resource_type)s(self._getProxy().get(url=UrlHelper.append(url, id),\n" + \
-            "                                                              headers=" + headers_map_params_str + "))\n" +
+            "                return %(resource_type)s(self.__getProxy().get(url=UrlHelper.append(url, id),\n" + \
+            "                                                               headers=" + headers_map_params_str + "),\n" + \
+            "                                         self.context)\n" +
             "            except RequestError, err:\n" + \
             "                if err.status and err.status == 404:\n" + \
             "                    return None\n" + \
             "                raise err\n" + \
             "        elif name:\n" +
-            "            result = self._getProxy().get(url=url,\n"
-            "                                          headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
-            "            return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})))\n" + \
+            "            result = self.__getProxy().get(url=url,\n"
+            "                                           headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
+            "            return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),\n" + \
+            "                                     self.context)\n" + \
             "        else:\n" + \
             "            raise MissingParametersError(['id', 'name'])\n\n") % collection_get_template_values
 
@@ -138,9 +153,10 @@ class Collection(object):
 
         url='/api/capabilities'
 
-        result = self._getProxy().get(url=url).version
+        result = self.__getProxy().get(url=url).version
         return ParseHelper.toCollection(VersionCaps,
-                                        FilterHelper.filter(result, kwargs))
+                                        FilterHelper.filter(result, kwargs),
+                                        context=self.context)
 """
         if prms_str != '' or headers_method_params_str != '':
             combined_method_params = prms_str + \
@@ -152,19 +168,21 @@ class Collection(object):
                                            'query: string (oVirt engine search dialect query)':False},
                                     method_params) +
             "        url='%(url)s'\n\n" + \
-            "        result = self._getProxy().get(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
+            "        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
                                                                                                               method_params_copy.keys()) +
                                                                                 "),\n"
             "                                      headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
             "        return ParseHelper.toCollection(%(resource_type)s,\n" + \
-            "                                        FilterHelper.filter(result, kwargs))\n\n") % collection_list_template_values
+            "                                        FilterHelper.filter(result, kwargs),\n" + \
+            "                                        context=self.context)\n\n") % collection_list_template_values
         return \
         ("    def list(self, **kwargs):\n" + \
          Documentation.document(link, {'**kwargs: dict (property based filtering)': False}) +
         "        url='%(url)s'\n\n" + \
-        "        result = self._getProxy().get(url=url).get_%(resource_name_lc)s()\n" + \
+        "        result = self.__getProxy().get(url=url).get_%(resource_name_lc)s()\n" + \
         "        return ParseHelper.toCollection(%(resource_type)s,\n" + \
-        "                                        FilterHelper.filter(result, kwargs))\n\n") % collection_list_template_values
+        "                                        FilterHelper.filter(result, kwargs),\n" + \
+        "                                        context=self.context)\n\n") % collection_list_template_values
 
     @staticmethod
     def add(url, body_type, response_type, link, KNOWN_WRAPPER_TYPES={}):
@@ -181,9 +199,9 @@ class Collection(object):
         ("    def add(self, %(resource_to_add_lc)s" + headers_method_params_str + "):\n" + \
          Documentation.document(link) +
         "        url = '%(url)s'\n\n" + \
-        "        result = self._getProxy().add(url=url,\n" + \
-        "                                      body=ParseHelper.toXml(%(resource_to_add_lc)s),\n"
-        "                                      headers=" + headers_map_params_str + ")\n" + \
-        "        return %(resource_type)s(result)\n\n") % collection_add_template_values
+        "        result = self.__getProxy().add(url=url,\n" + \
+        "                                       body=ParseHelper.toXml(%(resource_to_add_lc)s),\n"
+        "                                       headers=" + headers_map_params_str + ")\n" + \
+        "        return %(resource_type)s(result, self.context)\n\n") % collection_add_template_values
 
         return collection_add_template

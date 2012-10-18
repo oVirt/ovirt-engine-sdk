@@ -19,17 +19,18 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-10-14 16:34:53.394624'''
+'''Generated at: 2012-10-18 13:45:50.454862'''
 
 import types
 
 from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError
 from ovirtsdk.infrastructure.connectionspool import ConnectionsPool
 from ovirtsdk.infrastructure.errors import DisconnectedError
-from ovirtsdk.infrastructure.contextmanager import Mode
-from ovirtsdk.infrastructure import contextmanager
+from ovirtsdk.infrastructure.errors import ImmutableError
+from ovirtsdk.infrastructure.context import context
 from ovirtsdk.infrastructure.proxy import Proxy
 
+from ovirtsdk.infrastructure.cache import Mode
 from ovirtsdk.infrastructure.brokers import Capabilities
 from ovirtsdk.infrastructure.brokers import Clusters
 from ovirtsdk.infrastructure.brokers import DataCenters
@@ -48,8 +49,10 @@ from ovirtsdk.infrastructure.brokers import VMs
 from ovirtsdk.infrastructure.brokers import VmPools
 
 
-class API():
-    def __init__(self, url, username, password, key_file=None, cert_file=None, ca_file=None, port=None, timeout=None, persistent_auth=True, insecure=False, filter=False, debug=False):
+class API(object):
+    def __init__(self, url, username, password, key_file=None, cert_file=None,
+                 ca_file=None, port=None, timeout=None, persistent_auth=True, 
+                 insecure=False, filter=False, debug=False):
 
         """
         @param url: server url (format "http/s://server[:port]/api")
@@ -66,11 +69,15 @@ class API():
         [@param debug: debug (format True|False)]
         """
 
+        # The instance id
+        self.__id = id(self)
+
         # Create the connection pool:
         pool = ConnectionsPool(
             url=url,
             username=username,
             password=password,
+            context=self.id,
             key_file=key_file,
             cert_file=cert_file,
             ca_file=ca_file,
@@ -85,7 +92,7 @@ class API():
         proxy = Proxy(pool, persistent_auth)
 
         # Store filter to the context:
-        contextmanager.add('filter', filter)
+        context.manager[self.id].add('filter', filter)
 
         # Get entry point
         entry_point = proxy.request(method='GET',
@@ -97,39 +104,49 @@ class API():
             raise UnsecuredConnectionAttemptError
 
         # Store entry point to the context
-        contextmanager.add('entry_point', entry_point, Mode.R)
+        context.manager[self.id].add('entry_point', entry_point, Mode.R)
 
         # Store proxy to the context:
-        contextmanager.add('proxy', proxy, Mode.R)
+        context.manager[self.id].add('proxy', proxy, Mode.R)
 
         # We need to remember if persistent auth is enabled:
-        contextmanager.add('persistent_auth',
-                           persistent_auth,
-                           Mode.R)
+        context.manager[self.id].add('persistent_auth',
+                                     persistent_auth,
+                                     Mode.R)
 
-        self.capabilities = Capabilities()
-        self.clusters = Clusters()
-        self.datacenters = DataCenters()
-        self.disks = Disks()
-        self.domains = Domains()
-        self.events = Events()
-        self.groups = Groups()
-        self.hosts = Hosts()
-        self.networks = Networks()
-        self.roles = Roles()
-        self.storagedomains = StorageDomains()
-        self.tags = Tags()
-        self.templates = Templates()
-        self.users = Users()
-        self.vms = VMs()
-        self.vmpools = VmPools()
+        self.capabilities = Capabilities(self.id)
+        self.clusters = Clusters(self.id)
+        self.datacenters = DataCenters(self.id)
+        self.disks = Disks(self.id)
+        self.domains = Domains(self.id)
+        self.events = Events(self.id)
+        self.groups = Groups(self.id)
+        self.hosts = Hosts(self.id)
+        self.networks = Networks(self.id)
+        self.roles = Roles(self.id)
+        self.storagedomains = StorageDomains(self.id)
+        self.tags = Tags(self.id)
+        self.templates = Templates(self.id)
+        self.users = Users(self.id)
+        self.vms = VMs(self.id)
+        self.vmpools = VmPools(self.id)
 
+
+    @property
+    def id(self):
+        return self.__id
+
+    def __setattr__(self, name, value):
+        if name in ['__id', 'id']:
+            raise ImmutableError(name)
+        else:
+            super(API, self).__setattr__(name, value)
 
     def disconnect(self):
         ''' terminates server connection/s '''
 
-        proxy = contextmanager.get('proxy')
-        persistent_auth = contextmanager.get('persistent_auth')
+        proxy = context.manager[self.id].get('proxy')
+        persistent_auth = context.manager[self.id].get('persistent_auth')
 
         # If persistent authentication is enabled then we need to
         # send a last request as a hint to the server to close the
@@ -146,12 +163,12 @@ class API():
             raise DisconnectedError
 
         # Clear context
-        contextmanager._clear(force=True)
+        context.manager[self.id].clear(force=True)
 
     def test(self, throw_exception=False):
         ''' test server connectivity '''
 
-        proxy = contextmanager.get('proxy')
+        proxy = context.manager[self.id].get('proxy')
         if proxy:
             try :
                 proxy.request(method='GET',
@@ -163,30 +180,34 @@ class API():
         raise DisconnectedError
 
     def set_filter(self, filter):
-        contextmanager.add('filter', filter)
+        ''' enables user permission based filtering '''
+        if type(filter) == types.BooleanType:
+            context.manager[self.id].add('filter', filter)
+        else:
+            raise TypeError(filter)
 
     def get_special_objects(self):
-        entry_point = contextmanager.get('entry_point')
+        entry_point = context.manager[self.id].get('entry_point')
         if entry_point:
             return entry_point.special_objects
         raise DisconnectedError
 
     def get_summary(self):
-        proxy = contextmanager.get('proxy')
+        proxy = context.manager[self.id].get('proxy')
         if proxy:
             return proxy.request(method='GET',
                                  url='/api').summary
         raise DisconnectedError
 
     def get_time(self):
-        proxy = contextmanager.get('proxy')
+        proxy = context.manager[self.id].get('proxy')
         if proxy:
             return proxy.request(method='GET',
                                  url='/api').time
         raise DisconnectedError
 
     def get_product_info(self):
-        entry_point = contextmanager.get('entry_point')
+        entry_point = context.manager[self.id].get('entry_point')
         if entry_point:
             return entry_point.product_info
         raise DisconnectedError

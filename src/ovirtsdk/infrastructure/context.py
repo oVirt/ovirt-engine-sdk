@@ -14,20 +14,25 @@
 # limitations under the License.
 #
 
-from ovirtsdk.utils.ordereddict import OrderedDict
-from ovirtsdk.infrastructure.cache import Cache
-import threading
+from ovirtsdk.infrastructure.contextmanager import ContextManager
+from ovirtsdk.infrastructure.errors import ImmutableError
 
 
-class ContextManager(OrderedDict):
-    """ The oVirt context manager """
+class Context(object):
+    """ The oVirt Context container """
 
     def __init__(self):
-        OrderedDict.__init__(self)
-        self.__lock = threading.RLock()
+        self.__manager = ContextManager()
 
-    def __getitem__(self, key):
-        with self.__lock:
-            if key not in self.keys():
-                OrderedDict.__setitem__(self, key, Cache())
-        return OrderedDict.__getitem__(self, key)
+    def __setattr__(self, name, value):
+        if name in ['__manager', 'manager']:
+            raise ImmutableError(name)
+        else:
+            super(Context, self).__setattr__(name, value)
+
+    @property
+    def manager(self):
+        """ The oVirt context manager """
+        return self.__manager
+
+context = Context()

@@ -69,38 +69,40 @@ class ParseHelper():
         return instance
 
     @staticmethod
-    def toType(fromItem, toType):
+    def toType(fromItem, toType, **kwargs):
         '''Encapsulates the entity with the broker instance.'''
-        return toType(fromItem)
+        return toType(fromItem, **kwargs)
 
     @staticmethod
-    def toCollection(toType, fromItems=[]):
-        '''Encapsulates the entities collection with the broker instance collection.'''
+    def toCollection(toType, fromItems=[], **kwargs):
+        '''Encapsulates entities collection with the broker decorator collection.'''
         new_coll = []
         for item in fromItems:
-            new_coll.append(ParseHelper.toType(item, toType))
+            new_coll.append(ParseHelper.toType(item, toType, **kwargs))
         return new_coll
 
     @staticmethod
-    def toSubType(fromItem, toType, parent):
+    def toSubType(fromItem, toType, parent, **kwargs):
         '''Encapsulates the sub-entity with the broker instance.'''
-        return toType(parent, fromItem)
+        return toType(parent, fromItem, **kwargs)
 
     @staticmethod
-    def toSubTypeFromCollection(toType, parent, fromItems=[]):
+    def toSubTypeFromCollection(toType, parent, fromItems=[], **kwargs):
         '''Encapsulates the sub-entity collection element with the broker instance.'''
-        return toType(parent, fromItems[0]) if(fromItems is not None and len(fromItems) > 0) else None
+        if(fromItems is not None and len(fromItems) > 0):
+            return toType(parent, fromItems[0], **kwargs)
 
     @staticmethod
-    def toTypeFromCollection(toType, fromItems=[]):
+    def toTypeFromCollection(toType, fromItems=[], **kwargs):
         '''Encapsulates the entity collection element with the broker instance.'''
         #return toType(fromItems[0]) if(fromItems is not None and len(fromItems) > 0) else None
-        return toType(fromItems[0] if(fromItems is not None and len(fromItems) > 0) else None)
+        return toType(fromItems[0] if(fromItems is not None and len(fromItems) > 0) \
+                                   else None, **kwargs)
 
     @staticmethod
-    def toSubCollection(toType, parent, fromItems=[]):
+    def toSubCollection(toType, parent, fromItems=[], **kwargs):
         '''Encapsulates the sub-entities collection with the broker instance collection.'''
         new_coll = []
         for fromItem in fromItems:
-            new_coll.append(ParseHelper.toSubType(fromItem, toType, parent))
+            new_coll.append(ParseHelper.toSubType(fromItem, toType, parent, **kwargs))
         return new_coll

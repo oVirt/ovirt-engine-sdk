@@ -16,6 +16,7 @@
 
 
 import datetime
+from ovirtsdk.infrastructure.context import context
 
 class EntryPoint(object):
 
@@ -45,21 +46,22 @@ class EntryPoint(object):
         "from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError\n" + \
         "from ovirtsdk.infrastructure.connectionspool import ConnectionsPool\n" + \
         "from ovirtsdk.infrastructure.errors import DisconnectedError\n" + \
-        "from ovirtsdk.infrastructure.contextmanager import Mode\n" + \
-        "from ovirtsdk.infrastructure import contextmanager\n" + \
-        "from ovirtsdk.infrastructure.proxy import Proxy\n\n"
+        "from ovirtsdk.infrastructure.errors import ImmutableError\n" + \
+        "from ovirtsdk.infrastructure.context import context\n" + \
+        "from ovirtsdk.infrastructure.proxy import Proxy\n\n" + \
+        "from ovirtsdk.infrastructure.cache import Mode\n"
 
         return entry_point_imports_template
 
 
     @staticmethod
-    def instanceMethods(exclude=['actions', 'href', 'link', 'extensiontype_', 'creation_status', 'id', 'name', 'description'],
+    def instanceMethods(api, exclude=['actions', 'href', 'link', 'extensiontype_', 'creation_status', 'id', 'name', 'description'],
                         static_methods=['special_objects', 'product_info']):
 
         static_methods_template = "\n" + \
 """
     def get_%(attr)s(self):
-        entry_point = contextmanager.get('entry_point')
+        entry_point = context.manager[self.id].get('entry_point')
         if entry_point:
             return entry_point.%(attr)s
         raise DisconnectedError"""
@@ -67,7 +69,7 @@ class EntryPoint(object):
         dinamic_methods_template = "\n" + \
 """
     def get_%(attr)s(self):
-        proxy = contextmanager.get('proxy')
+        proxy = context.manager[self.id].get('proxy')
         if proxy:
             return proxy.request(method='GET',
                                  url='/api').%(attr)s
@@ -75,11 +77,21 @@ class EntryPoint(object):
 
         methods_template = "\n" + \
 """
+    @property
+    def id(self):
+        return self.__id
+
+    def __setattr__(self, name, value):
+        if name in ['__id', 'id']:
+            raise ImmutableError(name)
+        else:
+            super(API, self).__setattr__(name, value)
+
     def disconnect(self):
         ''' terminates server connection/s '''
 
-        proxy = contextmanager.get('proxy')
-        persistent_auth = contextmanager.get('persistent_auth')
+        proxy = context.manager[self.id].get('proxy')
+        persistent_auth = context.manager[self.id].get('persistent_auth')
 
         # If persistent authentication is enabled then we need to
         # send a last request as a hint to the server to close the
@@ -96,12 +108,12 @@ class EntryPoint(object):
             raise DisconnectedError
 
         # Clear context
-        contextmanager._clear(force=True)
+        context.manager[self.id].clear(force=True)
 
     def test(self, throw_exception=False):
         ''' test server connectivity '''
 
-        proxy = contextmanager.get('proxy')
+        proxy = context.manager[self.id].get('proxy')
         if proxy:
             try :
                 proxy.request(method='GET',
@@ -113,10 +125,13 @@ class EntryPoint(object):
         raise DisconnectedError
 
     def set_filter(self, filter):
-        contextmanager.add('filter', filter)"""
+        ''' enables user permission based filtering '''
+        if type(filter) == types.BooleanType:
+            context.manager[self.id].add('filter', filter)
+        else:
+            raise TypeError(filter)"""
 
-        from ovirtsdk.infrastructure import contextmanager
-        entry_point_resource = contextmanager.get('proxy').request('GET', '/api')
+        entry_point_resource = context.manager[api.id].get('proxy').request('GET', '/api')
         for attr in entry_point_resource.__dict__.keys():
             if attr not in exclude:
                 if attr in static_methods:
@@ -139,11 +154,13 @@ class EntryPoint(object):
         return imports + ('\n\n')
 
     @staticmethod
-    def entryPoint(types=[], rootCollections=''):
+    def entryPoint(api, types=[], rootCollections=''):
         api_template = EntryPoint.entryPointImports() + \
         EntryPoint.entryPointCustomImports(types) + \
-"""class API():
-    def __init__(self, url, username, password, key_file=None, cert_file=None, ca_file=None, port=None, timeout=None, persistent_auth=True, insecure=False, filter=False, debug=False):
+"""class API(object):
+    def __init__(self, url, username, password, key_file=None, cert_file=None,
+                 ca_file=None, port=None, timeout=None, persistent_auth=True, 
+                 insecure=False, filter=False, debug=False):
 
         \"""
         @param url: server url (format "http/s://server[:port]/api")
@@ -160,11 +177,15 @@ class EntryPoint(object):
         [@param debug: debug (format True|False)]
         \"""
 
+        # The instance id
+        self.__id = id(self)
+
         # Create the connection pool:
         pool = ConnectionsPool(
             url=url,
             username=username,
             password=password,
+            context=self.id,
             key_file=key_file,
             cert_file=cert_file,
             ca_file=ca_file,
@@ -179,7 +200,7 @@ class EntryPoint(object):
         proxy = Proxy(pool, persistent_auth)
 
         # Store filter to the context:
-        contextmanager.add('filter', filter)
+        context.manager[self.id].add('filter', filter)
 
         # Get entry point
         entry_point = proxy.request(method='GET',
@@ -191,23 +212,23 @@ class EntryPoint(object):
             raise UnsecuredConnectionAttemptError
 
         # Store entry point to the context
-        contextmanager.add('entry_point', entry_point, Mode.R)
+        context.manager[self.id].add('entry_point', entry_point, Mode.R)
 
         # Store proxy to the context:
-        contextmanager.add('proxy', proxy, Mode.R)
+        context.manager[self.id].add('proxy', proxy, Mode.R)
 
         # We need to remember if persistent auth is enabled:
-        contextmanager.add('persistent_auth',
-                           persistent_auth,
-                           Mode.R)
+        context.manager[self.id].add('persistent_auth',
+                                     persistent_auth,
+                                     Mode.R)
 
 """
 
-        return (api_template + rootCollections + EntryPoint.instanceMethods())
+        return (api_template + rootCollections + EntryPoint.instanceMethods(api))
 
     @staticmethod
     def collection(name, item={}):
-        entrypoint_template = '        self.%s = %s()\n'
+        entrypoint_template = '        self.%s = %s(self.id)\n'
         if item.has_key('root_collection') and item['root_collection'] == True:
             if  item.has_key('name'):
                 coll_name = item['name']
