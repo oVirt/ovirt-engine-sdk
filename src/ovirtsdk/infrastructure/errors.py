@@ -66,11 +66,11 @@ class RequestError(Exception):
                     detail = f_detail.fault.detail.lstrip()
                 else:
                     #self.reason = response.reason
-                    if f_detail is not None:
+                    if f_detail and f_detail.detail:
                         detail = f_detail.detail.lstrip()
 
                 #engine returns can-do-action error messages with brackets
-                if detail.startswith('[') and detail.endswith(']'):
+                if detail and detail.startswith('[') and detail.endswith(']'):
                     detail = detail[1:len(detail) - 1]
 
         #application server error

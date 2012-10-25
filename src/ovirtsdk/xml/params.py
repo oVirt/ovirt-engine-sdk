@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Sun Oct 14 16:00:29 2012 by generateDS.py version 2.7b.
+# Generated Tue Nov  6 14:24:24 2012 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -3684,6 +3684,81 @@ class StorageFormats(GeneratedsSuper):
             format_ = self.gds_validate_string(format_, node, 'format')
             self.format.append(format_)
 # end class StorageFormats
+
+
+class NfsVersions(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, nfs_version=None):
+        if nfs_version is None:
+            self.nfs_version = []
+        else:
+            self.nfs_version = nfs_version
+    def factory(*args_, **kwargs_):
+        if NfsVersions.subclass:
+            return NfsVersions.subclass(*args_, **kwargs_)
+        else:
+            return NfsVersions(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_nfs_version(self): return self.nfs_version
+    def set_nfs_version(self, nfs_version): self.nfs_version = nfs_version
+    def add_nfs_version(self, value): self.nfs_version.append(value)
+    def insert_nfs_version(self, index, value): self.nfs_version[index] = value
+    def export(self, outfile, level, namespace_='', name_='NfsVersions', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='NfsVersions')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='NfsVersions'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='NfsVersions', fromsubclass_=False):
+        for nfs_version_ in self.nfs_version:
+            showIndent(outfile, level)
+            outfile.write('<%snfs_version>%s</%snfs_version>\n' % (namespace_, self.gds_format_string(quote_xml(nfs_version_).encode(ExternalEncoding), input_name='nfs_version'), namespace_))
+    def hasContent_(self):
+        if (
+            self.nfs_version
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='NfsVersions'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('nfs_version=[\n')
+        level += 1
+        for nfs_version_ in self.nfs_version:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(nfs_version_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'nfs_version':
+            nfs_version_ = child_.text
+            nfs_version_ = self.gds_validate_string(nfs_version_, node, 'nfs_version')
+            self.nfs_version.append(nfs_version_)
+# end class NfsVersions
 
 
 class ActionableResource(GeneratedsSuper):
@@ -9399,7 +9474,7 @@ class Storage(BaseResource):
             outfile.write('<%svfs_type>%s</%svfs_type>\n' % (namespace_, self.gds_format_string(quote_xml(self.vfs_type).encode(ExternalEncoding), input_name='vfs_type'), namespace_))
         if self.nfs_version is not None:
             showIndent(outfile, level)
-            outfile.write('<%snfs_version>%s</%snfs_version>\n' % (namespace_, self.gds_format_integer(self.nfs_version, input_name='nfs_version'), namespace_))
+            outfile.write('<%snfs_version>%s</%snfs_version>\n' % (namespace_, self.gds_format_string(quote_xml(self.nfs_version).encode(ExternalEncoding), input_name='nfs_version'), namespace_))
         if self.nfs_timeo is not None:
             showIndent(outfile, level)
             outfile.write('<%snfs_timeo>%s</%snfs_timeo>\n' % (namespace_, self.gds_format_integer(self.nfs_timeo, input_name='nfs_timeo'), namespace_))
@@ -9460,7 +9535,7 @@ class Storage(BaseResource):
             outfile.write('vfs_type=%s,\n' % quote_python(self.vfs_type).encode(ExternalEncoding))
         if self.nfs_version is not None:
             showIndent(outfile, level)
-            outfile.write('nfs_version=%d,\n' % self.nfs_version)
+            outfile.write('nfs_version=%s,\n' % quote_python(self.nfs_version).encode(ExternalEncoding))
         if self.nfs_timeo is not None:
             showIndent(outfile, level)
             outfile.write('nfs_timeo=%d,\n' % self.nfs_timeo)
@@ -9523,13 +9598,9 @@ class Storage(BaseResource):
             vfs_type_ = self.gds_validate_string(vfs_type_, node, 'vfs_type')
             self.vfs_type = vfs_type_
         elif nodeName_ == 'nfs_version':
-            sval_ = child_.text
-            try:
-                ival_ = int(sval_)
-            except (TypeError, ValueError), exp:
-                raise_parse_error(child_, 'requires integer: %s' % exp)
-            ival_ = self.gds_validate_integer(ival_, node, 'nfs_version')
-            self.nfs_version = ival_
+            nfs_version_ = child_.text
+            nfs_version_ = self.gds_validate_string(nfs_version_, node, 'nfs_version')
+            self.nfs_version = nfs_version_
         elif nodeName_ == 'nfs_timeo':
             sval_ = child_.text
             try:
@@ -10743,13 +10814,15 @@ class HighAvailability(GeneratedsSuper):
 class Display(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, type_=None, address=None, port=None, secure_port=None, monitors=None, allow_override=None):
+    def __init__(self, type_=None, address=None, port=None, secure_port=None, monitors=None, allow_override=None, certificate=None, smartcard_enabled=None):
         self.type_ = type_
         self.address = address
         self.port = port
         self.secure_port = secure_port
         self.monitors = monitors
         self.allow_override = allow_override
+        self.certificate = certificate
+        self.smartcard_enabled = smartcard_enabled
     def factory(*args_, **kwargs_):
         if Display.subclass:
             return Display.subclass(*args_, **kwargs_)
@@ -10768,6 +10841,10 @@ class Display(GeneratedsSuper):
     def set_monitors(self, monitors): self.monitors = monitors
     def get_allow_override(self): return self.allow_override
     def set_allow_override(self, allow_override): self.allow_override = allow_override
+    def get_certificate(self): return self.certificate
+    def set_certificate(self, certificate): self.certificate = certificate
+    def get_smartcard_enabled(self): return self.smartcard_enabled
+    def set_smartcard_enabled(self, smartcard_enabled): self.smartcard_enabled = smartcard_enabled
     def export(self, outfile, level, namespace_='', name_='Display', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -10801,6 +10878,11 @@ class Display(GeneratedsSuper):
         if self.allow_override is not None:
             showIndent(outfile, level)
             outfile.write('<%sallow_override>%s</%sallow_override>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.allow_override)), input_name='allow_override'), namespace_))
+        if self.certificate is not None:
+            self.certificate.export(outfile, level, namespace_, name_='certificate')
+        if self.smartcard_enabled is not None:
+            showIndent(outfile, level)
+            outfile.write('<%ssmartcard_enabled>%s</%ssmartcard_enabled>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.smartcard_enabled)), input_name='smartcard_enabled'), namespace_))
     def hasContent_(self):
         if (
             self.type_ is not None or
@@ -10808,7 +10890,9 @@ class Display(GeneratedsSuper):
             self.port is not None or
             self.secure_port is not None or
             self.monitors is not None or
-            self.allow_override is not None
+            self.allow_override is not None or
+            self.certificate is not None or
+            self.smartcard_enabled is not None
             ):
             return True
         else:
@@ -10839,6 +10923,15 @@ class Display(GeneratedsSuper):
         if self.allow_override is not None:
             showIndent(outfile, level)
             outfile.write('allow_override=%s,\n' % self.allow_override)
+        if self.certificate is not None:
+            showIndent(outfile, level)
+            outfile.write('certificate=model_.certificate(\n')
+            self.certificate.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.smartcard_enabled is not None:
+            showIndent(outfile, level)
+            outfile.write('smartcard_enabled=%s,\n' % self.smartcard_enabled)
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -10889,6 +10982,20 @@ class Display(GeneratedsSuper):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'allow_override')
             self.allow_override = ival_
+        elif nodeName_ == 'certificate':
+            obj_ = Certificate.factory()
+            obj_.build(child_)
+            self.set_certificate(obj_)
+        elif nodeName_ == 'smartcard_enabled':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'smartcard_enabled')
+            self.smartcard_enabled = ival_
 # end class Display
 
 
@@ -13164,7 +13271,7 @@ class Floppies(BaseDevices):
 class Disk(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, template=None, alias=None, image_id=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, quota=None, lunStorage=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, template=None, alias=None, image_id=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, quota=None, lun_storage=None):
         super(Disk, self).__init__(actions, href, id, name, description, creation_status, link, vm, template, )
         self.alias = alias
         self.image_id = image_id
@@ -13184,7 +13291,7 @@ class Disk(BaseDevice):
         self.statistics = statistics
         self.active = active
         self.quota = quota
-        self.lunStorage = lunStorage
+        self.lun_storage = lun_storage
     def factory(*args_, **kwargs_):
         if Disk.subclass:
             return Disk.subclass(*args_, **kwargs_)
@@ -13227,8 +13334,8 @@ class Disk(BaseDevice):
     def set_active(self, active): self.active = active
     def get_quota(self): return self.quota
     def set_quota(self, quota): self.quota = quota
-    def get_lunStorage(self): return self.lunStorage
-    def set_lunStorage(self, lunStorage): self.lunStorage = lunStorage
+    def get_lun_storage(self): return self.lun_storage
+    def set_lun_storage(self, lun_storage): self.lun_storage = lun_storage
     def export(self, outfile, level, namespace_='', name_='Disk', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -13295,8 +13402,8 @@ class Disk(BaseDevice):
             outfile.write('<%sactive>%s</%sactive>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.active)), input_name='active'), namespace_))
         if self.quota is not None:
             self.quota.export(outfile, level, namespace_, name_='quota')
-        if self.lunStorage is not None:
-            self.lunStorage.export(outfile, level, namespace_, name_='lunStorage')
+        if self.lun_storage is not None:
+            self.lun_storage.export(outfile, level, namespace_, name_='lun_storage')
     def hasContent_(self):
         if (
             self.alias is not None or
@@ -13317,7 +13424,7 @@ class Disk(BaseDevice):
             self.statistics is not None or
             self.active is not None or
             self.quota is not None or
-            self.lunStorage is not None or
+            self.lun_storage is not None or
             super(Disk, self).hasContent_()
             ):
             return True
@@ -13398,10 +13505,10 @@ class Disk(BaseDevice):
             self.quota.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
-        if self.lunStorage is not None:
+        if self.lun_storage is not None:
             showIndent(outfile, level)
-            outfile.write('lunStorage=model_.Storage(\n')
-            self.lunStorage.exportLiteral(outfile, level, name_='lunStorage')
+            outfile.write('lun_storage=model_.Storage(\n')
+            self.lun_storage.exportLiteral(outfile, level, name_='lun_storage')
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -13532,10 +13639,10 @@ class Disk(BaseDevice):
             obj_ = Quota.factory()
             obj_.build(child_)
             self.set_quota(obj_)
-        elif nodeName_ == 'lunStorage':
+        elif nodeName_ == 'lun_storage':
             obj_ = Storage.factory()
             obj_.build(child_)
-            self.set_lunStorage(obj_)
+            self.set_lun_storage(obj_)
         super(Disk, self).buildChildren(child_, node, nodeName_, True)
 # end class Disk
 
@@ -18827,7 +18934,7 @@ class DetailedLink(Link):
 class VersionCaps(Version):
     subclass = None
     superclass = Version
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None):
         super(VersionCaps, self).__init__(actions, href, id, name, description, creation_status, link, major, full_version, build_, minor, revision, )
         self.current = current
         self.features = features
@@ -18864,6 +18971,7 @@ class VersionCaps(Version):
         self.permits = permits
         self.scheduling_policies = scheduling_policies
         self.usages = usages
+        self.nfs_versions = nfs_versions
         self.gluster_volume_types = gluster_volume_types
         self.transport_types = transport_types
         self.gluster_volume_states = gluster_volume_states
@@ -18944,6 +19052,8 @@ class VersionCaps(Version):
     def set_scheduling_policies(self, scheduling_policies): self.scheduling_policies = scheduling_policies
     def get_usages(self): return self.usages
     def set_usages(self, usages): self.usages = usages
+    def get_nfs_versions(self): return self.nfs_versions
+    def set_nfs_versions(self, nfs_versions): self.nfs_versions = nfs_versions
     def get_gluster_volume_types(self): return self.gluster_volume_types
     def set_gluster_volume_types(self, gluster_volume_types): self.gluster_volume_types = gluster_volume_types
     def get_transport_types(self): return self.transport_types
@@ -19039,6 +19149,8 @@ class VersionCaps(Version):
             self.scheduling_policies.export(outfile, level, namespace_, name_='scheduling_policies')
         if self.usages is not None:
             self.usages.export(outfile, level, namespace_, name_='usages')
+        if self.nfs_versions is not None:
+            self.nfs_versions.export(outfile, level, namespace_, name_='nfs_versions')
         if self.gluster_volume_types is not None:
             self.gluster_volume_types.export(outfile, level, namespace_, name_='gluster_volume_types')
         if self.transport_types is not None:
@@ -19084,6 +19196,7 @@ class VersionCaps(Version):
             self.permits is not None or
             self.scheduling_policies is not None or
             self.usages is not None or
+            self.nfs_versions is not None or
             self.gluster_volume_types is not None or
             self.transport_types is not None or
             self.gluster_volume_states is not None or
@@ -19309,6 +19422,12 @@ class VersionCaps(Version):
             self.usages.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.nfs_versions is not None:
+            showIndent(outfile, level)
+            outfile.write('nfs_versions=model_.nfs_versions(\n')
+            self.nfs_versions.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.gluster_volume_types is not None:
             showIndent(outfile, level)
             outfile.write('gluster_volume_types=model_.gluster_volume_types(\n')
@@ -19487,6 +19606,10 @@ class VersionCaps(Version):
             obj_ = Usages.factory()
             obj_.build(child_)
             self.set_usages(obj_)
+        elif nodeName_ == 'nfs_versions':
+            obj_ = NfsVersions.factory()
+            obj_.build(child_)
+            self.set_nfs_versions(obj_)
         elif nodeName_ == 'gluster_volume_types':
             obj_ = GlusterVolumeTypes.factory()
             obj_.build(child_)
@@ -19691,6 +19814,7 @@ __all__ = [
     "Network",
     "NetworkStates",
     "Networks",
+    "NfsVersions",
     "NicInterfaces",
     "Nics",
     "OperatingSystem",
@@ -19853,12 +19977,13 @@ _rootClassMap = {
                     "linkCapabilities"              : LinkCapabilities,
                     "links"                         : DetailedLinks,
                     "logical_unit"                  : LogicalUnit,
-                    "lunStorage"                    : Storage,
+                    "lun_storage"                   : Storage,
                     "mac"                           : MAC,
                     "memory_policy"                 : MemoryPolicy,
                     "network"                       : Network,
                     "network_states"                : NetworkStates,
                     "networks"                      : Networks,
+                    "nfs_versions"                  : NfsVersions,
                     "nic"                           : NIC,
                     "nic_interfaces"                : NicInterfaces,
                     "nics"                          : Nics,

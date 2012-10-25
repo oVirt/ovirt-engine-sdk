@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-10-18 13:45:20.305626'''
+'''Generated at: 2012-11-06 14:24:23.279748'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -589,9 +589,10 @@ class ClusterNetwork(params.Network, Base):
         '''
 
         url = '/api/clusters/{cluster:id}/networks/{network:id}'
+        url = UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
+                                      '{network:id}': self.get_id()})
 
-        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                     '{network:id}': self.get_id()}),
+        result = self.__getProxy().update(url=SearchHelper.appendQuery(url, {}),
                                           body=ParseHelper.toXml(self.superclass),
                                           headers={"Correlation-Id":correlation_id})
 
@@ -1474,29 +1475,6 @@ class Disk(params.Disk, Base):
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def update(self, correlation_id=None):
-        '''
-        [@param size: int]
-        [@param provisioned_size: int]
-        [@param disk.interface: string]
-        [@param disk.format: string]
-        [@param disk.sparse: boolean]
-        [@param disk.bootable: boolean]
-        [@param disk.shareable: boolean]
-        [@param disk.propagate_errors: boolean]
-        [@param disk.wipe_after_delete: boolean]
-        [@param correlation_id: any string]
-
-        @return Disk:
-        '''
-
-        url = '/api/disks/{disk:id}'
-
-        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{disk:id}': self.get_id()}),
-                                          body=ParseHelper.toXml(self.superclass),
-                                          headers={"Correlation-Id":correlation_id})
-        return Disk(result, self.context)
-
 class DiskStatistic(params.Statistic, Base):
     def __init__(self, disk, statistic, context):
         Base.__init__(self, context)
@@ -1598,21 +1576,43 @@ class Disks(Base):
         '''
         @type Disk:
 
-        @param provisioned_size: int
-        @param disk.interface: string
-        @param disk.format: string
-        [@param disk.alias: string]
-        [@param disk.name: string]
-        [@param disk.size: int]
-        [@param disk.sparse: boolean]
-        [@param disk.bootable: boolean]
-        [@param disk.shareable: boolean]
-        [@param disk.propagate_errors: boolean]
-        [@param disk.wipe_after_delete: boolean]
-        [@param disk.storage_domains.storage_domain: collection]
-        {
-          [@ivar storage_domain.id|name: string]
-        }
+        Overload 1:
+          @param provisioned_size: int
+          @param disk.interface: string
+          @param disk.format: string
+          [@param disk.alias: string]
+          [@param disk.name: string]
+          [@param disk.size: int]
+          [@param disk.sparse: boolean]
+          [@param disk.bootable: boolean]
+          [@param disk.shareable: boolean]
+          [@param disk.propagate_errors: boolean]
+          [@param disk.wipe_after_delete: boolean]
+          [@param disk.storage_domains.storage_domain: collection]
+          {
+            [@ivar storage_domain.id|name: string]
+          }
+        Overload 2:
+          @param disk.interface: string
+          @param disk.format: string
+          @param disk.lun_storage.type: string
+          @param disk.lun_storage.logical_unit: collection
+          {
+            @ivar logical_unit.id: string
+            @ivar logical_unit.address: string
+            @ivar logical_unit.port: int
+            @ivar logical_unit.target: string
+          }
+          [@param disk.alias: string]
+          [@param disk.sparse: boolean]
+          [@param disk.bootable: boolean]
+          [@param disk.shareable: boolean]
+          [@param disk.propagate_errors: boolean]
+          [@param disk.wipe_after_delete: boolean]
+          [@param disk.storage_domains.storage_domain: collection]
+          {
+            [@ivar storage_domain.id|name: string]
+          }
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -2886,7 +2886,7 @@ class HostNIC(params.HostNIC, Base):
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                         headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None):
         '''
         [@param hostnic.bonding.slaves.host_nic: collection]
         {
@@ -2906,15 +2906,17 @@ class HostNIC(params.HostNIC, Base):
         [@param hostnic.ip.address: string]
         [@param hostnic.ip.netmask: string]
         [@param hostnic.ip.mtu: int]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return HostNIC:
         '''
 
         url = '/api/hosts/{host:id}/nics/{nic:id}'
+        url = UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
+                                      '{nic:id}': self.get_id()})
 
-        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                     '{nic:id}': self.get_id()}),
+        result = self.__getProxy().update(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                           body=ParseHelper.toXml(self.superclass),
                                           headers={"Correlation-Id":correlation_id})
 
@@ -4933,6 +4935,7 @@ class Template(params.Template, Base):
         [@param template.display.type: string]
         [@param template.display.monitors: int]
         [@param template.display.allow_override: boolean]
+        [@param template.display.smartcard_enabled: boolean]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
@@ -5237,9 +5240,10 @@ class TemplateNic(params.NIC, Base):
         '''
 
         url = '/api/templates/{template:id}/nics/{nic:id}'
+        url = UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
+                                      '{nic:id}': self.get_id()})
 
-        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
-                                                                     '{nic:id}': self.get_id()}),
+        result = self.__getProxy().update(url=SearchHelper.appendQuery(url, {}),
                                           body=ParseHelper.toXml(self.superclass),
                                           headers={"Correlation-Id":correlation_id})
 
@@ -5510,6 +5514,7 @@ class Templates(Base):
         [@param template.display.type: string]
         [@param template.display.monitors: int]
         [@param template.display.allow_override: boolean]
+        [@param template.display.smartcard_enabled: boolean]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
@@ -6281,6 +6286,7 @@ class VM(params.VM, Base):
         [@param vm.display.monitors: int]
         [@param vm.display.type: string]
         [@param vm.display.allow_override: boolean]
+        [@param vm.display.smartcard_enabled: boolean]
         [@param vm.os.cmdline: string]
         [@param vm.cpu.topology.cores: int]
         [@param vm.memory: long]
@@ -6552,18 +6558,21 @@ class VMCdRom(params.CdRom, Base):
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                         headers={"Correlation-Id":correlation_id,"Content-type":None})
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, current=None, correlation_id=None):
         '''
         [@param cdrom.file.id: string]
+        [@param async: boolean (true|false)]
+        [@param current: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return CdRom:
         '''
 
         url = '/api/vms/{vm:id}/cdroms/{cdrom:id}'
+        url = UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                      '{cdrom:id}': self.get_id()})
 
-        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                     '{cdrom:id}': self.get_id()}),
+        result = self.__getProxy().update(url=SearchHelper.appendQuery(url, {'async:matrix':async,'current:matrix':current}),
                                           body=ParseHelper.toXml(self.superclass),
                                           headers={"Correlation-Id":correlation_id})
 
@@ -6713,18 +6722,20 @@ class VMDisk(params.Disk, Base):
         '''
 
         url = '/api/vms/{vm:id}/disks/{disk:id}'
+        url = UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                      '{disk:id}': self.get_id()})
 
-        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                     '{disk:id}': self.get_id()}),
+        result = self.__getProxy().update(url=SearchHelper.appendQuery(url, {}),
                                           body=ParseHelper.toXml(self.superclass),
                                           headers={"Correlation-Id":correlation_id})
 
         return VMDisk(self.parentclass, result, self.context)
 
-    def activate(self, action=params.Action()):
+    def activate(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -6735,14 +6746,15 @@ class VMDisk(params.Disk, Base):
                                            url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{disk:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
-                                           headers={})
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
-    def deactivate(self, action=params.Action()):
+    def deactivate(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -6753,7 +6765,7 @@ class VMDisk(params.Disk, Base):
                                            url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{disk:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
-                                           headers={})
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -6881,6 +6893,27 @@ class VMDisks(Base):
             [@ivar storage_domain.id|name: string]
           }
         Overload 2:
+          @param disk.interface: string
+          @param disk.format: string
+          @param disk.lun_storage.type: string
+          @param disk.lun_storage.logical_unit: collection
+          {
+            @ivar logical_unit.id: string
+            @ivar logical_unit.address: string
+            @ivar logical_unit.port: int
+            @ivar logical_unit.target: string
+          }
+          [@param disk.alias: string]
+          [@param disk.sparse: boolean]
+          [@param disk.bootable: boolean]
+          [@param disk.shareable: boolean]
+          [@param disk.propagate_errors: boolean]
+          [@param disk.wipe_after_delete: boolean]
+          [@param disk.storage_domains.storage_domain: collection]
+          {
+            [@ivar storage_domain.id|name: string]
+          }
+        Overload 3:
           @param disk.id: string
           [@param disk.active: boolean]
         [@param expect: 201-created]
@@ -7001,18 +7034,20 @@ class VMNic(params.NIC, Base):
         '''
 
         url = '/api/vms/{vm:id}/nics/{nic:id}'
+        url = UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                      '{nic:id}': self.get_id()})
 
-        result = self.__getProxy().update(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                     '{nic:id}': self.get_id()}),
+        result = self.__getProxy().update(url=SearchHelper.appendQuery(url, {}),
                                           body=ParseHelper.toXml(self.superclass),
                                           headers={"Correlation-Id":correlation_id})
 
         return VMNic(self.parentclass, result, self.context)
 
-    def activate(self, action=params.Action()):
+    def activate(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -7023,14 +7058,15 @@ class VMNic(params.NIC, Base):
                                            url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
-                                           headers={})
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
-    def deactivate(self, action=params.Action()):
+    def deactivate(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Response:
         '''
@@ -7041,7 +7077,7 @@ class VMNic(params.NIC, Base):
                                            url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
                                                                      '{nic:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
-                                           headers={})
+                                           headers={"Correlation-Id":correlation_id})
 
         return result
 
@@ -8004,6 +8040,7 @@ class VMs(Base):
         [@param vm.display.monitors: int]
         [@param vm.display.type: string]
         [@param vm.display.allow_override: boolean]
+        [@param vm.display.smartcard_enabled: boolean]
         [@param vm.os.cmdline: string]
         [@param vm.cpu.topology.cores: int]
         [@param vm.memory: long]

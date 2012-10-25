@@ -120,24 +120,39 @@ class SubResource(object):
     @staticmethod
     def update(url, link, parent_resource_name_lc, resource_name, returned_type, KNOWN_WRAPPER_TYPES):
         actual_xml_entity = TypeUtil.getValueByKeyOrNone(returned_type.lower(), KNOWN_WRAPPER_TYPES)
-        sub_collection_resource_update_template_values = {'url':url,
-                                                          'parent_resource_name_lc':parent_resource_name_lc.lower(),
-                                                          'resource_name':resource_name,
-                                                          'resource_name_lc':resource_name.lower(),
-                                                          'returned_type':actual_xml_entity if actual_xml_entity is not None else returned_type}
+        sub_collection_resource_update_template_values = \
+        {
+         'url':url,
+        'parent_resource_name_lc':parent_resource_name_lc.lower(),
+        'resource_name':resource_name,
+        'resource_name_lc':resource_name.lower(),
+        'returned_type':actual_xml_entity if actual_xml_entity is not None
+                                          else returned_type
+        }
         headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
-        headers_method_params_str = ', ' + headers_method_params_str if headers_method_params_str != '' else headers_method_params_str
+        headers_method_params_str = \
+            ', ' + headers_method_params_str if headers_method_params_str != '' else headers_method_params_str
+        prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
+
+        if prms_str != '' or headers_method_params_str != '':
+            combined_method_params = ', ' if prms_str != '' and not prms_str.startswith(',') else ''
+            combined_method_params += prms_str + headers_method_params_str
+
+        method_params_copy = method_params.copy()
+        url_params = ParamUtils.toDictStr(url_params.keys(), method_params_copy.keys())
+        url_identifiers_replacments = \
+            UrlUtils.generate_url_identifiers_replacments(link,
+                                                          offset="                                     ",
+                                                          continues=True)
 
         sub_collection_resource_update_template = \
-        ("    def update(self" + headers_method_params_str + "):\n" + \
-         Documentation.document(link) +
-        "        url = '%(url)s'\n\n" + \
-        "        result = self.__getProxy().update(url=UrlHelper.replace(url, " + \
-        UrlUtils.generate_url_identifiers_replacments(link,
-                                                           offset="                                                                    ",
-                                                           continues=True) + \
-		"),\n" + \
-        "                                          body=ParseHelper.toXml(self.superclass),\n"
+        ("    def update(self" + combined_method_params + "):\n" + \
+         Documentation.document(link, {}, method_params) +
+        "        url = '%(url)s'\n" + \
+        "        url = UrlHelper.replace(url, " + url_identifiers_replacments + ")\n\n" + \
+        "        result = self.__getProxy().update(url=SearchHelper.appendQuery(url" + \
+        ((", " + url_params) if url_params != '' else '') + "),\n" + \
+        "                                          body=ParseHelper.toXml(self.superclass),\n" + \
         "                                          headers=" + headers_map_params_str + ")\n\n" + \
         "        return %(returned_type)s(self.parentclass, result, self.context)\n\n") % sub_collection_resource_update_template_values
 

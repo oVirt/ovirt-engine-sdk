@@ -51,13 +51,14 @@ class ParamUtils():
 
     @staticmethod
     def toDictStr(names, values):
-        if len(names) != len(values): return ''
-        output = '{'
-        for i in range(len(names)):
-            output += '\'' + names[i] + '\'' + ':' + values[i] + ','
+        if names and values:
+            if len(names) != len(values): return ''
+            output = '{'
+            for i in range(len(names)):
+                output += '\'' + names[i] + '\'' + ':' + values[i] + ','
 
-        return output[0: len(output) - 1] + '}'
-
+            return output[0: len(output) - 1] + '}'
+        return '{}'
 
     @staticmethod
     def getBodyInstance(link):
