@@ -15,10 +15,10 @@ version_info = {
     'url': 'http://www.ovirt.org/wiki/SDK',
     'license': 'ASL2',
     'classifiers': [
-        'Development Status :: 1 - Beta',
+        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: System Administrators',
-        'License :: OSI Approved :: ASL2 License',
+        'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2.6' ],
 }
