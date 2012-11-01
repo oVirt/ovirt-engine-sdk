@@ -37,6 +37,24 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
+* Thu Nov  1 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.3-1
+- do not send /max header on name-based search
+- Cannot fetch the disk using /alias #865407
+- restrict .get() methods to id/name
+- defend against disconnected mode when no proxy cached
+- allow persistent_auth via localhost
+- rebase to latest api
+  - gluster action refactored to lowercase
+  - added StorageDomainTemplate.delete()
+  - added StorageDomainVM.delete()
+  - template/vm.display.allow_reconnect renamed to template/vm.display.allow_override
+  - added TemplateDisk.copy()
+  - added template.cpu.cpu_tune.vcpu_pin: at Templates.add()/VMs.add()
+  - added VmPool.allocatevm()
+  - added size property to VmPools.add()
+  - from ClusterGlusterVolumes.add() params removed
+    access_protocols/access_control_list
+
 * Thu Sep  20 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.2-1
 - make /filter header global rather than method driven #857018
 - to host added max_scheduling_memory property
