@@ -2,17 +2,6 @@
 
 This is a SDK interface for the oVirt Virtualization.
 
-== Installation ==
-
-Installation from the source directory:
-
- $ python setup.py build
- # python setup.py install
- 
- or
- 
- # python setup.py develop
-
 == Usage ==
 
 http://www.ovirt.org/wiki/SDK#IDE_Examples
