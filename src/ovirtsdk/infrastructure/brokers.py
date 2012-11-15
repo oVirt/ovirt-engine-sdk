@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-11-06 14:24:23.279748'''
+'''Generated at: 2012-11-15 11:24:12.801571'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -4401,6 +4401,7 @@ class StorageDomainTemplate(params.Template, Base):
         @param action.cluster.id|name: string
         [@param action.storage_domain.id|name: string]
         [@param action.clone: boolen]
+        [@param action.exclusive: boolen]
         [@param action.template.name: string]
         [@param action.vm.disks.disk: collection]
         {
@@ -4531,6 +4532,7 @@ class StorageDomainVM(params.VM, Base):
         [@param action.storage_domain.id|name: string]
         [@param action.vm.snapshots.collapse_snapshots: boolean]
         [@param action.clone: boolen]
+        [@param action.exclusive: boolen]
         [@param action.vm.name: string]
         [@param action.vm.disks.disk: collection]
         {
