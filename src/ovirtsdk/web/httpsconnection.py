@@ -26,10 +26,9 @@ class HTTPSConnection(httplib.HTTPSConnection):
     '''
 
     def __init__(self, host, port=None, key_file=None, cert_file=None, ca_file=None,
-                 strict=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT, source_address=None):
+                 strict=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
         httplib.HTTPSConnection.__init__(self, host=host, port=port, key_file=key_file,
-                                         cert_file=cert_file, strict=strict, timeout=timeout,
-                                         source_address=source_address)
+                                         cert_file=cert_file, strict=strict, timeout=timeout)
         self.ca_file = ca_file
 
     def connect(self):
@@ -39,7 +38,7 @@ class HTTPSConnection(httplib.HTTPSConnection):
         '''
 
         sock = socket.create_connection((self.host, self.port),
-                                        self.timeout, self.source_address)
+                                        self.timeout)
         if self._tunnel_host:
             self.sock = sock
             self._tunnel()
