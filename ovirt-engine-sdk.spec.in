@@ -37,7 +37,7 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
-* wed Nov  21 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.5-1
+* Wed Nov  21 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.5-1
 - httpsconnection.source_address is not supported on python26 #877897
 
 * Sun Nov  18 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.4-1
