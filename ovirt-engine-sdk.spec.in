@@ -37,6 +37,15 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
+* Thu Dec  27 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.6-1
+- to host added hooks sub-collection
+- added force flag the host.delete()
+- added host.power_management.pm_proxy collection
+- added permissions sub-collection to network
+- added search capabilities to api.networks collection
+- added deletion protection to the template/vm via .delete_protected
+- add print of the whole response body in debug mode #887808
+
 * Wed Nov  21 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.5-1
 - httpsconnection.source_address is not supported on python26 #877897
 
