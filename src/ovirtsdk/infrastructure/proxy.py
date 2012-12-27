@@ -144,6 +144,7 @@ class Proxy():
 
             # Send the request and wait for the response:
             conn.doRequest(method=method, url=url, body=body, headers=headers)
+
             response = conn.getResponse()
 
             # Read the response headers (there is always a response,
@@ -163,12 +164,20 @@ class Proxy():
 
             # Parse the body:
             response_body = response.read()
+
+            # Print response body (if in debug mode)
+            self.__do_debug(conn, response_body)
+
             return params.parseString(response_body) if response_body is not None and response_body is not '' \
                                                      else response_body
         except socket.error, e:
             raise ConnectionError, str(e)
         finally:
             conn.close()
+
+    def __do_debug(self, conn, body):
+        if conn.getConnection().debuglevel:
+                print 'body:\n' + body if body else ''
 
     def get_url(self):
         return self.getConnectionsPool().get_url()
