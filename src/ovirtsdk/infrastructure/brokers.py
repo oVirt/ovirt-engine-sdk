@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-11-15 11:24:12.801571'''
+'''Generated at: 2012-12-27 15:24:29.248362'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -193,7 +193,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         [@param action.force: boolean]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/rebalance'
@@ -212,7 +212,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetalloptions'
@@ -233,7 +233,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @param action.force: boolean
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetoption'
@@ -254,7 +254,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @param action.option.value: string
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/setoption'
@@ -274,7 +274,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         [@param action.force: boolean]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/start'
@@ -294,7 +294,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         [@param action.force: boolean]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stop'
@@ -1241,7 +1241,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate'
@@ -1260,7 +1260,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/deactivate'
@@ -2640,10 +2640,11 @@ class Host(params.Host, Base):
         Base.__init__(self, context)
         self.superclass = host
 
-        self.nics = HostNics(self, context)
         self.statistics = HostStatistics(self, context)
-        self.storage = HostStorage(self, context)
         self.tags = HostTags(self, context)
+        self.hooks = HostHooks(self, context)
+        self.storage = HostStorage(self, context)
+        self.nics = HostNics(self, context)
         self.permissions = HostPermissions(self, context)
 
     def __new__(cls, host, context):
@@ -2661,8 +2662,11 @@ class Host(params.Host, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self, async=None, correlation_id=None):
+    def delete(self, action=params.Action(), async=None, correlation_id=None):
         '''
+        @type Action:
+
+        [@param action.force: boolean]
         [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
@@ -2673,7 +2677,8 @@ class Host(params.Host, Base):
                                 {'{host:id}': self.get_id()})
 
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+                                        body=ParseHelper.toXml(action),
+                                        headers={"Correlation-Id":correlation_id})
 
     def update(self, correlation_id=None):
         '''
@@ -2693,6 +2698,10 @@ class Host(params.Host, Base):
           [@ivar option.name: string]
           [@ivar option.value: string]
         }
+        [@param host.power_management.pm_proxy: collection]
+        {
+          [@ivar propietary: string]
+        }
         [@param correlation_id: any string]
 
         @return Host:
@@ -2711,7 +2720,7 @@ class Host(params.Host, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/hosts/{host:id}/activate'
@@ -2731,7 +2740,7 @@ class Host(params.Host, Base):
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/hosts/{host:id}/approve'
@@ -2748,7 +2757,7 @@ class Host(params.Host, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/hosts/{host:id}/commitnetconfig'
@@ -2765,7 +2774,7 @@ class Host(params.Host, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/hosts/{host:id}/deactivate'
@@ -2782,7 +2791,7 @@ class Host(params.Host, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/hosts/{host:id}/fence'
@@ -2800,7 +2809,7 @@ class Host(params.Host, Base):
         [@param action.root_password: string]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/hosts/{host:id}/install'
@@ -2818,7 +2827,7 @@ class Host(params.Host, Base):
         @param action.iscsi.address: string
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/hosts/{host:id}/iscsidiscover'
@@ -2837,7 +2846,7 @@ class Host(params.Host, Base):
         @param action.iscsi.target: string
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/hosts/{host:id}/iscsilogin'
@@ -2847,6 +2856,90 @@ class Host(params.Host, Base):
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
         return result
+
+class HostHook(params.Hook, Base):
+    def __init__(self, host, hook, context):
+        Base.__init__(self, context)
+        self.parentclass = host
+        self.superclass  =  hook
+
+        #SUB_COLLECTIONS
+    def __new__(cls, host, hook, context):
+        if hook is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(host, hook, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class HostHooks(Base):
+
+    def __init__(self, host , context):
+        Base.__init__(self, context)
+        self.parentclass = host
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Hooks:
+        '''
+
+        url = '/api/hosts/{host:id}/hooks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                                                   id),
+                                               headers={})
+                return HostHook(self.parentclass, result, self.context)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
+                                           headers={}).get_hook()
+
+            return HostHook(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Hooks:
+        '''
+
+        url = '/api/hosts/{host:id}/hooks'
+
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()})).get_hook()
+
+        return ParseHelper.toSubCollection(HostHook,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class HostNIC(params.HostNIC, Base):
     def __init__(self, host, nic, context):
@@ -2931,7 +3024,7 @@ class HostNIC(params.HostNIC, Base):
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/hosts/{host:id}/nics/{nic:id}/attach'
@@ -2951,7 +3044,7 @@ class HostNIC(params.HostNIC, Base):
         [@param action.async: boolean]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/hosts/{host:id}/nics/{nic:id}/detach'
@@ -3180,7 +3273,7 @@ class HostNics(Base):
         [@param action.force: boolean]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/hosts/{host:id}/nics/setupnetworks'
@@ -3626,6 +3719,10 @@ class Hosts(Base):
           [@ivar option.name: string]
           [@ivar option.value: string]
         }
+        [@param host.power_management.pm_proxy: collection]
+        {
+          [@ivar propietary: string]
+        }
         [@param host.reboot_after_installation: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
@@ -3690,7 +3787,8 @@ class Network(params.Network, Base):
         Base.__init__(self, context)
         self.superclass = network
 
-        #SUB_COLLECTIONS
+        self.permissions = NetworkPermissions(self, context)
+
     def __new__(cls, network, context):
         if network is None: return None
         obj = object.__new__(cls)
@@ -3742,6 +3840,133 @@ class Network(params.Network, Base):
                                           body=ParseHelper.toXml(self.superclass),
                                           headers={"Correlation-Id":correlation_id})
         return Network(result, self.context)
+
+class NetworkPermission(params.Permission, Base):
+    def __init__(self, network, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = network
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, network, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(network, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace('/api/networks/{network:id}/permissions/{permission:id}',
+                                {'{network:id}' : self.parentclass.get_id(),
+                                 '{permission:id}': self.get_id()})
+
+        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
+
+class NetworkPermissions(Base):
+
+    def __init__(self, network , context):
+        Base.__init__(self, context)
+        self.parentclass = network
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission, expect=None, correlation_id=None):
+
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.group.id: string
+          @param permission.role.id: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Permission:
+        '''
+
+        url = '/api/networks/{network:id}/permissions'
+
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{network:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+
+        return NetworkPermission(self.parentclass, result, self.context)
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/networks/{network:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{network:id}': self.parentclass.get_id()}),
+                                                                   id),
+                                               headers={})
+                return NetworkPermission(self.parentclass, result, self.context)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{network:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
+
+            return NetworkPermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/networks/{network:id}/permissions'
+
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{network:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_permission()
+        return ParseHelper.toSubCollection(NetworkPermission,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class Networks(Base):
     def __init__(self, context):
@@ -3803,16 +4028,18 @@ class Networks(Base):
                     return None
                 raise err
         elif name:
-            result = self.__getProxy().get(url=url,
+            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                                            headers={}).get_network()
-            return Network(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+            return Network(FilterHelper.getItem(result),
                                      self.context)
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
+        [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
 
         @return Networks:
@@ -3820,7 +4047,7 @@ class Networks(Base):
 
         url='/api/networks'
 
-        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_network()
         return ParseHelper.toCollection(Network,
                                         FilterHelper.filter(result, kwargs),
@@ -4128,7 +4355,26 @@ class StorageDomain(params.StorageDomain, Base):
 
     def update(self, correlation_id=None):
         '''
-        [@param storagedomain.name: string]
+        Overload 1:
+          [@param storagedomain.name: string]
+        Overload 2:
+          @param storagedomain.storage.logical_unit: collection
+          {
+            @ivar logical_unit.address: string
+            @ivar logical_unit.port: int
+            @ivar logical_unit.target: string
+            @ivar logical_unit.username: string
+            @ivar logical_unit.password: string
+            @ivar logical_unit.serial: string
+            @ivar logical_unit.vendor_id: string
+            @ivar logical_unit.product_id: string
+            @ivar logical_unit.lun_mapping: int
+            @ivar logical_unit.portal: string
+            @ivar logical_unit.paths: int
+            @ivar logical_unit.id: string
+          }
+          [@param storagedomain.name: string]
+          [@param storagedomain.storage.override_luns: boolean]
         [@param correlation_id: any string]
 
         @return StorageDomain:
@@ -4409,7 +4655,7 @@ class StorageDomainTemplate(params.Template, Base):
         }
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/import'
@@ -4540,7 +4786,7 @@ class StorageDomainVM(params.VM, Base):
         }
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/import'
@@ -4920,6 +5166,7 @@ class Template(params.Template, Base):
         [@param template.domain.name: string]
         [@param template.type: string]
         [@param template.stateless: boolean]
+        [@param template.delete_protected: boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
         [@param template.custom_properties.custom_property: collection]
@@ -4963,7 +5210,7 @@ class Template(params.Template, Base):
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/templates/{template:id}/export'
@@ -5111,7 +5358,7 @@ class TemplateDisk(params.Disk, Base):
         [@param action.async: boolean]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/templates/{template:id}/disks/{disk:id}/copy'
@@ -5499,6 +5746,7 @@ class Templates(Base):
         [@param template.domain.name: string]
         [@param template.type: string]
         [@param template.stateless: boolean]
+        [@param template.delete_protected: boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
         [@param template.custom_properties.custom_property: collection]
@@ -6297,6 +6545,7 @@ class VM(params.VM, Base):
         [@param vm.domain.name: string]
         [@param vm.description: string]
         [@param vm.stateless: boolean]
+        [@param vm.delete_protected: boolean]
         [@param vm.cpu.topology.sockets: int]
         [@param vm.placement_policy.affinity: string]
         [@param vm.placement_policy.host.id|name: string]
@@ -6330,7 +6579,7 @@ class VM(params.VM, Base):
         @type Action:
 
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/cancelmigration'
@@ -6347,7 +6596,7 @@ class VM(params.VM, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/detach'
@@ -6369,7 +6618,7 @@ class VM(params.VM, Base):
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/export'
@@ -6390,7 +6639,7 @@ class VM(params.VM, Base):
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/migrate'
@@ -6410,7 +6659,7 @@ class VM(params.VM, Base):
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/move'
@@ -6427,7 +6676,7 @@ class VM(params.VM, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/shutdown'
@@ -6461,7 +6710,7 @@ class VM(params.VM, Base):
         [@param action.vm.domain.user.password: string]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/start'
@@ -6478,7 +6727,7 @@ class VM(params.VM, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/stop'
@@ -6495,7 +6744,7 @@ class VM(params.VM, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/suspend'
@@ -6512,7 +6761,7 @@ class VM(params.VM, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/ticket'
@@ -6739,7 +6988,7 @@ class VMDisk(params.Disk, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/disks/{disk:id}/activate'
@@ -6758,7 +7007,7 @@ class VMDisk(params.Disk, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/disks/{disk:id}/deactivate'
@@ -7051,7 +7300,7 @@ class VMNic(params.NIC, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/nics/{nic:id}/activate'
@@ -7070,7 +7319,7 @@ class VMNic(params.NIC, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/nics/{nic:id}/deactivate'
@@ -7435,7 +7684,7 @@ class VMSnapshot(params.Snapshot, Base):
 
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/restore'
@@ -8051,6 +8300,7 @@ class VMs(Base):
         [@param vm.domain.name: string]
         [@param vm.description: string]
         [@param vm.stateless: boolean]
+        [@param vm.delete_protected: boolean]
         [@param vm.cpu.topology.sockets: int]
         [@param vm.placement_policy.affinity: string]
         [@param vm.placement_policy.host.id|name: string]
@@ -8208,7 +8458,7 @@ class VmPool(params.VmPool, Base):
         [@param action.async: boolean]
         [@param correlation_id: any string]
 
-        @return Response:
+        @return Action:
         '''
 
         url = '/api/vmpools/{vmpool:id}/allocatevm'

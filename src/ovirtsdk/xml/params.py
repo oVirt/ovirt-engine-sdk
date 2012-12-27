@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Tue Nov  6 14:24:24 2012 by generateDS.py version 2.7b.
+# Generated Thu Dec 27 15:24:43 2012 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -2016,13 +2016,14 @@ class CpuTune(GeneratedsSuper):
 class CPU(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, id=None, topology=None, level=None, name=None, speed=None, cpu_tune=None):
+    def __init__(self, id=None, topology=None, level=None, name=None, speed=None, cpu_tune=None, mode='CUSTOM'):
         self.id = _cast(None, id)
         self.topology = topology
         self.level = level
         self.name = name
         self.speed = speed
         self.cpu_tune = cpu_tune
+        self.mode = mode
     def factory(*args_, **kwargs_):
         if CPU.subclass:
             return CPU.subclass(*args_, **kwargs_)
@@ -2039,6 +2040,8 @@ class CPU(GeneratedsSuper):
     def set_speed(self, speed): self.speed = speed
     def get_cpu_tune(self): return self.cpu_tune
     def set_cpu_tune(self, cpu_tune): self.cpu_tune = cpu_tune
+    def get_mode(self): return self.mode
+    def set_mode(self, mode): self.mode = mode
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
     def export(self, outfile, level, namespace_='', name_='CPU', namespacedef_=''):
@@ -2071,13 +2074,17 @@ class CPU(GeneratedsSuper):
             outfile.write('<%sspeed>%s</%sspeed>\n' % (namespace_, self.gds_format_float(self.speed, input_name='speed'), namespace_))
         if self.cpu_tune is not None:
             self.cpu_tune.export(outfile, level, namespace_, name_='cpu_tune')
+        if self.mode is not None:
+            showIndent(outfile, level)
+            outfile.write('<%smode>%s</%smode>\n' % (namespace_, self.gds_format_string(quote_xml(self.mode).encode(ExternalEncoding), input_name='mode'), namespace_))
     def hasContent_(self):
         if (
             self.topology is not None or
             self.level is not None or
             self.name is not None or
             self.speed is not None or
-            self.cpu_tune is not None
+            self.cpu_tune is not None or
+            self.mode is not None
             ):
             return True
         else:
@@ -2114,6 +2121,9 @@ class CPU(GeneratedsSuper):
             self.cpu_tune.exportLiteral(outfile, level, name_='cpu_tune')
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.mode is not None:
+            showIndent(outfile, level)
+            outfile.write('mode=%s,\n' % quote_python(self.mode).encode(ExternalEncoding))
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -2153,6 +2163,10 @@ class CPU(GeneratedsSuper):
             obj_ = CpuTune.factory()
             obj_.build(child_)
             self.set_cpu_tune(obj_)
+        elif nodeName_ == 'mode':
+            mode_ = child_.text
+            mode_ = self.gds_validate_string(mode_, node, 'mode')
+            self.mode = mode_
 # end class CPU
 
 
@@ -5227,7 +5241,7 @@ class Clusters(BaseResources):
 class PowerManagement(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, type_=None, enabled=None, address=None, username=None, password=None, options=None, status=None):
+    def __init__(self, type_=None, enabled=None, address=None, username=None, password=None, options=None, status=None, pm_proxies=None):
         self.type_ = _cast(None, type_)
         self.enabled = enabled
         self.address = address
@@ -5235,6 +5249,7 @@ class PowerManagement(GeneratedsSuper):
         self.password = password
         self.options = options
         self.status = status
+        self.pm_proxies = pm_proxies
     def factory(*args_, **kwargs_):
         if PowerManagement.subclass:
             return PowerManagement.subclass(*args_, **kwargs_)
@@ -5253,6 +5268,8 @@ class PowerManagement(GeneratedsSuper):
     def set_options(self, options): self.options = options
     def get_status(self): return self.status
     def set_status(self, status): self.status = status
+    def get_pm_proxies(self): return self.pm_proxies
+    def set_pm_proxies(self, pm_proxies): self.pm_proxies = pm_proxies
     def get_type(self): return self.type_
     def set_type(self, type_): self.type_ = type_
     def export(self, outfile, level, namespace_='', name_='PowerManagement', namespacedef_=''):
@@ -5288,6 +5305,8 @@ class PowerManagement(GeneratedsSuper):
             self.options.export(outfile, level, namespace_, name_='options')
         if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status')
+        if self.pm_proxies is not None:
+            self.pm_proxies.export(outfile, level, namespace_, name_='pm_proxies')
     def hasContent_(self):
         if (
             self.enabled is not None or
@@ -5295,7 +5314,8 @@ class PowerManagement(GeneratedsSuper):
             self.username is not None or
             self.password is not None or
             self.options is not None or
-            self.status is not None
+            self.status is not None or
+            self.pm_proxies is not None
             ):
             return True
         else:
@@ -5333,6 +5353,12 @@ class PowerManagement(GeneratedsSuper):
             showIndent(outfile, level)
             outfile.write('status=model_.status(\n')
             self.status.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.pm_proxies is not None:
+            showIndent(outfile, level)
+            outfile.write('pm_proxies=model_.pm_proxies(\n')
+            self.pm_proxies.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -5376,6 +5402,10 @@ class PowerManagement(GeneratedsSuper):
             obj_ = Status.factory()
             obj_.build(child_)
             self.set_status(obj_)
+        elif nodeName_ == 'pm_proxies':
+            obj_ = PmProxies.factory()
+            obj_.build(child_)
+            self.set_pm_proxies(obj_)
 # end class PowerManagement
 
 
@@ -5752,7 +5782,7 @@ class Certificate(GeneratedsSuper):
 class Host(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, reboot_after_installation=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, reboot_after_installation=None, os=None, hooks=None):
         super(Host, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.address = address
         self.certificate = certificate
@@ -5774,6 +5804,8 @@ class Host(BaseResource):
         self.summary = summary
         self.override_iptables = override_iptables
         self.reboot_after_installation = reboot_after_installation
+        self.os = os
+        self.hooks = hooks
     def factory(*args_, **kwargs_):
         if Host.subclass:
             return Host.subclass(*args_, **kwargs_)
@@ -5820,6 +5852,10 @@ class Host(BaseResource):
     def set_override_iptables(self, override_iptables): self.override_iptables = override_iptables
     def get_reboot_after_installation(self): return self.reboot_after_installation
     def set_reboot_after_installation(self, reboot_after_installation): self.reboot_after_installation = reboot_after_installation
+    def get_os(self): return self.os
+    def set_os(self, os): self.os = os
+    def get_hooks(self): return self.hooks
+    def set_hooks(self, hooks): self.hooks = hooks
     def export(self, outfile, level, namespace_='', name_='Host', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -5884,6 +5920,10 @@ class Host(BaseResource):
         if self.reboot_after_installation is not None:
             showIndent(outfile, level)
             outfile.write('<%sreboot_after_installation>%s</%sreboot_after_installation>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.reboot_after_installation)), input_name='reboot_after_installation'), namespace_))
+        if self.os is not None:
+            self.os.export(outfile, level, namespace_, name_='os')
+        if self.hooks is not None:
+            self.hooks.export(outfile, level, namespace_, name_='hooks')
     def hasContent_(self):
         if (
             self.address is not None or
@@ -5906,6 +5946,8 @@ class Host(BaseResource):
             self.summary is not None or
             self.override_iptables is not None or
             self.reboot_after_installation is not None or
+            self.os is not None or
+            self.hooks is not None or
             super(Host, self).hasContent_()
             ):
             return True
@@ -6016,6 +6058,18 @@ class Host(BaseResource):
         if self.reboot_after_installation is not None:
             showIndent(outfile, level)
             outfile.write('reboot_after_installation=%s,\n' % self.reboot_after_installation)
+        if self.os is not None:
+            showIndent(outfile, level)
+            outfile.write('os=model_.OperatingSystem(\n')
+            self.os.exportLiteral(outfile, level, name_='os')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.hooks is not None:
+            showIndent(outfile, level)
+            outfile.write('hooks=model_.hooks(\n')
+            self.hooks.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -6129,6 +6183,14 @@ class Host(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'reboot_after_installation')
             self.reboot_after_installation = ival_
+        elif nodeName_ == 'os':
+            obj_ = OperatingSystem.factory()
+            obj_.build(child_)
+            self.set_os(obj_)
+        elif nodeName_ == 'hooks':
+            obj_ = Hooks.factory()
+            obj_.build(child_)
+            self.set_hooks(obj_)
         super(Host, self).buildChildren(child_, node, nodeName_, True)
 # end class Host
 
@@ -6634,10 +6696,11 @@ class Permit(BaseResource):
 # end class Permit
 
 
-class Permits(GeneratedsSuper):
+class Permits(BaseResources):
     subclass = None
-    superclass = None
-    def __init__(self, permit=None):
+    superclass = BaseResources
+    def __init__(self, actions=None, total=None, active=None, permit=None):
+        super(Permits, self).__init__(actions, total, active, )
         if permit is None:
             self.permit = []
         else:
@@ -6665,13 +6728,15 @@ class Permits(GeneratedsSuper):
         else:
             outfile.write('/>\n')
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Permits'):
-        pass
+        super(Permits, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Permits')
     def exportChildren(self, outfile, level, namespace_='', name_='Permits', fromsubclass_=False):
+        super(Permits, self).exportChildren(outfile, level, namespace_, name_, True)
         for permit_ in self.permit:
             permit_.export(outfile, level, namespace_, name_='permit')
     def hasContent_(self):
         if (
-            self.permit
+            self.permit or
+            super(Permits, self).hasContent_()
             ):
             return True
         else:
@@ -6682,8 +6747,9 @@ class Permits(GeneratedsSuper):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
+        super(Permits, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
+        super(Permits, self).exportLiteralChildren(outfile, level, name_)
         showIndent(outfile, level)
         outfile.write('permit=[\n')
         level += 1
@@ -6702,12 +6768,13 @@ class Permits(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        pass
+        super(Permits, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'permit':
             obj_ = Permit.factory()
             obj_.build(child_)
             self.permit.append(obj_)
+        super(Permits, self).buildChildren(child_, node, nodeName_, True)
 # end class Permits
 
 
@@ -8290,6 +8357,171 @@ class Files(BaseResources):
             self.file.append(obj_)
         super(Files, self).buildChildren(child_, node, nodeName_, True)
 # end class Files
+
+
+class Hook(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, event_name=None, md5=None):
+        super(Hook, self).__init__(actions, href, id, name, description, creation_status, link, )
+        self.event_name = event_name
+        self.md5 = md5
+    def factory(*args_, **kwargs_):
+        if Hook.subclass:
+            return Hook.subclass(*args_, **kwargs_)
+        else:
+            return Hook(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_event_name(self): return self.event_name
+    def set_event_name(self, event_name): self.event_name = event_name
+    def get_md5(self): return self.md5
+    def set_md5(self, md5): self.md5 = md5
+    def export(self, outfile, level, namespace_='', name_='Hook', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Hook')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Hook'):
+        super(Hook, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Hook')
+    def exportChildren(self, outfile, level, namespace_='', name_='Hook', fromsubclass_=False):
+        super(Hook, self).exportChildren(outfile, level, namespace_, name_, True)
+        if self.event_name is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sevent_name>%s</%sevent_name>\n' % (namespace_, self.gds_format_string(quote_xml(self.event_name).encode(ExternalEncoding), input_name='event_name'), namespace_))
+        if self.md5 is not None:
+            showIndent(outfile, level)
+            outfile.write('<%smd5>%s</%smd5>\n' % (namespace_, self.gds_format_string(quote_xml(self.md5).encode(ExternalEncoding), input_name='md5'), namespace_))
+    def hasContent_(self):
+        if (
+            self.event_name is not None or
+            self.md5 is not None or
+            super(Hook, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='Hook'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(Hook, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(Hook, self).exportLiteralChildren(outfile, level, name_)
+        if self.event_name is not None:
+            showIndent(outfile, level)
+            outfile.write('event_name=%s,\n' % quote_python(self.event_name).encode(ExternalEncoding))
+        if self.md5 is not None:
+            showIndent(outfile, level)
+            outfile.write('md5=%s,\n' % quote_python(self.md5).encode(ExternalEncoding))
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(Hook, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'event_name':
+            event_name_ = child_.text
+            event_name_ = self.gds_validate_string(event_name_, node, 'event_name')
+            self.event_name = event_name_
+        elif nodeName_ == 'md5':
+            md5_ = child_.text
+            md5_ = self.gds_validate_string(md5_, node, 'md5')
+            self.md5 = md5_
+        super(Hook, self).buildChildren(child_, node, nodeName_, True)
+# end class Hook
+
+
+class Hooks(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, total=None, active=None, hook=None):
+        super(Hooks, self).__init__(actions, total, active, )
+        if hook is None:
+            self.hook = []
+        else:
+            self.hook = hook
+    def factory(*args_, **kwargs_):
+        if Hooks.subclass:
+            return Hooks.subclass(*args_, **kwargs_)
+        else:
+            return Hooks(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_hook(self): return self.hook
+    def set_hook(self, hook): self.hook = hook
+    def add_hook(self, value): self.hook.append(value)
+    def insert_hook(self, index, value): self.hook[index] = value
+    def export(self, outfile, level, namespace_='', name_='Hooks', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Hooks')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Hooks'):
+        super(Hooks, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Hooks')
+    def exportChildren(self, outfile, level, namespace_='', name_='Hooks', fromsubclass_=False):
+        super(Hooks, self).exportChildren(outfile, level, namespace_, name_, True)
+        for hook_ in self.hook:
+            hook_.export(outfile, level, namespace_, name_='hook')
+    def hasContent_(self):
+        if (
+            self.hook or
+            super(Hooks, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='Hooks'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(Hooks, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(Hooks, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('hook=[\n')
+        level += 1
+        for hook_ in self.hook:
+            showIndent(outfile, level)
+            outfile.write('model_.hook(\n')
+            hook_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(Hooks, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'hook':
+            obj_ = Hook.factory()
+            obj_.build(child_)
+            self.hook.append(obj_)
+        super(Hooks, self).buildChildren(child_, node, nodeName_, True)
+# end class Hooks
 
 
 class IP(GeneratedsSuper):
@@ -10064,7 +10296,7 @@ class StorageDomains(BaseResources):
 class Template(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, timezone=None, domain=None, usb=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, timezone=None, domain=None, usb=None):
         super(Template, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.vm = vm
         self.type_ = type_
@@ -10079,6 +10311,7 @@ class Template(BaseResource):
         self.high_availability = high_availability
         self.display = display
         self.stateless = stateless
+        self.delete_protected = delete_protected
         self.timezone = timezone
         self.domain = domain
         self.usb = usb
@@ -10114,6 +10347,8 @@ class Template(BaseResource):
     def set_display(self, display): self.display = display
     def get_stateless(self): return self.stateless
     def set_stateless(self, stateless): self.stateless = stateless
+    def get_delete_protected(self): return self.delete_protected
+    def set_delete_protected(self, delete_protected): self.delete_protected = delete_protected
     def get_timezone(self): return self.timezone
     def set_timezone(self, timezone): self.timezone = timezone
     def get_domain(self): return self.domain
@@ -10167,6 +10402,9 @@ class Template(BaseResource):
         if self.stateless is not None:
             showIndent(outfile, level)
             outfile.write('<%sstateless>%s</%sstateless>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.stateless)), input_name='stateless'), namespace_))
+        if self.delete_protected is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sdelete_protected>%s</%sdelete_protected>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.delete_protected)), input_name='delete_protected'), namespace_))
         if self.timezone is not None:
             showIndent(outfile, level)
             outfile.write('<%stimezone>%s</%stimezone>\n' % (namespace_, self.gds_format_string(quote_xml(self.timezone).encode(ExternalEncoding), input_name='timezone'), namespace_))
@@ -10189,6 +10427,7 @@ class Template(BaseResource):
             self.high_availability is not None or
             self.display is not None or
             self.stateless is not None or
+            self.delete_protected is not None or
             self.timezone is not None or
             self.domain is not None or
             self.usb is not None or
@@ -10269,6 +10508,9 @@ class Template(BaseResource):
         if self.stateless is not None:
             showIndent(outfile, level)
             outfile.write('stateless=%s,\n' % self.stateless)
+        if self.delete_protected is not None:
+            showIndent(outfile, level)
+            outfile.write('delete_protected=%s,\n' % self.delete_protected)
         if self.timezone is not None:
             showIndent(outfile, level)
             outfile.write('timezone=%s,\n' % quote_python(self.timezone).encode(ExternalEncoding))
@@ -10355,6 +10597,16 @@ class Template(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'stateless')
             self.stateless = ival_
+        elif nodeName_ == 'delete_protected':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'delete_protected')
+            self.delete_protected = ival_
         elif nodeName_ == 'timezone':
             timezone_ = child_.text
             timezone_ = self.gds_validate_string(timezone_, node, 'timezone')
@@ -10596,7 +10848,7 @@ class Boot(GeneratedsSuper):
 class OperatingSystem(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, type_=None, boot=None, kernel=None, initrd=None, cmdline=None):
+    def __init__(self, type_=None, boot=None, kernel=None, initrd=None, cmdline=None, version=None):
         self.type_ = _cast(None, type_)
         if boot is None:
             self.boot = []
@@ -10605,6 +10857,7 @@ class OperatingSystem(GeneratedsSuper):
         self.kernel = kernel
         self.initrd = initrd
         self.cmdline = cmdline
+        self.version = version
     def factory(*args_, **kwargs_):
         if OperatingSystem.subclass:
             return OperatingSystem.subclass(*args_, **kwargs_)
@@ -10621,6 +10874,8 @@ class OperatingSystem(GeneratedsSuper):
     def set_initrd(self, initrd): self.initrd = initrd
     def get_cmdline(self): return self.cmdline
     def set_cmdline(self, cmdline): self.cmdline = cmdline
+    def get_version(self): return self.version
+    def set_version(self, version): self.version = version
     def get_type(self): return self.type_
     def set_type(self, type_): self.type_ = type_
     def export(self, outfile, level, namespace_='', name_='OperatingSystem', namespacedef_=''):
@@ -10651,12 +10906,15 @@ class OperatingSystem(GeneratedsSuper):
         if self.cmdline is not None:
             showIndent(outfile, level)
             outfile.write('<%scmdline>%s</%scmdline>\n' % (namespace_, self.gds_format_string(quote_xml(self.cmdline).encode(ExternalEncoding), input_name='cmdline'), namespace_))
+        if self.version is not None:
+            self.version.export(outfile, level, namespace_, name_='version')
     def hasContent_(self):
         if (
             self.boot or
             self.kernel is not None or
             self.initrd is not None or
-            self.cmdline is not None
+            self.cmdline is not None or
+            self.version is not None
             ):
             return True
         else:
@@ -10693,6 +10951,12 @@ class OperatingSystem(GeneratedsSuper):
         if self.cmdline is not None:
             showIndent(outfile, level)
             outfile.write('cmdline=%s,\n' % quote_python(self.cmdline).encode(ExternalEncoding))
+        if self.version is not None:
+            showIndent(outfile, level)
+            outfile.write('version=model_.Version(\n')
+            self.version.exportLiteral(outfile, level, name_='version')
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -10720,6 +10984,11 @@ class OperatingSystem(GeneratedsSuper):
             cmdline_ = child_.text
             cmdline_ = self.gds_validate_string(cmdline_, node, 'cmdline')
             self.cmdline = cmdline_
+        elif nodeName_ == 'version':
+            class_obj_ = self.get_class_obj_(child_, Version)
+            obj_ = class_obj_.factory()
+            obj_.build(child_)
+            self.set_version(obj_)
 # end class OperatingSystem
 
 
@@ -11704,7 +11973,7 @@ class GuestInfo(GeneratedsSuper):
 class VM(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, creation_time=None, origin=None, stateless=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, vmpool=None, cdroms=None, floppies=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, vmpool=None, cdroms=None, floppies=None, extensiontype_=None):
         super(VM, self).__init__(actions, href, id, name, description, creation_status, link, extensiontype_, )
         self.type_ = type_
         self.status = status
@@ -11721,6 +11990,7 @@ class VM(BaseResource):
         self.creation_time = creation_time
         self.origin = origin
         self.stateless = stateless
+        self.delete_protected = delete_protected
         self.timezone = timezone
         self.domain = domain
         self.custom_properties = custom_properties
@@ -11775,6 +12045,8 @@ class VM(BaseResource):
     def set_origin(self, origin): self.origin = origin
     def get_stateless(self): return self.stateless
     def set_stateless(self, stateless): self.stateless = stateless
+    def get_delete_protected(self): return self.delete_protected
+    def set_delete_protected(self, delete_protected): self.delete_protected = delete_protected
     def get_timezone(self): return self.timezone
     def set_timezone(self, timezone): self.timezone = timezone
     def get_domain(self): return self.domain
@@ -11867,6 +12139,9 @@ class VM(BaseResource):
         if self.stateless is not None:
             showIndent(outfile, level)
             outfile.write('<%sstateless>%s</%sstateless>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.stateless)), input_name='stateless'), namespace_))
+        if self.delete_protected is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sdelete_protected>%s</%sdelete_protected>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.delete_protected)), input_name='delete_protected'), namespace_))
         if self.timezone is not None:
             showIndent(outfile, level)
             outfile.write('<%stimezone>%s</%stimezone>\n' % (namespace_, self.gds_format_string(quote_xml(self.timezone).encode(ExternalEncoding), input_name='timezone'), namespace_))
@@ -11919,6 +12194,7 @@ class VM(BaseResource):
             self.creation_time is not None or
             self.origin is not None or
             self.stateless is not None or
+            self.delete_protected is not None or
             self.timezone is not None or
             self.domain is not None or
             self.custom_properties is not None or
@@ -12022,6 +12298,9 @@ class VM(BaseResource):
         if self.stateless is not None:
             showIndent(outfile, level)
             outfile.write('stateless=%s,\n' % self.stateless)
+        if self.delete_protected is not None:
+            showIndent(outfile, level)
+            outfile.write('delete_protected=%s,\n' % self.delete_protected)
         if self.timezone is not None:
             showIndent(outfile, level)
             outfile.write('timezone=%s,\n' % quote_python(self.timezone).encode(ExternalEncoding))
@@ -12203,6 +12482,16 @@ class VM(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'stateless')
             self.stateless = ival_
+        elif nodeName_ == 'delete_protected':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'delete_protected')
+            self.delete_protected = ival_
         elif nodeName_ == 'timezone':
             timezone_ = child_.text
             timezone_ = self.gds_validate_string(timezone_, node, 'timezone')
@@ -12589,6 +12878,81 @@ class VmPauseDetails(GeneratedsSuper):
             vm_pause_detail_ = self.gds_validate_string(vm_pause_detail_, node, 'vm_pause_detail')
             self.vm_pause_detail.append(vm_pause_detail_)
 # end class VmPauseDetails
+
+
+class PmProxyTypes(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, type_=None):
+        if type_ is None:
+            self.type_ = []
+        else:
+            self.type_ = type_
+    def factory(*args_, **kwargs_):
+        if PmProxyTypes.subclass:
+            return PmProxyTypes.subclass(*args_, **kwargs_)
+        else:
+            return PmProxyTypes(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_type(self): return self.type_
+    def set_type(self, type_): self.type_ = type_
+    def add_type(self, value): self.type_.append(value)
+    def insert_type(self, index, value): self.type_[index] = value
+    def export(self, outfile, level, namespace_='', name_='PmProxyTypes', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='PmProxyTypes')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='PmProxyTypes'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='PmProxyTypes', fromsubclass_=False):
+        for type_ in self.type_:
+            showIndent(outfile, level)
+            outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(type_).encode(ExternalEncoding), input_name='type'), namespace_))
+    def hasContent_(self):
+        if (
+            self.type_
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='PmProxyTypes'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('type_=[\n')
+        level += 1
+        for type_ in self.type_:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(type_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'type':
+            type_ = child_.text
+            type_ = self.gds_validate_string(type_, node, 'type')
+            self.type_.append(type_)
+# end class PmProxyTypes
 
 
 class VmPool(BaseResource):
@@ -14128,8 +14492,8 @@ class Nics(BaseDevices):
 class Snapshot(VM):
     subclass = None
     superclass = VM
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, creation_time=None, origin=None, stateless=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, vmpool=None, cdroms=None, floppies=None, vm=None, date=None, snapshot_status=None):
-        super(Snapshot, self).__init__(actions, href, id, name, description, creation_status, link, type_, status, memory, cpu, os, high_availability, display, host, cluster, template, storage_domain, start_time, creation_time, origin, stateless, timezone, domain, custom_properties, payloads, statistics, disks, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, vmpool, cdroms, floppies, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, vmpool=None, cdroms=None, floppies=None, vm=None, date=None, snapshot_status=None):
+        super(Snapshot, self).__init__(actions, href, id, name, description, creation_status, link, type_, status, memory, cpu, os, high_availability, display, host, cluster, template, storage_domain, start_time, creation_time, origin, stateless, delete_protected, timezone, domain, custom_properties, payloads, statistics, disks, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, vmpool, cdroms, floppies, )
         self.vm = vm
         self.date = date
         self.snapshot_status = snapshot_status
@@ -17173,10 +17537,11 @@ class GlusterBrick(BaseResource):
 # end class GlusterBrick
 
 
-class GlusterBricks(GeneratedsSuper):
+class GlusterBricks(BaseResources):
     subclass = None
-    superclass = None
-    def __init__(self, replica_count=None, stripe_count=None, brick=None):
+    superclass = BaseResources
+    def __init__(self, actions=None, total=None, active=None, replica_count=None, stripe_count=None, brick=None):
+        super(GlusterBricks, self).__init__(actions, total, active, )
         self.replica_count = replica_count
         self.stripe_count = stripe_count
         if brick is None:
@@ -17210,8 +17575,9 @@ class GlusterBricks(GeneratedsSuper):
         else:
             outfile.write('/>\n')
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GlusterBricks'):
-        pass
+        super(GlusterBricks, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterBricks')
     def exportChildren(self, outfile, level, namespace_='', name_='GlusterBricks', fromsubclass_=False):
+        super(GlusterBricks, self).exportChildren(outfile, level, namespace_, name_, True)
         if self.replica_count is not None:
             showIndent(outfile, level)
             outfile.write('<%sreplica_count>%s</%sreplica_count>\n' % (namespace_, self.gds_format_integer(self.replica_count, input_name='replica_count'), namespace_))
@@ -17224,7 +17590,8 @@ class GlusterBricks(GeneratedsSuper):
         if (
             self.replica_count is not None or
             self.stripe_count is not None or
-            self.brick
+            self.brick or
+            super(GlusterBricks, self).hasContent_()
             ):
             return True
         else:
@@ -17235,8 +17602,9 @@ class GlusterBricks(GeneratedsSuper):
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
+        super(GlusterBricks, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
+        super(GlusterBricks, self).exportLiteralChildren(outfile, level, name_)
         if self.replica_count is not None:
             showIndent(outfile, level)
             outfile.write('replica_count=%d,\n' % self.replica_count)
@@ -17261,7 +17629,7 @@ class GlusterBricks(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        pass
+        super(GlusterBricks, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'replica_count':
             sval_ = child_.text
@@ -17283,7 +17651,149 @@ class GlusterBricks(GeneratedsSuper):
             obj_ = GlusterBrick.factory()
             obj_.build(child_)
             self.brick.append(obj_)
+        super(GlusterBricks, self).buildChildren(child_, node, nodeName_, True)
 # end class GlusterBricks
+
+
+class PmProxies(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, pm_proxy=None):
+        if pm_proxy is None:
+            self.pm_proxy = []
+        else:
+            self.pm_proxy = pm_proxy
+    def factory(*args_, **kwargs_):
+        if PmProxies.subclass:
+            return PmProxies.subclass(*args_, **kwargs_)
+        else:
+            return PmProxies(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_pm_proxy(self): return self.pm_proxy
+    def set_pm_proxy(self, pm_proxy): self.pm_proxy = pm_proxy
+    def add_pm_proxy(self, value): self.pm_proxy.append(value)
+    def insert_pm_proxy(self, index, value): self.pm_proxy[index] = value
+    def export(self, outfile, level, namespace_='', name_='PmProxies', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='PmProxies')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='PmProxies'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='PmProxies', fromsubclass_=False):
+        for pm_proxy_ in self.pm_proxy:
+            pm_proxy_.export(outfile, level, namespace_, name_='pm_proxy')
+    def hasContent_(self):
+        if (
+            self.pm_proxy
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='PmProxies'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('pm_proxy=[\n')
+        level += 1
+        for pm_proxy_ in self.pm_proxy:
+            showIndent(outfile, level)
+            outfile.write('model_.pm_proxy(\n')
+            pm_proxy_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'pm_proxy':
+            obj_ = PmProxy.factory()
+            obj_.build(child_)
+            self.pm_proxy.append(obj_)
+# end class PmProxies
+
+
+class PmProxy(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, type_=None):
+        self.type_ = type_
+    def factory(*args_, **kwargs_):
+        if PmProxy.subclass:
+            return PmProxy.subclass(*args_, **kwargs_)
+        else:
+            return PmProxy(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_type(self): return self.type_
+    def set_type(self, type_): self.type_ = type_
+    def export(self, outfile, level, namespace_='', name_='PmProxy', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='PmProxy')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='PmProxy'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='PmProxy', fromsubclass_=False):
+        if self.type_ is not None:
+            showIndent(outfile, level)
+            outfile.write('<%stype>%s</%stype>\n' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_))
+    def hasContent_(self):
+        if (
+            self.type_ is not None
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='PmProxy'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.type_ is not None:
+            showIndent(outfile, level)
+            outfile.write('type_=%s,\n' % quote_python(self.type_).encode(ExternalEncoding))
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'type':
+            type_ = child_.text
+            type_ = self.gds_validate_string(type_, node, 'type')
+            self.type_ = type_
+# end class PmProxy
 
 
 class Feature(BaseResource):
@@ -18934,7 +19444,7 @@ class DetailedLink(Link):
 class VersionCaps(Version):
     subclass = None
     superclass = Version
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None):
         super(VersionCaps, self).__init__(actions, href, id, name, description, creation_status, link, major, full_version, build_, minor, revision, )
         self.current = current
         self.features = features
@@ -18972,6 +19482,7 @@ class VersionCaps(Version):
         self.scheduling_policies = scheduling_policies
         self.usages = usages
         self.nfs_versions = nfs_versions
+        self.pm_proxy_types = pm_proxy_types
         self.gluster_volume_types = gluster_volume_types
         self.transport_types = transport_types
         self.gluster_volume_states = gluster_volume_states
@@ -19054,6 +19565,8 @@ class VersionCaps(Version):
     def set_usages(self, usages): self.usages = usages
     def get_nfs_versions(self): return self.nfs_versions
     def set_nfs_versions(self, nfs_versions): self.nfs_versions = nfs_versions
+    def get_pm_proxy_types(self): return self.pm_proxy_types
+    def set_pm_proxy_types(self, pm_proxy_types): self.pm_proxy_types = pm_proxy_types
     def get_gluster_volume_types(self): return self.gluster_volume_types
     def set_gluster_volume_types(self, gluster_volume_types): self.gluster_volume_types = gluster_volume_types
     def get_transport_types(self): return self.transport_types
@@ -19151,6 +19664,8 @@ class VersionCaps(Version):
             self.usages.export(outfile, level, namespace_, name_='usages')
         if self.nfs_versions is not None:
             self.nfs_versions.export(outfile, level, namespace_, name_='nfs_versions')
+        if self.pm_proxy_types is not None:
+            self.pm_proxy_types.export(outfile, level, namespace_, name_='pm_proxy_types')
         if self.gluster_volume_types is not None:
             self.gluster_volume_types.export(outfile, level, namespace_, name_='gluster_volume_types')
         if self.transport_types is not None:
@@ -19197,6 +19712,7 @@ class VersionCaps(Version):
             self.scheduling_policies is not None or
             self.usages is not None or
             self.nfs_versions is not None or
+            self.pm_proxy_types is not None or
             self.gluster_volume_types is not None or
             self.transport_types is not None or
             self.gluster_volume_states is not None or
@@ -19428,6 +19944,12 @@ class VersionCaps(Version):
             self.nfs_versions.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.pm_proxy_types is not None:
+            showIndent(outfile, level)
+            outfile.write('pm_proxy_types=model_.pm_proxy_types(\n')
+            self.pm_proxy_types.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.gluster_volume_types is not None:
             showIndent(outfile, level)
             outfile.write('gluster_volume_types=model_.gluster_volume_types(\n')
@@ -19610,6 +20132,10 @@ class VersionCaps(Version):
             obj_ = NfsVersions.factory()
             obj_.build(child_)
             self.set_nfs_versions(obj_)
+        elif nodeName_ == 'pm_proxy_types':
+            obj_ = PmProxyTypes.factory()
+            obj_.build(child_)
+            self.set_pm_proxy_types(obj_)
         elif nodeName_ == 'gluster_volume_types':
             obj_ = GlusterVolumeTypes.factory()
             obj_.build(child_)
@@ -19791,6 +20317,8 @@ __all__ = [
     "Header",
     "Headers",
     "HighAvailability",
+    "Hook",
+    "Hooks",
     "Host",
     "HostNIC",
     "HostNICStates",
@@ -19830,6 +20358,9 @@ __all__ = [
     "Permissions",
     "Permit",
     "Permits",
+    "PmProxies",
+    "PmProxy",
+    "PmProxyTypes",
     "PortMirroring",
     "PowerManagement",
     "PowerManagementStates",
@@ -19960,6 +20491,8 @@ _rootClassMap = {
                     "header"                        : Header,
                     "headers"                       : Headers,
                     "high_availability"             : HighAvailability,
+                    "hook"                          : Hook,
+                    "hooks"                         : Hooks,
                     "host"                          : Host,
                     "host_nic"                      : HostNIC,
                     "host_nic_states"               : HostNICStates,
@@ -20003,6 +20536,9 @@ _rootClassMap = {
                     "permit"                        : Permit,
                     "permits"                       : Permits,
                     "placement_policy"              : VmPlacementPolicy,
+                    "pm_proxies"                    : PmProxies,
+                    "pm_proxy"                      : PmProxy,
+                    "pm_proxy_types"                : PmProxyTypes,
                     "port_mirroring"                : PortMirroring,
                     "power_management"              : PowerManagement,
                     "power_management_states"       : PowerManagementStates,
