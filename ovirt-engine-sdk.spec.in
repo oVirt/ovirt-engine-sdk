@@ -37,7 +37,7 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
-* Sun Jan  13 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.7-1
+* Sun Jan  13 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.7-1
  - events can be added now (user defined events)
  - events can be removed now
  - vm can be removed now, but it's disk/s kept (added disks.detach_only property to VMDisks)
