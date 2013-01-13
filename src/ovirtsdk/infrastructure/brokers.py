@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-12-27 15:24:29.248362'''
+'''Generated at: 2013-01-13 19:52:39.094040'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -139,6 +139,7 @@ class Cluster(params.Cluster, Base):
         [@param cluster.error_handling.on_error: string]
         [@param cluster.virt_service: boolean]
         [@param cluster.gluster_service: boolean]
+        [@param cluster.threads_as_cores: boolean]
         [@param correlation_id: any string]
 
         @return Cluster:
@@ -842,6 +843,7 @@ class Clusters(Base):
         [@param cluster.error_handling.on_error: string]
         [@param cluster.virt_service: boolean]
         [@param cluster.gluster_service: boolean]
+        [@param cluster.threads_as_cores: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -1445,6 +1447,7 @@ class Disk(params.Disk, Base):
         self.superclass = disk
 
         self.statistics = DiskStatistics(self, context)
+        self.permissions = DiskPermissions(self, context)
 
     def __new__(cls, disk, context):
         if disk is None: return None
@@ -1474,6 +1477,118 @@ class Disk(params.Disk, Base):
 
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
+
+class DiskPermission(params.Permission, Base):
+    def __init__(self, disk, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = disk
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, disk, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(disk, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/disks/{disk:id}/permissions/{permission:id}'
+
+        return self.__getProxy().delete(url=UrlHelper.replace(url, {'{disk:id}' : self.parentclass.get_id(),
+                                                                   '{permission:id}': self.get_id()}),
+                                       headers={'Content-type':None})
+
+class DiskPermissions(Base):
+
+    def __init__(self, disk , context):
+        Base.__init__(self, context)
+        self.parentclass = disk
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission):
+
+        '''
+        @type Permission:
+
+
+        @return Permission:
+        '''
+
+        url = '/api/disks/{disk:id}/permissions'
+
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={})
+
+        return DiskPermission(self.parentclass, result, self.context)
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/disks/{disk:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
+                                                                   id),
+                                               headers={})
+                return DiskPermission(self.parentclass, result, self.context)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
+
+            return DiskPermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Permissions:
+        '''
+
+        url = '/api/disks/{disk:id}/permissions'
+
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()})).get_permission()
+
+        return ParseHelper.toSubCollection(DiskPermission,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class DiskStatistic(params.Statistic, Base):
     def __init__(self, disk, statistic, context):
@@ -1949,6 +2064,16 @@ class Event(params.Event, Base):
         #still available at client's code.
         raise DisconnectedError
 
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/events/{event:id}'
+
+        return self.__getProxy().delete(url=UrlHelper.replace(url, {'{event:id}': self.get_id()}),
+                                        headers={'Content-type':None})
+
 class Events(Base):
     def __init__(self, context):
         Base.__init__(self, context)
@@ -1961,6 +2086,35 @@ class Events(Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
+
+    def add(self, event, expect=None, correlation_id=None):
+        '''
+        @type Event:
+
+        @param event.description: string
+        @param event.severity: string
+        @param event.origin: string
+        @param event.custom_id: int
+        [@param event.flood_rate: int]
+        [@param event.host.id: string]
+        [@param event.user.id: string]
+        [@param event.vm.id: string]
+        [@param event.storage_domain.id: string]
+        [@param event.template.id: string]
+        [@param event.cluster.id: string]
+        [@param event.data_center.id: string]
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Event:
+        '''
+
+        url = '/api/events'
+
+        result = self.__getProxy().add(url=url,
+                                       body=ParseHelper.toXml(event),
+                                       headers={"Expect":expect, "Correlation-Id":correlation_id})
+        return Event(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -2701,6 +2855,18 @@ class Host(params.Host, Base):
         [@param host.power_management.pm_proxy: collection]
         {
           [@ivar propietary: string]
+        }
+        [@param host.power_management.agents.agent: collection]
+        {
+          [@ivar type: string]
+          [@ivar address: string]
+          [@ivar user_name: string]
+          [@ivar password: string]
+          [@ivar options.option: collection]
+          {
+            [@param option.name: string]
+            [@param option.value: string]
+          }
         }
         [@param correlation_id: any string]
 
@@ -3706,7 +3872,7 @@ class Hosts(Base):
         @param host.name: string
         @param host.address: string
         @param host.root_password: string
-        @param host.cluster.id: string
+        @param host.cluster.id|name: string
         [@param host.port: int]
         [@param host.storage_manager.priority: int]
         [@param host.power_management.type: string]
@@ -3722,6 +3888,18 @@ class Hosts(Base):
         [@param host.power_management.pm_proxy: collection]
         {
           [@ivar propietary: string]
+        }
+        [@param host.power_management.agents.agent: collection]
+        {
+          [@ivar type: string]
+          [@ivar address: string]
+          [@ivar user_name: string]
+          [@ivar password: string]
+          [@ivar options.option: collection]
+          {
+            [@param option.name: string]
+            [@param option.value: string]
+          }
         }
         [@param host.reboot_after_installation: boolean]
         [@param expect: 201-created]
@@ -5354,8 +5532,9 @@ class TemplateDisk(params.Disk, Base):
         '''
         @type Action:
 
-        @param storagedomain.host.id|name: string
+        @param storagedomain.id|name: string
         [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -5476,6 +5655,7 @@ class TemplateNic(params.NIC, Base):
     def update(self, correlation_id=None):
         '''
         [@param nic.network.id|name: string]
+        [@param nic.linked: boolean]
         [@param nic.name: string]
         [@param nic.mac.address: string]
         [@param nic.interface: string]
@@ -5520,6 +5700,7 @@ class TemplateNics(Base):
 
         @param nic.network.id|name: string
         @param nic.name: string
+        [@param nic.linked: boolean]
         [@param nic.mac.address: string]
         [@param nic.interface: string]
         [@param nic.port_mirroring.networks.network: collection]
@@ -6478,6 +6659,7 @@ class VM(params.VM, Base):
         self.tags = VMTags(self, context)
         self.nics = VMNics(self, context)
         self.disks = VMDisks(self, context)
+        self.reporteddevices = VMReportedDevices(self, context)
         self.snapshots = VMSnapshots(self, context)
         self.permissions = VMPermissions(self, context)
 
@@ -6501,6 +6683,7 @@ class VM(params.VM, Base):
         @type Action:
 
         [@param action.force: boolean]
+        [@param action.vm.disks.detach_only: boolean]
         [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
@@ -6921,6 +7104,7 @@ class VMDisk(params.Disk, Base):
         self.superclass  =  disk
 
         self.statistics = VMDiskStatistics(self, context)
+        self.permissions = VMDiskPermissions(self, context)
 
     def __new__(cls, vm, disk, context):
         if disk is None: return None
@@ -7019,6 +7203,145 @@ class VMDisk(params.Disk, Base):
                                            headers={"Correlation-Id":correlation_id})
 
         return result
+
+    def move(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param storagedomain.id|name: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/vms/{vm:id}/disks/{disk:id}/move'
+
+        result = self.__getProxy().request(method='POST',
+                                           url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
+                                                                     '{disk:id}': self.get_id()}),
+                                           body=ParseHelper.toXml(action),
+                                           headers={"Correlation-Id":correlation_id})
+
+        return result
+
+class VMDiskPermission(params.Permission, Base):
+    def __init__(self, vmdisk, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = vmdisk
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vmdisk, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmdisk, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/vms/{vm:id}/disks/{disk:id}/permissions/{permission:id}'
+
+        return self.__getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                   '{disk:id}': self.parentclass.get_id(),
+                                                                   '{permission:id}': self.get_id()}),
+                                       headers={'Content-type':None})
+
+class VMDiskPermissions(Base):
+
+    def __init__(self, vmdisk , context):
+        Base.__init__(self, context)
+        self.parentclass = vmdisk
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission):
+
+        '''
+        @type Permission:
+
+
+        @return Permission:
+        '''
+
+        url = '/api/vms/{vm:id}/disks/{disk:id}/permissions'
+
+        result = self.__getProxy().add(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{disk:id}': self.parentclass.get_id()}),
+                                       body=ParseHelper.toXml(permission),
+                                       headers={})
+
+        return VMDiskPermission(self.parentclass, result, self.context)
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/vms/{vm:id}/disks/{disk:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                                           '{disk:id}': self.parentclass.get_id()}),
+                                                                   id),
+                                               headers={})
+                return VMDiskPermission(self.parentclass, result, self.context)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                      '{disk:id}': self.parentclass.get_id()}),
+                                           headers={}).get_permission()
+
+            return VMDiskPermission(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Permissions:
+        '''
+
+        url = '/api/vms/{vm:id}/disks/{disk:id}/permissions'
+
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{disk:id}': self.parentclass.get_id()})).get_permission()
+
+        return ParseHelper.toSubCollection(VMDiskPermission,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMDiskStatistic(params.Statistic, Base):
     def __init__(self, vmdisk, statistic, context):
@@ -7238,6 +7561,7 @@ class VMNic(params.NIC, Base):
         self.superclass  =  nic
 
         self.statistics = VMNicStatistics(self, context)
+        self.reporteddevices = VMNicReporteddevices(self, context)
 
     def __new__(cls, vm, nic, context):
         if nic is None: return None
@@ -7272,6 +7596,7 @@ class VMNic(params.NIC, Base):
     def update(self, correlation_id=None):
         '''
         [@param nic.network.id|name: string]
+        [@param nic.linked: boolean]
         [@param nic.name: string]
         [@param nic.mac.address: string]
         [@param nic.interface: string]
@@ -7279,6 +7604,7 @@ class VMNic(params.NIC, Base):
         {
           [@ivar network.id: string]
         }
+        [@param nic.plugged: boolean]
         [@param correlation_id: any string]
 
         @return NIC:
@@ -7331,6 +7657,93 @@ class VMNic(params.NIC, Base):
                                            headers={"Correlation-Id":correlation_id})
 
         return result
+
+class VMNicReporteddevice(params.ReportedDevice, Base):
+    def __init__(self, vmnic, reporteddevice, context):
+        Base.__init__(self, context)
+        self.parentclass = vmnic
+        self.superclass  =  reporteddevice
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vmnic, reporteddevice, context):
+        if reporteddevice is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmnic, reporteddevice, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class VMNicReporteddevices(Base):
+
+    def __init__(self, vmnic , context):
+        Base.__init__(self, context)
+        self.parentclass = vmnic
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return ReportedDevices:
+        '''
+
+        url = '/api/vms/{vm:id}/nics/{nic:id}/reporteddevices'
+
+        if id:
+            try :
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                                           '{nic:id}': self.parentclass.get_id()}),
+                                                                   id),
+                                               headers={})
+                return VMNicReporteddevice(self.parentclass, result, self.context)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                      '{nic:id}': self.parentclass.get_id()}),
+                                           headers={}).get_reported_device()
+
+            return VMNicReporteddevice(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return ReportedDevices:
+        '''
+
+        url = '/api/vms/{vm:id}/nics/{nic:id}/reporteddevices'
+
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
+                                                                  '{nic:id}': self.parentclass.get_id()})).get_reported_device()
+
+        return ParseHelper.toSubCollection(VMNicReporteddevice,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
 
 class VMNicStatistic(params.Statistic, Base):
     def __init__(self, vmnic, statistic, context):
@@ -7439,14 +7852,16 @@ class VMNics(Base):
         '''
         @type NIC:
 
-        @param nic.network.id|name: string
         @param nic.name: string
+        [@param nic.network.id|name: string]
+        [@param nic.linked: boolean]
         [@param nic.mac.address: string]
         [@param nic.interface: string]
         [@param nic.port_mirroring.networks.network: collection]
         {
           [@ivar network.id: string]
         }
+        [@param nic.plugged: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -7634,6 +8049,90 @@ class VMPermissions(Base):
                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(VMPermission,
+                                           self.parentclass,
+                                           FilterHelper.filter(result, kwargs),
+                                           context=self.context)
+
+class VMReportedDevice(params.ReportedDevice, Base):
+    def __init__(self, vm, reporteddevice, context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+        self.superclass  =  reporteddevice
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vm, reporteddevice, context):
+        if reporteddevice is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vm, reporteddevice, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class VMReportedDevices(Base):
+
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return ReportedDevices:
+        '''
+
+        url = '/api/vms/{vm:id}/reporteddevices'
+
+        if id:
+            try :
+                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                                                   id),
+                                               headers={})
+                return VMReportedDevice(self.parentclass, result, self.context)
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
+                                           headers={}).get_reported_device()
+
+            return VMReportedDevice(self.parentclass,
+                                              FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                                              self.context)
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return ReportedDevices:
+        '''
+
+        url = '/api/vms/{vm:id}/reporteddevices'
+
+        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()})).get_reported_device()
+
+        return ParseHelper.toSubCollection(VMReportedDevice,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs),
                                            context=self.context)

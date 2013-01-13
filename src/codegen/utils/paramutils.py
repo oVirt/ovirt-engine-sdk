@@ -28,6 +28,8 @@ class ParamUtils():
            and len(link.request.url.parameters_set) > 0:
             for parameters_set in link.request.url.parameters_set:
                 for param in parameters_set.parameter:
+                    if param.value == 'search query':
+                        param.value = 'query'
                     url_params[param.name + ':' + param.context] = param.value
                     if param.name in PRESERVED_NAMES:
                         name_candidate = param.name + '_' + param.value
