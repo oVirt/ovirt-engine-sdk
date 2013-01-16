@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2012-10-18 13:45:50.454862'''
+'''Generated at: 2013-01-16 14:33:14.989279'''
 
 import types
 
@@ -64,9 +64,24 @@ class API(object):
         [@param port: port to use (if not specified in url)]
         [@param timeout: request timeout]
         [@param persistent_auth: enable persistent authentication (format True|False)]
-        [@param insecure: signals to not demand site trustworthiness for ssl enabled connection (format True|False)]
-        [@param filter: signals if user permission based filtering should be turned on/off (format True|False)]
+        [@param insecure: signals to not demand site trustworthiness for ssl enabled 
+                connection (format True|False)]
+        [@param filter: signals if user permission based filtering should be turned
+                on/off (format True|False)]
         [@param debug: debug (format True|False)]
+
+        @raise NoCertificatesError: raised when CA certificate is not provided for SSL
+               site (can be disabled using 'insecure=True' argument).
+        @raise UnsecuredConnectionAttemptError: raised when HTTP protocol is used in 
+               url against server running HTTPS.
+        @raise ImmutableError: raised on sdk < 3.2 when sdk initiation attempt occurred 
+               while sdk instance already exist under the same domain.
+        @raise DisconnectedError: raised when sdk usage attempt occurred after it was
+               explicitly disconnected.
+        @raise MissingParametersError: raised when get() method invoked without id or
+               name been specified.
+        @raise ConnectionError: raised when any kind of communication error occurred.
+        @raise RequestError: raised when any kind of oVirt server error occurred.
         """
 
         # The instance id
