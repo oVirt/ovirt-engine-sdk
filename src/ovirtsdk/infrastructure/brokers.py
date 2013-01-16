@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-01-13 19:52:39.094040'''
+'''Generated at: 2013-01-16 16:03:56.865198'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -201,7 +201,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                     '{glustervolume:id}': self.get_id()}),
+                                                                       '{glustervolume:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -220,7 +220,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                     '{glustervolume:id}': self.get_id()}),
+                                                                       '{glustervolume:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -241,7 +241,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                     '{glustervolume:id}': self.get_id()}),
+                                                                       '{glustervolume:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -262,7 +262,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                     '{glustervolume:id}': self.get_id()}),
+                                                                       '{glustervolume:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -282,7 +282,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                     '{glustervolume:id}': self.get_id()}),
+                                                                       '{glustervolume:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -302,7 +302,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                     '{glustervolume:id}': self.get_id()}),
+                                                                       '{glustervolume:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -1250,7 +1250,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
-                                                                     '{storagedomain:id}': self.get_id()}),
+                                                                       '{storagedomain:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -1269,7 +1269,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
-                                                                     '{storagedomain:id}': self.get_id()}),
+                                                                       '{storagedomain:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -3197,7 +3197,7 @@ class HostNIC(params.HostNIC, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                     '{nic:id}': self.get_id()}),
+                                                                       '{nic:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -3217,7 +3217,7 @@ class HostNIC(params.HostNIC, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.get_id(),
-                                                                     '{nic:id}': self.get_id()}),
+                                                                       '{nic:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -4840,7 +4840,7 @@ class StorageDomainTemplate(params.Template, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
-                                                                     '{template:id}': self.get_id()}),
+                                                                       '{template:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -4971,7 +4971,7 @@ class StorageDomainVM(params.VM, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{storagedomain:id}' : self.parentclass.get_id(),
-                                                                     '{vm:id}': self.get_id()}),
+                                                                       '{vm:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -5544,7 +5544,7 @@ class TemplateDisk(params.Disk, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{template:id}' : self.parentclass.get_id(),
-                                                                     '{disk:id}': self.get_id()}),
+                                                                       '{disk:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -7179,7 +7179,7 @@ class VMDisk(params.Disk, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                     '{disk:id}': self.get_id()}),
+                                                                       '{disk:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -7198,7 +7198,7 @@ class VMDisk(params.Disk, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                     '{disk:id}': self.get_id()}),
+                                                                       '{disk:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -7220,7 +7220,7 @@ class VMDisk(params.Disk, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                     '{disk:id}': self.get_id()}),
+                                                                       '{disk:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -7633,7 +7633,7 @@ class VMNic(params.NIC, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                     '{nic:id}': self.get_id()}),
+                                                                       '{nic:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -7652,7 +7652,7 @@ class VMNic(params.NIC, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                     '{nic:id}': self.get_id()}),
+                                                                       '{nic:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
@@ -8190,7 +8190,7 @@ class VMSnapshot(params.Snapshot, Base):
 
         result = self.__getProxy().request(method='POST',
                                            url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.get_id(),
-                                                                     '{snapshot:id}': self.get_id()}),
+                                                                       '{snapshot:id}': self.get_id()}),
                                            body=ParseHelper.toXml(action),
                                            headers={"Correlation-Id":correlation_id})
 
