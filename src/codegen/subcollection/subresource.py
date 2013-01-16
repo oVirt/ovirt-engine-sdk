@@ -92,7 +92,7 @@ class SubResource(object):
             "        url = '%(url)s'\n\n" + \
             "        result = self.__getProxy().request(method='%(method)s',\n" + \
             "                                           url=UrlHelper.replace(url, {'{%(parent_resource_name_lc)s:id}' : self.parentclass.get_id()}),\n" + \
-#TODO: support action on sub-collection
+# TODO: support action on sub-collection
             "                                           body=ParseHelper.toXml(%(body_type_lc)s),\n"
             "                                           headers=" + headers_map_params_str + ")\n\n"
             "        return result\n\n"
@@ -105,7 +105,7 @@ class SubResource(object):
             "        result = self.__getProxy().request(method='%(method)s',\n" + \
 			"                                           url=UrlHelper.replace(url, " + \
             UrlUtils.generate_url_identifiers_replacments(link,
-                                                           offset="                                                                    ",
+                                                           offset="                                                                      ",
                                                            continues=True) + \
             "),\n" + \
             "                                           body=ParseHelper.toXml(%(body_type_lc)s),\n"
