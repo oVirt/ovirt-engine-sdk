@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-01-16 16:03:56.865198'''
+'''Generated at: 2013-01-20 12:14:51.260664'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -121,7 +121,7 @@ class Cluster(params.Cluster, Base):
                                 {'{cluster:id}': self.get_id()})
 
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
         '''
@@ -183,8 +183,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}'
 
         return self.__getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.get_id(),
-                                                                   '{glustervolume:id}': self.get_id()}),
-                                       headers={'Content-type':None})
+                                                                    '{glustervolume:id}': self.get_id()}),
+                                        headers={'Content-type':None})
 
     def rebalance(self, action=params.Action(), correlation_id=None):
         '''
@@ -338,9 +338,9 @@ class ClusterGlusterVolumeBrick(params.GlusterBrick, Base):
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
 
         return self.__getProxy().delete(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
-                                                                   '{glustervolume:id}': self.parentclass.get_id(),
-                                                                   '{brick:id}': self.get_id()}),
-                                       headers={'Content-type':None})
+                                                                    '{glustervolume:id}': self.parentclass.get_id(),
+                                                                    '{brick:id}': self.get_id()}),
+                                        headers={'Content-type':None})
 
 class ClusterGlusterVolumeBricks(Base):
 
@@ -381,7 +381,7 @@ class ClusterGlusterVolumeBricks(Base):
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         result = self.__getProxy().add(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
-                                                                  '{glustervolume:id}': self.parentclass.get_id()}),
+                                                                   '{glustervolume:id}': self.parentclass.get_id()}),
                                        body=ParseHelper.toXml(glusterbricks),
                                        headers={"Expect":expect, "Correlation-Id":correlation_id})
 
@@ -401,8 +401,8 @@ class ClusterGlusterVolumeBricks(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
-                                                                                           '{glustervolume:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                                            '{glustervolume:id}': self.parentclass.get_id()}),
+                                                                    id),
                                                headers={})
                 return ClusterGlusterVolumeBrick(self.parentclass, result, self.context)
             except RequestError, err:
@@ -411,7 +411,7 @@ class ClusterGlusterVolumeBricks(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(url=UrlHelper.replace(url, {'{cluster:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{glustervolume:id}': self.parentclass.get_id()}),
+                                                                       '{glustervolume:id}': self.parentclass.get_id()}),
                                            headers={}).get_brick()
 
             return ClusterGlusterVolumeBrick(self.parentclass,
@@ -503,7 +503,7 @@ class ClusterGlusterVolumes(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return ClusterGlusterVolume(self.parentclass, result, self.context)
             except RequestError, err:
@@ -532,8 +532,8 @@ class ClusterGlusterVolumes(Base):
         url = '/api/clusters/{cluster:id}/glustervolumes'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{cluster:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive}),
+                                                                                          args={'{cluster:id}': self.parentclass.get_id()}),
+                                                                    qargs={'search:query':query,'case_sensitive:matrix':case_sensitive}),
                                       headers={}).get_gluster_volume()
         return ParseHelper.toSubCollection(ClusterGlusterVolume,
                                            self.parentclass,
@@ -648,7 +648,7 @@ class ClusterNetworks(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return ClusterNetwork(self.parentclass, result, self.context)
             except RequestError, err:
@@ -676,8 +676,8 @@ class ClusterNetworks(Base):
         url = '/api/clusters/{cluster:id}/networks'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{cluster:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{cluster:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_network()
         return ParseHelper.toSubCollection(ClusterNetwork,
                                            self.parentclass,
@@ -775,7 +775,7 @@ class ClusterPermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{cluster:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return ClusterPermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -803,8 +803,8 @@ class ClusterPermissions(Base):
         url = '/api/clusters/{cluster:id}/permissions'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{cluster:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{cluster:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(ClusterPermission,
                                            self.parentclass,
@@ -1055,7 +1055,7 @@ class DataCenterPermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return DataCenterPermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -1118,8 +1118,8 @@ class DataCenterQuota(params.Quota, Base):
         url = '/api/datacenters/{datacenter:id}/quotas/{quota:id}'
 
         return self.__getProxy().delete(url=UrlHelper.replace(url, {'{datacenter:id}' : self.parentclass.get_id(),
-                                                                   '{quota:id}': self.get_id()}),
-                                       headers={'Content-type':None})
+                                                                    '{quota:id}': self.get_id()}),
+                                        headers={'Content-type':None})
 
 class DataCenterQuotas(Base):
 
@@ -1167,7 +1167,7 @@ class DataCenterQuotas(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return DataCenterQuota(self.parentclass, result, self.context)
             except RequestError, err:
@@ -1324,7 +1324,7 @@ class DataCenterStorageDomains(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{datacenter:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return DataCenterStorageDomain(self.parentclass, result, self.context)
             except RequestError, err:
@@ -1352,8 +1352,8 @@ class DataCenterStorageDomains(Base):
         url = '/api/datacenters/{datacenter:id}/storagedomains'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{datacenter:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{datacenter:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_storage_domain()
         return ParseHelper.toSubCollection(DataCenterStorageDomain,
                                            self.parentclass,
@@ -1476,7 +1476,7 @@ class Disk(params.Disk, Base):
                                 {'{disk:id}': self.get_id()})
 
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class DiskPermission(params.Permission, Base):
     def __init__(self, disk, permission, context):
@@ -1508,8 +1508,8 @@ class DiskPermission(params.Permission, Base):
         url = '/api/disks/{disk:id}/permissions/{permission:id}'
 
         return self.__getProxy().delete(url=UrlHelper.replace(url, {'{disk:id}' : self.parentclass.get_id(),
-                                                                   '{permission:id}': self.get_id()}),
-                                       headers={'Content-type':None})
+                                                                    '{permission:id}': self.get_id()}),
+                                        headers={'Content-type':None})
 
 class DiskPermissions(Base):
 
@@ -1557,7 +1557,7 @@ class DiskPermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return DiskPermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -1641,7 +1641,7 @@ class DiskStatistics(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return DiskStatistic(self.parentclass, result, self.context)
             except RequestError, err:
@@ -1860,7 +1860,7 @@ class DomainGroups(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return DomainGroup(self.parentclass, result, self.context)
             except RequestError, err:
@@ -1890,8 +1890,8 @@ class DomainGroups(Base):
         url = '/api/domains/{domain:id}/groups'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{domain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                                                                          args={'{domain:id}': self.parentclass.get_id()}),
+                                                                    qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_group()
         return ParseHelper.toSubCollection(DomainGroup,
                                            self.parentclass,
@@ -1949,7 +1949,7 @@ class DomainUsers(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{domain:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return DomainUser(self.parentclass, result, self.context)
             except RequestError, err:
@@ -1979,8 +1979,8 @@ class DomainUsers(Base):
         url = '/api/domains/{domain:id}/users'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{domain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                                                                          args={'{domain:id}': self.parentclass.get_id()}),
+                                                                    qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_user()
         return ParseHelper.toSubCollection(DomainUser,
                                            self.parentclass,
@@ -2198,7 +2198,7 @@ class Group(params.Group, Base):
                                 {'{group:id}': self.get_id()})
 
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class GroupPermission(params.Permission, Base):
     def __init__(self, group, permission, context):
@@ -2306,7 +2306,7 @@ class GroupPermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return GroupPermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -2334,8 +2334,8 @@ class GroupPermissions(Base):
         url = '/api/groups/{group:id}/permissions'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{group:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{group:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(GroupPermission,
                                            self.parentclass,
@@ -2448,7 +2448,7 @@ class GroupRolePermits(Base):
         url = '/api/groups/{group:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().add(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
-                                                                  '{role:id}': self.parentclass.get_id()}),
+                                                                   '{role:id}': self.parentclass.get_id()}),
                                        body=ParseHelper.toXml(permit),
                                        headers={"Expect":expect, "Correlation-Id":correlation_id})
 
@@ -2468,8 +2468,8 @@ class GroupRolePermits(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
-                                                                                           '{role:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                                            '{role:id}': self.parentclass.get_id()}),
+                                                                    id),
                                                headers={})
                 return GroupRolePermit(self.parentclass, result, self.context)
             except RequestError, err:
@@ -2478,7 +2478,7 @@ class GroupRolePermits(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(url=UrlHelper.replace(url, {'{group:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{role:id}': self.parentclass.get_id()}),
+                                                                       '{role:id}': self.parentclass.get_id()}),
                                            headers={}).get_permit()
 
             return GroupRolePermit(self.parentclass,
@@ -2498,9 +2498,9 @@ class GroupRolePermits(Base):
         url = '/api/groups/{group:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{group:id}' : self.parentclass.parentclass.get_id(),
+                                                                                          args={'{group:id}' : self.parentclass.parentclass.get_id(),
                                                                                                '{role:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permit()
         return ParseHelper.toSubCollection(GroupRolePermit,
                                            self.parentclass,
@@ -2556,7 +2556,7 @@ class GroupRoles(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return GroupRole(self.parentclass, result, self.context)
             except RequestError, err:
@@ -2584,8 +2584,8 @@ class GroupRoles(Base):
         url = '/api/groups/{group:id}/roles'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{group:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{group:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_role()
         return ParseHelper.toSubCollection(GroupRole,
                                            self.parentclass,
@@ -2678,7 +2678,7 @@ class GroupTags(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{group:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return GroupTag(self.parentclass, result, self.context)
             except RequestError, err:
@@ -2706,8 +2706,8 @@ class GroupTags(Base):
         url = '/api/groups/{group:id}/tags'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{group:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{group:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_tag()
         return ParseHelper.toSubCollection(GroupTag,
                                            self.parentclass,
@@ -3074,7 +3074,7 @@ class HostHooks(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return HostHook(self.parentclass, result, self.context)
             except RequestError, err:
@@ -3274,8 +3274,8 @@ class HostNicStatistics(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
-                                                                                           '{nic:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                                            '{nic:id}': self.parentclass.get_id()}),
+                                                                    id),
                                                headers={})
                 return HostNicStatistic(self.parentclass, result, self.context)
             except RequestError, err:
@@ -3284,7 +3284,7 @@ class HostNicStatistics(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(url=UrlHelper.replace(url, {'{host:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{nic:id}': self.parentclass.get_id()}),
+                                                                       '{nic:id}': self.parentclass.get_id()}),
                                            headers={}).get_statistic()
 
             return HostNicStatistic(self.parentclass,
@@ -3304,9 +3304,9 @@ class HostNicStatistics(Base):
         url = '/api/hosts/{host:id}/nics/{nic:id}/statistics'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{host:id}' : self.parentclass.parentclass.get_id(),
+                                                                                          args={'{host:id}' : self.parentclass.parentclass.get_id(),
                                                                                                '{nic:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_statistic()
         return ParseHelper.toSubCollection(HostNicStatistic,
                                            self.parentclass,
@@ -3373,7 +3373,7 @@ class HostNics(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return HostNIC(self.parentclass, result, self.context)
             except RequestError, err:
@@ -3401,8 +3401,8 @@ class HostNics(Base):
         url = '/api/hosts/{host:id}/nics'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{host:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{host:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_host_nic()
         return ParseHelper.toSubCollection(HostNIC,
                                            self.parentclass,
@@ -3542,7 +3542,7 @@ class HostPermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return HostPermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -3570,8 +3570,8 @@ class HostPermissions(Base):
         url = '/api/hosts/{host:id}/permissions'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{host:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{host:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(HostPermission,
                                            self.parentclass,
@@ -3629,7 +3629,7 @@ class HostStatistics(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return HostStatistic(self.parentclass, result, self.context)
             except RequestError, err:
@@ -3657,8 +3657,8 @@ class HostStatistics(Base):
         url = '/api/hosts/{host:id}/statistics'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{host:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{host:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_statistic()
         return ParseHelper.toSubCollection(HostStatistic,
                                            self.parentclass,
@@ -3694,7 +3694,7 @@ class HostStorage(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return HostStorage(self.parentclass, result, self.context)
             except RequestError, err:
@@ -3722,8 +3722,8 @@ class HostStorage(Base):
         url = '/api/hosts/{host:id}/storage'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{host:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{host:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_storage()
         return ParseHelper.toSubCollection(HostStorage,
                                            self.parentclass,
@@ -3816,7 +3816,7 @@ class HostTags(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{host:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return HostTag(self.parentclass, result, self.context)
             except RequestError, err:
@@ -3844,8 +3844,8 @@ class HostTags(Base):
         url = '/api/hosts/{host:id}/tags'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{host:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{host:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_tag()
         return ParseHelper.toSubCollection(HostTag,
                                            self.parentclass,
@@ -3994,7 +3994,7 @@ class Network(params.Network, Base):
                                 {'{network:id}': self.get_id()})
 
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
         '''
@@ -4110,7 +4110,7 @@ class NetworkPermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{network:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return NetworkPermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -4138,8 +4138,8 @@ class NetworkPermissions(Base):
         url = '/api/networks/{network:id}/permissions'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{network:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{network:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(NetworkPermission,
                                            self.parentclass,
@@ -4265,7 +4265,7 @@ class Role(params.Role, Base):
                                 {'{role:id}': self.get_id()})
 
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
         '''
@@ -4372,7 +4372,7 @@ class RolePermits(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{role:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return RolePermit(self.parentclass, result, self.context)
             except RequestError, err:
@@ -4400,8 +4400,8 @@ class RolePermits(Base):
         url = '/api/roles/{role:id}/permits'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{role:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{role:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permit()
         return ParseHelper.toSubCollection(RolePermit,
                                            self.parentclass,
@@ -4616,7 +4616,7 @@ class StorageDomainFiles(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return StorageDomainFile(self.parentclass, result, self.context)
             except RequestError, err:
@@ -4646,8 +4646,8 @@ class StorageDomainFiles(Base):
         url = '/api/storagedomains/{storagedomain:id}/files'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+                                                                                          args={'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                    qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
                                       headers={}).get_file()
         return ParseHelper.toSubCollection(StorageDomainFile,
                                            self.parentclass,
@@ -4745,7 +4745,7 @@ class StorageDomainPermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return StorageDomainPermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -4773,8 +4773,8 @@ class StorageDomainPermissions(Base):
         url = '/api/storagedomains/{storagedomain:id}/permissions'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(StorageDomainPermission,
                                            self.parentclass,
@@ -4875,7 +4875,7 @@ class StorageDomainTemplates(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return StorageDomainTemplate(self.parentclass, result, self.context)
             except RequestError, err:
@@ -4903,8 +4903,8 @@ class StorageDomainTemplates(Base):
         url = '/api/storagedomains/{storagedomain:id}/templates'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_template()
         return ParseHelper.toSubCollection(StorageDomainTemplate,
                                            self.parentclass,
@@ -5006,7 +5006,7 @@ class StorageDomainVMs(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return StorageDomainVM(self.parentclass, result, self.context)
             except RequestError, err:
@@ -5034,8 +5034,8 @@ class StorageDomainVMs(Base):
         url = '/api/storagedomains/{storagedomain:id}/vms'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{storagedomain:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{storagedomain:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_vm()
         return ParseHelper.toSubCollection(StorageDomainVM,
                                            self.parentclass,
@@ -5198,7 +5198,7 @@ class Tag(params.Tag, Base):
                                 {'{tag:id}': self.get_id()})
 
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
         '''
@@ -5329,7 +5329,7 @@ class Template(params.Template, Base):
                                 {'{template:id}': self.get_id()})
 
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
         '''
@@ -5450,7 +5450,7 @@ class TemplateCdRoms(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return TemplateCdRom(self.parentclass, result, self.context)
             except RequestError, err:
@@ -5478,8 +5478,8 @@ class TemplateCdRoms(Base):
         url = '/api/templates/{template:id}/cdroms'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{template:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{template:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_cdrom()
         return ParseHelper.toSubCollection(TemplateCdRom,
                                            self.parentclass,
@@ -5579,7 +5579,7 @@ class TemplateDisks(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return TemplateDisk(self.parentclass, result, self.context)
             except RequestError, err:
@@ -5607,8 +5607,8 @@ class TemplateDisks(Base):
         url = '/api/templates/{template:id}/disks'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{template:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{template:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_disk()
         return ParseHelper.toSubCollection(TemplateDisk,
                                            self.parentclass,
@@ -5735,7 +5735,7 @@ class TemplateNics(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return TemplateNic(self.parentclass, result, self.context)
             except RequestError, err:
@@ -5763,8 +5763,8 @@ class TemplateNics(Base):
         url = '/api/templates/{template:id}/nics'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{template:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{template:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_nic()
         return ParseHelper.toSubCollection(TemplateNic,
                                            self.parentclass,
@@ -5862,7 +5862,7 @@ class TemplatePermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{template:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return TemplatePermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -5890,8 +5890,8 @@ class TemplatePermissions(Base):
         url = '/api/templates/{template:id}/permissions'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{template:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{template:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(TemplatePermission,
                                            self.parentclass,
@@ -6056,7 +6056,7 @@ class User(params.User, Base):
                                 {'{user:id}': self.get_id()})
 
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
 class UserPermission(params.Permission, Base):
     def __init__(self, user, permission, context):
@@ -6164,7 +6164,7 @@ class UserPermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return UserPermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -6192,8 +6192,8 @@ class UserPermissions(Base):
         url = '/api/users/{user:id}/permissions'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{user:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{user:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(UserPermission,
                                            self.parentclass,
@@ -6306,7 +6306,7 @@ class UserRolePermits(Base):
         url = '/api/users/{user:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().add(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
-                                                                  '{role:id}': self.parentclass.get_id()}),
+                                                                   '{role:id}': self.parentclass.get_id()}),
                                        body=ParseHelper.toXml(permit),
                                        headers={"Expect":expect, "Correlation-Id":correlation_id})
 
@@ -6326,8 +6326,8 @@ class UserRolePermits(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
-                                                                                           '{role:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                                            '{role:id}': self.parentclass.get_id()}),
+                                                                    id),
                                                headers={})
                 return UserRolePermit(self.parentclass, result, self.context)
             except RequestError, err:
@@ -6336,7 +6336,7 @@ class UserRolePermits(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(url=UrlHelper.replace(url, {'{user:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{role:id}': self.parentclass.get_id()}),
+                                                                       '{role:id}': self.parentclass.get_id()}),
                                            headers={}).get_permit()
 
             return UserRolePermit(self.parentclass,
@@ -6356,9 +6356,9 @@ class UserRolePermits(Base):
         url = '/api/users/{user:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{user:id}' : self.parentclass.parentclass.get_id(),
+                                                                                          args={'{user:id}' : self.parentclass.parentclass.get_id(),
                                                                                                '{role:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permit()
         return ParseHelper.toSubCollection(UserRolePermit,
                                            self.parentclass,
@@ -6414,7 +6414,7 @@ class UserRoles(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return UserRole(self.parentclass, result, self.context)
             except RequestError, err:
@@ -6442,8 +6442,8 @@ class UserRoles(Base):
         url = '/api/users/{user:id}/roles'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{user:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{user:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_role()
         return ParseHelper.toSubCollection(UserRole,
                                            self.parentclass,
@@ -6536,7 +6536,7 @@ class UserTags(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{user:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return UserTag(self.parentclass, result, self.context)
             except RequestError, err:
@@ -6564,8 +6564,8 @@ class UserTags(Base):
         url = '/api/users/{user:id}/tags'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{user:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{user:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_tag()
         return ParseHelper.toSubCollection(UserTag,
                                            self.parentclass,
@@ -7061,7 +7061,7 @@ class VMCdRoms(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return VMCdRom(self.parentclass, result, self.context)
             except RequestError, err:
@@ -7089,8 +7089,8 @@ class VMCdRoms(Base):
         url = '/api/vms/{vm:id}/cdroms'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_cdrom()
         return ParseHelper.toSubCollection(VMCdRom,
                                            self.parentclass,
@@ -7256,9 +7256,9 @@ class VMDiskPermission(params.Permission, Base):
         url = '/api/vms/{vm:id}/disks/{disk:id}/permissions/{permission:id}'
 
         return self.__getProxy().delete(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                   '{disk:id}': self.parentclass.get_id(),
-                                                                   '{permission:id}': self.get_id()}),
-                                       headers={'Content-type':None})
+                                                                    '{disk:id}': self.parentclass.get_id(),
+                                                                    '{permission:id}': self.get_id()}),
+                                        headers={'Content-type':None})
 
 class VMDiskPermissions(Base):
 
@@ -7287,7 +7287,7 @@ class VMDiskPermissions(Base):
         url = '/api/vms/{vm:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().add(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                  '{disk:id}': self.parentclass.get_id()}),
+                                                                   '{disk:id}': self.parentclass.get_id()}),
                                        body=ParseHelper.toXml(permission),
                                        headers={})
 
@@ -7307,8 +7307,8 @@ class VMDiskPermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                                           '{disk:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                                            '{disk:id}': self.parentclass.get_id()}),
+                                                                    id),
                                                headers={})
                 return VMDiskPermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -7317,7 +7317,7 @@ class VMDiskPermissions(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{disk:id}': self.parentclass.get_id()}),
+                                                                       '{disk:id}': self.parentclass.get_id()}),
                                            headers={}).get_permission()
 
             return VMDiskPermission(self.parentclass,
@@ -7394,8 +7394,8 @@ class VMDiskStatistics(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                                           '{disk:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                                            '{disk:id}': self.parentclass.get_id()}),
+                                                                    id),
                                                headers={})
                 return VMDiskStatistic(self.parentclass, result, self.context)
             except RequestError, err:
@@ -7404,7 +7404,7 @@ class VMDiskStatistics(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{disk:id}': self.parentclass.get_id()}),
+                                                                       '{disk:id}': self.parentclass.get_id()}),
                                            headers={}).get_statistic()
 
             return VMDiskStatistic(self.parentclass,
@@ -7518,7 +7518,7 @@ class VMDisks(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return VMDisk(self.parentclass, result, self.context)
             except RequestError, err:
@@ -7546,8 +7546,8 @@ class VMDisks(Base):
         url = '/api/vms/{vm:id}/disks'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_disk()
         return ParseHelper.toSubCollection(VMDisk,
                                            self.parentclass,
@@ -7709,8 +7709,8 @@ class VMNicReporteddevices(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                                           '{nic:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                                            '{nic:id}': self.parentclass.get_id()}),
+                                                                    id),
                                                headers={})
                 return VMNicReporteddevice(self.parentclass, result, self.context)
             except RequestError, err:
@@ -7719,7 +7719,7 @@ class VMNicReporteddevices(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{nic:id}': self.parentclass.get_id()}),
+                                                                       '{nic:id}': self.parentclass.get_id()}),
                                            headers={}).get_reported_device()
 
             return VMNicReporteddevice(self.parentclass,
@@ -7796,8 +7796,8 @@ class VMNicStatistics(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                                           '{nic:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                                            '{nic:id}': self.parentclass.get_id()}),
+                                                                    id),
                                                headers={})
                 return VMNicStatistic(self.parentclass, result, self.context)
             except RequestError, err:
@@ -7806,7 +7806,7 @@ class VMNicStatistics(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{nic:id}': self.parentclass.get_id()}),
+                                                                       '{nic:id}': self.parentclass.get_id()}),
                                            headers={}).get_statistic()
 
             return VMNicStatistic(self.parentclass,
@@ -7890,7 +7890,7 @@ class VMNics(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return VMNic(self.parentclass, result, self.context)
             except RequestError, err:
@@ -7918,8 +7918,8 @@ class VMNics(Base):
         url = '/api/vms/{vm:id}/nics'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_nic()
         return ParseHelper.toSubCollection(VMNic,
                                            self.parentclass,
@@ -8017,7 +8017,7 @@ class VMPermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return VMPermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -8045,8 +8045,8 @@ class VMPermissions(Base):
         url = '/api/vms/{vm:id}/permissions'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(VMPermission,
                                            self.parentclass,
@@ -8104,7 +8104,7 @@ class VMReportedDevices(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return VMReportedDevice(self.parentclass, result, self.context)
             except RequestError, err:
@@ -8247,8 +8247,8 @@ class VMSnapshotCdroms(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                                           '{snapshot:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
+                                                                    id),
                                                headers={})
                 return VMSnapshotCdrom(self.parentclass, result, self.context)
             except RequestError, err:
@@ -8257,7 +8257,7 @@ class VMSnapshotCdroms(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{snapshot:id}': self.parentclass.get_id()}),
+                                                                       '{snapshot:id}': self.parentclass.get_id()}),
                                            headers={}).get_cdrom()
 
             return VMSnapshotCdrom(self.parentclass,
@@ -8334,8 +8334,8 @@ class VMSnapshotDisks(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                                           '{snapshot:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
+                                                                    id),
                                                headers={})
                 return VMSnapshotDisk(self.parentclass, result, self.context)
             except RequestError, err:
@@ -8344,7 +8344,7 @@ class VMSnapshotDisks(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{snapshot:id}': self.parentclass.get_id()}),
+                                                                       '{snapshot:id}': self.parentclass.get_id()}),
                                            headers={}).get_disk()
 
             return VMSnapshotDisk(self.parentclass,
@@ -8421,8 +8421,8 @@ class VMSnapshotNics(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                                           '{snapshot:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                                            '{snapshot:id}': self.parentclass.get_id()}),
+                                                                    id),
                                                headers={})
                 return VMSnapshotNic(self.parentclass, result, self.context)
             except RequestError, err:
@@ -8431,7 +8431,7 @@ class VMSnapshotNics(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(url=UrlHelper.replace(url, {'{vm:id}' : self.parentclass.parentclass.get_id(),
-                                                                      '{snapshot:id}': self.parentclass.get_id()}),
+                                                                       '{snapshot:id}': self.parentclass.get_id()}),
                                            headers={}).get_nic()
 
             return VMSnapshotNic(self.parentclass,
@@ -8506,7 +8506,7 @@ class VMSnapshots(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return VMSnapshot(self.parentclass, result, self.context)
             except RequestError, err:
@@ -8534,8 +8534,8 @@ class VMSnapshots(Base):
         url = '/api/vms/{vm:id}/snapshots'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_snapshot()
         return ParseHelper.toSubCollection(VMSnapshot,
                                            self.parentclass,
@@ -8593,7 +8593,7 @@ class VMStatistics(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return VMStatistic(self.parentclass, result, self.context)
             except RequestError, err:
@@ -8621,8 +8621,8 @@ class VMStatistics(Base):
         url = '/api/vms/{vm:id}/statistics'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_statistic()
         return ParseHelper.toSubCollection(VMStatistic,
                                            self.parentclass,
@@ -8715,7 +8715,7 @@ class VMTags(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vm:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return VMTag(self.parentclass, result, self.context)
             except RequestError, err:
@@ -8743,8 +8743,8 @@ class VMTags(Base):
         url = '/api/vms/{vm:id}/tags'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{vm:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{vm:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_tag()
         return ParseHelper.toSubCollection(VMTag,
                                            self.parentclass,
@@ -8930,7 +8930,7 @@ class VmPool(params.VmPool, Base):
                                 {'{vmpool:id}': self.get_id()})
 
         return self.__getProxy().delete(url=SearchHelper.appendQuery(url, {'async:matrix':async}),
-                                       headers={"Correlation-Id":correlation_id,"Content-type":None})
+                                        headers={"Correlation-Id":correlation_id,"Content-type":None})
 
     def update(self, correlation_id=None):
         '''
@@ -9059,7 +9059,7 @@ class VmPoolPermissions(Base):
         if id:
             try :
                 result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, {'{vmpool:id}': self.parentclass.get_id()}),
-                                                                   id),
+                                                                    id),
                                                headers={})
                 return VmPoolPermission(self.parentclass, result, self.context)
             except RequestError, err:
@@ -9087,8 +9087,8 @@ class VmPoolPermissions(Base):
         url = '/api/vmpools/{vmpool:id}/permissions'
 
         result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
-                                                                                           args={'{vmpool:id}': self.parentclass.get_id()}),
-                                                                   qargs={'max:matrix':max}),
+                                                                                          args={'{vmpool:id}': self.parentclass.get_id()}),
+                                                                    qargs={'max:matrix':max}),
                                       headers={}).get_permission()
         return ParseHelper.toSubCollection(VmPoolPermission,
                                            self.parentclass,

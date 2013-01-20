@@ -84,10 +84,10 @@ class SubCollection(object):
         "            try :\n" + \
         "                result = self.__getProxy().get(url=UrlHelper.append(UrlHelper.replace(url, " + \
         UrlUtils.generate_url_identifiers_replacments(link,
-                                                       "                                                                                          ",
+                                                       "                                                                                           ",
                                                        continues=True, is_collection=True) + \
         "),\n" +
-        "                                                                   id),\n"
+        "                                                                    id),\n"
         "                                               headers=" + headers_map_params_str + ")\n" +
         "                return %(encapsulating_resource)s(self.parentclass, result, self.context)\n" +
         "            except RequestError, err:\n" + \
@@ -97,7 +97,7 @@ class SubCollection(object):
         "        elif name:\n" +
         "            result = self.__getProxy().get(url=UrlHelper.replace(url, " + \
         UrlUtils.generate_url_identifiers_replacments(link,
-                                                       "                                                                     ",
+                                                       "                                                                      ",
                                                        continues=True, is_collection=True) + \
         "),\n"
         "                                           headers=" + headers_map_params_str + ").get_%(actual_resource_name_lc)s()\n\n" + \
@@ -145,12 +145,12 @@ class SubCollection(object):
                                     method_params) +
             "        url = '%(url)s'\n\n" + \
             "        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,\n " +
-            "                                                                                          args=" +
+            "                                                                                         args=" +
             UrlUtils.generate_url_identifiers_replacments(link,
                                                           "                                                                                              ",
                                                           continues=True, is_collection=True) + \
              "),\n" + \
-            "                                                                   qargs=" + ParamUtils.toDictStr(url_params.keys(), method_params_copy.keys()) +
+            "                                                                    qargs=" + ParamUtils.toDictStr(url_params.keys(), method_params_copy.keys()) +
             "),\n"
             "                                      headers=" + headers_map_params_str + ").get_%(actual_resource_name_lc)s()\n" + \
             "        return ParseHelper.toSubCollection(%(encapsulating_resource)s,\n" + \
@@ -189,7 +189,7 @@ class SubCollection(object):
         "        url = '%(url)s'\n\n" + \
         "        result = self.__getProxy().add(url=UrlHelper.replace(url, " + \
         UrlUtils.generate_url_identifiers_replacments(link,
-                                                           "                                                                 ",
+                                                           "                                                                  ",
                                                            continues=True, is_collection=True) + \
         "),\n" + \
         "                                       body=ParseHelper.toXml(%(resource_to_add)s),\n"

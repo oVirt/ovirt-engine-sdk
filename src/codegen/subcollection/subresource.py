@@ -214,10 +214,10 @@ class SubResource(object):
              "        url = '%(url)s'\n\n" + \
              "        return self.__getProxy().delete(url=UrlHelper.replace(url, " + \
             UrlUtils.generate_url_identifiers_replacments(link,
-                                                           offset="                                                                  ",
+                                                           offset="                                                                   ",
                                                            continues=True) + \
              "),\n" + \
-             "                                       headers={'Content-type':None})\n\n"
+             "                                        headers={'Content-type':None})\n\n"
              ) % sub_collection_resource_delete_template_values
 
             body_sub_collection_resource_delete_template = \
@@ -226,7 +226,7 @@ class SubResource(object):
              "        url = '%(url)s'\n\n" + \
              "        return self.__getProxy().delete(url=UrlHelper.replace(url,\n" + \
             UrlUtils.generate_url_identifiers_replacments(link,
-                                                           offset="                                                             ") + \
+                                                           offset="                                                               ") + \
              "),\n" + \
              "                                        body=ParseHelper.toXml(%(body_type_lc)s))\n\n"
              ) % sub_collection_resource_delete_template_values

@@ -140,7 +140,7 @@ class Resource(object):
             "        return self.__getProxy().delete(url=SearchHelper.appendQuery(url, " +
             ParamUtils.toDictStr(url_params.keys(), method_params.copy().keys()) +
                                                                                 "),\n" +
-            "                                       headers=" + headers_map_params_str_with_no_ct + ")\n\n"
+            "                                        headers=" + headers_map_params_str_with_no_ct + ")\n\n"
             ) % resource_delete_template_values
 
 
