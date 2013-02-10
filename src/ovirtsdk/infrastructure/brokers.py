@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-01-20 12:14:51.260664'''
+'''Generated at: 2013-02-10 15:40:09.760260'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -2839,6 +2839,7 @@ class Host(params.Host, Base):
         [@param host.name: string]
         [@param host.address: string]
         [@param host.root_password: string]
+        [@param host.display.address: string]
         [@param host.cluster.id: string]
         [@param host.port: int]
         [@param host.storage_manager.priority: int]
@@ -3872,6 +3873,7 @@ class Hosts(Base):
         @param host.name: string
         @param host.address: string
         @param host.root_password: string
+        @param host.display.address: string
         @param host.cluster.id|name: string
         [@param host.port: int]
         [@param host.storage_manager.priority: int]
@@ -6942,6 +6944,7 @@ class VM(params.VM, Base):
         '''
         @type Action:
 
+        [@param action.ticket.value: string]
         [@param correlation_id: any string]
 
         @return Action:

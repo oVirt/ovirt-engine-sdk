@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Sun Jan 13 19:52:44 2013 by generateDS.py version 2.7b.
+# Generated Sun Feb 10 15:40:11 2013 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -6353,7 +6353,7 @@ class Certificate(GeneratedsSuper):
 class Host(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None, display=None):
         super(Host, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.address = address
         self.certificate = certificate
@@ -6379,6 +6379,7 @@ class Host(BaseResource):
         self.os = os
         self.hooks = hooks
         self.libvirt_version = libvirt_version
+        self.display = display
     def factory(*args_, **kwargs_):
         if Host.subclass:
             return Host.subclass(*args_, **kwargs_)
@@ -6433,6 +6434,8 @@ class Host(BaseResource):
     def set_hooks(self, hooks): self.hooks = hooks
     def get_libvirt_version(self): return self.libvirt_version
     def set_libvirt_version(self, libvirt_version): self.libvirt_version = libvirt_version
+    def get_display(self): return self.display
+    def set_display(self, display): self.display = display
     def export(self, outfile, level, namespace_='', name_='Host', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -6505,6 +6508,8 @@ class Host(BaseResource):
             self.hooks.export(outfile, level, namespace_, name_='hooks')
         if self.libvirt_version is not None:
             self.libvirt_version.export(outfile, level, namespace_, name_='libvirt_version')
+        if self.display is not None:
+            self.display.export(outfile, level, namespace_, name_='display')
     def hasContent_(self):
         if (
             self.address is not None or
@@ -6531,6 +6536,7 @@ class Host(BaseResource):
             self.os is not None or
             self.hooks is not None or
             self.libvirt_version is not None or
+            self.display is not None or
             super(Host, self).hasContent_()
             ):
             return True
@@ -6665,6 +6671,12 @@ class Host(BaseResource):
             self.libvirt_version.exportLiteral(outfile, level, name_='libvirt_version')
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.display is not None:
+            showIndent(outfile, level)
+            outfile.write('display=model_.display(\n')
+            self.display.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -6795,6 +6807,10 @@ class Host(BaseResource):
             obj_ = class_obj_.factory()
             obj_.build(child_)
             self.set_libvirt_version(obj_)
+        elif nodeName_ == 'display':
+            obj_ = Display.factory()
+            obj_.build(child_)
+            self.set_display(obj_)
         super(Host, self).buildChildren(child_, node, nodeName_, True)
 # end class Host
 
@@ -9046,10 +9062,11 @@ class Files(BaseResources):
 class Hook(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, event_name=None, md5=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, event_name=None, md5=None, host=None):
         super(Hook, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.event_name = event_name
         self.md5 = md5
+        self.host = host
     def factory(*args_, **kwargs_):
         if Hook.subclass:
             return Hook.subclass(*args_, **kwargs_)
@@ -9060,6 +9077,8 @@ class Hook(BaseResource):
     def set_event_name(self, event_name): self.event_name = event_name
     def get_md5(self): return self.md5
     def set_md5(self, md5): self.md5 = md5
+    def get_host(self): return self.host
+    def set_host(self, host): self.host = host
     def export(self, outfile, level, namespace_='', name_='Hook', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -9082,10 +9101,13 @@ class Hook(BaseResource):
         if self.md5 is not None:
             showIndent(outfile, level)
             outfile.write('<%smd5>%s</%smd5>\n' % (namespace_, self.gds_format_string(quote_xml(self.md5).encode(ExternalEncoding), input_name='md5'), namespace_))
+        if self.host is not None:
+            self.host.export(outfile, level, namespace_, name_='host')
     def hasContent_(self):
         if (
             self.event_name is not None or
             self.md5 is not None or
+            self.host is not None or
             super(Hook, self).hasContent_()
             ):
             return True
@@ -9106,6 +9128,12 @@ class Hook(BaseResource):
         if self.md5 is not None:
             showIndent(outfile, level)
             outfile.write('md5=%s,\n' % quote_python(self.md5).encode(ExternalEncoding))
+        if self.host is not None:
+            showIndent(outfile, level)
+            outfile.write('host=model_.host(\n')
+            self.host.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -9122,6 +9150,10 @@ class Hook(BaseResource):
             md5_ = child_.text
             md5_ = self.gds_validate_string(md5_, node, 'md5')
             self.md5 = md5_
+        elif nodeName_ == 'host':
+            obj_ = Host.factory()
+            obj_.build(child_)
+            self.set_host(obj_)
         super(Hook, self).buildChildren(child_, node, nodeName_, True)
 # end class Hook
 
