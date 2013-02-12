@@ -14,17 +14,36 @@
 # limitations under the License.
 #
 
+from ovirtsdk.utils.ordereddict import OrderedDict
+
 class TypeUtil(object):
     '''
-    classdocs
+    Providing type related services
     '''
-
-#    @staticmethod
-#    def getValueByKey(name, cache = {}):
-#        if cache.has_key(name): return cache[name]
-#        return name
 
     @staticmethod
     def getValueByKeyOrNone(name, cache={}):
-        if cache.has_key(name): return cache[name]
+        '''
+        Returns key if exist or None
+        
+        @param name: key name
+        @param cache: map to look at 
+        '''
+        if cache.has_key(name):
+            return cache[name]
         return None
+
+    @staticmethod
+    def toOrderedMap(lst=[]):
+        '''
+        Formats list in to map preserving list order in map
+        
+        @param lst: list to convert
+        '''
+        dct = OrderedDict()
+        for i in range(len(lst)):
+            if (i % 2 is 0):
+                coll = lst[i]
+                res = lst[i + 1] if ((i + 1 < len(lst))) else None
+                dct[coll] = res
+        return dct

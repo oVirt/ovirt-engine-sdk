@@ -89,7 +89,10 @@ class Proxy():
     The proxy to web connection
     '''
     def __init__(self, connections_pool, persistent_auth=True):
-        """Constructor."""
+        '''
+        @param connections_pool: connections pool
+        @param persistent_auth: persistent authentication flag (default True)
+        '''
         self.__connections_pool = connections_pool
         self._persistent_auth = persistent_auth
 
@@ -103,32 +106,92 @@ class Proxy():
         self._cookies_jar = cookielib.CookieJar(policy=cookies_policy)
 
     def getConnectionsPool(self):
+        '''
+        Returns connections pool
+        '''
         return self.__connections_pool
 
     def get(self, url, headers={}):
+        '''
+        Performs get request
+        
+        @param url: request URI
+        @param body: request body
+        @param headers: request headers
+        '''
         return self.request(method='GET', url=url, headers=headers)
 
     def delete(self, url, body=None, headers={}):
+        '''
+        Performs delete request
+        
+        @param url: request URI
+        @param body: request body
+        @param headers: request headers
+        '''
         return self.request('DELETE', url, body, headers)
 
     def update(self, url, body=None, headers={}):
+        '''
+        Performs update request
+        
+        @param url: request URI
+        @param body: request body
+        @param headers: request headers
+        '''
         return self.request('PUT', url, body, headers)
 
     def add(self, url, body=None, headers={}):
+        '''
+        Performs add request
+        
+        @param url: request URI
+        @param body: request body
+        @param headers: request headers
+        '''
         return self.request('POST', url, body, headers)
 
     def action(self, url, body=None, headers={}):
+        '''
+        Performs action request
+        
+        @param url: request URI
+        @param body: request body
+        @param headers: request headers
+        '''
         return self.request('POST', url, body, headers)
 
-    def request(self, method, url, body=None, headers={}, last=False):
+    def request(self, method, url, body=None, headers={}, last=False, noParse=False):
+        '''
+        Performs HTTP request
+        
+        @param method: HTTP method
+        @param url: request URI
+        @param body: request body
+        @param headers: request headers
+        @param last: disables persistence authentication
+        @param noParse: disables xml2py conversion
+        '''
         return self.__doRequest(method, \
                                 url, \
                                 body=body, \
                                 headers=headers, \
                                 conn=self.getConnectionsPool().getConnection(), \
-                                last=last)
+                                last=last,
+                                noParse=noParse)
 
-    def __doRequest(self, method, url, conn, body=None, headers={}, last=False):
+    def __doRequest(self, method, url, conn, body=None, headers={}, last=False, noParse=False):
+        '''
+        Performs HTTP request
+        
+        @param method: HTTP method
+        @param url: request URI
+        @param conn: connection to invoke request on
+        @param body: request body
+        @param headers: request headers
+        @param last: disables persistence authentication
+        @param noParse: disables xml2py conversion
+        '''
         try:
             # Add cookie headers as needed:
             request_adapter = CookieJarAdapter(self._url, headers)
@@ -168,20 +231,31 @@ class Proxy():
             # Print response body (if in debug mode)
             self.__do_debug(conn, response_body)
 
-            return params.parseString(response_body) if response_body is not None and response_body is not '' \
-                                                     else response_body
+            if not noParse and (response_body is not None and response_body is not ''):
+                return params.parseString(response_body)
+            return response_body
+
         except socket.error, e:
             raise ConnectionError, str(e)
         finally:
             conn.close()
 
     def __do_debug(self, conn, body):
+        '''
+        Prints request body (when in debug) to STDIO
+        '''
         if conn.getConnection().debuglevel:
                 print 'body:\n' + body if body else ''
 
     def get_url(self):
+        '''
+        Returns entry point URI
+        '''
         return self.getConnectionsPool().get_url()
 
     @staticmethod
     def instance(connections_pool):
+        '''
+        Produces Proxy instance
+        '''
         Proxy(connections_pool)
