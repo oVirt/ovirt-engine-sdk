@@ -81,7 +81,7 @@ class Connection(object):
 
     def close(self):
         self.__connection.close()
-#FIXME: create connection watchdog to close it on idle-ttl expiration, rather than after the call
+# FIXME: create connection watchdog to close it on idle-ttl expiration, rather than after the call
         if (self.__manager is not None):
             self.__manager._freeResource(self)
 
@@ -98,25 +98,31 @@ class Connection(object):
         return urlparse.urlparse(url)
 
 
-    def __createConnection(self, url, key_file=None, cert_file=None, ca_file=None, insecure=False, port=None, strict=None, timeout=None):
+    def __createConnection(self, url, key_file=None, cert_file=None,
+                           ca_file=None, insecure=False, port=None,
+                           strict=None, timeout=None):
+
         u = self.__parse_url(url)
 
         if(u.scheme == 'https'):
             if not insecure and not ca_file:
                 raise NoCertificatesError
 
-            return HTTPSConnection(host=u.hostname,
-                                   port=u.port,
-                                   key_file=key_file,
-                                   cert_file=cert_file,
-                                   ca_file=ca_file,
-                                   strict=strict,
-                                   timeout=timeout)
-
-        return HTTPConnection(host=u.hostname,
-                              port=u.port,
-                              strict=strict,
-                              timeout=timeout)
+            return HTTPSConnection(
+                       host=u.hostname,
+                       port=u.port,
+                       key_file=key_file,
+                       cert_file=cert_file,
+                       ca_file=ca_file,
+                       strict=strict,
+                       timeout=timeout
+                   )
+        return HTTPConnection(
+                  host=u.hostname,
+                  port=u.port,
+                  strict=strict,
+                  timeout=timeout
+              )
 
     def __createStaticHeaders(self, username, password):
         auth = base64.encodestring("%s:%s" % (username, password)).strip()

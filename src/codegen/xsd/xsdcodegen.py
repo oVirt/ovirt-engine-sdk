@@ -15,8 +15,8 @@
 #
 
 from codegen.xsd.abstractxsdcodegen import AbstractXsdCodegen
-from codegen.genparams import paramsHandle
 from codegen.utils.fileutils import FileUtils
+from codegen.xsd.genparams import paramsHandle
 
 class XsdCodegen(AbstractXsdCodegen):
     '''

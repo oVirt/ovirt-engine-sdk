@@ -1,0 +1,20 @@
+    def add(self, %(resource_to_add)s%(headers_method_params_str)s):
+
+%(docs)s
+        url = '%(url)s'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                %(url_params)s
+            ),
+            body=ParseHelper.toXml(%(resource_to_add)s),
+            headers=%(headers_map_params_str)s
+        )
+
+        return %(encapsulating_entity)s(
+            self.parentclass,
+            result,
+            self.context
+        )
+

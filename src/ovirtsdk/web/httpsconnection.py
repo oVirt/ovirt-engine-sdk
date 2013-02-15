@@ -44,13 +44,17 @@ class HTTPSConnection(httplib.HTTPSConnection):
             self._tunnel()
 
         if self.ca_file:
-            self.sock = ssl.wrap_socket(sock,
-                                        self.key_file,
-                                        self.cert_file,
-                                        ca_certs=self.ca_file,
-                                        cert_reqs=ssl.CERT_REQUIRED)
+            self.sock = ssl.wrap_socket(
+                sock,
+                self.key_file,
+                self.cert_file,
+                ca_certs=self.ca_file,
+                cert_reqs=ssl.CERT_REQUIRED
+            )
         else:
-            self.sock = ssl.wrap_socket(sock,
-                                        self.key_file,
-                                        self.cert_file,
-                                        cert_reqs=ssl.CERT_NONE)
+            self.sock = ssl.wrap_socket(
+                sock,
+                self.key_file,
+                self.cert_file,
+                cert_reqs=ssl.CERT_NONE
+            )

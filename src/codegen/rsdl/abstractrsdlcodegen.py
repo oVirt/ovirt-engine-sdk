@@ -15,11 +15,14 @@
 #
 
 from codegen.common.icodegen import ICodegen
+import abc
 
 class AbstractRsdlCodegen(ICodegen):
     '''
     Providing RSDL codegen capabilities abstraction
     '''
+
+    __metaclass__ = abc.ABCMeta
 
     def __init__(self, path):
         '''

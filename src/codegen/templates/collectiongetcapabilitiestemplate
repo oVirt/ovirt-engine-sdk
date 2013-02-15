@@ -1,0 +1,30 @@
+
+    def get(self, id=None, **kwargs):
+        '''
+        [@param id: string (the id of the entity)]
+        [@param **kwargs: dict (property based filtering)]
+
+        @return VersionCaps:
+        '''
+
+        url = '/api/capabilities'
+
+        if id:
+            try :
+                return VersionCaps(
+                    self.__getProxy().get(url=UrlHelper.append(url, id)),
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif kwargs:
+            result = self.__getProxy().get(url=url).version
+
+            return VersionCaps(
+                FilterHelper.getItem(FilterHelper.filter(result, kwargs)),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'kwargs'])

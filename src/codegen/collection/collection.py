@@ -24,184 +24,214 @@ from codegen.doc.documentation import Documentation
 from codegen.utils.paramutils import ParamUtils
 from codegen.utils.headerutils import HeaderUtils
 from codegen.collection.collectionexceptions import CollectionExceptions
+from codegen.utils.paramscontainer import ParamsContainer
+from codegen.templates.collectiontemplate import CollectionTemplate
+from codegen.templates.collectiongetsearchabletemplate import CollectionGetSearchableTemplate
+from codegen.templates.collectiongetnotsearchabletemplate import CollectionGetNotSearchableTemplate
+from codegen.templates.collectionlistsearchabletemplate import CollectionListSearchableTemplate
+from codegen.templates.collectionlistnotsearchabletemplate import CollectionListNotSearchableTemplate
+from codegen.templates.collectionaddtemplate import CollectionAddTemplate
+
+collectiontemplate = CollectionTemplate()
+collectiongetsearchabletemplate = CollectionGetSearchableTemplate()
+collectiongetnotsearchabletemplate = CollectionGetNotSearchableTemplate()
+collectionlistsearchabletemplate = CollectionListSearchableTemplate()
+collectionlistnotsearchabletemplate = CollectionListNotSearchableTemplate()
+collectionaddtemplate = CollectionAddTemplate()
 
 class Collection(object):
 
     @staticmethod
     def collection(collection_name):
-        collection_resource_template_values = {'collection_name':collection_name}
 
-        collection_resource_template = \
-        (
-        "class %(collection_name)s(Base):\n" + \
-        "    def __init__(self, context):\n" + \
-        "        Base.__init__(self, context)\n\n" + \
+        collection_resource_template_values = {
+               'collection_name':collection_name
+        }
 
-        "    def __getProxy(self):\n" + \
-        "        proxy = context.manager[self.context].get('proxy')\n" + \
-        "        if proxy:\n" + \
-        "            return proxy\n" + \
-        "        #This may happen only if sdk was explicitly disconnected\n" + \
-        "        #using .disconnect() method, but resource instance ref. is\n" + \
-        "        #still available at client's code.\n" + \
-        "        raise DisconnectedError\n\n"
-        ) % collection_resource_template_values
-
-        return collection_resource_template
+        return collectiontemplate \
+               .generate(collection_resource_template_values)
 
     @staticmethod
     def get(url, resource_type, link, KNOWN_WRAPPER_TYPES={}):
-        actual_resource_type = TypeUtil.getValueByKeyOrNone(resource_type.lower(), KNOWN_WRAPPER_TYPES)
-        actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(resource_type.lower())).lower()
 
-        collection_get_template_values = {'url':url,
-                                          'resource_name_lc':actual_resource_name_lc,
-                                          'resource_type' : actual_resource_type if actual_resource_type is not None else resource_type}
+        actual_resource_type = \
+            TypeUtil.getValueByKeyOrNone(
+                     resource_type.lower(), KNOWN_WRAPPER_TYPES
+             )
 
-        prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
-        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
-        headers_method_params_str = headers_method_params_str + ', ' if headers_method_params_str != '' else headers_method_params_str
+        actual_resource_name_lc = (
+                ParseHelper.getXmlTypeInstance(
+                        resource_type.lower()
+                )
+        ).lower()
 
-        #Capabilities resource has unique structure which is not
-        #fully comply with RESTful collection pattern, but preserved
-        #in sake of backward compatibility
+        prms_str, method_params, url_params = \
+            ParamUtils.getMethodParamsByUrlParamsMeta(link)
+
+        headers_method_params_str, headers_map_params_str = \
+            HeaderUtils.generate_method_params(link)
+
+        headers_method_params_str = headers_method_params_str + ', ' \
+                if headers_method_params_str != '' \
+                else headers_method_params_str
+
+        collection_get_template_values = {
+          'url':url,
+          'resource_name_lc':actual_resource_name_lc,
+          'headers_method_params_str' : headers_method_params_str,
+          'headers_map_params_str' : headers_map_params_str,
+          'resource_type' : actual_resource_type \
+                if actual_resource_type is not None \
+                else resource_type,
+          'docs' : Documentation.document(
+                          link, {
+                            ParamsContainer.NAME_SEARCH_PARAM: False,
+                            ParamsContainer.ID_SEARCH_PARAM  : False
+                            }
+                   )
+        }
+
+        # Capabilities resource has unique structure which is not
+        # fully comply with RESTful collection pattern, but preserved
+        # in sake of backward compatibility
         if url == '/api/capabilities':
-            return CollectionExceptions.get(url, link, prms_str, method_params, url_params,
-                                            headers_method_params_str, headers_map_params_str,
-                                            collection_get_template_values)
+            return CollectionExceptions.get(
+                        url,
+                        link,
+                        prms_str,
+                        method_params,
+                        url_params,
+                        headers_method_params_str,
+                        headers_map_params_str,
+                        collection_get_template_values
+                    )
 
-        #/api/disks search-by-name paradigm was broken by the engine
-        #should be fixed later on
+        # /api/disks search-by-name paradigm was broken by the engine
+        # should be fixed later on
         if url == '/api/disks':
-            return CollectionExceptions.get(url, link, prms_str, method_params, url_params,
-                                            headers_method_params_str, headers_map_params_str,
-                                            collection_get_template_values)
+            return CollectionExceptions.get(
+                        url,
+                        link,
+                        prms_str,
+                        method_params,
+                        url_params,
+                        headers_method_params_str,
+                        headers_map_params_str,
+                        collection_get_template_values
+                    )
 
         if 'search:query' in url_params:
-            return \
-            ("    def get(self, name=None, " + headers_method_params_str + "id=None):\n" + \
-             Documentation.document(link, {'name: string (the name of the entity)': False,
-                                           'id  : string (the id of the entity)'  : False}) +
-            "        url = '%(url)s'\n\n" + \
-
-            "        if id:\n" +
-            "            try :\n" + \
-            "                return %(resource_type)s(self.__getProxy().get(url=UrlHelper.append(url, id),\n"
-            "                                                               headers=" + headers_map_params_str + "),\n" + \
-            "                                         self.context)\n" +
-            "            except RequestError, err:\n" + \
-            "                if err.status and err.status == 404:\n" + \
-            "                    return None\n" + \
-            "                raise err\n" + \
-            "        elif name:\n" +
-            "            result = self.__getProxy().get(url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),\n"
-            "                                           headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
-            "            return %(resource_type)s(FilterHelper.getItem(result),\n" + \
-            "                                     self.context)\n" + \
-            "        else:\n" + \
-            "            raise MissingParametersError(['id', 'name'])\n\n") % collection_get_template_values
-
-
-        return \
-            ("    def get(self, name=None, " + headers_method_params_str + "id=None):\n" + \
-             Documentation.document(link, {'name: string (the name of the entity)': False,
-                                           'id  : string (the id of the entity)'  : False}) +
-            "        url = '%(url)s'\n\n" + \
-            "        if id:\n" +
-            "            try :\n" + \
-            "                return %(resource_type)s(self.__getProxy().get(url=UrlHelper.append(url, id),\n" + \
-            "                                                               headers=" + headers_map_params_str + "),\n" + \
-            "                                         self.context)\n" +
-            "            except RequestError, err:\n" + \
-            "                if err.status and err.status == 404:\n" + \
-            "                    return None\n" + \
-            "                raise err\n" + \
-            "        elif name:\n" +
-            "            result = self.__getProxy().get(url=url,\n"
-            "                                           headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
-            "            return %(resource_type)s(FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),\n" + \
-            "                                     self.context)\n" + \
-            "        else:\n" + \
-            "            raise MissingParametersError(['id', 'name'])\n\n") % collection_get_template_values
+            return collectiongetsearchabletemplate.generate(
+                                            collection_get_template_values
+                   )
+        else:
+            return collectiongetnotsearchabletemplate.generate(
+                                           collection_get_template_values
+                   )
 
     @staticmethod
     def list(url, resource_type, link, KNOWN_WRAPPER_TYPES={}):
-        actual_resource_type = TypeUtil.getValueByKeyOrNone(resource_type.lower(), KNOWN_WRAPPER_TYPES)
-        actual_resource_name_lc = (ParseHelper.getXmlTypeInstance(resource_type.lower())).lower()
 
-        collection_list_template_values = {'url':url,
-                                           'resource_name_lc':actual_resource_name_lc,
-                                           'resource_type' : actual_resource_type if actual_resource_type is not None else resource_type}
+        actual_resource_type = TypeUtil.getValueByKeyOrNone(
+            resource_type.lower(),
+            KNOWN_WRAPPER_TYPES
+        )
 
-        prms_str, method_params, url_params = ParamUtils.getMethodParamsByUrlParamsMeta(link)
-        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
+        actual_resource_name_lc = (
+           ParseHelper.getXmlTypeInstance(
+                          resource_type.lower()
+           )
+        ).lower()
+
+        prms_str, method_params, url_params = \
+            ParamUtils.getMethodParamsByUrlParamsMeta(link)
+
+        headers_method_params_str, headers_map_params_str = \
+            HeaderUtils.generate_method_params(link)
+
         method_params_copy = method_params.copy()
         method_params['**kwargs'] = '**kwargs'
 
-        #Capabilities resource has unique structure which is not
-        #fully comply with RESTful collection pattern, but preserved
-        #in sake of backward compatibility
+        collection_list_template_values = {
+           'url':url,
+           'resource_name_lc':actual_resource_name_lc,
+           'resource_type' : actual_resource_type \
+                if actual_resource_type is not None \
+                else resource_type
+        }
+
+
+        # Capabilities resource has unique structure which is not
+        # fully comply with RESTful collection pattern, but preserved
+        # in sake of backward compatibility
         if url == '/api/capabilities':
-            return \
-"""
-    def list(self, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
 
-        @return [VersionCaps]:
-        '''
+            return CollectionExceptions.list()
+        elif prms_str != '' or headers_method_params_str != '':
 
-        url='/api/capabilities'
+            combined_method_params = prms_str + (
+                ', ' if prms_str != '' and headers_method_params_str != '' \
+                     else ''
+             ) + headers_method_params_str
 
-        result = self.__getProxy().get(url=url).version
-        return ParseHelper.toCollection(VersionCaps,
-                                        FilterHelper.filter(result, kwargs),
-                                        context=self.context)
-"""
-        if prms_str != '' or headers_method_params_str != '':
-            combined_method_params = prms_str + \
-                                     (', ' if prms_str != '' and headers_method_params_str != '' else '') + \
-                                     headers_method_params_str
-            return \
-            ("    def list(self, " + combined_method_params + ", **kwargs):\n" + \
-             Documentation.document(link, {'**kwargs: dict (property based filtering)': False,
-                                           'query: string (oVirt engine search dialect query)':False},
-                                    method_params) +
-            "        url='%(url)s'\n\n" + \
-            "        result = self.__getProxy().get(url=SearchHelper.appendQuery(url, " + ParamUtils.toDictStr(url_params.keys(),
-                                                                                                              method_params_copy.keys()) +
-                                                                                "),\n"
-            "                                      headers=" + headers_map_params_str + ").get_%(resource_name_lc)s()\n" + \
-            "        return ParseHelper.toCollection(%(resource_type)s,\n" + \
-            "                                        FilterHelper.filter(result, kwargs),\n" + \
-            "                                        context=self.context)\n\n") % collection_list_template_values
-        return \
-        ("    def list(self, **kwargs):\n" + \
-         Documentation.document(link, {'**kwargs: dict (property based filtering)': False}) +
-        "        url='%(url)s'\n\n" + \
-        "        result = self.__getProxy().get(url=url).get_%(resource_name_lc)s()\n" + \
-        "        return ParseHelper.toCollection(%(resource_type)s,\n" + \
-        "                                        FilterHelper.filter(result, kwargs),\n" + \
-        "                                        context=self.context)\n\n") % collection_list_template_values
+            collection_list_template_values['docs'] = \
+                    Documentation.document(link, {
+                              ParamsContainer.KWARGS_PARAMS: False,
+                              ParamsContainer.QUERY_PARAMS:False
+                              },
+                              method_params
+                    )
+
+            collection_list_template_values['url_params'] = \
+                    ParamUtils.toDictStr(
+                             url_params.keys(),
+                             method_params_copy.keys()
+                    )
+
+            collection_list_template_values['headers_map_params_str'] = \
+                    headers_map_params_str
+
+            collection_list_template_values['combined_method_params'] = \
+                    combined_method_params
+
+            return collectionlistsearchabletemplate \
+                   .generate(collection_list_template_values)
+        else:
+            collection_list_template_values['docs'] = \
+                    Documentation.document(link, {
+                                  ParamsContainer.KWARGS_PARAMS: False
+                              }
+                    )
+
+            return collectionlistnotsearchabletemplate \
+                   .generate(collection_list_template_values)
 
     @staticmethod
     def add(url, body_type, response_type, link, KNOWN_WRAPPER_TYPES={}):
-        actual_resource_type = TypeUtil.getValueByKeyOrNone(response_type.lower(), KNOWN_WRAPPER_TYPES)
 
-        collection_add_template_values = {'url':url,
-                                          'resource_to_add_lc':body_type.lower(),
-                                          'resource_type' : actual_resource_type if actual_resource_type is not None
-                                                                                 else response_type}
-        headers_method_params_str, headers_map_params_str = HeaderUtils.generate_method_params(link)
-        headers_method_params_str = ', ' + headers_method_params_str if headers_method_params_str != '' else headers_method_params_str
+        actual_resource_type = \
+                    TypeUtil.getValueByKeyOrNone(
+                             response_type.lower(),
+                             KNOWN_WRAPPER_TYPES
+                    )
 
-        collection_add_template = \
-        ("    def add(self, %(resource_to_add_lc)s" + headers_method_params_str + "):\n" + \
-         Documentation.document(link) +
-        "        url = '%(url)s'\n\n" + \
-        "        result = self.__getProxy().add(url=url,\n" + \
-        "                                       body=ParseHelper.toXml(%(resource_to_add_lc)s),\n"
-        "                                       headers=" + headers_map_params_str + ")\n" + \
-        "        return %(resource_type)s(result, self.context)\n\n") % collection_add_template_values
+        headers_method_params_str, headers_map_params_str = \
+              HeaderUtils.generate_method_params(link)
 
-        return collection_add_template
+        headers_method_params_str = ', ' + headers_method_params_str \
+              if headers_method_params_str != '' \
+              else headers_method_params_str
+
+        collection_add_template_values = {
+              'url':url,
+              'resource_to_add_lc':body_type.lower(),
+              'headers_method_params_str' : headers_method_params_str,
+              'docs' : Documentation.document(link),
+              'headers_map_params_str': headers_map_params_str,
+              'resource_type' : actual_resource_type \
+                    if actual_resource_type is not None
+                    else response_type
+        }
+
+        return collectionaddtemplate\
+               .generate(collection_add_template_values)

@@ -13,17 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from abc import abstractmethod
 
-class ICodegen():
+class ICodegen(object):
     '''
     Providing codegen interface'''
 
+    @abstractmethod
     def generate(self):
         '''
         Cleans the package and generates the code
         '''
         pass
 
+    @abstractmethod
     def doGenerate(self, path):
         '''
         Generates the code
@@ -44,6 +47,7 @@ class ICodegen():
         '''
         pass
 
+    @abstractmethod
     def doClean(self, path):
         '''
         Performs Pre-generate cleanup

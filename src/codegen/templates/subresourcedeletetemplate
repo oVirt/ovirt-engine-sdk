@@ -1,0 +1,12 @@
+    def delete(self):
+%(docs)s
+        url = '%(url)s'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                %(url_identifyiers)s
+            ),
+            headers={'Content-type':None}
+        )
+

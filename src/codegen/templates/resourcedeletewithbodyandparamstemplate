@@ -1,0 +1,12 @@
+    def delete(self, %(body_type_lc)s%(body_instance_str)s):
+%(docs)s
+        url = '%(url)s'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{%(resource_name_lc)s:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(%(body_type_lc)s)
+        )
+

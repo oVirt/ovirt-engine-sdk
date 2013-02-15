@@ -15,8 +15,6 @@
 #
 
 from codegen.rsdl.abstractrsdlcodegen import AbstractRsdlCodegen
-from codegen.imp.imprt import Import
-from codegen.collection.resource import Resource
 from codegen.entrypoint.entrypoint import EntryPoint
 from codegen.utils.typeutil import TypeUtil
 from ovirtsdk.infrastructure.context import context
@@ -24,10 +22,12 @@ from ovirtsdk.utils.reflectionhelper import ReflectionHelper
 from ovirtsdk.xml import params
 from ovirtsdk.utils.parsehelper import ParseHelper
 from codegen.collection.collection import Collection
-from codegen.subcollection.subresource import SubResource
-from codegen.subcollection.subcollection import SubCollection
 from codegen.utils.fileutils import FileUtils
 from codegen.utils.stringutils import StringUtils
+from codegen.resource.resource import Resource
+from codegen.subresource.subresource import SubResource
+from codegen.subcollection.subcollection import SubCollection
+from codegen.imprt.imprt import Import
 
 class RsdlCodegen(AbstractRsdlCodegen):
     '''
@@ -39,13 +39,21 @@ class RsdlCodegen(AbstractRsdlCodegen):
     KNOWN_ACTIONS = ['get', 'add', 'delete', 'update']
 
     # TODO:should be fixed on server side
-    COLLECTION_TO_ENTITY_EXCEPTIONS = ['Capabilities', 'Storage', 'VersionCaps']
+    COLLECTION_TO_ENTITY_EXCEPTIONS = [
+           'Capabilities',
+           'Storage',
+           'VersionCaps'
+    ]
 
     # TODO:should be fixed on server side (naming inconsistency)
-    NAMING_ENTITY_EXCEPTIONS = {'host_storage':'storage'}
+    NAMING_ENTITY_EXCEPTIONS = {
+            'host_storage':'storage'
+    }
 
     # names that should not be used as method/s names
-    PRESERVED_NAMES = ['import', 'from']
+    PRESERVED_NAMES = [
+           'import', 'from'
+    ]
 
     # cache known python2xml bindings types
     KNOWN_WRAPPER_TYPES = ReflectionHelper.getClassNames(params)
@@ -91,7 +99,10 @@ class RsdlCodegen(AbstractRsdlCodegen):
                 # response
                 response = link.response
                 if (link.response and hasattr(link.response, 'type_')):
-                    response_type = StringUtils.toSingular(response.type_, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS)
+                    response_type = StringUtils.toSingular(
+                                           response.type_,
+                                           RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS
+                                    )
 
                 # get relations
                 splitted_url = url.strip()[1:].split('/')
@@ -149,11 +160,6 @@ class RsdlCodegen(AbstractRsdlCodegen):
             FileUtils.save(RsdlCodegen.BROKERS_FILE, brokers_file)
             FileUtils.save(RsdlCodegen.ENTRY_POINT_FILE, api_file)
 
-#    def __toSingular(self, typ):
-#        if typ and typ.endswith('s') and typ not in RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS:
-#            return typ[0:len(typ) - 1]
-#        return typ
-
     def __appendRootCollections(self, collectionsHolder={}):
         '''
         Appends RootCollections
@@ -206,7 +212,16 @@ class RsdlCodegen(AbstractRsdlCodegen):
                 # coll = k
                 coll = ParseHelper.getXmlWrapperType(k)
                 if (v is None):
-                    self.__extendCollection(coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
+                    self.__extendCollection(
+                                coll,
+                                url,
+                                rel,
+                                http_method,
+                                body_type,
+                                link,
+                                response_type,
+                                collectionsHolder
+                        )
                 else:
                     self.__extendResource(coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
             elif(ln is 2):  # vms/xxx/disks/yyy
@@ -261,7 +276,8 @@ class RsdlCodegen(AbstractRsdlCodegen):
             elif(ln > 3):
                 print 'WARNING: unsupported deep(' + str(len(resources)) + "): url: " + url
 
-    def __extendCollection(self, collection, url, rel, http_method, body_type, link, response_type, collectionsHolder):
+    def __extendCollection(self, collection, url, rel, http_method,
+                           body_type, link, response_type, collectionsHolder):
         '''
         Extends collection
         
@@ -291,7 +307,8 @@ class RsdlCodegen(AbstractRsdlCodegen):
             add_method = Collection.add(url, body_type, response_type, link, RsdlCodegen.KNOWN_WRAPPER_TYPES)
             collectionsHolder[collection]['body'] += add_method
 
-    def __extendResource(self, collection, url, rel, http_method, body_type, link, response_type, collectionsHolder):
+    def __extendResource(self, collection, url, rel, http_method, body_type,
+                         link, response_type, collectionsHolder):
         '''
         Extends resource
         
@@ -319,7 +336,9 @@ class RsdlCodegen(AbstractRsdlCodegen):
             upd_method = Resource.update(url, self.__toResourceType(resource), link, RsdlCodegen.KNOWN_WRAPPER_TYPES)
             collectionsHolder[resource]['body'] += upd_method
 
-    def __createAction(self, root_coll, sub_coll, action_name, url, rel, http_method, body_type, link, response_type, collectionsHolder, collection_action=False):
+    def __createAction(self, root_coll, sub_coll, action_name, url, rel,
+                       http_method, body_type, link, response_type, collectionsHolder,
+                       collection_action=False):
         '''
         Creates action
         
@@ -413,7 +432,8 @@ class RsdlCodegen(AbstractRsdlCodegen):
 
         return None
 
-    def __extendSubCollection(self, root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder):
+    def __extendSubCollection(self, root_coll, sub_coll, url, rel, http_method,
+                              body_type, link, response_type, collectionsHolder):
         '''
         Extends sub-collection
         
@@ -447,17 +467,24 @@ class RsdlCodegen(AbstractRsdlCodegen):
 
         # ['get', 'add']
         if (rel == 'get'):
-            get_method_body = SubCollection.get(url, link, root_res, self.__toResourceType(sub_res_type), sub_res, RsdlCodegen.KNOWN_WRAPPER_TYPES, RsdlCodegen.NAMING_ENTITY_EXCEPTIONS)
+            get_method_body = SubCollection.get(url, link, root_res,
+                                                self.__toResourceType(sub_res_type),
+                                                sub_res, RsdlCodegen.KNOWN_WRAPPER_TYPES,
+                                                RsdlCodegen.NAMING_ENTITY_EXCEPTIONS
+                                            )
             collectionsHolder[sub_coll_type]['body'] += get_method_body
 
-            list_method = SubCollection.list(url, link, root_res, self.__toResourceType(sub_res_type), sub_res, RsdlCodegen.KNOWN_WRAPPER_TYPES, RsdlCodegen.NAMING_ENTITY_EXCEPTIONS)
+            list_method = SubCollection.list(url, link, root_res, self.__toResourceType(sub_res_type),
+                                              sub_res, RsdlCodegen.KNOWN_WRAPPER_TYPES, RsdlCodegen.NAMING_ENTITY_EXCEPTIONS)
+
             collectionsHolder[sub_coll_type]['body'] += list_method
 
         elif (rel == 'add'):
             add_method = SubCollection.add(url, link, body_type, root_res, self.__toResourceType(sub_res_type), RsdlCodegen.KNOWN_WRAPPER_TYPES)
             collectionsHolder[sub_coll_type]['body'] += add_method
 
-    def __extendSubResource(self, root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder, extend_only=False):
+    def __extendSubResource(self, root_coll, sub_coll, url, rel, http_method, body_type,
+                            link, response_type, collectionsHolder, extend_only=False):
         '''
         Extends sub-resource
         
@@ -485,7 +512,10 @@ class RsdlCodegen(AbstractRsdlCodegen):
                 del_method = SubResource.delete(url, link, root_res, sub_res, body_type)
                 collectionsHolder[sub_res_type]['body'] += del_method
             elif (rel == 'update'):
-                update_method = SubResource.update(url, link, root_res, self.__toResourceType(sub_res), sub_res_type, RsdlCodegen.KNOWN_WRAPPER_TYPES)
+                update_method = SubResource.update(url, link, root_res,
+                                                   self.__toResourceType(sub_res),
+                                                   sub_res_type, RsdlCodegen.KNOWN_WRAPPER_TYPES)
+
                 collectionsHolder[sub_res_type]['body'] += update_method
 
     def doClean(self, path):

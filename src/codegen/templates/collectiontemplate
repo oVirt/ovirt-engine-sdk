@@ -1,0 +1,13 @@
+class %(collection_name)s(Base):
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+

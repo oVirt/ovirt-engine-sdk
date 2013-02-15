@@ -15,8 +15,7 @@
 #
 
 from ovirtsdk.utils.comperator import Comparator
-from ovirtsdk.infrastructure.errors import ImmutableError, DisconnectedError
-from ovirtsdk.infrastructure.context import context
+from ovirtsdk.infrastructure.errors import ImmutableError
 
 class Base(object):
     ''' Decorator base class '''
