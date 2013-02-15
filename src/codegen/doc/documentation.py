@@ -21,7 +21,7 @@ class Documentation():
     OVERLOAD_TEMPLATE = 'Overload'
 
     @staticmethod
-    def document(link, custom_params={}, mapper={}, HEADERS_EXCLUDE = ['Content-Type', 'Filter']):
+    def document(link, custom_params={}, mapper={}, HEADERS_EXCLUDE=['Content-Type', 'Filter']):
         '''
         @param body: request body
         @param custom_params: custom params to add {param:required=true|false}
@@ -36,7 +36,7 @@ class Documentation():
 
         doc_str = ""
         doc_str_in = offset + "'''\n"
-        doc_str_out = offset + "'''\n\n"
+        doc_str_out = offset + "'''\n"
 
         type_doc = offset + "@type %s:\n\n" % Documentation._getRequestType(link)
         return_doc = offset + "@return %s:\n" % Documentation._getResponseType(link)
@@ -77,7 +77,7 @@ class Documentation():
                 doc_str += mand_params
                 doc_str += opt_params
 
-        for k in custom_params.keys(): #TODO: revisit - not optimal in terms of overload
+        for k in custom_params.keys():  # TODO: revisit - not optimal in terms of overload
             if len(mapper) == 0 or Documentation._isMapperHasKey(mapper, k) == True:
                 if custom_params[k] == True:
                     doc_str += offset + custom_mand_param_doc_template % k
@@ -88,7 +88,7 @@ class Documentation():
             if doc_str.find(k + ':') == -1:
                 doc_str += offset + opt_param_doc_template % (k, v)
 
-        #document http header params
+        # document http header params
         if hasattr(link, 'request') and hasattr(link.request, 'headers') and \
            link.request.headers:
             for header_parameter in link.request.headers.header:

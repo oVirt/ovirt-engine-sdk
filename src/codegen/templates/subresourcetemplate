@@ -1,0 +1,22 @@
+class %(encapsulating_entity)s(params.%(sub_res_type)s, Base):
+    def __init__(self, %(parent)s, %(encapsulated_entity)s, context):
+        Base.__init__(self, context)
+        self.parentclass = %(parent)s
+        self.superclass  =  %(encapsulated_entity)s
+
+%(fixme)s
+    def __new__(cls, %(parent)s, %(encapsulated_entity)s, context):
+        if %(encapsulated_entity)s is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(%(parent)s, %(encapsulated_entity)s, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+

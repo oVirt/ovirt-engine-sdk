@@ -1,0 +1,13 @@
+    def %(action_name)s(self%(method_params)s, %(body_type_lc)s=params.%(body_type)s()%(headers_method_params_str)s):
+%(docs)s
+        url = '%(url)s'
+
+        result = self.__getProxy().request(
+            method='%(method)s',
+            url=UrlHelper.replace(url, {'{%(resource_name_lc)s:id}': self.get_id()}),
+            body=ParseHelper.toXml(%(body_type_lc)s),
+            headers=%(headers_map_params_str)s
+        )
+
+        return result
+

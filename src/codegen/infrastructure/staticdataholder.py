@@ -14,6 +14,6 @@
 # limitations under the License.
 #
 
-#preserved words that should not be used in code
+# preserved words that should not be used in code
 PRESERVED_NAMES = ['import', 'from']
 KNOWN_ACTIONS = ['get', 'add', 'delete', 'update']

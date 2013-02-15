@@ -1,0 +1,15 @@
+    def list(self, %(combined_method_params)s, **kwargs):
+%(docs)s
+        url='%(url)s'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(url, %(url_params)s),
+            headers=%(headers_map_params_str)s
+        ).get_%(resource_name_lc)s()
+
+        return ParseHelper.toCollection(
+            %(resource_type)s,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )
+

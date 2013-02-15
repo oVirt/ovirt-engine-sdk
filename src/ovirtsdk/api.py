@@ -1,3 +1,4 @@
+
 #
 # Copyright (c) 2010 Red Hat, Inc.
 #
@@ -19,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-01-16 16:04:08.414277'''
+'''Generated at: 2013-02-15 13:24:54.600583'''
 
 import types
 
@@ -29,8 +30,8 @@ from ovirtsdk.infrastructure.errors import DisconnectedError
 from ovirtsdk.infrastructure.errors import ImmutableError
 from ovirtsdk.infrastructure.context import context
 from ovirtsdk.infrastructure.proxy import Proxy
-
 from ovirtsdk.infrastructure.cache import Mode
+
 from ovirtsdk.infrastructure.brokers import Capabilities
 from ovirtsdk.infrastructure.brokers import Clusters
 from ovirtsdk.infrastructure.brokers import DataCenters
@@ -54,7 +55,7 @@ class API(object):
                  ca_file=None, port=None, timeout=None, persistent_auth=True, 
                  insecure=False, filter=False, debug=False):
 
-        """
+        '''
         @param url: server url (format "http/s://server[:port]/api")
         @param username: user (format user@domain)
         @param password: password
@@ -75,7 +76,7 @@ class API(object):
         @raise MissingParametersError: raised when get() method invoked without id or name been specified.
         @raise ConnectionError: raised when any kind of communication error occurred.
         @raise RequestError: raised when any kind of oVirt server error occurred.
-        """
+        '''
 
         # The instance id
         self.__id = id(self)
@@ -97,14 +98,22 @@ class API(object):
         )
 
         # Create the proxy:
-        proxy = Proxy(pool, persistent_auth)
+        proxy = Proxy(
+            pool, 
+            persistent_auth
+        )
 
         # Store filter to the context:
-        context.manager[self.id].add('filter', filter)
+        context.manager[self.id].add(
+            'filter', 
+            filter
+        )
 
         # Get entry point
-        entry_point = proxy.request(method='GET',
-                                    url='/api')
+        entry_point = proxy.request(
+            method='GET',
+            url='/api'
+        )
 
         # If server returns no response for the root resource, this is sign
         # that used http protocol against SSL secured site
@@ -112,15 +121,25 @@ class API(object):
             raise UnsecuredConnectionAttemptError
 
         # Store entry point to the context
-        context.manager[self.id].add('entry_point', entry_point, Mode.R)
+        context.manager[self.id].add(
+            'entry_point',
+            entry_point,
+            Mode.R
+        )
 
         # Store proxy to the context:
-        context.manager[self.id].add('proxy', proxy, Mode.R)
+        context.manager[self.id].add(
+            'proxy', 
+            proxy, 
+            Mode.R
+        )
 
         # We need to remember if persistent auth is enabled:
-        context.manager[self.id].add('persistent_auth',
-                                     persistent_auth,
-                                     Mode.R)
+        context.manager[self.id].add(
+            'persistent_auth',
+             persistent_auth,
+             Mode.R
+        )
 
         self.capabilities = Capabilities(self.id)
         self.clusters = Clusters(self.id)
@@ -162,9 +181,11 @@ class API(object):
         if proxy:
             if persistent_auth:
                 try:
-                    proxy.request(method='GET',
-                                  url='/api',
-                                  last=True)
+                    proxy.request(
+                        method='GET',
+                        url='/api',
+                        last=True
+                    )
                 except Exception:
                     pass
         else:
@@ -179,8 +200,10 @@ class API(object):
         proxy = context.manager[self.id].get('proxy')
         if proxy:
             try :
-                proxy.request(method='GET',
-                              url='/api')
+                proxy.request(
+                    method='GET',
+                    url='/api'
+                )
             except Exception, e:
                 if throw_exception: raise e
                 return False
@@ -203,16 +226,23 @@ class API(object):
     def get_summary(self):
         proxy = context.manager[self.id].get('proxy')
         if proxy:
-            return proxy.request(method='GET',
-                                 url='/api').summary
+            return proxy.request(
+                method='GET',
+                url='/api'
+            ).summary
+
         raise DisconnectedError
 
     def get_time(self):
         proxy = context.manager[self.id].get('proxy')
         if proxy:
-            return proxy.request(method='GET',
-                                 url='/api').time
+            return proxy.request(
+                method='GET',
+                url='/api'
+            ).time
+
         raise DisconnectedError
+
 
     def get_product_info(self):
         entry_point = context.manager[self.id].get('entry_point')

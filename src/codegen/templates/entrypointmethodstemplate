@@ -1,0 +1,59 @@
+
+
+    @property
+    def id(self):
+        return self.__id
+
+    def __setattr__(self, name, value):
+        if name in ['__id', 'id']:
+            raise ImmutableError(name)
+        else:
+            super(API, self).__setattr__(name, value)
+
+    def disconnect(self):
+        ''' terminates server connection/s '''
+
+        proxy = context.manager[self.id].get('proxy')
+        persistent_auth = context.manager[self.id].get('persistent_auth')
+
+        # If persistent authentication is enabled then we need to
+        # send a last request as a hint to the server to close the
+        # session:
+        if proxy:
+            if persistent_auth:
+                try:
+                    proxy.request(
+                        method='GET',
+                        url='/api',
+                        last=True
+                    )
+                except Exception:
+                    pass
+        else:
+            raise DisconnectedError
+
+        # Clear context
+        context.manager[self.id].clear(force=True)
+
+    def test(self, throw_exception=False):
+        ''' test server connectivity '''
+
+        proxy = context.manager[self.id].get('proxy')
+        if proxy:
+            try :
+                proxy.request(
+                    method='GET',
+                    url='/api'
+                )
+            except Exception, e:
+                if throw_exception: raise e
+                return False
+            return True
+        raise DisconnectedError
+
+    def set_filter(self, filter):
+        ''' enables user permission based filtering '''
+        if type(filter) == types.BooleanType:
+            context.manager[self.id].add('filter', filter)
+        else:
+            raise TypeError(filter)

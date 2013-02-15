@@ -1,0 +1,17 @@
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return [VersionCaps]:
+        '''
+
+        url='/api/capabilities'
+
+        result = self.__getProxy().get(url=url).version
+
+        return ParseHelper.toCollection(
+            VersionCaps,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )

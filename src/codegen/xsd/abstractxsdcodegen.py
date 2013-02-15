@@ -16,11 +16,14 @@
 
 from codegen.common.icodegen import ICodegen
 from ovirtsdk.infrastructure.context import context
+import abc
 
 class AbstractXsdCodegen(ICodegen):
     '''
     Providing XDS codegen capabilities abstraction
     '''
+
+    __metaclass__ = abc.ABCMeta
 
     SCHEMA_URI = '/api?schema'
 

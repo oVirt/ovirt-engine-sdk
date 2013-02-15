@@ -1,0 +1,12 @@
+    def add(self, %(resource_to_add_lc)s%(headers_method_params_str)s):
+%(docs)s
+        url = '%(url)s'
+
+        result = self.__getProxy().add(
+           url=url,
+           body=ParseHelper.toXml(%(resource_to_add_lc)s),
+           headers=%(headers_map_params_str)s
+        )
+
+        return %(resource_type)s(result, self.context)
+

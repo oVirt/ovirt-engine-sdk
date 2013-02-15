@@ -1,6 +1,6 @@
 == CodeGen ==
 
-This is python bindings code generation suite for the ovirt-engine-sdk
+This is python2xml entities bindings code generation suite for the ovirt-engine-sdk
 the genparams.py will call generateDS to generate the original code, and then
 it will edit the original code to generate the final code. the final code was
 dependented on the confiure of paramsconf.py.
