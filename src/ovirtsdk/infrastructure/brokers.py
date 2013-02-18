@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-02-15 15:17:52.316703'''
+'''Generated at: 2013-02-18 15:46:57.594940'''
 
 
 from ovirtsdk.xml import params
@@ -404,6 +404,34 @@ class ClusterGlusterVolumeBrick(params.GlusterBrick, Base):
             ),
             headers={'Content-type':None}
         )
+
+    def replace(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param action.brick.server_id: string
+        @param action.brick.brick_dir: string
+        [@param action.force: boolean]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/replace'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                 '{glustervolume:id}': self.parentclass.get_id(),
+                 '{brick:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
 
 class ClusterGlusterVolumeBricks(Base):
 
