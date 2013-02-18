@@ -244,7 +244,7 @@ class RsdlCodegen(AbstractRsdlCodegen):
                     else:
                         self.__extendSubResource(root_coll, sub_coll, url, rel, http_method,
                                                  body_type, link, response_type, collectionsHolder)
-            elif(ln is 3):
+            elif(ln >= 3):
                 if (i is 1):
                     root_coll = ParseHelper.getXmlWrapperType(k)
                 if (i is 2):
@@ -261,20 +261,21 @@ class RsdlCodegen(AbstractRsdlCodegen):
                 if (i is 3 and v is None and not self.__isCollection(link)):
                     self.__createAction(root_coll, sub_coll, k, url, rel, http_method,
                                         body_type, link, response_type, collectionsHolder)
-                elif(i is 3):
+                elif(i >= 3):
                     sub_root_coll = StringUtils.toSingular(root_coll, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS) + self.__toResourceType(sub_coll)
                     sub_res_coll = self.__toResourceType(resources.keys()[2])
                     if (v is None and self.__isCollection(link)):
                         self.__extendSubCollection(sub_root_coll, sub_res_coll, url, rel, http_method,
                                                    body_type, link, response_type, collectionsHolder)
-                    elif(self.__isAction(link)):
-                        self.__createAction(sub_root_coll, None, sub_coll, url, rel, http_method,
-                                            body_type, link, response_type, collectionsHolder)
+                    elif(self.__isAction(link) and i == ln):
+                        self.__createAction(sub_root_coll, sub_res_coll, k, url, rel, http_method,
+                                            body_type, link, response_type, collectionsHolder, force_sub_resource=True)
                     else:
                         self.__extendSubResource(sub_root_coll, sub_res_coll, url, rel, http_method,
                                                  body_type, link, response_type, collectionsHolder)
-            elif(ln > 3):
-                print 'WARNING: unsupported deep(' + str(len(resources)) + "): url: " + url
+
+                    root_coll = StringUtils.toSingular(sub_root_coll)
+                    sub_coll = sub_res_coll
 
     def __extendCollection(self, collection, url, rel, http_method,
                            body_type, link, response_type, collectionsHolder):
@@ -338,7 +339,7 @@ class RsdlCodegen(AbstractRsdlCodegen):
 
     def __createAction(self, root_coll, sub_coll, action_name, url, rel,
                        http_method, body_type, link, response_type, collectionsHolder,
-                       collection_action=False):
+                       collection_action=False, force_sub_resource=False):
         '''
         Creates action
         
@@ -358,23 +359,29 @@ class RsdlCodegen(AbstractRsdlCodegen):
         sub_resource = sub_coll[:len(sub_coll) - 1] if sub_coll is not None and not collection_action else None if sub_coll is None else sub_coll
         action_name = self.__adaptActionName(action_name, sub_resource if sub_resource is not None
                                                                        else resource)
-        if (sub_coll is None or sub_coll == ''):
+        if (sub_coll is None or sub_coll == '') and not force_sub_resource:
             if (not collectionsHolder.has_key(resource)):
                 self.__extendCollection(root_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
             action_body = Resource.action(url, body_type, link, action_name, resource, http_method, {})
             collectionsHolder[resource]['body'] += action_body
         else:
-            nested_collection = root_coll[:len(root_coll) - 1] + sub_coll
-            nested_resource = nested_collection[:len(nested_collection) - 1] if not collection_action else nested_collection
+            if not force_sub_resource:
+                nested_collection = root_coll[:len(root_coll) - 1] + sub_coll
+                nested_resource = nested_collection[:len(nested_collection) - 1] if not collection_action else nested_collection
 
-            if (not collectionsHolder.has_key(nested_collection)):
-                self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
+                if (not collectionsHolder.has_key(nested_collection)and not force_sub_resource):
+                    self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
 
-            if (not collectionsHolder.has_key(nested_resource)):
-                self.__extendSubResource(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
+                if (not collectionsHolder.has_key(nested_resource) and not force_sub_resource):
+                    self.__extendSubResource(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
 
-            action_body = SubResource.action(url, link, action_name, resource, body_type, sub_resource, http_method, {}, collection_action)
-            collectionsHolder[nested_resource]['body'] += action_body
+                action_body = SubResource.action(url, link, action_name, resource, body_type, sub_resource, http_method, {}, collection_action)
+
+                collectionsHolder[nested_resource]['body'] += action_body
+            else:
+                action_body = SubResource.action(url, link, action_name, resource, body_type, sub_resource, http_method, {}, collection_action)
+
+                collectionsHolder[resource]['body'] += action_body
 
     # rename /preserved/ names
     def __adaptActionName(self, action_name, resource):
