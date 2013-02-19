@@ -37,6 +37,11 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
+* Tue Feb  19 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.9-1
+ - to DiskStatistics.list() added 'max' argument
+ - to ClusterGlusterVolumeBrick added 'replace' action
+ - Host can be added to cluster now either by id or name
+
 * Sun Jan  13 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.8-1
  - fix date in ovirt-engine-sdk.spec.in
 
