@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Sun Jan 13 19:52:44 2013 by generateDS.py version 2.7b.
+# Generated Tue Feb 19 14:54:44 2013 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -9046,10 +9046,11 @@ class Files(BaseResources):
 class Hook(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, event_name=None, md5=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, event_name=None, md5=None, host=None):
         super(Hook, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.event_name = event_name
         self.md5 = md5
+        self.host = host
     def factory(*args_, **kwargs_):
         if Hook.subclass:
             return Hook.subclass(*args_, **kwargs_)
@@ -9060,6 +9061,8 @@ class Hook(BaseResource):
     def set_event_name(self, event_name): self.event_name = event_name
     def get_md5(self): return self.md5
     def set_md5(self, md5): self.md5 = md5
+    def get_host(self): return self.host
+    def set_host(self, host): self.host = host
     def export(self, outfile, level, namespace_='', name_='Hook', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -9082,10 +9085,13 @@ class Hook(BaseResource):
         if self.md5 is not None:
             showIndent(outfile, level)
             outfile.write('<%smd5>%s</%smd5>\n' % (namespace_, self.gds_format_string(quote_xml(self.md5).encode(ExternalEncoding), input_name='md5'), namespace_))
+        if self.host is not None:
+            self.host.export(outfile, level, namespace_, name_='host')
     def hasContent_(self):
         if (
             self.event_name is not None or
             self.md5 is not None or
+            self.host is not None or
             super(Hook, self).hasContent_()
             ):
             return True
@@ -9106,6 +9112,12 @@ class Hook(BaseResource):
         if self.md5 is not None:
             showIndent(outfile, level)
             outfile.write('md5=%s,\n' % quote_python(self.md5).encode(ExternalEncoding))
+        if self.host is not None:
+            showIndent(outfile, level)
+            outfile.write('host=model_.host(\n')
+            self.host.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -9122,6 +9134,10 @@ class Hook(BaseResource):
             md5_ = child_.text
             md5_ = self.gds_validate_string(md5_, node, 'md5')
             self.md5 = md5_
+        elif nodeName_ == 'host':
+            obj_ = Host.factory()
+            obj_.build(child_)
+            self.set_host(obj_)
         super(Hook, self).buildChildren(child_, node, nodeName_, True)
 # end class Hook
 

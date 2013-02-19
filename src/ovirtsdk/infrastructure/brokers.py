@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-01-13 19:52:39.094040'''
+'''Generated at: 2013-02-19 14:54:43.225049'''
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
@@ -341,6 +341,34 @@ class ClusterGlusterVolumeBrick(params.GlusterBrick, Base):
                                                                    '{glustervolume:id}': self.parentclass.get_id(),
                                                                    '{brick:id}': self.get_id()}),
                                        headers={'Content-type':None})
+
+    def replace(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param action.brick.server_id: string
+        @param action.brick.brick_dir: string
+        [@param action.force: boolean]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/replace'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                 '{glustervolume:id}': self.parentclass.get_id(),
+                 '{brick:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
 
 class ClusterGlusterVolumeBricks(Base):
 
@@ -1658,17 +1686,20 @@ class DiskStatistics(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Statistics:
         '''
 
         url = '/api/disks/{disk:id}/statistics'
 
-        result = self.__getProxy().get(url=UrlHelper.replace(url, {'{disk:id}': self.parentclass.get_id()})).get_statistic()
-
+        result = self.__getProxy().get(url=SearchHelper.appendQuery(url=UrlHelper.replace(url=url,
+                                                                                           args={'{disk:id}': self.parentclass.get_id()}),
+                                                                   qargs={'max:matrix':max}),
+                                      headers={}).get_statistic()
         return ParseHelper.toSubCollection(DiskStatistic,
                                            self.parentclass,
                                            FilterHelper.filter(result, kwargs),
@@ -2839,7 +2870,7 @@ class Host(params.Host, Base):
         [@param host.name: string]
         [@param host.address: string]
         [@param host.root_password: string]
-        [@param host.cluster.id: string]
+        [@param host.cluster.id|name: string]
         [@param host.port: int]
         [@param host.storage_manager.priority: int]
         [@param host.power_management.type: string]
