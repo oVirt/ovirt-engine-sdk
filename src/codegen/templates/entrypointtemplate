@@ -24,6 +24,7 @@ class API(object):
         @raise MissingParametersError: raised when get() method invoked without id or name been specified.
         @raise ConnectionError: raised when any kind of communication error occurred.
         @raise RequestError: raised when any kind of oVirt server error occurred.
+        @raise FormatError: raised when server replies in non-XML format.
         '''
 
         # The instance id

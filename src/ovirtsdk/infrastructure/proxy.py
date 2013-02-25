@@ -18,9 +18,11 @@ import cookielib
 import socket
 import urlparse
 
-from ovirtsdk.infrastructure.errors import RequestError, ConnectionError
+from ovirtsdk.infrastructure.errors import RequestError, ConnectionError, \
+    FormatError
 from ovirtsdk.xml import params
 from cookielib import DefaultCookiePolicy
+from lxml import etree
 
 class CookieJarAdapter():
     """
@@ -231,14 +233,27 @@ class Proxy():
             # Print response body (if in debug mode)
             self.__do_debug(conn, response_body)
 
-            if not noParse and (response_body is not None and response_body is not ''):
-                return params.parseString(response_body)
+            if not noParse:
+                return self.__xml2py(response_body)
             return response_body
 
         except socket.error, e:
             raise ConnectionError, str(e)
         finally:
             conn.close()
+
+    def __xml2py(self, obj):
+        '''
+        Parse XML in to python entity
+        '''
+        if obj is not None and obj is not '':
+            try:
+                return params.parseString(obj)
+            except etree.XMLSyntaxError:
+                # raised when server replies in non-XML format,
+                # the motivation for this error is #915036
+                raise FormatError
+        return obj
 
     def __do_debug(self, conn, body):
         '''
