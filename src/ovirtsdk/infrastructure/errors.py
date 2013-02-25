@@ -97,3 +97,7 @@ class RequestError(Exception):
 class ImmutableError(Exception):
     def __init__(self, key):
         Exception.__init__(self, '[ERROR]::\'%s\' is immutable.' % key)
+
+class FormatError(Exception):
+    def __init__(self):
+        Exception.__init__(self, '[ERROR]::Server reply is in inappropriate format.')
