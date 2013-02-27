@@ -134,6 +134,7 @@ class Connection(object):
     def __createStaticHeaders(self, username, password):
         auth = base64.encodestring("%s:%s" % (username, password)).strip()
         return {"Content-type" : "application/xml",
+                "Accept"       : "application/xml",
                 "Authorization": "Basic %s" % auth}
 
     def __createDynamicHeaders(self):
