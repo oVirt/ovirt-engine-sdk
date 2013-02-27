@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-02-15 13:24:54.600583'''
+'''Generated at: 2013-02-27 09:42:27.329672'''
 
 import types
 
@@ -53,7 +53,7 @@ from ovirtsdk.infrastructure.brokers import VmPools
 class API(object):
     def __init__(self, url, username, password, key_file=None, cert_file=None,
                  ca_file=None, port=None, timeout=None, persistent_auth=True, 
-                 insecure=False, filter=False, debug=False):
+                 insecure=False, validate_cert_chain=True, filter=False, debug=False):
 
         '''
         @param url: server url (format "http/s://server[:port]/api")
@@ -65,7 +65,8 @@ class API(object):
         [@param port: port to use (if not specified in url)]
         [@param timeout: request timeout]
         [@param persistent_auth: enable persistent authentication (format True|False)]
-        [@param insecure: signals to not demand site trustworthiness for ssl enabled connection (format True|False)]
+        [@param insecure: signals to not demand site trustworthiness for ssl enabled connection (format True|False, default is False)]
+        [@param validate_cert_chain: validate the server's certificate (format True|False, default is True)]
         [@param filter: signals if user permission based filtering should be turned on/off (format True|False)]
         [@param debug: debug (format True|False)]
 
@@ -95,6 +96,7 @@ class API(object):
             strict=False,
             timeout=timeout,
             insecure=insecure,
+            validate_cert_chain=validate_cert_chain,
             debug=debug
         )
 

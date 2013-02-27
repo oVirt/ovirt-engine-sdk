@@ -27,13 +27,16 @@ class Connection(object):
     '''
     The oVirt api connection proxy
     '''
-    def __init__(self, url, port, key_file, cert_file, ca_file, strict, timeout, username, password, manager, insecure=False, debug=False):
+    def __init__(self, url, port, key_file, cert_file, ca_file, strict, timeout, username,
+                 password, manager, insecure=False, validate_cert_chain=True, debug=False):
+
         self.__connection = self.__createConnection(url=url,
                                                     port=port,
                                                     key_file=key_file,
                                                     cert_file=cert_file,
                                                     ca_file=ca_file,
                                                     insecure=insecure,
+                                                    validate_cert_chain=validate_cert_chain,
                                                     strict=strict,
                                                     timeout=timeout)
 
@@ -42,6 +45,7 @@ class Connection(object):
         self.__manager = manager
         self.__id = id(self)
         self.__insecure = insecure
+        self.__validate_cert_chain = validate_cert_chain
         self.__context = manager.context
 
     def get_id(self):
@@ -99,14 +103,17 @@ class Connection(object):
 
 
     def __createConnection(self, url, key_file=None, cert_file=None,
-                           ca_file=None, insecure=False, port=None,
+                           ca_file=None, insecure=False, validate_cert_chain=True, port=None,
                            strict=None, timeout=None):
 
         u = self.__parse_url(url)
 
         if(u.scheme == 'https'):
-            if not insecure and not ca_file:
-                raise NoCertificatesError
+            if validate_cert_chain:
+                if not insecure and not ca_file:
+                    raise NoCertificatesError
+            else:
+                ca_file = None
 
             return HTTPSConnection(
                        host=u.hostname,
@@ -139,3 +146,15 @@ class Connection(object):
             super(Connection, self).__setattr__(name, value)
 
     id = property(get_id, None, None, None)
+
+    def isInsecure(self):
+        '''
+        signals to not demand site trustworthiness for ssl enabled connection (default is False)
+        '''
+        return self.__insecure
+
+    def isValidateCertChain(self):
+        '''
+        validate the server's certificate (default is True)
+        '''
+        return self.__validate_cert_chain
