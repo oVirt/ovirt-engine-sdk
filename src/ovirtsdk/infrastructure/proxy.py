@@ -90,6 +90,7 @@ class Proxy():
     '''
     The proxy to web connection
     '''
+
     def __init__(self, connections_pool, persistent_auth=True):
         '''
         @param connections_pool: connections pool
@@ -101,11 +102,26 @@ class Proxy():
         # In order to create the cookies adapter we need to extract from the
         # URL the host name, so that we can accept cookies only from that host:
         self._url = self.__connections_pool.get_url()
-        parsed_url = urlparse.urlparse(self._url)
 
         # Create the cookies policy and jar:
-        cookies_policy = cookielib.DefaultCookiePolicy(allowed_domains=[parsed_url.hostname])
+        cookies_policy = cookielib.DefaultCookiePolicy(
+                   strict_ns_domain=DefaultCookiePolicy.DomainStrictNoDots,
+                   allowed_domains=self.__getAllowedDomains(self._url))
         self._cookies_jar = cookielib.CookieJar(policy=cookies_policy)
+
+    def __getAllowedDomains(self, url):
+        '''
+        fetches allowed domains for cookie
+        '''
+
+        LOCAL_HOST = 'localhost'
+        parsed_url = urlparse.urlparse(url)
+        domains = [parsed_url.hostname]
+
+        if parsed_url.hostname == LOCAL_HOST:
+            return domains.append(LOCAL_HOST + '.local')
+
+        return domains
 
     def getConnectionsPool(self):
         '''
@@ -196,10 +212,7 @@ class Proxy():
         '''
         try:
             # Add cookie headers as needed:
-            request_adapter = CookieJarAdapter(self._url, headers)
-            self._cookies_jar.set_policy(
-                     cookielib.DefaultCookiePolicy(
-                           strict_ns_domain=DefaultCookiePolicy.DomainStrictNoDots))
+            request_adapter = CookieJarAdapter(self._url + url, headers)
             self._cookies_jar.add_cookie_header(request_adapter)
 
             # Every request except the last one should indicate that we prefer
@@ -208,7 +221,14 @@ class Proxy():
                 headers["Prefer"] = "persistent-auth"
 
             # Send the request and wait for the response:
-            conn.doRequest(method=method, url=url, body=body, headers=headers)
+            conn.doRequest(
+                   method=method,
+                   url=url,
+                   body=body,
+                   headers=headers,
+                   no_auth=self._persistent_auth and \
+                        self.__isSetJsessionCookie(self._cookies_jar)
+            )
 
             response = conn.getResponse()
 
@@ -241,6 +261,19 @@ class Proxy():
             raise ConnectionError, str(e)
         finally:
             conn.close()
+
+    def __isSetJsessionCookie(self, cookies_jar):
+        '''
+        Checks if JSESSIONID cookie is set
+
+        @param cookies_jar: cookies container
+        '''
+        if cookies_jar and len(cookies_jar._cookies) > 0:
+            for key in cookies_jar._cookies.keys():
+                if cookies_jar._cookies[key].has_key('/api') and \
+                    cookies_jar._cookies[key]['/api'].has_key('JSESSIONID'):
+                    return True
+        return False
 
     def __xml2py(self, obj):
         '''
