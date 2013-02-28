@@ -54,16 +54,38 @@ class Connection(object):
     def getConnection(self):
         return self.__connection
 
-    def getDefaultHeaders(self):
+    def getDefaultHeaders(self, no_auth=False):
+        '''
+        Fetches headers to be used on request
+
+        @param no_auth: do not authorize request (authorization is done via cookie)
+        '''
+
+        AUTH_HEADER = 'Authorization'
+
         headers = self.__headers.copy()
         headers.update(self.__createDynamicHeaders())
+
+        # remove AUTH_HEADER
+        if no_auth and headers.has_key(AUTH_HEADER):
+            headers.pop(AUTH_HEADER)
+
         return headers
 
-    def doRequest(self, method, url, body=urllib.urlencode({}), headers={}):
-        return self.__connection.request(method, url, body, self.getHeaders(headers))
+    def doRequest(self, method, url, body=urllib.urlencode({}), headers={}, no_auth=False):
+        '''
+        Performs HTTP request
 
-    def getHeaders(self, headers):
-        extended_headers = self.getDefaultHeaders()
+        @param method: HTTP method
+        @param url: URL to invoke the request on
+        @param body: request body
+        @param headers: request headers
+        @param no_auth: do not authorize request (authorization is done via cookie)
+        '''
+        return self.__connection.request(method, url, body, self.getHeaders(headers, no_auth))
+
+    def getHeaders(self, headers, no_auth=False):
+        extended_headers = self.getDefaultHeaders(no_auth)
         for k in headers.keys():
             if (headers[k] is None and extended_headers.has_key(k)):
                 extended_headers.pop(k)
@@ -72,6 +94,7 @@ class Connection(object):
                     extended_headers[k] = str(headers[k])
                 else:
                     extended_headers[k] = headers[k]
+
         return extended_headers
 
     def getResponse(self):
