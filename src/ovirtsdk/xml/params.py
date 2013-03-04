@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Tue Feb 19 14:54:44 2013 by generateDS.py version 2.7b.
+# Generated Tue Apr  2 14:17:34 2013 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -644,7 +644,8 @@ class DetailedLinks(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'link':
-            obj_ = DetailedLink.factory()
+            class_obj_ = self.get_class_obj_(child_, DetailedLink)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.link.append(obj_)
 # end class DetailedLinks
@@ -3940,6 +3941,81 @@ class IpVersions(GeneratedsSuper):
             ip_version_ = self.gds_validate_string(ip_version_, node, 'ip_version')
             self.ip_version.append(ip_version_)
 # end class IpVersions
+
+
+class CpuModes(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, cpu_mode=None):
+        if cpu_mode is None:
+            self.cpu_mode = []
+        else:
+            self.cpu_mode = cpu_mode
+    def factory(*args_, **kwargs_):
+        if CpuModes.subclass:
+            return CpuModes.subclass(*args_, **kwargs_)
+        else:
+            return CpuModes(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_cpu_mode(self): return self.cpu_mode
+    def set_cpu_mode(self, cpu_mode): self.cpu_mode = cpu_mode
+    def add_cpu_mode(self, value): self.cpu_mode.append(value)
+    def insert_cpu_mode(self, index, value): self.cpu_mode[index] = value
+    def export(self, outfile, level, namespace_='', name_='CpuModes', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='CpuModes')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CpuModes'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='CpuModes', fromsubclass_=False):
+        for cpu_mode_ in self.cpu_mode:
+            showIndent(outfile, level)
+            outfile.write('<%scpu_mode>%s</%scpu_mode>\n' % (namespace_, self.gds_format_string(quote_xml(cpu_mode_).encode(ExternalEncoding), input_name='cpu_mode'), namespace_))
+    def hasContent_(self):
+        if (
+            self.cpu_mode
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='CpuModes'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('cpu_mode=[\n')
+        level += 1
+        for cpu_mode_ in self.cpu_mode:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(cpu_mode_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'cpu_mode':
+            cpu_mode_ = child_.text
+            cpu_mode_ = self.gds_validate_string(cpu_mode_, node, 'cpu_mode')
+            self.cpu_mode.append(cpu_mode_)
+# end class CpuModes
 
 
 class ActionableResource(GeneratedsSuper):
@@ -17801,12 +17877,13 @@ class Schema(Link):
 class RSDL(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, href=None, rel=None, description=None, version=None, schema=None, links=None):
+    def __init__(self, href=None, rel=None, description=None, version=None, schema=None, general=None, links=None):
         self.href = _cast(None, href)
         self.rel = _cast(None, rel)
         self.description = description
         self.version = version
         self.schema = schema
+        self.general = general
         self.links = links
     def factory(*args_, **kwargs_):
         if RSDL.subclass:
@@ -17820,6 +17897,8 @@ class RSDL(GeneratedsSuper):
     def set_version(self, version): self.version = version
     def get_schema(self): return self.schema
     def set_schema(self, schema): self.schema = schema
+    def get_general(self): return self.general
+    def set_general(self, general): self.general = general
     def get_links(self): return self.links
     def set_links(self, links): self.links = links
     def get_href(self): return self.href
@@ -17853,6 +17932,8 @@ class RSDL(GeneratedsSuper):
             self.version.export(outfile, level, namespace_, name_='version')
         if self.schema is not None:
             self.schema.export(outfile, level, namespace_, name_='schema')
+        if self.general is not None:
+            self.general.export(outfile, level, namespace_, name_='general')
         if self.links is not None:
             self.links.export(outfile, level, namespace_, name_='links')
     def hasContent_(self):
@@ -17860,6 +17941,7 @@ class RSDL(GeneratedsSuper):
             self.description is not None or
             self.version is not None or
             self.schema is not None or
+            self.general is not None or
             self.links is not None
             ):
             return True
@@ -17893,6 +17975,12 @@ class RSDL(GeneratedsSuper):
             showIndent(outfile, level)
             outfile.write('schema=model_.schema(\n')
             self.schema.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.general is not None:
+            showIndent(outfile, level)
+            outfile.write('general=model_.GeneralMetadata(\n')
+            self.general.exportLiteral(outfile, level, name_='general')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.links is not None:
@@ -17929,6 +18017,10 @@ class RSDL(GeneratedsSuper):
             obj_ = Schema.factory()
             obj_.build(child_)
             self.set_schema(obj_)
+        elif nodeName_ == 'general':
+            obj_ = GeneralMetadata.factory()
+            obj_.build(child_)
+            self.set_general(obj_)
         elif nodeName_ == 'links':
             obj_ = DetailedLinks.factory()
             obj_.build(child_)
@@ -20347,11 +20439,12 @@ class API(BaseResource):
 class DetailedLink(Link):
     subclass = None
     superclass = Link
-    def __init__(self, href=None, rel=None, request=None, response=None, linkCapabilities=None):
-        super(DetailedLink, self).__init__(href, rel, )
+    def __init__(self, href=None, rel=None, request=None, response=None, linkCapabilities=None, extensiontype_=None):
+        super(DetailedLink, self).__init__(href, rel, extensiontype_, )
         self.request = request
         self.response = response
         self.linkCapabilities = linkCapabilities
+        self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if DetailedLink.subclass:
             return DetailedLink.subclass(*args_, **kwargs_)
@@ -20364,6 +20457,8 @@ class DetailedLink(Link):
     def set_response(self, response): self.response = response
     def get_linkCapabilities(self): return self.linkCapabilities
     def set_linkCapabilities(self, linkCapabilities): self.linkCapabilities = linkCapabilities
+    def get_extensiontype_(self): return self.extensiontype_
+    def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def export(self, outfile, level, namespace_='', name_='DetailedLink', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -20378,6 +20473,10 @@ class DetailedLink(Link):
             outfile.write('/>\n')
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='DetailedLink'):
         super(DetailedLink, self).exportAttributes(outfile, level, already_processed, namespace_, name_='DetailedLink')
+        if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
+            already_processed.append('xsi:type')
+            outfile.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            outfile.write(' xsi:type="%s"' % self.extensiontype_)
     def exportChildren(self, outfile, level, namespace_='', name_='DetailedLink', fromsubclass_=False):
         super(DetailedLink, self).exportChildren(outfile, level, namespace_, name_, True)
         if self.request is not None:
@@ -20429,6 +20528,10 @@ class DetailedLink(Link):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('xsi:type', node)
+        if value is not None and 'xsi:type' not in already_processed:
+            already_processed.append('xsi:type')
+            self.extensiontype_ = value
         super(DetailedLink, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'request':
@@ -20447,10 +20550,93 @@ class DetailedLink(Link):
 # end class DetailedLink
 
 
+class GeneralMetadata(DetailedLink):
+    subclass = None
+    superclass = DetailedLink
+    def __init__(self, href=None, rel=None, request=None, response=None, linkCapabilities=None, name=None, description=None):
+        super(GeneralMetadata, self).__init__(href, rel, request, response, linkCapabilities, )
+        self.name = name
+        self.description = description
+    def factory(*args_, **kwargs_):
+        if GeneralMetadata.subclass:
+            return GeneralMetadata.subclass(*args_, **kwargs_)
+        else:
+            return GeneralMetadata(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_name(self): return self.name
+    def set_name(self, name): self.name = name
+    def get_description(self): return self.description
+    def set_description(self, description): self.description = description
+    def export(self, outfile, level, namespace_='', name_='GeneralMetadata', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GeneralMetadata')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GeneralMetadata'):
+        super(GeneralMetadata, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GeneralMetadata')
+    def exportChildren(self, outfile, level, namespace_='', name_='GeneralMetadata', fromsubclass_=False):
+        super(GeneralMetadata, self).exportChildren(outfile, level, namespace_, name_, True)
+        if self.name is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sname>%s</%sname>\n' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_))
+        if self.description is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sdescription>%s</%sdescription>\n' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_))
+    def hasContent_(self):
+        if (
+            self.name is not None or
+            self.description is not None or
+            super(GeneralMetadata, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='GeneralMetadata'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(GeneralMetadata, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(GeneralMetadata, self).exportLiteralChildren(outfile, level, name_)
+        if self.name is not None:
+            showIndent(outfile, level)
+            outfile.write('name=%s,\n' % quote_python(self.name).encode(ExternalEncoding))
+        if self.description is not None:
+            showIndent(outfile, level)
+            outfile.write('description=%s,\n' % quote_python(self.description).encode(ExternalEncoding))
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(GeneralMetadata, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'name':
+            name_ = child_.text
+            name_ = self.gds_validate_string(name_, node, 'name')
+            self.name = name_
+        elif nodeName_ == 'description':
+            description_ = child_.text
+            description_ = self.gds_validate_string(description_, node, 'description')
+            self.description = description_
+        super(GeneralMetadata, self).buildChildren(child_, node, nodeName_, True)
+# end class GeneralMetadata
+
+
 class VersionCaps(Version):
     subclass = None
     superclass = Version
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None):
         super(VersionCaps, self).__init__(actions, href, id, name, description, creation_status, link, major, full_version, build_, minor, revision, )
         self.current = current
         self.features = features
@@ -20489,6 +20675,7 @@ class VersionCaps(Version):
         self.usages = usages
         self.nfs_versions = nfs_versions
         self.pm_proxy_types = pm_proxy_types
+        self.cpu_modes = cpu_modes
         self.gluster_volume_types = gluster_volume_types
         self.transport_types = transport_types
         self.gluster_volume_states = gluster_volume_states
@@ -20575,6 +20762,8 @@ class VersionCaps(Version):
     def set_nfs_versions(self, nfs_versions): self.nfs_versions = nfs_versions
     def get_pm_proxy_types(self): return self.pm_proxy_types
     def set_pm_proxy_types(self, pm_proxy_types): self.pm_proxy_types = pm_proxy_types
+    def get_cpu_modes(self): return self.cpu_modes
+    def set_cpu_modes(self, cpu_modes): self.cpu_modes = cpu_modes
     def get_gluster_volume_types(self): return self.gluster_volume_types
     def set_gluster_volume_types(self, gluster_volume_types): self.gluster_volume_types = gluster_volume_types
     def get_transport_types(self): return self.transport_types
@@ -20678,6 +20867,8 @@ class VersionCaps(Version):
             self.nfs_versions.export(outfile, level, namespace_, name_='nfs_versions')
         if self.pm_proxy_types is not None:
             self.pm_proxy_types.export(outfile, level, namespace_, name_='pm_proxy_types')
+        if self.cpu_modes is not None:
+            self.cpu_modes.export(outfile, level, namespace_, name_='cpu_modes')
         if self.gluster_volume_types is not None:
             self.gluster_volume_types.export(outfile, level, namespace_, name_='gluster_volume_types')
         if self.transport_types is not None:
@@ -20729,6 +20920,7 @@ class VersionCaps(Version):
             self.usages is not None or
             self.nfs_versions is not None or
             self.pm_proxy_types is not None or
+            self.cpu_modes is not None or
             self.gluster_volume_types is not None or
             self.transport_types is not None or
             self.gluster_volume_states is not None or
@@ -20968,6 +21160,12 @@ class VersionCaps(Version):
             self.pm_proxy_types.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.cpu_modes is not None:
+            showIndent(outfile, level)
+            outfile.write('cpu_modes=model_.cpu_modes(\n')
+            self.cpu_modes.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.gluster_volume_types is not None:
             showIndent(outfile, level)
             outfile.write('gluster_volume_types=model_.gluster_volume_types(\n')
@@ -21166,6 +21364,10 @@ class VersionCaps(Version):
             obj_ = PmProxyTypes.factory()
             obj_.build(child_)
             self.set_pm_proxy_types(obj_)
+        elif nodeName_ == 'cpu_modes':
+            obj_ = CpuModes.factory()
+            obj_.build(child_)
+            self.set_cpu_modes(obj_)
         elif nodeName_ == 'gluster_volume_types':
             obj_ = GlusterVolumeTypes.factory()
             obj_.build(child_)
@@ -21312,6 +21514,7 @@ __all__ = [
     "Certificate",
     "Cluster",
     "Clusters",
+    "CpuModes",
     "CpuTopology",
     "CpuTune",
     "Creation",
@@ -21344,6 +21547,7 @@ __all__ = [
     "Files",
     "Floppies",
     "Floppy",
+    "GeneralMetadata",
     "GlusterBrick",
     "GlusterBricks",
     "GlusterStates",
@@ -21496,6 +21700,7 @@ _rootClassMap = {
                     "cluster"                       : Cluster,
                     "clusters"                      : Clusters,
                     "cpu"                           : CPU,
+                    "cpu_modes"                     : CpuModes,
                     "cpu_tune"                      : CpuTune,
                     "cpus"                          : CPUs,
                     "creation"                      : Creation,
@@ -21527,6 +21732,8 @@ _rootClassMap = {
                     "files"                         : Files,
                     "floppies"                      : Floppies,
                     "floppy"                        : Floppy,
+                    "general"                       : GeneralMetadata,
+                    "general_metadata"              : GeneralMetadata,
                     "gluster_volume"                : GlusterVolume,
                     "gluster_volume_states"         : GlusterStates,
                     "gluster_volume_types"          : GlusterVolumeTypes,

@@ -15,6 +15,7 @@
 #
 
 from ovirtsdk.utils.searchhelper import SearchHelper
+from ovirtsdk.infrastructure.errors import AmbiguousQueryError
 
 class FilterHelper():
     @staticmethod
@@ -23,6 +24,9 @@ class FilterHelper():
         return SearchHelper.filterResults(collection, kwargs) if (len(kwargs) is not 0) else collection
 
     @staticmethod
-    def getItem(result=[]):
+    def getItem(result=[], query=None):
         '''Returns first item in collection if exist, otherwise None'''
+
+        if len(result) > 1:
+            raise AmbiguousQueryError(query)
         return result[0] if result else None

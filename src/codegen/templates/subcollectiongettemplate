@@ -40,7 +40,8 @@
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )

@@ -20,7 +20,10 @@
             ).get_%(resource_name_lc)s()
 
             return %(resource_type)s(
-                        FilterHelper.getItem(result),
+                        FilterHelper.getItem(
+                            result,
+                            query="alias=" + alias
+                        ),
                         self.context
             )
         else:
