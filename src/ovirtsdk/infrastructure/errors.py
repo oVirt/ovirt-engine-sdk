@@ -17,7 +17,7 @@
 from ovirtsdk.xml import params
 import types
 
-class ERROR(Exception):
+class OvirtSdkError(Exception):
     def __init__(self, content):
         Exception.__init__(self, content)
 
@@ -53,7 +53,7 @@ class RequestError(Exception):
         RESPONSE_FAULT_BODY = '<fault>'
         APP_SERVER_RESPONSE_FORMAT = '<html><head><title>JBoss Web'
 
-        #REST error
+        # REST error
         if res and res.startswith(RESPONSE_FORMAT) and res.find(RESPONSE_FAULT_BODY) != -1:
             try:
                 f_detail = params.parseString(res)
@@ -62,18 +62,18 @@ class RequestError(Exception):
 
             if types.StringType != type(f_detail):
                 if isinstance(f_detail, params.Action) and f_detail.fault is not None:
-                    #self.reason = f_detail.fault.reason
+                    # self.reason = f_detail.fault.reason
                     detail = f_detail.fault.detail.lstrip()
                 else:
-                    #self.reason = response.reason
+                    # self.reason = response.reason
                     if f_detail and f_detail.detail:
                         detail = f_detail.detail.lstrip()
 
-                #engine returns can-do-action error messages with brackets
+                # engine returns can-do-action error messages with brackets
                 if detail and detail.startswith('[') and detail.endswith(']'):
                     detail = detail[1:len(detail) - 1]
 
-        #application server error
+        # application server error
         elif res.startswith(APP_SERVER_RESPONSE_FORMAT):
             detail = res
             start = detail.find('<h1>')
@@ -101,3 +101,11 @@ class ImmutableError(Exception):
 class FormatError(Exception):
     def __init__(self):
         Exception.__init__(self, '[ERROR]::Server reply is in inappropriate format.')
+
+class AmbiguousQueryError(OvirtSdkError):
+    def __init__(self, query=None):
+        Exception.__init__(
+           self,
+           '[ERROR]::Used query %s produces ambiguous results.'
+                % ("(" + query + ")" if query and query != "" else "")
+        )

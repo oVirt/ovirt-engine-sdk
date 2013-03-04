@@ -22,7 +22,10 @@
             ).get_%(resource_name_lc)s()
 
             return %(resource_type)s(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:

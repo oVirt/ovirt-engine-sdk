@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-03-04 15:02:46.897427'''
+'''Generated at: 2013-03-04 15:48:23.658388'''
 
 
 from ovirtsdk.xml import params
@@ -538,7 +538,8 @@ class ClusterGlusterVolumeBricks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -681,7 +682,8 @@ class ClusterGlusterVolumes(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -887,7 +889,8 @@ class ClusterNetworks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -1066,7 +1069,8 @@ class ClusterPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -1184,7 +1188,10 @@ class Clusters(Base):
             ).get_cluster()
 
             return Cluster(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -1722,7 +1729,8 @@ class DataCenterClusterGlustervolumeBricks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -1849,7 +1857,8 @@ class DataCenterClusterGlustervolumes(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -2055,7 +2064,8 @@ class DataCenterClusterNetworks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -2239,7 +2249,8 @@ class DataCenterClusterPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -2385,7 +2396,8 @@ class DataCenterClusters(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -2564,7 +2576,8 @@ class DataCenterPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -2724,7 +2737,8 @@ class DataCenterQuotas(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -3032,7 +3046,8 @@ class DataCenterStorageDomainDiskPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -3156,7 +3171,8 @@ class DataCenterStorageDomainDiskStatistics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -3314,7 +3330,8 @@ class DataCenterStorageDomainDisks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -3448,7 +3465,8 @@ class DataCenterStorageDomains(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -3555,7 +3573,10 @@ class DataCenters(Base):
             ).get_data_center()
 
             return DataCenter(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -3755,7 +3776,8 @@ class DiskPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -3878,7 +3900,8 @@ class DiskStatistics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -4014,7 +4037,10 @@ class Disks(Base):
             ).get_disk()
 
             return Disk(
-                        FilterHelper.getItem(result),
+                        FilterHelper.getItem(
+                            result,
+                            query="alias=" + alias
+                        ),
                         self.context
             )
         else:
@@ -4151,7 +4177,8 @@ class DomainGroups(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -4276,7 +4303,8 @@ class DomainUsers(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -4359,7 +4387,10 @@ class Domains(Base):
             ).get_domain()
 
             return Domain(
-                FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -4498,7 +4529,10 @@ class Events(Base):
             ).get_event()
 
             return Event(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -4729,7 +4763,8 @@ class GroupPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -4952,7 +4987,8 @@ class GroupRolePermits(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -5083,7 +5119,8 @@ class GroupRoles(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -5257,7 +5294,8 @@ class GroupTags(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -5358,7 +5396,10 @@ class Groups(Base):
             ).get_group()
 
             return Group(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -5744,7 +5785,8 @@ class HostHooks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -6006,7 +6048,8 @@ class HostNicStatistics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -6148,7 +6191,8 @@ class HostNics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -6373,7 +6417,8 @@ class HostPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -6496,7 +6541,8 @@ class HostStatistics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -6597,7 +6643,8 @@ class HostStorage(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -6771,7 +6818,8 @@ class HostTags(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -6906,7 +6954,10 @@ class Hosts(Base):
             ).get_host()
 
             return Host(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -7148,7 +7199,8 @@ class NetworkPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -7259,7 +7311,10 @@ class Networks(Base):
             ).get_network()
 
             return Network(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -7492,7 +7547,8 @@ class RolePermits(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -7600,7 +7656,10 @@ class Roles(Base):
             ).get_role()
 
             return Role(
-                FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -7896,7 +7955,8 @@ class StorageDomainDiskPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -8017,7 +8077,8 @@ class StorageDomainDiskStatistics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -8171,7 +8232,8 @@ class StorageDomainDisks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -8297,7 +8359,8 @@ class StorageDomainFiles(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -8478,7 +8541,8 @@ class StorageDomainPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -8681,7 +8745,8 @@ class StorageDomainTemplateDisks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -8778,7 +8843,8 @@ class StorageDomainTemplates(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -8982,7 +9048,8 @@ class StorageDomainVMDisks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -9079,7 +9146,8 @@ class StorageDomainVMs(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -9228,7 +9296,10 @@ class StorageDomains(Base):
             ).get_storage_domain()
 
             return StorageDomain(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -9387,7 +9458,10 @@ class Tags(Base):
             ).get_tag()
 
             return Tag(
-                FilterHelper.getItem(FilterHelper.filter(result, {'name':name})),
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -9625,7 +9699,8 @@ class TemplateCdRoms(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -9802,7 +9877,8 @@ class TemplateDisks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -10019,7 +10095,8 @@ class TemplateNics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -10198,7 +10275,8 @@ class TemplatePermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -10348,7 +10426,10 @@ class Templates(Base):
             ).get_template()
 
             return Template(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -10578,7 +10659,8 @@ class UserPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -10801,7 +10883,8 @@ class UserRolePermits(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -10932,7 +11015,8 @@ class UserRoles(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -11106,7 +11190,8 @@ class UserTags(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -11209,7 +11294,10 @@ class Users(Base):
             ).get_user()
 
             return User(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -11755,7 +11843,8 @@ class VMCdRoms(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -12084,7 +12173,8 @@ class VMDiskPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -12205,7 +12295,8 @@ class VMDiskStatistics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -12370,7 +12461,8 @@ class VMDisks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -12625,7 +12717,8 @@ class VMNicReporteddevices(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -12746,7 +12839,8 @@ class VMNicStatistics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -12881,7 +12975,8 @@ class VMNics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -13060,7 +13155,8 @@ class VMPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -13183,7 +13279,8 @@ class VMReportedDevices(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -13446,7 +13543,8 @@ class VMSnapshotCdroms(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -13567,7 +13665,8 @@ class VMSnapshotDisks(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -13688,7 +13787,8 @@ class VMSnapshotNics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -13814,7 +13914,8 @@ class VMSnapshots(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -13937,7 +14038,8 @@ class VMStatistics(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -14111,7 +14213,8 @@ class VMTags(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -14319,7 +14422,10 @@ class VMs(Base):
             ).get_vm()
 
             return VM(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
@@ -14598,7 +14704,8 @@ class VmPoolPermissions(Base):
                     FilterHelper.filter(
                         result,
                         {'name':name}
-                    )
+                    ),
+                    query="name=" + name
                 ),
                 self.context
             )
@@ -14703,7 +14810,10 @@ class VmPools(Base):
             ).get_vmpool()
 
             return VmPool(
-                FilterHelper.getItem(result),
+                FilterHelper.getItem(
+                    result,
+                    query="name=" + name
+                ),
                 self.context
             )
         else:
