@@ -262,8 +262,11 @@ class RsdlCodegen(AbstractRsdlCodegen):
                     self.__createAction(root_coll, sub_coll, k, url, rel, http_method,
                                         body_type, link, response_type, collectionsHolder)
                 elif(i >= 3):
-                    sub_root_coll = StringUtils.toSingular(root_coll, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS) + self.__toResourceType(sub_coll)
-                    sub_res_coll = self.__toResourceType(resources.keys()[2])
+                    sub_root_coll = StringUtils.toSingular(
+                           root_coll, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS
+                    ) + self.__toResourceType(sub_coll)
+                    sub_res_coll = self.__toResourceType(resources.keys()[i-1])
+
                     if (v is None and self.__isCollection(link)):
                         self.__extendSubCollection(sub_root_coll, sub_res_coll, url, rel, http_method,
                                                    body_type, link, response_type, collectionsHolder)
@@ -272,7 +275,8 @@ class RsdlCodegen(AbstractRsdlCodegen):
                                             body_type, link, response_type, collectionsHolder, force_sub_resource=True)
                     else:
                         self.__extendSubResource(sub_root_coll, sub_res_coll, url, rel, http_method,
-                                                 body_type, link, response_type, collectionsHolder)
+                                                 body_type, link, response_type, collectionsHolder,
+                                                 extend_only=(ln > i))
 
                     root_coll = StringUtils.toSingular(sub_root_coll)
                     sub_coll = sub_res_coll

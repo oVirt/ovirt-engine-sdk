@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-03-04 13:43:57.387452'''
+'''Generated at: 2013-03-04 15:02:46.897427'''
 
 
 from ovirtsdk.xml import params
@@ -1384,7 +1384,7 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
         self.parentclass = datacentercluster
         self.superclass  =  glustervolume
 
-        self.glustervolumes = DataCenterClusterGlustervolumeGlustervolumes(self, context)
+        self.bricks = DataCenterClusterGlustervolumeBricks(self, context)
 
     def __new__(cls, datacentercluster, glustervolume, context):
         if glustervolume is None: return None
@@ -1414,24 +1414,6 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
                 {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
                  '{cluster:id}': self.parentclass.get_id(),
                  '{glustervolume:id}': self.get_id()}
-            ),
-            headers={'Content-type':None}
-        )
-
-    def delete(self):
-        '''
-        @return None:
-        '''
-
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
-                 '{cluster:id}': self.parentclass.parentclass.get_id(),
-                 '{glustervolume:id}': self.parentclass.get_id(),
-                 '{brick:id}': self.get_id()}
             ),
             headers={'Content-type':None}
         )
@@ -1580,17 +1562,17 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
 
         return result
 
-class DataCenterClusterGlustervolumeGlustervolume(params.GlusterVolume, Base):
-    def __init__(self, datacenterclusterglustervolume, glustervolume, context):
+class DataCenterClusterGlustervolumeBrick(params.GlusterBrick, Base):
+    def __init__(self, datacenterclusterglustervolume, brick, context):
         Base.__init__(self, context)
         self.parentclass = datacenterclusterglustervolume
-        self.superclass  =  glustervolume
+        self.superclass  =  brick
 
         #SUB_COLLECTIONS
-    def __new__(cls, datacenterclusterglustervolume, glustervolume, context):
-        if glustervolume is None: return None
+    def __new__(cls, datacenterclusterglustervolume, brick, context):
+        if brick is None: return None
         obj = object.__new__(cls)
-        obj.__init__(datacenterclusterglustervolume, glustervolume, context)
+        obj.__init__(datacenterclusterglustervolume, brick, context)
         return obj
 
     def __getProxy(self):
@@ -1645,7 +1627,7 @@ class DataCenterClusterGlustervolumeGlustervolume(params.GlusterVolume, Base):
 
         return result
 
-class DataCenterClusterGlustervolumeGlustervolumes(Base):
+class DataCenterClusterGlustervolumeBricks(Base):
 
     def __init__(self, datacenterclusterglustervolume , context):
         Base.__init__(self, context)
@@ -1682,7 +1664,7 @@ class DataCenterClusterGlustervolumeGlustervolumes(Base):
             headers={}
         )
 
-        return DataCenterClusterGlustervolumeGlustervolume(
+        return DataCenterClusterGlustervolumeBrick(
             self.parentclass,
             result,
             self.context
@@ -1714,7 +1696,7 @@ class DataCenterClusterGlustervolumeGlustervolumes(Base):
                     headers={}
                 )
 
-                return DataCenterClusterGlustervolumeGlustervolume(
+                return DataCenterClusterGlustervolumeBrick(
                     self.parentclass,
                     result,
                     self.context
@@ -1734,7 +1716,7 @@ class DataCenterClusterGlustervolumeGlustervolumes(Base):
                 headers={}
             ).get_brick()
 
-            return DataCenterClusterGlustervolumeGlustervolume(
+            return DataCenterClusterGlustervolumeBrick(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -1766,7 +1748,7 @@ class DataCenterClusterGlustervolumeGlustervolumes(Base):
         ).get_brick()
 
         return ParseHelper.toSubCollection(
-            DataCenterClusterGlustervolumeGlustervolume,
+            DataCenterClusterGlustervolumeBrick,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -2874,7 +2856,8 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
         self.parentclass = datacenterstoragedomain
         self.superclass  =  disk
 
-        self.disks = DataCenterStorageDomainDiskDisks(self, context)
+        self.statistics = DataCenterStorageDomainDiskStatistics(self, context)
+        self.permissions = DataCenterStorageDomainDiskPermissions(self, context)
 
     def __new__(cls, datacenterstoragedomain, disk, context):
         if disk is None: return None
@@ -2914,35 +2897,17 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def delete(self):
-        '''
-        @return None:
-        '''
-
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
-                 '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                 '{disk:id}': self.parentclass.get_id(),
-                 '{permission:id}': self.get_id()}
-            ),
-            headers={'Content-type':None}
-        )
-
-class DataCenterStorageDomainDiskDisk(params.Disk, Base):
-    def __init__(self, datacenterstoragedomaindisk, disk, context):
+class DataCenterStorageDomainDiskPermission(params.Permission, Base):
+    def __init__(self, datacenterstoragedomaindisk, permission, context):
         Base.__init__(self, context)
         self.parentclass = datacenterstoragedomaindisk
-        self.superclass  =  disk
+        self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, datacenterstoragedomaindisk, disk, context):
-        if disk is None: return None
+    def __new__(cls, datacenterstoragedomaindisk, permission, context):
+        if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(datacenterstoragedomaindisk, disk, context)
+        obj.__init__(datacenterstoragedomaindisk, permission, context)
         return obj
 
     def __getProxy(self):
@@ -2972,7 +2937,7 @@ class DataCenterStorageDomainDiskDisk(params.Disk, Base):
             headers={'Content-type':None}
         )
 
-class DataCenterStorageDomainDiskDisks(Base):
+class DataCenterStorageDomainDiskPermissions(Base):
 
     def __init__(self, datacenterstoragedomaindisk , context):
         Base.__init__(self, context)
@@ -3009,7 +2974,7 @@ class DataCenterStorageDomainDiskDisks(Base):
             headers={}
         )
 
-        return DataCenterStorageDomainDiskDisk(
+        return DataCenterStorageDomainDiskPermission(
             self.parentclass,
             result,
             self.context
@@ -3041,7 +3006,7 @@ class DataCenterStorageDomainDiskDisks(Base):
                     headers={}
                 )
 
-                return DataCenterStorageDomainDiskDisk(
+                return DataCenterStorageDomainDiskPermission(
                     self.parentclass,
                     result,
                     self.context
@@ -3061,7 +3026,7 @@ class DataCenterStorageDomainDiskDisks(Base):
                 headers={}
             ).get_permission()
 
-            return DataCenterStorageDomainDiskDisk(
+            return DataCenterStorageDomainDiskPermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -3093,7 +3058,7 @@ class DataCenterStorageDomainDiskDisks(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            DataCenterStorageDomainDiskDisk,
+            DataCenterStorageDomainDiskPermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -3101,6 +3066,43 @@ class DataCenterStorageDomainDiskDisks(Base):
             ),
             context=self.context
         )
+
+class DataCenterStorageDomainDiskStatistic(params.Statistic, Base):
+    def __init__(self, datacenterstoragedomaindisk, statistic, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterstoragedomaindisk
+        self.superclass  =  statistic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacenterstoragedomaindisk, statistic, context):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenterstoragedomaindisk, statistic, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class DataCenterStorageDomainDiskStatistics(Base):
+
+    def __init__(self, datacenterstoragedomaindisk , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterstoragedomaindisk
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
     def get(self, name=None, id=None):
 
@@ -3128,7 +3130,7 @@ class DataCenterStorageDomainDiskDisks(Base):
                     headers={}
                 )
 
-                return DataCenterStorageDomainDiskDisk(
+                return DataCenterStorageDomainDiskStatistic(
                     self.parentclass,
                     result,
                     self.context
@@ -3148,7 +3150,7 @@ class DataCenterStorageDomainDiskDisks(Base):
                 headers={}
             ).get_statistic()
 
-            return DataCenterStorageDomainDiskDisk(
+            return DataCenterStorageDomainDiskStatistic(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -3180,7 +3182,7 @@ class DataCenterStorageDomainDiskDisks(Base):
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
-            DataCenterStorageDomainDiskDisk,
+            DataCenterStorageDomainDiskStatistic,
             self.parentclass,
             FilterHelper.filter(
                 result,
