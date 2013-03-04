@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Sun Feb 10 15:40:11 2013 by generateDS.py version 2.7b.
+# Generated Mon Mar  4 13:43:50 2013 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -5118,7 +5118,7 @@ class SchedulingPolicy(GeneratedsSuper):
 class Cluster(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, cpu=None, data_center=None, memory_policy=None, scheduling_policy=None, version=None, supported_versions=None, error_handling=None, virt_service=None, gluster_service=None, threads_as_cores=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, cpu=None, data_center=None, memory_policy=None, scheduling_policy=None, version=None, supported_versions=None, error_handling=None, virt_service=None, gluster_service=None, threads_as_cores=None, tunnel_migration=None):
         super(Cluster, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.cpu = cpu
         self.data_center = data_center
@@ -5130,6 +5130,7 @@ class Cluster(BaseResource):
         self.virt_service = virt_service
         self.gluster_service = gluster_service
         self.threads_as_cores = threads_as_cores
+        self.tunnel_migration = tunnel_migration
     def factory(*args_, **kwargs_):
         if Cluster.subclass:
             return Cluster.subclass(*args_, **kwargs_)
@@ -5156,6 +5157,8 @@ class Cluster(BaseResource):
     def set_gluster_service(self, gluster_service): self.gluster_service = gluster_service
     def get_threads_as_cores(self): return self.threads_as_cores
     def set_threads_as_cores(self, threads_as_cores): self.threads_as_cores = threads_as_cores
+    def get_tunnel_migration(self): return self.tunnel_migration
+    def set_tunnel_migration(self, tunnel_migration): self.tunnel_migration = tunnel_migration
     def export(self, outfile, level, namespace_='', name_='Cluster', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -5195,6 +5198,9 @@ class Cluster(BaseResource):
         if self.threads_as_cores is not None:
             showIndent(outfile, level)
             outfile.write('<%sthreads_as_cores>%s</%sthreads_as_cores>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.threads_as_cores)), input_name='threads_as_cores'), namespace_))
+        if self.tunnel_migration is not None:
+            showIndent(outfile, level)
+            outfile.write('<%stunnel_migration>%s</%stunnel_migration>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.tunnel_migration)), input_name='tunnel_migration'), namespace_))
     def hasContent_(self):
         if (
             self.cpu is not None or
@@ -5207,6 +5213,7 @@ class Cluster(BaseResource):
             self.virt_service is not None or
             self.gluster_service is not None or
             self.threads_as_cores is not None or
+            self.tunnel_migration is not None or
             super(Cluster, self).hasContent_()
             ):
             return True
@@ -5272,6 +5279,9 @@ class Cluster(BaseResource):
         if self.threads_as_cores is not None:
             showIndent(outfile, level)
             outfile.write('threads_as_cores=%s,\n' % self.threads_as_cores)
+        if self.tunnel_migration is not None:
+            showIndent(outfile, level)
+            outfile.write('tunnel_migration=%s,\n' % self.tunnel_migration)
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -5339,6 +5349,16 @@ class Cluster(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'threads_as_cores')
             self.threads_as_cores = ival_
+        elif nodeName_ == 'tunnel_migration':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'tunnel_migration')
+            self.tunnel_migration = ival_
         super(Cluster, self).buildChildren(child_, node, nodeName_, True)
 # end class Cluster
 
@@ -11026,7 +11046,7 @@ class StorageDomains(BaseResources):
 class Template(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, timezone=None, domain=None, usb=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, timezone=None, domain=None, usb=None, tunnel_migration=None):
         super(Template, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.vm = vm
         self.type_ = type_
@@ -11045,6 +11065,7 @@ class Template(BaseResource):
         self.timezone = timezone
         self.domain = domain
         self.usb = usb
+        self.tunnel_migration = tunnel_migration
     def factory(*args_, **kwargs_):
         if Template.subclass:
             return Template.subclass(*args_, **kwargs_)
@@ -11085,6 +11106,8 @@ class Template(BaseResource):
     def set_domain(self, domain): self.domain = domain
     def get_usb(self): return self.usb
     def set_usb(self, usb): self.usb = usb
+    def get_tunnel_migration(self): return self.tunnel_migration
+    def set_tunnel_migration(self, tunnel_migration): self.tunnel_migration = tunnel_migration
     def export(self, outfile, level, namespace_='', name_='Template', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -11142,6 +11165,9 @@ class Template(BaseResource):
             self.domain.export(outfile, level, namespace_, name_='domain')
         if self.usb is not None:
             self.usb.export(outfile, level, namespace_, name_='usb')
+        if self.tunnel_migration is not None:
+            showIndent(outfile, level)
+            outfile.write('<%stunnel_migration>%s</%stunnel_migration>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.tunnel_migration)), input_name='tunnel_migration'), namespace_))
     def hasContent_(self):
         if (
             self.vm is not None or
@@ -11161,6 +11187,7 @@ class Template(BaseResource):
             self.timezone is not None or
             self.domain is not None or
             self.usb is not None or
+            self.tunnel_migration is not None or
             super(Template, self).hasContent_()
             ):
             return True
@@ -11256,6 +11283,9 @@ class Template(BaseResource):
             self.usb.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.tunnel_migration is not None:
+            showIndent(outfile, level)
+            outfile.write('tunnel_migration=%s,\n' % self.tunnel_migration)
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -11349,6 +11379,16 @@ class Template(BaseResource):
             obj_ = Usb.factory()
             obj_.build(child_)
             self.set_usb(obj_)
+        elif nodeName_ == 'tunnel_migration':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'tunnel_migration')
+            self.tunnel_migration = ival_
         super(Template, self).buildChildren(child_, node, nodeName_, True)
 # end class Template
 
@@ -11813,7 +11853,7 @@ class HighAvailability(GeneratedsSuper):
 class Display(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, type_=None, address=None, port=None, secure_port=None, monitors=None, allow_override=None, certificate=None, smartcard_enabled=None):
+    def __init__(self, type_=None, address=None, port=None, secure_port=None, monitors=None, allow_override=None, certificate=None, smartcard_enabled=None, keyboard_layout=None):
         self.type_ = type_
         self.address = address
         self.port = port
@@ -11822,6 +11862,7 @@ class Display(GeneratedsSuper):
         self.allow_override = allow_override
         self.certificate = certificate
         self.smartcard_enabled = smartcard_enabled
+        self.keyboard_layout = keyboard_layout
     def factory(*args_, **kwargs_):
         if Display.subclass:
             return Display.subclass(*args_, **kwargs_)
@@ -11844,6 +11885,8 @@ class Display(GeneratedsSuper):
     def set_certificate(self, certificate): self.certificate = certificate
     def get_smartcard_enabled(self): return self.smartcard_enabled
     def set_smartcard_enabled(self, smartcard_enabled): self.smartcard_enabled = smartcard_enabled
+    def get_keyboard_layout(self): return self.keyboard_layout
+    def set_keyboard_layout(self, keyboard_layout): self.keyboard_layout = keyboard_layout
     def export(self, outfile, level, namespace_='', name_='Display', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -11882,6 +11925,9 @@ class Display(GeneratedsSuper):
         if self.smartcard_enabled is not None:
             showIndent(outfile, level)
             outfile.write('<%ssmartcard_enabled>%s</%ssmartcard_enabled>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.smartcard_enabled)), input_name='smartcard_enabled'), namespace_))
+        if self.keyboard_layout is not None:
+            showIndent(outfile, level)
+            outfile.write('<%skeyboard_layout>%s</%skeyboard_layout>\n' % (namespace_, self.gds_format_string(quote_xml(self.keyboard_layout).encode(ExternalEncoding), input_name='keyboard_layout'), namespace_))
     def hasContent_(self):
         if (
             self.type_ is not None or
@@ -11891,7 +11937,8 @@ class Display(GeneratedsSuper):
             self.monitors is not None or
             self.allow_override is not None or
             self.certificate is not None or
-            self.smartcard_enabled is not None
+            self.smartcard_enabled is not None or
+            self.keyboard_layout is not None
             ):
             return True
         else:
@@ -11931,6 +11978,9 @@ class Display(GeneratedsSuper):
         if self.smartcard_enabled is not None:
             showIndent(outfile, level)
             outfile.write('smartcard_enabled=%s,\n' % self.smartcard_enabled)
+        if self.keyboard_layout is not None:
+            showIndent(outfile, level)
+            outfile.write('keyboard_layout=%s,\n' % quote_python(self.keyboard_layout).encode(ExternalEncoding))
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -11995,6 +12045,10 @@ class Display(GeneratedsSuper):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'smartcard_enabled')
             self.smartcard_enabled = ival_
+        elif nodeName_ == 'keyboard_layout':
+            keyboard_layout_ = child_.text
+            keyboard_layout_ = self.gds_validate_string(keyboard_layout_, node, 'keyboard_layout')
+            self.keyboard_layout = keyboard_layout_
 # end class Display
 
 
@@ -12703,7 +12757,7 @@ class GuestInfo(GeneratedsSuper):
 class VM(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, extensiontype_=None):
         super(VM, self).__init__(actions, href, id, name, description, creation_status, link, extensiontype_, )
         self.type_ = type_
         self.status = status
@@ -12735,6 +12789,7 @@ class VM(BaseResource):
         self.guest_info = guest_info
         self.quota = quota
         self.usb = usb
+        self.tunnel_migration = tunnel_migration
         self.vmpool = vmpool
         self.cdroms = cdroms
         self.floppies = floppies
@@ -12806,6 +12861,8 @@ class VM(BaseResource):
     def set_quota(self, quota): self.quota = quota
     def get_usb(self): return self.usb
     def set_usb(self, usb): self.usb = usb
+    def get_tunnel_migration(self): return self.tunnel_migration
+    def set_tunnel_migration(self, tunnel_migration): self.tunnel_migration = tunnel_migration
     def get_vmpool(self): return self.vmpool
     def set_vmpool(self, vmpool): self.vmpool = vmpool
     def get_cdroms(self): return self.cdroms
@@ -12904,6 +12961,9 @@ class VM(BaseResource):
             self.quota.export(outfile, level, namespace_, name_='quota')
         if self.usb is not None:
             self.usb.export(outfile, level, namespace_, name_='usb')
+        if self.tunnel_migration is not None:
+            showIndent(outfile, level)
+            outfile.write('<%stunnel_migration>%s</%stunnel_migration>\n' % (namespace_, self.gds_format_boolean(self.gds_str_lower(str(self.tunnel_migration)), input_name='tunnel_migration'), namespace_))
         if self.vmpool is not None:
             self.vmpool.export(outfile, level, namespace_, name_='vmpool')
         if self.cdroms is not None:
@@ -12944,6 +13004,7 @@ class VM(BaseResource):
             self.guest_info is not None or
             self.quota is not None or
             self.usb is not None or
+            self.tunnel_migration is not None or
             self.vmpool is not None or
             self.cdroms is not None or
             self.floppies is not None or
@@ -13118,6 +13179,9 @@ class VM(BaseResource):
             self.usb.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.tunnel_migration is not None:
+            showIndent(outfile, level)
+            outfile.write('tunnel_migration=%s,\n' % self.tunnel_migration)
         if self.vmpool is not None:
             showIndent(outfile, level)
             outfile.write('vmpool=model_.vmpool(\n')
@@ -13290,6 +13354,16 @@ class VM(BaseResource):
             obj_ = Usb.factory()
             obj_.build(child_)
             self.set_usb(obj_)
+        elif nodeName_ == 'tunnel_migration':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'tunnel_migration')
+            self.tunnel_migration = ival_
         elif nodeName_ == 'vmpool':
             obj_ = VmPool.factory()
             obj_.build(child_)
@@ -14581,10 +14655,11 @@ class Floppies(BaseDevices):
 class Disk(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, template=None, alias=None, image_id=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, quota=None, lun_storage=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, vm=None, template=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, quota=None, lun_storage=None):
         super(Disk, self).__init__(actions, href, id, name, description, creation_status, link, vm, template, )
         self.alias = alias
         self.image_id = image_id
+        self.storage_domain = storage_domain
         self.storage_domains = storage_domains
         self.size = size
         self.type_ = type_
@@ -14612,6 +14687,8 @@ class Disk(BaseDevice):
     def set_alias(self, alias): self.alias = alias
     def get_image_id(self): return self.image_id
     def set_image_id(self, image_id): self.image_id = image_id
+    def get_storage_domain(self): return self.storage_domain
+    def set_storage_domain(self, storage_domain): self.storage_domain = storage_domain
     def get_storage_domains(self): return self.storage_domains
     def set_storage_domains(self, storage_domains): self.storage_domains = storage_domains
     def get_size(self): return self.size
@@ -14668,6 +14745,8 @@ class Disk(BaseDevice):
         if self.image_id is not None:
             showIndent(outfile, level)
             outfile.write('<%simage_id>%s</%simage_id>\n' % (namespace_, self.gds_format_string(quote_xml(self.image_id).encode(ExternalEncoding), input_name='image_id'), namespace_))
+        if self.storage_domain is not None:
+            self.storage_domain.export(outfile, level, namespace_, name_='storage_domain')
         if self.storage_domains is not None:
             self.storage_domains.export(outfile, level, namespace_, name_='storage_domains')
         if self.size is not None:
@@ -14718,6 +14797,7 @@ class Disk(BaseDevice):
         if (
             self.alias is not None or
             self.image_id is not None or
+            self.storage_domain is not None or
             self.storage_domains is not None or
             self.size is not None or
             self.type_ is not None or
@@ -14755,6 +14835,12 @@ class Disk(BaseDevice):
         if self.image_id is not None:
             showIndent(outfile, level)
             outfile.write('image_id=%s,\n' % quote_python(self.image_id).encode(ExternalEncoding))
+        if self.storage_domain is not None:
+            showIndent(outfile, level)
+            outfile.write('storage_domain=model_.storage_domain(\n')
+            self.storage_domain.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.storage_domains is not None:
             showIndent(outfile, level)
             outfile.write('storage_domains=model_.storage_domains(\n')
@@ -14837,6 +14923,10 @@ class Disk(BaseDevice):
             image_id_ = child_.text
             image_id_ = self.gds_validate_string(image_id_, node, 'image_id')
             self.image_id = image_id_
+        elif nodeName_ == 'storage_domain':
+            obj_ = StorageDomain.factory()
+            obj_.build(child_)
+            self.set_storage_domain(obj_)
         elif nodeName_ == 'storage_domains':
             obj_ = StorageDomains.factory()
             obj_.build(child_)
@@ -15514,8 +15604,8 @@ class Nics(BaseDevices):
 class Snapshot(VM):
     subclass = None
     superclass = VM
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, vm=None, date=None, snapshot_status=None):
-        super(Snapshot, self).__init__(actions, href, id, name, description, creation_status, link, type_, status, memory, cpu, os, high_availability, display, host, cluster, template, storage_domain, start_time, creation_time, origin, stateless, delete_protected, timezone, domain, custom_properties, payloads, statistics, disks, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, vmpool, cdroms, floppies, reported_devices, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, vm=None, date=None, snapshot_status=None):
+        super(Snapshot, self).__init__(actions, href, id, name, description, creation_status, link, type_, status, memory, cpu, os, high_availability, display, host, cluster, template, storage_domain, start_time, creation_time, origin, stateless, delete_protected, timezone, domain, custom_properties, payloads, statistics, disks, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, tunnel_migration, vmpool, cdroms, floppies, reported_devices, )
         self.vm = vm
         self.date = date
         self.snapshot_status = snapshot_status

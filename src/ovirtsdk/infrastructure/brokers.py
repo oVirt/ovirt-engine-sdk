@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-02-18 15:46:57.594940'''
+'''Generated at: 2013-03-04 13:43:57.387452'''
 
 
 from ovirtsdk.xml import params
@@ -157,6 +157,7 @@ class Cluster(params.Cluster, Base):
         [@param cluster.virt_service: boolean]
         [@param cluster.gluster_service: boolean]
         [@param cluster.threads_as_cores: boolean]
+        [@param cluster.tunnel_migration: boolean]
         [@param correlation_id: any string]
 
         @return Cluster:
@@ -1136,6 +1137,7 @@ class Clusters(Base):
         [@param cluster.virt_service: boolean]
         [@param cluster.gluster_service: boolean]
         [@param cluster.threads_as_cores: boolean]
+        [@param cluster.tunnel_migration: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -1217,6 +1219,7 @@ class DataCenter(params.DataCenter, Base):
         self.superclass = datacenter
 
         self.storagedomains = DataCenterStorageDomains(self, context)
+        self.clusters = DataCenterClusters(self, context)
         self.quotas = DataCenterQuotas(self, context)
         self.permissions = DataCenterPermissions(self, context)
 
@@ -1285,6 +1288,1158 @@ class DataCenter(params.DataCenter, Base):
         )
 
         return DataCenter(result, self.context)
+
+class DataCenterCluster(params.Cluster, Base):
+    def __init__(self, datacenter, cluster, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenter
+        self.superclass  =  cluster
+
+        self.permissions = DataCenterClusterPermissions(self, context)
+        self.glustervolumes = DataCenterClusterGlustervolumes(self, context)
+        self.networks = DataCenterClusterNetworks(self, context)
+
+    def __new__(cls, datacenter, cluster, context):
+        if cluster is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenter, cluster, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/datacenters/{datacenter:id}/clusters/{cluster:id}',
+            {'{datacenter:id}' : self.parentclass.get_id(),
+             '{cluster:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, correlation_id=None):
+        '''
+        [@param cluster.name: string]
+        [@param cluster.description: string]
+        [@param cluster.cpu.id: string]
+        [@param cluster.version.major: int]
+        [@param cluster.version.minor: int]
+        [@param cluster.memory_policy.overcommit.percent: double]
+        [@param cluster.memory_policy.transparent_hugepages.enabled: boolean]
+        [@param cluster.scheduling_policy.policy: string]
+        [@param cluster.scheduling_policy.thresholds.low: int]
+        [@param cluster.scheduling_policy.thresholds.high: int]
+        [@param cluster.scheduling_policy.thresholds.duration: int]
+        [@param cluster.error_handling.on_error: string]
+        [@param cluster.virt_service: boolean]
+        [@param cluster.gluster_service: boolean]
+        [@param cluster.threads_as_cores: boolean]
+        [@param cluster.tunnel_migration: boolean]
+        [@param correlation_id: any string]
+
+        @return Cluster:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}'
+        url = UrlHelper.replace(
+            url,
+            {'{datacenter:id}' : self.parentclass.get_id(),
+             '{cluster:id}': self.get_id()}
+        )
+
+        result = self.__getProxy().update(
+            url=SearchHelper.appendQuery(url, {}),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return DataCenterCluster(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
+    def __init__(self, datacentercluster, glustervolume, context):
+        Base.__init__(self, context)
+        self.parentclass = datacentercluster
+        self.superclass  =  glustervolume
+
+        self.glustervolumes = DataCenterClusterGlustervolumeGlustervolumes(self, context)
+
+    def __new__(cls, datacentercluster, glustervolume, context):
+        if glustervolume is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacentercluster, glustervolume, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.parentclass.get_id(),
+                 '{glustervolume:id}': self.parentclass.get_id(),
+                 '{brick:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+    def rebalance(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/rebalance'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+    def resetalloptions(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetalloptions'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+    def resetoption(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetoption'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+    def setoption(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/setoption'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+    def start(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/start'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+    def stop(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stop'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+class DataCenterClusterGlustervolumeGlustervolume(params.GlusterVolume, Base):
+    def __init__(self, datacenterclusterglustervolume, glustervolume, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterclusterglustervolume
+        self.superclass  =  glustervolume
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacenterclusterglustervolume, glustervolume, context):
+        if glustervolume is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenterclusterglustervolume, glustervolume, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.parentclass.get_id(),
+                 '{glustervolume:id}': self.parentclass.get_id(),
+                 '{brick:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+    def replace(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/replace'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.parentclass.get_id(),
+                 '{glustervolume:id}': self.parentclass.get_id(),
+                 '{brick:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+class DataCenterClusterGlustervolumeGlustervolumes(Base):
+
+    def __init__(self, datacenterclusterglustervolume , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterclusterglustervolume
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, glusterbricks):
+
+        '''
+        @type GlusterBricks:
+
+
+        @return GlusterBricks:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.parentclass.get_id(),
+                 '{glustervolume:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(glusterbricks),
+            headers={}
+        )
+
+        return DataCenterClusterGlustervolumeGlustervolume(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return GlusterBricks:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                             '{cluster:id}': self.parentclass.parentclass.get_id(),
+                             '{glustervolume:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterClusterGlustervolumeGlustervolume(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                     '{cluster:id}': self.parentclass.parentclass.get_id(),
+                     '{glustervolume:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_brick()
+
+            return DataCenterClusterGlustervolumeGlustervolume(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return GlusterBricks:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.parentclass.get_id(),
+                 '{glustervolume:id}': self.parentclass.get_id()}
+            )
+        ).get_brick()
+
+        return ParseHelper.toSubCollection(
+            DataCenterClusterGlustervolumeGlustervolume,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterClusterGlustervolumes(Base):
+
+    def __init__(self, datacentercluster , context):
+        Base.__init__(self, context)
+        self.parentclass = datacentercluster
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, glustervolume):
+
+        '''
+        @type GlusterVolume:
+
+
+        @return GlusterVolume:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(glustervolume),
+            headers={}
+        )
+
+        return DataCenterClusterGlustervolume(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return GlusterVolumes:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                             '{cluster:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterClusterGlustervolume(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                     '{cluster:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_gluster_volume()
+
+            return DataCenterClusterGlustervolume(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return GlusterVolumes:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id()}
+            )
+        ).get_gluster_volume()
+
+        return ParseHelper.toSubCollection(
+            DataCenterClusterGlustervolume,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterClusterNetwork(params.Network, Base):
+    def __init__(self, datacentercluster, network, context):
+        Base.__init__(self, context)
+        self.parentclass = datacentercluster
+        self.superclass  =  network
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacentercluster, network, context):
+        if network is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacentercluster, network, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/networks/{network:id}',
+            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+             '{cluster:id}': self.parentclass.get_id(),
+             '{network:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, correlation_id=None):
+        '''
+        [@param network.display: boolean]
+        [@param network.usages.usage: collection]
+        {
+          [@ivar usage: string]
+        }
+        [@param correlation_id: any string]
+
+        @return Network:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/networks/{network:id}'
+        url = UrlHelper.replace(
+            url,
+            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+             '{cluster:id}': self.parentclass.get_id(),
+             '{network:id}': self.get_id()}
+        )
+
+        result = self.__getProxy().update(
+            url=SearchHelper.appendQuery(url, {}),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return DataCenterClusterNetwork(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+class DataCenterClusterNetworks(Base):
+
+    def __init__(self, datacentercluster , context):
+        Base.__init__(self, context)
+        self.parentclass = datacentercluster
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, network, expect=None, correlation_id=None):
+
+        '''
+        @type Network:
+
+        @param network.id|name: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Network:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/networks'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(network),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return DataCenterClusterNetwork(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Networks:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/networks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                             '{cluster:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterClusterNetwork(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                     '{cluster:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_network()
+
+            return DataCenterClusterNetwork(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Networks:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/networks'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_network()
+
+        return ParseHelper.toSubCollection(
+            DataCenterClusterNetwork,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterClusterPermission(params.Permission, Base):
+    def __init__(self, datacentercluster, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = datacentercluster
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacentercluster, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacentercluster, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions/{permission:id}',
+            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+             '{cluster:id}': self.parentclass.get_id(),
+             '{permission:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class DataCenterClusterPermissions(Base):
+
+    def __init__(self, datacentercluster , context):
+        Base.__init__(self, context)
+        self.parentclass = datacentercluster
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission, expect=None, correlation_id=None):
+
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.group.id: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Permission:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return DataCenterClusterPermission(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                             '{cluster:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterClusterPermission(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                     '{cluster:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_permission()
+
+            return DataCenterClusterPermission(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            DataCenterClusterPermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterClusters(Base):
+
+    def __init__(self, datacenter , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenter
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, cluster, expect=None, correlation_id=None):
+
+        '''
+        @type Cluster:
+
+        @param cluster.name: string
+        @param cluster.version.major: int
+        @param cluster.version.minor: int
+        @param cluster.cpu.id: string
+        [@param cluster.description: string]
+        [@param cluster.memory_policy.overcommit.percent: double]
+        [@param cluster.memory_policy.transparent_hugepages.enabled: boolean]
+        [@param cluster.scheduling_policy.policy: string]
+        [@param cluster.scheduling_policy.thresholds.low: int]
+        [@param cluster.scheduling_policy.thresholds.high: int]
+        [@param cluster.scheduling_policy.thresholds.duration: int]
+        [@param cluster.error_handling.on_error: string]
+        [@param cluster.virt_service: boolean]
+        [@param cluster.gluster_service: boolean]
+        [@param cluster.threads_as_cores: boolean]
+        [@param cluster.tunnel_migration: boolean]
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Cluster:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(cluster),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return DataCenterCluster(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Clusters:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterCluster(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_cluster()
+
+            return DataCenterCluster(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Clusters:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{datacenter:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_cluster()
+
+        return ParseHelper.toSubCollection(
+            DataCenterCluster,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class DataCenterPermission(params.Permission, Base):
     def __init__(self, datacenter, permission, context):
@@ -1626,7 +2781,8 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         self.parentclass = datacenter
         self.superclass  =  storagedomain
 
-        #SUB_COLLECTIONS
+        self.disks = DataCenterStorageDomainDisks(self, context)
+
     def __new__(cls, datacenter, storagedomain, context):
         if storagedomain is None: return None
         obj = object.__new__(cls)
@@ -1711,6 +2867,492 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         )
 
         return result
+
+class DataCenterStorageDomainDisk(params.Disk, Base):
+    def __init__(self, datacenterstoragedomain, disk, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterstoragedomain
+        self.superclass  =  disk
+
+        self.disks = DataCenterStorageDomainDiskDisks(self, context)
+
+    def __new__(cls, datacenterstoragedomain, disk, context):
+        if disk is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenterstoragedomain, disk, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}',
+            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+             '{storagedomain:id}': self.parentclass.get_id(),
+             '{disk:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                 '{disk:id}': self.parentclass.get_id(),
+                 '{permission:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+class DataCenterStorageDomainDiskDisk(params.Disk, Base):
+    def __init__(self, datacenterstoragedomaindisk, disk, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterstoragedomaindisk
+        self.superclass  =  disk
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacenterstoragedomaindisk, disk, context):
+        if disk is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenterstoragedomaindisk, disk, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                 '{disk:id}': self.parentclass.get_id(),
+                 '{permission:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+class DataCenterStorageDomainDiskDisks(Base):
+
+    def __init__(self, datacenterstoragedomaindisk , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterstoragedomaindisk
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission):
+
+        '''
+        @type Permission:
+
+
+        @return Permission:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                 '{disk:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={}
+        )
+
+        return DataCenterStorageDomainDiskDisk(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                             '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                             '{disk:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterStorageDomainDiskDisk(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                     '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                     '{disk:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_permission()
+
+            return DataCenterStorageDomainDiskDisk(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Permissions:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                 '{disk:id}': self.parentclass.get_id()}
+            )
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            DataCenterStorageDomainDiskDisk,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Statistics:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                             '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                             '{disk:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterStorageDomainDiskDisk(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                     '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                     '{disk:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_statistic()
+
+            return DataCenterStorageDomainDiskDisk(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Statistics:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                 '{disk:id}': self.parentclass.get_id()}
+            )
+        ).get_statistic()
+
+        return ParseHelper.toSubCollection(
+            DataCenterStorageDomainDiskDisk,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterStorageDomainDisks(Base):
+
+    def __init__(self, datacenterstoragedomain , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterstoragedomain
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, disk, expect=None, correlation_id=None):
+
+        '''
+        @type Disk:
+
+        Overload 1:
+          @param provisioned_size: int
+          @param disk.interface: string
+          @param disk.format: string
+          [@param disk.alias: string]
+          [@param disk.name: string]
+          [@param disk.size: int]
+          [@param disk.sparse: boolean]
+          [@param disk.bootable: boolean]
+          [@param disk.shareable: boolean]
+          [@param disk.propagate_errors: boolean]
+          [@param disk.wipe_after_delete: boolean]
+        Overload 2:
+          @param disk.interface: string
+          @param disk.format: string
+          @param disk.lun_storage.type: string
+          @param disk.lun_storage.logical_unit: collection
+          {
+            @ivar logical_unit.id: string
+            @ivar logical_unit.address: string
+            @ivar logical_unit.port: int
+            @ivar logical_unit.target: string
+          }
+          [@param disk.alias: string]
+          [@param disk.sparse: boolean]
+          [@param disk.bootable: boolean]
+          [@param disk.shareable: boolean]
+          [@param disk.propagate_errors: boolean]
+          [@param disk.wipe_after_delete: boolean]
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Disk:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{storagedomain:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(disk),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return DataCenterStorageDomainDisk(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Disks:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                             '{storagedomain:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterStorageDomainDisk(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                     '{storagedomain:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_disk()
+
+            return DataCenterStorageDomainDisk(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, query=None, case_sensitive=True, max=None, unregistered=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
+        [@param unregistered: boolean (true|false)]
+
+        @return Disks:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{storagedomain:id}': self.parentclass.get_id()}
+                ),
+                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max,'unregistered:matrix':unregistered}
+            ),
+            headers={}
+        ).get_disk()
+
+        return ParseHelper.toSubCollection(
+            DataCenterStorageDomainDisk,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class DataCenterStorageDomains(Base):
 
@@ -2118,9 +3760,10 @@ class DiskPermissions(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -2128,10 +3771,14 @@ class DiskPermissions(Base):
         url = '/api/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {'{disk:id}': self.parentclass.get_id()}
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{disk:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_permission()
 
         return ParseHelper.toSubCollection(
@@ -2236,9 +3883,10 @@ class DiskStatistics(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Statistics:
         '''
@@ -2246,10 +3894,14 @@ class DiskStatistics(Base):
         url = '/api/disks/{disk:id}/statistics'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {'{disk:id}': self.parentclass.get_id()}
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{disk:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
@@ -3791,7 +5443,7 @@ class Host(params.Host, Base):
         [@param host.address: string]
         [@param host.root_password: string]
         [@param host.display.address: string]
-        [@param host.cluster.id: string]
+        [@param host.cluster.id|name: string]
         [@param host.port: int]
         [@param host.storage_manager.priority: int]
         [@param host.power_management.type: string]
@@ -5175,9 +6827,9 @@ class Hosts(Base):
         @param host.name: string
         @param host.address: string
         @param host.root_password: string
-        @param host.display.address: string
         @param host.cluster.id|name: string
         [@param host.port: int]
+        [@param host.display.address: string]
         [@param host.storage_manager.priority: int]
         [@param host.power_management.type: string]
         [@param host.power_management.enabled: boolean]
@@ -5981,6 +7633,7 @@ class StorageDomain(params.StorageDomain, Base):
 
         self.files = StorageDomainFiles(self, context)
         self.templates = StorageDomainTemplates(self, context)
+        self.disks = StorageDomainDisks(self, context)
         self.vms = StorageDomainVMs(self, context)
         self.permissions = StorageDomainPermissions(self, context)
 
@@ -6063,6 +7716,499 @@ class StorageDomain(params.StorageDomain, Base):
         )
 
         return StorageDomain(result, self.context)
+
+class StorageDomainDisk(params.Disk, Base):
+    def __init__(self, storagedomain, disk, context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomain
+        self.superclass  =  disk
+
+        self.statistics = StorageDomainDiskStatistics(self, context)
+        self.permissions = StorageDomainDiskPermissions(self, context)
+
+    def __new__(cls, storagedomain, disk, context):
+        if disk is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(storagedomain, disk, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/storagedomains/{storagedomain:id}/disks/{disk:id}',
+            {'{storagedomain:id}' : self.parentclass.get_id(),
+             '{disk:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class StorageDomainDiskPermission(params.Permission, Base):
+    def __init__(self, storagedomaindisk, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomaindisk
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, storagedomaindisk, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(storagedomaindisk, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                 '{disk:id}': self.parentclass.get_id(),
+                 '{permission:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+class StorageDomainDiskPermissions(Base):
+
+    def __init__(self, storagedomaindisk , context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomaindisk
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission):
+
+        '''
+        @type Permission:
+
+
+        @return Permission:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                 '{disk:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={}
+        )
+
+        return StorageDomainDiskPermission(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                             '{disk:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return StorageDomainDiskPermission(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                     '{disk:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_permission()
+
+            return StorageDomainDiskPermission(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Permissions:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                 '{disk:id}': self.parentclass.get_id()}
+            )
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            StorageDomainDiskPermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class StorageDomainDiskStatistic(params.Statistic, Base):
+    def __init__(self, storagedomaindisk, statistic, context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomaindisk
+        self.superclass  =  statistic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, storagedomaindisk, statistic, context):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(storagedomaindisk, statistic, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class StorageDomainDiskStatistics(Base):
+
+    def __init__(self, storagedomaindisk , context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomaindisk
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Statistics:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                             '{disk:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return StorageDomainDiskStatistic(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                     '{disk:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_statistic()
+
+            return StorageDomainDiskStatistic(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Statistics:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                 '{disk:id}': self.parentclass.get_id()}
+            )
+        ).get_statistic()
+
+        return ParseHelper.toSubCollection(
+            StorageDomainDiskStatistic,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class StorageDomainDisks(Base):
+
+    def __init__(self, storagedomain , context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomain
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, disk, expect=None, correlation_id=None):
+
+        '''
+        @type Disk:
+
+        Overload 1:
+          @param provisioned_size: int
+          @param disk.interface: string
+          @param disk.format: string
+          [@param disk.alias: string]
+          [@param disk.name: string]
+          [@param disk.size: int]
+          [@param disk.sparse: boolean]
+          [@param disk.bootable: boolean]
+          [@param disk.shareable: boolean]
+          [@param disk.propagate_errors: boolean]
+          [@param disk.wipe_after_delete: boolean]
+        Overload 2:
+          @param disk.interface: string
+          @param disk.format: string
+          @param disk.lun_storage.type: string
+          @param disk.lun_storage.logical_unit: collection
+          {
+            @ivar logical_unit.id: string
+            @ivar logical_unit.address: string
+            @ivar logical_unit.port: int
+            @ivar logical_unit.target: string
+          }
+          [@param disk.alias: string]
+          [@param disk.sparse: boolean]
+          [@param disk.bootable: boolean]
+          [@param disk.shareable: boolean]
+          [@param disk.propagate_errors: boolean]
+          [@param disk.wipe_after_delete: boolean]
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Disk:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/disks'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{storagedomain:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(disk),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return StorageDomainDisk(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Disks:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/disks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{storagedomain:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return StorageDomainDisk(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{storagedomain:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_disk()
+
+            return StorageDomainDisk(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, query=None, case_sensitive=True, max=None, unregistered=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
+        [@param unregistered: boolean (true|false)]
+
+        @return Disks:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/disks'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{storagedomain:id}': self.parentclass.get_id()}
+                ),
+                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max,'unregistered:matrix':unregistered}
+            ),
+            headers={}
+        ).get_disk()
+
+        return ParseHelper.toSubCollection(
+            StorageDomainDisk,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class StorageDomainFile(params.File, Base):
     def __init__(self, storagedomain, file, context):
@@ -6374,7 +8520,8 @@ class StorageDomainTemplate(params.Template, Base):
         self.parentclass = storagedomain
         self.superclass  =  template
 
-        #SUB_COLLECTIONS
+        self.disks = StorageDomainTemplateDisks(self, context)
+
     def __new__(cls, storagedomain, template, context):
         if template is None: return None
         obj = object.__new__(cls)
@@ -6444,6 +8591,127 @@ class StorageDomainTemplate(params.Template, Base):
         )
 
         return result
+
+class StorageDomainTemplateDisk(params.Disk, Base):
+    def __init__(self, storagedomaintemplate, disk, context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomaintemplate
+        self.superclass  =  disk
+
+        #SUB_COLLECTIONS
+    def __new__(cls, storagedomaintemplate, disk, context):
+        if disk is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(storagedomaintemplate, disk, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class StorageDomainTemplateDisks(Base):
+
+    def __init__(self, storagedomaintemplate , context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomaintemplate
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Disks:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/disks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                             '{template:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return StorageDomainTemplateDisk(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                     '{template:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_disk()
+
+            return StorageDomainTemplateDisk(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Disks:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/disks'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                 '{template:id}': self.parentclass.get_id()}
+            )
+        ).get_disk()
+
+        return ParseHelper.toSubCollection(
+            StorageDomainTemplateDisk,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class StorageDomainTemplates(Base):
 
@@ -6552,7 +8820,8 @@ class StorageDomainVM(params.VM, Base):
         self.parentclass = storagedomain
         self.superclass  =  vm
 
-        #SUB_COLLECTIONS
+        self.disks = StorageDomainVMDisks(self, context)
+
     def __new__(cls, storagedomain, vm, context):
         if vm is None: return None
         obj = object.__new__(cls)
@@ -6623,6 +8892,127 @@ class StorageDomainVM(params.VM, Base):
         )
 
         return result
+
+class StorageDomainVMDisk(params.Disk, Base):
+    def __init__(self, storagedomainvm, disk, context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomainvm
+        self.superclass  =  disk
+
+        #SUB_COLLECTIONS
+    def __new__(cls, storagedomainvm, disk, context):
+        if disk is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(storagedomainvm, disk, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class StorageDomainVMDisks(Base):
+
+    def __init__(self, storagedomainvm , context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomainvm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Disks:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/disks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                             '{vm:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return StorageDomainVMDisk(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                     '{vm:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_disk()
+
+            return StorageDomainVMDisk(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    )
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Disks:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/disks'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{storagedomain:id}' : self.parentclass.parentclass.get_id(),
+                 '{vm:id}': self.parentclass.get_id()}
+            )
+        ).get_disk()
+
+        return ParseHelper.toSubCollection(
+            StorageDomainVMDisk,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class StorageDomainVMs(Base):
 
@@ -7101,9 +9491,11 @@ class Template(params.Template, Base):
         [@param template.display.monitors: int]
         [@param template.display.allow_override: boolean]
         [@param template.display.smartcard_enabled: boolean]
+        [@param template.display.keyboard_layout: string]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
+        [@param template.tunnel_migration: boolean]
         [@param correlation_id: any string]
 
         @return Template:
@@ -7890,9 +10282,11 @@ class Templates(Base):
         [@param template.display.monitors: int]
         [@param template.display.allow_override: boolean]
         [@param template.display.smartcard_enabled: boolean]
+        [@param template.display.keyboard_layout: string]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
+        [@param template.tunnel_migration: boolean]
         [@param template.vm.disks.disk: collection]
         {
           [@ivar disk.id: string]
@@ -8920,6 +11314,7 @@ class VM(params.VM, Base):
         [@param vm.display.type: string]
         [@param vm.display.allow_override: boolean]
         [@param vm.display.smartcard_enabled: boolean]
+        [@param vm.display.keyboard_layout: string]
         [@param vm.os.cmdline: string]
         [@param vm.cpu.topology.cores: int]
         [@param vm.memory: long]
@@ -8934,6 +11329,7 @@ class VM(params.VM, Base):
         [@param vm.placement_policy.host.id|name: string]
         [@param vm.origin: string]
         [@param vm.os.kernel: string]
+        [@param vm.tunnel_migration: boolean]
         [@param vm.payloads.payload: collection]
         {
           [@ivar payload.type: string]
@@ -10865,6 +13261,54 @@ class VMSnapshot(params.Snapshot, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
+    def commit(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/commit'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}' : self.parentclass.get_id(),
+                 '{snapshot:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def preview(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/preview'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}' : self.parentclass.get_id(),
+                 '{snapshot:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
     def restore(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
@@ -10875,6 +13319,30 @@ class VMSnapshot(params.Snapshot, Base):
         '''
 
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/restore'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}' : self.parentclass.get_id(),
+                 '{snapshot:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def undo(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/undo'
 
         result = self.__getProxy().request(
             method='POST',
@@ -11696,55 +14164,113 @@ class VMs(Base):
         '''
         @type VM:
 
-        @param vm.name: string
-        @param vm.template.id|name: string
-        @param vm.cluster.id|name: string
-        [@param vm.quota.id: string]
-        [@param vm.timezone: string]
-        [@param vm.os.boot: collection]
-        {
-          [@ivar boot.dev: string]
-        }
-        [@param vm.custom_properties.custom_property: collection]
-        {
-          [@ivar custom_property.name: string]
-          [@ivar custom_property.value: string]
-        }
-        [@param vm.os.type: string]
-        [@param vm.usb.enabled: boolean]
-        [@param vm.usb.type: string]
-        [@param vm.type: string]
-        [@param vm.os.initRd: string]
-        [@param vm.display.monitors: int]
-        [@param vm.display.type: string]
-        [@param vm.display.allow_override: boolean]
-        [@param vm.display.smartcard_enabled: boolean]
-        [@param vm.os.cmdline: string]
-        [@param vm.cpu.topology.cores: int]
-        [@param vm.memory: long]
-        [@param vm.high_availability.priority: int]
-        [@param vm.high_availability.enabled: boolean]
-        [@param vm.domain.name: string]
-        [@param vm.description: string]
-        [@param vm.stateless: boolean]
-        [@param vm.delete_protected: boolean]
-        [@param vm.cpu.topology.sockets: int]
-        [@param vm.placement_policy.affinity: string]
-        [@param vm.placement_policy.host.id|name: string]
-        [@param vm.origin: string]
-        [@param vm.os.kernel: string]
-        [@param vm.disks.clone: boolean]
-        [@param vm.payloads.payload: collection]
-        {
-          [@ivar payload.type: string]
-          [@ivar payload.file.name: string]
-          [@ivar payload.file.content: string]
-        }
-        [@param vm.cpu.cpu_tune.vcpu_pin: collection]
-        {
-          [@ivar vcpu_pin.vcpu: int]
-          [@ivar vcpu_pin.cpu_set: string]
-        }
+        Overload 1:
+          @param vm.name: string
+          @param vm.template.id|name: string
+          @param vm.cluster.id|name: string
+          [@param vm.quota.id: string]
+          [@param vm.timezone: string]
+          [@param vm.os.boot: collection]
+          {
+            [@ivar boot.dev: string]
+          }
+          [@param vm.custom_properties.custom_property: collection]
+          {
+            [@ivar custom_property.name: string]
+            [@ivar custom_property.value: string]
+          }
+          [@param vm.os.type: string]
+          [@param vm.usb.enabled: boolean]
+          [@param vm.usb.type: string]
+          [@param vm.type: string]
+          [@param vm.os.initRd: string]
+          [@param vm.display.monitors: int]
+          [@param vm.display.type: string]
+          [@param vm.display.allow_override: boolean]
+          [@param vm.display.smartcard_enabled: boolean]
+          [@param vm.display.keyboard_layout: string]
+          [@param vm.os.cmdline: string]
+          [@param vm.cpu.topology.cores: int]
+          [@param vm.memory: long]
+          [@param vm.high_availability.priority: int]
+          [@param vm.high_availability.enabled: boolean]
+          [@param vm.domain.name: string]
+          [@param vm.description: string]
+          [@param vm.stateless: boolean]
+          [@param vm.delete_protected: boolean]
+          [@param vm.cpu.topology.sockets: int]
+          [@param vm.placement_policy.affinity: string]
+          [@param vm.placement_policy.host.id|name: string]
+          [@param vm.origin: string]
+          [@param vm.os.kernel: string]
+          [@param vm.disks.clone: boolean]
+          [@param vm.tunnel_migration: boolean]
+          [@param vm.payloads.payload: collection]
+          {
+            [@ivar payload.type: string]
+            [@ivar payload.file.name: string]
+            [@ivar payload.file.content: string]
+          }
+          [@param vm.cpu.cpu_tune.vcpu_pin: collection]
+          {
+            [@ivar vcpu_pin.vcpu: int]
+            [@ivar vcpu_pin.cpu_set: string]
+          }
+        Overload 2:
+          @param vm.name: string
+          @param vm.template.id|name: string
+          @param vm.cluster.id|name: string
+          @param vm.snapshots.snapshot: collection
+          {
+            @ivar snapshot.id: string
+          }
+          [@param vm.quota.id: string]
+          [@param vm.timezone: string]
+          [@param vm.os.boot: collection]
+          {
+            [@ivar boot.dev: string]
+          }
+          [@param vm.custom_properties.custom_property: collection]
+          {
+            [@ivar custom_property.name: string]
+            [@ivar custom_property.value: string]
+          }
+          [@param vm.os.type: string]
+          [@param vm.usb.enabled: boolean]
+          [@param vm.usb.type: string]
+          [@param vm.type: string]
+          [@param vm.os.initRd: string]
+          [@param vm.display.monitors: int]
+          [@param vm.display.type: string]
+          [@param vm.display.allow_override: boolean]
+          [@param vm.display.smartcard_enabled: boolean]
+          [@param vm.display.keyboard_layout: string]
+          [@param vm.os.cmdline: string]
+          [@param vm.cpu.topology.cores: int]
+          [@param vm.memory: long]
+          [@param vm.high_availability.priority: int]
+          [@param vm.high_availability.enabled: boolean]
+          [@param vm.domain.name: string]
+          [@param vm.description: string]
+          [@param vm.stateless: boolean]
+          [@param vm.delete_protected: boolean]
+          [@param vm.cpu.topology.sockets: int]
+          [@param vm.placement_policy.affinity: string]
+          [@param vm.placement_policy.host.id|name: string]
+          [@param vm.origin: string]
+          [@param vm.os.kernel: string]
+          [@param vm.tunnel_migration: boolean]
+          [@param vm.payloads.payload: collection]
+          {
+            [@ivar payload.type: string]
+            [@ivar payload.file.name: string]
+            [@ivar payload.file.content: string]
+          }
+          [@param vm.cpu.cpu_tune.vcpu_pin: collection]
+          {
+            [@ivar vcpu_pin.vcpu: int]
+            [@ivar vcpu_pin.cpu_set: string]
+          }
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
