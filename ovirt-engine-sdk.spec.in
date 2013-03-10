@@ -37,6 +37,12 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
+* Sun Mar  10 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.10-1
+ - session based authentication is broken #916285
+ - explicitly ask for reply in xml
+ - add constructor parameter validate_cert_chain=True #915225
+ - defend against malformed server reply
+
 * Tue Feb  19 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.9-1
  - to DiskStatistics.list() added 'max' argument
  - to ClusterGlusterVolumeBrick added 'replace' action
