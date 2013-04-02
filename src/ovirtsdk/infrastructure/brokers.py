@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-03-04 15:48:23.658388'''
+'''Generated at: 2013-04-02 14:56:45.652111'''
 
 
 from ovirtsdk.xml import params
@@ -373,7 +373,8 @@ class ClusterGlusterVolumeBrick(params.GlusterBrick, Base):
         self.parentclass = clusterglustervolume
         self.superclass  =  brick
 
-        #SUB_COLLECTIONS
+        self.statistics = ClusterGlusterVolumeBrickStatistics(self, context)
+
     def __new__(cls, clusterglustervolume, brick, context):
         if brick is None: return None
         obj = object.__new__(cls)
@@ -434,6 +435,136 @@ class ClusterGlusterVolumeBrick(params.GlusterBrick, Base):
 
         return result
 
+class ClusterGlusterVolumeBrickStatistic(params.Statistic, Base):
+    def __init__(self, clusterglustervolumebrick, statistic, context):
+        Base.__init__(self, context)
+        self.parentclass = clusterglustervolumebrick
+        self.superclass  =  statistic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, clusterglustervolumebrick, statistic, context):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(clusterglustervolumebrick, statistic, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class ClusterGlusterVolumeBrickStatistics(Base):
+
+    def __init__(self, clusterglustervolumebrick , context):
+        Base.__init__(self, context)
+        self.parentclass = clusterglustervolumebrick
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Statistics:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{cluster:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                             '{glustervolume:id}': self.parentclass.parentclass.get_id(),
+                             '{brick:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return ClusterGlusterVolumeBrickStatistic(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{cluster:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                     '{glustervolume:id}': self.parentclass.parentclass.get_id(),
+                     '{brick:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_statistic()
+
+            return ClusterGlusterVolumeBrickStatistic(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Statistics:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{cluster:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{glustervolume:id}': self.parentclass.parentclass.get_id(),
+                 '{brick:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_statistic()
+
+        return ParseHelper.toSubCollection(
+            ClusterGlusterVolumeBrickStatistic,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
 class ClusterGlusterVolumeBricks(Base):
 
     def __init__(self, clusterglustervolume , context):
@@ -488,11 +619,12 @@ class ClusterGlusterVolumeBricks(Base):
             self.context
         )
 
-    def get(self, name=None, id=None):
+    def get(self, name=None, all_content=None, id=None):
 
         '''
         [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
+        [@param all_content: true|false]
 
         @return GlusterBricks:
         '''
@@ -510,7 +642,7 @@ class ClusterGlusterVolumeBricks(Base):
                         ),
                         id
                     ),
-                    headers={}
+                    headers={"All-Content":all_content}
                 )
 
                 return ClusterGlusterVolumeBrick(
@@ -529,7 +661,7 @@ class ClusterGlusterVolumeBricks(Base):
                     {'{cluster:id}' : self.parentclass.parentclass.get_id(),
                      '{glustervolume:id}': self.parentclass.get_id()}
                 ),
-                headers={}
+                headers={"All-Content":all_content}
             ).get_brick()
 
             return ClusterGlusterVolumeBrick(
@@ -546,9 +678,10 @@ class ClusterGlusterVolumeBricks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, all_content=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param all_content: true|false]
 
         @return GlusterBricks:
         '''
@@ -556,11 +689,15 @@ class ClusterGlusterVolumeBricks(Base):
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{cluster:id}' : self.parentclass.parentclass.get_id(),
                  '{glustervolume:id}': self.parentclass.get_id()}
-            )
+                ),
+                qargs={}
+            ),
+            headers={"All-Content":all_content}
         ).get_brick()
 
         return ParseHelper.toSubCollection(
@@ -1575,7 +1712,8 @@ class DataCenterClusterGlustervolumeBrick(params.GlusterBrick, Base):
         self.parentclass = datacenterclusterglustervolume
         self.superclass  =  brick
 
-        #SUB_COLLECTIONS
+        self.statistics = DataCenterClusterGlustervolumeBrickStatistics(self, context)
+
     def __new__(cls, datacenterclusterglustervolume, brick, context):
         if brick is None: return None
         obj = object.__new__(cls)
@@ -1633,6 +1771,134 @@ class DataCenterClusterGlustervolumeBrick(params.GlusterBrick, Base):
         )
 
         return result
+
+class DataCenterClusterGlustervolumeBrickStatistic(params.Statistic, Base):
+    def __init__(self, datacenterclusterglustervolumebrick, statistic, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterclusterglustervolumebrick
+        self.superclass  =  statistic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacenterclusterglustervolumebrick, statistic, context):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenterclusterglustervolumebrick, statistic, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class DataCenterClusterGlustervolumeBrickStatistics(Base):
+
+    def __init__(self, datacenterclusterglustervolumebrick , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterclusterglustervolumebrick
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Statistics:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.parentclass.parentclass.get_id(),
+                             '{cluster:id}': self.parentclass.parentclass.parentclass.get_id(),
+                             '{glustervolume:id}': self.parentclass.parentclass.get_id(),
+                             '{brick:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterClusterGlustervolumeBrickStatistic(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.parentclass.parentclass.get_id(),
+                     '{cluster:id}': self.parentclass.parentclass.parentclass.get_id(),
+                     '{glustervolume:id}': self.parentclass.parentclass.get_id(),
+                     '{brick:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_statistic()
+
+            return DataCenterClusterGlustervolumeBrickStatistic(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Statistics:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.parentclass.parentclass.get_id(),
+                 '{glustervolume:id}': self.parentclass.parentclass.get_id(),
+                 '{brick:id}': self.parentclass.get_id()}
+            )
+        ).get_statistic()
+
+        return ParseHelper.toSubCollection(
+            DataCenterClusterGlustervolumeBrickStatistic,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class DataCenterClusterGlustervolumeBricks(Base):
 
@@ -5641,6 +5907,7 @@ class Host(params.Host, Base):
         @type Action:
 
         [@param action.root_password: string]
+        [@param action.image: string]
         [@param correlation_id: any string]
 
         @return Action:
@@ -11406,6 +11673,7 @@ class VM(params.VM, Base):
         [@param vm.display.smartcard_enabled: boolean]
         [@param vm.display.keyboard_layout: string]
         [@param vm.os.cmdline: string]
+        [@param vm.cpu.mode: string]
         [@param vm.cpu.topology.cores: int]
         [@param vm.memory: long]
         [@param vm.high_availability.priority: int]
@@ -14303,6 +14571,7 @@ class VMs(Base):
           [@param vm.description: string]
           [@param vm.stateless: boolean]
           [@param vm.delete_protected: boolean]
+          [@param vm.cpu.mode: string]
           [@param vm.cpu.topology.sockets: int]
           [@param vm.placement_policy.affinity: string]
           [@param vm.placement_policy.host.id|name: string]

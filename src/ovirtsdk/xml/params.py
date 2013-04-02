@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Mon Mar  4 13:43:50 2013 by generateDS.py version 2.7b.
+# Generated Tue Apr  2 14:56:37 2013 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -644,7 +644,8 @@ class DetailedLinks(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'link':
-            obj_ = DetailedLink.factory()
+            class_obj_ = self.get_class_obj_(child_, DetailedLink)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.link.append(obj_)
 # end class DetailedLinks
@@ -3940,6 +3941,81 @@ class IpVersions(GeneratedsSuper):
             ip_version_ = self.gds_validate_string(ip_version_, node, 'ip_version')
             self.ip_version.append(ip_version_)
 # end class IpVersions
+
+
+class CpuModes(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, cpu_mode=None):
+        if cpu_mode is None:
+            self.cpu_mode = []
+        else:
+            self.cpu_mode = cpu_mode
+    def factory(*args_, **kwargs_):
+        if CpuModes.subclass:
+            return CpuModes.subclass(*args_, **kwargs_)
+        else:
+            return CpuModes(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_cpu_mode(self): return self.cpu_mode
+    def set_cpu_mode(self, cpu_mode): self.cpu_mode = cpu_mode
+    def add_cpu_mode(self, value): self.cpu_mode.append(value)
+    def insert_cpu_mode(self, index, value): self.cpu_mode[index] = value
+    def export(self, outfile, level, namespace_='', name_='CpuModes', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='CpuModes')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CpuModes'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='CpuModes', fromsubclass_=False):
+        for cpu_mode_ in self.cpu_mode:
+            showIndent(outfile, level)
+            outfile.write('<%scpu_mode>%s</%scpu_mode>\n' % (namespace_, self.gds_format_string(quote_xml(cpu_mode_).encode(ExternalEncoding), input_name='cpu_mode'), namespace_))
+    def hasContent_(self):
+        if (
+            self.cpu_mode
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='CpuModes'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('cpu_mode=[\n')
+        level += 1
+        for cpu_mode_ in self.cpu_mode:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(cpu_mode_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'cpu_mode':
+            cpu_mode_ = child_.text
+            cpu_mode_ = self.gds_validate_string(cpu_mode_, node, 'cpu_mode')
+            self.cpu_mode.append(cpu_mode_)
+# end class CpuModes
 
 
 class ActionableResource(GeneratedsSuper):
@@ -17907,12 +17983,13 @@ class Schema(Link):
 class RSDL(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, href=None, rel=None, description=None, version=None, schema=None, links=None):
+    def __init__(self, href=None, rel=None, description=None, version=None, schema=None, general=None, links=None):
         self.href = _cast(None, href)
         self.rel = _cast(None, rel)
         self.description = description
         self.version = version
         self.schema = schema
+        self.general = general
         self.links = links
     def factory(*args_, **kwargs_):
         if RSDL.subclass:
@@ -17926,6 +18003,8 @@ class RSDL(GeneratedsSuper):
     def set_version(self, version): self.version = version
     def get_schema(self): return self.schema
     def set_schema(self, schema): self.schema = schema
+    def get_general(self): return self.general
+    def set_general(self, general): self.general = general
     def get_links(self): return self.links
     def set_links(self, links): self.links = links
     def get_href(self): return self.href
@@ -17959,6 +18038,8 @@ class RSDL(GeneratedsSuper):
             self.version.export(outfile, level, namespace_, name_='version')
         if self.schema is not None:
             self.schema.export(outfile, level, namespace_, name_='schema')
+        if self.general is not None:
+            self.general.export(outfile, level, namespace_, name_='general')
         if self.links is not None:
             self.links.export(outfile, level, namespace_, name_='links')
     def hasContent_(self):
@@ -17966,6 +18047,7 @@ class RSDL(GeneratedsSuper):
             self.description is not None or
             self.version is not None or
             self.schema is not None or
+            self.general is not None or
             self.links is not None
             ):
             return True
@@ -17999,6 +18081,12 @@ class RSDL(GeneratedsSuper):
             showIndent(outfile, level)
             outfile.write('schema=model_.schema(\n')
             self.schema.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.general is not None:
+            showIndent(outfile, level)
+            outfile.write('general=model_.GeneralMetadata(\n')
+            self.general.exportLiteral(outfile, level, name_='general')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.links is not None:
@@ -18035,6 +18123,10 @@ class RSDL(GeneratedsSuper):
             obj_ = Schema.factory()
             obj_.build(child_)
             self.set_schema(obj_)
+        elif nodeName_ == 'general':
+            obj_ = GeneralMetadata.factory()
+            obj_.build(child_)
+            self.set_general(obj_)
         elif nodeName_ == 'links':
             obj_ = DetailedLinks.factory()
             obj_.build(child_)
@@ -18534,11 +18626,725 @@ class GlusterVolumes(BaseResources):
 # end class GlusterVolumes
 
 
-class GlusterBrick(BaseResource):
+class GlusterClient(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, host_name=None, client_port=None, bytes_read=None, bytes_written=None):
+        self.host_name = host_name
+        self.client_port = client_port
+        self.bytes_read = bytes_read
+        self.bytes_written = bytes_written
+    def factory(*args_, **kwargs_):
+        if GlusterClient.subclass:
+            return GlusterClient.subclass(*args_, **kwargs_)
+        else:
+            return GlusterClient(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_host_name(self): return self.host_name
+    def set_host_name(self, host_name): self.host_name = host_name
+    def get_client_port(self): return self.client_port
+    def set_client_port(self, client_port): self.client_port = client_port
+    def get_bytes_read(self): return self.bytes_read
+    def set_bytes_read(self, bytes_read): self.bytes_read = bytes_read
+    def get_bytes_written(self): return self.bytes_written
+    def set_bytes_written(self, bytes_written): self.bytes_written = bytes_written
+    def export(self, outfile, level, namespace_='', name_='GlusterClient', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterClient')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GlusterClient'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='GlusterClient', fromsubclass_=False):
+        if self.host_name is not None:
+            showIndent(outfile, level)
+            outfile.write('<%shost_name>%s</%shost_name>\n' % (namespace_, self.gds_format_string(quote_xml(self.host_name).encode(ExternalEncoding), input_name='host_name'), namespace_))
+        if self.client_port is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sclient_port>%s</%sclient_port>\n' % (namespace_, self.gds_format_integer(self.client_port, input_name='client_port'), namespace_))
+        if self.bytes_read is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sbytes_read>%s</%sbytes_read>\n' % (namespace_, self.gds_format_integer(self.bytes_read, input_name='bytes_read'), namespace_))
+        if self.bytes_written is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sbytes_written>%s</%sbytes_written>\n' % (namespace_, self.gds_format_integer(self.bytes_written, input_name='bytes_written'), namespace_))
+    def hasContent_(self):
+        if (
+            self.host_name is not None or
+            self.client_port is not None or
+            self.bytes_read is not None or
+            self.bytes_written is not None
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='GlusterClient'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.host_name is not None:
+            showIndent(outfile, level)
+            outfile.write('host_name=%s,\n' % quote_python(self.host_name).encode(ExternalEncoding))
+        if self.client_port is not None:
+            showIndent(outfile, level)
+            outfile.write('client_port=%d,\n' % self.client_port)
+        if self.bytes_read is not None:
+            showIndent(outfile, level)
+            outfile.write('bytes_read=%d,\n' % self.bytes_read)
+        if self.bytes_written is not None:
+            showIndent(outfile, level)
+            outfile.write('bytes_written=%d,\n' % self.bytes_written)
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'host_name':
+            host_name_ = child_.text
+            host_name_ = self.gds_validate_string(host_name_, node, 'host_name')
+            self.host_name = host_name_
+        elif nodeName_ == 'client_port':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'client_port')
+            self.client_port = ival_
+        elif nodeName_ == 'bytes_read':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'bytes_read')
+            self.bytes_read = ival_
+        elif nodeName_ == 'bytes_written':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'bytes_written')
+            self.bytes_written = ival_
+# end class GlusterClient
+
+
+class GlusterClients(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, total=None, active=None, gluster_client=None):
+        super(GlusterClients, self).__init__(actions, total, active, )
+        if gluster_client is None:
+            self.gluster_client = []
+        else:
+            self.gluster_client = gluster_client
+    def factory(*args_, **kwargs_):
+        if GlusterClients.subclass:
+            return GlusterClients.subclass(*args_, **kwargs_)
+        else:
+            return GlusterClients(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_gluster_client(self): return self.gluster_client
+    def set_gluster_client(self, gluster_client): self.gluster_client = gluster_client
+    def add_gluster_client(self, value): self.gluster_client.append(value)
+    def insert_gluster_client(self, index, value): self.gluster_client[index] = value
+    def export(self, outfile, level, namespace_='', name_='GlusterClients', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterClients')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GlusterClients'):
+        super(GlusterClients, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterClients')
+    def exportChildren(self, outfile, level, namespace_='', name_='GlusterClients', fromsubclass_=False):
+        super(GlusterClients, self).exportChildren(outfile, level, namespace_, name_, True)
+        for gluster_client_ in self.gluster_client:
+            gluster_client_.export(outfile, level, namespace_, name_='gluster_client')
+    def hasContent_(self):
+        if (
+            self.gluster_client or
+            super(GlusterClients, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='GlusterClients'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(GlusterClients, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(GlusterClients, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('gluster_client=[\n')
+        level += 1
+        for gluster_client_ in self.gluster_client:
+            showIndent(outfile, level)
+            outfile.write('model_.gluster_client(\n')
+            gluster_client_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(GlusterClients, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'gluster_client':
+            obj_ = GlusterClient.factory()
+            obj_.build(child_)
+            self.gluster_client.append(obj_)
+        super(GlusterClients, self).buildChildren(child_, node, nodeName_, True)
+# end class GlusterClients
+
+
+class GlusterMemoryPool(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, name=None, hot_count=None, cold_count=None, padded_size=None, alloc_count=None, max_alloc=None, pool_misses=None, max_stdalloc=None):
+        self.name = name
+        self.hot_count = hot_count
+        self.cold_count = cold_count
+        self.padded_size = padded_size
+        self.alloc_count = alloc_count
+        self.max_alloc = max_alloc
+        self.pool_misses = pool_misses
+        self.max_stdalloc = max_stdalloc
+    def factory(*args_, **kwargs_):
+        if GlusterMemoryPool.subclass:
+            return GlusterMemoryPool.subclass(*args_, **kwargs_)
+        else:
+            return GlusterMemoryPool(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_name(self): return self.name
+    def set_name(self, name): self.name = name
+    def get_hot_count(self): return self.hot_count
+    def set_hot_count(self, hot_count): self.hot_count = hot_count
+    def get_cold_count(self): return self.cold_count
+    def set_cold_count(self, cold_count): self.cold_count = cold_count
+    def get_padded_size(self): return self.padded_size
+    def set_padded_size(self, padded_size): self.padded_size = padded_size
+    def get_alloc_count(self): return self.alloc_count
+    def set_alloc_count(self, alloc_count): self.alloc_count = alloc_count
+    def get_max_alloc(self): return self.max_alloc
+    def set_max_alloc(self, max_alloc): self.max_alloc = max_alloc
+    def get_pool_misses(self): return self.pool_misses
+    def set_pool_misses(self, pool_misses): self.pool_misses = pool_misses
+    def get_max_stdalloc(self): return self.max_stdalloc
+    def set_max_stdalloc(self, max_stdalloc): self.max_stdalloc = max_stdalloc
+    def export(self, outfile, level, namespace_='', name_='GlusterMemoryPool', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterMemoryPool')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GlusterMemoryPool'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='GlusterMemoryPool', fromsubclass_=False):
+        if self.name is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sname>%s</%sname>\n' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_))
+        if self.hot_count is not None:
+            showIndent(outfile, level)
+            outfile.write('<%shot_count>%s</%shot_count>\n' % (namespace_, self.gds_format_integer(self.hot_count, input_name='hot_count'), namespace_))
+        if self.cold_count is not None:
+            showIndent(outfile, level)
+            outfile.write('<%scold_count>%s</%scold_count>\n' % (namespace_, self.gds_format_integer(self.cold_count, input_name='cold_count'), namespace_))
+        if self.padded_size is not None:
+            showIndent(outfile, level)
+            outfile.write('<%spadded_size>%s</%spadded_size>\n' % (namespace_, self.gds_format_integer(self.padded_size, input_name='padded_size'), namespace_))
+        if self.alloc_count is not None:
+            showIndent(outfile, level)
+            outfile.write('<%salloc_count>%s</%salloc_count>\n' % (namespace_, self.gds_format_integer(self.alloc_count, input_name='alloc_count'), namespace_))
+        if self.max_alloc is not None:
+            showIndent(outfile, level)
+            outfile.write('<%smax_alloc>%s</%smax_alloc>\n' % (namespace_, self.gds_format_integer(self.max_alloc, input_name='max_alloc'), namespace_))
+        if self.pool_misses is not None:
+            showIndent(outfile, level)
+            outfile.write('<%spool_misses>%s</%spool_misses>\n' % (namespace_, self.gds_format_integer(self.pool_misses, input_name='pool_misses'), namespace_))
+        if self.max_stdalloc is not None:
+            showIndent(outfile, level)
+            outfile.write('<%smax_stdalloc>%s</%smax_stdalloc>\n' % (namespace_, self.gds_format_integer(self.max_stdalloc, input_name='max_stdalloc'), namespace_))
+    def hasContent_(self):
+        if (
+            self.name is not None or
+            self.hot_count is not None or
+            self.cold_count is not None or
+            self.padded_size is not None or
+            self.alloc_count is not None or
+            self.max_alloc is not None or
+            self.pool_misses is not None or
+            self.max_stdalloc is not None
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='GlusterMemoryPool'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.name is not None:
+            showIndent(outfile, level)
+            outfile.write('name=%s,\n' % quote_python(self.name).encode(ExternalEncoding))
+        if self.hot_count is not None:
+            showIndent(outfile, level)
+            outfile.write('hot_count=%d,\n' % self.hot_count)
+        if self.cold_count is not None:
+            showIndent(outfile, level)
+            outfile.write('cold_count=%d,\n' % self.cold_count)
+        if self.padded_size is not None:
+            showIndent(outfile, level)
+            outfile.write('padded_size=%d,\n' % self.padded_size)
+        if self.alloc_count is not None:
+            showIndent(outfile, level)
+            outfile.write('alloc_count=%d,\n' % self.alloc_count)
+        if self.max_alloc is not None:
+            showIndent(outfile, level)
+            outfile.write('max_alloc=%d,\n' % self.max_alloc)
+        if self.pool_misses is not None:
+            showIndent(outfile, level)
+            outfile.write('pool_misses=%d,\n' % self.pool_misses)
+        if self.max_stdalloc is not None:
+            showIndent(outfile, level)
+            outfile.write('max_stdalloc=%d,\n' % self.max_stdalloc)
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'name':
+            name_ = child_.text
+            name_ = self.gds_validate_string(name_, node, 'name')
+            self.name = name_
+        elif nodeName_ == 'hot_count':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'hot_count')
+            self.hot_count = ival_
+        elif nodeName_ == 'cold_count':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'cold_count')
+            self.cold_count = ival_
+        elif nodeName_ == 'padded_size':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'padded_size')
+            self.padded_size = ival_
+        elif nodeName_ == 'alloc_count':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'alloc_count')
+            self.alloc_count = ival_
+        elif nodeName_ == 'max_alloc':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'max_alloc')
+            self.max_alloc = ival_
+        elif nodeName_ == 'pool_misses':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'pool_misses')
+            self.pool_misses = ival_
+        elif nodeName_ == 'max_stdalloc':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'max_stdalloc')
+            self.max_stdalloc = ival_
+# end class GlusterMemoryPool
+
+
+class GlusterMemoryPools(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, total=None, active=None, memory_pool=None):
+        super(GlusterMemoryPools, self).__init__(actions, total, active, )
+        if memory_pool is None:
+            self.memory_pool = []
+        else:
+            self.memory_pool = memory_pool
+    def factory(*args_, **kwargs_):
+        if GlusterMemoryPools.subclass:
+            return GlusterMemoryPools.subclass(*args_, **kwargs_)
+        else:
+            return GlusterMemoryPools(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_memory_pool(self): return self.memory_pool
+    def set_memory_pool(self, memory_pool): self.memory_pool = memory_pool
+    def add_memory_pool(self, value): self.memory_pool.append(value)
+    def insert_memory_pool(self, index, value): self.memory_pool[index] = value
+    def export(self, outfile, level, namespace_='', name_='GlusterMemoryPools', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterMemoryPools')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GlusterMemoryPools'):
+        super(GlusterMemoryPools, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterMemoryPools')
+    def exportChildren(self, outfile, level, namespace_='', name_='GlusterMemoryPools', fromsubclass_=False):
+        super(GlusterMemoryPools, self).exportChildren(outfile, level, namespace_, name_, True)
+        for memory_pool_ in self.memory_pool:
+            memory_pool_.export(outfile, level, namespace_, name_='memory_pool')
+    def hasContent_(self):
+        if (
+            self.memory_pool or
+            super(GlusterMemoryPools, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='GlusterMemoryPools'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(GlusterMemoryPools, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(GlusterMemoryPools, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('memory_pool=[\n')
+        level += 1
+        for memory_pool_ in self.memory_pool:
+            showIndent(outfile, level)
+            outfile.write('model_.memory_pool(\n')
+            memory_pool_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(GlusterMemoryPools, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'memory_pool':
+            obj_ = GlusterMemoryPool.factory()
+            obj_.build(child_)
+            self.memory_pool.append(obj_)
+        super(GlusterMemoryPools, self).buildChildren(child_, node, nodeName_, True)
+# end class GlusterMemoryPools
+
+
+class GlusterBrickMemoryInfo(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, memory_pools=None):
+        self.memory_pools = memory_pools
+    def factory(*args_, **kwargs_):
+        if GlusterBrickMemoryInfo.subclass:
+            return GlusterBrickMemoryInfo.subclass(*args_, **kwargs_)
+        else:
+            return GlusterBrickMemoryInfo(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_memory_pools(self): return self.memory_pools
+    def set_memory_pools(self, memory_pools): self.memory_pools = memory_pools
+    def export(self, outfile, level, namespace_='', name_='GlusterBrickMemoryInfo', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterBrickMemoryInfo')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GlusterBrickMemoryInfo'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='GlusterBrickMemoryInfo', fromsubclass_=False):
+        if self.memory_pools is not None:
+            self.memory_pools.export(outfile, level, namespace_, name_='memory_pools')
+    def hasContent_(self):
+        if (
+            self.memory_pools is not None
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='GlusterBrickMemoryInfo'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.memory_pools is not None:
+            showIndent(outfile, level)
+            outfile.write('memory_pools=model_.memory_pools(\n')
+            self.memory_pools.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'memory_pools':
+            obj_ = GlusterMemoryPools.factory()
+            obj_.build(child_)
+            self.set_memory_pools(obj_)
+# end class GlusterBrickMemoryInfo
+
+
+class GlusterBrickAdvancedDetails(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, gluster_volume=None, server_id=None, brick_dir=None, status=None):
-        super(GlusterBrick, self).__init__(actions, href, id, name, description, creation_status, link, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, port=None, pid=None, device=None, mnt_options=None, fs_name=None, gluster_clients=None, memory_pools=None, extensiontype_=None):
+        super(GlusterBrickAdvancedDetails, self).__init__(actions, href, id, name, description, creation_status, link, extensiontype_, )
+        self.port = port
+        self.pid = pid
+        self.device = device
+        self.mnt_options = mnt_options
+        self.fs_name = fs_name
+        self.gluster_clients = gluster_clients
+        self.memory_pools = memory_pools
+        self.extensiontype_ = extensiontype_
+    def factory(*args_, **kwargs_):
+        if GlusterBrickAdvancedDetails.subclass:
+            return GlusterBrickAdvancedDetails.subclass(*args_, **kwargs_)
+        else:
+            return GlusterBrickAdvancedDetails(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_port(self): return self.port
+    def set_port(self, port): self.port = port
+    def get_pid(self): return self.pid
+    def set_pid(self, pid): self.pid = pid
+    def get_device(self): return self.device
+    def set_device(self, device): self.device = device
+    def get_mnt_options(self): return self.mnt_options
+    def set_mnt_options(self, mnt_options): self.mnt_options = mnt_options
+    def get_fs_name(self): return self.fs_name
+    def set_fs_name(self, fs_name): self.fs_name = fs_name
+    def get_gluster_clients(self): return self.gluster_clients
+    def set_gluster_clients(self, gluster_clients): self.gluster_clients = gluster_clients
+    def get_memory_pools(self): return self.memory_pools
+    def set_memory_pools(self, memory_pools): self.memory_pools = memory_pools
+    def get_extensiontype_(self): return self.extensiontype_
+    def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
+    def export(self, outfile, level, namespace_='', name_='GlusterBrickAdvancedDetails', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterBrickAdvancedDetails')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GlusterBrickAdvancedDetails'):
+        super(GlusterBrickAdvancedDetails, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterBrickAdvancedDetails')
+        if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
+            already_processed.append('xsi:type')
+            outfile.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            outfile.write(' xsi:type="%s"' % self.extensiontype_)
+    def exportChildren(self, outfile, level, namespace_='', name_='GlusterBrickAdvancedDetails', fromsubclass_=False):
+        super(GlusterBrickAdvancedDetails, self).exportChildren(outfile, level, namespace_, name_, True)
+        if self.port is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sport>%s</%sport>\n' % (namespace_, self.gds_format_integer(self.port, input_name='port'), namespace_))
+        if self.pid is not None:
+            showIndent(outfile, level)
+            outfile.write('<%spid>%s</%spid>\n' % (namespace_, self.gds_format_integer(self.pid, input_name='pid'), namespace_))
+        if self.device is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sdevice>%s</%sdevice>\n' % (namespace_, self.gds_format_string(quote_xml(self.device).encode(ExternalEncoding), input_name='device'), namespace_))
+        if self.mnt_options is not None:
+            showIndent(outfile, level)
+            outfile.write('<%smnt_options>%s</%smnt_options>\n' % (namespace_, self.gds_format_string(quote_xml(self.mnt_options).encode(ExternalEncoding), input_name='mnt_options'), namespace_))
+        if self.fs_name is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sfs_name>%s</%sfs_name>\n' % (namespace_, self.gds_format_string(quote_xml(self.fs_name).encode(ExternalEncoding), input_name='fs_name'), namespace_))
+        if self.gluster_clients is not None:
+            self.gluster_clients.export(outfile, level, namespace_, name_='gluster_clients')
+        if self.memory_pools is not None:
+            self.memory_pools.export(outfile, level, namespace_, name_='memory_pools')
+    def hasContent_(self):
+        if (
+            self.port is not None or
+            self.pid is not None or
+            self.device is not None or
+            self.mnt_options is not None or
+            self.fs_name is not None or
+            self.gluster_clients is not None or
+            self.memory_pools is not None or
+            super(GlusterBrickAdvancedDetails, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='GlusterBrickAdvancedDetails'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(GlusterBrickAdvancedDetails, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(GlusterBrickAdvancedDetails, self).exportLiteralChildren(outfile, level, name_)
+        if self.port is not None:
+            showIndent(outfile, level)
+            outfile.write('port=%d,\n' % self.port)
+        if self.pid is not None:
+            showIndent(outfile, level)
+            outfile.write('pid=%d,\n' % self.pid)
+        if self.device is not None:
+            showIndent(outfile, level)
+            outfile.write('device=%s,\n' % quote_python(self.device).encode(ExternalEncoding))
+        if self.mnt_options is not None:
+            showIndent(outfile, level)
+            outfile.write('mnt_options=%s,\n' % quote_python(self.mnt_options).encode(ExternalEncoding))
+        if self.fs_name is not None:
+            showIndent(outfile, level)
+            outfile.write('fs_name=%s,\n' % quote_python(self.fs_name).encode(ExternalEncoding))
+        if self.gluster_clients is not None:
+            showIndent(outfile, level)
+            outfile.write('gluster_clients=model_.gluster_clients(\n')
+            self.gluster_clients.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.memory_pools is not None:
+            showIndent(outfile, level)
+            outfile.write('memory_pools=model_.memory_pools(\n')
+            self.memory_pools.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('xsi:type', node)
+        if value is not None and 'xsi:type' not in already_processed:
+            already_processed.append('xsi:type')
+            self.extensiontype_ = value
+        super(GlusterBrickAdvancedDetails, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'port':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'port')
+            self.port = ival_
+        elif nodeName_ == 'pid':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'pid')
+            self.pid = ival_
+        elif nodeName_ == 'device':
+            device_ = child_.text
+            device_ = self.gds_validate_string(device_, node, 'device')
+            self.device = device_
+        elif nodeName_ == 'mnt_options':
+            mnt_options_ = child_.text
+            mnt_options_ = self.gds_validate_string(mnt_options_, node, 'mnt_options')
+            self.mnt_options = mnt_options_
+        elif nodeName_ == 'fs_name':
+            fs_name_ = child_.text
+            fs_name_ = self.gds_validate_string(fs_name_, node, 'fs_name')
+            self.fs_name = fs_name_
+        elif nodeName_ == 'gluster_clients':
+            obj_ = GlusterClients.factory()
+            obj_.build(child_)
+            self.set_gluster_clients(obj_)
+        elif nodeName_ == 'memory_pools':
+            obj_ = GlusterMemoryPools.factory()
+            obj_.build(child_)
+            self.set_memory_pools(obj_)
+        super(GlusterBrickAdvancedDetails, self).buildChildren(child_, node, nodeName_, True)
+# end class GlusterBrickAdvancedDetails
+
+
+class GlusterBrick(GlusterBrickAdvancedDetails):
+    subclass = None
+    superclass = GlusterBrickAdvancedDetails
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, port=None, pid=None, device=None, mnt_options=None, fs_name=None, gluster_clients=None, memory_pools=None, gluster_volume=None, server_id=None, brick_dir=None, status=None):
+        super(GlusterBrick, self).__init__(actions, href, id, name, description, creation_status, link, port, pid, device, mnt_options, fs_name, gluster_clients, memory_pools, )
         self.gluster_volume = gluster_volume
         self.server_id = server_id
         self.brick_dir = brick_dir
@@ -19443,7 +20249,7 @@ class Statistics(BaseResources):
 class Statistic(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, values=None, type_=None, unit=None, disk=None, host=None, host_nic=None, nic=None, vm=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, values=None, type_=None, unit=None, disk=None, host=None, host_nic=None, nic=None, vm=None, brick=None):
         super(Statistic, self).__init__(actions, href, id, name, description, creation_status, link, )
         self.values = values
         self.type_ = type_
@@ -19453,6 +20259,7 @@ class Statistic(BaseResource):
         self.host_nic = host_nic
         self.nic = nic
         self.vm = vm
+        self.brick = brick
     def factory(*args_, **kwargs_):
         if Statistic.subclass:
             return Statistic.subclass(*args_, **kwargs_)
@@ -19481,6 +20288,8 @@ class Statistic(BaseResource):
     def set_nic(self, nic): self.nic = nic
     def get_vm(self): return self.vm
     def set_vm(self, vm): self.vm = vm
+    def get_brick(self): return self.brick
+    def set_brick(self, brick): self.brick = brick
     def export(self, outfile, level, namespace_='', name_='Statistic', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -19515,6 +20324,8 @@ class Statistic(BaseResource):
             self.nic.export(outfile, level, namespace_, name_='nic')
         if self.vm is not None:
             self.vm.export(outfile, level, namespace_, name_='vm')
+        if self.brick is not None:
+            self.brick.export(outfile, level, namespace_, name_='brick')
     def hasContent_(self):
         if (
             self.values is not None or
@@ -19525,6 +20336,7 @@ class Statistic(BaseResource):
             self.host_nic is not None or
             self.nic is not None or
             self.vm is not None or
+            self.brick is not None or
             super(Statistic, self).hasContent_()
             ):
             return True
@@ -19581,6 +20393,12 @@ class Statistic(BaseResource):
             self.vm.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.brick is not None:
+            showIndent(outfile, level)
+            outfile.write('brick=model_.brick(\n')
+            self.brick.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         self.buildAttributes(node, node.attrib, [])
         for child in node:
@@ -19624,6 +20442,10 @@ class Statistic(BaseResource):
             obj_ = class_obj_.factory()
             obj_.build(child_)
             self.set_vm(obj_)
+        elif nodeName_ == 'brick':
+            obj_ = GlusterBrick.factory()
+            obj_.build(child_)
+            self.set_brick(obj_)
         super(Statistic, self).buildChildren(child_, node, nodeName_, True)
 # end class Statistic
 
@@ -20453,11 +21275,12 @@ class API(BaseResource):
 class DetailedLink(Link):
     subclass = None
     superclass = Link
-    def __init__(self, href=None, rel=None, request=None, response=None, linkCapabilities=None):
-        super(DetailedLink, self).__init__(href, rel, )
+    def __init__(self, href=None, rel=None, request=None, response=None, linkCapabilities=None, extensiontype_=None):
+        super(DetailedLink, self).__init__(href, rel, extensiontype_, )
         self.request = request
         self.response = response
         self.linkCapabilities = linkCapabilities
+        self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if DetailedLink.subclass:
             return DetailedLink.subclass(*args_, **kwargs_)
@@ -20470,6 +21293,8 @@ class DetailedLink(Link):
     def set_response(self, response): self.response = response
     def get_linkCapabilities(self): return self.linkCapabilities
     def set_linkCapabilities(self, linkCapabilities): self.linkCapabilities = linkCapabilities
+    def get_extensiontype_(self): return self.extensiontype_
+    def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def export(self, outfile, level, namespace_='', name_='DetailedLink', namespacedef_=''):
         showIndent(outfile, level)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
@@ -20484,6 +21309,10 @@ class DetailedLink(Link):
             outfile.write('/>\n')
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='DetailedLink'):
         super(DetailedLink, self).exportAttributes(outfile, level, already_processed, namespace_, name_='DetailedLink')
+        if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
+            already_processed.append('xsi:type')
+            outfile.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            outfile.write(' xsi:type="%s"' % self.extensiontype_)
     def exportChildren(self, outfile, level, namespace_='', name_='DetailedLink', fromsubclass_=False):
         super(DetailedLink, self).exportChildren(outfile, level, namespace_, name_, True)
         if self.request is not None:
@@ -20535,6 +21364,10 @@ class DetailedLink(Link):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('xsi:type', node)
+        if value is not None and 'xsi:type' not in already_processed:
+            already_processed.append('xsi:type')
+            self.extensiontype_ = value
         super(DetailedLink, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'request':
@@ -20553,10 +21386,93 @@ class DetailedLink(Link):
 # end class DetailedLink
 
 
+class GeneralMetadata(DetailedLink):
+    subclass = None
+    superclass = DetailedLink
+    def __init__(self, href=None, rel=None, request=None, response=None, linkCapabilities=None, name=None, description=None):
+        super(GeneralMetadata, self).__init__(href, rel, request, response, linkCapabilities, )
+        self.name = name
+        self.description = description
+    def factory(*args_, **kwargs_):
+        if GeneralMetadata.subclass:
+            return GeneralMetadata.subclass(*args_, **kwargs_)
+        else:
+            return GeneralMetadata(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_name(self): return self.name
+    def set_name(self, name): self.name = name
+    def get_description(self): return self.description
+    def set_description(self, description): self.description = description
+    def export(self, outfile, level, namespace_='', name_='GeneralMetadata', namespacedef_=''):
+        showIndent(outfile, level)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = []
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GeneralMetadata')
+        if self.hasContent_():
+            outfile.write('>\n')
+            self.exportChildren(outfile, level + 1, namespace_, name_)
+            showIndent(outfile, level)
+            outfile.write('</%s%s>\n' % (namespace_, name_))
+        else:
+            outfile.write('/>\n')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GeneralMetadata'):
+        super(GeneralMetadata, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GeneralMetadata')
+    def exportChildren(self, outfile, level, namespace_='', name_='GeneralMetadata', fromsubclass_=False):
+        super(GeneralMetadata, self).exportChildren(outfile, level, namespace_, name_, True)
+        if self.name is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sname>%s</%sname>\n' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_))
+        if self.description is not None:
+            showIndent(outfile, level)
+            outfile.write('<%sdescription>%s</%sdescription>\n' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_))
+    def hasContent_(self):
+        if (
+            self.name is not None or
+            self.description is not None or
+            super(GeneralMetadata, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def exportLiteral(self, outfile, level, name_='GeneralMetadata'):
+        level += 1
+        self.exportLiteralAttributes(outfile, level, [], name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(GeneralMetadata, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(GeneralMetadata, self).exportLiteralChildren(outfile, level, name_)
+        if self.name is not None:
+            showIndent(outfile, level)
+            outfile.write('name=%s,\n' % quote_python(self.name).encode(ExternalEncoding))
+        if self.description is not None:
+            showIndent(outfile, level)
+            outfile.write('description=%s,\n' % quote_python(self.description).encode(ExternalEncoding))
+    def build(self, node):
+        self.buildAttributes(node, node.attrib, [])
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(GeneralMetadata, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'name':
+            name_ = child_.text
+            name_ = self.gds_validate_string(name_, node, 'name')
+            self.name = name_
+        elif nodeName_ == 'description':
+            description_ = child_.text
+            description_ = self.gds_validate_string(description_, node, 'description')
+            self.description = description_
+        super(GeneralMetadata, self).buildChildren(child_, node, nodeName_, True)
+# end class GeneralMetadata
+
+
 class VersionCaps(Version):
     subclass = None
     superclass = Version
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None):
         super(VersionCaps, self).__init__(actions, href, id, name, description, creation_status, link, major, full_version, build_, minor, revision, )
         self.current = current
         self.features = features
@@ -20595,6 +21511,7 @@ class VersionCaps(Version):
         self.usages = usages
         self.nfs_versions = nfs_versions
         self.pm_proxy_types = pm_proxy_types
+        self.cpu_modes = cpu_modes
         self.gluster_volume_types = gluster_volume_types
         self.transport_types = transport_types
         self.gluster_volume_states = gluster_volume_states
@@ -20681,6 +21598,8 @@ class VersionCaps(Version):
     def set_nfs_versions(self, nfs_versions): self.nfs_versions = nfs_versions
     def get_pm_proxy_types(self): return self.pm_proxy_types
     def set_pm_proxy_types(self, pm_proxy_types): self.pm_proxy_types = pm_proxy_types
+    def get_cpu_modes(self): return self.cpu_modes
+    def set_cpu_modes(self, cpu_modes): self.cpu_modes = cpu_modes
     def get_gluster_volume_types(self): return self.gluster_volume_types
     def set_gluster_volume_types(self, gluster_volume_types): self.gluster_volume_types = gluster_volume_types
     def get_transport_types(self): return self.transport_types
@@ -20784,6 +21703,8 @@ class VersionCaps(Version):
             self.nfs_versions.export(outfile, level, namespace_, name_='nfs_versions')
         if self.pm_proxy_types is not None:
             self.pm_proxy_types.export(outfile, level, namespace_, name_='pm_proxy_types')
+        if self.cpu_modes is not None:
+            self.cpu_modes.export(outfile, level, namespace_, name_='cpu_modes')
         if self.gluster_volume_types is not None:
             self.gluster_volume_types.export(outfile, level, namespace_, name_='gluster_volume_types')
         if self.transport_types is not None:
@@ -20835,6 +21756,7 @@ class VersionCaps(Version):
             self.usages is not None or
             self.nfs_versions is not None or
             self.pm_proxy_types is not None or
+            self.cpu_modes is not None or
             self.gluster_volume_types is not None or
             self.transport_types is not None or
             self.gluster_volume_states is not None or
@@ -21074,6 +21996,12 @@ class VersionCaps(Version):
             self.pm_proxy_types.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.cpu_modes is not None:
+            showIndent(outfile, level)
+            outfile.write('cpu_modes=model_.cpu_modes(\n')
+            self.cpu_modes.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.gluster_volume_types is not None:
             showIndent(outfile, level)
             outfile.write('gluster_volume_types=model_.gluster_volume_types(\n')
@@ -21272,6 +22200,10 @@ class VersionCaps(Version):
             obj_ = PmProxyTypes.factory()
             obj_.build(child_)
             self.set_pm_proxy_types(obj_)
+        elif nodeName_ == 'cpu_modes':
+            obj_ = CpuModes.factory()
+            obj_.build(child_)
+            self.set_cpu_modes(obj_)
         elif nodeName_ == 'gluster_volume_types':
             obj_ = GlusterVolumeTypes.factory()
             obj_.build(child_)
@@ -21418,6 +22350,7 @@ __all__ = [
     "Certificate",
     "Cluster",
     "Clusters",
+    "CpuModes",
     "CpuTopology",
     "CpuTune",
     "Creation",
@@ -21450,8 +22383,15 @@ __all__ = [
     "Files",
     "Floppies",
     "Floppy",
+    "GeneralMetadata",
     "GlusterBrick",
+    "GlusterBrickAdvancedDetails",
+    "GlusterBrickMemoryInfo",
     "GlusterBricks",
+    "GlusterClient",
+    "GlusterClients",
+    "GlusterMemoryPool",
+    "GlusterMemoryPools",
     "GlusterStates",
     "GlusterVolume",
     "GlusterVolumeTypes",
@@ -21593,6 +22533,8 @@ _rootClassMap = {
                     "boot_devices"                  : BootDevices,
                     "boot_protocols"                : BootProtocols,
                     "brick"                         : GlusterBrick,
+                    "brick_details"                 : GlusterBrickAdvancedDetails,
+                    "brick_memoryinfo"              : GlusterBrickMemoryInfo,
                     "brick_states"                  : GlusterStates,
                     "bricks"                        : GlusterBricks,
                     "capabilities"                  : Capabilities,
@@ -21602,6 +22544,7 @@ _rootClassMap = {
                     "cluster"                       : Cluster,
                     "clusters"                      : Clusters,
                     "cpu"                           : CPU,
+                    "cpu_modes"                     : CpuModes,
                     "cpu_tune"                      : CpuTune,
                     "cpus"                          : CPUs,
                     "creation"                      : Creation,
@@ -21633,6 +22576,10 @@ _rootClassMap = {
                     "files"                         : Files,
                     "floppies"                      : Floppies,
                     "floppy"                        : Floppy,
+                    "general"                       : GeneralMetadata,
+                    "general_metadata"              : GeneralMetadata,
+                    "gluster_client"                : GlusterClient,
+                    "gluster_clients"               : GlusterClients,
                     "gluster_volume"                : GlusterVolume,
                     "gluster_volume_states"         : GlusterStates,
                     "gluster_volume_types"          : GlusterVolumeTypes,
@@ -21669,6 +22616,8 @@ _rootClassMap = {
                     "lun_storage"                   : Storage,
                     "mac"                           : MAC,
                     "memory_policy"                 : MemoryPolicy,
+                    "memory_pool"                   : GlusterMemoryPool,
+                    "memory_pools"                  : GlusterMemoryPools,
                     "network"                       : Network,
                     "network_states"                : NetworkStates,
                     "networks"                      : Networks,
