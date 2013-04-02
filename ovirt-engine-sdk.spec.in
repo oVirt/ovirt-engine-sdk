@@ -37,6 +37,32 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
+* Tue Apr  2 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.1-1
+ - added new collection ClusterGlusterVolumeBrickStatistics
+ - added NetUp 'cloned disk' importing capabilities
+ - to ClusterGlusterVolumeBricks.list() added new argument "all_content"
+ - to ClusterGlusterVolumeBricks.get() added new argument "all_content"
+ - to host install method added new parameter "image"
+ - to host add method added new parameter "display.address"
+ - to vm add method added new parameter "vm.cpu.mode"
+ - to vm add method added new overload for creating vm from snapshot
+ - to cluster added tunnel_migration
+ - to display added keyboard_layout
+ - to display added smartcard_enabled
+ - to DataCenter added Clusters sub-collection
+ - to StorageDomain added Disks sub-collection
+ - to Disks.list() added 'unregistered' argument
+ - to Host added display.address
+ - to Snapshot added commit/preview/undo actions
+ - to vms.add() added overload for creating vm from snapshot
+ - to hosts.add() added [@param host.display.address: string]
+ - to vm.ticket() added [@param action.ticket.value: string]
+ - return error if amount of fetched objects in X.get() is > 1 #890327
+ - session based authentication for /localhost is broken #916285
+ - explicitly ask for reply in xml
+ - Add constructor parameter validate_cert_chain=True #915225
+ - defend against malformed server reply
+
 * Sun Jan  13 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.8-1
  - fix date in ovirt-engine-sdk.spec.in
 
