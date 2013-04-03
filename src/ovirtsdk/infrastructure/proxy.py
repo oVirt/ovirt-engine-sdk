@@ -211,21 +211,25 @@ class Proxy():
         @param noParse: disables xml2py conversion
         '''
         try:
+            # Copy request headers to avoid by-ref lookup after
+            # JSESSIONID has been injected
+            request_headers = headers.copy()
+
             # Add cookie headers as needed:
-            request_adapter = CookieJarAdapter(self._url + url, headers)
+            request_adapter = CookieJarAdapter(self._url + url, request_headers)
             self._cookies_jar.add_cookie_header(request_adapter)
 
             # Every request except the last one should indicate that we prefer
             # to use persistent authentication:
             if self._persistent_auth and not last:
-                headers["Prefer"] = "persistent-auth"
+                request_headers["Prefer"] = "persistent-auth"
 
             # Send the request and wait for the response:
             conn.doRequest(
                    method=method,
                    url=url,
                    body=body,
-                   headers=headers,
+                   headers=request_headers,
                    no_auth=self._persistent_auth and \
                         self.__isSetJsessionCookie(self._cookies_jar)
             )
@@ -234,7 +238,7 @@ class Proxy():
 
             # Read the response headers (there is always a response,
             # even for error responses):
-            headers = dict(response.getheaders())
+            response_headers = dict(response.getheaders())
 
             # Parse the received body only if there are no errors reported by
             # the server (this needs review, as less than 400 doesn't garantee
@@ -244,7 +248,7 @@ class Proxy():
                 raise RequestError, response
 
             # Copy the cookies from the response:
-            response_adapter = CookieJarAdapter(self._url, headers)
+            response_adapter = CookieJarAdapter(self._url, response_headers)
             self._cookies_jar.extract_cookies(response_adapter, request_adapter)
 
             # Parse the body:
