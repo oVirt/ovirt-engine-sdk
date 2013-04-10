@@ -16,8 +16,15 @@
 
 from Queue import Queue
 import thread
+import cookielib
+import urlparse
+
+from cookielib import DefaultCookiePolicy
+
 from ovirtsdk.web.connection import Connection
 from ovirtsdk.infrastructure.errors import ImmutableError
+from ovirtsdk.utils.synchronizationhelper import synchronized
+
 
 class ConnectionsPool(object):
     '''
@@ -35,6 +42,14 @@ class ConnectionsPool(object):
 
         self.__url = url
         self.__context = context
+
+        # Create the cookies policy and jar:
+        self.__cookies_jar = cookielib.CookieJar(
+                 policy=cookielib.DefaultCookiePolicy(
+                       strict_ns_domain=DefaultCookiePolicy.DomainStrictNoDots,
+                       allowed_domains=self.__getAllowedDomains(url)
+                 )
+            )
 
         for _ in range(count):
             self.__free_connections.put(item=Connection(url=url, \
@@ -64,10 +79,25 @@ class ConnectionsPool(object):
 # TODO: add more connections if needed
 #        continue
 
-    def _freeResource(self, conn):
-        with self.__rlock:
-            conn = self.__busy_connections.pop(conn.get_id())
-            self.__free_connections.put_nowait(conn)
+    def getCookiesJar(self):
+        """
+        returns cookies container
+        """
+        return self.__cookies_jar
+
+    @synchronized
+    def addCookieHeaders(self, request_adapter):
+        """
+        Adds the stored cookie/s to the request adapter:
+        """
+        self.getCookiesJar().add_cookie_header(request_adapter)
+
+    @synchronized
+    def storeCookies(self, response_adapter, request_adapter):
+        """
+        Stores the cookie/s located in the response adapter in request adapter:
+        """
+        self.getCookiesJar().extract_cookies(response_adapter, request_adapter)
 
     def get_url(self):
         return self.__url
@@ -75,6 +105,26 @@ class ConnectionsPool(object):
     @property
     def context(self):
         return self.__context
+
+    @synchronized
+    def __getAllowedDomains(self, url):
+        '''
+        fetches allowed domains for cookie
+        '''
+
+        LOCAL_HOST = 'localhost'
+        parsed_url = urlparse.urlparse(url)
+        domains = [parsed_url.hostname]
+
+        if parsed_url.hostname == LOCAL_HOST:
+            return domains.append(LOCAL_HOST + '.local')
+
+        return domains
+
+    def _freeResource(self, conn):
+        with self.__rlock:
+            conn = self.__busy_connections.pop(conn.get_id())
+            self.__free_connections.put_nowait(conn)
 
     def __setattr__(self, name, value):
         if name in ['__context', 'context']:
