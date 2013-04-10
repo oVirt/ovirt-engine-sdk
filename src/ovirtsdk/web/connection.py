@@ -14,14 +14,18 @@
 # limitations under the License.
 #
 
-import base64
-from httplib import HTTPConnection
+import types
 import urllib
 import urlparse
-from ovirtsdk.web.httpsconnection import HTTPSConnection
-from ovirtsdk.infrastructure.errors import NoCertificatesError, ImmutableError
-import types
+import base64
+import socket
+
+from httplib import HTTPConnection
+
+from ovirtsdk.web.cookiejaradapter import CookieJarAdapter
 from ovirtsdk.infrastructure.context import context
+from ovirtsdk.web.httpsconnection import HTTPSConnection
+from ovirtsdk.infrastructure.errors import NoCertificatesError, ImmutableError, RequestError, ConnectionError
 
 class Connection(object):
     '''
@@ -40,6 +44,7 @@ class Connection(object):
                                                     strict=strict,
                                                     timeout=timeout)
 
+        self.__url = url
         self.__connection.set_debuglevel(int(debug))
         self.__headers = self.__createStaticHeaders(username, password)
         self.__manager = manager
@@ -72,7 +77,7 @@ class Connection(object):
 
         return headers
 
-    def doRequest(self, method, url, body=urllib.urlencode({}), headers={}, no_auth=False):
+    def doRequest(self, method, url, body=urllib.urlencode({}), headers={}, last=False, persistent_auth=True):
         '''
         Performs HTTP request
 
@@ -80,9 +85,87 @@ class Connection(object):
         @param url: URL to invoke the request on
         @param body: request body
         @param headers: request headers
-        @param no_auth: do not authorize request (authorization is done via cookie)
+        @param last: disables persistence authentication
+        @param persistent_auth: session based auth
         '''
-        return self.__connection.request(method, url, body, self.getHeaders(headers, no_auth))
+
+        try:
+            # Copy request headers to avoid by-ref lookup after
+            # JSESSIONID has been injected
+            request_headers = headers.copy()
+
+            # Add cookie headers as needed:
+            request_adapter = CookieJarAdapter(self.__url + url, request_headers)
+            self.__manager.addCookieHeaders(request_adapter)
+
+            # Every request except the last one should indicate that we prefer
+            # to use persistent authentication:
+            if persistent_auth and not last:
+                request_headers["Prefer"] = "persistent-auth"
+
+            # Send the request and wait for the response:
+            response = self.__connection.request(
+                         method,
+                         url,
+                         body,
+                         self.getHeaders(request_headers,
+                                         no_auth=
+                                            persistent_auth and \
+                                            self.__isSetJsessionCookie(
+                                                   self.__manager.getCookiesJar()
+                                            ),
+                         )
+                       )
+
+            response = self.getResponse()
+
+            # Read the response headers (there is always a response,
+            # even for error responses):
+            response_headers = dict(response.getheaders())
+
+            # Parse the received body only if there are no errors reported by
+            # the server (this needs review, as less than 400 doesn't garantee
+            # a correct response, it could be a redirect, and many other
+            # things):
+            if response.status >= 400:
+                raise RequestError, response
+
+            # Copy the cookies from the response:
+            response_adapter = CookieJarAdapter(self.__url, response_headers)
+            self.__manager.storeCookies(response_adapter, request_adapter)
+
+            # Parse the body:
+            response_body = response.read()
+
+            # Print response body (if in debug mode)
+            self.__do_debug(self, response_body)
+
+            return response_body
+
+        except socket.error, e:
+            raise ConnectionError, str(e)
+        finally:
+            self.close()
+
+    def __do_debug(self, conn, body):
+        '''
+        Prints request body (when in debug) to STDIO
+        '''
+        if conn.getConnection().debuglevel:
+                print 'body:\n' + body if body else ''
+
+    def __isSetJsessionCookie(self, cookies_jar):
+        '''
+        Checks if JSESSIONID cookie is set
+
+        @param cookies_jar: cookies container
+        '''
+        if cookies_jar and len(cookies_jar._cookies) > 0:
+            for key in cookies_jar._cookies.keys():
+                if cookies_jar._cookies[key].has_key('/api') and \
+                    cookies_jar._cookies[key]['/api'].has_key('JSESSIONID'):
+                    return True
+        return False
 
     def getHeaders(self, headers, no_auth=False):
         extended_headers = self.getDefaultHeaders(no_auth)
