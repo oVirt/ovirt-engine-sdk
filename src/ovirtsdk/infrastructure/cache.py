@@ -16,6 +16,7 @@
 
 import threading
 from ovirtsdk.infrastructure.errors import ImmutableError
+import types
 
 
 class Item():
@@ -58,17 +59,31 @@ class Cache(object):
         self.__cache = {}
         self.__lock = threading.RLock()
 
-    def add(self, key, val, mode=Mode.RW):
+    def add(self, key, val, mode=Mode.RW, typ=None):
         '''
         Stores the value in cache
 
         @param key:  is the cache key
         @param val:  is the cache value
         [@param mode: is the access mode [r|rw]]
+        [@param typ: type to cast value to]
+
+        @raise TypeError: when value cannot be cast to the typ
         '''
         with self.__lock:
             if mode is Mode.R and self.__cache.has_key(key):
                 raise ImmutableError(key)
+            elif typ:
+                try:
+                    if typ == types.BooleanType and type(val) == types.StringType \
+                        and val not in ['True', 'False']:
+                        raise ValueError(val)
+                    self.__cache[key] = Item(typ(val), mode)
+                except ValueError:
+                    raise TypeError(
+                             key + "=" + val,
+                             str(typ) + ' is expected.'
+                          )
             else:
                 self.__cache[key] = Item(val, mode)
 

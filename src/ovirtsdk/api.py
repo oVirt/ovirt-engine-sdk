@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-02-27 09:42:27.329672'''
+'''Generated at: 2013-04-17 14:37:52.244063'''
 
 import types
 
@@ -52,7 +52,7 @@ from ovirtsdk.infrastructure.brokers import VmPools
 
 class API(object):
     def __init__(self, url, username, password, key_file=None, cert_file=None,
-                 ca_file=None, port=None, timeout=None, persistent_auth=True, 
+                 ca_file=None, port=None, timeout=None, session_timeout=None, persistent_auth=True,
                  insecure=False, validate_cert_chain=True, filter=False, debug=False):
 
         '''
@@ -64,6 +64,7 @@ class API(object):
         [@param ca_file: server ca_file for ssl enabled connection]
         [@param port: port to use (if not specified in url)]
         [@param timeout: request timeout]
+        [@param session_timeout: authentication session timeout (if persistent_auth is enabled)]
         [@param persistent_auth: enable persistent authentication (format True|False)]
         [@param insecure: signals to not demand site trustworthiness for ssl enabled connection (format True|False, default is False)]
         [@param validate_cert_chain: validate the server's certificate (format True|False, default is True)]
@@ -102,15 +103,15 @@ class API(object):
 
         # Create the proxy:
         proxy = Proxy(
-            pool, 
+            pool,
             persistent_auth
         )
 
         # Store filter to the context:
-        context.manager[self.id].add(
-            'filter', 
-            filter
-        )
+        self.set_filter(filter)
+
+        # Store session_timeout to the context:
+        self.__set_session_timeout(session_timeout)
 
         # Get entry point
         entry_point = proxy.request(
@@ -132,8 +133,8 @@ class API(object):
 
         # Store proxy to the context:
         context.manager[self.id].add(
-            'proxy', 
-            proxy, 
+            'proxy',
+            proxy,
             Mode.R
         )
 
@@ -141,7 +142,8 @@ class API(object):
         context.manager[self.id].add(
             'persistent_auth',
              persistent_auth,
-             Mode.R
+             Mode.R,
+             typ=types.BooleanType
         )
 
         self.capabilities = Capabilities(self.id)
@@ -215,10 +217,21 @@ class API(object):
 
     def set_filter(self, filter):
         ''' enables user permission based filtering '''
-        if type(filter) == types.BooleanType:
-            context.manager[self.id].add('filter', filter)
-        else:
-            raise TypeError(filter)
+        if filter != None:
+            context.manager[self.id].add(
+                             'filter',
+                             filter,
+                             typ=types.BooleanType
+            )
+
+    def __set_session_timeout(self, session_timeout):
+        ''' set authentication session timeout '''
+        if session_timeout != None:
+            context.manager[self.id].add(
+                             'session_timeout',
+                             session_timeout,
+                             typ=types.IntType
+            )
 
     def get_special_objects(self):
         entry_point = context.manager[self.id].get('entry_point')

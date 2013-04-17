@@ -19,6 +19,7 @@ import urllib
 import urlparse
 import base64
 import socket
+import logging
 
 from httplib import HTTPConnection
 
@@ -26,6 +27,7 @@ from ovirtsdk.web.cookiejaradapter import CookieJarAdapter
 from ovirtsdk.infrastructure.context import context
 from ovirtsdk.web.httpsconnection import HTTPSConnection
 from ovirtsdk.infrastructure.errors import NoCertificatesError, ImmutableError, RequestError, ConnectionError
+
 
 class Connection(object):
     '''
@@ -167,8 +169,9 @@ class Connection(object):
                     return True
         return False
 
-    def getHeaders(self, headers, no_auth=False):
-        extended_headers = self.getDefaultHeaders(no_auth)
+    def getHeaders(self, headers={}, no_auth=False):
+        headers.update(self.getDefaultHeaders(no_auth))
+        extended_headers = {}
         for k in headers.keys():
             if (headers[k] is None and extended_headers.has_key(k)):
                 extended_headers.pop(k)
@@ -243,8 +246,39 @@ class Connection(object):
                 "Accept"       : "application/xml",
                 "Authorization": "Basic %s" % auth}
 
+    def __injectFilterHeader(self, headers):
+        filter_header = context.manager[self.context].get('filter')
+        if filter_header != None:
+            if type(filter_header) == types.BooleanType:
+                headers['Filter'] = filter_header
+            else:
+                logging.error(
+                      TypeError(
+                        "filter_header"+str(filter_header),
+                        str(types.BooleanType) + ' is expected.'
+                       )
+                )
+
+    def __injectAuthSessionHeader(self, headers):
+        session_timeout = context.manager[self.context].get('session_timeout')
+        if session_timeout != None:
+            if type(session_timeout) == types.IntType:
+                headers['Session-TTL'] = session_timeout
+            else:
+                logging.error(
+                      TypeError(
+                        "session_timeout"+str(session_timeout),
+                        str(types.IntType) + ' is expected.'
+                      )
+                )
+
     def __createDynamicHeaders(self):
-        return {'Filter' : str(context.manager[self.context].get('filter'))}
+        headers = {}
+
+        self.__injectFilterHeader(headers)
+        self.__injectAuthSessionHeader(headers)
+
+        return headers
 
     def __setattr__(self, name, value):
         if name in ['__context', 'context']:

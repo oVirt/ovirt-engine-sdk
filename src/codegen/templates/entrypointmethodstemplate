@@ -53,7 +53,18 @@
 
     def set_filter(self, filter):
         ''' enables user permission based filtering '''
-        if type(filter) == types.BooleanType:
-            context.manager[self.id].add('filter', filter)
-        else:
-            raise TypeError(filter)
+        if filter != None:
+            context.manager[self.id].add(
+                             'filter',
+                             filter,
+                             typ=types.BooleanType
+            )
+
+    def __set_session_timeout(self, session_timeout):
+        ''' set authentication session timeout '''
+        if session_timeout != None:
+            context.manager[self.id].add(
+                             'session_timeout',
+                             session_timeout,
+                             typ=types.IntType
+            )
