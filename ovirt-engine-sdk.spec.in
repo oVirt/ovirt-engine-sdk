@@ -37,6 +37,15 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
+* Wed May  1 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.2-1
+ - in ClusterGlusterVolumeBricks fixed add() parameters
+ - to StorageDomainVM.delete() added async parameter
+ - fixed parent tag parameter in the tags.add()/.update() methods
+ - nic.network is no longer mandatory parameter for vnic creation
+ - Implement Session-TTL header support #928313
+ - refactor invocation flow #949189, #949187
+ - user should not see admin permissions the DC #924357
+
 * Tue Apr  2 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.1-1
  - added new collection ClusterGlusterVolumeBrickStatistics
  - added NetUp 'cloned disk' importing capabilities
