@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-04-02 14:56:45.652111'''
+'''Generated at: 2013-05-01 10:05:06.249223'''
 
 
 from ovirtsdk.xml import params
@@ -585,16 +585,13 @@ class ClusterGlusterVolumeBricks(Base):
         '''
         @type GlusterBricks:
 
-        @param bricks.brick: collection
+        @param brick: collection
         {
           @ivar brick.server_id: string
           @ivar brick.brick_dir: string
         }
-        [@param bricks.brick: collection]
-        {
-          [@ivar brick.replica_count: unsignedShort]
-          [@ivar brick.stripe_count: unsignedShort]
-        }
+        [@param replica_count: unsignedShort]
+        [@param stripe_count: unsignedShort]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -9199,6 +9196,7 @@ class StorageDomainVM(params.VM, Base):
         @type Action:
 
         @param action.cluster.id|name: string
+        [@param action.async: boolean]
         [@param action.storage_domain.id|name: string]
         [@param action.vm.snapshots.collapse_snapshots: boolean]
         [@param action.clone: boolen]
@@ -9641,7 +9639,7 @@ class Tag(params.Tag, Base):
         '''
         [@param tag.name: string]
         [@param tag.description: string]
-        [@param tag.parent.name: string]
+        [@param tag.parent.tag.name: string]
         [@param correlation_id: any string]
 
         @return Tag:
@@ -9679,7 +9677,7 @@ class Tags(Base):
 
         @param tag.name: string
         [@param tag.description: string]
-        [@param tag.parent.name: string]
+        [@param tag.parent.tag.name: string]
         [@param correlation_id: any string]
 
         @return Tag:
@@ -10282,8 +10280,8 @@ class TemplateNics(Base):
         '''
         @type NIC:
 
-        @param nic.network.id|name: string
         @param nic.name: string
+        [@param nic.network.id|name: string]
         [@param nic.linked: boolean]
         [@param nic.mac.address: string]
         [@param nic.interface: string]
