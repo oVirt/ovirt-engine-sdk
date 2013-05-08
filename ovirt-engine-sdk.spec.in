@@ -37,6 +37,15 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
+* Sun May  10 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.11-1
+ - fixed brics.add() params docs
+ - fixed assigning tag to parant param docs
+ - implement Session-TTL header support #928313
+ - refactor invocation flow #949189, #949187
+ - user should not see admin permissions the DC #924357
+ - return error if amount of fetched objects in X.get() is > 1 #890327
+ - sdk expose datetime elements as strings #960747
+
 * Sun Mar  10 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.10-1
  - session based authentication is broken #916285
  - explicitly ask for reply in xml
