@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 
 #
-# Generated Tue Apr  2 14:17:34 2013 by generateDS.py version 2.7b.
+# Generated Wed May  8 11:25:39 2013 by generateDS.py version 2.7b.
 #
 
 import sys
@@ -21852,7 +21852,7 @@ _rootClassMap = {
                     "value"                         : Value,
                     "values"                        : Values,
                     "vcpu_pin"                      : VCpuPin,
-                    "version"                       : VersionCaps,
+                    "version"                       : Version,
                     "vlan"                          : VLAN,
                     "vm"                            : VM,
                     "vm_affinities"                 : VmAffinities,
