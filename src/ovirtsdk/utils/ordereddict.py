@@ -6,9 +6,10 @@ class OrderedDict(UserDict):
     """A dictionary preserving insert order"""
     def __init__(self, dict=None):
         self._keys = []
-        UserDict.__init__(self, dict)
         self.__plock = thread.allocate_lock()
         self.__rlock = thread.allocate_lock()
+
+        UserDict.__init__(self, dict)
 
     def clear(self):
         """Clears the dictionary"""
