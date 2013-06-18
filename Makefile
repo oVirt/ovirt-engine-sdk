@@ -3,10 +3,10 @@ all: rpm
 rpmrelease:=1
 rpmversion=3.3.0.3
 RPMTOP=$(shell bash -c "pwd -P")/rpmtop
-SPEC=ovirt-engine-sdk.spec
+SPEC=ovirt-engine-sdk-python.spec
 
-TARBALL=ovirt-engine-sdk-$(rpmversion).tar.gz
-SRPM=$(RPMTOP)/SRPMS/ovirt-engine-sdk-$(rpmversion)-$(rpmrelease)*.src.rpm
+TARBALL=ovirt-engine-sdk-python-$(rpmversion).tar.gz
+SRPM=$(RPMTOP)/SRPMS/ovirt-engine-sdk-python-$(rpmversion)-$(rpmrelease)*.src.rpm
 
 TESTS=pyflakes
 
@@ -20,12 +20,12 @@ pyflakes:
 .PHONY: tarball
 tarball: $(TARBALL)
 $(TARBALL): Makefile #$(TESTS)
-	git archive --format=tar --prefix ovirt-engine-sdk/ HEAD | gzip > $(TARBALL)
+	git archive --format=tar --prefix ovirt-engine-sdk-python/ HEAD | gzip > $(TARBALL)
 
 .PHONY: srpm rpm
 srpm: $(SRPM)
-$(SRPM): $(TARBALL) ovirt-engine-sdk.spec.in
-	sed 's/^Version:.*/Version: $(rpmversion)/;s/^Release:.*/Release: $(rpmrelease)%{dist}/;s/%{release}/$(rpmrelease)/' ovirt-engine-sdk.spec.in > $(SPEC)
+$(SRPM): $(TARBALL) ovirt-engine-sdk-python.spec.in
+	sed 's/^Version:.*/Version: $(rpmversion)/;s/^Release:.*/Release: $(rpmrelease)%{dist}/;s/%{release}/$(rpmrelease)/' ovirt-engine-sdk-python.spec.in > $(SPEC)
 	mkdir -p $(RPMTOP)/{RPMS,SRPMS,SOURCES,BUILD}
 	rpmbuild -bs \
 	    --define="_topdir $(RPMTOP)" \
