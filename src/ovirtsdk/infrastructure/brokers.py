@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-05-01 10:05:06.249223'''
+'''Generated at: 2013-06-18 16:07:24.253249'''
 
 
 from ovirtsdk.xml import params
@@ -144,6 +144,7 @@ class Cluster(params.Cluster, Base):
         '''
         [@param cluster.name: string]
         [@param cluster.description: string]
+        [@param cluster.data_center.id: string]
         [@param cluster.cpu.id: string]
         [@param cluster.version.major: int]
         [@param cluster.version.minor: int]
@@ -952,6 +953,10 @@ class ClusterNetworks(Base):
         @type Network:
 
         @param network.id|name: string
+        [@param network.usages.usage: collection]
+        {
+          [@ivar usage: string]
+        }
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -2253,6 +2258,10 @@ class DataCenterClusterNetworks(Base):
         @type Network:
 
         @param network.id|name: string
+        [@param network.usages.usage: collection]
+        {
+          [@ivar usage: string]
+        }
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -2895,22 +2904,6 @@ class DataCenterQuota(params.Quota, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
-        '''
-        @return None:
-        '''
-
-        url = '/api/datacenters/{datacenter:id}/quotas/{quota:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {'{datacenter:id}' : self.parentclass.get_id(),
-                 '{quota:id}': self.get_id()}
-            ),
-            headers={'Content-type':None}
-        )
-
 class DataCenterQuotas(Base):
 
     def __init__(self, datacenter , context):
@@ -2925,32 +2918,6 @@ class DataCenterQuotas(Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
-
-    def add(self, quota):
-
-        '''
-        @type Quota:
-
-
-        @return Quota:
-        '''
-
-        url = '/api/datacenters/{datacenter:id}/quotas'
-
-        result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {'{datacenter:id}': self.parentclass.get_id()}
-            ),
-            body=ParseHelper.toXml(quota),
-            headers={}
-        )
-
-        return DataCenterQuota(
-            self.parentclass,
-            result,
-            self.context
-        )
 
     def get(self, name=None, id=None):
 
@@ -5755,7 +5722,7 @@ class Host(params.Host, Base):
         [@param host.power_management.type: string]
         [@param host.power_management.enabled: boolean]
         [@param host.power_management.address: string]
-        [@param host.power_management.user_name: string]
+        [@param host.power_management.username: string]
         [@param host.power_management.password: string]
         [@param host.power_management.options.option: collection]
         {
@@ -5883,6 +5850,7 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
+        @param action.fence_type: string
         [@param correlation_id: any string]
 
         @return Action:
@@ -7148,7 +7116,7 @@ class Hosts(Base):
         [@param host.power_management.type: string]
         [@param host.power_management.enabled: boolean]
         [@param host.power_management.address: string]
-        [@param host.power_management.user_name: string]
+        [@param host.power_management.username: string]
         [@param host.power_management.password: string]
         [@param host.power_management.options.option: collection]
         {
@@ -7982,6 +7950,7 @@ class StorageDomain(params.StorageDomain, Base):
         @type StorageDomain:
 
         @param storagedomain.host.id|name: string
+        [@param storagedomain.format: boolean]
         [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
@@ -8007,6 +7976,7 @@ class StorageDomain(params.StorageDomain, Base):
         Overload 1:
           [@param storagedomain.name: string]
         Overload 2:
+          @param storagedomain.host.id|name: string
           @param storagedomain.storage.logical_unit: collection
           {
             @ivar logical_unit.address: string
@@ -9490,6 +9460,7 @@ class StorageDomains(Base):
           }
           [@param storagedomain.name: string]
           [@param storagedomain.storage.override_luns: boolean]
+          [@param storagedomain.storage_format: string]
         Overload 2:
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
@@ -9498,6 +9469,7 @@ class StorageDomains(Base):
           @param storagedomain.storage.address: string
           @param storagedomain.storage.path: string
           [@param storagedomain.name: string]
+          [@param storagedomain.storage_format: string]
         Overload 3:
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
@@ -9505,6 +9477,7 @@ class StorageDomains(Base):
           @param storagedomain.format: boolean
           @param storagedomain.storage.path: string
           [@param storagedomain.name: string]
+          [@param storagedomain.storage_format: string]
         Overload 4:
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
@@ -9515,6 +9488,7 @@ class StorageDomains(Base):
           [@param storagedomain.name: string]
           [@param storagedomain.storage.address: string]
           [@param storagedomain.storage.mount_options: string]
+          [@param storagedomain.storage_format: string]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -9677,7 +9651,7 @@ class Tags(Base):
 
         @param tag.name: string
         [@param tag.description: string]
-        [@param tag.parent.tag.name: string]
+        [@param tag.parent.tag.id|name: string]
         [@param correlation_id: any string]
 
         @return Tag:
@@ -10236,6 +10210,11 @@ class TemplateNic(params.NIC, Base):
         {
           [@ivar network.id: string]
         }
+        [@param nic.custom_properties.custom_property: collection]
+        {
+          [@ivar custom_property.name: string]
+          [@ivar custom_property.value: string]
+        }
         [@param correlation_id: any string]
 
         @return NIC:
@@ -10288,6 +10267,11 @@ class TemplateNics(Base):
         [@param nic.port_mirroring.networks.network: collection]
         {
           [@ivar network.id: string]
+        }
+        [@param nic.custom_properties.custom_property: collection]
+        {
+          [@ivar custom_property.name: string]
+          [@ivar custom_property.value: string]
         }
         [@param expect: 201-created]
         [@param correlation_id: any string]
@@ -11603,6 +11587,7 @@ class VM(params.VM, Base):
         self.disks = VMDisks(self, context)
         self.reporteddevices = VMReportedDevices(self, context)
         self.snapshots = VMSnapshots(self, context)
+        self.applications = VMapplications(self, context)
         self.permissions = VMPermissions(self, context)
 
     def __new__(cls, vm, context):
@@ -12824,6 +12809,11 @@ class VMNic(params.NIC, Base):
           [@ivar network.id: string]
         }
         [@param nic.plugged: boolean]
+        [@param nic.custom_properties.custom_property: collection]
+        {
+          [@ivar custom_property.name: string]
+          [@ivar custom_property.value: string]
+        }
         [@param correlation_id: any string]
 
         @return NIC:
@@ -13170,6 +13160,11 @@ class VMNics(Base):
           [@ivar network.id: string]
         }
         [@param nic.plugged: boolean]
+        [@param nic.custom_properties.custom_property: collection]
+        {
+          [@ivar custom_property.name: string]
+          [@ivar custom_property.value: string]
+        }
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -14518,6 +14513,125 @@ class VMTags(Base):
             context=self.context
         )
 
+class VMapplication(params.Application, Base):
+    def __init__(self, vm, application, context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+        self.superclass  =  application
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vm, application, context):
+        if application is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vm, application, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class VMapplications(Base):
+
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Applications:
+        '''
+
+        url = '/api/vms/{vm:id}/applications'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{vm:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMapplication(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{vm:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_application()
+
+            return VMapplication(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Applications:
+        '''
+
+        url = '/api/vms/{vm:id}/applications'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.parentclass.get_id()}
+            )
+        ).get_application()
+
+        return ParseHelper.toSubCollection(
+            VMapplication,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
 class VMs(Base):
     def __init__(self, context):
         Base.__init__(self, context)
@@ -14563,6 +14677,7 @@ class VMs(Base):
           [@param vm.os.cmdline: string]
           [@param vm.cpu.topology.cores: int]
           [@param vm.memory: long]
+          [@param vm.memory_policy.guaranteed: long]
           [@param vm.high_availability.priority: int]
           [@param vm.high_availability.enabled: boolean]
           [@param vm.domain.name: string]
@@ -14620,6 +14735,7 @@ class VMs(Base):
           [@param vm.os.cmdline: string]
           [@param vm.cpu.topology.cores: int]
           [@param vm.memory: long]
+          [@param vm.memory_policy.guaranteed: long]
           [@param vm.high_availability.priority: int]
           [@param vm.high_availability.enabled: boolean]
           [@param vm.domain.name: string]
@@ -14791,6 +14907,7 @@ class VmPool(params.VmPool, Base):
         [@param vmpool.template.id|name: string]
         [@param vmpool.name: string]
         [@param vmpool.size: int]
+        [@param vmpool.max_user_vms: int]
         [@param correlation_id: any string]
 
         @return VmPool:
@@ -15031,6 +15148,7 @@ class VmPools(Base):
         @param vmpool.template.id|name: string
         @param vmpool.name: string
         [@param vmpool.size: int]
+        [@param vmpool.max_user_vms: int]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
