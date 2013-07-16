@@ -40,6 +40,25 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
+* Tue Jul  16 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.3-1
+- rename package to ovirt-engine-sdk-python
+- added "watchdog" feature #947977
+- added "external tasks" feature #872719
+- snapshot can persist/restore memory state now #960931
+- sdk expose datetime elements as strings while schema defines them as xs:dateTime #960747
+- removed DataCenterQuota.delete() (not supported in this version)
+- removed DataCenterQuota.add() (not supported in this version)
+- to cluster.add()/update() added [trusted_service: boolean] property
+- to datacenter added new field [comment]
+- to disk added [sgio] field to enable|disable filtering for the ScsiGenericIo
+- to VmPools.add() added new property [@param vmpool.max_user_vms: int]
+- to NIC added new property [custom_properties]
+- to cluster.update() added new doc [@param cluster.data_center.id: string]
+- to host.fence() added parameter action.fence_type
+- to StorageDomain.delete() added doc host.id|name
+- to StorageDomains.add() added doc [@param storagedomain.storage_format: string]
+- to VM added new sub-collection VMApplications
+
 * Wed May  1 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.2-1
  - in ClusterGlusterVolumeBricks fixed add() parameters
  - to StorageDomainVM.delete() added async parameter
