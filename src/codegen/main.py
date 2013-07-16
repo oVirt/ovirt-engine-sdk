@@ -19,7 +19,7 @@ from codegen.xsd.xsdcodegen import XsdCodegen
 from codegen.rsdl.rsdlcodegen import RsdlCodegen
 from ovirtsdk.api import API
 
-SERVER = 'http://localhost:8700/api'
+SERVER = 'http://localhost:8080/api'
 USER = 'admin@internal'
 PASSWORD = 'letmein!'
 
