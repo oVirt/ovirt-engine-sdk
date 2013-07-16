@@ -54,7 +54,8 @@ class EntryPoint(object):
                                  'description'
                          ],
                         static_methods=['special_objects',
-                                        'product_info'
+                                        'product_info',
+                                        'comment'
                         ]):
 
         static_methods_template = entrypointstaticmethodtemplate

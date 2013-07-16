@@ -134,6 +134,8 @@ class SubResource(object):
     def update(url, link, parent_resource_name_lc, resource_name,
                returned_type, KNOWN_WRAPPER_TYPES):
 
+        combined_method_params = ''
+
         actual_xml_entity = TypeUtil.getValueByKeyOrNone(
                                          returned_type.lower(),
                                          KNOWN_WRAPPER_TYPES

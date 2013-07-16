@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-04-17 14:37:52.244063'''
+'''Generated at: 2013-07-16 15:19:23.013631'''
 
 import types
 
@@ -40,6 +40,7 @@ from ovirtsdk.infrastructure.brokers import Domains
 from ovirtsdk.infrastructure.brokers import Events
 from ovirtsdk.infrastructure.brokers import Groups
 from ovirtsdk.infrastructure.brokers import Hosts
+from ovirtsdk.infrastructure.brokers import Jobs
 from ovirtsdk.infrastructure.brokers import Networks
 from ovirtsdk.infrastructure.brokers import Roles
 from ovirtsdk.infrastructure.brokers import StorageDomains
@@ -154,6 +155,7 @@ class API(object):
         self.events = Events(self.id)
         self.groups = Groups(self.id)
         self.hosts = Hosts(self.id)
+        self.jobs = Jobs(self.id)
         self.networks = Networks(self.id)
         self.roles = Roles(self.id)
         self.storagedomains = StorageDomains(self.id)
@@ -232,6 +234,13 @@ class API(object):
                              session_timeout,
                              typ=types.IntType
             )
+
+    def get_comment(self):
+        entry_point = context.manager[self.id].get('entry_point')
+        if entry_point:
+            return entry_point.comment
+        raise DisconnectedError
+
 
     def get_special_objects(self):
         entry_point = context.manager[self.id].get('entry_point')
