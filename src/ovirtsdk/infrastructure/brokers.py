@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-07-16 15:19:23.012684'''
+'''Generated at: 2013-07-23 08:10:17.833192'''
 
 
 from ovirtsdk.xml import params
@@ -144,6 +144,7 @@ class Cluster(params.Cluster, Base):
         '''
         [@param cluster.name: string]
         [@param cluster.description: string]
+        [@param cluster.comment: string]
         [@param cluster.data_center.id: string]
         [@param cluster.cpu.id: string]
         [@param cluster.version.major: int]
@@ -159,6 +160,7 @@ class Cluster(params.Cluster, Base):
         [@param cluster.gluster_service: boolean]
         [@param cluster.threads_as_cores: boolean]
         [@param cluster.tunnel_migration: boolean]
+        [@param cluster.ballooning_enabled: boolean]
         [@param correlation_id: any string]
 
         @return Cluster:
@@ -1270,6 +1272,7 @@ class Clusters(Base):
         @param cluster.version.minor: int
         @param cluster.cpu.id: string
         [@param cluster.description: string]
+        [@param cluster.comment: string]
         [@param cluster.memory_policy.overcommit.percent: double]
         [@param cluster.memory_policy.transparent_hugepages.enabled: boolean]
         [@param cluster.scheduling_policy.policy: string]
@@ -1282,6 +1285,7 @@ class Clusters(Base):
         [@param cluster.threads_as_cores: boolean]
         [@param cluster.tunnel_migration: boolean]
         [@param cluster.trusted_service: boolean]
+        [@param cluster.ballooning_enabled: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -1503,6 +1507,7 @@ class DataCenterCluster(params.Cluster, Base):
         [@param cluster.threads_as_cores: boolean]
         [@param cluster.tunnel_migration: boolean]
         [@param cluster.trusted_service: boolean]
+        [@param cluster.ballooning_enabled: boolean]
         [@param correlation_id: any string]
 
         @return Cluster:
@@ -2600,6 +2605,7 @@ class DataCenterClusters(Base):
         [@param cluster.gluster_service: boolean]
         [@param cluster.threads_as_cores: boolean]
         [@param cluster.tunnel_migration: boolean]
+        [@param cluster.ballooning_enabled: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -5719,8 +5725,13 @@ class Host(params.Host, Base):
     def update(self, correlation_id=None):
         '''
         [@param host.name: string]
+        [@param host.comment: string]
         [@param host.address: string]
         [@param host.root_password: string]
+        [@param host.ssh.port: int]
+        [@param host.ssh.fingerprint: string]
+        [@param host.ssh.authentication_type: string]
+        [@param host.ssh.password: string]
         [@param host.display.address: string]
         [@param host.cluster.id|name: string]
         [@param host.port: int]
@@ -5863,6 +5874,26 @@ class Host(params.Host, Base):
         '''
 
         url = '/api/hosts/{host:id}/fence'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def forceselectspm(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/hosts/{host:id}/forceselectspm'
 
         result = self.__getProxy().request(
             method='POST',
@@ -7116,6 +7147,11 @@ class Hosts(Base):
         @param host.address: string
         @param host.root_password: string
         @param host.cluster.id|name: string
+        [@param host.comment: string]
+        [@param host.ssh.port: int]
+        [@param host.ssh.fingerprint: string]
+        [@param host.ssh.authentication_type: string]
+        [@param host.ssh.password: string]
         [@param host.port: int]
         [@param host.display.address: string]
         [@param host.storage_manager.priority: int]
@@ -7614,6 +7650,7 @@ class Network(params.Network, Base):
         '''
         [@param network.name: string]
         [@param network.description: string]
+        [@param network.comment: string]
         [@param network.vlan.id: string]
         [@param network.ip.address: string]
         [@param network.ip.gateway: string]
@@ -7839,6 +7876,7 @@ class Networks(Base):
         @param network.data_center.id|name: string
         @param network.name: string
         [@param network.description: string]
+        [@param network.comment: string]
         [@param network.vlan.id: string]
         [@param network.ip.address: string]
         [@param network.ip.gateway: string]
@@ -8342,6 +8380,7 @@ class StorageDomain(params.StorageDomain, Base):
             @ivar logical_unit.id: string
           }
           [@param storagedomain.name: string]
+          [@param storagedomain.comment: string]
           [@param storagedomain.storage.override_luns: boolean]
         [@param correlation_id: any string]
 
@@ -9809,6 +9848,7 @@ class StorageDomains(Base):
             @ivar logical_unit.id: string
           }
           [@param storagedomain.name: string]
+          [@param storagedomain.comment: string]
           [@param storagedomain.storage.override_luns: boolean]
           [@param storagedomain.storage_format: string]
         Overload 2:
@@ -9819,6 +9859,7 @@ class StorageDomains(Base):
           @param storagedomain.storage.address: string
           @param storagedomain.storage.path: string
           [@param storagedomain.name: string]
+          [@param storagedomain.comment: string]
           [@param storagedomain.storage_format: string]
         Overload 3:
           @param storagedomain.host.id|name: string
@@ -9827,6 +9868,7 @@ class StorageDomains(Base):
           @param storagedomain.format: boolean
           @param storagedomain.storage.path: string
           [@param storagedomain.name: string]
+          [@param storagedomain.comment: string]
           [@param storagedomain.storage_format: string]
         Overload 4:
           @param storagedomain.host.id|name: string
@@ -9836,6 +9878,7 @@ class StorageDomains(Base):
           @param storagedomain.storage.path: string
           @param storagedomain.storage.vfs_type: string
           [@param storagedomain.name: string]
+          [@param storagedomain.comment: string]
           [@param storagedomain.storage.address: string]
           [@param storagedomain.storage.mount_options: string]
           [@param storagedomain.storage_format: string]
@@ -10141,6 +10184,7 @@ class Template(params.Template, Base):
         [@param template.delete_protected: boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
+        [@param template.comment: string]
         [@param template.custom_properties.custom_property: collection]
         {
           [@ivar custom_property.name: string]
@@ -11105,6 +11149,7 @@ class Templates(Base):
         [@param template.delete_protected: boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
+        [@param template.comment: string]
         [@param template.custom_properties.custom_property: collection]
         {
           [@ivar custom_property.name: string]
@@ -11134,6 +11179,7 @@ class Templates(Base):
             [@param storage_domain.id: string]
           }
         }
+        [@param template.permissions.clone: boolean]
         [@param template.cpu.cpu_tune.vcpu_pin: collection]
         {
           [@ivar vcpu_pin.vcpu: int]
@@ -12174,6 +12220,7 @@ class VM(params.VM, Base):
         [@param vm.high_availability.enabled: boolean]
         [@param vm.domain.name: string]
         [@param vm.description: string]
+        [@param vm.comment: string]
         [@param vm.stateless: boolean]
         [@param vm.delete_protected: boolean]
         [@param vm.cpu.topology.sockets: int]
@@ -12185,6 +12232,7 @@ class VM(params.VM, Base):
         [@param vm.payloads.payload: collection]
         {
           [@ivar payload.type: string]
+          [@ivar payload.volume_id: string]
           [@ivar payload.file.name: string]
           [@ivar payload.file.content: string]
         }
@@ -15372,7 +15420,9 @@ class VMs(Base):
           [@param vm.high_availability.enabled: boolean]
           [@param vm.domain.name: string]
           [@param vm.description: string]
+          [@param vm.comment: string]
           [@param vm.stateless: boolean]
+          [@param vm.permissions.clone: boolean]
           [@param vm.delete_protected: boolean]
           [@param vm.cpu.mode: string]
           [@param vm.cpu.topology.sockets: int]
@@ -15385,6 +15435,7 @@ class VMs(Base):
           [@param vm.payloads.payload: collection]
           {
             [@ivar payload.type: string]
+            [@ivar payload.volume_id: string]
             [@ivar payload.file.name: string]
             [@ivar payload.file.content: string]
           }
@@ -15430,6 +15481,7 @@ class VMs(Base):
           [@param vm.high_availability.enabled: boolean]
           [@param vm.domain.name: string]
           [@param vm.description: string]
+          [@param vm.comment: string]
           [@param vm.stateless: boolean]
           [@param vm.delete_protected: boolean]
           [@param vm.cpu.topology.sockets: int]
@@ -15441,6 +15493,7 @@ class VMs(Base):
           [@param vm.payloads.payload: collection]
           {
             [@ivar payload.type: string]
+            [@ivar payload.volume_id: string]
             [@ivar payload.file.name: string]
             [@ivar payload.file.content: string]
           }
@@ -15596,6 +15649,7 @@ class VmPool(params.VmPool, Base):
         [@param vmpool.cluster.id|name: string]
         [@param vmpool.template.id|name: string]
         [@param vmpool.name: string]
+        [@param vmpool.comment: string]
         [@param vmpool.size: int]
         [@param vmpool.max_user_vms: int]
         [@param correlation_id: any string]
@@ -15837,6 +15891,7 @@ class VmPools(Base):
         @param vmpool.cluster.id|name: string
         @param vmpool.template.id|name: string
         @param vmpool.name: string
+        [@param vmpool.comment: string]
         [@param vmpool.size: int]
         [@param vmpool.max_user_vms: int]
         [@param expect: 201-created]
