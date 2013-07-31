@@ -265,7 +265,7 @@ class RsdlCodegen(AbstractRsdlCodegen):
                     sub_root_coll = StringUtils.toSingular(
                            root_coll, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS
                     ) + self.__toResourceType(sub_coll)
-                    sub_res_coll = self.__toResourceType(resources.keys()[i-1])
+                    sub_res_coll = self.__toResourceType(resources.keys()[i - 1])
 
                     if (v is None and self.__isCollection(link)):
                         self.__extendSubCollection(sub_root_coll, sub_res_coll, url, rel, http_method,
@@ -536,3 +536,11 @@ class RsdlCodegen(AbstractRsdlCodegen):
         @param path: path to clean
         '''
         FileUtils.delete(RsdlCodegen.BROKERS_FILE)
+
+    def doPreGenerate(self):
+        '''
+        Pre-generate call
+        '''
+
+        # refreshes previously generated sources
+        reload(params)

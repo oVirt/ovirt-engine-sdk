@@ -17,6 +17,7 @@
 from codegen.xsd.abstractxsdcodegen import AbstractXsdCodegen
 from codegen.utils.fileutils import FileUtils
 from codegen.xsd.genparams import paramsHandle
+import py_compile
 
 class XsdCodegen(AbstractXsdCodegen):
     '''
@@ -66,3 +67,7 @@ class XsdCodegen(AbstractXsdCodegen):
 
         FileUtils.delete(XsdCodegen.XML_PARAMS_TMP_FILE)
         FileUtils.delete(XsdCodegen.SCHEMA_TMP_FILE)
+
+        # compile generated sources so the changes will be visible
+        # to the consuming code that already loaded this module
+        py_compile.compile(self.path)
