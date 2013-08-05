@@ -39,7 +39,9 @@ class ParseHelper():
     def getXmlWrapperType(type_name):
         tn = type_name.lower()
         for k, v in params._rootClassMap.items():
-            if v.__name__.lower() == tn or k.lower() == tn:
+            if v.__name__.lower() == tn \
+             or k.lower() == tn \
+             or k.replace("_", "") == tn:
                 return v.__name__
         return type_name
 
