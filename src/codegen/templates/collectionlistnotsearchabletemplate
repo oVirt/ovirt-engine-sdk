@@ -1,5 +1,5 @@
-     def list(self, **kwargs):
- %(docs)s
+    def list(self, **kwargs):
+%(docs)s
         url='%(url)s'
 
         result = self.__getProxy().get(
@@ -11,5 +11,3 @@
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
-
- 
