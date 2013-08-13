@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-07-16 15:19:23.013631'''
+'''Generated at: 2013-08-13 16:22:32.807312'''
 
 import types
 
@@ -43,12 +43,14 @@ from ovirtsdk.infrastructure.brokers import Hosts
 from ovirtsdk.infrastructure.brokers import Jobs
 from ovirtsdk.infrastructure.brokers import Networks
 from ovirtsdk.infrastructure.brokers import Roles
+from ovirtsdk.infrastructure.brokers import StorageConnections
 from ovirtsdk.infrastructure.brokers import StorageDomains
 from ovirtsdk.infrastructure.brokers import Tags
 from ovirtsdk.infrastructure.brokers import Templates
 from ovirtsdk.infrastructure.brokers import Users
 from ovirtsdk.infrastructure.brokers import VMs
 from ovirtsdk.infrastructure.brokers import VmPools
+from ovirtsdk.infrastructure.brokers import VnicProfiles
 
 
 class API(object):
@@ -158,12 +160,14 @@ class API(object):
         self.jobs = Jobs(self.id)
         self.networks = Networks(self.id)
         self.roles = Roles(self.id)
+        self.storageconnections = StorageConnections(self.id)
         self.storagedomains = StorageDomains(self.id)
         self.tags = Tags(self.id)
         self.templates = Templates(self.id)
         self.users = Users(self.id)
         self.vms = VMs(self.id)
         self.vmpools = VmPools(self.id)
+        self.vnicprofiles = VnicProfiles(self.id)
 
 
     @property

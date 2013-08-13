@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-07-23 08:10:17.833192'''
+'''Generated at: 2013-08-13 16:22:32.805641'''
 
 
 from ovirtsdk.xml import params
@@ -5724,44 +5724,79 @@ class Host(params.Host, Base):
 
     def update(self, correlation_id=None):
         '''
-        [@param host.name: string]
-        [@param host.comment: string]
-        [@param host.address: string]
-        [@param host.root_password: string]
-        [@param host.ssh.port: int]
-        [@param host.ssh.fingerprint: string]
-        [@param host.ssh.authentication_type: string]
-        [@param host.ssh.password: string]
-        [@param host.display.address: string]
-        [@param host.cluster.id|name: string]
-        [@param host.port: int]
-        [@param host.storage_manager.priority: int]
-        [@param host.power_management.type: string]
-        [@param host.power_management.enabled: boolean]
-        [@param host.power_management.address: string]
-        [@param host.power_management.username: string]
-        [@param host.power_management.password: string]
-        [@param host.power_management.options.option: collection]
-        {
-          [@ivar option.name: string]
-          [@ivar option.value: string]
-        }
-        [@param host.power_management.pm_proxy: collection]
-        {
-          [@ivar propietary: string]
-        }
-        [@param host.power_management.agents.agent: collection]
-        {
-          [@ivar type: string]
-          [@ivar address: string]
-          [@ivar user_name: string]
-          [@ivar password: string]
-          [@ivar options.option: collection]
+        Overload 1:
+          [@param host.name: string]
+          [@param host.comment: string]
+          [@param host.address: string]
+          [@param host.root_password: string]
+          [@param host.display.address: string]
+          [@param host.cluster.id|name: string]
+          [@param host.port: int]
+          [@param host.storage_manager.priority: int]
+          [@param host.power_management.type: string]
+          [@param host.power_management.enabled: boolean]
+          [@param host.power_management.address: string]
+          [@param host.power_management.username: string]
+          [@param host.power_management.password: string]
+          [@param host.power_management.options.option: collection]
           {
-            [@param option.name: string]
-            [@param option.value: string]
+            [@ivar option.name: string]
+            [@ivar option.value: string]
           }
-        }
+          [@param host.power_management.pm_proxy: collection]
+          {
+            [@ivar propietary: string]
+          }
+          [@param host.power_management.agents.agent: collection]
+          {
+            [@ivar type: string]
+            [@ivar address: string]
+            [@ivar user_name: string]
+            [@ivar password: string]
+            [@ivar options.option: collection]
+            {
+              [@param option.name: string]
+              [@param option.value: string]
+            }
+          }
+        Overload 2:
+          [@param host.name: string]
+          [@param host.comment: string]
+          [@param host.address: string]
+          [@param host.ssh.password: string]
+          [@param host.ssh.port: int]
+          [@param host.ssh.fingerprint: string]
+          [@param host.ssh.authentication_type: string]
+          [@param host.display.address: string]
+          [@param host.cluster.id|name: string]
+          [@param host.port: int]
+          [@param host.storage_manager.priority: int]
+          [@param host.power_management.type: string]
+          [@param host.power_management.enabled: boolean]
+          [@param host.power_management.address: string]
+          [@param host.power_management.username: string]
+          [@param host.power_management.password: string]
+          [@param host.power_management.options.option: collection]
+          {
+            [@ivar option.name: string]
+            [@ivar option.value: string]
+          }
+          [@param host.power_management.pm_proxy: collection]
+          {
+            [@ivar propietary: string]
+          }
+          [@param host.power_management.agents.agent: collection]
+          {
+            [@ivar type: string]
+            [@ivar address: string]
+            [@ivar user_name: string]
+            [@ivar password: string]
+            [@ivar options.option: collection]
+            {
+              [@param option.name: string]
+              [@param option.value: string]
+            }
+          }
         [@param correlation_id: any string]
 
         @return Host:
@@ -5908,8 +5943,12 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
-        [@param action.root_password: string]
-        [@param action.image: string]
+        Overload 1:
+          [@param action.root_password: string]
+          [@param action.image: string]
+        Overload 2:
+          [@param action.ssh.password: string]
+          [@param action.image: string]
         [@param correlation_id: any string]
 
         @return Action:
@@ -7143,45 +7182,83 @@ class Hosts(Base):
         '''
         @type Host:
 
-        @param host.name: string
-        @param host.address: string
-        @param host.root_password: string
-        @param host.cluster.id|name: string
-        [@param host.comment: string]
-        [@param host.ssh.port: int]
-        [@param host.ssh.fingerprint: string]
-        [@param host.ssh.authentication_type: string]
-        [@param host.ssh.password: string]
-        [@param host.port: int]
-        [@param host.display.address: string]
-        [@param host.storage_manager.priority: int]
-        [@param host.power_management.type: string]
-        [@param host.power_management.enabled: boolean]
-        [@param host.power_management.address: string]
-        [@param host.power_management.username: string]
-        [@param host.power_management.password: string]
-        [@param host.power_management.options.option: collection]
-        {
-          [@ivar option.name: string]
-          [@ivar option.value: string]
-        }
-        [@param host.power_management.pm_proxy: collection]
-        {
-          [@ivar propietary: string]
-        }
-        [@param host.power_management.agents.agent: collection]
-        {
-          [@ivar type: string]
-          [@ivar address: string]
-          [@ivar user_name: string]
-          [@ivar password: string]
-          [@ivar options.option: collection]
+        Overload 1:
+          @param host.name: string
+          @param host.address: string
+          @param host.root_password: string
+          @param host.cluster.id|name: string
+          [@param host.comment: string]
+          [@param host.port: int]
+          [@param host.display.address: string]
+          [@param host.storage_manager.priority: int]
+          [@param host.power_management.type: string]
+          [@param host.power_management.enabled: boolean]
+          [@param host.power_management.address: string]
+          [@param host.power_management.username: string]
+          [@param host.power_management.password: string]
+          [@param host.power_management.options.option: collection]
           {
-            [@param option.name: string]
-            [@param option.value: string]
+            [@ivar option.name: string]
+            [@ivar option.value: string]
           }
-        }
-        [@param host.reboot_after_installation: boolean]
+          [@param host.power_management.pm_proxy: collection]
+          {
+            [@ivar propietary: string]
+          }
+          [@param host.power_management.agents.agent: collection]
+          {
+            [@ivar type: string]
+            [@ivar address: string]
+            [@ivar user_name: string]
+            [@ivar password: string]
+            [@ivar options.option: collection]
+            {
+              [@param option.name: string]
+              [@param option.value: string]
+            }
+          }
+          [@param host.reboot_after_installation: boolean]
+          [@param host.override_iptables: boolean]
+        Overload 2:
+          @param host.name: string
+          @param host.address: string
+          @param host.ssh.password: string
+          @param host.cluster.id|name: string
+          [@param host.comment: string]
+          [@param host.ssh.port: int]
+          [@param host.ssh.fingerprint: string]
+          [@param host.ssh.authentication_type: string]
+          [@param host.port: int]
+          [@param host.display.address: string]
+          [@param host.storage_manager.priority: int]
+          [@param host.power_management.type: string]
+          [@param host.power_management.enabled: boolean]
+          [@param host.power_management.address: string]
+          [@param host.power_management.username: string]
+          [@param host.power_management.password: string]
+          [@param host.power_management.options.option: collection]
+          {
+            [@ivar option.name: string]
+            [@ivar option.value: string]
+          }
+          [@param host.power_management.pm_proxy: collection]
+          {
+            [@ivar propietary: string]
+          }
+          [@param host.power_management.agents.agent: collection]
+          {
+            [@ivar type: string]
+            [@ivar address: string]
+            [@ivar user_name: string]
+            [@ivar password: string]
+            [@ivar options.option: collection]
+            {
+              [@param option.name: string]
+              [@param option.value: string]
+            }
+          }
+          [@param host.reboot_after_installation: boolean]
+          [@param host.override_iptables: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -7394,7 +7471,6 @@ class JobSteps(Base):
 
         @param step.type: string
         @param step.description: string
-        @param step.status.state: string
         [@param step.job.id: string]
         [@param step.parent_step.id: string]
         [@param expect: 201-created]
@@ -7608,6 +7684,7 @@ class Network(params.Network, Base):
         Base.__init__(self, context)
         self.superclass = network
 
+        self.vnicprofiles = NetworkVnicProfiles(self, context)
         self.permissions = NetworkPermissions(self, context)
 
     def __new__(cls, network, context):
@@ -7856,6 +7933,188 @@ class NetworkPermissions(Base):
             context=self.context
         )
 
+class NetworkVnicProfile(params.VnicProfile, Base):
+    def __init__(self, network, vnicprofile, context):
+        Base.__init__(self, context)
+        self.parentclass = network
+        self.superclass  =  vnicprofile
+
+        #SUB_COLLECTIONS
+    def __new__(cls, network, vnicprofile, context):
+        if vnicprofile is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(network, vnicprofile, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}',
+            {'{network:id}' : self.parentclass.get_id(),
+             '{vnicprofile:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class NetworkVnicProfiles(Base):
+
+    def __init__(self, network , context):
+        Base.__init__(self, context)
+        self.parentclass = network
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, vnicprofile, expect=None, correlation_id=None):
+
+        '''
+        @type VnicProfile:
+
+        @param vnicprofile.name: string
+        [@param vnicprofile.description: string]
+        [@param vnicprofile.port_mirroring: boolean]
+        [@param vnicprofile.custom_properties.custom_property: collection]
+        {
+          [@ivar custom_property.name: string]
+          [@ivar custom_property.value: string]
+        }
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return VnicProfile:
+        '''
+
+        url = '/api/networks/{network:id}/vnicprofiles'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{network:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(vnicprofile),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return NetworkVnicProfile(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return VnicProfiles:
+        '''
+
+        url = '/api/networks/{network:id}/vnicprofiles'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{network:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return NetworkVnicProfile(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{network:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_vnic_profile()
+
+            return NetworkVnicProfile(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return VnicProfiles:
+        '''
+
+        url = '/api/networks/{network:id}/vnicprofiles'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{network:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_vnic_profile()
+
+        return ParseHelper.toSubCollection(
+            NetworkVnicProfile,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
 class Networks(Base):
     def __init__(self, context):
         Base.__init__(self, context)
@@ -7884,6 +8143,7 @@ class Networks(Base):
         [@param network.display: boolean]
         [@param network.stp: boolean]
         [@param network.mtu: int]
+        [@param network.profile_required: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -8306,6 +8566,205 @@ class Roles(Base):
             context=self.context
         )
 
+class StorageConnection(params.StorageConnection, Base):
+    def __init__(self, storageconnection, context):
+        Base.__init__(self, context)
+        self.superclass = storageconnection
+
+        #SUB_COLLECTIONS
+    def __new__(cls, storageconnection, context):
+        if storageconnection is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(storageconnection, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, host=params.Host(), async=None, correlation_id=None):
+        '''
+        @type Host:
+
+        [@param host.id|name: string]
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/storageconnections/{storageconnection:id}',
+            {'{storageconnection:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            body=ParseHelper.toXml(host),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+    def update(self, correlation_id=None):
+        '''
+        Overload 1:
+          [@param storage_connection.port: int]
+          [@param storage_connection.username: string]
+          [@param storage_connection.password: string]
+          [@param storage_connection.iqn: string]
+          [@param storage_connection.address: string]
+        Overload 2:
+          [@param storage_connection.nfs_timeo: string]
+          [@param storage_connection.nfs_version: string]
+          [@param storage_connection.nfs_retrans: string]
+          [@param storage_connection.address: string]
+          [@param storage_connection.path: string]
+        Overload 3:
+          [@param storage_connection.mount_options: string]
+          [@param storage_connection.vfs_type: string]
+          [@param storage_connection.address: string]
+          [@param storage_connection.path: string]
+        Overload 4:
+          [@param storage_connection.path: string]
+        [@param correlation_id: any string]
+
+        @return StorageConnection:
+        '''
+
+        url = '/api/storageconnections/{storageconnection:id}'
+
+        result = self.__getProxy().update(
+            url=UrlHelper.replace(
+                url,
+                {'{storageconnection:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return StorageConnection(result, self.context)
+
+class StorageConnections(Base):
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, storageconnection, expect=None, correlation_id=None):
+        '''
+        @type StorageConnection:
+
+        Overload 1:
+          @param storage_connection.address: string
+          @param storage_connection.type: string
+          @param storage_connection.iqn: string
+          @param storage_connection.port: int
+          [@param storage_connection.username: string]
+          [@param storage_connection.password: string]
+        Overload 2:
+          @param storage_connection.address: string
+          @param storage_connection.type: string
+          @param storage_connection.path: string
+          [@param storage_connection.nfs_timeo: string]
+          [@param storage_connection.nfs_version: string]
+          [@param storage_connection.nfs_retrans: string]
+        Overload 3:
+          @param storage_connection.type: string
+          @param storage_connection.path: string
+          @param storage_connection.vfs_type: string
+          [@param storage_connection.address: string]
+          [@param storage_connection.mount_options: string]
+        Overload 4:
+          @param storage_connection.type: string
+          @param storage_connection.path: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return StorageConnection:
+        '''
+
+        url = '/api/storageconnections'
+
+        result = self.__getProxy().add(
+           url=url,
+           body=ParseHelper.toXml(storageconnection),
+           headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return StorageConnection(result, self.context)
+
+    def get(self, name=None, id=None):
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return StorageConnections:
+        '''
+
+        url = '/api/storageconnections'
+
+        if id:
+            try :
+                return StorageConnection(
+                    self.__getProxy().get(
+                                url=UrlHelper.append(url, id),
+                                headers={}
+                    ),
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                    url=url,
+                    headers={}
+            ).get_storage_connection()
+
+            return StorageConnection(
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)]
+
+        @return StorageConnections:
+        '''
+
+        url='/api/storageconnections'
+
+        result = self.__getProxy().get(
+            url=url
+        ).get_storage_connection()
+
+        return ParseHelper.toCollection(
+            StorageConnection,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )
 class StorageDomain(params.StorageDomain, Base):
     def __init__(self, storagedomain, context):
         Base.__init__(self, context)
@@ -8314,6 +8773,7 @@ class StorageDomain(params.StorageDomain, Base):
         self.files = StorageDomainFiles(self, context)
         self.templates = StorageDomainTemplates(self, context)
         self.disks = StorageDomainDisks(self, context)
+        self.storageconnections = StorageDomainStorageConnections(self, context)
         self.vms = StorageDomainVMs(self, context)
         self.permissions = StorageDomainPermissions(self, context)
 
@@ -9195,6 +9655,130 @@ class StorageDomainPermissions(Base):
 
         return ParseHelper.toSubCollection(
             StorageDomainPermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class StorageDomainStorageConnection(params.StorageConnection, Base):
+    def __init__(self, storagedomain, storageconnection, context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomain
+        self.superclass  =  storageconnection
+
+        #SUB_COLLECTIONS
+    def __new__(cls, storagedomain, storageconnection, context):
+        if storageconnection is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(storagedomain, storageconnection, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class StorageDomainStorageConnections(Base):
+
+    def __init__(self, storagedomain , context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomain
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return StorageConnections:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/storageconnections'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{storagedomain:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return StorageDomainStorageConnection(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{storagedomain:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_storage_connection()
+
+            return StorageDomainStorageConnection(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return StorageConnections:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/storageconnections'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{storagedomain:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_storage_connection()
+
+        return ParseHelper.toSubCollection(
+            StorageDomainStorageConnection,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -10182,6 +10766,7 @@ class Template(params.Template, Base):
         [@param template.type: string]
         [@param template.stateless: boolean]
         [@param template.delete_protected: boolean]
+        [@param template.console.enabled: boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
         [@param template.comment: string]
@@ -10196,9 +10781,11 @@ class Template(params.Template, Base):
           [@ivar boot.dev: string]
         }
         [@param template.cpu.topology.sockets: int]
+        [@param template.cpu_shares: int]
         [@param template.os.kernel: string]
         [@param template.display.type: string]
         [@param template.display.monitors: int]
+        [@param vm.display.single_qxl_pci: boolean]
         [@param template.display.allow_override: boolean]
         [@param template.display.smartcard_enabled: boolean]
         [@param template.display.keyboard_layout: string]
@@ -10596,20 +11183,23 @@ class TemplateNic(params.NIC, Base):
 
     def update(self, correlation_id=None):
         '''
-        [@param nic.network.id|name: string]
-        [@param nic.linked: boolean]
-        [@param nic.name: string]
-        [@param nic.mac.address: string]
-        [@param nic.interface: string]
-        [@param nic.port_mirroring.networks.network: collection]
-        {
-          [@ivar network.id: string]
-        }
-        [@param nic.custom_properties.custom_property: collection]
-        {
-          [@ivar custom_property.name: string]
-          [@ivar custom_property.value: string]
-        }
+        Overload 1:
+          [@param nic.vnic_profile.id: string]
+          [@param nic.linked: boolean]
+          [@param nic.name: string]
+          [@param nic.mac.address: string]
+          [@param nic.interface: string]
+          [@param nic.plugged: boolean]
+        Overload 2:
+          [@param nic.network.id|name: string]
+          [@param nic.linked: boolean]
+          [@param nic.name: string]
+          [@param nic.mac.address: string]
+          [@param nic.interface: string]
+          [@param nic.port_mirroring.networks.network: collection]
+          {
+            [@ivar network.id: string]
+          }
         [@param correlation_id: any string]
 
         @return NIC:
@@ -10654,20 +11244,23 @@ class TemplateNics(Base):
         '''
         @type NIC:
 
-        @param nic.name: string
-        [@param nic.network.id|name: string]
-        [@param nic.linked: boolean]
-        [@param nic.mac.address: string]
-        [@param nic.interface: string]
-        [@param nic.port_mirroring.networks.network: collection]
-        {
-          [@ivar network.id: string]
-        }
-        [@param nic.custom_properties.custom_property: collection]
-        {
-          [@ivar custom_property.name: string]
-          [@ivar custom_property.value: string]
-        }
+        Overload 1:
+          [@param nic.vnic_profile.id: string]
+          [@param nic.linked: boolean]
+          [@param nic.name: string]
+          [@param nic.mac.address: string]
+          [@param nic.interface: string]
+          [@param nic.plugged: boolean]
+        Overload 2:
+          @param nic.name: string
+          [@param nic.network.id|name: string]
+          [@param nic.linked: boolean]
+          [@param nic.mac.address: string]
+          [@param nic.interface: string]
+          [@param nic.port_mirroring.networks.network: collection]
+          {
+            [@ivar network.id: string]
+          }
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -11147,6 +11740,7 @@ class Templates(Base):
         [@param template.type: string]
         [@param template.stateless: boolean]
         [@param template.delete_protected: boolean]
+        [@param template.console.enabled: boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
         [@param template.comment: string]
@@ -11161,9 +11755,11 @@ class Templates(Base):
           [@ivar boot.dev: string]
         }
         [@param template.cpu.topology.sockets: int]
+        [@param template.cpu_shares: int]
         [@param template.os.kernel: string]
         [@param template.display.type: string]
         [@param template.display.monitors: int]
+        [@param vm.display.single_qxl_pci: boolean]
         [@param template.display.allow_override: boolean]
         [@param template.display.smartcard_enabled: boolean]
         [@param template.display.keyboard_layout: string]
@@ -12208,6 +12804,7 @@ class VM(params.VM, Base):
         [@param vm.type: string]
         [@param vm.os.initRd: string]
         [@param vm.display.monitors: int]
+        [@param vm.display.single_qxl_pci: boolean]
         [@param vm.display.type: string]
         [@param vm.display.allow_override: boolean]
         [@param vm.display.smartcard_enabled: boolean]
@@ -12215,6 +12812,7 @@ class VM(params.VM, Base):
         [@param vm.os.cmdline: string]
         [@param vm.cpu.mode: string]
         [@param vm.cpu.topology.cores: int]
+        [@param vm.cpu_shares: int]
         [@param vm.memory: long]
         [@param vm.high_availability.priority: int]
         [@param vm.high_availability.enabled: boolean]
@@ -12223,6 +12821,7 @@ class VM(params.VM, Base):
         [@param vm.comment: string]
         [@param vm.stateless: boolean]
         [@param vm.delete_protected: boolean]
+        [@param vm.console.enabled: boolean]
         [@param vm.cpu.topology.sockets: int]
         [@param vm.placement_policy.affinity: string]
         [@param vm.placement_policy.host.id|name: string]
@@ -13479,21 +14078,24 @@ class VMNic(params.NIC, Base):
 
     def update(self, correlation_id=None):
         '''
-        [@param nic.network.id|name: string]
-        [@param nic.linked: boolean]
-        [@param nic.name: string]
-        [@param nic.mac.address: string]
-        [@param nic.interface: string]
-        [@param nic.port_mirroring.networks.network: collection]
-        {
-          [@ivar network.id: string]
-        }
-        [@param nic.plugged: boolean]
-        [@param nic.custom_properties.custom_property: collection]
-        {
-          [@ivar custom_property.name: string]
-          [@ivar custom_property.value: string]
-        }
+        Overload 1:
+          [@param nic.vnic_profile.id: string]
+          [@param nic.linked: boolean]
+          [@param nic.name: string]
+          [@param nic.mac.address: string]
+          [@param nic.interface: string]
+          [@param nic.plugged: boolean]
+        Overload 2:
+          [@param nic.network.id|name: string]
+          [@param nic.linked: boolean]
+          [@param nic.name: string]
+          [@param nic.mac.address: string]
+          [@param nic.interface: string]
+          [@param nic.port_mirroring.networks.network: collection]
+          {
+            [@ivar network.id: string]
+          }
+          [@param nic.plugged: boolean]
         [@param correlation_id: any string]
 
         @return NIC:
@@ -13830,21 +14432,24 @@ class VMNics(Base):
         '''
         @type NIC:
 
-        @param nic.name: string
-        [@param nic.network.id|name: string]
-        [@param nic.linked: boolean]
-        [@param nic.mac.address: string]
-        [@param nic.interface: string]
-        [@param nic.port_mirroring.networks.network: collection]
-        {
-          [@ivar network.id: string]
-        }
-        [@param nic.plugged: boolean]
-        [@param nic.custom_properties.custom_property: collection]
-        {
-          [@ivar custom_property.name: string]
-          [@ivar custom_property.value: string]
-        }
+        Overload 1:
+          [@param nic.vnic_profile.id: string]
+          [@param nic.linked: boolean]
+          [@param nic.name: string]
+          [@param nic.mac.address: string]
+          [@param nic.interface: string]
+          [@param nic.plugged: boolean]
+        Overload 2:
+          @param nic.name: string
+          [@param nic.network.id|name: string]
+          [@param nic.linked: boolean]
+          [@param nic.mac.address: string]
+          [@param nic.interface: string]
+          [@param nic.port_mirroring.networks.network: collection]
+          {
+            [@ivar network.id: string]
+          }
+          [@param nic.plugged: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -14810,11 +15415,12 @@ class VMSnapshots(Base):
             self.context
         )
 
-    def get(self, name=None, id=None):
+    def get(self, name=None, all_content=None, id=None):
 
         '''
         [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
+        [@param all_content: true|false]
 
         @return Snapshots:
         '''
@@ -14831,7 +15437,7 @@ class VMSnapshots(Base):
                         ),
                         id
                     ),
-                    headers={}
+                    headers={"All-Content":all_content}
                 )
 
                 return VMSnapshot(
@@ -14849,7 +15455,7 @@ class VMSnapshots(Base):
                     url,
                     {'{vm:id}': self.parentclass.get_id()}
                 ),
-                headers={}
+                headers={"All-Content":all_content}
             ).get_snapshot()
 
             return VMSnapshot(
@@ -14866,10 +15472,11 @@ class VMSnapshots(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, max=None, all_content=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param max: int (max results)]
+        [@param all_content: true|false]
 
         @return Snapshots:
         '''
@@ -14884,7 +15491,7 @@ class VMSnapshots(Base):
                 ),
                 qargs={'max:matrix':max}
             ),
-            headers={}
+            headers={"All-Content":all_content}
         ).get_snapshot()
 
         return ParseHelper.toSubCollection(
@@ -15408,6 +16015,7 @@ class VMs(Base):
           [@param vm.type: string]
           [@param vm.os.initRd: string]
           [@param vm.display.monitors: int]
+          [@param vm.display.single_qxl_pci: boolean]
           [@param vm.display.type: string]
           [@param vm.display.allow_override: boolean]
           [@param vm.display.smartcard_enabled: boolean]
@@ -15424,8 +16032,10 @@ class VMs(Base):
           [@param vm.stateless: boolean]
           [@param vm.permissions.clone: boolean]
           [@param vm.delete_protected: boolean]
+          [@param vm.console.enabled: boolean]
           [@param vm.cpu.mode: string]
           [@param vm.cpu.topology.sockets: int]
+          [@param vm.cpu_shares: int]
           [@param vm.placement_policy.affinity: string]
           [@param vm.placement_policy.host.id|name: string]
           [@param vm.origin: string]
@@ -15439,6 +16049,8 @@ class VMs(Base):
             [@ivar payload.file.name: string]
             [@ivar payload.file.content: string]
           }
+          [@param vm.initialization.configuration.type: string]
+          [@param vm.initialization.configuration.data: string]
           [@param vm.cpu.cpu_tune.vcpu_pin: collection]
           {
             [@ivar vcpu_pin.vcpu: int]
@@ -15452,6 +16064,63 @@ class VMs(Base):
           {
             @ivar snapshot.id: string
           }
+          [@param vm.quota.id: string]
+          [@param vm.timezone: string]
+          [@param vm.os.boot: collection]
+          {
+            [@ivar boot.dev: string]
+          }
+          [@param vm.custom_properties.custom_property: collection]
+          {
+            [@ivar custom_property.name: string]
+            [@ivar custom_property.value: string]
+          }
+          [@param vm.os.type: string]
+          [@param vm.usb.enabled: boolean]
+          [@param vm.usb.type: string]
+          [@param vm.type: string]
+          [@param vm.os.initRd: string]
+          [@param vm.display.monitors: int]
+          [@param vm.display.single_qxl_pci: boolean]
+          [@param vm.display.type: string]
+          [@param vm.display.allow_override: boolean]
+          [@param vm.display.smartcard_enabled: boolean]
+          [@param vm.display.keyboard_layout: string]
+          [@param vm.os.cmdline: string]
+          [@param vm.cpu.topology.cores: int]
+          [@param vm.cpu_shares: int]
+          [@param vm.memory: long]
+          [@param vm.memory_policy.guaranteed: long]
+          [@param vm.high_availability.priority: int]
+          [@param vm.high_availability.enabled: boolean]
+          [@param vm.domain.name: string]
+          [@param vm.description: string]
+          [@param vm.comment: string]
+          [@param vm.stateless: boolean]
+          [@param vm.delete_protected: boolean]
+          [@param vm.console.enabled: boolean]
+          [@param vm.cpu.topology.sockets: int]
+          [@param vm.placement_policy.affinity: string]
+          [@param vm.placement_policy.host.id|name: string]
+          [@param vm.origin: string]
+          [@param vm.os.kernel: string]
+          [@param vm.tunnel_migration: boolean]
+          [@param vm.payloads.payload: collection]
+          {
+            [@ivar payload.type: string]
+            [@ivar payload.volume_id: string]
+            [@ivar payload.file.name: string]
+            [@ivar payload.file.content: string]
+          }
+          [@param vm.cpu.cpu_tune.vcpu_pin: collection]
+          {
+            [@ivar vcpu_pin.vcpu: int]
+            [@ivar vcpu_pin.cpu_set: string]
+          }
+        Overload 3:
+          @param vm.initialization.configuration.type: string
+          @param vm.initialization.configuration.data: string
+          [@param vm.name: string]
           [@param vm.quota.id: string]
           [@param vm.timezone: string]
           [@param vm.os.boot: collection]
@@ -15483,12 +16152,15 @@ class VMs(Base):
           [@param vm.description: string]
           [@param vm.comment: string]
           [@param vm.stateless: boolean]
+          [@param vm.permissions.clone: boolean]
           [@param vm.delete_protected: boolean]
+          [@param vm.cpu.mode: string]
           [@param vm.cpu.topology.sockets: int]
           [@param vm.placement_policy.affinity: string]
           [@param vm.placement_policy.host.id|name: string]
           [@param vm.origin: string]
           [@param vm.os.kernel: string]
+          [@param vm.disks.clone: boolean]
           [@param vm.tunnel_migration: boolean]
           [@param vm.payloads.payload: collection]
           {
@@ -15497,6 +16169,8 @@ class VMs(Base):
             [@ivar payload.file.name: string]
             [@ivar payload.file.content: string]
           }
+          [@param vm.initialization.configuration.type: string]
+          [@param vm.initialization.configuration.data: string]
           [@param vm.cpu.cpu_tune.vcpu_pin: collection]
           {
             [@ivar vcpu_pin.vcpu: int]
@@ -15968,6 +16642,354 @@ class VmPools(Base):
 
         return ParseHelper.toCollection(
             VmPool,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )
+
+class VnicProfile(params.VnicProfile, Base):
+    def __init__(self, vnicprofile, context):
+        Base.__init__(self, context)
+        self.superclass = vnicprofile
+
+        self.permissions = VnicProfilePermissions(self, context)
+
+    def __new__(cls, vnicprofile, context):
+        if vnicprofile is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vnicprofile, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/vnicprofiles/{vnicprofile:id}',
+            {'{vnicprofile:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, correlation_id=None):
+        '''
+        [@param vnicprofile.name: string]
+        [@param vnicprofile.description: string]
+        [@param vnicprofile.port_mirroring: boolean]
+        [@param vnicprofile.custom_properties.custom_property: collection]
+        {
+          [@ivar custom_property.name: string]
+          [@ivar custom_property.value: string]
+        }
+        [@param correlation_id: any string]
+
+        @return VnicProfile:
+        '''
+
+        url = '/api/vnicprofiles/{vnicprofile:id}'
+
+        result = self.__getProxy().update(
+            url=UrlHelper.replace(
+                url,
+                {'{vnicprofile:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return VnicProfile(result, self.context)
+
+class VnicProfilePermission(params.Permission, Base):
+    def __init__(self, vnicprofile, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = vnicprofile
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vnicprofile, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vnicprofile, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{vnicprofile:id}' : self.parentclass.get_id(),
+                 '{permission:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+class VnicProfilePermissions(Base):
+
+    def __init__(self, vnicprofile , context):
+        Base.__init__(self, context)
+        self.parentclass = vnicprofile
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission, expect=None, correlation_id=None):
+
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.group.id: string
+          @param permission.role.id: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Permission:
+        '''
+
+        url = '/api/vnicprofiles/{vnicprofile:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{vnicprofile:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return VnicProfilePermission(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/vnicprofiles/{vnicprofile:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{vnicprofile:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VnicProfilePermission(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{vnicprofile:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_permission()
+
+            return VnicProfilePermission(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/vnicprofiles/{vnicprofile:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{vnicprofile:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            VnicProfilePermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VnicProfiles(Base):
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, vnicprofile, expect=None, correlation_id=None):
+        '''
+        @type VnicProfile:
+
+        @param vnicprofile.network.id: string
+        @param vnicprofile.name: string
+        [@param vnicprofile.description: string]
+        [@param vnicprofile.port_mirroring: boolean]
+        [@param vnicprofile.custom_properties.custom_property: collection]
+        {
+          [@ivar custom_property.name: string]
+          [@ivar custom_property.value: string]
+        }
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return VnicProfile:
+        '''
+
+        url = '/api/vnicprofiles'
+
+        result = self.__getProxy().add(
+           url=url,
+           body=ParseHelper.toXml(vnicprofile),
+           headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return VnicProfile(result, self.context)
+
+    def get(self, name=None, id=None):
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return VnicProfiles:
+        '''
+
+        url = '/api/vnicprofiles'
+
+        if id:
+            try :
+                return VnicProfile(
+                    self.__getProxy().get(
+                                url=UrlHelper.append(url, id),
+                                headers={}
+                    ),
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                    url=url,
+                    headers={}
+            ).get_vnic_profile()
+
+            return VnicProfile(
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param max: int (max results)]
+
+        @return VnicProfiles:
+        '''
+
+        url='/api/vnicprofiles'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            headers={}
+        ).get_vnic_profile()
+
+        return ParseHelper.toCollection(
+            VnicProfile,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
