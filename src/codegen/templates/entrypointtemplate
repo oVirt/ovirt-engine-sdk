@@ -32,6 +32,12 @@ class API(object):
         # The instance id
         self.__id = id(self)
 
+        # Implicitly disconnect and perform cleanup
+        # when detected instance of the SDK proxy with
+        # ref-count == 0
+        if context.manager.has_key(self.__id):
+            self.disconnect()
+
         # Create the connection pool:
         pool = ConnectionsPool(
             url=url,

@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-08-13 16:22:32.807312'''
+'''Generated at: 2013-08-14 10:30:29.498191'''
 
 import types
 
@@ -86,6 +86,12 @@ class API(object):
 
         # The instance id
         self.__id = id(self)
+
+        # Implicitly disconnect and perform cleanup
+        # when detected instance of the SDK proxy with
+        # ref-count == 0
+        if context.manager.has_key(self.__id):
+            self.disconnect()
 
         # Create the connection pool:
         pool = ConnectionsPool(
