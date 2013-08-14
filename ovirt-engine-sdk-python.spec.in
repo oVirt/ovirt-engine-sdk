@@ -40,6 +40,10 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
+* Wed  Aug 14 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.5-1
+ - implicitly disconnect and perform cleanup
+ - encapsulate context removal
+
 * Tue Aug  13 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.4-1
 - added VnicProfiles root-collection
 - to network added VnicProfiles sub-collection
