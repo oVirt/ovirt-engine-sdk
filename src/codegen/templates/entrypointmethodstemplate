@@ -33,7 +33,7 @@
             raise DisconnectedError
 
         # Clear context
-        context.manager[self.id].clear(force=True)
+        context.manager.drop(self.id)
 
     def test(self, throw_exception=False):
         ''' test server connectivity '''

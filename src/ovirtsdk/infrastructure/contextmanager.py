@@ -28,6 +28,16 @@ class ContextManager(OrderedDict):
 
     def __getitem__(self, key):
         with self.__lock:
-            if key not in self.keys():
+            if key not in self.data.keys():
                 OrderedDict.__setitem__(self, key, Cache())
         return OrderedDict.__getitem__(self, key)
+
+    def drop(self, key):
+        """
+        Removes specified context
+
+        @param key: the context id
+        """
+        item = self.__getitem__(key)
+        item.clear(force=True)
+        self.pop(key)

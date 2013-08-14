@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-08-14 10:30:29.498191'''
+'''Generated at: 2013-08-14 12:10:31.267414'''
 
 import types
 
@@ -209,7 +209,7 @@ class API(object):
             raise DisconnectedError
 
         # Clear context
-        context.manager[self.id].clear(force=True)
+        context.manager.drop(self.id)
 
     def test(self, throw_exception=False):
         ''' test server connectivity '''
