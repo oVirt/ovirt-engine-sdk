@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-08-13 16:22:32.805641'''
+'''Generated at: 2013-08-26 15:36:10.578423'''
 
 
 from ovirtsdk.xml import params
@@ -102,6 +102,7 @@ class Cluster(params.Cluster, Base):
 
         self.permissions = ClusterPermissions(self, context)
         self.glustervolumes = ClusterGlusterVolumes(self, context)
+        self.glusterhooks = ClusterGlusterHooks(self, context)
         self.networks = ClusterNetworks(self, context)
 
     def __new__(cls, cluster, context):
@@ -178,6 +179,221 @@ class Cluster(params.Cluster, Base):
         )
 
         return Cluster(result, self.context)
+
+class ClusterGlusterHook(params.GlusterHook, Base):
+    def __init__(self, cluster, glusterhook, context):
+        Base.__init__(self, context)
+        self.parentclass = cluster
+        self.superclass  =  glusterhook
+
+        #SUB_COLLECTIONS
+    def __new__(cls, cluster, glusterhook, context):
+        if glusterhook is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(cluster, glusterhook, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/clusters/{cluster:id}/glusterhooks/{glusterhook:id}',
+            {'{cluster:id}' : self.parentclass.get_id(),
+             '{glusterhook:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def disable(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/disable'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.get_id(),
+                 '{glusterhook:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def enable(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/enable'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.get_id(),
+                 '{glusterhook:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def resolve(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param action.resolution_type: string
+        [@param action.host.id|name: string]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/resolve'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.get_id(),
+                 '{glusterhook:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+class ClusterGlusterHooks(Base):
+
+    def __init__(self, cluster , context):
+        Base.__init__(self, context)
+        self.parentclass = cluster
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return GlusterHooks:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glusterhooks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{cluster:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return ClusterGlusterHook(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{cluster:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_gluster_hook()
+
+            return ClusterGlusterHook(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return GlusterHooks:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glusterhooks'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}': self.parentclass.get_id()}
+            )
+        ).get_gluster_hook()
+
+        return ParseHelper.toSubCollection(
+            ClusterGlusterHook,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class ClusterGlusterVolume(params.GlusterVolume, Base):
     def __init__(self, cluster, glustervolume, context):
@@ -1449,6 +1665,7 @@ class DataCenterCluster(params.Cluster, Base):
 
         self.permissions = DataCenterClusterPermissions(self, context)
         self.glustervolumes = DataCenterClusterGlustervolumes(self, context)
+        self.glusterhooks = DataCenterClusterGlusterhooks(self, context)
         self.networks = DataCenterClusterNetworks(self, context)
 
     def __new__(cls, datacenter, cluster, context):
@@ -1530,6 +1747,217 @@ class DataCenterCluster(params.Cluster, Base):
             self.parentclass,
             result,
             self.context
+        )
+
+class DataCenterClusterGlusterhook(params.GlusterHook, Base):
+    def __init__(self, datacentercluster, glusterhook, context):
+        Base.__init__(self, context)
+        self.parentclass = datacentercluster
+        self.superclass  =  glusterhook
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacentercluster, glusterhook, context):
+        if glusterhook is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacentercluster, glusterhook, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glusterhook:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+    def disable(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/disable'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glusterhook:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+    def enable(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/enable'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glusterhook:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+    def resolve(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/resolve'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glusterhook:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+class DataCenterClusterGlusterhooks(Base):
+
+    def __init__(self, datacentercluster , context):
+        Base.__init__(self, context)
+        self.parentclass = datacentercluster
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return GlusterHooks:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                             '{cluster:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterClusterGlusterhook(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                     '{cluster:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_gluster_hook()
+
+            return DataCenterClusterGlusterhook(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return GlusterHooks:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id()}
+            )
+        ).get_gluster_hook()
+
+        return ParseHelper.toSubCollection(
+            DataCenterClusterGlusterhook,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
         )
 
 class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
@@ -8774,6 +9202,7 @@ class StorageDomain(params.StorageDomain, Base):
         self.templates = StorageDomainTemplates(self, context)
         self.disks = StorageDomainDisks(self, context)
         self.storageconnections = StorageDomainStorageConnections(self, context)
+        self.images = StorageDomainImages(self, context)
         self.vms = StorageDomainVMs(self, context)
         self.permissions = StorageDomainPermissions(self, context)
 
@@ -9475,6 +9904,130 @@ class StorageDomainFiles(Base):
 
         return ParseHelper.toSubCollection(
             StorageDomainFile,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class StorageDomainImage(params.Image, Base):
+    def __init__(self, storagedomain, image, context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomain
+        self.superclass  =  image
+
+        #SUB_COLLECTIONS
+    def __new__(cls, storagedomain, image, context):
+        if image is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(storagedomain, image, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class StorageDomainImages(Base):
+
+    def __init__(self, storagedomain , context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomain
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Images:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/images'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{storagedomain:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return StorageDomainImage(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{storagedomain:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_image()
+
+            return StorageDomainImage(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Images:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/images'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{storagedomain:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_image()
+
+        return ParseHelper.toSubCollection(
+            StorageDomainImage,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -11245,9 +11798,9 @@ class TemplateNics(Base):
         @type NIC:
 
         Overload 1:
+          @param nic.name: string
           [@param nic.vnic_profile.id: string]
           [@param nic.linked: boolean]
-          [@param nic.name: string]
           [@param nic.mac.address: string]
           [@param nic.interface: string]
           [@param nic.plugged: boolean]
@@ -11591,7 +12144,7 @@ class TemplateWatchDog(params.WatchDog, Base):
 
     def update(self):
         '''
-        @return CdRom:
+        @return WatchDog:
         '''
 
         url = '/api/templates/{template:id}/watchdogs/{watchdog:id}'
@@ -11627,6 +12180,32 @@ class TemplateWatchDogs(Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
+
+    def add(self, watchdog):
+
+        '''
+        @type WatchDog:
+
+
+        @return WatchDog:
+        '''
+
+        url = '/api/templates/{template:id}/watchdogs'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{template:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(watchdog),
+            headers={}
+        )
+
+        return TemplateWatchDog(
+            self.parentclass,
+            result,
+            self.context
+        )
 
     def get(self, name=None, id=None):
 
@@ -14433,9 +15012,9 @@ class VMNics(Base):
         @type NIC:
 
         Overload 1:
+          @param nic.name: string
           [@param nic.vnic_profile.id: string]
           [@param nic.linked: boolean]
-          [@param nic.name: string]
           [@param nic.mac.address: string]
           [@param nic.interface: string]
           [@param nic.plugged: boolean]
@@ -15853,7 +16432,7 @@ class VMWatchDog(params.WatchDog, Base):
         [@param watchdog.model: string]
         [@param correlation_id: any string]
 
-        @return CdRom:
+        @return WatchDog:
         '''
 
         url = '/api/vms/{vm:id}/watchdogs/{watchdog:id}'
@@ -15889,6 +16468,36 @@ class VMWatchDogs(Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
+
+    def add(self, watchdog, expect=None, correlation_id=None):
+
+        '''
+        @type WatchDog:
+
+        @param watchdog.action: string
+        @param watchdog.model: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return WatchDog:
+        '''
+
+        url = '/api/vms/{vm:id}/watchdogs'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(watchdog),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return VMWatchDog(
+            self.parentclass,
+            result,
+            self.context
+        )
 
     def get(self, name=None, id=None):
 

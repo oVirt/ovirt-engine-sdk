@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Tue Aug 13 16:22:18 2013 by generateDS.py version 2.9a.
+# Generated Mon Aug 26 15:35:54 2013 by generateDS.py version 2.9a.
 #
 
 import sys
@@ -4791,6 +4791,91 @@ class WatchdogModels(GeneratedsSuper):
             model_ = self.gds_validate_string(model_, node, 'model')
             self.model.append(model_)
 # end class WatchdogModels
+
+
+class SnapshotStatuses(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, snapshot_status=None):
+        if snapshot_status is None:
+            self.snapshot_status = []
+        else:
+            self.snapshot_status = snapshot_status
+    def factory(*args_, **kwargs_):
+        if SnapshotStatuses.subclass:
+            return SnapshotStatuses.subclass(*args_, **kwargs_)
+        else:
+            return SnapshotStatuses(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_snapshot_status(self): return self.snapshot_status
+    def set_snapshot_status(self, snapshot_status): self.snapshot_status = snapshot_status
+    def add_snapshot_status(self, value): self.snapshot_status.append(value)
+    def insert_snapshot_status(self, index, value): self.snapshot_status[index] = value
+    def hasContent_(self):
+        if (
+            self.snapshot_status
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='SnapshotStatuses', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='SnapshotStatuses')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='SnapshotStatuses'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='SnapshotStatuses', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for snapshot_status_ in self.snapshot_status:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%ssnapshot_status>%s</%ssnapshot_status>%s' % (namespace_, self.gds_format_string(quote_xml(snapshot_status_).encode(ExternalEncoding), input_name='snapshot_status'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='SnapshotStatuses'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('snapshot_status=[\n')
+        level += 1
+        for snapshot_status_ in self.snapshot_status:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(snapshot_status_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'snapshot_status':
+            snapshot_status_ = child_.text
+            snapshot_status_ = self.gds_validate_string(snapshot_status_, node, 'snapshot_status')
+            self.snapshot_status.append(snapshot_status_)
+# end class SnapshotStatuses
 
 
 class ActionableResource(GeneratedsSuper):
@@ -10740,6 +10825,161 @@ class Files(BaseResources):
             self.file.append(obj_)
         super(Files, self).buildChildren(child_, node, nodeName_, True)
 # end class Files
+
+
+class Image(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None):
+        super(Image, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        pass
+    def factory(*args_, **kwargs_):
+        if Image.subclass:
+            return Image.subclass(*args_, **kwargs_)
+        else:
+            return Image(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def hasContent_(self):
+        if (
+            super(Image, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='Image', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Image')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Image'):
+        super(Image, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Image')
+    def exportChildren(self, outfile, level, namespace_='', name_='Image', fromsubclass_=False, pretty_print=True):
+        super(Image, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='Image'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(Image, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(Image, self).exportLiteralChildren(outfile, level, name_)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(Image, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        super(Image, self).buildChildren(child_, node, nodeName_, True)
+        pass
+# end class Image
+
+
+class Images(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, total=None, active=None, image=None):
+        super(Images, self).__init__(actions, total, active, )
+        if image is None:
+            self.image = []
+        else:
+            self.image = image
+    def factory(*args_, **kwargs_):
+        if Images.subclass:
+            return Images.subclass(*args_, **kwargs_)
+        else:
+            return Images(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_image(self): return self.image
+    def set_image(self, image): self.image = image
+    def add_image(self, value): self.image.append(value)
+    def insert_image(self, index, value): self.image[index] = value
+    def hasContent_(self):
+        if (
+            self.image or
+            super(Images, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='Images', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Images')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Images'):
+        super(Images, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Images')
+    def exportChildren(self, outfile, level, namespace_='', name_='Images', fromsubclass_=False, pretty_print=True):
+        super(Images, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for image_ in self.image:
+            image_.export(outfile, level, namespace_, name_='image', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='Images'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(Images, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(Images, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('image=[\n')
+        level += 1
+        for image_ in self.image:
+            showIndent(outfile, level)
+            outfile.write('model_.image(\n')
+            image_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(Images, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'image':
+            obj_ = Image.factory()
+            obj_.build(child_)
+            self.image.append(obj_)
+        super(Images, self).buildChildren(child_, node, nodeName_, True)
+# end class Images
 
 
 class Hook(BaseResource):
@@ -23349,6 +23589,785 @@ class GlusterBricks(BaseResources):
 # end class GlusterBricks
 
 
+class Stages(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, stage=None):
+        if stage is None:
+            self.stage = []
+        else:
+            self.stage = stage
+    def factory(*args_, **kwargs_):
+        if Stages.subclass:
+            return Stages.subclass(*args_, **kwargs_)
+        else:
+            return Stages(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_stage(self): return self.stage
+    def set_stage(self, stage): self.stage = stage
+    def add_stage(self, value): self.stage.append(value)
+    def insert_stage(self, index, value): self.stage[index] = value
+    def hasContent_(self):
+        if (
+            self.stage
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='Stages', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Stages')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Stages'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='Stages', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for stage_ in self.stage:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sstage>%s</%sstage>%s' % (namespace_, self.gds_format_string(quote_xml(stage_).encode(ExternalEncoding), input_name='stage'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='Stages'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('stage=[\n')
+        level += 1
+        for stage_ in self.stage:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(stage_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'stage':
+            stage_ = child_.text
+            stage_ = self.gds_validate_string(stage_, node, 'stage')
+            self.stage.append(stage_)
+# end class Stages
+
+
+class HookStates(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, hook_state=None):
+        if hook_state is None:
+            self.hook_state = []
+        else:
+            self.hook_state = hook_state
+    def factory(*args_, **kwargs_):
+        if HookStates.subclass:
+            return HookStates.subclass(*args_, **kwargs_)
+        else:
+            return HookStates(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_hook_state(self): return self.hook_state
+    def set_hook_state(self, hook_state): self.hook_state = hook_state
+    def add_hook_state(self, value): self.hook_state.append(value)
+    def insert_hook_state(self, index, value): self.hook_state[index] = value
+    def hasContent_(self):
+        if (
+            self.hook_state
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='HookStates', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='HookStates')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='HookStates'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='HookStates', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for hook_state_ in self.hook_state:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%shook_state>%s</%shook_state>%s' % (namespace_, self.gds_format_string(quote_xml(hook_state_).encode(ExternalEncoding), input_name='hook_state'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='HookStates'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('hook_state=[\n')
+        level += 1
+        for hook_state_ in self.hook_state:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(hook_state_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'hook_state':
+            hook_state_ = child_.text
+            hook_state_ = self.gds_validate_string(hook_state_, node, 'hook_state')
+            self.hook_state.append(hook_state_)
+# end class HookStates
+
+
+class ContentTypes(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, content_type=None):
+        if content_type is None:
+            self.content_type = []
+        else:
+            self.content_type = content_type
+    def factory(*args_, **kwargs_):
+        if ContentTypes.subclass:
+            return ContentTypes.subclass(*args_, **kwargs_)
+        else:
+            return ContentTypes(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_content_type(self): return self.content_type
+    def set_content_type(self, content_type): self.content_type = content_type
+    def add_content_type(self, value): self.content_type.append(value)
+    def insert_content_type(self, index, value): self.content_type[index] = value
+    def hasContent_(self):
+        if (
+            self.content_type
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='ContentTypes', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ContentTypes')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='ContentTypes'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='ContentTypes', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for content_type_ in self.content_type:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%scontent_type>%s</%scontent_type>%s' % (namespace_, self.gds_format_string(quote_xml(content_type_).encode(ExternalEncoding), input_name='content_type'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='ContentTypes'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('content_type=[\n')
+        level += 1
+        for content_type_ in self.content_type:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(content_type_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'content_type':
+            content_type_ = child_.text
+            content_type_ = self.gds_validate_string(content_type_, node, 'content_type')
+            self.content_type.append(content_type_)
+# end class ContentTypes
+
+
+class GlusterServerHooks(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, total=None, active=None, server_hook=None):
+        super(GlusterServerHooks, self).__init__(actions, total, active, )
+        if server_hook is None:
+            self.server_hook = []
+        else:
+            self.server_hook = server_hook
+    def factory(*args_, **kwargs_):
+        if GlusterServerHooks.subclass:
+            return GlusterServerHooks.subclass(*args_, **kwargs_)
+        else:
+            return GlusterServerHooks(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_server_hook(self): return self.server_hook
+    def set_server_hook(self, server_hook): self.server_hook = server_hook
+    def add_server_hook(self, value): self.server_hook.append(value)
+    def insert_server_hook(self, index, value): self.server_hook[index] = value
+    def hasContent_(self):
+        if (
+            self.server_hook or
+            super(GlusterServerHooks, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='GlusterServerHooks', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterServerHooks')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GlusterServerHooks'):
+        super(GlusterServerHooks, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterServerHooks')
+    def exportChildren(self, outfile, level, namespace_='', name_='GlusterServerHooks', fromsubclass_=False, pretty_print=True):
+        super(GlusterServerHooks, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for server_hook_ in self.server_hook:
+            server_hook_.export(outfile, level, namespace_, name_='server_hook', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='GlusterServerHooks'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(GlusterServerHooks, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(GlusterServerHooks, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('server_hook=[\n')
+        level += 1
+        for server_hook_ in self.server_hook:
+            showIndent(outfile, level)
+            outfile.write('model_.server_hook(\n')
+            server_hook_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(GlusterServerHooks, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'server_hook':
+            obj_ = GlusterServerHook.factory()
+            obj_.build(child_)
+            self.server_hook.append(obj_)
+        super(GlusterServerHooks, self).buildChildren(child_, node, nodeName_, True)
+# end class GlusterServerHooks
+
+
+class GlusterServerHook(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, host=None, content_type=None, status=None, checksum=None):
+        super(GlusterServerHook, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        self.host = host
+        self.content_type = content_type
+        self.status = status
+        self.checksum = checksum
+    def factory(*args_, **kwargs_):
+        if GlusterServerHook.subclass:
+            return GlusterServerHook.subclass(*args_, **kwargs_)
+        else:
+            return GlusterServerHook(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_host(self): return self.host
+    def set_host(self, host): self.host = host
+    def get_content_type(self): return self.content_type
+    def set_content_type(self, content_type): self.content_type = content_type
+    def get_status(self): return self.status
+    def set_status(self, status): self.status = status
+    def get_checksum(self): return self.checksum
+    def set_checksum(self, checksum): self.checksum = checksum
+    def hasContent_(self):
+        if (
+            self.host is not None or
+            self.content_type is not None or
+            self.status is not None or
+            self.checksum is not None or
+            super(GlusterServerHook, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='GlusterServerHook', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterServerHook')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GlusterServerHook'):
+        super(GlusterServerHook, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterServerHook')
+    def exportChildren(self, outfile, level, namespace_='', name_='GlusterServerHook', fromsubclass_=False, pretty_print=True):
+        super(GlusterServerHook, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.host is not None:
+            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+        if self.content_type is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%scontent_type>%s</%scontent_type>%s' % (namespace_, self.gds_format_string(quote_xml(self.content_type).encode(ExternalEncoding), input_name='content_type'), namespace_, eol_))
+        if self.status is not None:
+            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+        if self.checksum is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%schecksum>%s</%schecksum>%s' % (namespace_, self.gds_format_string(quote_xml(self.checksum).encode(ExternalEncoding), input_name='checksum'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='GlusterServerHook'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(GlusterServerHook, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(GlusterServerHook, self).exportLiteralChildren(outfile, level, name_)
+        if self.host is not None:
+            showIndent(outfile, level)
+            outfile.write('host=model_.host(\n')
+            self.host.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.content_type is not None:
+            showIndent(outfile, level)
+            outfile.write('content_type=%s,\n' % quote_python(self.content_type).encode(ExternalEncoding))
+        if self.status is not None:
+            showIndent(outfile, level)
+            outfile.write('status=model_.status(\n')
+            self.status.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.checksum is not None:
+            showIndent(outfile, level)
+            outfile.write('checksum=%s,\n' % quote_python(self.checksum).encode(ExternalEncoding))
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(GlusterServerHook, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'host':
+            obj_ = Host.factory()
+            obj_.build(child_)
+            self.set_host(obj_)
+        elif nodeName_ == 'content_type':
+            content_type_ = child_.text
+            content_type_ = self.gds_validate_string(content_type_, node, 'content_type')
+            self.content_type = content_type_
+        elif nodeName_ == 'status':
+            obj_ = Status.factory()
+            obj_.build(child_)
+            self.set_status(obj_)
+        elif nodeName_ == 'checksum':
+            checksum_ = child_.text
+            checksum_ = self.gds_validate_string(checksum_, node, 'checksum')
+            self.checksum = checksum_
+        super(GlusterServerHook, self).buildChildren(child_, node, nodeName_, True)
+# end class GlusterServerHook
+
+
+class GlusterHook(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, cluster=None, gluster_command=None, stage=None, content_type=None, checksum=None, content=None, conflict_status=None, conflicts=None, status=None, server_hooks=None):
+        super(GlusterHook, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        self.cluster = cluster
+        self.gluster_command = gluster_command
+        self.stage = stage
+        self.content_type = content_type
+        self.checksum = checksum
+        self.content = content
+        self.conflict_status = conflict_status
+        self.conflicts = conflicts
+        self.status = status
+        self.server_hooks = server_hooks
+    def factory(*args_, **kwargs_):
+        if GlusterHook.subclass:
+            return GlusterHook.subclass(*args_, **kwargs_)
+        else:
+            return GlusterHook(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_cluster(self): return self.cluster
+    def set_cluster(self, cluster): self.cluster = cluster
+    def get_gluster_command(self): return self.gluster_command
+    def set_gluster_command(self, gluster_command): self.gluster_command = gluster_command
+    def get_stage(self): return self.stage
+    def set_stage(self, stage): self.stage = stage
+    def get_content_type(self): return self.content_type
+    def set_content_type(self, content_type): self.content_type = content_type
+    def get_checksum(self): return self.checksum
+    def set_checksum(self, checksum): self.checksum = checksum
+    def get_content(self): return self.content
+    def set_content(self, content): self.content = content
+    def get_conflict_status(self): return self.conflict_status
+    def set_conflict_status(self, conflict_status): self.conflict_status = conflict_status
+    def get_conflicts(self): return self.conflicts
+    def set_conflicts(self, conflicts): self.conflicts = conflicts
+    def get_status(self): return self.status
+    def set_status(self, status): self.status = status
+    def get_server_hooks(self): return self.server_hooks
+    def set_server_hooks(self, server_hooks): self.server_hooks = server_hooks
+    def hasContent_(self):
+        if (
+            self.cluster is not None or
+            self.gluster_command is not None or
+            self.stage is not None or
+            self.content_type is not None or
+            self.checksum is not None or
+            self.content is not None or
+            self.conflict_status is not None or
+            self.conflicts is not None or
+            self.status is not None or
+            self.server_hooks is not None or
+            super(GlusterHook, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='GlusterHook', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterHook')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GlusterHook'):
+        super(GlusterHook, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterHook')
+    def exportChildren(self, outfile, level, namespace_='', name_='GlusterHook', fromsubclass_=False, pretty_print=True):
+        super(GlusterHook, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.cluster is not None:
+            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+        if self.gluster_command is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sgluster_command>%s</%sgluster_command>%s' % (namespace_, self.gds_format_string(quote_xml(self.gluster_command).encode(ExternalEncoding), input_name='gluster_command'), namespace_, eol_))
+        if self.stage is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sstage>%s</%sstage>%s' % (namespace_, self.gds_format_string(quote_xml(self.stage).encode(ExternalEncoding), input_name='stage'), namespace_, eol_))
+        if self.content_type is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%scontent_type>%s</%scontent_type>%s' % (namespace_, self.gds_format_string(quote_xml(self.content_type).encode(ExternalEncoding), input_name='content_type'), namespace_, eol_))
+        if self.checksum is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%schecksum>%s</%schecksum>%s' % (namespace_, self.gds_format_string(quote_xml(self.checksum).encode(ExternalEncoding), input_name='checksum'), namespace_, eol_))
+        if self.content is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%scontent>%s</%scontent>%s' % (namespace_, self.gds_format_string(quote_xml(self.content).encode(ExternalEncoding), input_name='content'), namespace_, eol_))
+        if self.conflict_status is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sconflict_status>%s</%sconflict_status>%s' % (namespace_, self.gds_format_integer(self.conflict_status, input_name='conflict_status'), namespace_, eol_))
+        if self.conflicts is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sconflicts>%s</%sconflicts>%s' % (namespace_, self.gds_format_string(quote_xml(self.conflicts).encode(ExternalEncoding), input_name='conflicts'), namespace_, eol_))
+        if self.status is not None:
+            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+        if self.server_hooks is not None:
+            self.server_hooks.export(outfile, level, namespace_, name_='server_hooks', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='GlusterHook'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(GlusterHook, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(GlusterHook, self).exportLiteralChildren(outfile, level, name_)
+        if self.cluster is not None:
+            showIndent(outfile, level)
+            outfile.write('cluster=model_.cluster(\n')
+            self.cluster.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.gluster_command is not None:
+            showIndent(outfile, level)
+            outfile.write('gluster_command=%s,\n' % quote_python(self.gluster_command).encode(ExternalEncoding))
+        if self.stage is not None:
+            showIndent(outfile, level)
+            outfile.write('stage=%s,\n' % quote_python(self.stage).encode(ExternalEncoding))
+        if self.content_type is not None:
+            showIndent(outfile, level)
+            outfile.write('content_type=%s,\n' % quote_python(self.content_type).encode(ExternalEncoding))
+        if self.checksum is not None:
+            showIndent(outfile, level)
+            outfile.write('checksum=%s,\n' % quote_python(self.checksum).encode(ExternalEncoding))
+        if self.content is not None:
+            showIndent(outfile, level)
+            outfile.write('content=%s,\n' % quote_python(self.content).encode(ExternalEncoding))
+        if self.conflict_status is not None:
+            showIndent(outfile, level)
+            outfile.write('conflict_status=%d,\n' % self.conflict_status)
+        if self.conflicts is not None:
+            showIndent(outfile, level)
+            outfile.write('conflicts=%s,\n' % quote_python(self.conflicts).encode(ExternalEncoding))
+        if self.status is not None:
+            showIndent(outfile, level)
+            outfile.write('status=model_.status(\n')
+            self.status.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.server_hooks is not None:
+            showIndent(outfile, level)
+            outfile.write('server_hooks=model_.server_hooks(\n')
+            self.server_hooks.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(GlusterHook, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'cluster':
+            obj_ = Cluster.factory()
+            obj_.build(child_)
+            self.set_cluster(obj_)
+        elif nodeName_ == 'gluster_command':
+            gluster_command_ = child_.text
+            gluster_command_ = self.gds_validate_string(gluster_command_, node, 'gluster_command')
+            self.gluster_command = gluster_command_
+        elif nodeName_ == 'stage':
+            stage_ = child_.text
+            stage_ = self.gds_validate_string(stage_, node, 'stage')
+            self.stage = stage_
+        elif nodeName_ == 'content_type':
+            content_type_ = child_.text
+            content_type_ = self.gds_validate_string(content_type_, node, 'content_type')
+            self.content_type = content_type_
+        elif nodeName_ == 'checksum':
+            checksum_ = child_.text
+            checksum_ = self.gds_validate_string(checksum_, node, 'checksum')
+            self.checksum = checksum_
+        elif nodeName_ == 'content':
+            content_ = child_.text
+            content_ = self.gds_validate_string(content_, node, 'content')
+            self.content = content_
+        elif nodeName_ == 'conflict_status':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'conflict_status')
+            self.conflict_status = ival_
+        elif nodeName_ == 'conflicts':
+            conflicts_ = child_.text
+            conflicts_ = self.gds_validate_string(conflicts_, node, 'conflicts')
+            self.conflicts = conflicts_
+        elif nodeName_ == 'status':
+            obj_ = Status.factory()
+            obj_.build(child_)
+            self.set_status(obj_)
+        elif nodeName_ == 'server_hooks':
+            obj_ = GlusterServerHooks.factory()
+            obj_.build(child_)
+            self.set_server_hooks(obj_)
+        super(GlusterHook, self).buildChildren(child_, node, nodeName_, True)
+# end class GlusterHook
+
+
+class GlusterHooks(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, total=None, active=None, gluster_hook=None):
+        super(GlusterHooks, self).__init__(actions, total, active, )
+        if gluster_hook is None:
+            self.gluster_hook = []
+        else:
+            self.gluster_hook = gluster_hook
+    def factory(*args_, **kwargs_):
+        if GlusterHooks.subclass:
+            return GlusterHooks.subclass(*args_, **kwargs_)
+        else:
+            return GlusterHooks(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_gluster_hook(self): return self.gluster_hook
+    def set_gluster_hook(self, gluster_hook): self.gluster_hook = gluster_hook
+    def add_gluster_hook(self, value): self.gluster_hook.append(value)
+    def insert_gluster_hook(self, index, value): self.gluster_hook[index] = value
+    def hasContent_(self):
+        if (
+            self.gluster_hook or
+            super(GlusterHooks, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='GlusterHooks', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterHooks')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GlusterHooks'):
+        super(GlusterHooks, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GlusterHooks')
+    def exportChildren(self, outfile, level, namespace_='', name_='GlusterHooks', fromsubclass_=False, pretty_print=True):
+        super(GlusterHooks, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for gluster_hook_ in self.gluster_hook:
+            gluster_hook_.export(outfile, level, namespace_, name_='gluster_hook', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='GlusterHooks'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(GlusterHooks, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(GlusterHooks, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('gluster_hook=[\n')
+        level += 1
+        for gluster_hook_ in self.gluster_hook:
+            showIndent(outfile, level)
+            outfile.write('model_.gluster_hook(\n')
+            gluster_hook_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(GlusterHooks, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'gluster_hook':
+            obj_ = GlusterHook.factory()
+            obj_.build(child_)
+            self.gluster_hook.append(obj_)
+        super(GlusterHooks, self).buildChildren(child_, node, nodeName_, True)
+# end class GlusterHooks
+
+
 class PmProxies(GeneratedsSuper):
     subclass = None
     superclass = None
@@ -25356,7 +26375,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, succeeded=None, status=None, fault=None, iscsi_target=None, power_management=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, succeeded=None, resolution_type=None, status=None, fault=None, iscsi_target=None, power_management=None):
         super(Action, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -25386,6 +26405,7 @@ class Action(BaseResource):
         self.clone = clone
         self.restore_memory = restore_memory
         self.succeeded = succeeded
+        self.resolution_type = resolution_type
         self.status = status
         self.fault = fault
         if iscsi_target is None:
@@ -25455,6 +26475,8 @@ class Action(BaseResource):
     def set_restore_memory(self, restore_memory): self.restore_memory = restore_memory
     def get_succeeded(self): return self.succeeded
     def set_succeeded(self, succeeded): self.succeeded = succeeded
+    def get_resolution_type(self): return self.resolution_type
+    def set_resolution_type(self, resolution_type): self.resolution_type = resolution_type
     def get_status(self): return self.status
     def set_status(self, status): self.status = status
     def get_fault(self): return self.fault
@@ -25495,6 +26517,7 @@ class Action(BaseResource):
             self.clone is not None or
             self.restore_memory is not None or
             self.succeeded is not None or
+            self.resolution_type is not None or
             self.status is not None or
             self.fault is not None or
             self.iscsi_target or
@@ -25599,6 +26622,9 @@ class Action(BaseResource):
         if self.succeeded is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssucceeded>%s</%ssucceeded>%s' % (namespace_, self.gds_format_boolean(self.succeeded, input_name='succeeded'), namespace_, eol_))
+        if self.resolution_type is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sresolution_type>%s</%sresolution_type>%s' % (namespace_, self.gds_format_string(quote_xml(self.resolution_type).encode(ExternalEncoding), input_name='resolution_type'), namespace_, eol_))
         if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.fault is not None:
@@ -25741,6 +26767,9 @@ class Action(BaseResource):
         if self.succeeded is not None:
             showIndent(outfile, level)
             outfile.write('succeeded=%s,\n' % self.succeeded)
+        if self.resolution_type is not None:
+            showIndent(outfile, level)
+            outfile.write('resolution_type=%s,\n' % quote_python(self.resolution_type).encode(ExternalEncoding))
         if self.status is not None:
             showIndent(outfile, level)
             outfile.write('status=model_.status(\n')
@@ -25960,6 +26989,10 @@ class Action(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'succeeded')
             self.succeeded = ival_
+        elif nodeName_ == 'resolution_type':
+            resolution_type_ = child_.text
+            resolution_type_ = self.gds_validate_string(resolution_type_, node, 'resolution_type')
+            self.resolution_type = resolution_type_
         elif nodeName_ == 'status':
             obj_ = Status.factory()
             obj_.build(child_)
@@ -26390,7 +27423,7 @@ class GeneralMetadata(DetailedLink):
 class VersionCaps(Version):
     subclass = None
     superclass = Version
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, configuration_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, sgio_options=None, watchdog_models=None, watchdog_actions=None, authentication_methods=None, step_types=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, configuration_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, sgio_options=None, watchdog_models=None, watchdog_actions=None, authentication_methods=None, step_types=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None, snapshot_statuses=None, content_types=None, hook_states=None, stages=None):
         super(VersionCaps, self).__init__(actions, href, id, name, description, comment, creation_status, link, major, full_version, build_, minor, revision, )
         self.current = current
         self.features = features
@@ -26442,6 +27475,10 @@ class VersionCaps(Version):
         self.brick_states = brick_states
         self.reported_device_types = reported_device_types
         self.ip_versions = ip_versions
+        self.snapshot_statuses = snapshot_statuses
+        self.content_types = content_types
+        self.hook_states = hook_states
+        self.stages = stages
     def factory(*args_, **kwargs_):
         if VersionCaps.subclass:
             return VersionCaps.subclass(*args_, **kwargs_)
@@ -26548,6 +27585,14 @@ class VersionCaps(Version):
     def set_reported_device_types(self, reported_device_types): self.reported_device_types = reported_device_types
     def get_ip_versions(self): return self.ip_versions
     def set_ip_versions(self, ip_versions): self.ip_versions = ip_versions
+    def get_snapshot_statuses(self): return self.snapshot_statuses
+    def set_snapshot_statuses(self, snapshot_statuses): self.snapshot_statuses = snapshot_statuses
+    def get_content_types(self): return self.content_types
+    def set_content_types(self, content_types): self.content_types = content_types
+    def get_hook_states(self): return self.hook_states
+    def set_hook_states(self, hook_states): self.hook_states = hook_states
+    def get_stages(self): return self.stages
+    def set_stages(self, stages): self.stages = stages
     def hasContent_(self):
         if (
             self.current is not None or
@@ -26600,6 +27645,10 @@ class VersionCaps(Version):
             self.brick_states is not None or
             self.reported_device_types is not None or
             self.ip_versions is not None or
+            self.snapshot_statuses is not None or
+            self.content_types is not None or
+            self.hook_states is not None or
+            self.stages is not None or
             super(VersionCaps, self).hasContent_()
             ):
             return True
@@ -26730,6 +27779,14 @@ class VersionCaps(Version):
             self.reported_device_types.export(outfile, level, namespace_, name_='reported_device_types', pretty_print=pretty_print)
         if self.ip_versions is not None:
             self.ip_versions.export(outfile, level, namespace_, name_='ip_versions', pretty_print=pretty_print)
+        if self.snapshot_statuses is not None:
+            self.snapshot_statuses.export(outfile, level, namespace_, name_='snapshot_statuses', pretty_print=pretty_print)
+        if self.content_types is not None:
+            self.content_types.export(outfile, level, namespace_, name_='content_types', pretty_print=pretty_print)
+        if self.hook_states is not None:
+            self.hook_states.export(outfile, level, namespace_, name_='hook_states', pretty_print=pretty_print)
+        if self.stages is not None:
+            self.stages.export(outfile, level, namespace_, name_='stages', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VersionCaps'):
         level += 1
         already_processed = set()
@@ -27037,6 +28094,30 @@ class VersionCaps(Version):
             self.ip_versions.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.snapshot_statuses is not None:
+            showIndent(outfile, level)
+            outfile.write('snapshot_statuses=model_.snapshot_statuses(\n')
+            self.snapshot_statuses.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.content_types is not None:
+            showIndent(outfile, level)
+            outfile.write('content_types=model_.content_types(\n')
+            self.content_types.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.hook_states is not None:
+            showIndent(outfile, level)
+            outfile.write('hook_states=model_.hook_states(\n')
+            self.hook_states.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.stages is not None:
+            showIndent(outfile, level)
+            outfile.write('stages=model_.stages(\n')
+            self.stages.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -27252,6 +28333,22 @@ class VersionCaps(Version):
             obj_ = IpVersions.factory()
             obj_.build(child_)
             self.set_ip_versions(obj_)
+        elif nodeName_ == 'snapshot_statuses':
+            obj_ = SnapshotStatuses.factory()
+            obj_.build(child_)
+            self.set_snapshot_statuses(obj_)
+        elif nodeName_ == 'content_types':
+            obj_ = ContentTypes.factory()
+            obj_.build(child_)
+            self.set_content_types(obj_)
+        elif nodeName_ == 'hook_states':
+            obj_ = HookStates.factory()
+            obj_.build(child_)
+            self.set_hook_states(obj_)
+        elif nodeName_ == 'stages':
+            obj_ = Stages.factory()
+            obj_.build(child_)
+            self.set_stages(obj_)
         super(VersionCaps, self).buildChildren(child_, node, nodeName_, True)
 # end class VersionCaps
 
@@ -27298,6 +28395,7 @@ GDSClassesMapping = {
     'permissions': Permissions,
     'gluster_volume_states': GlusterStates,
     'libvirt_version': Version,
+    'glusterhooks': GlusterHooks,
     'links': DetailedLinks,
     'ips': IPs,
     'pm_proxies': PmProxies,
@@ -27317,7 +28415,7 @@ GDSClassesMapping = {
     'owner': User,
     'reported_device_types': ReportedDeviceTypes,
     'statistic': Statistic,
-    'host_storage': HostStorage,
+    'images': Images,
     'vm_pause_details': VmPauseDetails,
     'event': Event,
     'vmpools': VmPools,
@@ -27347,6 +28445,7 @@ GDSClassesMapping = {
     'os_types': OsTypes,
     'host': Host,
     'power_management_states': PowerManagementStates,
+    'server_hooks': GlusterServerHooks,
     'groups': Groups,
     'supported_versions': SupportedVersions,
     'configuration': Configuration,
@@ -27354,12 +28453,14 @@ GDSClassesMapping = {
     'scheduling_policy': SchedulingPolicy,
     'topology': CpuTopology,
     'grace_period': GracePeriod,
+    'stages': Stages,
     'parent_step': Step,
     'applications': Applications,
     'fault': Fault,
     'cpu_tune': CpuTune,
     'bonding': Bonding,
     'nic_interfaces': NicInterfaces,
+    'content_types': ContentTypes,
     'permit': Permit,
     'action': Action,
     'os': OperatingSystem,
@@ -27368,6 +28469,7 @@ GDSClassesMapping = {
     'features': Features,
     'bricks': GlusterBricks,
     'watchdogs': WatchDogs,
+    'image': Image,
     'cpus': CPUs,
     'hook': Hook,
     'storage_domain_states': StorageDomainStates,
@@ -27375,6 +28477,7 @@ GDSClassesMapping = {
     'agents': Agents,
     'gluster_clients': GlusterClients,
     'watchdog': WatchDog,
+    'host_storage': HostStorage,
     'storage_connection': StorageConnection,
     'vm_types': VmTypes,
     'preview_vms': PreviewVMs,
@@ -27392,6 +28495,7 @@ GDSClassesMapping = {
     'volume_group': VolumeGroup,
     'vcpu_pin': VCpuPin,
     'brick': GlusterBrick,
+    'hook_states': HookStates,
     'schema': Schema,
     'files': Files,
     'option': Option,
@@ -27410,9 +28514,11 @@ GDSClassesMapping = {
     'permits': Permits,
     'value': Value,
     'headers': Headers,
+    'server_hook': GlusterServerHook,
     'values': Values,
     'memory_pools': GlusterMemoryPools,
     'creation_status': Status,
+    'gluster_hook': GlusterHook,
     'display': Display,
     'usages': Usages,
     'power_managers': PowerManagers,
@@ -27470,6 +28576,7 @@ GDSClassesMapping = {
     'snapshot': Snapshot,
     'gluster_volume': GlusterVolume,
     'slaves': Slaves,
+    'snapshot_statuses': SnapshotStatuses,
     'cpu': CPU,
     'ssh': SSH,
 }
@@ -27620,6 +28727,7 @@ __all__ = [
     "Configuration",
     "ConfigurationTypes",
     "Console",
+    "ContentTypes",
     "CpuModes",
     "CpuTopology",
     "CpuTune",
@@ -27660,8 +28768,12 @@ __all__ = [
     "GlusterBricks",
     "GlusterClient",
     "GlusterClients",
+    "GlusterHook",
+    "GlusterHooks",
     "GlusterMemoryPool",
     "GlusterMemoryPools",
+    "GlusterServerHook",
+    "GlusterServerHooks",
     "GlusterStates",
     "GlusterVolume",
     "GlusterVolumeTypes",
@@ -27675,6 +28787,7 @@ __all__ = [
     "Headers",
     "HighAvailability",
     "Hook",
+    "HookStates",
     "Hooks",
     "Host",
     "HostNIC",
@@ -27686,6 +28799,8 @@ __all__ = [
     "Hosts",
     "IP",
     "IPs",
+    "Image",
+    "Images",
     "Initialization",
     "IpVersions",
     "IscsiDetails",
@@ -27746,8 +28861,10 @@ __all__ = [
     "ScsiGenericIoOptions",
     "Slaves",
     "Snapshot",
+    "SnapshotStatuses",
     "Snapshots",
     "SpecialObjects",
+    "Stages",
     "Statistic",
     "Statistics",
     "Status",
@@ -27835,6 +28952,7 @@ _rootClassMap = {
                     "configuration"                 : Configuration,
                     "configuration_types"           : ConfigurationTypes,
                     "console"                       : Console,
+                    "content_types"                 : ContentTypes,
                     "cpu"                           : CPU,
                     "cpu_modes"                     : CpuModes,
                     "cpu_tune"                      : CpuTune,
@@ -27872,10 +28990,12 @@ _rootClassMap = {
                     "general_metadata"              : GeneralMetadata,
                     "gluster_client"                : GlusterClient,
                     "gluster_clients"               : GlusterClients,
+                    "gluster_hook"                  : GlusterHook,
                     "gluster_volume"                : GlusterVolume,
                     "gluster_volume_states"         : GlusterStates,
                     "gluster_volume_types"          : GlusterVolumeTypes,
                     "gluster_volumes"               : GlusterVolumes,
+                    "glusterhooks"                  : GlusterHooks,
                     "grace_period"                  : GracePeriod,
                     "group"                         : Group,
                     "groups"                        : Groups,
@@ -27885,6 +29005,7 @@ _rootClassMap = {
                     "headers"                       : Headers,
                     "high_availability"             : HighAvailability,
                     "hook"                          : Hook,
+                    "hook_states"                   : HookStates,
                     "hooks"                         : Hooks,
                     "host"                          : Host,
                     "host_nic"                      : HostNIC,
@@ -27894,6 +29015,8 @@ _rootClassMap = {
                     "host_states"                   : HostStates,
                     "host_storage"                  : HostStorage,
                     "hosts"                         : Hosts,
+                    "image"                         : Image,
+                    "images"                        : Images,
                     "initialization"                : Initialization,
                     "ip"                            : IP,
                     "ip_versions"                   : IpVersions,
@@ -27961,12 +29084,16 @@ _rootClassMap = {
                     "scheduling_policies"           : SchedulingPolicies,
                     "scheduling_policy"             : SchedulingPolicy,
                     "schema"                        : Schema,
+                    "server_hook"                   : GlusterServerHook,
+                    "server_hooks"                  : GlusterServerHooks,
                     "sgio_options"                  : ScsiGenericIoOptions,
                     "slaves"                        : Slaves,
                     "snapshot"                      : Snapshot,
+                    "snapshot_statuses"             : SnapshotStatuses,
                     "snapshots"                     : Snapshots,
                     "special_objects"               : SpecialObjects,
                     "ssh"                           : SSH,
+                    "stages"                        : Stages,
                     "statistic"                     : Statistic,
                     "statistics"                    : Statistics,
                     "status"                        : Status,
