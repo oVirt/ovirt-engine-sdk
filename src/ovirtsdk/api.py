@@ -284,3 +284,9 @@ class API(object):
         if entry_point:
             return entry_point.product_info
         raise DisconnectedError
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, tb):
+        self.disconnect()

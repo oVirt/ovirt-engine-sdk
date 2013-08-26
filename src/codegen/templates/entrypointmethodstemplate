@@ -68,3 +68,9 @@
                              session_timeout,
                              typ=types.IntType
             )
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, tb):
+        self.disconnect()
