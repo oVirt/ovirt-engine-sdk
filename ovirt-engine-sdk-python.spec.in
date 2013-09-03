@@ -40,6 +40,14 @@ With this package, custom software can be built for oVirt-Engine.
 %doc LICENSE
 
 %changelog
+* Tue  Sep 3 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.6-1
+ - added StorageDomainStorageConnection.delete(async) signature
+ - added StorageDomainStorageConnections.add(storageconnection, expect, correlationId) signature
+ - implement support for with-resources statement
+ - in Cluster added glusterhooks (ClusterGlusterHooks) sub-collection
+ - in DataCenterCluster added glusterhooks (DataCenterClusterGlusterhooks) sub-collection
+ - in StorageDomain added images (StorageDomainImages) sub-collection
+
 * Wed  Aug 14 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.5-1
  - implicitly disconnect and perform cleanup
  - encapsulate context removal
