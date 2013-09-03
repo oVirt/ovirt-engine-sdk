@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-08-26 15:36:10.578423'''
+'''Generated at: 2013-09-03 17:33:36.497540'''
 
 
 from ovirtsdk.xml import params
@@ -10238,6 +10238,27 @@ class StorageDomainStorageConnection(params.StorageConnection, Base):
         #still available at client's code.
         raise DisconnectedError
 
+    def delete(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/storagedomains/{storagedomain:id}/storageconnections/{storageconnection:id}',
+            {'{storagedomain:id}' : self.parentclass.get_id(),
+             '{storageconnection:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
 class StorageDomainStorageConnections(Base):
 
     def __init__(self, storagedomain , context):
@@ -10252,6 +10273,35 @@ class StorageDomainStorageConnections(Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
+
+    def add(self, storageconnection, expect=None, correlation_id=None):
+
+        '''
+        @type StorageConnection:
+
+        @param storageconnection.id: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return StorageConnection:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/storageconnections'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{storagedomain:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(storageconnection),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return StorageDomainStorageConnection(
+            self.parentclass,
+            result,
+            self.context
+        )
 
     def get(self, name=None, id=None):
 

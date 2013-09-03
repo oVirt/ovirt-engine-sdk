@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Mon Aug 26 15:35:54 2013 by generateDS.py version 2.9a.
+# Generated Tue Sep  3 17:33:19 2013 by generateDS.py version 2.9a.
 #
 
 import sys
@@ -21659,8 +21659,9 @@ class Headers(GeneratedsSuper):
 class ParametersSet(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, deprecated=None, parameter=None):
+    def __init__(self, deprecated=None, description=None, parameter=None):
         self.deprecated = deprecated
+        self.description = description
         if parameter is None:
             self.parameter = []
         else:
@@ -21673,6 +21674,8 @@ class ParametersSet(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_deprecated(self): return self.deprecated
     def set_deprecated(self, deprecated): self.deprecated = deprecated
+    def get_description(self): return self.description
+    def set_description(self, description): self.description = description
     def get_parameter(self): return self.parameter
     def set_parameter(self, parameter): self.parameter = parameter
     def add_parameter(self, value): self.parameter.append(value)
@@ -21680,6 +21683,7 @@ class ParametersSet(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.deprecated is not None or
+            self.description is not None or
             self.parameter
             ):
             return True
@@ -21711,6 +21715,9 @@ class ParametersSet(GeneratedsSuper):
         if self.deprecated is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdeprecated>%s</%sdeprecated>%s' % (namespace_, self.gds_format_boolean(self.deprecated, input_name='deprecated'), namespace_, eol_))
+        if self.description is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sdescription>%s</%sdescription>%s' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_, eol_))
         for parameter_ in self.parameter:
             parameter_.export(outfile, level, namespace_, name_='parameter', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='ParametersSet'):
@@ -21725,6 +21732,9 @@ class ParametersSet(GeneratedsSuper):
         if self.deprecated is not None:
             showIndent(outfile, level)
             outfile.write('deprecated=%s,\n' % self.deprecated)
+        if self.description is not None:
+            showIndent(outfile, level)
+            outfile.write('description=%s,\n' % quote_python(self.description).encode(ExternalEncoding))
         showIndent(outfile, level)
         outfile.write('parameter=[\n')
         level += 1
@@ -21756,6 +21766,10 @@ class ParametersSet(GeneratedsSuper):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'deprecated')
             self.deprecated = ival_
+        elif nodeName_ == 'description':
+            description_ = child_.text
+            description_ = self.gds_validate_string(description_, node, 'description')
+            self.description = description_
         elif nodeName_ == 'parameter':
             obj_ = Parameter.factory()
             obj_.build(child_)
@@ -27206,8 +27220,9 @@ class API(BaseResource):
 class DetailedLink(Link):
     subclass = None
     superclass = Link
-    def __init__(self, href=None, rel=None, request=None, response=None, linkCapabilities=None, extensiontype_=None):
+    def __init__(self, href=None, rel=None, description=None, request=None, response=None, linkCapabilities=None, extensiontype_=None):
         super(DetailedLink, self).__init__(href, rel, extensiontype_, )
+        self.description = description
         self.request = request
         self.response = response
         self.linkCapabilities = linkCapabilities
@@ -27218,6 +27233,8 @@ class DetailedLink(Link):
         else:
             return DetailedLink(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def get_description(self): return self.description
+    def set_description(self, description): self.description = description
     def get_request(self): return self.request
     def set_request(self, request): self.request = request
     def get_response(self): return self.response
@@ -27228,6 +27245,7 @@ class DetailedLink(Link):
     def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def hasContent_(self):
         if (
+            self.description is not None or
             self.request is not None or
             self.response is not None or
             self.linkCapabilities is not None or
@@ -27264,6 +27282,9 @@ class DetailedLink(Link):
             eol_ = '\n'
         else:
             eol_ = ''
+        if self.description is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sdescription>%s</%sdescription>%s' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_, eol_))
         if self.request is not None:
             self.request.export(outfile, level, namespace_, name_='request', pretty_print=pretty_print)
         if self.response is not None:
@@ -27280,6 +27301,9 @@ class DetailedLink(Link):
         super(DetailedLink, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
         super(DetailedLink, self).exportLiteralChildren(outfile, level, name_)
+        if self.description is not None:
+            showIndent(outfile, level)
+            outfile.write('description=%s,\n' % quote_python(self.description).encode(ExternalEncoding))
         if self.request is not None:
             showIndent(outfile, level)
             outfile.write('request=model_.request(\n')
@@ -27311,7 +27335,11 @@ class DetailedLink(Link):
             self.extensiontype_ = value
         super(DetailedLink, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'request':
+        if nodeName_ == 'description':
+            description_ = child_.text
+            description_ = self.gds_validate_string(description_, node, 'description')
+            self.description = description_
+        elif nodeName_ == 'request':
             obj_ = Request.factory()
             obj_.build(child_)
             self.set_request(obj_)
@@ -27330,10 +27358,9 @@ class DetailedLink(Link):
 class GeneralMetadata(DetailedLink):
     subclass = None
     superclass = DetailedLink
-    def __init__(self, href=None, rel=None, request=None, response=None, linkCapabilities=None, name=None, description=None):
-        super(GeneralMetadata, self).__init__(href, rel, request, response, linkCapabilities, )
+    def __init__(self, href=None, rel=None, description=None, request=None, response=None, linkCapabilities=None, name=None):
+        super(GeneralMetadata, self).__init__(href, rel, description, request, response, linkCapabilities, )
         self.name = name
-        self.description = description
     def factory(*args_, **kwargs_):
         if GeneralMetadata.subclass:
             return GeneralMetadata.subclass(*args_, **kwargs_)
@@ -27342,12 +27369,9 @@ class GeneralMetadata(DetailedLink):
     factory = staticmethod(factory)
     def get_name(self): return self.name
     def set_name(self, name): self.name = name
-    def get_description(self): return self.description
-    def set_description(self, description): self.description = description
     def hasContent_(self):
         if (
             self.name is not None or
-            self.description is not None or
             super(GeneralMetadata, self).hasContent_()
             ):
             return True
@@ -27380,9 +27404,6 @@ class GeneralMetadata(DetailedLink):
         if self.name is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sname>%s</%sname>%s' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_, eol_))
-        if self.description is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%sdescription>%s</%sdescription>%s' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='GeneralMetadata'):
         level += 1
         already_processed = set()
@@ -27396,9 +27417,6 @@ class GeneralMetadata(DetailedLink):
         if self.name is not None:
             showIndent(outfile, level)
             outfile.write('name=%s,\n' % quote_python(self.name).encode(ExternalEncoding))
-        if self.description is not None:
-            showIndent(outfile, level)
-            outfile.write('description=%s,\n' % quote_python(self.description).encode(ExternalEncoding))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -27412,10 +27430,6 @@ class GeneralMetadata(DetailedLink):
             name_ = child_.text
             name_ = self.gds_validate_string(name_, node, 'name')
             self.name = name_
-        elif nodeName_ == 'description':
-            description_ = child_.text
-            description_ = self.gds_validate_string(description_, node, 'description')
-            self.description = description_
         super(GeneralMetadata, self).buildChildren(child_, node, nodeName_, True)
 # end class GeneralMetadata
 

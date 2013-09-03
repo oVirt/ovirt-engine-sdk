@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-08-14 12:10:31.267414'''
+'''Generated at: 2013-09-03 17:33:36.499568'''
 
 import types
 
@@ -245,6 +245,12 @@ class API(object):
                              typ=types.IntType
             )
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, type, value, tb):
+        self.disconnect()
+
     def get_comment(self):
         entry_point = context.manager[self.id].get('entry_point')
         if entry_point:
@@ -284,9 +290,3 @@ class API(object):
         if entry_point:
             return entry_point.product_info
         raise DisconnectedError
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, type, value, tb):
-        self.disconnect()
