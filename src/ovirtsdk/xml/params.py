@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Tue Sep  3 17:33:19 2013 by generateDS.py version 2.9a.
+# Generated Wed Oct  9 09:45:02 2013 by generateDS.py version 2.9a.
 #
 
 import sys
@@ -2312,8 +2312,8 @@ class CpuTune(GeneratedsSuper):
         level += 1
         for vcpu_pin_ in self.vcpu_pin:
             showIndent(outfile, level)
-            outfile.write('model_.VCpuPin(\n')
-            vcpu_pin_.exportLiteral(outfile, level, name_='VCpuPin')
+            outfile.write('model_.vcpu_pin(\n')
+            vcpu_pin_.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -15803,8 +15803,9 @@ class VmPlacementPolicy(GeneratedsSuper):
 class GuestInfo(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, ips=None):
+    def __init__(self, ips=None, fqdn=None):
         self.ips = ips
+        self.fqdn = fqdn
     def factory(*args_, **kwargs_):
         if GuestInfo.subclass:
             return GuestInfo.subclass(*args_, **kwargs_)
@@ -15813,9 +15814,12 @@ class GuestInfo(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_ips(self): return self.ips
     def set_ips(self, ips): self.ips = ips
+    def get_fqdn(self): return self.fqdn
+    def set_fqdn(self, fqdn): self.fqdn = fqdn
     def hasContent_(self):
         if (
-            self.ips is not None
+            self.ips is not None or
+            self.fqdn is not None
             ):
             return True
         else:
@@ -15845,6 +15849,9 @@ class GuestInfo(GeneratedsSuper):
             eol_ = ''
         if self.ips is not None:
             self.ips.export(outfile, level, namespace_, name_='ips', pretty_print=pretty_print)
+        if self.fqdn is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sfqdn>%s</%sfqdn>%s' % (namespace_, self.gds_format_string(quote_xml(self.fqdn).encode(ExternalEncoding), input_name='fqdn'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='GuestInfo'):
         level += 1
         already_processed = set()
@@ -15860,6 +15867,9 @@ class GuestInfo(GeneratedsSuper):
             self.ips.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.fqdn is not None:
+            showIndent(outfile, level)
+            outfile.write('fqdn=%s,\n' % quote_python(self.fqdn).encode(ExternalEncoding))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -15873,6 +15883,10 @@ class GuestInfo(GeneratedsSuper):
             obj_ = IPs.factory()
             obj_.build(child_)
             self.set_ips(obj_)
+        elif nodeName_ == 'fqdn':
+            fqdn_ = child_.text
+            fqdn_ = self.gds_validate_string(fqdn_, node, 'fqdn')
+            self.fqdn = fqdn_
 # end class GuestInfo
 
 

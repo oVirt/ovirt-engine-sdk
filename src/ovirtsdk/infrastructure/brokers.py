@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-09-03 17:33:36.497540'''
+'''Generated at: 2013-10-09 09:45:19.614629'''
 
 
 from ovirtsdk.xml import params
@@ -3578,6 +3578,32 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
+    def export(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param storagedomain.id|name: string
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/export'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{storagedomain:id}': self.parentclass.get_id(),
+                 '{disk:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
 class DataCenterStorageDomainDiskPermission(params.Permission, Base):
     def __init__(self, datacenterstoragedomaindisk, permission, context):
         Base.__init__(self, context)
@@ -4317,6 +4343,27 @@ class Disk(params.Disk, Base):
             ),
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
+
+    def export(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param storagedomain.id|name: string
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/disks/{disk:id}/export'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(url, {'{disk:id}': self.get_id()}),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
 
 class DiskPermission(params.Permission, Base):
     def __init__(self, disk, permission, context):
@@ -6191,10 +6238,9 @@ class Host(params.Host, Base):
           [@param host.name: string]
           [@param host.comment: string]
           [@param host.address: string]
-          [@param host.ssh.password: string]
           [@param host.ssh.port: int]
+          [@param host.ssh.user.user_name: string]
           [@param host.ssh.fingerprint: string]
-          [@param host.ssh.authentication_type: string]
           [@param host.display.address: string]
           [@param host.cluster.id|name: string]
           [@param host.port: int]
@@ -7650,12 +7696,13 @@ class Hosts(Base):
         Overload 2:
           @param host.name: string
           @param host.address: string
-          @param host.ssh.password: string
           @param host.cluster.id|name: string
           [@param host.comment: string]
           [@param host.ssh.port: int]
           [@param host.ssh.fingerprint: string]
-          [@param host.ssh.authentication_type: string]
+          [@param host.ssh.authentication_method: string]
+          [@param host.ssh.user.user_name: string]
+          [@param host.ssh.user.password: string]
           [@param host.port: int]
           [@param host.display.address: string]
           [@param host.storage_manager.priority: int]
@@ -9334,6 +9381,31 @@ class StorageDomainDisk(params.Disk, Base):
             ),
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
+
+    def export(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param storagedomain.id|name: string
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/export'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{storagedomain:id}' : self.parentclass.get_id(),
+                 '{disk:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
 
 class StorageDomainDiskPermission(params.Permission, Base):
     def __init__(self, storagedomaindisk, permission, context):
@@ -11624,6 +11696,31 @@ class TemplateDisk(params.Disk, Base):
         '''
 
         url = '/api/templates/{template:id}/disks/{disk:id}/copy'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{template:id}' : self.parentclass.get_id(),
+                 '{disk:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def export(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param storagedomain.id|name: string
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/templates/{template:id}/disks/{disk:id}/export'
 
         result = self.__getProxy().request(
             method='POST',
@@ -14159,6 +14256,31 @@ class VMDisk(params.Disk, Base):
         '''
 
         url = '/api/vms/{vm:id}/disks/{disk:id}/deactivate'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}' : self.parentclass.get_id(),
+                 '{disk:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def export(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param storagedomain.id|name: string
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/vms/{vm:id}/disks/{disk:id}/export'
 
         result = self.__getProxy().request(
             method='POST',
