@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-10-09 09:45:19.614629'''
+'''Generated at: 2013-10-30 11:21:41.565433'''
 
 
 from ovirtsdk.xml import params
@@ -6421,7 +6421,11 @@ class Host(params.Host, Base):
           [@param action.root_password: string]
           [@param action.image: string]
         Overload 2:
-          [@param action.ssh.password: string]
+          [@param action.ssh.port: int]
+          [@param action.ssh.fingerprint: string]
+          [@param action.ssh.authentication_method: string]
+          [@param action.ssh.user.user_name: string]
+          [@param action.ssh.user.password: string]
           [@param action.image: string]
         [@param correlation_id: any string]
 
@@ -11468,6 +11472,7 @@ class Template(params.Template, Base):
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
         [@param template.tunnel_migration: boolean]
+        [@param template.virtio_scsi.enabled: boolean]
         [@param correlation_id: any string]
 
         @return Template:
@@ -12493,6 +12498,7 @@ class Templates(Base):
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
         [@param template.tunnel_migration: boolean]
+        [@param template.virtio_scsi.enabled: boolean]
         [@param template.vm.disks.disk: collection]
         {
           [@ivar disk.id: string]
@@ -13554,12 +13560,16 @@ class VM(params.VM, Base):
         [@param vm.origin: string]
         [@param vm.os.kernel: string]
         [@param vm.tunnel_migration: boolean]
+        [@param vm.virtio_scsi.enabled: boolean]
         [@param vm.payloads.payload: collection]
         {
           [@ivar payload.type: string]
           [@ivar payload.volume_id: string]
-          [@ivar payload.file.name: string]
-          [@ivar payload.file.content: string]
+          [@ivar payload.files.file: collection]
+          {
+            [@param file.name: string]
+            [@param file.content: string]
+          }
         }
         [@param vm.cpu.cpu_tune.vcpu_pin: collection]
         {
@@ -14670,6 +14680,10 @@ class VMDisks(Base):
           }
         Overload 3:
           @param disk.id: string
+          [@param disk.active: boolean]
+        Overload 4:
+          @param disk.id: string
+          @param disk.snapshot.id: string
           [@param disk.active: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
@@ -16823,12 +16837,16 @@ class VMs(Base):
           [@param vm.os.kernel: string]
           [@param vm.disks.clone: boolean]
           [@param vm.tunnel_migration: boolean]
+          [@param vm.virtio_scsi.enabled: boolean]
           [@param vm.payloads.payload: collection]
           {
             [@ivar payload.type: string]
             [@ivar payload.volume_id: string]
-            [@ivar payload.file.name: string]
-            [@ivar payload.file.content: string]
+            [@ivar payload.files.file: collection]
+            {
+              [@param file.name: string]
+              [@param file.content: string]
+            }
           }
           [@param vm.initialization.configuration.type: string]
           [@param vm.initialization.configuration.data: string]
@@ -16886,12 +16904,16 @@ class VMs(Base):
           [@param vm.origin: string]
           [@param vm.os.kernel: string]
           [@param vm.tunnel_migration: boolean]
+          [@param vm.virtio_scsi.enabled: boolean]
           [@param vm.payloads.payload: collection]
           {
             [@ivar payload.type: string]
             [@ivar payload.volume_id: string]
-            [@ivar payload.file.name: string]
-            [@ivar payload.file.content: string]
+            [@ivar payload.files.file: collection]
+            {
+              [@param file.name: string]
+              [@param file.content: string]
+            }
           }
           [@param vm.cpu.cpu_tune.vcpu_pin: collection]
           {
@@ -16943,12 +16965,16 @@ class VMs(Base):
           [@param vm.os.kernel: string]
           [@param vm.disks.clone: boolean]
           [@param vm.tunnel_migration: boolean]
+          [@param vm.virtio_scsi.enabled: boolean]
           [@param vm.payloads.payload: collection]
           {
             [@ivar payload.type: string]
             [@ivar payload.volume_id: string]
-            [@ivar payload.file.name: string]
-            [@ivar payload.file.content: string]
+            [@ivar payload.files.file: collection]
+            {
+              [@param file.name: string]
+              [@param file.content: string]
+            }
           }
           [@param vm.initialization.configuration.type: string]
           [@param vm.initialization.configuration.data: string]
