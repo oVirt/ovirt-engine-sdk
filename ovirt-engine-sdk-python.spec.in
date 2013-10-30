@@ -40,6 +40,14 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS README LICENSE
 
 %changelog
+* Wed  Oct 30 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.8-1
+ - to host.install() added ssh related details
+ - to template added virtio_scsi.enabled
+ - to vm added virtio_scsi.enabled
+ - added ability to attach a disk snapshot to the virtual machine
+ - to File class added 'content' field
+ - Payload class now reuses Files instead of own PayloadFile collection
+
 * Wed  Oct 9 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.7-1
  - added fqdn property to GuestInfo
  - to DataCenterStorageDomainDisk added export() action
