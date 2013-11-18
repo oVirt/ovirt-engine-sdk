@@ -164,9 +164,10 @@ class Connection(object):
         '''
         if cookies_jar and len(cookies_jar._cookies) > 0:
             for key in cookies_jar._cookies.keys():
-                if cookies_jar._cookies[key].has_key('/api') and \
-                    cookies_jar._cookies[key]['/api'].has_key('JSESSIONID'):
-                    return True
+                if key and len(cookies_jar._cookies[key]) > 0:
+                    for value in cookies_jar._cookies[key].values():
+                        if value and 'JSESSIONID' in value.keys():
+                            return True
         return False
 
     def getHeaders(self, headers={}, no_auth=False):
@@ -254,7 +255,7 @@ class Connection(object):
             else:
                 logging.error(
                       TypeError(
-                        "filter_header"+str(filter_header),
+                        "filter_header" + str(filter_header),
                         str(types.BooleanType) + ' is expected.'
                        )
                 )
@@ -267,7 +268,7 @@ class Connection(object):
             else:
                 logging.error(
                       TypeError(
-                        "session_timeout"+str(session_timeout),
+                        "session_timeout" + str(session_timeout),
                         str(types.IntType) + ' is expected.'
                       )
                 )
