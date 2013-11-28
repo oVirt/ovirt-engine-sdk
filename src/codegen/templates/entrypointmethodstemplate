@@ -51,13 +51,23 @@
             return True
         raise DisconnectedError
 
-    def set_filter(self, filter):
+    def set_filter(self, filter):  # @ReservedAssignment
         ''' enables user permission based filtering '''
         if filter != None:
             context.manager[self.id].add(
                              'filter',
                              filter,
                              typ=types.BooleanType
+            )
+
+    def set_renew_session(self, renew_session):
+        ''' automatically renew expired authentication session '''
+        if renew_session != None:
+            context.manager[self.id].add(
+                'renew_session',
+                 renew_session,
+                 Mode.RW,
+                 typ=types.BooleanType
             )
 
     def __set_session_timeout(self, session_timeout):
@@ -72,5 +82,5 @@
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, tb):
+    def __exit__(self, type, value, tb):  # @ReservedAssignment
         self.disconnect()

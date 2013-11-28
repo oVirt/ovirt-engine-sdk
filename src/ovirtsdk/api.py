@@ -56,7 +56,7 @@ from ovirtsdk.infrastructure.brokers import VnicProfiles
 class API(object):
     def __init__(self, url, username, password, key_file=None, cert_file=None,
                  ca_file=None, port=None, timeout=None, session_timeout=None, persistent_auth=True,
-                 insecure=False, validate_cert_chain=True, filter=False, debug=False):
+                 renew_session=False, insecure=False, validate_cert_chain=True, filter=False, debug=False):  # @ReservedAssignment
 
         '''
         @param url: server url (format "http/s://server[:port]/api")
@@ -68,10 +68,11 @@ class API(object):
         [@param port: port to use (if not specified in url)]
         [@param timeout: request timeout]
         [@param session_timeout: authentication session timeout (if persistent_auth is enabled)]
-        [@param persistent_auth: enable persistent authentication (format True|False)]
-        [@param insecure: signals to not demand site trustworthiness for ssl enabled connection (format True|False, default is False)]
-        [@param validate_cert_chain: validate the server's certificate (format True|False, default is True)]
-        [@param filter: signals if user permission based filtering should be turned on/off (format True|False)]
+        [@param persistent_auth: use persistent authentication (default is True)]
+        [@param renew_session: automatically renew expired authentication session (default is False)]
+        [@param insecure: signals to not demand site trustworthiness for ssl enabled connection (default is False)]
+        [@param validate_cert_chain: validate the server's CA certificate (default is True)]
+        [@param filter: enables user-api filtering (default is False)]
         [@param debug: debug (format True|False)]
 
         @raise NoCertificatesError: raised when CA certificate is not provided for SSL site (can be disabled using 'insecure=True' argument).
@@ -118,6 +119,9 @@ class API(object):
 
         # Store filter to the context:
         self.set_filter(filter)
+
+        # We need to remember if renew_session is enabled:
+        self.set_renew_session(renew_session)
 
         # Store session_timeout to the context:
         self.__set_session_timeout(session_timeout)
@@ -227,13 +231,23 @@ class API(object):
             return True
         raise DisconnectedError
 
-    def set_filter(self, filter):
+    def set_filter(self, filter):  # @ReservedAssignment
         ''' enables user permission based filtering '''
         if filter != None:
             context.manager[self.id].add(
                              'filter',
                              filter,
                              typ=types.BooleanType
+            )
+
+    def set_renew_session(self, renew_session):
+        ''' automatically renew expired authentication session '''
+        if renew_session != None:
+            context.manager[self.id].add(
+                'renew_session',
+                 renew_session,
+                 Mode.RW,
+                 typ=types.BooleanType
             )
 
     def __set_session_timeout(self, session_timeout):
@@ -248,7 +262,7 @@ class API(object):
     def __enter__(self):
         return self
 
-    def __exit__(self, type, value, tb):
+    def __exit__(self, type, value, tb):  # @ReservedAssignment
         self.disconnect()
 
     def get_comment(self):
