@@ -72,9 +72,10 @@ class Connection(object):
 
         headers = self.__headers.copy()
         headers.update(self.__createDynamicHeaders())
+        renew_session = context.manager[self.context].get('renew_session')
 
         # remove AUTH_HEADER
-        if no_auth and headers.has_key(AUTH_HEADER):
+        if no_auth and not renew_session and headers.has_key(AUTH_HEADER):
             headers.pop(AUTH_HEADER)
 
         return headers
