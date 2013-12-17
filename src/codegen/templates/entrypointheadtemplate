@@ -23,6 +23,7 @@
 %(timestamp)s
 
 import types
+import urlparse
 
 from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError
 from ovirtsdk.infrastructure.connectionspool import ConnectionsPool

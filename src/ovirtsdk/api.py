@@ -23,6 +23,7 @@
 '''Generated at: 2013-09-03 17:33:36.499568'''
 
 import types
+import urlparse
 
 from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError
 from ovirtsdk.infrastructure.connectionspool import ConnectionsPool
@@ -129,7 +130,7 @@ class API(object):
         # Get entry point
         entry_point = proxy.request(
             method='GET',
-            url='/api'
+            url=urlparse.urlparse(url).path
         )
 
         # If server returns no response for the root resource, this is sign
