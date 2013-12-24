@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-10-30 11:21:41.565433'''
+'''Generated at: 2013-12-24 11:16:42.674331'''
 
 
 from ovirtsdk.xml import params
@@ -162,6 +162,8 @@ class Cluster(params.Cluster, Base):
         [@param cluster.threads_as_cores: boolean]
         [@param cluster.tunnel_migration: boolean]
         [@param cluster.ballooning_enabled: boolean]
+        [@param cluster.cpu.architecture: string]
+        [@param cluster.display.proxy: string]
         [@param correlation_id: any string]
 
         @return Cluster:
@@ -434,6 +436,90 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
             headers={'Content-type':None}
         )
 
+    def activate(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param action.bricks: collection
+        {
+          @ivar brick.name: string
+        }
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/activate'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def migrate(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param action.bricks: collection
+        {
+          @ivar brick.name: string
+        }
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/migrate'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def stopmigrate(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param action.bricks: collection
+        {
+          @ivar brick.name: string
+        }
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/stopmigrate'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
     def rebalance(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
@@ -572,6 +658,30 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         '''
 
         url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stop'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def stoprebalance(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stoprebalance'
 
         result = self.__getProxy().request(
             method='POST',
@@ -1502,6 +1612,8 @@ class Clusters(Base):
         [@param cluster.tunnel_migration: boolean]
         [@param cluster.trusted_service: boolean]
         [@param cluster.ballooning_enabled: boolean]
+        [@param cluster.cpu.architecture: string]
+        [@param cluster.display.proxy: string]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -1588,6 +1700,7 @@ class DataCenter(params.DataCenter, Base):
         self.storagedomains = DataCenterStorageDomains(self, context)
         self.clusters = DataCenterClusters(self, context)
         self.quotas = DataCenterQuotas(self, context)
+        self.networks = DataCenterNetworks(self, context)
         self.permissions = DataCenterPermissions(self, context)
 
     def __new__(cls, datacenter, context):
@@ -1725,6 +1838,8 @@ class DataCenterCluster(params.Cluster, Base):
         [@param cluster.tunnel_migration: boolean]
         [@param cluster.trusted_service: boolean]
         [@param cluster.ballooning_enabled: boolean]
+        [@param cluster.cpu.architecture: string]
+        [@param cluster.display.proxy: string]
         [@param correlation_id: any string]
 
         @return Cluster:
@@ -2000,6 +2115,78 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
             headers={'Content-type':None}
         )
 
+    def activate(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/activate'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+    def migrate(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/migrate'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+    def stopmigrate(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/stopmigrate'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
     def rebalance(self, action=params.Action()):
         '''
         @type Action:
@@ -2129,6 +2316,30 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
         '''
 
         url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stop'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{glustervolume:id}': self.get_id()}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+    def stoprebalance(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stoprebalance'
 
         result = self.__getProxy().request(
             method='POST',
@@ -3034,6 +3245,8 @@ class DataCenterClusters(Base):
         [@param cluster.threads_as_cores: boolean]
         [@param cluster.tunnel_migration: boolean]
         [@param cluster.ballooning_enabled: boolean]
+        [@param cluster.cpu.architecture: string]
+        [@param cluster.display.proxy: string]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -3136,6 +3349,718 @@ class DataCenterClusters(Base):
 
         return ParseHelper.toSubCollection(
             DataCenterCluster,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterNetwork(params.Network, Base):
+    def __init__(self, datacenter, network, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenter
+        self.superclass  =  network
+
+        self.vnicprofiles = DataCenterNetworkVnicprofiles(self, context)
+        self.permissions = DataCenterNetworkPermissions(self, context)
+
+    def __new__(cls, datacenter, network, context):
+        if network is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenter, network, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/datacenters/{datacenter:id}/networks/{network:id}',
+            {'{datacenter:id}' : self.parentclass.get_id(),
+             '{network:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, correlation_id=None):
+        '''
+        [@param network.display: boolean]
+        [@param network.usages.usage: collection]
+        {
+          [@ivar usage: string]
+        }
+        [@param correlation_id: any string]
+
+        @return Network:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}'
+        url = UrlHelper.replace(
+            url,
+            {'{datacenter:id}' : self.parentclass.get_id(),
+             '{network:id}': self.get_id()}
+        )
+
+        result = self.__getProxy().update(
+            url=SearchHelper.appendQuery(url, {}),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return DataCenterNetwork(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+class DataCenterNetworkPermission(params.Permission, Base):
+    def __init__(self, datacenternetwork, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenternetwork
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacenternetwork, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenternetwork, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/permissions/{permission:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{network:id}': self.parentclass.get_id(),
+                 '{permission:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+class DataCenterNetworkPermissions(Base):
+
+    def __init__(self, datacenternetwork , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenternetwork
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission):
+
+        '''
+        @type Permission:
+
+
+        @return Permission:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{network:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={}
+        )
+
+        return DataCenterNetworkPermission(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                             '{network:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterNetworkPermission(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                     '{network:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_permission()
+
+            return DataCenterNetworkPermission(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Permissions:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{network:id}': self.parentclass.get_id()}
+            )
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            DataCenterNetworkPermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterNetworkVnicprofile(params.VnicProfile, Base):
+    def __init__(self, datacenternetwork, vnicprofile, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenternetwork
+        self.superclass  =  vnicprofile
+
+        self.permissions = DataCenterNetworkVnicprofilePermissions(self, context)
+
+    def __new__(cls, datacenternetwork, vnicprofile, context):
+        if vnicprofile is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenternetwork, vnicprofile, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{network:id}': self.parentclass.get_id(),
+                 '{vnicprofile:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+class DataCenterNetworkVnicprofilePermission(params.Permission, Base):
+    def __init__(self, datacenternetworkvnicprofile, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenternetworkvnicprofile
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacenternetworkvnicprofile, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenternetworkvnicprofile, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{network:id}': self.parentclass.parentclass.get_id(),
+                 '{vnicprofile:id}': self.parentclass.get_id(),
+                 '{permission:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+class DataCenterNetworkVnicprofilePermissions(Base):
+
+    def __init__(self, datacenternetworkvnicprofile , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenternetworkvnicprofile
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission):
+
+        '''
+        @type Permission:
+
+
+        @return Permission:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{network:id}': self.parentclass.parentclass.get_id(),
+                 '{vnicprofile:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={}
+        )
+
+        return DataCenterNetworkVnicprofilePermission(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                             '{network:id}': self.parentclass.parentclass.get_id(),
+                             '{vnicprofile:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterNetworkVnicprofilePermission(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                     '{network:id}': self.parentclass.parentclass.get_id(),
+                     '{vnicprofile:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_permission()
+
+            return DataCenterNetworkVnicprofilePermission(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Permissions:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{network:id}': self.parentclass.parentclass.get_id(),
+                 '{vnicprofile:id}': self.parentclass.get_id()}
+            )
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            DataCenterNetworkVnicprofilePermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterNetworkVnicprofiles(Base):
+
+    def __init__(self, datacenternetwork , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenternetwork
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, vnicprofile):
+
+        '''
+        @type VnicProfile:
+
+
+        @return VnicProfile:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{network:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(vnicprofile),
+            headers={}
+        )
+
+        return DataCenterNetworkVnicprofile(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return VnicProfiles:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                             '{network:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterNetworkVnicprofile(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                     '{network:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_vnic_profile()
+
+            return DataCenterNetworkVnicprofile(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return VnicProfiles:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{network:id}': self.parentclass.get_id()}
+            )
+        ).get_vnic_profile()
+
+        return ParseHelper.toSubCollection(
+            DataCenterNetworkVnicprofile,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterNetworks(Base):
+
+    def __init__(self, datacenter , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenter
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, network, expect=None, correlation_id=None):
+
+        '''
+        @type Network:
+
+        @param network.id|name: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Network:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(network),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return DataCenterNetwork(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Networks:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterNetwork(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_network()
+
+            return DataCenterNetwork(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Networks:
+        '''
+
+        url = '/api/datacenters/{datacenter:id}/networks'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{datacenter:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_network()
+
+        return ParseHelper.toSubCollection(
+            DataCenterNetwork,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -4344,12 +5269,10 @@ class Disk(params.Disk, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def export(self, action=params.Action(), correlation_id=None):
+    def export(self, action=params.Action()):
         '''
         @type Action:
 
-        @param storagedomain.id|name: string
-        [@param correlation_id: any string]
 
         @return Action:
         '''
@@ -4360,7 +5283,7 @@ class Disk(params.Disk, Base):
             method='POST',
             url=UrlHelper.replace(url, {'{disk:id}': self.get_id()}),
             body=ParseHelper.toXml(action),
-            headers={"Correlation-Id":correlation_id}
+            headers={}
         )
 
         return result
@@ -5542,28 +6465,6 @@ class GroupRole(params.Role, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/api/groups/{group:id}/roles/{role:id}',
-            {'{group:id}' : self.parentclass.get_id(),
-             '{role:id}': self.get_id()}
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
 class GroupRolePermit(params.Permit, Base):
     def __init__(self, grouprole, permit, context):
         Base.__init__(self, context)
@@ -5758,35 +6659,6 @@ class GroupRoles(Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
-
-    def add(self, role, expect=None, correlation_id=None):
-
-        '''
-        @type Role:
-
-        @param role.id: string
-        [@param expect: 201-created]
-        [@param correlation_id: any string]
-
-        @return Role:
-        '''
-
-        url = '/api/groups/{group:id}/roles'
-
-        result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {'{group:id}': self.parentclass.get_id()}
-            ),
-            body=ParseHelper.toXml(role),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
-        )
-
-        return GroupRole(
-            self.parentclass,
-            result,
-            self.context
-        )
 
     def get(self, name=None, id=None):
 
@@ -6226,7 +7098,7 @@ class Host(params.Host, Base):
           {
             [@ivar type: string]
             [@ivar address: string]
-            [@ivar user_name: string]
+            [@ivar username: string]
             [@ivar password: string]
             [@ivar options.option: collection]
             {
@@ -6263,7 +7135,7 @@ class Host(params.Host, Base):
           {
             [@ivar type: string]
             [@ivar address: string]
-            [@ivar user_name: string]
+            [@ivar username: string]
             [@ivar password: string]
             [@ivar options.option: collection]
             {
@@ -7687,7 +8559,7 @@ class Hosts(Base):
           {
             [@ivar type: string]
             [@ivar address: string]
-            [@ivar user_name: string]
+            [@ivar username: string]
             [@ivar password: string]
             [@ivar options.option: collection]
             {
@@ -7728,7 +8600,7 @@ class Hosts(Base):
           {
             [@ivar type: string]
             [@ivar address: string]
-            [@ivar user_name: string]
+            [@ivar username: string]
             [@ivar password: string]
             [@ivar options.option: collection]
             {
@@ -7886,7 +8758,8 @@ class JobStep(params.Step, Base):
         self.parentclass = job
         self.superclass  =  step
 
-        #SUB_COLLECTIONS
+        self.statistics = JobStepStatistics(self, context)
+
     def __new__(cls, job, step, context):
         if step is None: return None
         obj = object.__new__(cls)
@@ -7927,6 +8800,133 @@ class JobStep(params.Step, Base):
         )
 
         return result
+
+class JobStepStatistic(params.Statistic, Base):
+    def __init__(self, jobstep, statistic, context):
+        Base.__init__(self, context)
+        self.parentclass = jobstep
+        self.superclass  =  statistic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, jobstep, statistic, context):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(jobstep, statistic, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class JobStepStatistics(Base):
+
+    def __init__(self, jobstep , context):
+        Base.__init__(self, context)
+        self.parentclass = jobstep
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Statistics:
+        '''
+
+        url = '/api/jobs/{job:id}/steps/{step:id}/statistics'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{job:id}' : self.parentclass.parentclass.get_id(),
+                             '{step:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return JobStepStatistic(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{job:id}' : self.parentclass.parentclass.get_id(),
+                     '{step:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_statistic()
+
+            return JobStepStatistic(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Statistics:
+        '''
+
+        url = '/api/jobs/{job:id}/steps/{step:id}/statistics'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{job:id}' : self.parentclass.parentclass.get_id(),
+                 '{step:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_statistic()
+
+        return ParseHelper.toSubCollection(
+            JobStepStatistic,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class JobSteps(Base):
 
@@ -8418,7 +9418,8 @@ class NetworkVnicProfile(params.VnicProfile, Base):
         self.parentclass = network
         self.superclass  =  vnicprofile
 
-        #SUB_COLLECTIONS
+        self.permissions = NetworkVnicProfilePermissions(self, context)
+
     def __new__(cls, network, vnicprofile, context):
         if vnicprofile is None: return None
         obj = object.__new__(cls)
@@ -8454,6 +9455,172 @@ class NetworkVnicProfile(params.VnicProfile, Base):
                 {'async:matrix':async}
             ),
             headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class NetworkVnicProfilePermission(params.Permission, Base):
+    def __init__(self, networkvnicprofile, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = networkvnicprofile
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, networkvnicprofile, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(networkvnicprofile, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{network:id}' : self.parentclass.parentclass.get_id(),
+                 '{vnicprofile:id}': self.parentclass.get_id(),
+                 '{permission:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+class NetworkVnicProfilePermissions(Base):
+
+    def __init__(self, networkvnicprofile , context):
+        Base.__init__(self, context)
+        self.parentclass = networkvnicprofile
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission):
+
+        '''
+        @type Permission:
+
+
+        @return Permission:
+        '''
+
+        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{network:id}' : self.parentclass.parentclass.get_id(),
+                 '{vnicprofile:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={}
+        )
+
+        return NetworkVnicProfilePermission(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{network:id}' : self.parentclass.parentclass.get_id(),
+                             '{vnicprofile:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return NetworkVnicProfilePermission(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{network:id}' : self.parentclass.parentclass.get_id(),
+                     '{vnicprofile:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_permission()
+
+            return NetworkVnicProfilePermission(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Permissions:
+        '''
+
+        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{network:id}' : self.parentclass.parentclass.get_id(),
+                 '{vnicprofile:id}': self.parentclass.get_id()}
+            )
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            NetworkVnicProfilePermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
         )
 
 class NetworkVnicProfiles(Base):
@@ -8697,6 +9864,148 @@ class Networks(Base):
 
         return ParseHelper.toCollection(
             Network,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )
+
+class Permission(params.Permission, Base):
+    def __init__(self, permission, context):
+        Base.__init__(self, context)
+        self.superclass = permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/api/permissions/{permission:id}',
+            {'{permission:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class Permissions(Base):
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission, expect=None, correlation_id=None):
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.group.id: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Permission:
+        '''
+
+        url = '/api/permissions'
+
+        result = self.__getProxy().add(
+           url=url,
+           body=ParseHelper.toXml(permission),
+           headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return Permission(result, self.context)
+
+    def get(self, name=None, id=None):
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/permissions'
+
+        if id:
+            try :
+                return Permission(
+                    self.__getProxy().get(
+                                url=UrlHelper.append(url, id),
+                                headers={}
+                    ),
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                    url=url,
+                    headers={}
+            ).get_permission()
+
+            return Permission(
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param max: int (max results)]
+
+        @return Permissions:
+        '''
+
+        url='/api/permissions'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            headers={}
+        ).get_permission()
+
+        return ParseHelper.toCollection(
+            Permission,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
@@ -11269,7 +12578,7 @@ class Tag(params.Tag, Base):
         '''
         [@param tag.name: string]
         [@param tag.description: string]
-        [@param tag.parent.tag.name: string]
+        [@param tag.parent.tag.id|name: string]
         [@param correlation_id: any string]
 
         @return Tag:
@@ -11461,6 +12770,7 @@ class Template(params.Template, Base):
         }
         [@param template.cpu.topology.sockets: int]
         [@param template.cpu_shares: int]
+        [@param template.cpu.architecture: string]
         [@param template.os.kernel: string]
         [@param template.display.type: string]
         [@param template.display.monitors: int]
@@ -12487,6 +13797,7 @@ class Templates(Base):
         }
         [@param template.cpu.topology.sockets: int]
         [@param template.cpu_shares: int]
+        [@param template.cpu.architecture: string]
         [@param template.os.kernel: string]
         [@param template.display.type: string]
         [@param template.display.monitors: int]
@@ -12854,28 +14165,6 @@ class UserRole(params.Role, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/api/users/{user:id}/roles/{role:id}',
-            {'{user:id}' : self.parentclass.get_id(),
-             '{role:id}': self.get_id()}
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
 class UserRolePermit(params.Permit, Base):
     def __init__(self, userrole, permit, context):
         Base.__init__(self, context)
@@ -13070,35 +14359,6 @@ class UserRoles(Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
-
-    def add(self, role, expect=None, correlation_id=None):
-
-        '''
-        @type Role:
-
-        @param role.id: string
-        [@param expect: 201-created]
-        [@param correlation_id: any string]
-
-        @return Role:
-        '''
-
-        url = '/api/users/{user:id}/roles'
-
-        result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {'{user:id}': self.parentclass.get_id()}
-            ),
-            body=ParseHelper.toXml(role),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
-        )
-
-        return UserRole(
-            self.parentclass,
-            result,
-            self.context
-        )
 
     def get(self, name=None, id=None):
 
@@ -13543,6 +14803,7 @@ class VM(params.VM, Base):
         [@param vm.display.keyboard_layout: string]
         [@param vm.os.cmdline: string]
         [@param vm.cpu.mode: string]
+        [@param vm.cpu.architecture: string]
         [@param vm.cpu.topology.cores: int]
         [@param vm.cpu_shares: int]
         [@param vm.memory: long]
@@ -13746,6 +15007,42 @@ class VM(params.VM, Base):
           [@ivar boot.dev: string]
         }
         [@param action.vm.domain.user.password: string]
+        [@param action.vm.initialization.cloud_init.hostname: string]
+        [@param action.vm.initialization.cloud_init.network_configuration.nics.nic: collection]
+        {
+          [@ivar nic.name: string]
+          [@ivar nic.boot_protocol: string]
+          [@ivar nic.network.address.ip: string]
+          [@ivar nic.network.address.netmask: string]
+          [@ivar nic.network.address.gateway: string]
+          [@ivar nic.onboot: boolean]
+        }
+        [@param action.vm.initialization.cloud_init.network_configuration.dns.servers.host: collection]
+        {
+          [@ivar host.address: string]
+        }
+        [@param action.vm.initialization.cloud_init.network_configuration.dns.search_domains.host: collection]
+        {
+          [@ivar host.address: string]
+        }
+        [@param action.vm.initialization.cloud_init.authorized_keys.authorized_key: collection]
+        {
+          [@ivar authorized_key.key: string]
+          [@ivar authorized_key.user.name: string]
+        }
+        [@param action.vm.initialization.cloud_init.regenerate_ssh_keys: boolean]
+        [@param action.vm.initialization.cloud_init.timezone: string]
+        [@param action.vm.initialization.cloud_init.users.user: collection]
+        {
+          [@ivar user.password: string]
+          [@ivar user.name: string]
+        }
+        [@param action.vm.initialization.cloud_init.payload_files.payload_file: collection]
+        {
+          [@ivar payload_file.name: string]
+          [@ivar payload_file.content: string]
+          [@ivar payload_file.type: string]
+        }
         [@param correlation_id: any string]
 
         @return Action:
@@ -14208,6 +15505,8 @@ class VMDisk(params.Disk, Base):
         [@param disk.propagate_errors: boolean]
         [@param disk.wipe_after_delete: boolean]
         [@param disk.sgio: string]
+        [@param disk.read_only: boolean]
+        [@param description: update the size, boot flag and other parameters of the disk attached to the virtual machine]
         [@param correlation_id: any string]
 
         @return Disk:
@@ -14681,6 +15980,7 @@ class VMDisks(Base):
         Overload 3:
           @param disk.id: string
           [@param disk.active: boolean]
+          [@param disk.read_only: boolean]
         Overload 4:
           @param disk.id: string
           @param disk.snapshot.id: string
@@ -15671,55 +16971,6 @@ class VMSnapshot(params.Snapshot, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def commit(self, action=params.Action(), correlation_id=None):
-        '''
-        @type Action:
-
-        [@param correlation_id: any string]
-
-        @return Action:
-        '''
-
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/commit'
-
-        result = self.__getProxy().request(
-            method='POST',
-            url=UrlHelper.replace(
-                url,
-                {'{vm:id}' : self.parentclass.get_id(),
-                 '{snapshot:id}': self.get_id()}
-            ),
-            body=ParseHelper.toXml(action),
-            headers={"Correlation-Id":correlation_id}
-        )
-
-        return result
-
-    def preview(self, action=params.Action(), correlation_id=None):
-        '''
-        @type Action:
-
-        [@param action.restore_memory: boolean]
-        [@param correlation_id: any string]
-
-        @return Action:
-        '''
-
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/preview'
-
-        result = self.__getProxy().request(
-            method='POST',
-            url=UrlHelper.replace(
-                url,
-                {'{vm:id}' : self.parentclass.get_id(),
-                 '{snapshot:id}': self.get_id()}
-            ),
-            body=ParseHelper.toXml(action),
-            headers={"Correlation-Id":correlation_id}
-        )
-
-        return result
-
     def restore(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
@@ -15731,30 +16982,6 @@ class VMSnapshot(params.Snapshot, Base):
         '''
 
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/restore'
-
-        result = self.__getProxy().request(
-            method='POST',
-            url=UrlHelper.replace(
-                url,
-                {'{vm:id}' : self.parentclass.get_id(),
-                 '{snapshot:id}': self.get_id()}
-            ),
-            body=ParseHelper.toXml(action),
-            headers={"Correlation-Id":correlation_id}
-        )
-
-        return result
-
-    def undo(self, action=params.Action(), correlation_id=None):
-        '''
-        @type Action:
-
-        [@param correlation_id: any string]
-
-        @return Action:
-        '''
-
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/undo'
 
         result = self.__getProxy().request(
             method='POST',
@@ -16817,6 +18044,7 @@ class VMs(Base):
           [@param vm.display.keyboard_layout: string]
           [@param vm.os.cmdline: string]
           [@param vm.cpu.topology.cores: int]
+          [@param vm.cpu.architecture: string]
           [@param vm.memory: long]
           [@param vm.memory_policy.guaranteed: long]
           [@param vm.high_availability.priority: int]
@@ -16888,6 +18116,7 @@ class VMs(Base):
           [@param vm.os.cmdline: string]
           [@param vm.cpu.topology.cores: int]
           [@param vm.cpu_shares: int]
+          [@param vm.cpu.architecture: string]
           [@param vm.memory: long]
           [@param vm.memory_policy.guaranteed: long]
           [@param vm.high_availability.priority: int]
@@ -17133,6 +18362,7 @@ class VmPool(params.VmPool, Base):
         [@param vmpool.comment: string]
         [@param vmpool.size: int]
         [@param vmpool.max_user_vms: int]
+        [@param vmpool.display.proxy: string]
         [@param correlation_id: any string]
 
         @return VmPool:
@@ -17375,6 +18605,7 @@ class VmPools(Base):
         [@param vmpool.comment: string]
         [@param vmpool.size: int]
         [@param vmpool.max_user_vms: int]
+        [@param vmpool.display.proxy: string]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -17546,20 +18777,26 @@ class VnicProfilePermission(params.Permission, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None, correlation_id=None):
         '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
         @return None:
         '''
 
-        url = '/api/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}'
+        url = UrlHelper.replace(
+            '/api/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}',
+            {'{vnicprofile:id}' : self.parentclass.get_id(),
+             '{permission:id}': self.get_id()}
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {'{vnicprofile:id}' : self.parentclass.get_id(),
-                 '{permission:id}': self.get_id()}
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
 class VnicProfilePermissions(Base):

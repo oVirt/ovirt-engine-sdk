@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-09-03 17:33:36.499568'''
+'''Generated at: 2013-12-24 11:16:42.676341'''
 
 import types
 import urlparse
@@ -43,6 +43,7 @@ from ovirtsdk.infrastructure.brokers import Groups
 from ovirtsdk.infrastructure.brokers import Hosts
 from ovirtsdk.infrastructure.brokers import Jobs
 from ovirtsdk.infrastructure.brokers import Networks
+from ovirtsdk.infrastructure.brokers import Permissions
 from ovirtsdk.infrastructure.brokers import Roles
 from ovirtsdk.infrastructure.brokers import StorageConnections
 from ovirtsdk.infrastructure.brokers import StorageDomains
@@ -170,6 +171,7 @@ class API(object):
         self.hosts = Hosts(self.id)
         self.jobs = Jobs(self.id)
         self.networks = Networks(self.id)
+        self.permissions = Permissions(self.id)
         self.roles = Roles(self.id)
         self.storageconnections = StorageConnections(self.id)
         self.storagedomains = StorageDomains(self.id)

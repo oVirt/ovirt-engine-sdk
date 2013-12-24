@@ -271,7 +271,7 @@ class RsdlCodegen(AbstractRsdlCodegen):
                         self.__extendSubCollection(sub_root_coll, sub_res_coll, url, rel, http_method,
                                                    body_type, link, response_type, collectionsHolder)
                     elif(self.__isAction(link) and i == ln):
-                        self.__createAction(sub_root_coll, sub_res_coll, k, url, rel, http_method,
+                        self.__createAction(sub_root_coll, sub_res_coll, rel, url, rel, http_method,
                                             body_type, link, response_type, collectionsHolder, force_sub_resource=True)
                     else:
                         self.__extendSubResource(sub_root_coll, sub_res_coll, url, rel, http_method,
