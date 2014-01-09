@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-12-24 11:16:42.674331'''
+'''Generated at: 2014-01-09 19:55:43.383562'''
 
 
 from ovirtsdk.xml import params
@@ -230,6 +230,8 @@ class ClusterGlusterHook(params.GlusterHook, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -254,6 +256,8 @@ class ClusterGlusterHook(params.GlusterHook, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -280,6 +284,8 @@ class ClusterGlusterHook(params.GlusterHook, Base):
 
         @param action.resolution_type: string
         [@param action.host.id|name: string]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -444,6 +450,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         {
           @ivar brick.name: string
         }
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -472,6 +480,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         {
           @ivar brick.name: string
         }
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -500,6 +510,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         {
           @ivar brick.name: string
         }
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -526,6 +538,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         [@param action.fix_layout: boolean]
         [@param action.force: boolean]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -550,6 +564,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -576,6 +592,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         @param action.option.name: string
         @param action.force: boolean
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -602,6 +620,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         @param action.option.name: string
         @param action.option.value: string
+        @param action.async: boolean
+        @param action.grace_period.expiry: long
         [@param correlation_id: any string]
 
         @return Action:
@@ -627,6 +647,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @type Action:
 
         [@param action.force: boolean]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -652,6 +674,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @type Action:
 
         [@param action.force: boolean]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -676,6 +700,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -743,6 +769,8 @@ class ClusterGlusterVolumeBrick(params.GlusterBrick, Base):
         @param action.brick.server_id: string
         @param action.brick.brick_dir: string
         [@param action.force: boolean]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1723,7 +1751,8 @@ class DataCenter(params.DataCenter, Base):
         @type Action:
 
         [@param action.force: boolean]
-        [@param async: boolean (true|false)]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return None:
@@ -4412,6 +4441,8 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -4436,6 +4467,8 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -4508,6 +4541,8 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
         @type Action:
 
         @param storagedomain.id|name: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -7049,7 +7084,8 @@ class Host(params.Host, Base):
         @type Action:
 
         [@param action.force: boolean]
-        [@param async: boolean (true|false)]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return None:
@@ -7165,6 +7201,8 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -7208,6 +7246,8 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -7228,6 +7268,8 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -7249,6 +7291,8 @@ class Host(params.Host, Base):
         @type Action:
 
         @param action.fence_type: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -7269,6 +7313,8 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -7299,6 +7345,8 @@ class Host(params.Host, Base):
           [@param action.ssh.user.user_name: string]
           [@param action.ssh.user.password: string]
           [@param action.image: string]
+          [@param action.async: boolean]
+          [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -7320,6 +7368,8 @@ class Host(params.Host, Base):
         @type Action:
 
         @param action.iscsi.address: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -7342,6 +7392,8 @@ class Host(params.Host, Base):
 
         @param action.iscsi.address: string
         @param action.iscsi.target: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -7599,6 +7651,7 @@ class HostNIC(params.HostNIC, Base):
         @type Action:
 
         [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -7912,6 +7965,8 @@ class HostNics(Base):
             [@param host_nic.name|id: string]
           }
           [@ivar host_nic.override_configuration: boolean]
+          [@ivar action.async: boolean]
+          [@ivar action.grace_period.expiry: long]
         }
         [@param action.checkConnectivity: boolean]
         [@param action.connectivityTimeout: int]
@@ -8714,6 +8769,8 @@ class Job(params.Job, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -8736,6 +8793,8 @@ class Job(params.Job, Base):
 
         @param action.status.state: string
         [@param action.force: boolean]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -8781,6 +8840,8 @@ class JobStep(params.Step, Base):
 
         [@param action.force: boolean]
         [@param action.status.state: string]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -10700,6 +10761,8 @@ class StorageDomainDisk(params.Disk, Base):
         @type Action:
 
         @param storagedomain.id|name: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -11833,6 +11896,8 @@ class StorageDomainTemplate(params.Template, Base):
         {
           [@ivar disk.id: string]
         }
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -12137,6 +12202,7 @@ class StorageDomainVM(params.VM, Base):
         {
           [@ivar disk.id: string]
         }
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -12977,7 +13043,8 @@ class TemplateDisk(params.Disk, Base):
 
         [@param action.storage_domain.id: string]
         [@param action.force: boolean]
-        [@param async: boolean (true|false)]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return None:
@@ -13030,6 +13097,8 @@ class TemplateDisk(params.Disk, Base):
         @type Action:
 
         @param storagedomain.id|name: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14756,7 +14825,8 @@ class VM(params.VM, Base):
 
         [@param action.force: boolean]
         [@param action.vm.disks.detach_only: boolean]
-        [@param async: boolean (true|false)]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return None:
@@ -14878,6 +14948,8 @@ class VM(params.VM, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14970,6 +15042,8 @@ class VM(params.VM, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -15063,6 +15137,8 @@ class VM(params.VM, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -15083,6 +15159,8 @@ class VM(params.VM, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -15104,6 +15182,8 @@ class VM(params.VM, Base):
         @type Action:
 
         [@param action.ticket.value: string]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -15472,7 +15552,8 @@ class VMDisk(params.Disk, Base):
         @type Action:
 
         @param action.detach: boolean
-        [@param async: boolean (true|false)]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return None:
@@ -15535,6 +15616,8 @@ class VMDisk(params.Disk, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -15559,6 +15642,8 @@ class VMDisk(params.Disk, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -15584,6 +15669,8 @@ class VMDisk(params.Disk, Base):
         @type Action:
 
         @param storagedomain.id|name: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -16976,6 +17063,8 @@ class VMSnapshot(params.Snapshot, Base):
         @type Action:
 
         [@param action.restore_memory: boolean]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -18386,6 +18475,7 @@ class VmPool(params.VmPool, Base):
         @type Action:
 
         [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:

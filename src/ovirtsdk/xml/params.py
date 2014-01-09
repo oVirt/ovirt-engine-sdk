@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Tue Dec 24 11:16:27 2013 by generateDS.py version 2.9a.
+# Generated Thu Jan  9 19:55:31 2014 by generateDS.py version 2.9a.
 #
 
 import sys
@@ -1132,6 +1132,97 @@ class Fault(GeneratedsSuper):
             detail_ = self.gds_validate_string(detail_, node, 'detail')
             self.detail = detail_
 # end class Fault
+
+
+class UsageMessage(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, message=None, detailedLink=None):
+        self.message = message
+        self.detailedLink = detailedLink
+    def factory(*args_, **kwargs_):
+        if UsageMessage.subclass:
+            return UsageMessage.subclass(*args_, **kwargs_)
+        else:
+            return UsageMessage(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_message(self): return self.message
+    def set_message(self, message): self.message = message
+    def get_detailedLink(self): return self.detailedLink
+    def set_detailedLink(self, detailedLink): self.detailedLink = detailedLink
+    def hasContent_(self):
+        if (
+            self.message is not None or
+            self.detailedLink is not None
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='UsageMessage', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='UsageMessage')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='UsageMessage'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='UsageMessage', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.message is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%smessage>%s</%smessage>%s' % (namespace_, self.gds_format_string(quote_xml(self.message).encode(ExternalEncoding), input_name='message'), namespace_, eol_))
+        if self.detailedLink is not None:
+            self.detailedLink.export(outfile, level, namespace_, name_='detailedLink', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='UsageMessage'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.message is not None:
+            showIndent(outfile, level)
+            outfile.write('message=%s,\n' % quote_python(self.message).encode(ExternalEncoding))
+        if self.detailedLink is not None:
+            showIndent(outfile, level)
+            outfile.write('detailedLink=model_.detailedLink(\n')
+            self.detailedLink.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'message':
+            message_ = child_.text
+            message_ = self.gds_validate_string(message_, node, 'message')
+            self.message = message_
+        elif nodeName_ == 'detailedLink':
+            class_obj_ = self.get_class_obj_(child_, DetailedLink)
+            obj_ = class_obj_.factory()
+            obj_.build(child_)
+            self.set_detailedLink(obj_)
+# end class UsageMessage
 
 
 class GracePeriod(GeneratedsSuper):
@@ -16625,7 +16716,7 @@ class GuestInfo(GeneratedsSuper):
 class VM(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, extensiontype_=None):
         super(VM, self).__init__(actions, href, id, name, description, comment, creation_status, link, extensiontype_, )
         self.type_ = type_
         self.status = status
@@ -16640,6 +16731,7 @@ class VM(BaseResource):
         self.template = template
         self.storage_domain = storage_domain
         self.start_time = start_time
+        self.stop_time = stop_time
         self.creation_time = creation_time
         self.origin = origin
         self.stateless = stateless
@@ -16701,6 +16793,8 @@ class VM(BaseResource):
     def set_storage_domain(self, storage_domain): self.storage_domain = storage_domain
     def get_start_time(self): return self.start_time
     def set_start_time(self, start_time): self.start_time = start_time
+    def get_stop_time(self): return self.stop_time
+    def set_stop_time(self, stop_time): self.stop_time = stop_time
     def get_creation_time(self): return self.creation_time
     def set_creation_time(self, creation_time): self.creation_time = creation_time
     def get_origin(self): return self.origin
@@ -16774,6 +16868,7 @@ class VM(BaseResource):
             self.template is not None or
             self.storage_domain is not None or
             self.start_time is not None or
+            self.stop_time is not None or
             self.creation_time is not None or
             self.origin is not None or
             self.stateless is not None or
@@ -16865,6 +16960,9 @@ class VM(BaseResource):
         if self.start_time is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstart_time>%s</%sstart_time>%s' % (namespace_, self.gds_format_datetime(self.start_time, input_name='start_time'), namespace_, eol_))
+        if self.stop_time is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sstop_time>%s</%sstop_time>%s' % (namespace_, self.gds_format_datetime(self.stop_time, input_name='stop_time'), namespace_, eol_))
         if self.creation_time is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%screation_time>%s</%screation_time>%s' % (namespace_, self.gds_format_datetime(self.creation_time, input_name='creation_time'), namespace_, eol_))
@@ -17003,6 +17101,9 @@ class VM(BaseResource):
         if self.start_time is not None:
             showIndent(outfile, level)
             outfile.write('start_time=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.start_time, input_name='start_time'))
+        if self.stop_time is not None:
+            showIndent(outfile, level)
+            outfile.write('stop_time=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.stop_time, input_name='stop_time'))
         if self.creation_time is not None:
             showIndent(outfile, level)
             outfile.write('creation_time=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.creation_time, input_name='creation_time'))
@@ -17226,6 +17327,10 @@ class VM(BaseResource):
             sval_ = child_.text
             dval_ = self.gds_parse_datetime(sval_, node, 'start_time')
             self.start_time = dval_
+        elif nodeName_ == 'stop_time':
+            sval_ = child_.text
+            dval_ = self.gds_parse_datetime(sval_, node, 'stop_time')
+            self.stop_time = dval_
         elif nodeName_ == 'creation_time':
             sval_ = child_.text
             dval_ = self.gds_parse_datetime(sval_, node, 'creation_time')
@@ -20094,8 +20199,8 @@ class Nics(BaseDevices):
 class Snapshot(VM):
     subclass = None
     superclass = VM
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
-        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, os, high_availability, display, host, cluster, template, storage_domain, start_time, creation_time, origin, stateless, delete_protected, console, timezone, domain, custom_properties, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, tunnel_migration, virtio_scsi, permissions, vmpool, cdroms, floppies, reported_devices, watchdogs, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
+        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, os, high_availability, display, host, cluster, template, storage_domain, start_time, stop_time, creation_time, origin, stateless, delete_protected, console, timezone, domain, custom_properties, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, tunnel_migration, virtio_scsi, permissions, vmpool, cdroms, floppies, reported_devices, watchdogs, )
         self.vm = vm
         self.date = date
         self.snapshot_status = snapshot_status
@@ -29323,6 +29428,7 @@ GDSClassesMapping = {
     'payloads': Payloads,
     'authorized_keys': AuthorizedKeys,
     'permission': Permission,
+    'usage_message': UsageMessage,
     'logical_unit': LogicalUnit,
     'boot_devices': BootDevices,
     'reported_device': ReportedDevice,
@@ -29845,6 +29951,7 @@ __all__ = [
     "TransparentHugePages",
     "TransportTypes",
     "Url",
+    "UsageMessage",
     "Usages",
     "Usb",
     "User",
@@ -30085,6 +30192,7 @@ _rootClassMap = {
                     "transparent_hugepages"         : TransparentHugePages,
                     "transport_types"               : TransportTypes,
                     "url"                           : Url,
+                    "usage_message"                 : UsageMessage,
                     "usages"                        : Usages,
                     "usb"                           : Usb,
                     "user"                          : User,
