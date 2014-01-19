@@ -6,7 +6,7 @@
         @return [VersionCaps]:
         '''
 
-        url='/api/capabilities'
+        url='/capabilities'
 
         result = self.__getProxy().get(url=url).version
 

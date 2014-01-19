@@ -24,7 +24,7 @@
                 try:
                     proxy.request(
                         method='GET',
-                        url='/api',
+                        url='',
                         last=True
                     )
                 except Exception:
@@ -43,7 +43,7 @@
             try :
                 proxy.request(
                     method='GET',
-                    url='/api'
+                    url=''
                 )
             except Exception, e:
                 if throw_exception: raise e

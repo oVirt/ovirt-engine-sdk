@@ -4,7 +4,7 @@
         if proxy:
             return proxy.request(
                 method='GET',
-                url='/api'
+                url=''
             ).%(attr)s
 
         raise DisconnectedError

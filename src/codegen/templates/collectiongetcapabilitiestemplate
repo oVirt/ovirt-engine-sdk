@@ -7,7 +7,7 @@
         @return VersionCaps:
         '''
 
-        url = '/api/capabilities'
+        url = '/capabilities'
 
         if id:
             try :

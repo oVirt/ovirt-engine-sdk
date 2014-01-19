@@ -23,13 +23,15 @@ class Proxy():
     The proxy to web connection
     '''
 
-    def __init__(self, connections_pool, persistent_auth=True):
+    def __init__(self, connections_pool, persistent_auth=True, prefix=''):
         '''
         @param connections_pool: connections pool
+        @param prefix: the prefix common to all requests
         @param persistent_auth: persistent authentication flag (default True)
         '''
         self.__connections_pool = connections_pool
         self._persistent_auth = persistent_auth
+        self.__prefix = prefix
 
         # In order to create the cookies adapter we need to extract from the
         # URL the host name, so that we can accept cookies only from that host:
@@ -40,6 +42,10 @@ class Proxy():
         Returns connections pool
         '''
         return self.__connections_pool
+
+    def getPrefix(self):
+        """Returns the prefix common to all requests."""
+        return self.__prefix
 
     def get(self, url, headers={}):
         '''
@@ -127,7 +133,7 @@ class Proxy():
 
         response = conn.doRequest(
                    method=method,
-                   url=url,
+                   url=self.__prefix + url,
                    body=body,
                    headers=headers,
                    last=last,

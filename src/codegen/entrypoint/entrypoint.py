@@ -65,7 +65,7 @@ class EntryPoint(object):
         methods_template = entrypointmethodstemplate.generate()
 
         entry_point_resource = context.manager[api.id]\
-                               .get('proxy').request('GET', '/api')
+                               .get('proxy').request('GET', '')
 
         for attr in entry_point_resource.__dict__.keys():
             if attr not in exclude:

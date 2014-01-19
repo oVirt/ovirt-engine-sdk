@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-12-24 11:16:42.676341'''
+'''Generated at: 2014-01-19 16:05:55.954861'''
 
 import types
 import urlparse
@@ -61,7 +61,7 @@ class API(object):
                  renew_session=False, insecure=False, validate_cert_chain=True, filter=False, debug=False):  # @ReservedAssignment
 
         '''
-        @param url: server url (format "http/s://server[:port]/api")
+        @param url: server url (format "http/s://server[:port]/ovirt-engine/api")
         @param username: user (format user@domain)
         @param password: password
         [@param key_file: client PEM key_file for ssl enabled connection]
@@ -113,10 +113,15 @@ class API(object):
             debug=debug
         )
 
+        # Extract from the entry point URL the prefix common to paths
+        # of all requests:
+        prefix = urlparse.urlparse(url).path
+
         # Create the proxy:
         proxy = Proxy(
             pool,
-            persistent_auth
+            persistent_auth,
+            prefix
         )
 
         # Store filter to the context:
@@ -131,7 +136,7 @@ class API(object):
         # Get entry point
         entry_point = proxy.request(
             method='GET',
-            url=urlparse.urlparse(url).path
+            url=''
         )
 
         # If server returns no response for the root resource, this is sign
@@ -207,7 +212,7 @@ class API(object):
                 try:
                     proxy.request(
                         method='GET',
-                        url='/api',
+                        url='',
                         last=True
                     )
                 except Exception:
@@ -226,7 +231,7 @@ class API(object):
             try :
                 proxy.request(
                     method='GET',
-                    url='/api'
+                    url=''
                 )
             except Exception, e:
                 if throw_exception: raise e
@@ -268,6 +273,7 @@ class API(object):
     def __exit__(self, type, value, tb):  # @ReservedAssignment
         self.disconnect()
 
+
     def get_comment(self):
         entry_point = context.manager[self.id].get('entry_point')
         if entry_point:
@@ -286,7 +292,7 @@ class API(object):
         if proxy:
             return proxy.request(
                 method='GET',
-                url='/api'
+                url=''
             ).summary
 
         raise DisconnectedError
@@ -296,7 +302,7 @@ class API(object):
         if proxy:
             return proxy.request(
                 method='GET',
-                url='/api'
+                url=''
             ).time
 
         raise DisconnectedError

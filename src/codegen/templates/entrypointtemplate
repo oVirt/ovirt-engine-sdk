@@ -4,7 +4,7 @@ class API(object):
                  renew_session=False, insecure=False, validate_cert_chain=True, filter=False, debug=False):  # @ReservedAssignment
 
         '''
-        @param url: server url (format "http/s://server[:port]/api")
+        @param url: server url (format "http/s://server[:port]/ovirt-engine/api")
         @param username: user (format user@domain)
         @param password: password
         [@param key_file: client PEM key_file for ssl enabled connection]
@@ -56,10 +56,15 @@ class API(object):
             debug=debug
         )
 
+        # Extract from the entry point URL the prefix common to paths
+        # of all requests:
+        prefix = urlparse.urlparse(url).path
+
         # Create the proxy:
         proxy = Proxy(
             pool,
-            persistent_auth
+            persistent_auth,
+            prefix
         )
 
         # Store filter to the context:
@@ -74,7 +79,7 @@ class API(object):
         # Get entry point
         entry_point = proxy.request(
             method='GET',
-            url=urlparse.urlparse(url).path
+            url=''
         )
 
         # If server returns no response for the root resource, this is sign
