@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2013-10-30 11:21:41.565433'''
+'''Generated at: 2014-01-24 18:54:38.884031'''
 
 
 from ovirtsdk.xml import params
@@ -6226,7 +6226,7 @@ class Host(params.Host, Base):
           {
             [@ivar type: string]
             [@ivar address: string]
-            [@ivar user_name: string]
+            [@ivar username: string]
             [@ivar password: string]
             [@ivar options.option: collection]
             {
@@ -6263,7 +6263,7 @@ class Host(params.Host, Base):
           {
             [@ivar type: string]
             [@ivar address: string]
-            [@ivar user_name: string]
+            [@ivar username: string]
             [@ivar password: string]
             [@ivar options.option: collection]
             {
@@ -7687,7 +7687,7 @@ class Hosts(Base):
           {
             [@ivar type: string]
             [@ivar address: string]
-            [@ivar user_name: string]
+            [@ivar username: string]
             [@ivar password: string]
             [@ivar options.option: collection]
             {
@@ -7728,7 +7728,7 @@ class Hosts(Base):
           {
             [@ivar type: string]
             [@ivar address: string]
-            [@ivar user_name: string]
+            [@ivar username: string]
             [@ivar password: string]
             [@ivar options.option: collection]
             {
@@ -8418,7 +8418,8 @@ class NetworkVnicProfile(params.VnicProfile, Base):
         self.parentclass = network
         self.superclass  =  vnicprofile
 
-        #SUB_COLLECTIONS
+        self.permissions = NetworkVnicProfilePermissions(self, context)
+
     def __new__(cls, network, vnicprofile, context):
         if vnicprofile is None: return None
         obj = object.__new__(cls)
@@ -8454,6 +8455,172 @@ class NetworkVnicProfile(params.VnicProfile, Base):
                 {'async:matrix':async}
             ),
             headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class NetworkVnicProfilePermission(params.Permission, Base):
+    def __init__(self, networkvnicprofile, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = networkvnicprofile
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, networkvnicprofile, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(networkvnicprofile, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{network:id}' : self.parentclass.parentclass.get_id(),
+                 '{vnicprofile:id}': self.parentclass.get_id(),
+                 '{permission:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+class NetworkVnicProfilePermissions(Base):
+
+    def __init__(self, networkvnicprofile , context):
+        Base.__init__(self, context)
+        self.parentclass = networkvnicprofile
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission):
+
+        '''
+        @type Permission:
+
+
+        @return Permission:
+        '''
+
+        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{network:id}' : self.parentclass.parentclass.get_id(),
+                 '{vnicprofile:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={}
+        )
+
+        return NetworkVnicProfilePermission(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{network:id}' : self.parentclass.parentclass.get_id(),
+                             '{vnicprofile:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return NetworkVnicProfilePermission(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{network:id}' : self.parentclass.parentclass.get_id(),
+                     '{vnicprofile:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_permission()
+
+            return NetworkVnicProfilePermission(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Permissions:
+        '''
+
+        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{network:id}' : self.parentclass.parentclass.get_id(),
+                 '{vnicprofile:id}': self.parentclass.get_id()}
+            )
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            NetworkVnicProfilePermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
         )
 
 class NetworkVnicProfiles(Base):
@@ -13746,6 +13913,42 @@ class VM(params.VM, Base):
           [@ivar boot.dev: string]
         }
         [@param action.vm.domain.user.password: string]
+        [@param action.vm.initialization.cloud_init.hostname: string]
+        [@param action.vm.initialization.cloud_init.network_configuration.nics.nic: collection]
+        {
+          [@ivar nic.name: string]
+          [@ivar nic.boot_protocol: string]
+          [@ivar nic.network.address.ip: string]
+          [@ivar nic.network.address.netmask: string]
+          [@ivar nic.network.address.gateway: string]
+          [@ivar nic.onboot: boolean]
+        }
+        [@param action.vm.initialization.cloud_init.network_configuration.dns.servers.host: collection]
+        {
+          [@ivar host.address: string]
+        }
+        [@param action.vm.initialization.cloud_init.network_configuration.dns.search_domains.host: collection]
+        {
+          [@ivar host.address: string]
+        }
+        [@param action.vm.initialization.cloud_init.authorized_keys.authorized_key: collection]
+        {
+          [@ivar authorized_key.key: string]
+          [@ivar authorized_key.user.name: string]
+        }
+        [@param action.vm.initialization.cloud_init.regenerate_ssh_keys: boolean]
+        [@param action.vm.initialization.cloud_init.timezone: string]
+        [@param action.vm.initialization.cloud_init.users.user: collection]
+        {
+          [@ivar user.password: string]
+          [@ivar user.name: string]
+        }
+        [@param action.vm.initialization.cloud_init.payload_files.payload_file: collection]
+        {
+          [@ivar payload_file.name: string]
+          [@ivar payload_file.content: string]
+          [@ivar payload_file.type: string]
+        }
         [@param correlation_id: any string]
 
         @return Action:
@@ -15671,55 +15874,6 @@ class VMSnapshot(params.Snapshot, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def commit(self, action=params.Action(), correlation_id=None):
-        '''
-        @type Action:
-
-        [@param correlation_id: any string]
-
-        @return Action:
-        '''
-
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/commit'
-
-        result = self.__getProxy().request(
-            method='POST',
-            url=UrlHelper.replace(
-                url,
-                {'{vm:id}' : self.parentclass.get_id(),
-                 '{snapshot:id}': self.get_id()}
-            ),
-            body=ParseHelper.toXml(action),
-            headers={"Correlation-Id":correlation_id}
-        )
-
-        return result
-
-    def preview(self, action=params.Action(), correlation_id=None):
-        '''
-        @type Action:
-
-        [@param action.restore_memory: boolean]
-        [@param correlation_id: any string]
-
-        @return Action:
-        '''
-
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/preview'
-
-        result = self.__getProxy().request(
-            method='POST',
-            url=UrlHelper.replace(
-                url,
-                {'{vm:id}' : self.parentclass.get_id(),
-                 '{snapshot:id}': self.get_id()}
-            ),
-            body=ParseHelper.toXml(action),
-            headers={"Correlation-Id":correlation_id}
-        )
-
-        return result
-
     def restore(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
@@ -15731,30 +15885,6 @@ class VMSnapshot(params.Snapshot, Base):
         '''
 
         url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/restore'
-
-        result = self.__getProxy().request(
-            method='POST',
-            url=UrlHelper.replace(
-                url,
-                {'{vm:id}' : self.parentclass.get_id(),
-                 '{snapshot:id}': self.get_id()}
-            ),
-            body=ParseHelper.toXml(action),
-            headers={"Correlation-Id":correlation_id}
-        )
-
-        return result
-
-    def undo(self, action=params.Action(), correlation_id=None):
-        '''
-        @type Action:
-
-        [@param correlation_id: any string]
-
-        @return Action:
-        '''
-
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/undo'
 
         result = self.__getProxy().request(
             method='POST',
@@ -17546,20 +17676,26 @@ class VnicProfilePermission(params.Permission, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None, correlation_id=None):
         '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
         @return None:
         '''
 
-        url = '/api/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}'
+        url = UrlHelper.replace(
+            '/api/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}',
+            {'{vnicprofile:id}' : self.parentclass.get_id(),
+             '{permission:id}': self.get_id()}
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {'{vnicprofile:id}' : self.parentclass.get_id(),
-                 '{permission:id}': self.get_id()}
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
 class VnicProfilePermissions(Base):
