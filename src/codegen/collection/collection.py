@@ -94,7 +94,7 @@ class Collection(object):
         # Capabilities resource has unique structure which is not
         # fully comply with RESTful collection pattern, but preserved
         # in sake of backward compatibility
-        if url == '/api/capabilities':
+        if url == '/capabilities':
             return CollectionExceptions.get(
                         url,
                         link,
@@ -106,9 +106,9 @@ class Collection(object):
                         collection_get_template_values
                     )
 
-        # /api/disks search-by-name paradigm was broken by the engine
+        # /disks search-by-name paradigm was broken by the engine
         # should be fixed later on
-        if url == '/api/disks':
+        if url == '/disks':
             return CollectionExceptions.get(
                         url,
                         link,
@@ -164,7 +164,7 @@ class Collection(object):
         # Capabilities resource has unique structure which is not
         # fully comply with RESTful collection pattern, but preserved
         # in sake of backward compatibility
-        if url == '/api/capabilities':
+        if url == '/capabilities':
 
             return CollectionExceptions.list()
         elif prms_str != '' or headers_method_params_str != '':

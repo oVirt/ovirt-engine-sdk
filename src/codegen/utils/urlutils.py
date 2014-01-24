@@ -32,7 +32,6 @@ class UrlUtils(object):
         url = link.href
         s_url = url.split('/')
         s_url.pop(0)
-        s_url.pop(0)
 
         return UrlUtils.__list_to_dict(s_url)
 
@@ -56,7 +55,6 @@ class UrlUtils(object):
 
         url = link.href
         s_url = url.split('/')
-        s_url.pop(0)
         s_url.pop(0)
 
         if url.endswith('/' + link.rel):

@@ -78,9 +78,16 @@ class RsdlCodegen(AbstractRsdlCodegen):
         collectionsHolder = {}
         usedRels = []
 
-        for link in context.manager[self.context].get('proxy') \
-                                                 .request('GET', '/api?rsdl') \
-                                                 .links.link:
+        # Get the proxy and the URL prefix from the context:
+        proxy = context.manager[self.context].get('proxy')
+        prefix = proxy.getPrefix()
+
+        # Get all the links from the RSDL document an make them relative:
+        links = proxy.request('GET', '?rsdl').links.link
+        for link in links:
+            link.href = link.href.replace(prefix, "", 1)
+
+        for link in links:
 
             response_type = None
             body_type = None
@@ -106,7 +113,6 @@ class RsdlCodegen(AbstractRsdlCodegen):
 
                 # get relations
                 splitted_url = url.strip()[1:].split('/')
-                splitted_url.pop(0)
 
                 # append resource/method/rel
                 self.__appendResource(rel, url, http_method, body_type, link,

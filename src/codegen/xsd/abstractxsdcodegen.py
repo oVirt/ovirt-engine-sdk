@@ -25,7 +25,7 @@ class AbstractXsdCodegen(ICodegen):
 
     __metaclass__ = abc.ABCMeta
 
-    SCHEMA_URI = '/api?schema'
+    SCHEMA_URI = '?schema'
 
     def __init__(self, path, api):
         '''

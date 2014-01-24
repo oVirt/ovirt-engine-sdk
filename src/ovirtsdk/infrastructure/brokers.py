@@ -57,7 +57,7 @@ class Capabilities(Base):
         @return VersionCaps:
         '''
 
-        url = '/api/capabilities'
+        url = '/capabilities'
 
         if id:
             try :
@@ -86,7 +86,7 @@ class Capabilities(Base):
         @return [VersionCaps]:
         '''
 
-        url='/api/capabilities'
+        url='/capabilities'
 
         result = self.__getProxy().get(url=url).version
 
@@ -129,7 +129,7 @@ class Cluster(params.Cluster, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/clusters/{cluster:id}',
+            '/clusters/{cluster:id}',
             {'{cluster:id}': self.get_id()}
         )
 
@@ -167,7 +167,7 @@ class Cluster(params.Cluster, Base):
         @return Cluster:
         '''
 
-        url = '/api/clusters/{cluster:id}'
+        url = '/clusters/{cluster:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -211,7 +211,7 @@ class ClusterGlusterHook(params.GlusterHook, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/clusters/{cluster:id}/glusterhooks/{glusterhook:id}',
+            '/clusters/{cluster:id}/glusterhooks/{glusterhook:id}',
             {'{cluster:id}' : self.parentclass.get_id(),
              '{glusterhook:id}': self.get_id()}
         )
@@ -233,7 +233,7 @@ class ClusterGlusterHook(params.GlusterHook, Base):
         @return Action:
         '''
 
-        url = '/api/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/disable'
+        url = '/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/disable'
 
         result = self.__getProxy().request(
             method='POST',
@@ -257,7 +257,7 @@ class ClusterGlusterHook(params.GlusterHook, Base):
         @return Action:
         '''
 
-        url = '/api/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/enable'
+        url = '/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/enable'
 
         result = self.__getProxy().request(
             method='POST',
@@ -283,7 +283,7 @@ class ClusterGlusterHook(params.GlusterHook, Base):
         @return Action:
         '''
 
-        url = '/api/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/resolve'
+        url = '/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/resolve'
 
         result = self.__getProxy().request(
             method='POST',
@@ -322,7 +322,7 @@ class ClusterGlusterHooks(Base):
         @return GlusterHooks:
         '''
 
-        url = '/api/clusters/{cluster:id}/glusterhooks'
+        url = '/clusters/{cluster:id}/glusterhooks'
 
         if id:
             try :
@@ -376,7 +376,7 @@ class ClusterGlusterHooks(Base):
         @return GlusterHooks:
         '''
 
-        url = '/api/clusters/{cluster:id}/glusterhooks'
+        url = '/clusters/{cluster:id}/glusterhooks'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -423,7 +423,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @return None:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -445,7 +445,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/rebalance'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/rebalance'
 
         result = self.__getProxy().request(
             method='POST',
@@ -469,7 +469,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetalloptions'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetalloptions'
 
         result = self.__getProxy().request(
             method='POST',
@@ -495,7 +495,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetoption'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetoption'
 
         result = self.__getProxy().request(
             method='POST',
@@ -521,7 +521,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/setoption'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/setoption'
 
         result = self.__getProxy().request(
             method='POST',
@@ -546,7 +546,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/start'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/start'
 
         result = self.__getProxy().request(
             method='POST',
@@ -571,7 +571,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stop'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stop'
 
         result = self.__getProxy().request(
             method='POST',
@@ -614,7 +614,7 @@ class ClusterGlusterVolumeBrick(params.GlusterBrick, Base):
         @return None:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -638,7 +638,7 @@ class ClusterGlusterVolumeBrick(params.GlusterBrick, Base):
         @return Action:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/replace'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/replace'
 
         result = self.__getProxy().request(
             method='POST',
@@ -700,7 +700,7 @@ class ClusterGlusterVolumeBrickStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
 
         if id:
             try :
@@ -759,7 +759,7 @@ class ClusterGlusterVolumeBrickStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -817,7 +817,7 @@ class ClusterGlusterVolumeBricks(Base):
         @return GlusterBricks:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -845,7 +845,7 @@ class ClusterGlusterVolumeBricks(Base):
         @return GlusterBricks:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         if id:
             try :
@@ -902,7 +902,7 @@ class ClusterGlusterVolumeBricks(Base):
         @return GlusterBricks:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -970,7 +970,7 @@ class ClusterGlusterVolumes(Base):
         @return GlusterVolume:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes'
+        url = '/clusters/{cluster:id}/glustervolumes'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -996,7 +996,7 @@ class ClusterGlusterVolumes(Base):
         @return GlusterVolumes:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes'
+        url = '/clusters/{cluster:id}/glustervolumes'
 
         if id:
             try :
@@ -1052,7 +1052,7 @@ class ClusterGlusterVolumes(Base):
         @return GlusterVolumes:
         '''
 
-        url = '/api/clusters/{cluster:id}/glustervolumes'
+        url = '/clusters/{cluster:id}/glustervolumes'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -1106,7 +1106,7 @@ class ClusterNetwork(params.Network, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/clusters/{cluster:id}/networks/{network:id}',
+            '/clusters/{cluster:id}/networks/{network:id}',
             {'{cluster:id}' : self.parentclass.get_id(),
              '{network:id}': self.get_id()}
         )
@@ -1131,7 +1131,7 @@ class ClusterNetwork(params.Network, Base):
         @return Network:
         '''
 
-        url = '/api/clusters/{cluster:id}/networks/{network:id}'
+        url = '/clusters/{cluster:id}/networks/{network:id}'
         url = UrlHelper.replace(
             url,
             {'{cluster:id}' : self.parentclass.get_id(),
@@ -1181,7 +1181,7 @@ class ClusterNetworks(Base):
         @return Network:
         '''
 
-        url = '/api/clusters/{cluster:id}/networks'
+        url = '/clusters/{cluster:id}/networks'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -1207,7 +1207,7 @@ class ClusterNetworks(Base):
         @return Networks:
         '''
 
-        url = '/api/clusters/{cluster:id}/networks'
+        url = '/clusters/{cluster:id}/networks'
 
         if id:
             try :
@@ -1262,7 +1262,7 @@ class ClusterNetworks(Base):
         @return Networks:
         '''
 
-        url = '/api/clusters/{cluster:id}/networks'
+        url = '/clusters/{cluster:id}/networks'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -1316,7 +1316,7 @@ class ClusterPermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/clusters/{cluster:id}/permissions/{permission:id}',
+            '/clusters/{cluster:id}/permissions/{permission:id}',
             {'{cluster:id}' : self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
         )
@@ -1361,7 +1361,7 @@ class ClusterPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/clusters/{cluster:id}/permissions'
+        url = '/clusters/{cluster:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -1387,7 +1387,7 @@ class ClusterPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/clusters/{cluster:id}/permissions'
+        url = '/clusters/{cluster:id}/permissions'
 
         if id:
             try :
@@ -1442,7 +1442,7 @@ class ClusterPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/clusters/{cluster:id}/permissions'
+        url = '/clusters/{cluster:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -1508,7 +1508,7 @@ class Clusters(Base):
         @return Cluster:
         '''
 
-        url = '/api/clusters'
+        url = '/clusters'
 
         result = self.__getProxy().add(
            url=url,
@@ -1526,7 +1526,7 @@ class Clusters(Base):
         @return Clusters:
         '''
 
-        url = '/api/clusters'
+        url = '/clusters'
 
         if id:
             try :
@@ -1567,7 +1567,7 @@ class Clusters(Base):
         @return Clusters:
         '''
 
-        url='/api/clusters'
+        url='/clusters'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
@@ -1617,7 +1617,7 @@ class DataCenter(params.DataCenter, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/datacenters/{datacenter:id}',
+            '/datacenters/{datacenter:id}',
             {'{datacenter:id}': self.get_id()}
         )
 
@@ -1644,7 +1644,7 @@ class DataCenter(params.DataCenter, Base):
         @return DataCenter:
         '''
 
-        url = '/api/datacenters/{datacenter:id}'
+        url = '/datacenters/{datacenter:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -1692,7 +1692,7 @@ class DataCenterCluster(params.Cluster, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/datacenters/{datacenter:id}/clusters/{cluster:id}',
+            '/datacenters/{datacenter:id}/clusters/{cluster:id}',
             {'{datacenter:id}' : self.parentclass.get_id(),
              '{cluster:id}': self.get_id()}
         )
@@ -1730,7 +1730,7 @@ class DataCenterCluster(params.Cluster, Base):
         @return Cluster:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}'
         url = UrlHelper.replace(
             url,
             {'{datacenter:id}' : self.parentclass.get_id(),
@@ -1776,7 +1776,7 @@ class DataCenterClusterGlusterhook(params.GlusterHook, Base):
         @return None:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -1796,7 +1796,7 @@ class DataCenterClusterGlusterhook(params.GlusterHook, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/disable'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/disable'
 
         result = self.__getProxy().request(
             method='POST',
@@ -1820,7 +1820,7 @@ class DataCenterClusterGlusterhook(params.GlusterHook, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/enable'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/enable'
 
         result = self.__getProxy().request(
             method='POST',
@@ -1844,7 +1844,7 @@ class DataCenterClusterGlusterhook(params.GlusterHook, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/resolve'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}/resolve'
 
         result = self.__getProxy().request(
             method='POST',
@@ -1884,7 +1884,7 @@ class DataCenterClusterGlusterhooks(Base):
         @return GlusterHooks:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks'
 
         if id:
             try :
@@ -1940,7 +1940,7 @@ class DataCenterClusterGlusterhooks(Base):
         @return GlusterHooks:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -1988,7 +1988,7 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
         @return None:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -2008,7 +2008,7 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/rebalance'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/rebalance'
 
         result = self.__getProxy().request(
             method='POST',
@@ -2032,7 +2032,7 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetalloptions'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetalloptions'
 
         result = self.__getProxy().request(
             method='POST',
@@ -2056,7 +2056,7 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetoption'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/resetoption'
 
         result = self.__getProxy().request(
             method='POST',
@@ -2080,7 +2080,7 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/setoption'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/setoption'
 
         result = self.__getProxy().request(
             method='POST',
@@ -2104,7 +2104,7 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/start'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/start'
 
         result = self.__getProxy().request(
             method='POST',
@@ -2128,7 +2128,7 @@ class DataCenterClusterGlustervolume(params.GlusterVolume, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stop'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/stop'
 
         result = self.__getProxy().request(
             method='POST',
@@ -2172,7 +2172,7 @@ class DataCenterClusterGlustervolumeBrick(params.GlusterBrick, Base):
         @return None:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -2193,7 +2193,7 @@ class DataCenterClusterGlustervolumeBrick(params.GlusterBrick, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/replace'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/replace'
 
         result = self.__getProxy().request(
             method='POST',
@@ -2256,7 +2256,7 @@ class DataCenterClusterGlustervolumeBrickStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
 
         if id:
             try :
@@ -2316,7 +2316,7 @@ class DataCenterClusterGlustervolumeBrickStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -2362,7 +2362,7 @@ class DataCenterClusterGlustervolumeBricks(Base):
         @return GlusterBricks:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -2390,7 +2390,7 @@ class DataCenterClusterGlustervolumeBricks(Base):
         @return GlusterBricks:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         if id:
             try :
@@ -2448,7 +2448,7 @@ class DataCenterClusterGlustervolumeBricks(Base):
         @return GlusterBricks:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -2493,7 +2493,7 @@ class DataCenterClusterGlustervolumes(Base):
         @return GlusterVolume:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -2520,7 +2520,7 @@ class DataCenterClusterGlustervolumes(Base):
         @return GlusterVolumes:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
 
         if id:
             try :
@@ -2576,7 +2576,7 @@ class DataCenterClusterGlustervolumes(Base):
         @return GlusterVolumes:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -2627,7 +2627,7 @@ class DataCenterClusterNetwork(params.Network, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/networks/{network:id}',
+            '/datacenters/{datacenter:id}/clusters/{cluster:id}/networks/{network:id}',
             {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
              '{cluster:id}': self.parentclass.get_id(),
              '{network:id}': self.get_id()}
@@ -2653,7 +2653,7 @@ class DataCenterClusterNetwork(params.Network, Base):
         @return Network:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/networks/{network:id}'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/networks/{network:id}'
         url = UrlHelper.replace(
             url,
             {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
@@ -2704,7 +2704,7 @@ class DataCenterClusterNetworks(Base):
         @return Network:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/networks'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/networks'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -2731,7 +2731,7 @@ class DataCenterClusterNetworks(Base):
         @return Networks:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/networks'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/networks'
 
         if id:
             try :
@@ -2788,7 +2788,7 @@ class DataCenterClusterNetworks(Base):
         @return Networks:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/networks'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/networks'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -2843,7 +2843,7 @@ class DataCenterClusterPermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions/{permission:id}',
+            '/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions/{permission:id}',
             {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
              '{cluster:id}': self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
@@ -2889,7 +2889,7 @@ class DataCenterClusterPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -2916,7 +2916,7 @@ class DataCenterClusterPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions'
 
         if id:
             try :
@@ -2973,7 +2973,7 @@ class DataCenterClusterPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions'
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -3040,7 +3040,7 @@ class DataCenterClusters(Base):
         @return Cluster:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters'
+        url = '/datacenters/{datacenter:id}/clusters'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -3066,7 +3066,7 @@ class DataCenterClusters(Base):
         @return Clusters:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters'
+        url = '/datacenters/{datacenter:id}/clusters'
 
         if id:
             try :
@@ -3121,7 +3121,7 @@ class DataCenterClusters(Base):
         @return Clusters:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/clusters'
+        url = '/datacenters/{datacenter:id}/clusters'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -3175,7 +3175,7 @@ class DataCenterPermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/datacenters/{datacenter:id}/permissions/{permission:id}',
+            '/datacenters/{datacenter:id}/permissions/{permission:id}',
             {'{datacenter:id}' : self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
         )
@@ -3220,7 +3220,7 @@ class DataCenterPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/permissions'
+        url = '/datacenters/{datacenter:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -3246,7 +3246,7 @@ class DataCenterPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/permissions'
+        url = '/datacenters/{datacenter:id}/permissions'
 
         if id:
             try :
@@ -3300,7 +3300,7 @@ class DataCenterPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/permissions'
+        url = '/datacenters/{datacenter:id}/permissions'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -3365,7 +3365,7 @@ class DataCenterQuotas(Base):
         @return Quotas:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/quotas'
+        url = '/datacenters/{datacenter:id}/quotas'
 
         if id:
             try :
@@ -3419,7 +3419,7 @@ class DataCenterQuotas(Base):
         @return Quotas:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/quotas'
+        url = '/datacenters/{datacenter:id}/quotas'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -3470,7 +3470,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}',
+            '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}',
             {'{datacenter:id}' : self.parentclass.get_id(),
              '{storagedomain:id}': self.get_id()}
         )
@@ -3492,7 +3492,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/activate'
 
         result = self.__getProxy().request(
             method='POST',
@@ -3516,7 +3516,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/deactivate'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/deactivate'
 
         result = self.__getProxy().request(
             method='POST',
@@ -3564,7 +3564,7 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}',
+            '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}',
             {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
              '{storagedomain:id}': self.parentclass.get_id(),
              '{disk:id}': self.get_id()}
@@ -3588,7 +3588,7 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
         @return Action:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/export'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/export'
 
         result = self.__getProxy().request(
             method='POST',
@@ -3631,7 +3631,7 @@ class DataCenterStorageDomainDiskPermission(params.Permission, Base):
         @return None:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -3668,7 +3668,7 @@ class DataCenterStorageDomainDiskPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -3696,7 +3696,7 @@ class DataCenterStorageDomainDiskPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         if id:
             try :
@@ -3754,7 +3754,7 @@ class DataCenterStorageDomainDiskPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -3821,7 +3821,7 @@ class DataCenterStorageDomainDiskStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
 
         if id:
             try :
@@ -3879,7 +3879,7 @@ class DataCenterStorageDomainDiskStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -3956,7 +3956,7 @@ class DataCenterStorageDomainDisks(Base):
         @return Disk:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -3983,7 +3983,7 @@ class DataCenterStorageDomainDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks'
 
         if id:
             try :
@@ -4043,7 +4043,7 @@ class DataCenterStorageDomainDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks'
+        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -4094,7 +4094,7 @@ class DataCenterStorageDomains(Base):
         @return StorageDomain:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains'
+        url = '/datacenters/{datacenter:id}/storagedomains'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -4120,7 +4120,7 @@ class DataCenterStorageDomains(Base):
         @return StorageDomains:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains'
+        url = '/datacenters/{datacenter:id}/storagedomains'
 
         if id:
             try :
@@ -4175,7 +4175,7 @@ class DataCenterStorageDomains(Base):
         @return StorageDomains:
         '''
 
-        url = '/api/datacenters/{datacenter:id}/storagedomains'
+        url = '/datacenters/{datacenter:id}/storagedomains'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -4228,7 +4228,7 @@ class DataCenters(Base):
         @return DataCenter:
         '''
 
-        url = '/api/datacenters'
+        url = '/datacenters'
 
         result = self.__getProxy().add(
            url=url,
@@ -4246,7 +4246,7 @@ class DataCenters(Base):
         @return DataCenters:
         '''
 
-        url = '/api/datacenters'
+        url = '/datacenters'
 
         if id:
             try :
@@ -4287,7 +4287,7 @@ class DataCenters(Base):
         @return DataCenters:
         '''
 
-        url='/api/datacenters'
+        url='/datacenters'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
@@ -4332,7 +4332,7 @@ class Disk(params.Disk, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/disks/{disk:id}',
+            '/disks/{disk:id}',
             {'{disk:id}': self.get_id()}
         )
 
@@ -4354,7 +4354,7 @@ class Disk(params.Disk, Base):
         @return Action:
         '''
 
-        url = '/api/disks/{disk:id}/export'
+        url = '/disks/{disk:id}/export'
 
         result = self.__getProxy().request(
             method='POST',
@@ -4392,7 +4392,7 @@ class DiskPermission(params.Permission, Base):
         @return None:
         '''
 
-        url = '/api/disks/{disk:id}/permissions/{permission:id}'
+        url = '/disks/{disk:id}/permissions/{permission:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -4427,7 +4427,7 @@ class DiskPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/disks/{disk:id}/permissions'
+        url = '/disks/{disk:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -4453,7 +4453,7 @@ class DiskPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/disks/{disk:id}/permissions'
+        url = '/disks/{disk:id}/permissions'
 
         if id:
             try :
@@ -4508,7 +4508,7 @@ class DiskPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/disks/{disk:id}/permissions'
+        url = '/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -4577,7 +4577,7 @@ class DiskStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/disks/{disk:id}/statistics'
+        url = '/disks/{disk:id}/statistics'
 
         if id:
             try :
@@ -4632,7 +4632,7 @@ class DiskStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/disks/{disk:id}/statistics'
+        url = '/disks/{disk:id}/statistics'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -4716,7 +4716,7 @@ class Disks(Base):
         @return Disk:
         '''
 
-        url = '/api/disks'
+        url = '/disks'
 
         result = self.__getProxy().add(
            url=url,
@@ -4734,7 +4734,7 @@ class Disks(Base):
         @return Disks:
         '''
 
-        url = '/api/disks'
+        url = '/disks'
 
         if id:
             try :
@@ -4773,7 +4773,7 @@ class Disks(Base):
         @return Disks:
         '''
 
-        url='/api/disks'
+        url='/disks'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
@@ -4855,7 +4855,7 @@ class DomainGroups(Base):
         @return Groups:
         '''
 
-        url = '/api/domains/{domain:id}/groups'
+        url = '/domains/{domain:id}/groups'
 
         if id:
             try :
@@ -4912,7 +4912,7 @@ class DomainGroups(Base):
         @return Groups:
         '''
 
-        url = '/api/domains/{domain:id}/groups'
+        url = '/domains/{domain:id}/groups'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -4981,7 +4981,7 @@ class DomainUsers(Base):
         @return Users:
         '''
 
-        url = '/api/domains/{domain:id}/users'
+        url = '/domains/{domain:id}/users'
 
         if id:
             try :
@@ -5038,7 +5038,7 @@ class DomainUsers(Base):
         @return Users:
         '''
 
-        url = '/api/domains/{domain:id}/users'
+        url = '/domains/{domain:id}/users'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -5082,7 +5082,7 @@ class Domains(Base):
         @return Domains:
         '''
 
-        url = '/api/domains'
+        url = '/domains'
 
         if id:
             try :
@@ -5122,7 +5122,7 @@ class Domains(Base):
         @return Domains:
         '''
 
-        url='/api/domains'
+        url='/domains'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'max:matrix':max}),
@@ -5161,7 +5161,7 @@ class Event(params.Event, Base):
         @return None:
         '''
 
-        url = '/api/events/{event:id}'
+        url = '/events/{event:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -5206,7 +5206,7 @@ class Events(Base):
         @return Event:
         '''
 
-        url = '/api/events'
+        url = '/events'
 
         result = self.__getProxy().add(
            url=url,
@@ -5224,7 +5224,7 @@ class Events(Base):
         @return Events:
         '''
 
-        url = '/api/events'
+        url = '/events'
 
         if id:
             try :
@@ -5266,7 +5266,7 @@ class Events(Base):
         @return Events:
         '''
 
-        url='/api/events'
+        url='/events'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'from:matrix':from_event_id,'max:matrix':max}),
@@ -5312,7 +5312,7 @@ class Group(params.Group, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/groups/{group:id}',
+            '/groups/{group:id}',
             {'{group:id}': self.get_id()}
         )
 
@@ -5355,7 +5355,7 @@ class GroupPermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/groups/{group:id}/permissions/{permission:id}',
+            '/groups/{group:id}/permissions/{permission:id}',
             {'{group:id}' : self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
         )
@@ -5415,7 +5415,7 @@ class GroupPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/groups/{group:id}/permissions'
+        url = '/groups/{group:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -5441,7 +5441,7 @@ class GroupPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/groups/{group:id}/permissions'
+        url = '/groups/{group:id}/permissions'
 
         if id:
             try :
@@ -5496,7 +5496,7 @@ class GroupPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/groups/{group:id}/permissions'
+        url = '/groups/{group:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -5551,7 +5551,7 @@ class GroupRole(params.Role, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/groups/{group:id}/roles/{role:id}',
+            '/groups/{group:id}/roles/{role:id}',
             {'{group:id}' : self.parentclass.get_id(),
              '{role:id}': self.get_id()}
         )
@@ -5595,7 +5595,7 @@ class GroupRolePermit(params.Permit, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/groups/{group:id}/roles/{role:id}/permits/{permit:id}',
+            '/groups/{group:id}/roles/{role:id}/permits/{permit:id}',
             {'{group:id}' : self.parentclass.parentclass.get_id(),
              '{role:id}': self.parentclass.get_id(),
              '{permit:id}': self.get_id()}
@@ -5636,7 +5636,7 @@ class GroupRolePermits(Base):
         @return Permit:
         '''
 
-        url = '/api/groups/{group:id}/roles/{role:id}/permits'
+        url = '/groups/{group:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -5663,7 +5663,7 @@ class GroupRolePermits(Base):
         @return Permits:
         '''
 
-        url = '/api/groups/{group:id}/roles/{role:id}/permits'
+        url = '/groups/{group:id}/roles/{role:id}/permits'
 
         if id:
             try :
@@ -5720,7 +5720,7 @@ class GroupRolePermits(Base):
         @return Permits:
         '''
 
-        url = '/api/groups/{group:id}/roles/{role:id}/permits'
+        url = '/groups/{group:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -5771,7 +5771,7 @@ class GroupRoles(Base):
         @return Role:
         '''
 
-        url = '/api/groups/{group:id}/roles'
+        url = '/groups/{group:id}/roles'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -5797,7 +5797,7 @@ class GroupRoles(Base):
         @return Roles:
         '''
 
-        url = '/api/groups/{group:id}/roles'
+        url = '/groups/{group:id}/roles'
 
         if id:
             try :
@@ -5852,7 +5852,7 @@ class GroupRoles(Base):
         @return Roles:
         '''
 
-        url = '/api/groups/{group:id}/roles'
+        url = '/groups/{group:id}/roles'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -5906,7 +5906,7 @@ class GroupTag(params.Tag, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/groups/{group:id}/tags/{tag:id}',
+            '/groups/{group:id}/tags/{tag:id}',
             {'{group:id}' : self.parentclass.get_id(),
              '{tag:id}': self.get_id()}
         )
@@ -5946,7 +5946,7 @@ class GroupTags(Base):
         @return Tag:
         '''
 
-        url = '/api/groups/{group:id}/tags'
+        url = '/groups/{group:id}/tags'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -5972,7 +5972,7 @@ class GroupTags(Base):
         @return Tags:
         '''
 
-        url = '/api/groups/{group:id}/tags'
+        url = '/groups/{group:id}/tags'
 
         if id:
             try :
@@ -6027,7 +6027,7 @@ class GroupTags(Base):
         @return Tags:
         '''
 
-        url = '/api/groups/{group:id}/tags'
+        url = '/groups/{group:id}/tags'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -6073,7 +6073,7 @@ class Groups(Base):
         @return Group:
         '''
 
-        url = '/api/groups'
+        url = '/groups'
 
         result = self.__getProxy().add(
            url=url,
@@ -6091,7 +6091,7 @@ class Groups(Base):
         @return Groups:
         '''
 
-        url = '/api/groups'
+        url = '/groups'
 
         if id:
             try :
@@ -6132,7 +6132,7 @@ class Groups(Base):
         @return Groups:
         '''
 
-        url='/api/groups'
+        url='/groups'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
@@ -6184,7 +6184,7 @@ class Host(params.Host, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/hosts/{host:id}',
+            '/hosts/{host:id}',
             {'{host:id}': self.get_id()}
         )
 
@@ -6276,7 +6276,7 @@ class Host(params.Host, Base):
         @return Host:
         '''
 
-        url = '/api/hosts/{host:id}'
+        url = '/hosts/{host:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -6298,7 +6298,7 @@ class Host(params.Host, Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/activate'
+        url = '/hosts/{host:id}/activate'
 
         result = self.__getProxy().request(
             method='POST',
@@ -6321,7 +6321,7 @@ class Host(params.Host, Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/approve'
+        url = '/hosts/{host:id}/approve'
 
         result = self.__getProxy().request(
             method='POST',
@@ -6341,7 +6341,7 @@ class Host(params.Host, Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/commitnetconfig'
+        url = '/hosts/{host:id}/commitnetconfig'
 
         result = self.__getProxy().request(
             method='POST',
@@ -6361,7 +6361,7 @@ class Host(params.Host, Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/deactivate'
+        url = '/hosts/{host:id}/deactivate'
 
         result = self.__getProxy().request(
             method='POST',
@@ -6382,7 +6382,7 @@ class Host(params.Host, Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/fence'
+        url = '/hosts/{host:id}/fence'
 
         result = self.__getProxy().request(
             method='POST',
@@ -6402,7 +6402,7 @@ class Host(params.Host, Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/forceselectspm'
+        url = '/hosts/{host:id}/forceselectspm'
 
         result = self.__getProxy().request(
             method='POST',
@@ -6432,7 +6432,7 @@ class Host(params.Host, Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/install'
+        url = '/hosts/{host:id}/install'
 
         result = self.__getProxy().request(
             method='POST',
@@ -6453,7 +6453,7 @@ class Host(params.Host, Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/iscsidiscover'
+        url = '/hosts/{host:id}/iscsidiscover'
 
         result = self.__getProxy().request(
             method='POST',
@@ -6475,7 +6475,7 @@ class Host(params.Host, Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/iscsilogin'
+        url = '/hosts/{host:id}/iscsilogin'
 
         result = self.__getProxy().request(
             method='POST',
@@ -6532,7 +6532,7 @@ class HostHooks(Base):
         @return Hooks:
         '''
 
-        url = '/api/hosts/{host:id}/hooks'
+        url = '/hosts/{host:id}/hooks'
 
         if id:
             try :
@@ -6586,7 +6586,7 @@ class HostHooks(Base):
         @return Hooks:
         '''
 
-        url = '/api/hosts/{host:id}/hooks'
+        url = '/hosts/{host:id}/hooks'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -6637,7 +6637,7 @@ class HostNIC(params.HostNIC, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/hosts/{host:id}/nics/{nic:id}',
+            '/hosts/{host:id}/nics/{nic:id}',
             {'{host:id}' : self.parentclass.get_id(),
              '{nic:id}': self.get_id()}
         )
@@ -6676,7 +6676,7 @@ class HostNIC(params.HostNIC, Base):
         @return HostNIC:
         '''
 
-        url = '/api/hosts/{host:id}/nics/{nic:id}'
+        url = '/hosts/{host:id}/nics/{nic:id}'
         url = UrlHelper.replace(
             url,
             {'{host:id}' : self.parentclass.get_id(),
@@ -6707,7 +6707,7 @@ class HostNIC(params.HostNIC, Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/nics/{nic:id}/attach'
+        url = '/hosts/{host:id}/nics/{nic:id}/attach'
 
         result = self.__getProxy().request(
             method='POST',
@@ -6732,7 +6732,7 @@ class HostNIC(params.HostNIC, Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/nics/{nic:id}/detach'
+        url = '/hosts/{host:id}/nics/{nic:id}/detach'
 
         result = self.__getProxy().request(
             method='POST',
@@ -6793,7 +6793,7 @@ class HostNicStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/hosts/{host:id}/nics/{nic:id}/statistics'
+        url = '/hosts/{host:id}/nics/{nic:id}/statistics'
 
         if id:
             try :
@@ -6850,7 +6850,7 @@ class HostNicStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/hosts/{host:id}/nics/{nic:id}/statistics'
+        url = '/hosts/{host:id}/nics/{nic:id}/statistics'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -6912,7 +6912,7 @@ class HostNics(Base):
         @return HostNIC:
         '''
 
-        url = '/api/hosts/{host:id}/nics'
+        url = '/hosts/{host:id}/nics'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -6938,7 +6938,7 @@ class HostNics(Base):
         @return HostNics:
         '''
 
-        url = '/api/hosts/{host:id}/nics'
+        url = '/hosts/{host:id}/nics'
 
         if id:
             try :
@@ -6993,7 +6993,7 @@ class HostNics(Base):
         @return HostNics:
         '''
 
-        url = '/api/hosts/{host:id}/nics'
+        url = '/hosts/{host:id}/nics'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -7049,7 +7049,7 @@ class HostNics(Base):
         @return Action:
         '''
 
-        url = '/api/hosts/{host:id}/nics/setupnetworks'
+        url = '/hosts/{host:id}/nics/setupnetworks'
 
         result = self.__getProxy().request(
             method='POST',
@@ -7093,7 +7093,7 @@ class HostPermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/hosts/{host:id}/permissions/{permission:id}',
+            '/hosts/{host:id}/permissions/{permission:id}',
             {'{host:id}' : self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
         )
@@ -7138,7 +7138,7 @@ class HostPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/hosts/{host:id}/permissions'
+        url = '/hosts/{host:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -7164,7 +7164,7 @@ class HostPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/hosts/{host:id}/permissions'
+        url = '/hosts/{host:id}/permissions'
 
         if id:
             try :
@@ -7219,7 +7219,7 @@ class HostPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/hosts/{host:id}/permissions'
+        url = '/hosts/{host:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -7288,7 +7288,7 @@ class HostStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/hosts/{host:id}/statistics'
+        url = '/hosts/{host:id}/statistics'
 
         if id:
             try :
@@ -7343,7 +7343,7 @@ class HostStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/hosts/{host:id}/statistics'
+        url = '/hosts/{host:id}/statistics'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -7390,7 +7390,7 @@ class HostStorage(Base):
         @return HostStorage:
         '''
 
-        url = '/api/hosts/{host:id}/storage'
+        url = '/hosts/{host:id}/storage'
 
         if id:
             try :
@@ -7445,7 +7445,7 @@ class HostStorage(Base):
         @return HostStorage:
         '''
 
-        url = '/api/hosts/{host:id}/storage'
+        url = '/hosts/{host:id}/storage'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -7499,7 +7499,7 @@ class HostTag(params.Tag, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/hosts/{host:id}/tags/{tag:id}',
+            '/hosts/{host:id}/tags/{tag:id}',
             {'{host:id}' : self.parentclass.get_id(),
              '{tag:id}': self.get_id()}
         )
@@ -7539,7 +7539,7 @@ class HostTags(Base):
         @return Tag:
         '''
 
-        url = '/api/hosts/{host:id}/tags'
+        url = '/hosts/{host:id}/tags'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -7565,7 +7565,7 @@ class HostTags(Base):
         @return Tags:
         '''
 
-        url = '/api/hosts/{host:id}/tags'
+        url = '/hosts/{host:id}/tags'
 
         if id:
             try :
@@ -7620,7 +7620,7 @@ class HostTags(Base):
         @return Tags:
         '''
 
-        url = '/api/hosts/{host:id}/tags'
+        url = '/hosts/{host:id}/tags'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -7744,7 +7744,7 @@ class Hosts(Base):
         @return Host:
         '''
 
-        url = '/api/hosts'
+        url = '/hosts'
 
         result = self.__getProxy().add(
            url=url,
@@ -7762,7 +7762,7 @@ class Hosts(Base):
         @return Hosts:
         '''
 
-        url = '/api/hosts'
+        url = '/hosts'
 
         if id:
             try :
@@ -7803,7 +7803,7 @@ class Hosts(Base):
         @return Hosts:
         '''
 
-        url='/api/hosts'
+        url='/hosts'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
@@ -7847,7 +7847,7 @@ class Job(params.Job, Base):
         @return Action:
         '''
 
-        url = '/api/jobs/{job:id}/clear'
+        url = '/jobs/{job:id}/clear'
 
         result = self.__getProxy().request(
             method='POST',
@@ -7869,7 +7869,7 @@ class Job(params.Job, Base):
         @return Action:
         '''
 
-        url = '/api/jobs/{job:id}/end'
+        url = '/jobs/{job:id}/end'
 
         result = self.__getProxy().request(
             method='POST',
@@ -7913,7 +7913,7 @@ class JobStep(params.Step, Base):
         @return Action:
         '''
 
-        url = '/api/jobs/{job:id}/steps/{step:id}/end'
+        url = '/jobs/{job:id}/steps/{step:id}/end'
 
         result = self.__getProxy().request(
             method='POST',
@@ -7958,7 +7958,7 @@ class JobSteps(Base):
         @return Step:
         '''
 
-        url = '/api/jobs/{job:id}/steps'
+        url = '/jobs/{job:id}/steps'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -7984,7 +7984,7 @@ class JobSteps(Base):
         @return Steps:
         '''
 
-        url = '/api/jobs/{job:id}/steps'
+        url = '/jobs/{job:id}/steps'
 
         if id:
             try :
@@ -8039,7 +8039,7 @@ class JobSteps(Base):
         @return Steps:
         '''
 
-        url = '/api/jobs/{job:id}/steps'
+        url = '/jobs/{job:id}/steps'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -8087,7 +8087,7 @@ class Jobs(Base):
         @return Job:
         '''
 
-        url = '/api/jobs'
+        url = '/jobs'
 
         result = self.__getProxy().add(
            url=url,
@@ -8105,7 +8105,7 @@ class Jobs(Base):
         @return Jobs:
         '''
 
-        url = '/api/jobs'
+        url = '/jobs'
 
         if id:
             try :
@@ -8145,7 +8145,7 @@ class Jobs(Base):
         @return Jobs:
         '''
 
-        url='/api/jobs'
+        url='/jobs'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'max:matrix':max}),
@@ -8190,7 +8190,7 @@ class Network(params.Network, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/networks/{network:id}',
+            '/networks/{network:id}',
             {'{network:id}': self.get_id()}
         )
 
@@ -8219,7 +8219,7 @@ class Network(params.Network, Base):
         @return Network:
         '''
 
-        url = '/api/networks/{network:id}'
+        url = '/networks/{network:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -8263,7 +8263,7 @@ class NetworkPermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/networks/{network:id}/permissions/{permission:id}',
+            '/networks/{network:id}/permissions/{permission:id}',
             {'{network:id}' : self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
         )
@@ -8308,7 +8308,7 @@ class NetworkPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/networks/{network:id}/permissions'
+        url = '/networks/{network:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -8334,7 +8334,7 @@ class NetworkPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/networks/{network:id}/permissions'
+        url = '/networks/{network:id}/permissions'
 
         if id:
             try :
@@ -8389,7 +8389,7 @@ class NetworkPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/networks/{network:id}/permissions'
+        url = '/networks/{network:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -8444,7 +8444,7 @@ class NetworkVnicProfile(params.VnicProfile, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}',
+            '/networks/{network:id}/vnicprofiles/{vnicprofile:id}',
             {'{network:id}' : self.parentclass.get_id(),
              '{vnicprofile:id}': self.get_id()}
         )
@@ -8484,7 +8484,7 @@ class NetworkVnicProfilePermission(params.Permission, Base):
         @return None:
         '''
 
-        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}'
+        url = '/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -8520,7 +8520,7 @@ class NetworkVnicProfilePermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+        url = '/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -8547,7 +8547,7 @@ class NetworkVnicProfilePermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+        url = '/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         if id:
             try :
@@ -8603,7 +8603,7 @@ class NetworkVnicProfilePermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
+        url = '/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -8657,7 +8657,7 @@ class NetworkVnicProfiles(Base):
         @return VnicProfile:
         '''
 
-        url = '/api/networks/{network:id}/vnicprofiles'
+        url = '/networks/{network:id}/vnicprofiles'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -8683,7 +8683,7 @@ class NetworkVnicProfiles(Base):
         @return VnicProfiles:
         '''
 
-        url = '/api/networks/{network:id}/vnicprofiles'
+        url = '/networks/{network:id}/vnicprofiles'
 
         if id:
             try :
@@ -8738,7 +8738,7 @@ class NetworkVnicProfiles(Base):
         @return VnicProfiles:
         '''
 
-        url = '/api/networks/{network:id}/vnicprofiles'
+        url = '/networks/{network:id}/vnicprofiles'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -8796,7 +8796,7 @@ class Networks(Base):
         @return Network:
         '''
 
-        url = '/api/networks'
+        url = '/networks'
 
         result = self.__getProxy().add(
            url=url,
@@ -8814,7 +8814,7 @@ class Networks(Base):
         @return Networks:
         '''
 
-        url = '/api/networks'
+        url = '/networks'
 
         if id:
             try :
@@ -8855,7 +8855,7 @@ class Networks(Base):
         @return Networks:
         '''
 
-        url='/api/networks'
+        url='/networks'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
@@ -8899,7 +8899,7 @@ class Role(params.Role, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/roles/{role:id}',
+            '/roles/{role:id}',
             {'{role:id}': self.get_id()}
         )
 
@@ -8923,7 +8923,7 @@ class Role(params.Role, Base):
         @return Role:
         '''
 
-        url = '/api/roles/{role:id}'
+        url = '/roles/{role:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -8967,7 +8967,7 @@ class RolePermit(params.Permit, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/roles/{role:id}/permits/{permit:id}',
+            '/roles/{role:id}/permits/{permit:id}',
             {'{role:id}' : self.parentclass.get_id(),
              '{permit:id}': self.get_id()}
         )
@@ -9007,7 +9007,7 @@ class RolePermits(Base):
         @return Permit:
         '''
 
-        url = '/api/roles/{role:id}/permits'
+        url = '/roles/{role:id}/permits'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -9033,7 +9033,7 @@ class RolePermits(Base):
         @return Permits:
         '''
 
-        url = '/api/roles/{role:id}/permits'
+        url = '/roles/{role:id}/permits'
 
         if id:
             try :
@@ -9088,7 +9088,7 @@ class RolePermits(Base):
         @return Permits:
         '''
 
-        url = '/api/roles/{role:id}/permits'
+        url = '/roles/{role:id}/permits'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -9141,7 +9141,7 @@ class Roles(Base):
         @return Role:
         '''
 
-        url = '/api/roles'
+        url = '/roles'
 
         result = self.__getProxy().add(
            url=url,
@@ -9159,7 +9159,7 @@ class Roles(Base):
         @return Roles:
         '''
 
-        url = '/api/roles'
+        url = '/roles'
 
         if id:
             try :
@@ -9199,7 +9199,7 @@ class Roles(Base):
         @return Roles:
         '''
 
-        url='/api/roles'
+        url='/roles'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'max:matrix':max}),
@@ -9245,7 +9245,7 @@ class StorageConnection(params.StorageConnection, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/storageconnections/{storageconnection:id}',
+            '/storageconnections/{storageconnection:id}',
             {'{storageconnection:id}': self.get_id()}
         )
 
@@ -9284,7 +9284,7 @@ class StorageConnection(params.StorageConnection, Base):
         @return StorageConnection:
         '''
 
-        url = '/api/storageconnections/{storageconnection:id}'
+        url = '/storageconnections/{storageconnection:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -9343,7 +9343,7 @@ class StorageConnections(Base):
         @return StorageConnection:
         '''
 
-        url = '/api/storageconnections'
+        url = '/storageconnections'
 
         result = self.__getProxy().add(
            url=url,
@@ -9361,7 +9361,7 @@ class StorageConnections(Base):
         @return StorageConnections:
         '''
 
-        url = '/api/storageconnections'
+        url = '/storageconnections'
 
         if id:
             try :
@@ -9400,7 +9400,7 @@ class StorageConnections(Base):
         @return StorageConnections:
         '''
 
-        url='/api/storageconnections'
+        url='/storageconnections'
 
         result = self.__getProxy().get(
             url=url
@@ -9452,7 +9452,7 @@ class StorageDomain(params.StorageDomain, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/storagedomains/{storagedomain:id}',
+            '/storagedomains/{storagedomain:id}',
             {'{storagedomain:id}': self.get_id()}
         )
 
@@ -9494,7 +9494,7 @@ class StorageDomain(params.StorageDomain, Base):
         @return StorageDomain:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}'
+        url = '/storagedomains/{storagedomain:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -9540,7 +9540,7 @@ class StorageDomainDisk(params.Disk, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/storagedomains/{storagedomain:id}/disks/{disk:id}',
+            '/storagedomains/{storagedomain:id}/disks/{disk:id}',
             {'{storagedomain:id}' : self.parentclass.get_id(),
              '{disk:id}': self.get_id()}
         )
@@ -9563,7 +9563,7 @@ class StorageDomainDisk(params.Disk, Base):
         @return Action:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/export'
+        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/export'
 
         result = self.__getProxy().request(
             method='POST',
@@ -9605,7 +9605,7 @@ class StorageDomainDiskPermission(params.Permission, Base):
         @return None:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}'
+        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -9641,7 +9641,7 @@ class StorageDomainDiskPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -9668,7 +9668,7 @@ class StorageDomainDiskPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         if id:
             try :
@@ -9724,7 +9724,7 @@ class StorageDomainDiskPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
+        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -9790,7 +9790,7 @@ class StorageDomainDiskStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
+        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
 
         if id:
             try :
@@ -9846,7 +9846,7 @@ class StorageDomainDiskStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
+        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -9922,7 +9922,7 @@ class StorageDomainDisks(Base):
         @return Disk:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/disks'
+        url = '/storagedomains/{storagedomain:id}/disks'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -9948,7 +9948,7 @@ class StorageDomainDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/disks'
+        url = '/storagedomains/{storagedomain:id}/disks'
 
         if id:
             try :
@@ -10006,7 +10006,7 @@ class StorageDomainDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/disks'
+        url = '/storagedomains/{storagedomain:id}/disks'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -10075,7 +10075,7 @@ class StorageDomainFiles(Base):
         @return Files:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/files'
+        url = '/storagedomains/{storagedomain:id}/files'
 
         if id:
             try :
@@ -10132,7 +10132,7 @@ class StorageDomainFiles(Base):
         @return Files:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/files'
+        url = '/storagedomains/{storagedomain:id}/files'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -10201,7 +10201,7 @@ class StorageDomainImages(Base):
         @return Images:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/images'
+        url = '/storagedomains/{storagedomain:id}/images'
 
         if id:
             try :
@@ -10256,7 +10256,7 @@ class StorageDomainImages(Base):
         @return Images:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/images'
+        url = '/storagedomains/{storagedomain:id}/images'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -10310,7 +10310,7 @@ class StorageDomainPermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/storagedomains/{storagedomain:id}/permissions/{permission:id}',
+            '/storagedomains/{storagedomain:id}/permissions/{permission:id}',
             {'{storagedomain:id}' : self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
         )
@@ -10355,7 +10355,7 @@ class StorageDomainPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/permissions'
+        url = '/storagedomains/{storagedomain:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -10381,7 +10381,7 @@ class StorageDomainPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/permissions'
+        url = '/storagedomains/{storagedomain:id}/permissions'
 
         if id:
             try :
@@ -10436,7 +10436,7 @@ class StorageDomainPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/permissions'
+        url = '/storagedomains/{storagedomain:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -10489,7 +10489,7 @@ class StorageDomainStorageConnection(params.StorageConnection, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/storagedomains/{storagedomain:id}/storageconnections/{storageconnection:id}',
+            '/storagedomains/{storagedomain:id}/storageconnections/{storageconnection:id}',
             {'{storagedomain:id}' : self.parentclass.get_id(),
              '{storageconnection:id}': self.get_id()}
         )
@@ -10529,7 +10529,7 @@ class StorageDomainStorageConnections(Base):
         @return StorageConnection:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/storageconnections'
+        url = '/storagedomains/{storagedomain:id}/storageconnections'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -10555,7 +10555,7 @@ class StorageDomainStorageConnections(Base):
         @return StorageConnections:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/storageconnections'
+        url = '/storagedomains/{storagedomain:id}/storageconnections'
 
         if id:
             try :
@@ -10610,7 +10610,7 @@ class StorageDomainStorageConnections(Base):
         @return StorageConnections:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/storageconnections'
+        url = '/storagedomains/{storagedomain:id}/storageconnections'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -10665,7 +10665,7 @@ class StorageDomainTemplate(params.Template, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/storagedomains/{storagedomain:id}/templates/{template:id}',
+            '/storagedomains/{storagedomain:id}/templates/{template:id}',
             {'{storagedomain:id}' : self.parentclass.get_id(),
              '{template:id}': self.get_id()}
         )
@@ -10696,7 +10696,7 @@ class StorageDomainTemplate(params.Template, Base):
         @return Action:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/import'
+        url = '/storagedomains/{storagedomain:id}/templates/{template:id}/import'
 
         result = self.__getProxy().request(
             method='POST',
@@ -10757,7 +10757,7 @@ class StorageDomainTemplateDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/disks'
+        url = '/storagedomains/{storagedomain:id}/templates/{template:id}/disks'
 
         if id:
             try :
@@ -10813,7 +10813,7 @@ class StorageDomainTemplateDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/templates/{template:id}/disks'
+        url = '/storagedomains/{storagedomain:id}/templates/{template:id}/disks'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -10857,7 +10857,7 @@ class StorageDomainTemplates(Base):
         @return Templates:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/templates'
+        url = '/storagedomains/{storagedomain:id}/templates'
 
         if id:
             try :
@@ -10912,7 +10912,7 @@ class StorageDomainTemplates(Base):
         @return Templates:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/templates'
+        url = '/storagedomains/{storagedomain:id}/templates'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -10967,7 +10967,7 @@ class StorageDomainVM(params.VM, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/storagedomains/{storagedomain:id}/vms/{vm:id}',
+            '/storagedomains/{storagedomain:id}/vms/{vm:id}',
             {'{storagedomain:id}' : self.parentclass.get_id(),
              '{vm:id}': self.get_id()}
         )
@@ -11000,7 +11000,7 @@ class StorageDomainVM(params.VM, Base):
         @return Action:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/import'
+        url = '/storagedomains/{storagedomain:id}/vms/{vm:id}/import'
 
         result = self.__getProxy().request(
             method='POST',
@@ -11061,7 +11061,7 @@ class StorageDomainVMDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/disks'
+        url = '/storagedomains/{storagedomain:id}/vms/{vm:id}/disks'
 
         if id:
             try :
@@ -11117,7 +11117,7 @@ class StorageDomainVMDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/vms/{vm:id}/disks'
+        url = '/storagedomains/{storagedomain:id}/vms/{vm:id}/disks'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -11161,7 +11161,7 @@ class StorageDomainVMs(Base):
         @return VMs:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/vms'
+        url = '/storagedomains/{storagedomain:id}/vms'
 
         if id:
             try :
@@ -11216,7 +11216,7 @@ class StorageDomainVMs(Base):
         @return VMs:
         '''
 
-        url = '/api/storagedomains/{storagedomain:id}/vms'
+        url = '/storagedomains/{storagedomain:id}/vms'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -11318,7 +11318,7 @@ class StorageDomains(Base):
         @return StorageDomain:
         '''
 
-        url = '/api/storagedomains'
+        url = '/storagedomains'
 
         result = self.__getProxy().add(
            url=url,
@@ -11336,7 +11336,7 @@ class StorageDomains(Base):
         @return StorageDomains:
         '''
 
-        url = '/api/storagedomains'
+        url = '/storagedomains'
 
         if id:
             try :
@@ -11377,7 +11377,7 @@ class StorageDomains(Base):
         @return StorageDomains:
         '''
 
-        url='/api/storagedomains'
+        url='/storagedomains'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
@@ -11420,7 +11420,7 @@ class Tag(params.Tag, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/tags/{tag:id}',
+            '/tags/{tag:id}',
             {'{tag:id}': self.get_id()}
         )
 
@@ -11442,7 +11442,7 @@ class Tag(params.Tag, Base):
         @return Tag:
         '''
 
-        url = '/api/tags/{tag:id}'
+        url = '/tags/{tag:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -11480,7 +11480,7 @@ class Tags(Base):
         @return Tag:
         '''
 
-        url = '/api/tags'
+        url = '/tags'
 
         result = self.__getProxy().add(
            url=url,
@@ -11498,7 +11498,7 @@ class Tags(Base):
         @return Tags:
         '''
 
-        url = '/api/tags'
+        url = '/tags'
 
         if id:
             try :
@@ -11538,7 +11538,7 @@ class Tags(Base):
         @return Tags:
         '''
 
-        url='/api/tags'
+        url='/tags'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'max:matrix':max}),
@@ -11586,7 +11586,7 @@ class Template(params.Template, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/templates/{template:id}',
+            '/templates/{template:id}',
             {'{template:id}': self.get_id()}
         )
 
@@ -11645,7 +11645,7 @@ class Template(params.Template, Base):
         @return Template:
         '''
 
-        url = '/api/templates/{template:id}'
+        url = '/templates/{template:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -11671,7 +11671,7 @@ class Template(params.Template, Base):
         @return Action:
         '''
 
-        url = '/api/templates/{template:id}/export'
+        url = '/templates/{template:id}/export'
 
         result = self.__getProxy().request(
             method='POST',
@@ -11728,7 +11728,7 @@ class TemplateCdRoms(Base):
         @return CdRoms:
         '''
 
-        url = '/api/templates/{template:id}/cdroms'
+        url = '/templates/{template:id}/cdroms'
 
         if id:
             try :
@@ -11783,7 +11783,7 @@ class TemplateCdRoms(Base):
         @return CdRoms:
         '''
 
-        url = '/api/templates/{template:id}/cdroms'
+        url = '/templates/{template:id}/cdroms'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -11841,7 +11841,7 @@ class TemplateDisk(params.Disk, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/templates/{template:id}/disks/{disk:id}',
+            '/templates/{template:id}/disks/{disk:id}',
             {'{template:id}' : self.parentclass.get_id(),
              '{disk:id}': self.get_id()}
         )
@@ -11867,7 +11867,7 @@ class TemplateDisk(params.Disk, Base):
         @return Action:
         '''
 
-        url = '/api/templates/{template:id}/disks/{disk:id}/copy'
+        url = '/templates/{template:id}/disks/{disk:id}/copy'
 
         result = self.__getProxy().request(
             method='POST',
@@ -11892,7 +11892,7 @@ class TemplateDisk(params.Disk, Base):
         @return Action:
         '''
 
-        url = '/api/templates/{template:id}/disks/{disk:id}/export'
+        url = '/templates/{template:id}/disks/{disk:id}/export'
 
         result = self.__getProxy().request(
             method='POST',
@@ -11931,7 +11931,7 @@ class TemplateDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/templates/{template:id}/disks'
+        url = '/templates/{template:id}/disks'
 
         if id:
             try :
@@ -11986,7 +11986,7 @@ class TemplateDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/templates/{template:id}/disks'
+        url = '/templates/{template:id}/disks'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -12040,7 +12040,7 @@ class TemplateNic(params.NIC, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/templates/{template:id}/nics/{nic:id}',
+            '/templates/{template:id}/nics/{nic:id}',
             {'{template:id}' : self.parentclass.get_id(),
              '{nic:id}': self.get_id()}
         )
@@ -12077,7 +12077,7 @@ class TemplateNic(params.NIC, Base):
         @return NIC:
         '''
 
-        url = '/api/templates/{template:id}/nics/{nic:id}'
+        url = '/templates/{template:id}/nics/{nic:id}'
         url = UrlHelper.replace(
             url,
             {'{template:id}' : self.parentclass.get_id(),
@@ -12139,7 +12139,7 @@ class TemplateNics(Base):
         @return NIC:
         '''
 
-        url = '/api/templates/{template:id}/nics'
+        url = '/templates/{template:id}/nics'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -12165,7 +12165,7 @@ class TemplateNics(Base):
         @return Nics:
         '''
 
-        url = '/api/templates/{template:id}/nics'
+        url = '/templates/{template:id}/nics'
 
         if id:
             try :
@@ -12220,7 +12220,7 @@ class TemplateNics(Base):
         @return Nics:
         '''
 
-        url = '/api/templates/{template:id}/nics'
+        url = '/templates/{template:id}/nics'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -12274,7 +12274,7 @@ class TemplatePermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/templates/{template:id}/permissions/{permission:id}',
+            '/templates/{template:id}/permissions/{permission:id}',
             {'{template:id}' : self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
         )
@@ -12319,7 +12319,7 @@ class TemplatePermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/templates/{template:id}/permissions'
+        url = '/templates/{template:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -12345,7 +12345,7 @@ class TemplatePermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/templates/{template:id}/permissions'
+        url = '/templates/{template:id}/permissions'
 
         if id:
             try :
@@ -12400,7 +12400,7 @@ class TemplatePermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/templates/{template:id}/permissions'
+        url = '/templates/{template:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -12450,7 +12450,7 @@ class TemplateWatchDog(params.WatchDog, Base):
         @return None:
         '''
 
-        url = '/api/templates/{template:id}/watchdogs/{watchdog:id}'
+        url = '/templates/{template:id}/watchdogs/{watchdog:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -12466,7 +12466,7 @@ class TemplateWatchDog(params.WatchDog, Base):
         @return WatchDog:
         '''
 
-        url = '/api/templates/{template:id}/watchdogs/{watchdog:id}'
+        url = '/templates/{template:id}/watchdogs/{watchdog:id}'
         url = UrlHelper.replace(
             url,
             {'{template:id}' : self.parentclass.get_id(),
@@ -12509,7 +12509,7 @@ class TemplateWatchDogs(Base):
         @return WatchDog:
         '''
 
-        url = '/api/templates/{template:id}/watchdogs'
+        url = '/templates/{template:id}/watchdogs'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -12535,7 +12535,7 @@ class TemplateWatchDogs(Base):
         @return WatchDogs:
         '''
 
-        url = '/api/templates/{template:id}/watchdogs'
+        url = '/templates/{template:id}/watchdogs'
 
         if id:
             try :
@@ -12589,7 +12589,7 @@ class TemplateWatchDogs(Base):
         @return WatchDogs:
         '''
 
-        url = '/api/templates/{template:id}/watchdogs'
+        url = '/templates/{template:id}/watchdogs'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -12686,7 +12686,7 @@ class Templates(Base):
         @return Template:
         '''
 
-        url = '/api/templates'
+        url = '/templates'
 
         result = self.__getProxy().add(
            url=url,
@@ -12704,7 +12704,7 @@ class Templates(Base):
         @return Templates:
         '''
 
-        url = '/api/templates'
+        url = '/templates'
 
         if id:
             try :
@@ -12745,7 +12745,7 @@ class Templates(Base):
         @return Templates:
         '''
 
-        url='/api/templates'
+        url='/templates'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
@@ -12791,7 +12791,7 @@ class User(params.User, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/users/{user:id}',
+            '/users/{user:id}',
             {'{user:id}': self.get_id()}
         )
 
@@ -12834,7 +12834,7 @@ class UserPermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/users/{user:id}/permissions/{permission:id}',
+            '/users/{user:id}/permissions/{permission:id}',
             {'{user:id}' : self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
         )
@@ -12894,7 +12894,7 @@ class UserPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/users/{user:id}/permissions'
+        url = '/users/{user:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -12920,7 +12920,7 @@ class UserPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/users/{user:id}/permissions'
+        url = '/users/{user:id}/permissions'
 
         if id:
             try :
@@ -12975,7 +12975,7 @@ class UserPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/users/{user:id}/permissions'
+        url = '/users/{user:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -13030,7 +13030,7 @@ class UserRole(params.Role, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/users/{user:id}/roles/{role:id}',
+            '/users/{user:id}/roles/{role:id}',
             {'{user:id}' : self.parentclass.get_id(),
              '{role:id}': self.get_id()}
         )
@@ -13074,7 +13074,7 @@ class UserRolePermit(params.Permit, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/users/{user:id}/roles/{role:id}/permits/{permit:id}',
+            '/users/{user:id}/roles/{role:id}/permits/{permit:id}',
             {'{user:id}' : self.parentclass.parentclass.get_id(),
              '{role:id}': self.parentclass.get_id(),
              '{permit:id}': self.get_id()}
@@ -13115,7 +13115,7 @@ class UserRolePermits(Base):
         @return Permit:
         '''
 
-        url = '/api/users/{user:id}/roles/{role:id}/permits'
+        url = '/users/{user:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -13142,7 +13142,7 @@ class UserRolePermits(Base):
         @return Permits:
         '''
 
-        url = '/api/users/{user:id}/roles/{role:id}/permits'
+        url = '/users/{user:id}/roles/{role:id}/permits'
 
         if id:
             try :
@@ -13199,7 +13199,7 @@ class UserRolePermits(Base):
         @return Permits:
         '''
 
-        url = '/api/users/{user:id}/roles/{role:id}/permits'
+        url = '/users/{user:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -13250,7 +13250,7 @@ class UserRoles(Base):
         @return Role:
         '''
 
-        url = '/api/users/{user:id}/roles'
+        url = '/users/{user:id}/roles'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -13276,7 +13276,7 @@ class UserRoles(Base):
         @return Roles:
         '''
 
-        url = '/api/users/{user:id}/roles'
+        url = '/users/{user:id}/roles'
 
         if id:
             try :
@@ -13331,7 +13331,7 @@ class UserRoles(Base):
         @return Roles:
         '''
 
-        url = '/api/users/{user:id}/roles'
+        url = '/users/{user:id}/roles'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -13385,7 +13385,7 @@ class UserTag(params.Tag, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/users/{user:id}/tags/{tag:id}',
+            '/users/{user:id}/tags/{tag:id}',
             {'{user:id}' : self.parentclass.get_id(),
              '{tag:id}': self.get_id()}
         )
@@ -13425,7 +13425,7 @@ class UserTags(Base):
         @return Tag:
         '''
 
-        url = '/api/users/{user:id}/tags'
+        url = '/users/{user:id}/tags'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -13451,7 +13451,7 @@ class UserTags(Base):
         @return Tags:
         '''
 
-        url = '/api/users/{user:id}/tags'
+        url = '/users/{user:id}/tags'
 
         if id:
             try :
@@ -13506,7 +13506,7 @@ class UserTags(Base):
         @return Tags:
         '''
 
-        url = '/api/users/{user:id}/tags'
+        url = '/users/{user:id}/tags'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -13554,7 +13554,7 @@ class Users(Base):
         @return User:
         '''
 
-        url = '/api/users'
+        url = '/users'
 
         result = self.__getProxy().add(
            url=url,
@@ -13572,7 +13572,7 @@ class Users(Base):
         @return Users:
         '''
 
-        url = '/api/users'
+        url = '/users'
 
         if id:
             try :
@@ -13613,7 +13613,7 @@ class Users(Base):
         @return Users:
         '''
 
-        url='/api/users'
+        url='/users'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
@@ -13670,7 +13670,7 @@ class VM(params.VM, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vms/{vm:id}',
+            '/vms/{vm:id}',
             {'{vm:id}': self.get_id()}
         )
 
@@ -13748,7 +13748,7 @@ class VM(params.VM, Base):
         @return VM:
         '''
 
-        url = '/api/vms/{vm:id}'
+        url = '/vms/{vm:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -13769,7 +13769,7 @@ class VM(params.VM, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/cancelmigration'
+        url = '/vms/{vm:id}/cancelmigration'
 
         result = self.__getProxy().request(
             method='POST',
@@ -13789,7 +13789,7 @@ class VM(params.VM, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/detach'
+        url = '/vms/{vm:id}/detach'
 
         result = self.__getProxy().request(
             method='POST',
@@ -13814,7 +13814,7 @@ class VM(params.VM, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/export'
+        url = '/vms/{vm:id}/export'
 
         result = self.__getProxy().request(
             method='POST',
@@ -13838,7 +13838,7 @@ class VM(params.VM, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/migrate'
+        url = '/vms/{vm:id}/migrate'
 
         result = self.__getProxy().request(
             method='POST',
@@ -13861,7 +13861,7 @@ class VM(params.VM, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/move'
+        url = '/vms/{vm:id}/move'
 
         result = self.__getProxy().request(
             method='POST',
@@ -13881,7 +13881,7 @@ class VM(params.VM, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/shutdown'
+        url = '/vms/{vm:id}/shutdown'
 
         result = self.__getProxy().request(
             method='POST',
@@ -13954,7 +13954,7 @@ class VM(params.VM, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/start'
+        url = '/vms/{vm:id}/start'
 
         result = self.__getProxy().request(
             method='POST',
@@ -13974,7 +13974,7 @@ class VM(params.VM, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/stop'
+        url = '/vms/{vm:id}/stop'
 
         result = self.__getProxy().request(
             method='POST',
@@ -13994,7 +13994,7 @@ class VM(params.VM, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/suspend'
+        url = '/vms/{vm:id}/suspend'
 
         result = self.__getProxy().request(
             method='POST',
@@ -14015,7 +14015,7 @@ class VM(params.VM, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/ticket'
+        url = '/vms/{vm:id}/ticket'
 
         result = self.__getProxy().request(
             method='POST',
@@ -14072,7 +14072,7 @@ class VMApplications(Base):
         @return Applications:
         '''
 
-        url = '/api/vms/{vm:id}/applications'
+        url = '/vms/{vm:id}/applications'
 
         if id:
             try :
@@ -14126,7 +14126,7 @@ class VMApplications(Base):
         @return Applications:
         '''
 
-        url = '/api/vms/{vm:id}/applications'
+        url = '/vms/{vm:id}/applications'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -14176,7 +14176,7 @@ class VMCdRom(params.CdRom, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vms/{vm:id}/cdroms/{cdrom:id}',
+            '/vms/{vm:id}/cdroms/{cdrom:id}',
             {'{vm:id}' : self.parentclass.get_id(),
              '{cdrom:id}': self.get_id()}
         )
@@ -14199,7 +14199,7 @@ class VMCdRom(params.CdRom, Base):
         @return CdRom:
         '''
 
-        url = '/api/vms/{vm:id}/cdroms/{cdrom:id}'
+        url = '/vms/{vm:id}/cdroms/{cdrom:id}'
         url = UrlHelper.replace(
             url,
             {'{vm:id}' : self.parentclass.get_id(),
@@ -14245,7 +14245,7 @@ class VMCdRoms(Base):
         @return CdRom:
         '''
 
-        url = '/api/vms/{vm:id}/cdroms'
+        url = '/vms/{vm:id}/cdroms'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -14271,7 +14271,7 @@ class VMCdRoms(Base):
         @return CdRoms:
         '''
 
-        url = '/api/vms/{vm:id}/cdroms'
+        url = '/vms/{vm:id}/cdroms'
 
         if id:
             try :
@@ -14326,7 +14326,7 @@ class VMCdRoms(Base):
         @return CdRoms:
         '''
 
-        url = '/api/vms/{vm:id}/cdroms'
+        url = '/vms/{vm:id}/cdroms'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -14385,7 +14385,7 @@ class VMDisk(params.Disk, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vms/{vm:id}/disks/{disk:id}',
+            '/vms/{vm:id}/disks/{disk:id}',
             {'{vm:id}' : self.parentclass.get_id(),
              '{disk:id}': self.get_id()}
         )
@@ -14416,7 +14416,7 @@ class VMDisk(params.Disk, Base):
         @return Disk:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}'
+        url = '/vms/{vm:id}/disks/{disk:id}'
         url = UrlHelper.replace(
             url,
             {'{vm:id}' : self.parentclass.get_id(),
@@ -14444,7 +14444,7 @@ class VMDisk(params.Disk, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}/activate'
+        url = '/vms/{vm:id}/disks/{disk:id}/activate'
 
         result = self.__getProxy().request(
             method='POST',
@@ -14468,7 +14468,7 @@ class VMDisk(params.Disk, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}/deactivate'
+        url = '/vms/{vm:id}/disks/{disk:id}/deactivate'
 
         result = self.__getProxy().request(
             method='POST',
@@ -14493,7 +14493,7 @@ class VMDisk(params.Disk, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}/export'
+        url = '/vms/{vm:id}/disks/{disk:id}/export'
 
         result = self.__getProxy().request(
             method='POST',
@@ -14520,7 +14520,7 @@ class VMDisk(params.Disk, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}/move'
+        url = '/vms/{vm:id}/disks/{disk:id}/move'
 
         result = self.__getProxy().request(
             method='POST',
@@ -14562,7 +14562,7 @@ class VMDiskPermission(params.Permission, Base):
         @return None:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}/permissions/{permission:id}'
+        url = '/vms/{vm:id}/disks/{disk:id}/permissions/{permission:id}'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(
@@ -14598,7 +14598,7 @@ class VMDiskPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}/permissions'
+        url = '/vms/{vm:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -14625,7 +14625,7 @@ class VMDiskPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}/permissions'
+        url = '/vms/{vm:id}/disks/{disk:id}/permissions'
 
         if id:
             try :
@@ -14681,7 +14681,7 @@ class VMDiskPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}/permissions'
+        url = '/vms/{vm:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -14747,7 +14747,7 @@ class VMDiskStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}/statistics'
+        url = '/vms/{vm:id}/disks/{disk:id}/statistics'
 
         if id:
             try :
@@ -14803,7 +14803,7 @@ class VMDiskStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/vms/{vm:id}/disks/{disk:id}/statistics'
+        url = '/vms/{vm:id}/disks/{disk:id}/statistics'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -14894,7 +14894,7 @@ class VMDisks(Base):
         @return Disk:
         '''
 
-        url = '/api/vms/{vm:id}/disks'
+        url = '/vms/{vm:id}/disks'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -14920,7 +14920,7 @@ class VMDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/vms/{vm:id}/disks'
+        url = '/vms/{vm:id}/disks'
 
         if id:
             try :
@@ -14975,7 +14975,7 @@ class VMDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/vms/{vm:id}/disks'
+        url = '/vms/{vm:id}/disks'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -15031,7 +15031,7 @@ class VMNic(params.NIC, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vms/{vm:id}/nics/{nic:id}',
+            '/vms/{vm:id}/nics/{nic:id}',
             {'{vm:id}' : self.parentclass.get_id(),
              '{nic:id}': self.get_id()}
         )
@@ -15069,7 +15069,7 @@ class VMNic(params.NIC, Base):
         @return NIC:
         '''
 
-        url = '/api/vms/{vm:id}/nics/{nic:id}'
+        url = '/vms/{vm:id}/nics/{nic:id}'
         url = UrlHelper.replace(
             url,
             {'{vm:id}' : self.parentclass.get_id(),
@@ -15097,7 +15097,7 @@ class VMNic(params.NIC, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/nics/{nic:id}/activate'
+        url = '/vms/{vm:id}/nics/{nic:id}/activate'
 
         result = self.__getProxy().request(
             method='POST',
@@ -15121,7 +15121,7 @@ class VMNic(params.NIC, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/nics/{nic:id}/deactivate'
+        url = '/vms/{vm:id}/nics/{nic:id}/deactivate'
 
         result = self.__getProxy().request(
             method='POST',
@@ -15182,7 +15182,7 @@ class VMNicReporteddevices(Base):
         @return ReportedDevices:
         '''
 
-        url = '/api/vms/{vm:id}/nics/{nic:id}/reporteddevices'
+        url = '/vms/{vm:id}/nics/{nic:id}/reporteddevices'
 
         if id:
             try :
@@ -15238,7 +15238,7 @@ class VMNicReporteddevices(Base):
         @return ReportedDevices:
         '''
 
-        url = '/api/vms/{vm:id}/nics/{nic:id}/reporteddevices'
+        url = '/vms/{vm:id}/nics/{nic:id}/reporteddevices'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -15304,7 +15304,7 @@ class VMNicStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/vms/{vm:id}/nics/{nic:id}/statistics'
+        url = '/vms/{vm:id}/nics/{nic:id}/statistics'
 
         if id:
             try :
@@ -15360,7 +15360,7 @@ class VMNicStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/vms/{vm:id}/nics/{nic:id}/statistics'
+        url = '/vms/{vm:id}/nics/{nic:id}/statistics'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -15424,7 +15424,7 @@ class VMNics(Base):
         @return NIC:
         '''
 
-        url = '/api/vms/{vm:id}/nics'
+        url = '/vms/{vm:id}/nics'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -15450,7 +15450,7 @@ class VMNics(Base):
         @return Nics:
         '''
 
-        url = '/api/vms/{vm:id}/nics'
+        url = '/vms/{vm:id}/nics'
 
         if id:
             try :
@@ -15505,7 +15505,7 @@ class VMNics(Base):
         @return Nics:
         '''
 
-        url = '/api/vms/{vm:id}/nics'
+        url = '/vms/{vm:id}/nics'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -15559,7 +15559,7 @@ class VMPermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vms/{vm:id}/permissions/{permission:id}',
+            '/vms/{vm:id}/permissions/{permission:id}',
             {'{vm:id}' : self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
         )
@@ -15604,7 +15604,7 @@ class VMPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/vms/{vm:id}/permissions'
+        url = '/vms/{vm:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -15630,7 +15630,7 @@ class VMPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/vms/{vm:id}/permissions'
+        url = '/vms/{vm:id}/permissions'
 
         if id:
             try :
@@ -15685,7 +15685,7 @@ class VMPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/vms/{vm:id}/permissions'
+        url = '/vms/{vm:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -15754,7 +15754,7 @@ class VMReportedDevices(Base):
         @return ReportedDevices:
         '''
 
-        url = '/api/vms/{vm:id}/reporteddevices'
+        url = '/vms/{vm:id}/reporteddevices'
 
         if id:
             try :
@@ -15808,7 +15808,7 @@ class VMReportedDevices(Base):
         @return ReportedDevices:
         '''
 
-        url = '/api/vms/{vm:id}/reporteddevices'
+        url = '/vms/{vm:id}/reporteddevices'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -15861,7 +15861,7 @@ class VMSnapshot(params.Snapshot, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vms/{vm:id}/snapshots/{snapshot:id}',
+            '/vms/{vm:id}/snapshots/{snapshot:id}',
             {'{vm:id}' : self.parentclass.get_id(),
              '{snapshot:id}': self.get_id()}
         )
@@ -15884,7 +15884,7 @@ class VMSnapshot(params.Snapshot, Base):
         @return Action:
         '''
 
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/restore'
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/restore'
 
         result = self.__getProxy().request(
             method='POST',
@@ -15945,7 +15945,7 @@ class VMSnapshotCdroms(Base):
         @return CdRoms:
         '''
 
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
 
         if id:
             try :
@@ -16001,7 +16001,7 @@ class VMSnapshotCdroms(Base):
         @return CdRoms:
         '''
 
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -16067,7 +16067,7 @@ class VMSnapshotDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/disks'
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/disks'
 
         if id:
             try :
@@ -16123,7 +16123,7 @@ class VMSnapshotDisks(Base):
         @return Disks:
         '''
 
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/disks'
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/disks'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -16189,7 +16189,7 @@ class VMSnapshotNics(Base):
         @return Nics:
         '''
 
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/nics'
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/nics'
 
         if id:
             try :
@@ -16245,7 +16245,7 @@ class VMSnapshotNics(Base):
         @return Nics:
         '''
 
-        url = '/api/vms/{vm:id}/snapshots/{snapshot:id}/nics'
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/nics'
 
         result = self.__getProxy().get(
             url=UrlHelper.replace(
@@ -16293,7 +16293,7 @@ class VMSnapshots(Base):
         @return Snapshot:
         '''
 
-        url = '/api/vms/{vm:id}/snapshots'
+        url = '/vms/{vm:id}/snapshots'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -16320,7 +16320,7 @@ class VMSnapshots(Base):
         @return Snapshots:
         '''
 
-        url = '/api/vms/{vm:id}/snapshots'
+        url = '/vms/{vm:id}/snapshots'
 
         if id:
             try :
@@ -16376,7 +16376,7 @@ class VMSnapshots(Base):
         @return Snapshots:
         '''
 
-        url = '/api/vms/{vm:id}/snapshots'
+        url = '/vms/{vm:id}/snapshots'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -16445,7 +16445,7 @@ class VMStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/vms/{vm:id}/statistics'
+        url = '/vms/{vm:id}/statistics'
 
         if id:
             try :
@@ -16500,7 +16500,7 @@ class VMStatistics(Base):
         @return Statistics:
         '''
 
-        url = '/api/vms/{vm:id}/statistics'
+        url = '/vms/{vm:id}/statistics'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -16554,7 +16554,7 @@ class VMTag(params.Tag, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vms/{vm:id}/tags/{tag:id}',
+            '/vms/{vm:id}/tags/{tag:id}',
             {'{vm:id}' : self.parentclass.get_id(),
              '{tag:id}': self.get_id()}
         )
@@ -16594,7 +16594,7 @@ class VMTags(Base):
         @return Tag:
         '''
 
-        url = '/api/vms/{vm:id}/tags'
+        url = '/vms/{vm:id}/tags'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -16620,7 +16620,7 @@ class VMTags(Base):
         @return Tags:
         '''
 
-        url = '/api/vms/{vm:id}/tags'
+        url = '/vms/{vm:id}/tags'
 
         if id:
             try :
@@ -16675,7 +16675,7 @@ class VMTags(Base):
         @return Tags:
         '''
 
-        url = '/api/vms/{vm:id}/tags'
+        url = '/vms/{vm:id}/tags'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -16729,7 +16729,7 @@ class VMWatchDog(params.WatchDog, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vms/{vm:id}/watchdogs/{watchdog:id}',
+            '/vms/{vm:id}/watchdogs/{watchdog:id}',
             {'{vm:id}' : self.parentclass.get_id(),
              '{watchdog:id}': self.get_id()}
         )
@@ -16751,7 +16751,7 @@ class VMWatchDog(params.WatchDog, Base):
         @return WatchDog:
         '''
 
-        url = '/api/vms/{vm:id}/watchdogs/{watchdog:id}'
+        url = '/vms/{vm:id}/watchdogs/{watchdog:id}'
         url = UrlHelper.replace(
             url,
             {'{vm:id}' : self.parentclass.get_id(),
@@ -16798,7 +16798,7 @@ class VMWatchDogs(Base):
         @return WatchDog:
         '''
 
-        url = '/api/vms/{vm:id}/watchdogs'
+        url = '/vms/{vm:id}/watchdogs'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -16824,7 +16824,7 @@ class VMWatchDogs(Base):
         @return WatchDogs:
         '''
 
-        url = '/api/vms/{vm:id}/watchdogs'
+        url = '/vms/{vm:id}/watchdogs'
 
         if id:
             try :
@@ -16879,7 +16879,7 @@ class VMWatchDogs(Base):
         @return WatchDogs:
         '''
 
-        url = '/api/vms/{vm:id}/watchdogs'
+        url = '/vms/{vm:id}/watchdogs'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -17119,7 +17119,7 @@ class VMs(Base):
         @return VM:
         '''
 
-        url = '/api/vms'
+        url = '/vms'
 
         result = self.__getProxy().add(
            url=url,
@@ -17137,7 +17137,7 @@ class VMs(Base):
         @return VMs:
         '''
 
-        url = '/api/vms'
+        url = '/vms'
 
         if id:
             try :
@@ -17178,7 +17178,7 @@ class VMs(Base):
         @return VMs:
         '''
 
-        url='/api/vms'
+        url='/vms'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
@@ -17243,7 +17243,7 @@ class VmPool(params.VmPool, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vmpools/{vmpool:id}',
+            '/vmpools/{vmpool:id}',
             {'{vmpool:id}': self.get_id()}
         )
 
@@ -17268,7 +17268,7 @@ class VmPool(params.VmPool, Base):
         @return VmPool:
         '''
 
-        url = '/api/vmpools/{vmpool:id}'
+        url = '/vmpools/{vmpool:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -17291,7 +17291,7 @@ class VmPool(params.VmPool, Base):
         @return Action:
         '''
 
-        url = '/api/vmpools/{vmpool:id}/allocatevm'
+        url = '/vmpools/{vmpool:id}/allocatevm'
 
         result = self.__getProxy().request(
             method='POST',
@@ -17333,7 +17333,7 @@ class VmPoolPermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vmpools/{vmpool:id}/permissions/{permission:id}',
+            '/vmpools/{vmpool:id}/permissions/{permission:id}',
             {'{vmpool:id}' : self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
         )
@@ -17378,7 +17378,7 @@ class VmPoolPermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/vmpools/{vmpool:id}/permissions'
+        url = '/vmpools/{vmpool:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -17404,7 +17404,7 @@ class VmPoolPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/vmpools/{vmpool:id}/permissions'
+        url = '/vmpools/{vmpool:id}/permissions'
 
         if id:
             try :
@@ -17459,7 +17459,7 @@ class VmPoolPermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/vmpools/{vmpool:id}/permissions'
+        url = '/vmpools/{vmpool:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -17511,7 +17511,7 @@ class VmPools(Base):
         @return VmPool:
         '''
 
-        url = '/api/vmpools'
+        url = '/vmpools'
 
         result = self.__getProxy().add(
            url=url,
@@ -17529,7 +17529,7 @@ class VmPools(Base):
         @return VmPools:
         '''
 
-        url = '/api/vmpools'
+        url = '/vmpools'
 
         if id:
             try :
@@ -17570,7 +17570,7 @@ class VmPools(Base):
         @return VmPools:
         '''
 
-        url='/api/vmpools'
+        url='/vmpools'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
@@ -17614,7 +17614,7 @@ class VnicProfile(params.VnicProfile, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vnicprofiles/{vnicprofile:id}',
+            '/vnicprofiles/{vnicprofile:id}',
             {'{vnicprofile:id}': self.get_id()}
         )
 
@@ -17641,7 +17641,7 @@ class VnicProfile(params.VnicProfile, Base):
         @return VnicProfile:
         '''
 
-        url = '/api/vnicprofiles/{vnicprofile:id}'
+        url = '/vnicprofiles/{vnicprofile:id}'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(
@@ -17685,7 +17685,7 @@ class VnicProfilePermission(params.Permission, Base):
         '''
 
         url = UrlHelper.replace(
-            '/api/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}',
+            '/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}',
             {'{vnicprofile:id}' : self.parentclass.get_id(),
              '{permission:id}': self.get_id()}
         )
@@ -17730,7 +17730,7 @@ class VnicProfilePermissions(Base):
         @return Permission:
         '''
 
-        url = '/api/vnicprofiles/{vnicprofile:id}/permissions'
+        url = '/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(
@@ -17756,7 +17756,7 @@ class VnicProfilePermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/vnicprofiles/{vnicprofile:id}/permissions'
+        url = '/vnicprofiles/{vnicprofile:id}/permissions'
 
         if id:
             try :
@@ -17811,7 +17811,7 @@ class VnicProfilePermissions(Base):
         @return Permissions:
         '''
 
-        url = '/api/vnicprofiles/{vnicprofile:id}/permissions'
+        url = '/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(
@@ -17866,7 +17866,7 @@ class VnicProfiles(Base):
         @return VnicProfile:
         '''
 
-        url = '/api/vnicprofiles'
+        url = '/vnicprofiles'
 
         result = self.__getProxy().add(
            url=url,
@@ -17884,7 +17884,7 @@ class VnicProfiles(Base):
         @return VnicProfiles:
         '''
 
-        url = '/api/vnicprofiles'
+        url = '/vnicprofiles'
 
         if id:
             try :
@@ -17924,7 +17924,7 @@ class VnicProfiles(Base):
         @return VnicProfiles:
         '''
 
-        url='/api/vnicprofiles'
+        url='/vnicprofiles'
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'max:matrix':max}),

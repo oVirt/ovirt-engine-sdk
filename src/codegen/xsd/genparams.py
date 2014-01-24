@@ -695,7 +695,7 @@ def main():
     genParser.handle_command(sys.argv[1:])
     outFile = genParser.getOutFile()
     # will support get the schema from the engine server
-    # contextmanager.get('proxy').request('GET', '/api?schema')
+    # contextmanager.get('proxy').request('GET', '?schema')
     schemaFile = genParser.getSchemaFile()
     logFile = genParser.getLogFile()
     tmpOutFile = outFile + r".in"

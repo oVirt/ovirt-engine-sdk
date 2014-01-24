@@ -41,11 +41,11 @@ class CollectionExceptions(object):
         # Capabilities resource has unique structure which is not
         # fully comply with RESTful collection pattern, but preserved
         # in sake of backward compatibility
-        if url == '/api/capabilities':
+        if url == '/capabilities':
             return collectiongetcapabilitiestemplate\
                    .generate()
 
-        if url == '/api/disks':
+        if url == '/disks':
             collection_get_template_values['docs'] = \
                     Documentation.document(link, {
                               'alias: string (the alias of the entity)': False,
