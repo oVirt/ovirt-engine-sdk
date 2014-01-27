@@ -8,7 +8,7 @@ from setuptools import setup, Command
 
 version_info = {
     'name': 'ovirt-engine-sdk-python',
-    'version': '3.3.0.8-1',
+    'version': '3.3.3.0',
     'description': 'A SDK interface to oVirt Virtualization',
     'author': 'Michael Pasternak',
     'author_email': 'mpastern@redhat.com',

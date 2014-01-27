@@ -40,6 +40,14 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS README LICENSE
 
 %changelog
+* Mon Jan 27 2014 Juan Hernandez <juan.hernandez@redhat.com> 3.3.3.0-1
+- Regenerate against version 3.3.3 of the engine.
+- Added VNIC profile permissions sub collection.
+- Added CloudInit support to VM initialization action.
+- Remove support for snapshot commit and undo opertions, these
+  operations have been removed from the RESTAPI.
+- Use relative paths #1038952, #1038952.
+
 * Wed  Oct 30 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.8-1
  - to host.install() added ssh related details
  - to template added virtio_scsi.enabled
