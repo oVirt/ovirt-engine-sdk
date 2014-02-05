@@ -43,3 +43,9 @@ class Base(object):
             raise ImmutableError(name)
         else:
             super(Base, self).__setattr__(name, value)
+
+    def export(self, outfile, level, namespace_='', name_='', namespacedef_='', pretty_print=True):
+        # This empty method is necessary in order to avoid exceptions when the
+        # infrastructure tries to invoke it on a collection decorator that is
+        # used as a parameter.
+        pass
