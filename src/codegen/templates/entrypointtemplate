@@ -57,8 +57,8 @@ class API(object):
         )
 
         # Extract from the entry point URL the prefix common to paths
-        # of all requests:
-        prefix = urlparse.urlparse(url).path
+        # of all requests and remove trailing slashes:
+        prefix = urlparse.urlparse(url).path.rstrip('/')
 
         # Create the proxy:
         proxy = Proxy(
