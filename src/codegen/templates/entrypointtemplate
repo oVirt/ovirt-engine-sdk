@@ -39,6 +39,16 @@ class API(object):
         if context.manager.has_key(self.__id):
             self.disconnect()
 
+        # Remove trailing slashes from the URL:
+        url = url.rstrip('/')
+
+        # For backwards compatibility we need to support URLs that don't
+        # contain a path, and in that case the path should be the old /api:
+        prefix = urlparse.urlparse(url).path
+        if prefix == '':
+            prefix = '/api'
+            url = url + prefix
+
         # Create the connection pool:
         pool = ConnectionsPool(
             url=url,
@@ -55,10 +65,6 @@ class API(object):
             validate_cert_chain=validate_cert_chain,
             debug=debug
         )
-
-        # Extract from the entry point URL the prefix common to paths
-        # of all requests and remove trailing slashes:
-        prefix = urlparse.urlparse(url).path.rstrip('/')
 
         # Create the proxy:
         proxy = Proxy(
