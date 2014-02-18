@@ -40,6 +40,10 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS README LICENSE
 
 %changelog
+* Tue Feb 18 2014 Juan Hernandez <juan.hernandez@redhat.com> 3.3.3.1-1
+- Use /api if the URL doesn't have a path #1066036.
+- Remove trailing slashes from URL prefix #1063746.
+
 * Mon Jan 27 2014 Juan Hernandez <juan.hernandez@redhat.com> 3.3.3.0-1
 - Regenerate against version 3.3.3 of the engine.
 - Added VNIC profile permissions sub collection.
