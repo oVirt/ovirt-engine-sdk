@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Thu Jan  9 19:55:31 2014 by generateDS.py version 2.9a.
+# Generated Tue Feb 18 13:00:29 2014 by generateDS.py version 2.9a.
 #
 
 import sys
@@ -5082,6 +5082,91 @@ class SnapshotStatuses(GeneratedsSuper):
 # end class SnapshotStatuses
 
 
+class SsoMethods(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, sso_method=None):
+        if sso_method is None:
+            self.sso_method = []
+        else:
+            self.sso_method = sso_method
+    def factory(*args_, **kwargs_):
+        if SsoMethods.subclass:
+            return SsoMethods.subclass(*args_, **kwargs_)
+        else:
+            return SsoMethods(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_sso_method(self): return self.sso_method
+    def set_sso_method(self, sso_method): self.sso_method = sso_method
+    def add_sso_method(self, value): self.sso_method.append(value)
+    def insert_sso_method(self, index, value): self.sso_method[index] = value
+    def hasContent_(self):
+        if (
+            self.sso_method
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='SsoMethods', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='SsoMethods')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='SsoMethods'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='SsoMethods', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for sso_method_ in self.sso_method:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%ssso_method>%s</%ssso_method>%s' % (namespace_, self.gds_format_string(quote_xml(sso_method_).encode(ExternalEncoding), input_name='sso_method'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='SsoMethods'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('sso_method=[\n')
+        level += 1
+        for sso_method_ in self.sso_method:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(sso_method_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'sso_method':
+            sso_method_ = child_.text
+            sso_method_ = self.gds_validate_string(sso_method_, node, 'sso_method')
+            self.sso_method.append(sso_method_)
+# end class SsoMethods
+
+
 class ActionableResource(GeneratedsSuper):
     subclass = None
     superclass = None
@@ -5659,9 +5744,10 @@ class Options(GeneratedsSuper):
 class DataCenter(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, storage_type=None, storage_format=None, version=None, supported_versions=None, status=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, storage_type=None, local=None, storage_format=None, version=None, supported_versions=None, status=None):
         super(DataCenter, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.storage_type = storage_type
+        self.local = local
         self.storage_format = storage_format
         self.version = version
         self.supported_versions = supported_versions
@@ -5674,6 +5760,8 @@ class DataCenter(BaseResource):
     factory = staticmethod(factory)
     def get_storage_type(self): return self.storage_type
     def set_storage_type(self, storage_type): self.storage_type = storage_type
+    def get_local(self): return self.local
+    def set_local(self, local): self.local = local
     def get_storage_format(self): return self.storage_format
     def set_storage_format(self, storage_format): self.storage_format = storage_format
     def get_version(self): return self.version
@@ -5685,6 +5773,7 @@ class DataCenter(BaseResource):
     def hasContent_(self):
         if (
             self.storage_type is not None or
+            self.local is not None or
             self.storage_format is not None or
             self.version is not None or
             self.supported_versions is not None or
@@ -5721,6 +5810,9 @@ class DataCenter(BaseResource):
         if self.storage_type is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstorage_type>%s</%sstorage_type>%s' % (namespace_, self.gds_format_string(quote_xml(self.storage_type).encode(ExternalEncoding), input_name='storage_type'), namespace_, eol_))
+        if self.local is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%slocal>%s</%slocal>%s' % (namespace_, self.gds_format_boolean(self.local, input_name='local'), namespace_, eol_))
         if self.storage_format is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstorage_format>%s</%sstorage_format>%s' % (namespace_, self.gds_format_string(quote_xml(self.storage_format).encode(ExternalEncoding), input_name='storage_format'), namespace_, eol_))
@@ -5743,6 +5835,9 @@ class DataCenter(BaseResource):
         if self.storage_type is not None:
             showIndent(outfile, level)
             outfile.write('storage_type=%s,\n' % quote_python(self.storage_type).encode(ExternalEncoding))
+        if self.local is not None:
+            showIndent(outfile, level)
+            outfile.write('local=%s,\n' % self.local)
         if self.storage_format is not None:
             showIndent(outfile, level)
             outfile.write('storage_format=%s,\n' % quote_python(self.storage_format).encode(ExternalEncoding))
@@ -5777,6 +5872,16 @@ class DataCenter(BaseResource):
             storage_type_ = child_.text
             storage_type_ = self.gds_validate_string(storage_type_, node, 'storage_type')
             self.storage_type = storage_type_
+        elif nodeName_ == 'local':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'local')
+            self.local = ival_
         elif nodeName_ == 'storage_format':
             storage_format_ = child_.text
             storage_format_ = self.gds_validate_string(storage_format_, node, 'storage_format')
@@ -6532,7 +6637,7 @@ class SchedulingPolicy(GeneratedsSuper):
 class Cluster(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, cpu=None, data_center=None, memory_policy=None, scheduling_policy=None, version=None, supported_versions=None, error_handling=None, virt_service=None, gluster_service=None, threads_as_cores=None, tunnel_migration=None, trusted_service=None, ballooning_enabled=None, display=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, cpu=None, data_center=None, memory_policy=None, scheduling_policy=None, version=None, supported_versions=None, error_handling=None, virt_service=None, gluster_service=None, threads_as_cores=None, tunnel_migration=None, trusted_service=None, ha_reservation=None, ballooning_enabled=None, display=None, ksm=None):
         super(Cluster, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.cpu = cpu
         self.data_center = data_center
@@ -6546,8 +6651,10 @@ class Cluster(BaseResource):
         self.threads_as_cores = threads_as_cores
         self.tunnel_migration = tunnel_migration
         self.trusted_service = trusted_service
+        self.ha_reservation = ha_reservation
         self.ballooning_enabled = ballooning_enabled
         self.display = display
+        self.ksm = ksm
     def factory(*args_, **kwargs_):
         if Cluster.subclass:
             return Cluster.subclass(*args_, **kwargs_)
@@ -6578,10 +6685,14 @@ class Cluster(BaseResource):
     def set_tunnel_migration(self, tunnel_migration): self.tunnel_migration = tunnel_migration
     def get_trusted_service(self): return self.trusted_service
     def set_trusted_service(self, trusted_service): self.trusted_service = trusted_service
+    def get_ha_reservation(self): return self.ha_reservation
+    def set_ha_reservation(self, ha_reservation): self.ha_reservation = ha_reservation
     def get_ballooning_enabled(self): return self.ballooning_enabled
     def set_ballooning_enabled(self, ballooning_enabled): self.ballooning_enabled = ballooning_enabled
     def get_display(self): return self.display
     def set_display(self, display): self.display = display
+    def get_ksm(self): return self.ksm
+    def set_ksm(self, ksm): self.ksm = ksm
     def hasContent_(self):
         if (
             self.cpu is not None or
@@ -6596,8 +6707,10 @@ class Cluster(BaseResource):
             self.threads_as_cores is not None or
             self.tunnel_migration is not None or
             self.trusted_service is not None or
+            self.ha_reservation is not None or
             self.ballooning_enabled is not None or
             self.display is not None or
+            self.ksm is not None or
             super(Cluster, self).hasContent_()
             ):
             return True
@@ -6656,11 +6769,16 @@ class Cluster(BaseResource):
         if self.trusted_service is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%strusted_service>%s</%strusted_service>%s' % (namespace_, self.gds_format_boolean(self.trusted_service, input_name='trusted_service'), namespace_, eol_))
+        if self.ha_reservation is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sha_reservation>%s</%sha_reservation>%s' % (namespace_, self.gds_format_boolean(self.ha_reservation, input_name='ha_reservation'), namespace_, eol_))
         if self.ballooning_enabled is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sballooning_enabled>%s</%sballooning_enabled>%s' % (namespace_, self.gds_format_boolean(self.ballooning_enabled, input_name='ballooning_enabled'), namespace_, eol_))
         if self.display is not None:
             self.display.export(outfile, level, namespace_, name_='display', pretty_print=pretty_print)
+        if self.ksm is not None:
+            self.ksm.export(outfile, level, namespace_, name_='ksm', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Cluster'):
         level += 1
         already_processed = set()
@@ -6728,6 +6846,9 @@ class Cluster(BaseResource):
         if self.trusted_service is not None:
             showIndent(outfile, level)
             outfile.write('trusted_service=%s,\n' % self.trusted_service)
+        if self.ha_reservation is not None:
+            showIndent(outfile, level)
+            outfile.write('ha_reservation=%s,\n' % self.ha_reservation)
         if self.ballooning_enabled is not None:
             showIndent(outfile, level)
             outfile.write('ballooning_enabled=%s,\n' % self.ballooning_enabled)
@@ -6735,6 +6856,12 @@ class Cluster(BaseResource):
             showIndent(outfile, level)
             outfile.write('display=model_.display(\n')
             self.display.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.ksm is not None:
+            showIndent(outfile, level)
+            outfile.write('ksm=model_.ksm(\n')
+            self.ksm.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -6825,6 +6952,16 @@ class Cluster(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'trusted_service')
             self.trusted_service = ival_
+        elif nodeName_ == 'ha_reservation':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'ha_reservation')
+            self.ha_reservation = ival_
         elif nodeName_ == 'ballooning_enabled':
             sval_ = child_.text
             if sval_ in ('true', '1'):
@@ -6839,6 +6976,10 @@ class Cluster(BaseResource):
             obj_ = Display.factory()
             obj_.build(child_)
             self.set_display(obj_)
+        elif nodeName_ == 'ksm':
+            obj_ = KSM.factory()
+            obj_.build(child_)
+            self.set_ksm(obj_)
         super(Cluster, self).buildChildren(child_, node, nodeName_, True)
 # end class Cluster
 
@@ -7192,7 +7333,7 @@ class Agents(GeneratedsSuper):
 class PowerManagement(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, type_=None, enabled=None, address=None, username=None, password=None, options=None, status=None, pm_proxies=None, agents=None):
+    def __init__(self, type_=None, enabled=None, address=None, username=None, password=None, options=None, status=None, pm_proxies=None, agents=None, automatic_pm_enabled=None):
         self.type_ = _cast(None, type_)
         self.enabled = enabled
         self.address = address
@@ -7202,6 +7343,7 @@ class PowerManagement(GeneratedsSuper):
         self.status = status
         self.pm_proxies = pm_proxies
         self.agents = agents
+        self.automatic_pm_enabled = automatic_pm_enabled
     def factory(*args_, **kwargs_):
         if PowerManagement.subclass:
             return PowerManagement.subclass(*args_, **kwargs_)
@@ -7224,6 +7366,8 @@ class PowerManagement(GeneratedsSuper):
     def set_pm_proxies(self, pm_proxies): self.pm_proxies = pm_proxies
     def get_agents(self): return self.agents
     def set_agents(self, agents): self.agents = agents
+    def get_automatic_pm_enabled(self): return self.automatic_pm_enabled
+    def set_automatic_pm_enabled(self, automatic_pm_enabled): self.automatic_pm_enabled = automatic_pm_enabled
     def get_type(self): return self.type_
     def set_type(self, type_): self.type_ = type_
     def hasContent_(self):
@@ -7235,7 +7379,8 @@ class PowerManagement(GeneratedsSuper):
             self.options is not None or
             self.status is not None or
             self.pm_proxies is not None or
-            self.agents is not None
+            self.agents is not None or
+            self.automatic_pm_enabled is not None
             ):
             return True
         else:
@@ -7285,6 +7430,9 @@ class PowerManagement(GeneratedsSuper):
             self.pm_proxies.export(outfile, level, namespace_, name_='pm_proxies', pretty_print=pretty_print)
         if self.agents is not None:
             self.agents.export(outfile, level, namespace_, name_='agents', pretty_print=pretty_print)
+        if self.automatic_pm_enabled is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sautomatic_pm_enabled>%s</%sautomatic_pm_enabled>%s' % (namespace_, self.gds_format_boolean(self.automatic_pm_enabled, input_name='automatic_pm_enabled'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='PowerManagement'):
         level += 1
         already_processed = set()
@@ -7333,6 +7481,9 @@ class PowerManagement(GeneratedsSuper):
             self.agents.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.automatic_pm_enabled is not None:
+            showIndent(outfile, level)
+            outfile.write('automatic_pm_enabled=%s,\n' % self.automatic_pm_enabled)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -7383,6 +7534,16 @@ class PowerManagement(GeneratedsSuper):
             obj_ = Agents.factory()
             obj_.build(child_)
             self.set_agents(obj_)
+        elif nodeName_ == 'automatic_pm_enabled':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'automatic_pm_enabled')
+            self.automatic_pm_enabled = ival_
 # end class PowerManagement
 
 
@@ -9322,9 +9483,10 @@ class Roles(BaseResources):
 class User(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, domain=None, department=None, logged_in=None, last_name=None, user_name=None, password=None, email=None, roles=None, groups=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, domain=None, external_id=None, department=None, logged_in=None, last_name=None, user_name=None, password=None, email=None, roles=None, groups=None):
         super(User, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.domain = domain
+        self.external_id = external_id
         self.department = department
         self.logged_in = logged_in
         self.last_name = last_name
@@ -9341,6 +9503,8 @@ class User(BaseResource):
     factory = staticmethod(factory)
     def get_domain(self): return self.domain
     def set_domain(self, domain): self.domain = domain
+    def get_external_id(self): return self.external_id
+    def set_external_id(self, external_id): self.external_id = external_id
     def get_department(self): return self.department
     def set_department(self, department): self.department = department
     def get_logged_in(self): return self.logged_in
@@ -9360,6 +9524,7 @@ class User(BaseResource):
     def hasContent_(self):
         if (
             self.domain is not None or
+            self.external_id is not None or
             self.department is not None or
             self.logged_in is not None or
             self.last_name is not None or
@@ -9399,6 +9564,9 @@ class User(BaseResource):
             eol_ = ''
         if self.domain is not None:
             self.domain.export(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
+        if self.external_id is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sexternal_id>%s</%sexternal_id>%s' % (namespace_, self.gds_format_string(quote_xml(self.external_id).encode(ExternalEncoding), input_name='external_id'), namespace_, eol_))
         if self.department is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdepartment>%s</%sdepartment>%s' % (namespace_, self.gds_format_string(quote_xml(self.department).encode(ExternalEncoding), input_name='department'), namespace_, eol_))
@@ -9437,6 +9605,9 @@ class User(BaseResource):
             self.domain.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.external_id is not None:
+            showIndent(outfile, level)
+            outfile.write('external_id=%s,\n' % quote_python(self.external_id).encode(ExternalEncoding))
         if self.department is not None:
             showIndent(outfile, level)
             outfile.write('department=%s,\n' % quote_python(self.department).encode(ExternalEncoding))
@@ -9480,6 +9651,10 @@ class User(BaseResource):
             obj_ = Domain.factory()
             obj_.build(child_)
             self.set_domain(obj_)
+        elif nodeName_ == 'external_id':
+            external_id_ = child_.text
+            external_id_ = self.gds_validate_string(external_id_, node, 'external_id')
+            self.external_id = external_id_
         elif nodeName_ == 'department':
             department_ = child_.text
             department_ = self.gds_validate_string(department_, node, 'department')
@@ -9829,9 +10004,10 @@ class SSH(BaseResource):
 class Group(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, domain=None, roles=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, domain=None, external_id=None, roles=None):
         super(Group, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.domain = domain
+        self.external_id = external_id
         self.roles = roles
     def factory(*args_, **kwargs_):
         if Group.subclass:
@@ -9841,11 +10017,14 @@ class Group(BaseResource):
     factory = staticmethod(factory)
     def get_domain(self): return self.domain
     def set_domain(self, domain): self.domain = domain
+    def get_external_id(self): return self.external_id
+    def set_external_id(self, external_id): self.external_id = external_id
     def get_roles(self): return self.roles
     def set_roles(self, roles): self.roles = roles
     def hasContent_(self):
         if (
             self.domain is not None or
+            self.external_id is not None or
             self.roles is not None or
             super(Group, self).hasContent_()
             ):
@@ -9878,6 +10057,9 @@ class Group(BaseResource):
             eol_ = ''
         if self.domain is not None:
             self.domain.export(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
+        if self.external_id is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sexternal_id>%s</%sexternal_id>%s' % (namespace_, self.gds_format_string(quote_xml(self.external_id).encode(ExternalEncoding), input_name='external_id'), namespace_, eol_))
         if self.roles is not None:
             self.roles.export(outfile, level, namespace_, name_='roles', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Group'):
@@ -9896,6 +10078,9 @@ class Group(BaseResource):
             self.domain.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.external_id is not None:
+            showIndent(outfile, level)
+            outfile.write('external_id=%s,\n' % quote_python(self.external_id).encode(ExternalEncoding))
         if self.roles is not None:
             showIndent(outfile, level)
             outfile.write('roles=model_.Roles(\n')
@@ -9915,6 +10100,10 @@ class Group(BaseResource):
             obj_ = Domain.factory()
             obj_.build(child_)
             self.set_domain(obj_)
+        elif nodeName_ == 'external_id':
+            external_id_ = child_.text
+            external_id_ = self.gds_validate_string(external_id_, node, 'external_id')
+            self.external_id = external_id_
         elif nodeName_ == 'roles':
             obj_ = Roles.factory()
             obj_.build(child_)
@@ -12297,6 +12486,195 @@ class Networks(BaseResources):
 # end class Networks
 
 
+class Label(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, network=None, host_nic=None):
+        super(Label, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        self.network = network
+        self.host_nic = host_nic
+    def factory(*args_, **kwargs_):
+        if Label.subclass:
+            return Label.subclass(*args_, **kwargs_)
+        else:
+            return Label(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_network(self): return self.network
+    def set_network(self, network): self.network = network
+    def get_host_nic(self): return self.host_nic
+    def set_host_nic(self, host_nic): self.host_nic = host_nic
+    def hasContent_(self):
+        if (
+            self.network is not None or
+            self.host_nic is not None or
+            super(Label, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='Label', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Label')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Label'):
+        super(Label, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Label')
+    def exportChildren(self, outfile, level, namespace_='', name_='Label', fromsubclass_=False, pretty_print=True):
+        super(Label, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.network is not None:
+            self.network.export(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
+        if self.host_nic is not None:
+            self.host_nic.export(outfile, level, namespace_, name_='host_nic', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='Label'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(Label, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(Label, self).exportLiteralChildren(outfile, level, name_)
+        if self.network is not None:
+            showIndent(outfile, level)
+            outfile.write('network=model_.network(\n')
+            self.network.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.host_nic is not None:
+            showIndent(outfile, level)
+            outfile.write('host_nic=model_.host_nic(\n')
+            self.host_nic.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(Label, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'network':
+            obj_ = Network.factory()
+            obj_.build(child_)
+            self.set_network(obj_)
+        elif nodeName_ == 'host_nic':
+            obj_ = HostNIC.factory()
+            obj_.build(child_)
+            self.set_host_nic(obj_)
+        super(Label, self).buildChildren(child_, node, nodeName_, True)
+# end class Label
+
+
+class Labels(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, total=None, active=None, label=None):
+        super(Labels, self).__init__(actions, total, active, )
+        if label is None:
+            self.label = []
+        else:
+            self.label = label
+    def factory(*args_, **kwargs_):
+        if Labels.subclass:
+            return Labels.subclass(*args_, **kwargs_)
+        else:
+            return Labels(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_label(self): return self.label
+    def set_label(self, label): self.label = label
+    def add_label(self, value): self.label.append(value)
+    def insert_label(self, index, value): self.label[index] = value
+    def hasContent_(self):
+        if (
+            self.label or
+            super(Labels, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='Labels', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Labels')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Labels'):
+        super(Labels, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Labels')
+    def exportChildren(self, outfile, level, namespace_='', name_='Labels', fromsubclass_=False, pretty_print=True):
+        super(Labels, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for label_ in self.label:
+            label_.export(outfile, level, namespace_, name_='label', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='Labels'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(Labels, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(Labels, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('label=[\n')
+        level += 1
+        for label_ in self.label:
+            showIndent(outfile, level)
+            outfile.write('model_.label(\n')
+            label_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(Labels, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'label':
+            obj_ = Label.factory()
+            obj_.build(child_)
+            self.label.append(obj_)
+        super(Labels, self).buildChildren(child_, node, nodeName_, True)
+# end class Labels
+
+
 class VnicProfile(BaseResource):
     subclass = None
     superclass = BaseResource
@@ -14085,7 +14463,7 @@ class StorageConnections(BaseResources):
 class Template(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, console=None, timezone=None, domain=None, usb=None, tunnel_migration=None, virtio_scsi=None, permissions=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, sso=None, console=None, timezone=None, domain=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None):
         super(Template, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.vm = vm
         self.type_ = type_
@@ -14102,11 +14480,13 @@ class Template(BaseResource):
         self.display = display
         self.stateless = stateless
         self.delete_protected = delete_protected
+        self.sso = sso
         self.console = console
         self.timezone = timezone
         self.domain = domain
         self.usb = usb
         self.tunnel_migration = tunnel_migration
+        self.migration_downtime = migration_downtime
         self.virtio_scsi = virtio_scsi
         self.permissions = permissions
     def factory(*args_, **kwargs_):
@@ -14145,6 +14525,8 @@ class Template(BaseResource):
     def set_stateless(self, stateless): self.stateless = stateless
     def get_delete_protected(self): return self.delete_protected
     def set_delete_protected(self, delete_protected): self.delete_protected = delete_protected
+    def get_sso(self): return self.sso
+    def set_sso(self, sso): self.sso = sso
     def get_console(self): return self.console
     def set_console(self, console): self.console = console
     def get_timezone(self): return self.timezone
@@ -14155,6 +14537,8 @@ class Template(BaseResource):
     def set_usb(self, usb): self.usb = usb
     def get_tunnel_migration(self): return self.tunnel_migration
     def set_tunnel_migration(self, tunnel_migration): self.tunnel_migration = tunnel_migration
+    def get_migration_downtime(self): return self.migration_downtime
+    def set_migration_downtime(self, migration_downtime): self.migration_downtime = migration_downtime
     def get_virtio_scsi(self): return self.virtio_scsi
     def set_virtio_scsi(self, virtio_scsi): self.virtio_scsi = virtio_scsi
     def get_permissions(self): return self.permissions
@@ -14176,11 +14560,13 @@ class Template(BaseResource):
             self.display is not None or
             self.stateless is not None or
             self.delete_protected is not None or
+            self.sso is not None or
             self.console is not None or
             self.timezone is not None or
             self.domain is not None or
             self.usb is not None or
             self.tunnel_migration is not None or
+            self.migration_downtime is not None or
             self.virtio_scsi is not None or
             self.permissions is not None or
             super(Template, self).hasContent_()
@@ -14249,6 +14635,8 @@ class Template(BaseResource):
         if self.delete_protected is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdelete_protected>%s</%sdelete_protected>%s' % (namespace_, self.gds_format_boolean(self.delete_protected, input_name='delete_protected'), namespace_, eol_))
+        if self.sso is not None:
+            self.sso.export(outfile, level, namespace_, name_='sso', pretty_print=pretty_print)
         if self.console is not None:
             self.console.export(outfile, level, namespace_, name_='console', pretty_print=pretty_print)
         if self.timezone is not None:
@@ -14261,6 +14649,9 @@ class Template(BaseResource):
         if self.tunnel_migration is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stunnel_migration>%s</%stunnel_migration>%s' % (namespace_, self.gds_format_boolean(self.tunnel_migration, input_name='tunnel_migration'), namespace_, eol_))
+        if self.migration_downtime is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%smigration_downtime>%s</%smigration_downtime>%s' % (namespace_, self.gds_format_integer(self.migration_downtime, input_name='migration_downtime'), namespace_, eol_))
         if self.virtio_scsi is not None:
             self.virtio_scsi.export(outfile, level, namespace_, name_='virtio_scsi', pretty_print=pretty_print)
         if self.permissions is not None:
@@ -14344,6 +14735,12 @@ class Template(BaseResource):
         if self.delete_protected is not None:
             showIndent(outfile, level)
             outfile.write('delete_protected=%s,\n' % self.delete_protected)
+        if self.sso is not None:
+            showIndent(outfile, level)
+            outfile.write('sso=model_.sso(\n')
+            self.sso.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.console is not None:
             showIndent(outfile, level)
             outfile.write('console=model_.console(\n')
@@ -14368,6 +14765,9 @@ class Template(BaseResource):
         if self.tunnel_migration is not None:
             showIndent(outfile, level)
             outfile.write('tunnel_migration=%s,\n' % self.tunnel_migration)
+        if self.migration_downtime is not None:
+            showIndent(outfile, level)
+            outfile.write('migration_downtime=%d,\n' % self.migration_downtime)
         if self.virtio_scsi is not None:
             showIndent(outfile, level)
             outfile.write('virtio_scsi=model_.virtio_scsi(\n')
@@ -14470,6 +14870,10 @@ class Template(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'delete_protected')
             self.delete_protected = ival_
+        elif nodeName_ == 'sso':
+            obj_ = Sso.factory()
+            obj_.build(child_)
+            self.set_sso(obj_)
         elif nodeName_ == 'console':
             obj_ = Console.factory()
             obj_.build(child_)
@@ -14496,6 +14900,14 @@ class Template(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'tunnel_migration')
             self.tunnel_migration = ival_
+        elif nodeName_ == 'migration_downtime':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'migration_downtime')
+            self.migration_downtime = ival_
         elif nodeName_ == 'virtio_scsi':
             obj_ = VirtIO_SCSI.factory()
             obj_.build(child_)
@@ -14911,6 +15323,240 @@ class OperatingSystem(GeneratedsSuper):
             obj_.build(child_)
             self.set_version(obj_)
 # end class OperatingSystem
+
+
+class Sso(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, methods=None):
+        self.methods = methods
+    def factory(*args_, **kwargs_):
+        if Sso.subclass:
+            return Sso.subclass(*args_, **kwargs_)
+        else:
+            return Sso(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_methods(self): return self.methods
+    def set_methods(self, methods): self.methods = methods
+    def hasContent_(self):
+        if (
+            self.methods is not None
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='Sso', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Sso')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Sso'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='Sso', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.methods is not None:
+            self.methods.export(outfile, level, namespace_, name_='methods', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='Sso'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.methods is not None:
+            showIndent(outfile, level)
+            outfile.write('methods=model_.methods(\n')
+            self.methods.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'methods':
+            obj_ = Methods.factory()
+            obj_.build(child_)
+            self.set_methods(obj_)
+# end class Sso
+
+
+class Methods(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, method=None):
+        if method is None:
+            self.method = []
+        else:
+            self.method = method
+    def factory(*args_, **kwargs_):
+        if Methods.subclass:
+            return Methods.subclass(*args_, **kwargs_)
+        else:
+            return Methods(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_method(self): return self.method
+    def set_method(self, method): self.method = method
+    def add_method(self, value): self.method.append(value)
+    def insert_method(self, index, value): self.method[index] = value
+    def hasContent_(self):
+        if (
+            self.method
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='Methods', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Methods')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Methods'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='Methods', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for method_ in self.method:
+            method_.export(outfile, level, namespace_, name_='method', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='Methods'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('method=[\n')
+        level += 1
+        for method_ in self.method:
+            showIndent(outfile, level)
+            outfile.write('model_.method(\n')
+            method_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'method':
+            obj_ = Method.factory()
+            obj_.build(child_)
+            self.method.append(obj_)
+# end class Methods
+
+
+class Method(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, id=None):
+        self.id = _cast(None, id)
+        pass
+    def factory(*args_, **kwargs_):
+        if Method.subclass:
+            return Method.subclass(*args_, **kwargs_)
+        else:
+            return Method(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_id(self): return self.id
+    def set_id(self, id): self.id = id
+    def hasContent_(self):
+        if (
+
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='Method', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Method')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Method'):
+        if self.id is not None and 'id' not in already_processed:
+            already_processed.add('id')
+            outfile.write(' id=%s' % (self.gds_format_string(quote_attrib(self.id).encode(ExternalEncoding), input_name='id'), ))
+    def exportChildren(self, outfile, level, namespace_='', name_='Method', fromsubclass_=False, pretty_print=True):
+        pass
+    def exportLiteral(self, outfile, level, name_='Method'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        if self.id is not None and 'id' not in already_processed:
+            already_processed.add('id')
+            showIndent(outfile, level)
+            outfile.write('id = "%s",\n' % (self.id,))
+    def exportLiteralChildren(self, outfile, level, name_):
+        pass
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('id', node)
+        if value is not None and 'id' not in already_processed:
+            already_processed.add('id')
+            self.id = value
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        pass
+# end class Method
 
 
 class HighAvailability(GeneratedsSuper):
@@ -15899,9 +16545,20 @@ class Configuration(GeneratedsSuper):
 class Initialization(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, configuration=None, cloud_init=None):
+    def __init__(self, configuration=None, cloud_init=None, host_name=None, domain=None, timezone=None, authorized_ssh_keys=None, regenerate_ssh_keys=None, dns_servers=None, dns_search=None, nic_configurations=None, windows_license_key=None, root_password=None, custom_script=None):
         self.configuration = configuration
         self.cloud_init = cloud_init
+        self.host_name = host_name
+        self.domain = domain
+        self.timezone = timezone
+        self.authorized_ssh_keys = authorized_ssh_keys
+        self.regenerate_ssh_keys = regenerate_ssh_keys
+        self.dns_servers = dns_servers
+        self.dns_search = dns_search
+        self.nic_configurations = nic_configurations
+        self.windows_license_key = windows_license_key
+        self.root_password = root_password
+        self.custom_script = custom_script
     def factory(*args_, **kwargs_):
         if Initialization.subclass:
             return Initialization.subclass(*args_, **kwargs_)
@@ -15912,10 +16569,43 @@ class Initialization(GeneratedsSuper):
     def set_configuration(self, configuration): self.configuration = configuration
     def get_cloud_init(self): return self.cloud_init
     def set_cloud_init(self, cloud_init): self.cloud_init = cloud_init
+    def get_host_name(self): return self.host_name
+    def set_host_name(self, host_name): self.host_name = host_name
+    def get_domain(self): return self.domain
+    def set_domain(self, domain): self.domain = domain
+    def get_timezone(self): return self.timezone
+    def set_timezone(self, timezone): self.timezone = timezone
+    def get_authorized_ssh_keys(self): return self.authorized_ssh_keys
+    def set_authorized_ssh_keys(self, authorized_ssh_keys): self.authorized_ssh_keys = authorized_ssh_keys
+    def get_regenerate_ssh_keys(self): return self.regenerate_ssh_keys
+    def set_regenerate_ssh_keys(self, regenerate_ssh_keys): self.regenerate_ssh_keys = regenerate_ssh_keys
+    def get_dns_servers(self): return self.dns_servers
+    def set_dns_servers(self, dns_servers): self.dns_servers = dns_servers
+    def get_dns_search(self): return self.dns_search
+    def set_dns_search(self, dns_search): self.dns_search = dns_search
+    def get_nic_configurations(self): return self.nic_configurations
+    def set_nic_configurations(self, nic_configurations): self.nic_configurations = nic_configurations
+    def get_windows_license_key(self): return self.windows_license_key
+    def set_windows_license_key(self, windows_license_key): self.windows_license_key = windows_license_key
+    def get_root_password(self): return self.root_password
+    def set_root_password(self, root_password): self.root_password = root_password
+    def get_custom_script(self): return self.custom_script
+    def set_custom_script(self, custom_script): self.custom_script = custom_script
     def hasContent_(self):
         if (
             self.configuration is not None or
-            self.cloud_init is not None
+            self.cloud_init is not None or
+            self.host_name is not None or
+            self.domain is not None or
+            self.timezone is not None or
+            self.authorized_ssh_keys is not None or
+            self.regenerate_ssh_keys is not None or
+            self.dns_servers is not None or
+            self.dns_search is not None or
+            self.nic_configurations is not None or
+            self.windows_license_key is not None or
+            self.root_password is not None or
+            self.custom_script is not None
             ):
             return True
         else:
@@ -15947,6 +16637,38 @@ class Initialization(GeneratedsSuper):
             self.configuration.export(outfile, level, namespace_, name_='configuration', pretty_print=pretty_print)
         if self.cloud_init is not None:
             self.cloud_init.export(outfile, level, namespace_, name_='cloud_init', pretty_print=pretty_print)
+        if self.host_name is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%shost_name>%s</%shost_name>%s' % (namespace_, self.gds_format_string(quote_xml(self.host_name).encode(ExternalEncoding), input_name='host_name'), namespace_, eol_))
+        if self.domain is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sdomain>%s</%sdomain>%s' % (namespace_, self.gds_format_string(quote_xml(self.domain).encode(ExternalEncoding), input_name='domain'), namespace_, eol_))
+        if self.timezone is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%stimezone>%s</%stimezone>%s' % (namespace_, self.gds_format_string(quote_xml(self.timezone).encode(ExternalEncoding), input_name='timezone'), namespace_, eol_))
+        if self.authorized_ssh_keys is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sauthorized_ssh_keys>%s</%sauthorized_ssh_keys>%s' % (namespace_, self.gds_format_string(quote_xml(self.authorized_ssh_keys).encode(ExternalEncoding), input_name='authorized_ssh_keys'), namespace_, eol_))
+        if self.regenerate_ssh_keys is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sregenerate_ssh_keys>%s</%sregenerate_ssh_keys>%s' % (namespace_, self.gds_format_boolean(self.regenerate_ssh_keys, input_name='regenerate_ssh_keys'), namespace_, eol_))
+        if self.dns_servers is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sdns_servers>%s</%sdns_servers>%s' % (namespace_, self.gds_format_string(quote_xml(self.dns_servers).encode(ExternalEncoding), input_name='dns_servers'), namespace_, eol_))
+        if self.dns_search is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sdns_search>%s</%sdns_search>%s' % (namespace_, self.gds_format_string(quote_xml(self.dns_search).encode(ExternalEncoding), input_name='dns_search'), namespace_, eol_))
+        if self.nic_configurations is not None:
+            self.nic_configurations.export(outfile, level, namespace_, name_='nic_configurations', pretty_print=pretty_print)
+        if self.windows_license_key is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%swindows_license_key>%s</%swindows_license_key>%s' % (namespace_, self.gds_format_string(quote_xml(self.windows_license_key).encode(ExternalEncoding), input_name='windows_license_key'), namespace_, eol_))
+        if self.root_password is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sroot_password>%s</%sroot_password>%s' % (namespace_, self.gds_format_string(quote_xml(self.root_password).encode(ExternalEncoding), input_name='root_password'), namespace_, eol_))
+        if self.custom_script is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%scustom_script>%s</%scustom_script>%s' % (namespace_, self.gds_format_string(quote_xml(self.custom_script).encode(ExternalEncoding), input_name='custom_script'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='Initialization'):
         level += 1
         already_processed = set()
@@ -15968,6 +16690,42 @@ class Initialization(GeneratedsSuper):
             self.cloud_init.exportLiteral(outfile, level, name_='cloud_init')
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.host_name is not None:
+            showIndent(outfile, level)
+            outfile.write('host_name=%s,\n' % quote_python(self.host_name).encode(ExternalEncoding))
+        if self.domain is not None:
+            showIndent(outfile, level)
+            outfile.write('domain=%s,\n' % quote_python(self.domain).encode(ExternalEncoding))
+        if self.timezone is not None:
+            showIndent(outfile, level)
+            outfile.write('timezone=%s,\n' % quote_python(self.timezone).encode(ExternalEncoding))
+        if self.authorized_ssh_keys is not None:
+            showIndent(outfile, level)
+            outfile.write('authorized_ssh_keys=%s,\n' % quote_python(self.authorized_ssh_keys).encode(ExternalEncoding))
+        if self.regenerate_ssh_keys is not None:
+            showIndent(outfile, level)
+            outfile.write('regenerate_ssh_keys=%s,\n' % self.regenerate_ssh_keys)
+        if self.dns_servers is not None:
+            showIndent(outfile, level)
+            outfile.write('dns_servers=%s,\n' % quote_python(self.dns_servers).encode(ExternalEncoding))
+        if self.dns_search is not None:
+            showIndent(outfile, level)
+            outfile.write('dns_search=%s,\n' % quote_python(self.dns_search).encode(ExternalEncoding))
+        if self.nic_configurations is not None:
+            showIndent(outfile, level)
+            outfile.write('nic_configurations=model_.nic_configurations(\n')
+            self.nic_configurations.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.windows_license_key is not None:
+            showIndent(outfile, level)
+            outfile.write('windows_license_key=%s,\n' % quote_python(self.windows_license_key).encode(ExternalEncoding))
+        if self.root_password is not None:
+            showIndent(outfile, level)
+            outfile.write('root_password=%s,\n' % quote_python(self.root_password).encode(ExternalEncoding))
+        if self.custom_script is not None:
+            showIndent(outfile, level)
+            outfile.write('custom_script=%s,\n' % quote_python(self.custom_script).encode(ExternalEncoding))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -15985,6 +16743,56 @@ class Initialization(GeneratedsSuper):
             obj_ = CloudInit.factory()
             obj_.build(child_)
             self.set_cloud_init(obj_)
+        elif nodeName_ == 'host_name':
+            host_name_ = child_.text
+            host_name_ = self.gds_validate_string(host_name_, node, 'host_name')
+            self.host_name = host_name_
+        elif nodeName_ == 'domain':
+            domain_ = child_.text
+            domain_ = self.gds_validate_string(domain_, node, 'domain')
+            self.domain = domain_
+        elif nodeName_ == 'timezone':
+            timezone_ = child_.text
+            timezone_ = self.gds_validate_string(timezone_, node, 'timezone')
+            self.timezone = timezone_
+        elif nodeName_ == 'authorized_ssh_keys':
+            authorized_ssh_keys_ = child_.text
+            authorized_ssh_keys_ = self.gds_validate_string(authorized_ssh_keys_, node, 'authorized_ssh_keys')
+            self.authorized_ssh_keys = authorized_ssh_keys_
+        elif nodeName_ == 'regenerate_ssh_keys':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'regenerate_ssh_keys')
+            self.regenerate_ssh_keys = ival_
+        elif nodeName_ == 'dns_servers':
+            dns_servers_ = child_.text
+            dns_servers_ = self.gds_validate_string(dns_servers_, node, 'dns_servers')
+            self.dns_servers = dns_servers_
+        elif nodeName_ == 'dns_search':
+            dns_search_ = child_.text
+            dns_search_ = self.gds_validate_string(dns_search_, node, 'dns_search')
+            self.dns_search = dns_search_
+        elif nodeName_ == 'nic_configurations':
+            obj_ = GuestNicsConfiguration.factory()
+            obj_.build(child_)
+            self.set_nic_configurations(obj_)
+        elif nodeName_ == 'windows_license_key':
+            windows_license_key_ = child_.text
+            windows_license_key_ = self.gds_validate_string(windows_license_key_, node, 'windows_license_key')
+            self.windows_license_key = windows_license_key_
+        elif nodeName_ == 'root_password':
+            root_password_ = child_.text
+            root_password_ = self.gds_validate_string(root_password_, node, 'root_password')
+            self.root_password = root_password_
+        elif nodeName_ == 'custom_script':
+            custom_script_ = child_.text
+            custom_script_ = self.gds_validate_string(custom_script_, node, 'custom_script')
+            self.custom_script = custom_script_
 # end class Initialization
 
 
@@ -16716,7 +17524,7 @@ class GuestInfo(GeneratedsSuper):
 class VM(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, sso=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, extensiontype_=None):
         super(VM, self).__init__(actions, href, id, name, description, comment, creation_status, link, extensiontype_, )
         self.type_ = type_
         self.status = status
@@ -16736,6 +17544,7 @@ class VM(BaseResource):
         self.origin = origin
         self.stateless = stateless
         self.delete_protected = delete_protected
+        self.sso = sso
         self.console = console
         self.timezone = timezone
         self.domain = domain
@@ -16753,6 +17562,7 @@ class VM(BaseResource):
         self.quota = quota
         self.usb = usb
         self.tunnel_migration = tunnel_migration
+        self.migration_downtime = migration_downtime
         self.virtio_scsi = virtio_scsi
         self.permissions = permissions
         self.vmpool = vmpool
@@ -16803,6 +17613,8 @@ class VM(BaseResource):
     def set_stateless(self, stateless): self.stateless = stateless
     def get_delete_protected(self): return self.delete_protected
     def set_delete_protected(self, delete_protected): self.delete_protected = delete_protected
+    def get_sso(self): return self.sso
+    def set_sso(self, sso): self.sso = sso
     def get_console(self): return self.console
     def set_console(self, console): self.console = console
     def get_timezone(self): return self.timezone
@@ -16837,6 +17649,8 @@ class VM(BaseResource):
     def set_usb(self, usb): self.usb = usb
     def get_tunnel_migration(self): return self.tunnel_migration
     def set_tunnel_migration(self, tunnel_migration): self.tunnel_migration = tunnel_migration
+    def get_migration_downtime(self): return self.migration_downtime
+    def set_migration_downtime(self, migration_downtime): self.migration_downtime = migration_downtime
     def get_virtio_scsi(self): return self.virtio_scsi
     def set_virtio_scsi(self, virtio_scsi): self.virtio_scsi = virtio_scsi
     def get_permissions(self): return self.permissions
@@ -16873,6 +17687,7 @@ class VM(BaseResource):
             self.origin is not None or
             self.stateless is not None or
             self.delete_protected is not None or
+            self.sso is not None or
             self.console is not None or
             self.timezone is not None or
             self.domain is not None or
@@ -16890,6 +17705,7 @@ class VM(BaseResource):
             self.quota is not None or
             self.usb is not None or
             self.tunnel_migration is not None or
+            self.migration_downtime is not None or
             self.virtio_scsi is not None or
             self.permissions is not None or
             self.vmpool is not None or
@@ -16975,6 +17791,8 @@ class VM(BaseResource):
         if self.delete_protected is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdelete_protected>%s</%sdelete_protected>%s' % (namespace_, self.gds_format_boolean(self.delete_protected, input_name='delete_protected'), namespace_, eol_))
+        if self.sso is not None:
+            self.sso.export(outfile, level, namespace_, name_='sso', pretty_print=pretty_print)
         if self.console is not None:
             self.console.export(outfile, level, namespace_, name_='console', pretty_print=pretty_print)
         if self.timezone is not None:
@@ -17011,6 +17829,9 @@ class VM(BaseResource):
         if self.tunnel_migration is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stunnel_migration>%s</%stunnel_migration>%s' % (namespace_, self.gds_format_boolean(self.tunnel_migration, input_name='tunnel_migration'), namespace_, eol_))
+        if self.migration_downtime is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%smigration_downtime>%s</%smigration_downtime>%s' % (namespace_, self.gds_format_integer(self.migration_downtime, input_name='migration_downtime'), namespace_, eol_))
         if self.virtio_scsi is not None:
             self.virtio_scsi.export(outfile, level, namespace_, name_='virtio_scsi', pretty_print=pretty_print)
         if self.permissions is not None:
@@ -17116,6 +17937,12 @@ class VM(BaseResource):
         if self.delete_protected is not None:
             showIndent(outfile, level)
             outfile.write('delete_protected=%s,\n' % self.delete_protected)
+        if self.sso is not None:
+            showIndent(outfile, level)
+            outfile.write('sso=model_.sso(\n')
+            self.sso.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.console is not None:
             showIndent(outfile, level)
             outfile.write('console=model_.console(\n')
@@ -17212,6 +18039,9 @@ class VM(BaseResource):
         if self.tunnel_migration is not None:
             showIndent(outfile, level)
             outfile.write('tunnel_migration=%s,\n' % self.tunnel_migration)
+        if self.migration_downtime is not None:
+            showIndent(outfile, level)
+            outfile.write('migration_downtime=%d,\n' % self.migration_downtime)
         if self.virtio_scsi is not None:
             showIndent(outfile, level)
             outfile.write('virtio_scsi=model_.virtio_scsi(\n')
@@ -17359,6 +18189,10 @@ class VM(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'delete_protected')
             self.delete_protected = ival_
+        elif nodeName_ == 'sso':
+            obj_ = Sso.factory()
+            obj_.build(child_)
+            self.set_sso(obj_)
         elif nodeName_ == 'console':
             obj_ = Console.factory()
             obj_.build(child_)
@@ -17433,6 +18267,14 @@ class VM(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'tunnel_migration')
             self.tunnel_migration = ival_
+        elif nodeName_ == 'migration_downtime':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'migration_downtime')
+            self.migration_downtime = ival_
         elif nodeName_ == 'virtio_scsi':
             obj_ = VirtIO_SCSI.factory()
             obj_.build(child_)
@@ -20199,8 +21041,8 @@ class Nics(BaseDevices):
 class Snapshot(VM):
     subclass = None
     superclass = VM
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
-        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, os, high_availability, display, host, cluster, template, storage_domain, start_time, stop_time, creation_time, origin, stateless, delete_protected, console, timezone, domain, custom_properties, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, tunnel_migration, virtio_scsi, permissions, vmpool, cdroms, floppies, reported_devices, watchdogs, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, sso=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
+        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, os, high_availability, display, host, cluster, template, storage_domain, start_time, stop_time, creation_time, origin, stateless, delete_protected, sso, console, timezone, domain, custom_properties, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, tunnel_migration, migration_downtime, virtio_scsi, permissions, vmpool, cdroms, floppies, reported_devices, watchdogs, )
         self.vm = vm
         self.date = date
         self.snapshot_status = snapshot_status
@@ -20851,6 +21693,217 @@ class HostNics(BaseResources):
             self.host_nic.append(obj_)
         super(HostNics, self).buildChildren(child_, node, nodeName_, True)
 # end class HostNics
+
+
+class GuestNicConfiguration(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, name=None, ip=None, boot_protocol=None, on_boot=None):
+        self.name = name
+        self.ip = ip
+        self.boot_protocol = boot_protocol
+        self.on_boot = on_boot
+    def factory(*args_, **kwargs_):
+        if GuestNicConfiguration.subclass:
+            return GuestNicConfiguration.subclass(*args_, **kwargs_)
+        else:
+            return GuestNicConfiguration(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_name(self): return self.name
+    def set_name(self, name): self.name = name
+    def get_ip(self): return self.ip
+    def set_ip(self, ip): self.ip = ip
+    def get_boot_protocol(self): return self.boot_protocol
+    def set_boot_protocol(self, boot_protocol): self.boot_protocol = boot_protocol
+    def get_on_boot(self): return self.on_boot
+    def set_on_boot(self, on_boot): self.on_boot = on_boot
+    def hasContent_(self):
+        if (
+            self.name is not None or
+            self.ip is not None or
+            self.boot_protocol is not None or
+            self.on_boot is not None
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='GuestNicConfiguration', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GuestNicConfiguration')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GuestNicConfiguration'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='GuestNicConfiguration', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.name is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sname>%s</%sname>%s' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_, eol_))
+        if self.ip is not None:
+            self.ip.export(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
+        if self.boot_protocol is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sboot_protocol>%s</%sboot_protocol>%s' % (namespace_, self.gds_format_string(quote_xml(self.boot_protocol).encode(ExternalEncoding), input_name='boot_protocol'), namespace_, eol_))
+        if self.on_boot is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%son_boot>%s</%son_boot>%s' % (namespace_, self.gds_format_boolean(self.on_boot, input_name='on_boot'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='GuestNicConfiguration'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.name is not None:
+            showIndent(outfile, level)
+            outfile.write('name=%s,\n' % quote_python(self.name).encode(ExternalEncoding))
+        if self.ip is not None:
+            showIndent(outfile, level)
+            outfile.write('ip=model_.ip(\n')
+            self.ip.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.boot_protocol is not None:
+            showIndent(outfile, level)
+            outfile.write('boot_protocol=%s,\n' % quote_python(self.boot_protocol).encode(ExternalEncoding))
+        if self.on_boot is not None:
+            showIndent(outfile, level)
+            outfile.write('on_boot=%s,\n' % self.on_boot)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'name':
+            name_ = child_.text
+            name_ = self.gds_validate_string(name_, node, 'name')
+            self.name = name_
+        elif nodeName_ == 'ip':
+            obj_ = IP.factory()
+            obj_.build(child_)
+            self.set_ip(obj_)
+        elif nodeName_ == 'boot_protocol':
+            boot_protocol_ = child_.text
+            boot_protocol_ = self.gds_validate_string(boot_protocol_, node, 'boot_protocol')
+            self.boot_protocol = boot_protocol_
+        elif nodeName_ == 'on_boot':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'on_boot')
+            self.on_boot = ival_
+# end class GuestNicConfiguration
+
+
+class GuestNicsConfiguration(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, nic_configuration=None):
+        if nic_configuration is None:
+            self.nic_configuration = []
+        else:
+            self.nic_configuration = nic_configuration
+    def factory(*args_, **kwargs_):
+        if GuestNicsConfiguration.subclass:
+            return GuestNicsConfiguration.subclass(*args_, **kwargs_)
+        else:
+            return GuestNicsConfiguration(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_nic_configuration(self): return self.nic_configuration
+    def set_nic_configuration(self, nic_configuration): self.nic_configuration = nic_configuration
+    def add_nic_configuration(self, value): self.nic_configuration.append(value)
+    def insert_nic_configuration(self, index, value): self.nic_configuration[index] = value
+    def hasContent_(self):
+        if (
+            self.nic_configuration
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='GuestNicsConfiguration', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GuestNicsConfiguration')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='GuestNicsConfiguration'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='GuestNicsConfiguration', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for nic_configuration_ in self.nic_configuration:
+            nic_configuration_.export(outfile, level, namespace_, name_='nic_configuration', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='GuestNicsConfiguration'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('nic_configuration=[\n')
+        level += 1
+        for nic_configuration_ in self.nic_configuration:
+            showIndent(outfile, level)
+            outfile.write('model_.nic_configuration(\n')
+            nic_configuration_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'nic_configuration':
+            obj_ = GuestNicConfiguration.factory()
+            obj_.build(child_)
+            self.nic_configuration.append(obj_)
+# end class GuestNicsConfiguration
 
 
 class HostNICStates(GeneratedsSuper):
@@ -27372,7 +28425,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, succeeded=None, resolution_type=None, bricks=None, job=None, status=None, fault=None, iscsi_target=None, power_management=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, status=None, fault=None, iscsi_target=None, power_management=None):
         super(Action, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -27401,6 +28454,7 @@ class Action(BaseResource):
         self.detach = detach
         self.clone = clone
         self.restore_memory = restore_memory
+        self.disks = disks
         self.succeeded = succeeded
         self.resolution_type = resolution_type
         self.bricks = bricks
@@ -27472,6 +28526,8 @@ class Action(BaseResource):
     def set_clone(self, clone): self.clone = clone
     def get_restore_memory(self): return self.restore_memory
     def set_restore_memory(self, restore_memory): self.restore_memory = restore_memory
+    def get_disks(self): return self.disks
+    def set_disks(self, disks): self.disks = disks
     def get_succeeded(self): return self.succeeded
     def set_succeeded(self, succeeded): self.succeeded = succeeded
     def get_resolution_type(self): return self.resolution_type
@@ -27519,6 +28575,7 @@ class Action(BaseResource):
             self.detach is not None or
             self.clone is not None or
             self.restore_memory is not None or
+            self.disks is not None or
             self.succeeded is not None or
             self.resolution_type is not None or
             self.bricks is not None or
@@ -27624,6 +28681,8 @@ class Action(BaseResource):
         if self.restore_memory is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%srestore_memory>%s</%srestore_memory>%s' % (namespace_, self.gds_format_boolean(self.restore_memory, input_name='restore_memory'), namespace_, eol_))
+        if self.disks is not None:
+            self.disks.export(outfile, level, namespace_, name_='disks', pretty_print=pretty_print)
         if self.succeeded is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssucceeded>%s</%ssucceeded>%s' % (namespace_, self.gds_format_boolean(self.succeeded, input_name='succeeded'), namespace_, eol_))
@@ -27773,6 +28832,12 @@ class Action(BaseResource):
         if self.restore_memory is not None:
             showIndent(outfile, level)
             outfile.write('restore_memory=%s,\n' % self.restore_memory)
+        if self.disks is not None:
+            showIndent(outfile, level)
+            outfile.write('disks=model_.disks(\n')
+            self.disks.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.succeeded is not None:
             showIndent(outfile, level)
             outfile.write('succeeded=%s,\n' % self.succeeded)
@@ -28000,6 +29065,10 @@ class Action(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'restore_memory')
             self.restore_memory = ival_
+        elif nodeName_ == 'disks':
+            obj_ = Disks.factory()
+            obj_.build(child_)
+            self.set_disks(obj_)
         elif nodeName_ == 'succeeded':
             sval_ = child_.text
             if sval_ in ('true', '1'):
@@ -28452,7 +29521,7 @@ class GeneralMetadata(DetailedLink):
 class VersionCaps(Version):
     subclass = None
     superclass = Version
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, configuration_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, sgio_options=None, watchdog_models=None, watchdog_actions=None, authentication_methods=None, step_types=None, payload_encodings=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None, snapshot_statuses=None, content_types=None, hook_states=None, stages=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, configuration_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, sgio_options=None, watchdog_models=None, watchdog_actions=None, authentication_methods=None, step_types=None, payload_encodings=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None, snapshot_statuses=None, content_types=None, hook_states=None, stages=None, sso_methods=None):
         super(VersionCaps, self).__init__(actions, href, id, name, description, comment, creation_status, link, major, full_version, build_, minor, revision, )
         self.current = current
         self.features = features
@@ -28509,6 +29578,7 @@ class VersionCaps(Version):
         self.content_types = content_types
         self.hook_states = hook_states
         self.stages = stages
+        self.sso_methods = sso_methods
     def factory(*args_, **kwargs_):
         if VersionCaps.subclass:
             return VersionCaps.subclass(*args_, **kwargs_)
@@ -28625,6 +29695,8 @@ class VersionCaps(Version):
     def set_hook_states(self, hook_states): self.hook_states = hook_states
     def get_stages(self): return self.stages
     def set_stages(self, stages): self.stages = stages
+    def get_sso_methods(self): return self.sso_methods
+    def set_sso_methods(self, sso_methods): self.sso_methods = sso_methods
     def hasContent_(self):
         if (
             self.current is not None or
@@ -28682,6 +29754,7 @@ class VersionCaps(Version):
             self.content_types is not None or
             self.hook_states is not None or
             self.stages is not None or
+            self.sso_methods is not None or
             super(VersionCaps, self).hasContent_()
             ):
             return True
@@ -28822,6 +29895,8 @@ class VersionCaps(Version):
             self.hook_states.export(outfile, level, namespace_, name_='hook_states', pretty_print=pretty_print)
         if self.stages is not None:
             self.stages.export(outfile, level, namespace_, name_='stages', pretty_print=pretty_print)
+        if self.sso_methods is not None:
+            self.sso_methods.export(outfile, level, namespace_, name_='sso_methods', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VersionCaps'):
         level += 1
         already_processed = set()
@@ -29159,6 +30234,12 @@ class VersionCaps(Version):
             self.stages.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.sso_methods is not None:
+            showIndent(outfile, level)
+            outfile.write('sso_methods=model_.sso_methods(\n')
+            self.sso_methods.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -29394,6 +30475,10 @@ class VersionCaps(Version):
             obj_ = Stages.factory()
             obj_.build(child_)
             self.set_stages(obj_)
+        elif nodeName_ == 'sso_methods':
+            obj_ = SsoMethods.factory()
+            obj_.build(child_)
+            self.set_sso_methods(obj_)
         super(VersionCaps, self).buildChildren(child_, node, nodeName_, True)
 # end class VersionCaps
 
@@ -29402,6 +30487,7 @@ GDSClassesMapping = {
     'memory_pool': GlusterMemoryPool,
     'hooks': Hooks,
     'thresholds': SchedulingPolicyThresholds,
+    'labels': Labels,
     'actions': Actions,
     'nfs_versions': NfsVersions,
     'detailedLink': DetailedLink,
@@ -29410,7 +30496,7 @@ GDSClassesMapping = {
     'brick_details': GlusterBrickAdvancedDetails,
     'disk': Disk,
     'networks': Networks,
-    'high_availability': HighAvailability,
+    'sso_methods': SsoMethods,
     'vm_states': VmStates,
     'vnic_profile': VnicProfile,
     'console': Console,
@@ -29427,12 +30513,14 @@ GDSClassesMapping = {
     'vms': VMs,
     'payloads': Payloads,
     'authorized_keys': AuthorizedKeys,
+    'payload': Payload,
     'permission': Permission,
     'usage_message': UsageMessage,
     'logical_unit': LogicalUnit,
     'boot_devices': BootDevices,
     'reported_device': ReportedDevice,
     'pm_proxy_types': PmProxyTypes,
+    'nic_configuration': GuestNicConfiguration,
     'cpu_modes': CpuModes,
     'data_center_states': DataCenterStates,
     'transparent_hugepages': TransparentHugePages,
@@ -29474,7 +30562,7 @@ GDSClassesMapping = {
     'boot_protocols': BootProtocols,
     'fence_types': FenceTypes,
     'sgio_options': ScsiGenericIoOptions,
-    'payload': Payload,
+    'label': Label,
     'authentication_methods': AuthenticationMethod,
     'version': Version,
     'templates': Templates,
@@ -29482,6 +30570,8 @@ GDSClassesMapping = {
     'rsdl': RSDL,
     'product_info': ProductInfo,
     'vnic_profiles': VnicProfiles,
+    'high_availability': HighAvailability,
+    'method': Method,
     'body': Body,
     'gluster_client': GlusterClient,
     'jobs': Jobs,
@@ -29532,6 +30622,7 @@ GDSClassesMapping = {
     'host_storage': HostStorage,
     'storage_connection': StorageConnection,
     'vm_types': VmTypes,
+    'methods': Methods,
     'preview_vms': PreviewVMs,
     'cdroms': CdRoms,
     'statistics': Statistics,
@@ -29592,6 +30683,7 @@ GDSClassesMapping = {
     'host_states': HostStates,
     'linkCapabilities': LinkCapabilities,
     'storage_manager': StorageManager,
+    'nic_configurations': GuestNicsConfiguration,
     'nics': Nics,
     'iscsi': IscsiDetails,
     'data_centers': DataCenters,
@@ -29627,6 +30719,7 @@ GDSClassesMapping = {
     'url': Url,
     'template_states': TemplateStates,
     'request': Request,
+    'sso': Sso,
     'snapshot': Snapshot,
     'gluster_volume': GlusterVolume,
     'slaves': Slaves,
@@ -29840,6 +30933,8 @@ __all__ = [
     "Group",
     "Groups",
     "GuestInfo",
+    "GuestNicConfiguration",
+    "GuestNicsConfiguration",
     "HardwareInformation",
     "Header",
     "Headers",
@@ -29866,12 +30961,16 @@ __all__ = [
     "Jobs",
     "KSM",
     "KeyValuePair",
+    "Label",
+    "Labels",
     "Link",
     "LinkCapabilities",
     "LogicalUnit",
     "MAC",
     "MemoryOverCommit",
     "MemoryPolicy",
+    "Method",
+    "Methods",
     "NIC",
     "Network",
     "NetworkConfiguration",
@@ -29923,6 +31022,8 @@ __all__ = [
     "SnapshotStatuses",
     "Snapshots",
     "SpecialObjects",
+    "Sso",
+    "SsoMethods",
     "Stages",
     "Statistic",
     "Statistics",
@@ -30091,6 +31192,8 @@ _rootClassMap = {
                     "jobs"                          : Jobs,
                     "keyValuePair"                  : KeyValuePair,
                     "ksm"                           : KSM,
+                    "label"                         : Label,
+                    "labels"                        : Labels,
                     "libvirt_version"               : Version,
                     "link"                          : Link,
                     "linkCapabilities"              : LinkCapabilities,
@@ -30101,12 +31204,16 @@ _rootClassMap = {
                     "memory_policy"                 : MemoryPolicy,
                     "memory_pool"                   : GlusterMemoryPool,
                     "memory_pools"                  : GlusterMemoryPools,
+                    "method"                        : Method,
+                    "methods"                       : Methods,
                     "network"                       : Network,
                     "network_configuration"         : NetworkConfiguration,
                     "network_states"                : NetworkStates,
                     "networks"                      : Networks,
                     "nfs_versions"                  : NfsVersions,
                     "nic"                           : NIC,
+                    "nic_configuration"             : GuestNicConfiguration,
+                    "nic_configurations"            : GuestNicsConfiguration,
                     "nic_interfaces"                : NicInterfaces,
                     "nics"                          : Nics,
                     "option"                        : Option,
@@ -30161,6 +31268,8 @@ _rootClassMap = {
                     "snapshots"                     : Snapshots,
                     "special_objects"               : SpecialObjects,
                     "ssh"                           : SSH,
+                    "sso"                           : Sso,
+                    "sso_methods"                   : SsoMethods,
                     "stages"                        : Stages,
                     "statistic"                     : Statistic,
                     "statistics"                    : Statistics,

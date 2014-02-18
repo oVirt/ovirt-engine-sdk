@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-01-19 16:05:55.954076'''
+'''Generated at: 2014-02-18 13:00:42.052834'''
 
 
 from ovirtsdk.xml import params
@@ -164,6 +164,7 @@ class Cluster(params.Cluster, Base):
         [@param cluster.ballooning_enabled: boolean]
         [@param cluster.cpu.architecture: string]
         [@param cluster.display.proxy: string]
+        [@param cluster.ksm.enabled: boolean]
         [@param correlation_id: any string]
 
         @return Cluster:
@@ -1639,9 +1640,11 @@ class Clusters(Base):
         [@param cluster.threads_as_cores: boolean]
         [@param cluster.tunnel_migration: boolean]
         [@param cluster.trusted_service: boolean]
+        [@param cluster.ha_reservation: boolean]
         [@param cluster.ballooning_enabled: boolean]
         [@param cluster.cpu.architecture: string]
         [@param cluster.display.proxy: string]
+        [@param cluster.ksm.enabled: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -1778,6 +1781,7 @@ class DataCenter(params.DataCenter, Base):
         [@param datacenter.description: string]
         [@param datacenter.comment: string]
         [@param datacenter.storage_type: string]
+        [@param datacenter.local: boolean]
         [@param datacenter.version.major: int]
         [@param datacenter.version.minor: int]
         [@param datacenter.storage_format: string]
@@ -1866,9 +1870,11 @@ class DataCenterCluster(params.Cluster, Base):
         [@param cluster.threads_as_cores: boolean]
         [@param cluster.tunnel_migration: boolean]
         [@param cluster.trusted_service: boolean]
+        [@param cluster.ha_reservation: boolean]
         [@param cluster.ballooning_enabled: boolean]
         [@param cluster.cpu.architecture: string]
         [@param cluster.display.proxy: string]
+        [@param cluster.ksm.enabled: boolean]
         [@param correlation_id: any string]
 
         @return Cluster:
@@ -3276,6 +3282,7 @@ class DataCenterClusters(Base):
         [@param cluster.ballooning_enabled: boolean]
         [@param cluster.cpu.architecture: string]
         [@param cluster.display.proxy: string]
+        [@param cluster.ksm.enabled: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -3392,6 +3399,7 @@ class DataCenterNetwork(params.Network, Base):
         self.parentclass = datacenter
         self.superclass  =  network
 
+        self.labels = DataCenterNetworkLabels(self, context)
         self.vnicprofiles = DataCenterNetworkVnicprofiles(self, context)
         self.permissions = DataCenterNetworkPermissions(self, context)
 
@@ -3461,6 +3469,178 @@ class DataCenterNetwork(params.Network, Base):
             self.parentclass,
             result,
             self.context
+        )
+
+class DataCenterNetworkLabel(params.Label, Base):
+    def __init__(self, datacenternetwork, label, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenternetwork
+        self.superclass  =  label
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacenternetwork, label, context):
+        if label is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenternetwork, label, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/networks/{network:id}/labels/{label:id}',
+            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+             '{network:id}': self.parentclass.get_id(),
+             '{label:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class DataCenterNetworkLabels(Base):
+
+    def __init__(self, datacenternetwork , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenternetwork
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, label):
+
+        '''
+        @type Label:
+
+
+        @return Label:
+        '''
+
+        url = '/datacenters/{datacenter:id}/networks/{network:id}/labels'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{network:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(label),
+            headers={}
+        )
+
+        return DataCenterNetworkLabel(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Labels:
+        '''
+
+        url = '/datacenters/{datacenter:id}/networks/{network:id}/labels'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                             '{network:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterNetworkLabel(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                     '{network:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_label()
+
+            return DataCenterNetworkLabel(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Labels:
+        '''
+
+        url = '/datacenters/{datacenter:id}/networks/{network:id}/labels'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{network:id}': self.parentclass.get_id()}
+            )
+        ).get_label()
+
+        return ParseHelper.toSubCollection(
+            DataCenterNetworkLabel,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
         )
 
 class DataCenterNetworkPermission(params.Permission, Base):
@@ -5176,9 +5356,10 @@ class DataCenters(Base):
         @type DataCenter:
 
         @param datacenter.name: string
-        @param datacenter.storage_type: string
         @param datacenter.version.major: int
         @param datacenter.version.minor: int
+        [@param datacenter.storage_type: string]
+        [@param datacenter.local: boolean]
         [@param datacenter.description: string]
         [@param datacenter.comment: string]
         [@param datacenter.storage_format: string]
@@ -7121,6 +7302,7 @@ class Host(params.Host, Base):
           [@param host.power_management.address: string]
           [@param host.power_management.username: string]
           [@param host.power_management.password: string]
+          [@param host.power_management.automatic_pm_enabled: boolean]
           [@param host.power_management.options.option: collection]
           {
             [@ivar option.name: string]
@@ -7154,6 +7336,7 @@ class Host(params.Host, Base):
           [@param host.port: int]
           [@param host.storage_manager.priority: int]
           [@param host.power_management.type: string]
+          [@param host.power_management.automatic_pm_enabled: boolean]
           [@param host.power_management.enabled: boolean]
           [@param host.power_management.address: string]
           [@param host.power_management.username: string]
@@ -7536,6 +7719,7 @@ class HostNIC(params.HostNIC, Base):
         self.superclass  =  nic
 
         self.statistics = HostNicStatistics(self, context)
+        self.labels = HostNicLabels(self, context)
 
     def __new__(cls, host, nic, context):
         if nic is None: return None
@@ -7671,6 +7855,178 @@ class HostNIC(params.HostNIC, Base):
         )
 
         return result
+
+class HostNicLabel(params.Label, Base):
+    def __init__(self, hostnic, label, context):
+        Base.__init__(self, context)
+        self.parentclass = hostnic
+        self.superclass  =  label
+
+        #SUB_COLLECTIONS
+    def __new__(cls, hostnic, label, context):
+        if label is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(hostnic, label, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/hosts/{host:id}/nics/{nic:id}/labels/{label:id}',
+            {'{host:id}' : self.parentclass.parentclass.get_id(),
+             '{nic:id}': self.parentclass.get_id(),
+             '{label:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class HostNicLabels(Base):
+
+    def __init__(self, hostnic , context):
+        Base.__init__(self, context)
+        self.parentclass = hostnic
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, label):
+
+        '''
+        @type Label:
+
+
+        @return Label:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/labels'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{host:id}' : self.parentclass.parentclass.get_id(),
+                 '{nic:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(label),
+            headers={}
+        )
+
+        return HostNicLabel(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Labels:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/labels'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{host:id}' : self.parentclass.parentclass.get_id(),
+                             '{nic:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return HostNicLabel(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{host:id}' : self.parentclass.parentclass.get_id(),
+                     '{nic:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_label()
+
+            return HostNicLabel(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Labels:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/labels'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{host:id}' : self.parentclass.parentclass.get_id(),
+                 '{nic:id}': self.parentclass.get_id()}
+            )
+        ).get_label()
+
+        return ParseHelper.toSubCollection(
+            HostNicLabel,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class HostNicStatistic(params.Statistic, Base):
     def __init__(self, hostnic, statistic, context):
@@ -8600,6 +8956,7 @@ class Hosts(Base):
           [@param host.power_management.enabled: boolean]
           [@param host.power_management.address: string]
           [@param host.power_management.username: string]
+          [@param host.power_management.automatic_pm_enabled: boolean]
           [@param host.power_management.password: string]
           [@param host.power_management.options.option: collection]
           {
@@ -8638,6 +8995,7 @@ class Hosts(Base):
           [@param host.display.address: string]
           [@param host.storage_manager.priority: int]
           [@param host.power_management.type: string]
+          [@param host.power_management.automatic_pm_enabled: boolean]
           [@param host.power_management.enabled: boolean]
           [@param host.power_management.address: string]
           [@param host.power_management.username: string]
@@ -9224,6 +9582,7 @@ class Network(params.Network, Base):
         Base.__init__(self, context)
         self.superclass = network
 
+        self.labels = NetworkLabels(self, context)
         self.vnicprofiles = NetworkVnicProfiles(self, context)
         self.permissions = NetworkPermissions(self, context)
 
@@ -9292,6 +9651,173 @@ class Network(params.Network, Base):
         )
 
         return Network(result, self.context)
+
+class NetworkLabel(params.Label, Base):
+    def __init__(self, network, label, context):
+        Base.__init__(self, context)
+        self.parentclass = network
+        self.superclass  =  label
+
+        #SUB_COLLECTIONS
+    def __new__(cls, network, label, context):
+        if label is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(network, label, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/networks/{network:id}/labels/{label:id}',
+            {'{network:id}' : self.parentclass.get_id(),
+             '{label:id}': self.get_id()}
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class NetworkLabels(Base):
+
+    def __init__(self, network , context):
+        Base.__init__(self, context)
+        self.parentclass = network
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, label):
+
+        '''
+        @type Label:
+
+
+        @return Label:
+        '''
+
+        url = '/networks/{network:id}/labels'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{network:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(label),
+            headers={}
+        )
+
+        return NetworkLabel(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Labels:
+        '''
+
+        url = '/networks/{network:id}/labels'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{network:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return NetworkLabel(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{network:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_label()
+
+            return NetworkLabel(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Labels:
+        '''
+
+        url = '/networks/{network:id}/labels'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{network:id}': self.parentclass.get_id()}
+            )
+        ).get_label()
+
+        return ParseHelper.toSubCollection(
+            NetworkLabel,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class NetworkPermission(params.Permission, Base):
     def __init__(self, network, permission, context):
@@ -12820,6 +13346,10 @@ class Template(params.Template, Base):
         [@param template.type: string]
         [@param template.stateless: boolean]
         [@param template.delete_protected: boolean]
+        [@param template.sso.methods.method: collection]
+        {
+          [@ivar method.id: string]
+        }
         [@param template.console.enabled: boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
@@ -12848,6 +13378,7 @@ class Template(params.Template, Base):
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
         [@param template.tunnel_migration: boolean]
+        [@param template.migration_downtime: int]
         [@param template.virtio_scsi.enabled: boolean]
         [@param correlation_id: any string]
 
@@ -13850,6 +14381,10 @@ class Templates(Base):
         [@param template.type: string]
         [@param template.stateless: boolean]
         [@param template.delete_protected: boolean]
+        [@param template.sso.methods.method: collection]
+        {
+          [@ivar method.id: string]
+        }
         [@param template.console.enabled: boolean]
         [@param template.placement_policy.affinity: string]
         [@param template.description: string]
@@ -13878,6 +14413,7 @@ class Templates(Base):
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
         [@param template.tunnel_migration: boolean]
+        [@param template.migration_downtime: int]
         [@param template.virtio_scsi.enabled: boolean]
         [@param template.vm.disks.disk: collection]
         {
@@ -13909,10 +14445,11 @@ class Templates(Base):
 
         return Template(result, self.context)
 
-    def get(self, name=None, id=None):
+    def get(self, name=None, all_content=None, id=None):
         '''
         [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
+        [@param all_content: true|false]
 
         @return Templates:
         '''
@@ -13924,7 +14461,7 @@ class Templates(Base):
                 return Template(
                     self.__getProxy().get(
                         url=UrlHelper.append(url, id),
-                        headers={}
+                        headers={"All-Content":all_content}
                     ),
                     self.context
                 )
@@ -13935,7 +14472,7 @@ class Templates(Base):
         elif name:
             result = self.__getProxy().get(
                 url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                headers={}
+                headers={"All-Content":all_content}
             ).get_template()
 
             return Template(
@@ -13948,12 +14485,13 @@ class Templates(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, all_content=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
+        [@param all_content: true|false]
 
         @return Templates:
         '''
@@ -13962,7 +14500,7 @@ class Templates(Base):
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-            headers={}
+            headers={"All-Content":all_content}
         ).get_template()
 
         return ParseHelper.toCollection(
@@ -14884,6 +15422,10 @@ class VM(params.VM, Base):
         [@param vm.comment: string]
         [@param vm.stateless: boolean]
         [@param vm.delete_protected: boolean]
+        [@param vm.sso.methods.method: collection]
+        {
+          [@ivar method.id: string]
+        }
         [@param vm.console.enabled: boolean]
         [@param vm.cpu.topology.sockets: int]
         [@param vm.placement_policy.affinity: string]
@@ -14891,6 +15433,7 @@ class VM(params.VM, Base):
         [@param vm.origin: string]
         [@param vm.os.kernel: string]
         [@param vm.tunnel_migration: boolean]
+        [@param vm.migration_downtime: int]
         [@param vm.virtio_scsi.enabled: boolean]
         [@param vm.payloads.payload: collection]
         {
@@ -15028,6 +15571,26 @@ class VM(params.VM, Base):
         '''
 
         url = '/vms/{vm:id}/move'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def reboot(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/vms/{vm:id}/reboot'
 
         result = self.__getProxy().request(
             method='POST',
@@ -16625,11 +17188,12 @@ class VMNics(Base):
             self.context
         )
 
-    def get(self, name=None, id=None):
+    def get(self, name=None, all_content=None, id=None):
 
         '''
         [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
+        [@param all_content: true|false]
 
         @return Nics:
         '''
@@ -16646,7 +17210,7 @@ class VMNics(Base):
                         ),
                         id
                     ),
-                    headers={}
+                    headers={"All-Content":all_content}
                 )
 
                 return VMNic(
@@ -16664,7 +17228,7 @@ class VMNics(Base):
                     url,
                     {'{vm:id}': self.parentclass.get_id()}
                 ),
-                headers={}
+                headers={"All-Content":all_content}
             ).get_nic()
 
             return VMNic(
@@ -16681,10 +17245,11 @@ class VMNics(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, max=None, all_content=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param max: int (max results)]
+        [@param all_content: true|false]
 
         @return Nics:
         '''
@@ -16699,7 +17264,7 @@ class VMNics(Base):
                 ),
                 qargs={'max:matrix':max}
             ),
-            headers={}
+            headers={"All-Content":all_content}
         ).get_nic()
 
         return ParseHelper.toSubCollection(
@@ -17065,6 +17630,11 @@ class VMSnapshot(params.Snapshot, Base):
         [@param action.restore_memory: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param action.disks.disk: collection]
+        {
+          [@ivar disk.id: string]
+          [@ivar disk.image_id: string]
+        }
         [@param correlation_id: any string]
 
         @return Action:
@@ -17473,6 +18043,10 @@ class VMSnapshots(Base):
 
         @param snapshot.description: string
         [@param snapshot.persist_memorystate: boolean]
+        [@param snapshot.disks.disk: collection]
+        {
+          [@ivar disk.id: string]
+        }
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -18144,6 +18718,10 @@ class VMs(Base):
           [@param vm.stateless: boolean]
           [@param vm.permissions.clone: boolean]
           [@param vm.delete_protected: boolean]
+          [@param vm.sso.methods.method: collection]
+          {
+            [@ivar method.id: string]
+          }
           [@param vm.console.enabled: boolean]
           [@param vm.cpu.mode: string]
           [@param vm.cpu.topology.sockets: int]
@@ -18154,6 +18732,7 @@ class VMs(Base):
           [@param vm.os.kernel: string]
           [@param vm.disks.clone: boolean]
           [@param vm.tunnel_migration: boolean]
+          [@param vm.migration_downtime: int]
           [@param vm.virtio_scsi.enabled: boolean]
           [@param vm.payloads.payload: collection]
           {
@@ -18215,6 +18794,10 @@ class VMs(Base):
           [@param vm.comment: string]
           [@param vm.stateless: boolean]
           [@param vm.delete_protected: boolean]
+          [@param vm.sso.methods.method: collection]
+          {
+            [@ivar method.id: string]
+          }
           [@param vm.console.enabled: boolean]
           [@param vm.cpu.topology.sockets: int]
           [@param vm.placement_policy.affinity: string]
@@ -18222,6 +18805,7 @@ class VMs(Base):
           [@param vm.origin: string]
           [@param vm.os.kernel: string]
           [@param vm.tunnel_migration: boolean]
+          [@param vm.migration_downtime: int]
           [@param vm.virtio_scsi.enabled: boolean]
           [@param vm.payloads.payload: collection]
           {
@@ -18275,6 +18859,10 @@ class VMs(Base):
           [@param vm.stateless: boolean]
           [@param vm.permissions.clone: boolean]
           [@param vm.delete_protected: boolean]
+          [@param vm.sso.methods.method: collection]
+          {
+            [@ivar method.id: string]
+          }
           [@param vm.cpu.mode: string]
           [@param vm.cpu.topology.sockets: int]
           [@param vm.placement_policy.affinity: string]
@@ -18283,6 +18871,7 @@ class VMs(Base):
           [@param vm.os.kernel: string]
           [@param vm.disks.clone: boolean]
           [@param vm.tunnel_migration: boolean]
+          [@param vm.migration_downtime: int]
           [@param vm.virtio_scsi.enabled: boolean]
           [@param vm.payloads.payload: collection]
           {
@@ -18317,10 +18906,11 @@ class VMs(Base):
 
         return VM(result, self.context)
 
-    def get(self, name=None, id=None):
+    def get(self, name=None, all_content=None, id=None):
         '''
         [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
+        [@param all_content: true|false]
 
         @return VMs:
         '''
@@ -18332,7 +18922,7 @@ class VMs(Base):
                 return VM(
                     self.__getProxy().get(
                         url=UrlHelper.append(url, id),
-                        headers={}
+                        headers={"All-Content":all_content}
                     ),
                     self.context
                 )
@@ -18343,7 +18933,7 @@ class VMs(Base):
         elif name:
             result = self.__getProxy().get(
                 url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                headers={}
+                headers={"All-Content":all_content}
             ).get_vm()
 
             return VM(
@@ -18356,12 +18946,13 @@ class VMs(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, all_content=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
+        [@param all_content: true|false]
 
         @return VMs:
         '''
@@ -18370,7 +18961,7 @@ class VMs(Base):
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-            headers={}
+            headers={"All-Content":all_content}
         ).get_vm()
 
         return ParseHelper.toCollection(
