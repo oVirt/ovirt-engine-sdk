@@ -40,6 +40,22 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS README LICENSE
 
 %changelog
+* Tue Feb 18 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.4-1
+- Added all_content parameter to relevant methods.
+- Added disks collection to Snapshot.
+- Added external_id property to User and Group #1059894.
+- Added ha_reservation property to Cluster #1059892.
+- Added ksm.enabled property to Cluster #1059892.
+- Added local property to DataCenter.
+- Added migration_downtime property to VM and Template.
+- Added network label support.
+- Added power_management.automatic_pm_enabled property to Host.
+- Added reboot method to VM.
+- Added sso.methods property to VM and Template #1059893.
+- Removed storage_type property from DataCenter.
+- Use /api if the URL doesn't have a path #1066036.
+- Remove trailing slashes from URL prefix #1063746.
+
 * Tue Jan 28 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.3-1
 - Use relative paths #1038952.
 
