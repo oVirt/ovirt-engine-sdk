@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-02-18 13:00:42.052834'''
+'''Generated at: 2014-02-27 12:00:49.509616'''
 
 
 from ovirtsdk.xml import params
@@ -13380,6 +13380,7 @@ class Template(params.Template, Base):
         [@param template.tunnel_migration: boolean]
         [@param template.migration_downtime: int]
         [@param template.virtio_scsi.enabled: boolean]
+        [@param template.version.version_name: string]
         [@param correlation_id: any string]
 
         @return Template:
@@ -14424,6 +14425,8 @@ class Templates(Base):
           }
         }
         [@param template.permissions.clone: boolean]
+        [@param template.version.version_name: string]
+        [@param template.version.base_template.id: string]
         [@param template.cpu.cpu_tune.vcpu_pin: collection]
         {
           [@ivar vcpu_pin.vcpu: int]
@@ -15435,6 +15438,7 @@ class VM(params.VM, Base):
         [@param vm.tunnel_migration: boolean]
         [@param vm.migration_downtime: int]
         [@param vm.virtio_scsi.enabled: boolean]
+        [@param vm.use_latest_template_version: boolean]
         [@param vm.payloads.payload: collection]
         {
           [@ivar payload.type: string]
@@ -18751,6 +18755,7 @@ class VMs(Base):
             [@ivar vcpu_pin.vcpu: int]
             [@ivar vcpu_pin.cpu_set: string]
           }
+          [@param vm.use_latest_template_version: boolean]
         Overload 2:
           @param vm.name: string
           @param vm.template.id|name: string

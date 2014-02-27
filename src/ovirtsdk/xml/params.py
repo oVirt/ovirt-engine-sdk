@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Tue Feb 18 13:00:29 2014 by generateDS.py version 2.9a.
+# Generated Thu Feb 27 12:00:36 2014 by generateDS.py version 2.9a.
 #
 
 import sys
@@ -2706,6 +2706,114 @@ class CPUs(GeneratedsSuper):
             obj_.build(child_)
             self.cpu.append(obj_)
 # end class CPUs
+
+
+class TemplateVersion(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, base_template=None, version_number=None, version_name=None):
+        self.base_template = base_template
+        self.version_number = version_number
+        self.version_name = version_name
+    def factory(*args_, **kwargs_):
+        if TemplateVersion.subclass:
+            return TemplateVersion.subclass(*args_, **kwargs_)
+        else:
+            return TemplateVersion(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_base_template(self): return self.base_template
+    def set_base_template(self, base_template): self.base_template = base_template
+    def get_version_number(self): return self.version_number
+    def set_version_number(self, version_number): self.version_number = version_number
+    def get_version_name(self): return self.version_name
+    def set_version_name(self, version_name): self.version_name = version_name
+    def hasContent_(self):
+        if (
+            self.base_template is not None or
+            self.version_number is not None or
+            self.version_name is not None
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='TemplateVersion', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='TemplateVersion')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='TemplateVersion'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='TemplateVersion', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.base_template is not None:
+            self.base_template.export(outfile, level, namespace_, name_='base_template', pretty_print=pretty_print)
+        if self.version_number is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sversion_number>%s</%sversion_number>%s' % (namespace_, self.gds_format_integer(self.version_number, input_name='version_number'), namespace_, eol_))
+        if self.version_name is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sversion_name>%s</%sversion_name>%s' % (namespace_, self.gds_format_string(quote_xml(self.version_name).encode(ExternalEncoding), input_name='version_name'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='TemplateVersion'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.base_template is not None:
+            showIndent(outfile, level)
+            outfile.write('base_template=model_.Template(\n')
+            self.base_template.exportLiteral(outfile, level, name_='base_template')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.version_number is not None:
+            showIndent(outfile, level)
+            outfile.write('version_number=%d,\n' % self.version_number)
+        if self.version_name is not None:
+            showIndent(outfile, level)
+            outfile.write('version_name=%s,\n' % quote_python(self.version_name).encode(ExternalEncoding))
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'base_template':
+            obj_ = Template.factory()
+            obj_.build(child_)
+            self.set_base_template(obj_)
+        elif nodeName_ == 'version_number':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'version_number')
+            self.version_number = ival_
+        elif nodeName_ == 'version_name':
+            version_name_ = child_.text
+            version_name_ = self.gds_validate_string(version_name_, node, 'version_name')
+            self.version_name = version_name_
+# end class TemplateVersion
 
 
 class SupportedVersions(GeneratedsSuper):
@@ -14463,7 +14571,7 @@ class StorageConnections(BaseResources):
 class Template(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, sso=None, console=None, timezone=None, domain=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, sso=None, console=None, timezone=None, domain=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, version=None):
         super(Template, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.vm = vm
         self.type_ = type_
@@ -14489,6 +14597,7 @@ class Template(BaseResource):
         self.migration_downtime = migration_downtime
         self.virtio_scsi = virtio_scsi
         self.permissions = permissions
+        self.version = version
     def factory(*args_, **kwargs_):
         if Template.subclass:
             return Template.subclass(*args_, **kwargs_)
@@ -14543,6 +14652,8 @@ class Template(BaseResource):
     def set_virtio_scsi(self, virtio_scsi): self.virtio_scsi = virtio_scsi
     def get_permissions(self): return self.permissions
     def set_permissions(self, permissions): self.permissions = permissions
+    def get_version(self): return self.version
+    def set_version(self, version): self.version = version
     def hasContent_(self):
         if (
             self.vm is not None or
@@ -14569,6 +14680,7 @@ class Template(BaseResource):
             self.migration_downtime is not None or
             self.virtio_scsi is not None or
             self.permissions is not None or
+            self.version is not None or
             super(Template, self).hasContent_()
             ):
             return True
@@ -14656,6 +14768,8 @@ class Template(BaseResource):
             self.virtio_scsi.export(outfile, level, namespace_, name_='virtio_scsi', pretty_print=pretty_print)
         if self.permissions is not None:
             self.permissions.export(outfile, level, namespace_, name_='permissions', pretty_print=pretty_print)
+        if self.version is not None:
+            self.version.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Template'):
         level += 1
         already_processed = set()
@@ -14778,6 +14892,12 @@ class Template(BaseResource):
             showIndent(outfile, level)
             outfile.write('permissions=model_.permissions(\n')
             self.permissions.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.version is not None:
+            showIndent(outfile, level)
+            outfile.write('version=model_.TemplateVersion(\n')
+            self.version.exportLiteral(outfile, level, name_='version')
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -14916,6 +15036,10 @@ class Template(BaseResource):
             obj_ = Permissions.factory()
             obj_.build(child_)
             self.set_permissions(obj_)
+        elif nodeName_ == 'version':
+            obj_ = TemplateVersion.factory()
+            obj_.build(child_)
+            self.set_version(obj_)
         super(Template, self).buildChildren(child_, node, nodeName_, True)
 # end class Template
 
@@ -17524,7 +17648,7 @@ class GuestInfo(GeneratedsSuper):
 class VM(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, sso=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, sso=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, extensiontype_=None):
         super(VM, self).__init__(actions, href, id, name, description, comment, creation_status, link, extensiontype_, )
         self.type_ = type_
         self.status = status
@@ -17570,6 +17694,7 @@ class VM(BaseResource):
         self.floppies = floppies
         self.reported_devices = reported_devices
         self.watchdogs = watchdogs
+        self.use_latest_template_version = use_latest_template_version
         self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if VM.subclass:
@@ -17665,6 +17790,8 @@ class VM(BaseResource):
     def set_reported_devices(self, reported_devices): self.reported_devices = reported_devices
     def get_watchdogs(self): return self.watchdogs
     def set_watchdogs(self, watchdogs): self.watchdogs = watchdogs
+    def get_use_latest_template_version(self): return self.use_latest_template_version
+    def set_use_latest_template_version(self, use_latest_template_version): self.use_latest_template_version = use_latest_template_version
     def get_extensiontype_(self): return self.extensiontype_
     def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def hasContent_(self):
@@ -17713,6 +17840,7 @@ class VM(BaseResource):
             self.floppies is not None or
             self.reported_devices is not None or
             self.watchdogs is not None or
+            self.use_latest_template_version is not None or
             super(VM, self).hasContent_()
             ):
             return True
@@ -17846,6 +17974,9 @@ class VM(BaseResource):
             self.reported_devices.export(outfile, level, namespace_, name_='reported_devices', pretty_print=pretty_print)
         if self.watchdogs is not None:
             self.watchdogs.export(outfile, level, namespace_, name_='watchdogs', pretty_print=pretty_print)
+        if self.use_latest_template_version is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%suse_latest_template_version>%s</%suse_latest_template_version>%s' % (namespace_, self.gds_format_boolean(self.use_latest_template_version, input_name='use_latest_template_version'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='VM'):
         level += 1
         already_processed = set()
@@ -18084,6 +18215,9 @@ class VM(BaseResource):
             self.watchdogs.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.use_latest_template_version is not None:
+            showIndent(outfile, level)
+            outfile.write('use_latest_template_version=%s,\n' % self.use_latest_template_version)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -18303,6 +18437,16 @@ class VM(BaseResource):
             obj_ = WatchDogs.factory()
             obj_.build(child_)
             self.set_watchdogs(obj_)
+        elif nodeName_ == 'use_latest_template_version':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'use_latest_template_version')
+            self.use_latest_template_version = ival_
         super(VM, self).buildChildren(child_, node, nodeName_, True)
 # end class VM
 
@@ -21041,8 +21185,8 @@ class Nics(BaseDevices):
 class Snapshot(VM):
     subclass = None
     superclass = VM
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, sso=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
-        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, os, high_availability, display, host, cluster, template, storage_domain, start_time, stop_time, creation_time, origin, stateless, delete_protected, sso, console, timezone, domain, custom_properties, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, tunnel_migration, migration_downtime, virtio_scsi, permissions, vmpool, cdroms, floppies, reported_devices, watchdogs, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, sso=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
+        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, os, high_availability, display, host, cluster, template, storage_domain, start_time, stop_time, creation_time, origin, stateless, delete_protected, sso, console, timezone, domain, custom_properties, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, tunnel_migration, migration_downtime, virtio_scsi, permissions, vmpool, cdroms, floppies, reported_devices, watchdogs, use_latest_template_version, )
         self.vm = vm
         self.date = date
         self.snapshot_status = snapshot_status
@@ -30680,6 +30824,7 @@ GDSClassesMapping = {
     'file': File,
     'data_center': DataCenter,
     'lun_storage': Storage,
+    'events': Events,
     'host_states': HostStates,
     'linkCapabilities': LinkCapabilities,
     'storage_manager': StorageManager,
@@ -30695,7 +30840,7 @@ GDSClassesMapping = {
     'display_types': DisplayTypes,
     'steps': Steps,
     'parameter': Parameter,
-    'events': Events,
+    'base_template': Template,
     'status': Status,
     'preview_vm': VM,
     'users': Users,
@@ -31047,6 +31192,7 @@ __all__ = [
     "Tags",
     "Template",
     "TemplateStates",
+    "TemplateVersion",
     "Templates",
     "Ticket",
     "TransparentHugePages",
@@ -31097,6 +31243,7 @@ _rootClassMap = {
                     "authentication_methods"        : AuthenticationMethod,
                     "authorized_key"                : AuthorizedKey,
                     "authorized_keys"               : AuthorizedKeys,
+                    "base_template"                 : Template,
                     "body"                          : Body,
                     "bonding"                       : Bonding,
                     "boot"                          : Boot,
