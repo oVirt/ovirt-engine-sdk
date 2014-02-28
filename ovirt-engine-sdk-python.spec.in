@@ -40,6 +40,9 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS README LICENSE
 
 %changelog
+* Fri Feb 28 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.6-1
+- Removed ip.mtu parameter from host NIC update operation #1049611.
+
 * Thu Feb 27 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.5-1
 - Added template versions support.
 
