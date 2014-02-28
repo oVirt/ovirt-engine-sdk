@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-02-27 12:00:49.509616'''
+'''Generated at: 2014-02-28 10:43:14.004102'''
 
 
 from ovirtsdk.xml import params
@@ -7777,7 +7777,6 @@ class HostNIC(params.HostNIC, Base):
         [@param hostnic.mac: string]
         [@param hostnic.ip.address: string]
         [@param hostnic.ip.netmask: string]
-        [@param hostnic.ip.mtu: int]
         [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
