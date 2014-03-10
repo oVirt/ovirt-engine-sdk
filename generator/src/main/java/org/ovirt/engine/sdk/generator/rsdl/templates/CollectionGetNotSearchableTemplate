@@ -1,0 +1,34 @@
+    def get(self, name=None, $headers_method_params_str$id=None):
+$docs$
+        url = '$url$'
+
+        if id:
+            try :
+                return $resource_type$(
+                    self.__getProxy().get(
+                                url=UrlHelper.append(url, id),
+                                headers=$headers_map_params_str$
+                    ),
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                    url=url,
+                    headers=$headers_map_params_str$
+            ).get_$resource_name_lc$()
+
+            return $resource_type$(
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+

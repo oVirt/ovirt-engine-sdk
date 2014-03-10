@@ -1,0 +1,10 @@
+
+    def get_$attr$(self):
+        proxy = context.manager[self.id].get('proxy')
+        if proxy:
+            return proxy.request(
+                method='GET',
+                url=''
+            ).$attr$
+
+        raise DisconnectedError

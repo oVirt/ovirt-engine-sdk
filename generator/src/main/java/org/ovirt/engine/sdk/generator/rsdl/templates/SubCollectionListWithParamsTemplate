@@ -1,0 +1,25 @@
+    def list(self, $combined_method_params$, **kwargs):
+$docs$
+        url = '$url$'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args=$url_params$
+                ),
+                qargs=$url_query_params$
+            ),
+            headers=$headers_map_params_str$
+        ).get_$actual_resource_name_lc$()
+
+        return ParseHelper.toSubCollection(
+            $encapsulating_resource$,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+

@@ -1,0 +1,21 @@
+class $xml_entity$(params.$xml_entity$, Base):
+    def __init__(self, $xml_entity_lc$, context):
+        Base.__init__(self, context)
+        self.superclass = $xml_entity_lc$
+
+$fixme$
+    def __new__(cls, $xml_entity_lc$, context):
+        if $xml_entity_lc$ is None: return None
+        obj = object.__new__(cls)
+        obj.__init__($xml_entity_lc$, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+

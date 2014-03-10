@@ -1,0 +1,21 @@
+    def list(self, **kwargs):
+$docs$
+        url = '$url$'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                $url_params$
+            )
+        ).get_$actual_resource_name_lc$()
+
+        return ParseHelper.toSubCollection(
+            $encapsulating_resource$,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
