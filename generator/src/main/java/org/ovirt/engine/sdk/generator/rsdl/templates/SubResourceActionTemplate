@@ -1,0 +1,16 @@
+    def $action_name$(self$add_method_params$, $body_type_lc$=params.$body_type$()$headers_method_params_str$):
+$docs$
+        url = '$url$'
+
+        result = self.__getProxy().request(
+            method='$method$',
+            url=UrlHelper.replace(
+                url,
+                $url_params$
+            ),
+            body=ParseHelper.toXml($body_type_lc$),
+            headers=$headers_map_params_str$
+        )
+
+        return result
+

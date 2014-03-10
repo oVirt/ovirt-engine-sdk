@@ -1,26 +1,13 @@
-# ovirt-engine global ignore list
-###########################
-# mvn folders
-############################
-target
-
-# build-time files
-###########################
-.metadata
 *.class
-*.swp
+*.iml
+*.ipr
 *.iws
-
-# IDE files
-###########################
-.settings
+*.pyc
+*.swp
+.classpath
+.idea
+.metadata
 .project
 .pydevproject
-.classpath
-*.ipr
-*.iml
-
-# Py compiled files
-###########################
-*.pyc
-
+.settings
+target

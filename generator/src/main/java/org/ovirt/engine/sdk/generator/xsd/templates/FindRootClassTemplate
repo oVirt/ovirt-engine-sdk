@@ -1,0 +1,9 @@
+def findRootClass(rootTag):
+    """
+    Helper function that enables the generated code to locate the
+    root element.  The api does not explicitly list a root
+    element; hence, the generated code has a hard time deducing
+    which one it actually is.  This function will map the first
+    tag in the XML (i.e. the root) to an internal class.
+    """
+    return _rootClassMap.get(rootTag)

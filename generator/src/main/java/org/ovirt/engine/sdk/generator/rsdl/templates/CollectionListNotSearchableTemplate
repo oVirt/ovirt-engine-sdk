@@ -1,0 +1,13 @@
+    def list(self, **kwargs):
+$docs$
+        url='$url$'
+
+        result = self.__getProxy().get(
+            url=url
+        ).get_$resource_name_lc$()
+
+        return ParseHelper.toCollection(
+            $resource_type$,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )
