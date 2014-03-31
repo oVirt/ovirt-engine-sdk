@@ -233,7 +233,8 @@ class Connection(object):
                        cert_file=cert_file,
                        ca_file=ca_file,
                        strict=strict,
-                       timeout=timeout
+                       timeout=timeout,
+                       insecure=insecure
                    )
         return HTTPConnection(
                   host=u.hostname,
