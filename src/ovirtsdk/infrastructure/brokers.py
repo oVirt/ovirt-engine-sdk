@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-01-24 18:54:38.884031'''
+'''Generated at: 2014-04-01 14:45:38.408761'''
 
 
 from ovirtsdk.xml import params
@@ -13913,7 +13913,7 @@ class VM(params.VM, Base):
           [@ivar boot.dev: string]
         }
         [@param action.vm.domain.user.password: string]
-        [@param action.vm.initialization.cloud_init.hostname: string]
+        [@param action.vm.initialization.cloud_init.host.address: string]
         [@param action.vm.initialization.cloud_init.network_configuration.nics.nic: collection]
         {
           [@ivar nic.name: string]
