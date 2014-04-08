@@ -53,9 +53,22 @@ class SearchHelper():
             for attr, match in compiled:
                 value = res
                 for at in attr:
-                    value = getattr(value, at, None)
+                    if type(value) is list:
+                        values = []
+                        for one_val in value:
+                             val = getattr(one_val, at, None)
+                             if val is not None:
+                                 values.append(val)
+                        value = values
+                    else:
+                        value = getattr(value, at, None)
                     if value is None:
                         break
+                if type(value) is list:
+                    for val in value:
+                         if hasattr(match, 'match') and (val is not None and match.match(str(val))):
+                             matched.append(res)
+                             break
                 if not hasattr(match, 'match') and value != match:
                     break
                 if hasattr(match, 'match') and (value is None or not match.match(str(value))):
