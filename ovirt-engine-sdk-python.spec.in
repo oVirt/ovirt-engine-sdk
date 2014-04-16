@@ -40,6 +40,11 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS README LICENSE
 
 %changelog
+* Wed Apr 16 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.7-1
+- Add support for filtering kwargs based on attributes.
+- Add check of SSL server name.
+- No new lines in basic auth token #1085837.
+
 * Fri Feb 28 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.6-1
 - Removed ip.mtu parameter from host NIC update operation #1049611.
 
