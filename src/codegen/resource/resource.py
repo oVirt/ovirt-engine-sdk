@@ -67,7 +67,8 @@ class Resource(object):
         tmpl = "        self.%s = %s(%s, context)\n"
 
         new_tmpl = ''
-        for k, v in sub_collections.items():
+        for k in sorted(sub_collections):
+            v = sub_collections[k]
             new_tmpl += tmpl % (k.lower(), v, parent)
 
         return new_tmpl
