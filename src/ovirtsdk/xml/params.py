@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Thu Feb 27 12:00:36 2014 by generateDS.py version 2.9a.
+# Generated Wed Apr 23 15:23:20 2014 by generateDS.py version 2.9a.
 #
 
 import sys
@@ -9591,10 +9591,9 @@ class Roles(BaseResources):
 class User(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, domain=None, external_id=None, department=None, logged_in=None, last_name=None, user_name=None, password=None, email=None, roles=None, groups=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, domain=None, department=None, logged_in=None, last_name=None, user_name=None, password=None, email=None, roles=None, groups=None):
         super(User, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.domain = domain
-        self.external_id = external_id
         self.department = department
         self.logged_in = logged_in
         self.last_name = last_name
@@ -9611,8 +9610,6 @@ class User(BaseResource):
     factory = staticmethod(factory)
     def get_domain(self): return self.domain
     def set_domain(self, domain): self.domain = domain
-    def get_external_id(self): return self.external_id
-    def set_external_id(self, external_id): self.external_id = external_id
     def get_department(self): return self.department
     def set_department(self, department): self.department = department
     def get_logged_in(self): return self.logged_in
@@ -9632,7 +9629,6 @@ class User(BaseResource):
     def hasContent_(self):
         if (
             self.domain is not None or
-            self.external_id is not None or
             self.department is not None or
             self.logged_in is not None or
             self.last_name is not None or
@@ -9672,9 +9668,6 @@ class User(BaseResource):
             eol_ = ''
         if self.domain is not None:
             self.domain.export(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
-        if self.external_id is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%sexternal_id>%s</%sexternal_id>%s' % (namespace_, self.gds_format_string(quote_xml(self.external_id).encode(ExternalEncoding), input_name='external_id'), namespace_, eol_))
         if self.department is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdepartment>%s</%sdepartment>%s' % (namespace_, self.gds_format_string(quote_xml(self.department).encode(ExternalEncoding), input_name='department'), namespace_, eol_))
@@ -9713,9 +9706,6 @@ class User(BaseResource):
             self.domain.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
-        if self.external_id is not None:
-            showIndent(outfile, level)
-            outfile.write('external_id=%s,\n' % quote_python(self.external_id).encode(ExternalEncoding))
         if self.department is not None:
             showIndent(outfile, level)
             outfile.write('department=%s,\n' % quote_python(self.department).encode(ExternalEncoding))
@@ -9759,10 +9749,6 @@ class User(BaseResource):
             obj_ = Domain.factory()
             obj_.build(child_)
             self.set_domain(obj_)
-        elif nodeName_ == 'external_id':
-            external_id_ = child_.text
-            external_id_ = self.gds_validate_string(external_id_, node, 'external_id')
-            self.external_id = external_id_
         elif nodeName_ == 'department':
             department_ = child_.text
             department_ = self.gds_validate_string(department_, node, 'department')
@@ -10112,10 +10098,9 @@ class SSH(BaseResource):
 class Group(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, domain=None, external_id=None, roles=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, domain=None, roles=None):
         super(Group, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.domain = domain
-        self.external_id = external_id
         self.roles = roles
     def factory(*args_, **kwargs_):
         if Group.subclass:
@@ -10125,14 +10110,11 @@ class Group(BaseResource):
     factory = staticmethod(factory)
     def get_domain(self): return self.domain
     def set_domain(self, domain): self.domain = domain
-    def get_external_id(self): return self.external_id
-    def set_external_id(self, external_id): self.external_id = external_id
     def get_roles(self): return self.roles
     def set_roles(self, roles): self.roles = roles
     def hasContent_(self):
         if (
             self.domain is not None or
-            self.external_id is not None or
             self.roles is not None or
             super(Group, self).hasContent_()
             ):
@@ -10165,9 +10147,6 @@ class Group(BaseResource):
             eol_ = ''
         if self.domain is not None:
             self.domain.export(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
-        if self.external_id is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%sexternal_id>%s</%sexternal_id>%s' % (namespace_, self.gds_format_string(quote_xml(self.external_id).encode(ExternalEncoding), input_name='external_id'), namespace_, eol_))
         if self.roles is not None:
             self.roles.export(outfile, level, namespace_, name_='roles', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Group'):
@@ -10186,9 +10165,6 @@ class Group(BaseResource):
             self.domain.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
-        if self.external_id is not None:
-            showIndent(outfile, level)
-            outfile.write('external_id=%s,\n' % quote_python(self.external_id).encode(ExternalEncoding))
         if self.roles is not None:
             showIndent(outfile, level)
             outfile.write('roles=model_.Roles(\n')
@@ -10208,10 +10184,6 @@ class Group(BaseResource):
             obj_ = Domain.factory()
             obj_.build(child_)
             self.set_domain(obj_)
-        elif nodeName_ == 'external_id':
-            external_id_ = child_.text
-            external_id_ = self.gds_validate_string(external_id_, node, 'external_id')
-            self.external_id = external_id_
         elif nodeName_ == 'roles':
             obj_ = Roles.factory()
             obj_.build(child_)
@@ -27348,6 +27320,219 @@ class Jobs(BaseResources):
 # end class Jobs
 
 
+class AffinityGroup(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, cluster=None, positive=None, enforcing=None):
+        super(AffinityGroup, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        self.cluster = cluster
+        self.positive = positive
+        self.enforcing = enforcing
+    def factory(*args_, **kwargs_):
+        if AffinityGroup.subclass:
+            return AffinityGroup.subclass(*args_, **kwargs_)
+        else:
+            return AffinityGroup(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_cluster(self): return self.cluster
+    def set_cluster(self, cluster): self.cluster = cluster
+    def get_positive(self): return self.positive
+    def set_positive(self, positive): self.positive = positive
+    def get_enforcing(self): return self.enforcing
+    def set_enforcing(self, enforcing): self.enforcing = enforcing
+    def hasContent_(self):
+        if (
+            self.cluster is not None or
+            self.positive is not None or
+            self.enforcing is not None or
+            super(AffinityGroup, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='AffinityGroup', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='AffinityGroup')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='AffinityGroup'):
+        super(AffinityGroup, self).exportAttributes(outfile, level, already_processed, namespace_, name_='AffinityGroup')
+    def exportChildren(self, outfile, level, namespace_='', name_='AffinityGroup', fromsubclass_=False, pretty_print=True):
+        super(AffinityGroup, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.cluster is not None:
+            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+        if self.positive is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%spositive>%s</%spositive>%s' % (namespace_, self.gds_format_boolean(self.positive, input_name='positive'), namespace_, eol_))
+        if self.enforcing is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%senforcing>%s</%senforcing>%s' % (namespace_, self.gds_format_boolean(self.enforcing, input_name='enforcing'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='AffinityGroup'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(AffinityGroup, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(AffinityGroup, self).exportLiteralChildren(outfile, level, name_)
+        if self.cluster is not None:
+            showIndent(outfile, level)
+            outfile.write('cluster=model_.cluster(\n')
+            self.cluster.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.positive is not None:
+            showIndent(outfile, level)
+            outfile.write('positive=%s,\n' % self.positive)
+        if self.enforcing is not None:
+            showIndent(outfile, level)
+            outfile.write('enforcing=%s,\n' % self.enforcing)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(AffinityGroup, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'cluster':
+            obj_ = Cluster.factory()
+            obj_.build(child_)
+            self.set_cluster(obj_)
+        elif nodeName_ == 'positive':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'positive')
+            self.positive = ival_
+        elif nodeName_ == 'enforcing':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'enforcing')
+            self.enforcing = ival_
+        super(AffinityGroup, self).buildChildren(child_, node, nodeName_, True)
+# end class AffinityGroup
+
+
+class AffinityGroups(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, total=None, active=None, affinity_group=None):
+        super(AffinityGroups, self).__init__(actions, total, active, )
+        if affinity_group is None:
+            self.affinity_group = []
+        else:
+            self.affinity_group = affinity_group
+    def factory(*args_, **kwargs_):
+        if AffinityGroups.subclass:
+            return AffinityGroups.subclass(*args_, **kwargs_)
+        else:
+            return AffinityGroups(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_affinity_group(self): return self.affinity_group
+    def set_affinity_group(self, affinity_group): self.affinity_group = affinity_group
+    def add_affinity_group(self, value): self.affinity_group.append(value)
+    def insert_affinity_group(self, index, value): self.affinity_group[index] = value
+    def hasContent_(self):
+        if (
+            self.affinity_group or
+            super(AffinityGroups, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='AffinityGroups', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='AffinityGroups')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='AffinityGroups'):
+        super(AffinityGroups, self).exportAttributes(outfile, level, already_processed, namespace_, name_='AffinityGroups')
+    def exportChildren(self, outfile, level, namespace_='', name_='AffinityGroups', fromsubclass_=False, pretty_print=True):
+        super(AffinityGroups, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for affinity_group_ in self.affinity_group:
+            affinity_group_.export(outfile, level, namespace_, name_='affinity_group', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='AffinityGroups'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(AffinityGroups, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(AffinityGroups, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('affinity_group=[\n')
+        level += 1
+        for affinity_group_ in self.affinity_group:
+            showIndent(outfile, level)
+            outfile.write('model_.affinity_group(\n')
+            affinity_group_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(AffinityGroups, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'affinity_group':
+            obj_ = AffinityGroup.factory()
+            obj_.build(child_)
+            self.affinity_group.append(obj_)
+        super(AffinityGroups, self).buildChildren(child_, node, nodeName_, True)
+# end class AffinityGroups
+
+
 class WatchDog(BaseDevice):
     subclass = None
     superclass = BaseDevice
@@ -28569,7 +28754,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, status=None, fault=None, iscsi_target=None, power_management=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, status=None, fault=None, iscsi_target=None, power_management=None):
         super(Action, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -28586,6 +28771,7 @@ class Action(BaseResource):
         self.discard_snapshots = discard_snapshots
         self.exclusive = exclusive
         self.vm = vm
+        self.snapshot = snapshot
         self.template = template
         self.host_nics = host_nics
         self.check_connectivity = check_connectivity
@@ -28603,6 +28789,7 @@ class Action(BaseResource):
         self.resolution_type = resolution_type
         self.bricks = bricks
         self.job = job
+        self.import_as_template = import_as_template
         self.status = status
         self.fault = fault
         if iscsi_target is None:
@@ -28646,6 +28833,8 @@ class Action(BaseResource):
     def set_exclusive(self, exclusive): self.exclusive = exclusive
     def get_vm(self): return self.vm
     def set_vm(self, vm): self.vm = vm
+    def get_snapshot(self): return self.snapshot
+    def set_snapshot(self, snapshot): self.snapshot = snapshot
     def get_template(self): return self.template
     def set_template(self, template): self.template = template
     def get_host_nics(self): return self.host_nics
@@ -28680,6 +28869,8 @@ class Action(BaseResource):
     def set_bricks(self, bricks): self.bricks = bricks
     def get_job(self): return self.job
     def set_job(self, job): self.job = job
+    def get_import_as_template(self): return self.import_as_template
+    def set_import_as_template(self, import_as_template): self.import_as_template = import_as_template
     def get_status(self): return self.status
     def set_status(self, status): self.status = status
     def get_fault(self): return self.fault
@@ -28707,6 +28898,7 @@ class Action(BaseResource):
             self.discard_snapshots is not None or
             self.exclusive is not None or
             self.vm is not None or
+            self.snapshot is not None or
             self.template is not None or
             self.host_nics is not None or
             self.check_connectivity is not None or
@@ -28724,6 +28916,7 @@ class Action(BaseResource):
             self.resolution_type is not None or
             self.bricks is not None or
             self.job is not None or
+            self.import_as_template is not None or
             self.status is not None or
             self.fault is not None or
             self.iscsi_target or
@@ -28793,6 +28986,8 @@ class Action(BaseResource):
             outfile.write('<%sexclusive>%s</%sexclusive>%s' % (namespace_, self.gds_format_boolean(self.exclusive, input_name='exclusive'), namespace_, eol_))
         if self.vm is not None:
             self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+        if self.snapshot is not None:
+            self.snapshot.export(outfile, level, namespace_, name_='snapshot', pretty_print=pretty_print)
         if self.template is not None:
             self.template.export(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
         if self.host_nics is not None:
@@ -28837,6 +29032,9 @@ class Action(BaseResource):
             self.bricks.export(outfile, level, namespace_, name_='bricks', pretty_print=pretty_print)
         if self.job is not None:
             self.job.export(outfile, level, namespace_, name_='job', pretty_print=pretty_print)
+        if self.import_as_template is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%simport_as_template>%s</%simport_as_template>%s' % (namespace_, self.gds_format_boolean(self.import_as_template, input_name='import_as_template'), namespace_, eol_))
         if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.fault is not None:
@@ -28928,6 +29126,12 @@ class Action(BaseResource):
             self.vm.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.snapshot is not None:
+            showIndent(outfile, level)
+            outfile.write('snapshot=model_.Snapshot(\n')
+            self.snapshot.exportLiteral(outfile, level, name_='snapshot')
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.template is not None:
             showIndent(outfile, level)
             outfile.write('template=model_.template(\n')
@@ -29000,6 +29204,9 @@ class Action(BaseResource):
             self.job.exportLiteral(outfile, level, name_='job')
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.import_as_template is not None:
+            showIndent(outfile, level)
+            outfile.write('import_as_template=%s,\n' % self.import_as_template)
         if self.status is not None:
             showIndent(outfile, level)
             outfile.write('status=model_.status(\n')
@@ -29115,6 +29322,10 @@ class Action(BaseResource):
             obj_ = class_obj_.factory()
             obj_.build(child_)
             self.set_vm(obj_)
+        elif nodeName_ == 'snapshot':
+            obj_ = Snapshot.factory()
+            obj_.build(child_)
+            self.set_snapshot(obj_)
         elif nodeName_ == 'template':
             obj_ = Template.factory()
             obj_.build(child_)
@@ -29235,6 +29446,16 @@ class Action(BaseResource):
             obj_ = Job.factory()
             obj_.build(child_)
             self.set_job(obj_)
+        elif nodeName_ == 'import_as_template':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'import_as_template')
+            self.import_as_template = ival_
         elif nodeName_ == 'status':
             obj_ = Status.factory()
             obj_.build(child_)
@@ -30793,6 +31014,7 @@ GDSClassesMapping = {
     'general_metadata': GeneralMetadata,
     'link': Link,
     'guest_info': GuestInfo,
+    'affinity_group': AffinityGroup,
     'cdrom': CdRom,
     'general': GeneralMetadata,
     'storage_domain_types': StorageDomainTypes,
@@ -30808,6 +31030,7 @@ GDSClassesMapping = {
     'creation_status': Status,
     'gluster_hook': GlusterHook,
     'display': Display,
+    'affinity_groups': AffinityGroups,
     'usages': Usages,
     'power_managers': PowerManagers,
     'step_types': StepTypes,
@@ -30993,6 +31216,8 @@ __all__ = [
     "Action",
     "ActionableResource",
     "Actions",
+    "AffinityGroup",
+    "AffinityGroups",
     "Agent",
     "Agents",
     "ApiSummary",
@@ -31235,6 +31460,8 @@ __all__ = [
 _rootClassMap = {
                     "action"                        : Action,
                     "actions"                       : Actions,
+                    "affinity_group"                : AffinityGroup,
+                    "affinity_groups"               : AffinityGroups,
                     "agent"                         : Agent,
                     "agents"                        : Agents,
                     "api"                           : API,

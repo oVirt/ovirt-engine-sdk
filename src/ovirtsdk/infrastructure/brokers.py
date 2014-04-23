@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-02-28 10:43:14.004102'''
+'''Generated at: 2014-04-23 15:23:33.567657'''
 
 
 from ovirtsdk.xml import params
@@ -100,6 +100,7 @@ class Cluster(params.Cluster, Base):
         Base.__init__(self, context)
         self.superclass = cluster
 
+        self.affinitygroups = ClusterAffinityGroups(self, context)
         self.permissions = ClusterPermissions(self, context)
         self.glustervolumes = ClusterGlusterVolumes(self, context)
         self.glusterhooks = ClusterGlusterHooks(self, context)
@@ -182,6 +183,378 @@ class Cluster(params.Cluster, Base):
         )
 
         return Cluster(result, self.context)
+
+class ClusterAffinityGroup(params.AffinityGroup, Base):
+    def __init__(self, cluster, affinitygroup, context):
+        Base.__init__(self, context)
+        self.parentclass = cluster
+        self.superclass  =  affinitygroup
+
+        self.vms = ClusterAffinityGroupVms(self, context)
+
+    def __new__(cls, cluster, affinitygroup, context):
+        if affinitygroup is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(cluster, affinitygroup, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.get_id(),
+                 '{affinitygroup:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+    def update(self):
+        '''
+        [@param affinitygroup.name: string]
+        [@param affinitygroup.positive: boolean]
+        [@param affinitygroup.enforcing: boolean]
+
+        @return AffinityGroup:
+        '''
+
+        url = '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}'
+        url = UrlHelper.replace(
+            url,
+            {'{cluster:id}' : self.parentclass.get_id(),
+             '{affinitygroup:id}': self.get_id()}
+        )
+
+        result = self.__getProxy().update(
+            url=SearchHelper.appendQuery(url, {}),
+            body=ParseHelper.toXml(self.superclass),
+            headers={}
+        )
+
+        return ClusterAffinityGroup(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+class ClusterAffinityGroupVm(params.VM, Base):
+    def __init__(self, clusteraffinitygroup, vm, context):
+        Base.__init__(self, context)
+        self.parentclass = clusteraffinitygroup
+        self.superclass  =  vm
+
+        #SUB_COLLECTIONS
+    def __new__(cls, clusteraffinitygroup, vm, context):
+        if vm is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(clusteraffinitygroup, vm, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms/{vm:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                 '{affinitygroup:id}': self.parentclass.get_id(),
+                 '{vm:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+class ClusterAffinityGroupVms(Base):
+
+    def __init__(self, clusteraffinitygroup , context):
+        Base.__init__(self, context)
+        self.parentclass = clusteraffinitygroup
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, vm, expect=None):
+
+        '''
+        @type VM:
+
+        @param vm.id|name: string
+        [@param expect: 201-created]
+
+        @return VM:
+        '''
+
+        url = '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                 '{affinitygroup:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(vm),
+            headers={"Expect":expect}
+        )
+
+        return ClusterAffinityGroupVm(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return VMs:
+        '''
+
+        url = '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                             '{affinitygroup:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return ClusterAffinityGroupVm(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                     '{affinitygroup:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_vm()
+
+            return ClusterAffinityGroupVm(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return VMs:
+        '''
+
+        url = '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{cluster:id}' : self.parentclass.parentclass.get_id(),
+                 '{affinitygroup:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_vm()
+
+        return ParseHelper.toSubCollection(
+            ClusterAffinityGroupVm,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class ClusterAffinityGroups(Base):
+
+    def __init__(self, cluster , context):
+        Base.__init__(self, context)
+        self.parentclass = cluster
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, affinitygroup, expect=None):
+
+        '''
+        @type AffinityGroup:
+
+        @param affinitygroup.name: string
+        @param affinitygroup.positive: boolean
+        @param affinitygroup.enforcing: boolean
+        [@param expect: 201-created]
+
+        @return AffinityGroup:
+        '''
+
+        url = '/clusters/{cluster:id}/affinitygroups'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{cluster:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(affinitygroup),
+            headers={"Expect":expect}
+        )
+
+        return ClusterAffinityGroup(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return AffinityGroups:
+        '''
+
+        url = '/clusters/{cluster:id}/affinitygroups'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{cluster:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return ClusterAffinityGroup(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{cluster:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_affinity_group()
+
+            return ClusterAffinityGroup(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return AffinityGroups:
+        '''
+
+        url = '/clusters/{cluster:id}/affinitygroups'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{cluster:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_affinity_group()
+
+        return ParseHelper.toSubCollection(
+            ClusterAffinityGroup,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class ClusterGlusterHook(params.GlusterHook, Base):
     def __init__(self, cluster, glusterhook, context):
@@ -1809,6 +2182,7 @@ class DataCenterCluster(params.Cluster, Base):
         self.parentclass = datacenter
         self.superclass  =  cluster
 
+        self.affinitygroups = DataCenterClusterAffinitygroups(self, context)
         self.permissions = DataCenterClusterPermissions(self, context)
         self.glustervolumes = DataCenterClusterGlustervolumes(self, context)
         self.glusterhooks = DataCenterClusterGlusterhooks(self, context)
@@ -1897,6 +2271,369 @@ class DataCenterCluster(params.Cluster, Base):
             self.parentclass,
             result,
             self.context
+        )
+
+class DataCenterClusterAffinitygroup(params.AffinityGroup, Base):
+    def __init__(self, datacentercluster, affinitygroup, context):
+        Base.__init__(self, context)
+        self.parentclass = datacentercluster
+        self.superclass  =  affinitygroup
+
+        self.vms = DataCenterClusterAffinitygroupVms(self, context)
+
+    def __new__(cls, datacentercluster, affinitygroup, context):
+        if affinitygroup is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacentercluster, affinitygroup, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id(),
+                 '{affinitygroup:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+    def update(self):
+        '''
+        @return AffinityGroup:
+        '''
+
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}'
+        url = UrlHelper.replace(
+            url,
+            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+             '{cluster:id}': self.parentclass.get_id(),
+             '{affinitygroup:id}': self.get_id()}
+        )
+
+        result = self.__getProxy().update(
+            url=SearchHelper.appendQuery(url, {}),
+            body=ParseHelper.toXml(self.superclass),
+            headers={}
+        )
+
+        return DataCenterClusterAffinitygroup(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+class DataCenterClusterAffinitygroupVm(params.VM, Base):
+    def __init__(self, datacenterclusteraffinitygroup, vm, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterclusteraffinitygroup
+        self.superclass  =  vm
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacenterclusteraffinitygroup, vm, context):
+        if vm is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenterclusteraffinitygroup, vm, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms/{vm:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.parentclass.get_id(),
+                 '{affinitygroup:id}': self.parentclass.get_id(),
+                 '{vm:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
+
+class DataCenterClusterAffinitygroupVms(Base):
+
+    def __init__(self, datacenterclusteraffinitygroup , context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterclusteraffinitygroup
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, vm):
+
+        '''
+        @type VM:
+
+
+        @return VM:
+        '''
+
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.parentclass.get_id(),
+                 '{affinitygroup:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(vm),
+            headers={}
+        )
+
+        return DataCenterClusterAffinitygroupVm(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return VMs:
+        '''
+
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                             '{cluster:id}': self.parentclass.parentclass.get_id(),
+                             '{affinitygroup:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterClusterAffinitygroupVm(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                     '{cluster:id}': self.parentclass.parentclass.get_id(),
+                     '{affinitygroup:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_vm()
+
+            return DataCenterClusterAffinitygroupVm(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return VMs:
+        '''
+
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.parentclass.get_id(),
+                 '{affinitygroup:id}': self.parentclass.get_id()}
+            )
+        ).get_vm()
+
+        return ParseHelper.toSubCollection(
+            DataCenterClusterAffinitygroupVm,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterClusterAffinitygroups(Base):
+
+    def __init__(self, datacentercluster , context):
+        Base.__init__(self, context)
+        self.parentclass = datacentercluster
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, affinitygroup):
+
+        '''
+        @type AffinityGroup:
+
+
+        @return AffinityGroup:
+        '''
+
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id()}
+            ),
+            body=ParseHelper.toXml(affinitygroup),
+            headers={}
+        )
+
+        return DataCenterClusterAffinitygroup(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return AffinityGroups:
+        '''
+
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                             '{cluster:id}': self.parentclass.get_id()}
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterClusterAffinitygroup(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                     '{cluster:id}': self.parentclass.get_id()}
+                ),
+                headers={}
+            ).get_affinity_group()
+
+            return DataCenterClusterAffinitygroup(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return AffinityGroups:
+        '''
+
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {'{datacenter:id}' : self.parentclass.parentclass.get_id(),
+                 '{cluster:id}': self.parentclass.get_id()}
+            )
+        ).get_affinity_group()
+
+        return ParseHelper.toSubCollection(
+            DataCenterClusterAffinitygroup,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
         )
 
 class DataCenterClusterGlusterhook(params.GlusterHook, Base):
@@ -15490,6 +16227,25 @@ class VM(params.VM, Base):
 
         return result
 
+    def commit_snapshot(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/vms/{vm:id}/commit_snapshot'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
     def detach(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
@@ -15584,6 +16340,25 @@ class VM(params.VM, Base):
 
         return result
 
+    def preview_snapshot(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/vms/{vm:id}/preview_snapshot'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
     def reboot(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
@@ -15647,7 +16422,7 @@ class VM(params.VM, Base):
           [@ivar boot.dev: string]
         }
         [@param action.vm.domain.user.password: string]
-        [@param action.vm.initialization.cloud_init.hostname: string]
+        [@param action.vm.initialization.cloud_init.host.address: string]
         [@param action.vm.initialization.cloud_init.network_configuration.nics.nic: collection]
         {
           [@ivar nic.name: string]
@@ -15762,6 +16537,25 @@ class VM(params.VM, Base):
             url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def undo_snapshot(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/vms/{vm:id}/undo_snapshot'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            body=ParseHelper.toXml(action),
+            headers={}
         )
 
         return result
