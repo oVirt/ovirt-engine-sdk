@@ -40,6 +40,13 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS README LICENSE
 
 %changelog
+* Wed Apr 23 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.1.0-1
+- Added actions to preview, commit and undo snapshots.
+- Added support for affinity groups.
+- Added support to import a VM as template.
+- Removed external_id from users and groups.
+- Renamed cloud_init.hostname to cloud_init.host.address.
+
 * Wed Apr 16 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.7-1
 - Add support for filtering kwargs based on attributes.
 - Add check of SSL server name.
