@@ -218,7 +218,7 @@ class symbolInterpret(object):
 
     @classmethod
     def getGlobalFun(cls, attri, symbols=[]):
-        attrrule = r'^def\s+%s\s*\([_\w\s\*,]*\)\s*:.*$' % attri
+        attrrule = r'^def\s+%s\s*\([_\w\s\*=,]*\)\s*:.*$' % attri
         p = re.compile(attrrule, re.M)
         for val in symbols:
             m = p.match(val)
