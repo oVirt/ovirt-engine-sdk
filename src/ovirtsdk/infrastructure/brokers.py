@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-04-23 15:23:33.567657'''
+'''Generated at: 2014-05-07 10:24:47.560092'''
 
 
 from ovirtsdk.xml import params
@@ -101,10 +101,10 @@ class Cluster(params.Cluster, Base):
         self.superclass = cluster
 
         self.affinitygroups = ClusterAffinityGroups(self, context)
-        self.permissions = ClusterPermissions(self, context)
-        self.glustervolumes = ClusterGlusterVolumes(self, context)
         self.glusterhooks = ClusterGlusterHooks(self, context)
+        self.glustervolumes = ClusterGlusterVolumes(self, context)
         self.networks = ClusterNetworks(self, context)
+        self.permissions = ClusterPermissions(self, context)
 
     def __new__(cls, cluster, context):
         if cluster is None: return None
@@ -2101,11 +2101,11 @@ class DataCenter(params.DataCenter, Base):
         Base.__init__(self, context)
         self.superclass = datacenter
 
-        self.storagedomains = DataCenterStorageDomains(self, context)
         self.clusters = DataCenterClusters(self, context)
-        self.quotas = DataCenterQuotas(self, context)
         self.networks = DataCenterNetworks(self, context)
         self.permissions = DataCenterPermissions(self, context)
+        self.quotas = DataCenterQuotas(self, context)
+        self.storagedomains = DataCenterStorageDomains(self, context)
 
     def __new__(cls, datacenter, context):
         if datacenter is None: return None
@@ -2183,10 +2183,10 @@ class DataCenterCluster(params.Cluster, Base):
         self.superclass  =  cluster
 
         self.affinitygroups = DataCenterClusterAffinitygroups(self, context)
-        self.permissions = DataCenterClusterPermissions(self, context)
-        self.glustervolumes = DataCenterClusterGlustervolumes(self, context)
         self.glusterhooks = DataCenterClusterGlusterhooks(self, context)
+        self.glustervolumes = DataCenterClusterGlustervolumes(self, context)
         self.networks = DataCenterClusterNetworks(self, context)
+        self.permissions = DataCenterClusterPermissions(self, context)
 
     def __new__(cls, datacenter, cluster, context):
         if cluster is None: return None
@@ -4137,8 +4137,8 @@ class DataCenterNetwork(params.Network, Base):
         self.superclass  =  network
 
         self.labels = DataCenterNetworkLabels(self, context)
-        self.vnicprofiles = DataCenterNetworkVnicprofiles(self, context)
         self.permissions = DataCenterNetworkPermissions(self, context)
+        self.vnicprofiles = DataCenterNetworkVnicprofiles(self, context)
 
     def __new__(cls, datacenter, network, context):
         if network is None: return None
@@ -5412,8 +5412,8 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
         self.parentclass = datacenterstoragedomain
         self.superclass  =  disk
 
-        self.statistics = DataCenterStorageDomainDiskStatistics(self, context)
         self.permissions = DataCenterStorageDomainDiskPermissions(self, context)
+        self.statistics = DataCenterStorageDomainDiskStatistics(self, context)
 
     def __new__(cls, datacenterstoragedomain, disk, context):
         if disk is None: return None
@@ -6183,8 +6183,8 @@ class Disk(params.Disk, Base):
         Base.__init__(self, context)
         self.superclass = disk
 
-        self.statistics = DiskStatistics(self, context)
         self.permissions = DiskPermissions(self, context)
+        self.statistics = DiskStatistics(self, context)
 
     def __new__(cls, disk, context):
         if disk is None: return None
@@ -6667,8 +6667,8 @@ class Domain(params.Domain, Base):
         Base.__init__(self, context)
         self.superclass = domain
 
-        self.users = DomainUsers(self, context)
         self.groups = DomainGroups(self, context)
+        self.users = DomainUsers(self, context)
 
     def __new__(cls, domain, context):
         if domain is None: return None
@@ -7160,9 +7160,9 @@ class Group(params.Group, Base):
         Base.__init__(self, context)
         self.superclass = group
 
-        self.tags = GroupTags(self, context)
-        self.roles = GroupRoles(self, context)
         self.permissions = GroupPermissions(self, context)
+        self.roles = GroupRoles(self, context)
+        self.tags = GroupTags(self, context)
 
     def __new__(cls, group, context):
         if group is None: return None
@@ -7975,12 +7975,12 @@ class Host(params.Host, Base):
         Base.__init__(self, context)
         self.superclass = host
 
-        self.statistics = HostStatistics(self, context)
-        self.tags = HostTags(self, context)
         self.hooks = HostHooks(self, context)
-        self.storage = HostStorage(self, context)
         self.nics = HostNics(self, context)
         self.permissions = HostPermissions(self, context)
+        self.statistics = HostStatistics(self, context)
+        self.storage = HostStorage(self, context)
+        self.tags = HostTags(self, context)
 
     def __new__(cls, host, context):
         if host is None: return None
@@ -8455,8 +8455,8 @@ class HostNIC(params.HostNIC, Base):
         self.parentclass = host
         self.superclass  =  nic
 
-        self.statistics = HostNicStatistics(self, context)
         self.labels = HostNicLabels(self, context)
+        self.statistics = HostNicStatistics(self, context)
 
     def __new__(cls, host, nic, context):
         if nic is None: return None
@@ -10319,8 +10319,8 @@ class Network(params.Network, Base):
         self.superclass = network
 
         self.labels = NetworkLabels(self, context)
-        self.vnicprofiles = NetworkVnicProfiles(self, context)
         self.permissions = NetworkPermissions(self, context)
+        self.vnicprofiles = NetworkVnicProfiles(self, context)
 
     def __new__(cls, network, context):
         if network is None: return None
@@ -11881,13 +11881,13 @@ class StorageDomain(params.StorageDomain, Base):
         Base.__init__(self, context)
         self.superclass = storagedomain
 
-        self.files = StorageDomainFiles(self, context)
-        self.templates = StorageDomainTemplates(self, context)
         self.disks = StorageDomainDisks(self, context)
-        self.storageconnections = StorageDomainStorageConnections(self, context)
+        self.files = StorageDomainFiles(self, context)
         self.images = StorageDomainImages(self, context)
-        self.vms = StorageDomainVMs(self, context)
         self.permissions = StorageDomainPermissions(self, context)
+        self.storageconnections = StorageDomainStorageConnections(self, context)
+        self.templates = StorageDomainTemplates(self, context)
+        self.vms = StorageDomainVMs(self, context)
 
     def __new__(cls, storagedomain, context):
         if storagedomain is None: return None
@@ -11978,8 +11978,8 @@ class StorageDomainDisk(params.Disk, Base):
         self.parentclass = storagedomain
         self.superclass  =  disk
 
-        self.statistics = StorageDomainDiskStatistics(self, context)
         self.permissions = StorageDomainDiskPermissions(self, context)
+        self.statistics = StorageDomainDiskStatistics(self, context)
 
     def __new__(cls, storagedomain, disk, context):
         if disk is None: return None
@@ -14026,11 +14026,11 @@ class Template(params.Template, Base):
         Base.__init__(self, context)
         self.superclass = template
 
-        self.nics = TemplateNics(self, context)
         self.cdroms = TemplateCdRoms(self, context)
         self.disks = TemplateDisks(self, context)
-        self.watchdogs = TemplateWatchDogs(self, context)
+        self.nics = TemplateNics(self, context)
         self.permissions = TemplatePermissions(self, context)
+        self.watchdogs = TemplateWatchDogs(self, context)
 
     def __new__(cls, template, context):
         if template is None: return None
@@ -15253,9 +15253,9 @@ class User(params.User, Base):
         Base.__init__(self, context)
         self.superclass = user
 
-        self.tags = UserTags(self, context)
-        self.roles = UserRoles(self, context)
         self.permissions = UserPermissions(self, context)
+        self.roles = UserRoles(self, context)
+        self.tags = UserTags(self, context)
 
     def __new__(cls, user, context):
         if user is None: return None
@@ -16070,16 +16070,16 @@ class VM(params.VM, Base):
         Base.__init__(self, context)
         self.superclass = vm
 
+        self.applications = VMApplications(self, context)
         self.cdroms = VMCdRoms(self, context)
-        self.statistics = VMStatistics(self, context)
-        self.tags = VMTags(self, context)
-        self.nics = VMNics(self, context)
         self.disks = VMDisks(self, context)
+        self.nics = VMNics(self, context)
+        self.permissions = VMPermissions(self, context)
         self.reporteddevices = VMReportedDevices(self, context)
         self.snapshots = VMSnapshots(self, context)
-        self.applications = VMApplications(self, context)
+        self.statistics = VMStatistics(self, context)
+        self.tags = VMTags(self, context)
         self.watchdogs = VMWatchDogs(self, context)
-        self.permissions = VMPermissions(self, context)
 
     def __new__(cls, vm, context):
         if vm is None: return None
@@ -16283,6 +16283,29 @@ class VM(params.VM, Base):
         '''
 
         url = '/vms/{vm:id}/export'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def maintenance(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param action.maintenance_enabled: boolean
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/vms/{vm:id}/maintenance'
 
         result = self.__getProxy().request(
             method='POST',
@@ -16889,8 +16912,8 @@ class VMDisk(params.Disk, Base):
         self.parentclass = vm
         self.superclass  =  disk
 
-        self.statistics = VMDiskStatistics(self, context)
         self.permissions = VMDiskPermissions(self, context)
+        self.statistics = VMDiskStatistics(self, context)
 
     def __new__(cls, vm, disk, context):
         if disk is None: return None
@@ -17548,8 +17571,8 @@ class VMNic(params.NIC, Base):
         self.parentclass = vm
         self.superclass  =  nic
 
-        self.statistics = VMNicStatistics(self, context)
         self.reporteddevices = VMNicReporteddevices(self, context)
+        self.statistics = VMNicStatistics(self, context)
 
     def __new__(cls, vm, nic, context):
         if nic is None: return None
@@ -18379,9 +18402,9 @@ class VMSnapshot(params.Snapshot, Base):
         self.parentclass = vm
         self.superclass  =  snapshot
 
-        self.nics = VMSnapshotNics(self, context)
         self.cdroms = VMSnapshotCdroms(self, context)
         self.disks = VMSnapshotDisks(self, context)
+        self.nics = VMSnapshotNics(self, context)
 
     def __new__(cls, vm, snapshot, context):
         if snapshot is None: return None
@@ -19841,6 +19864,7 @@ class VmPool(params.VmPool, Base):
         [@param vmpool.size: int]
         [@param vmpool.max_user_vms: int]
         [@param vmpool.display.proxy: string]
+        [@param vmpool.description: string]
         [@param correlation_id: any string]
 
         @return VmPool:
@@ -20085,6 +20109,7 @@ class VmPools(Base):
         [@param vmpool.size: int]
         [@param vmpool.max_user_vms: int]
         [@param vmpool.display.proxy: string]
+        [@param vmpool.description: string]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 

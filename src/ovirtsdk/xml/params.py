@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Apr 23 15:23:20 2014 by generateDS.py version 2.9a.
+# Generated Wed May  7 10:24:33 2014 by generateDS.py version 2.9a.
 #
 
 import sys
@@ -8222,7 +8222,7 @@ class Certificate(GeneratedsSuper):
 class Host(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, ssh=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None, display=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, ssh=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None, display=None, hosted_engine=None):
         super(Host, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.address = address
         self.certificate = certificate
@@ -8250,6 +8250,7 @@ class Host(BaseResource):
         self.hooks = hooks
         self.libvirt_version = libvirt_version
         self.display = display
+        self.hosted_engine = hosted_engine
     def factory(*args_, **kwargs_):
         if Host.subclass:
             return Host.subclass(*args_, **kwargs_)
@@ -8308,6 +8309,8 @@ class Host(BaseResource):
     def set_libvirt_version(self, libvirt_version): self.libvirt_version = libvirt_version
     def get_display(self): return self.display
     def set_display(self, display): self.display = display
+    def get_hosted_engine(self): return self.hosted_engine
+    def set_hosted_engine(self, hosted_engine): self.hosted_engine = hosted_engine
     def hasContent_(self):
         if (
             self.address is not None or
@@ -8336,6 +8339,7 @@ class Host(BaseResource):
             self.hooks is not None or
             self.libvirt_version is not None or
             self.display is not None or
+            self.hosted_engine is not None or
             super(Host, self).hasContent_()
             ):
             return True
@@ -8425,6 +8429,8 @@ class Host(BaseResource):
             self.libvirt_version.export(outfile, level, namespace_, name_='libvirt_version', pretty_print=pretty_print)
         if self.display is not None:
             self.display.export(outfile, level, namespace_, name_='display', pretty_print=pretty_print)
+        if self.hosted_engine is not None:
+            self.hosted_engine.export(outfile, level, namespace_, name_='hosted_engine', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Host'):
         level += 1
         already_processed = set()
@@ -8567,6 +8573,12 @@ class Host(BaseResource):
             self.display.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.hosted_engine is not None:
+            showIndent(outfile, level)
+            outfile.write('hosted_engine=model_.HostedEngine(\n')
+            self.hosted_engine.exportLiteral(outfile, level, name_='hosted_engine')
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -8706,6 +8718,10 @@ class Host(BaseResource):
             obj_ = Display.factory()
             obj_.build(child_)
             self.set_display(obj_)
+        elif nodeName_ == 'hosted_engine':
+            obj_ = HostedEngine.factory()
+            obj_.build(child_)
+            self.set_hosted_engine(obj_)
         super(Host, self).buildChildren(child_, node, nodeName_, True)
 # end class Host
 
@@ -8788,6 +8804,164 @@ class StorageManager(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class StorageManager
+
+
+class HostedEngine(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, configured=None, active=None, score=None, global_maintenance=None, local_maintenance=None):
+        self.configured = configured
+        self.active = active
+        self.score = score
+        self.global_maintenance = global_maintenance
+        self.local_maintenance = local_maintenance
+    def factory(*args_, **kwargs_):
+        if HostedEngine.subclass:
+            return HostedEngine.subclass(*args_, **kwargs_)
+        else:
+            return HostedEngine(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_configured(self): return self.configured
+    def set_configured(self, configured): self.configured = configured
+    def get_active(self): return self.active
+    def set_active(self, active): self.active = active
+    def get_score(self): return self.score
+    def set_score(self, score): self.score = score
+    def get_global_maintenance(self): return self.global_maintenance
+    def set_global_maintenance(self, global_maintenance): self.global_maintenance = global_maintenance
+    def get_local_maintenance(self): return self.local_maintenance
+    def set_local_maintenance(self, local_maintenance): self.local_maintenance = local_maintenance
+    def hasContent_(self):
+        if (
+            self.configured is not None or
+            self.active is not None or
+            self.score is not None or
+            self.global_maintenance is not None or
+            self.local_maintenance is not None
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='HostedEngine', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='HostedEngine')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='HostedEngine'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='HostedEngine', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.configured is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sconfigured>%s</%sconfigured>%s' % (namespace_, self.gds_format_boolean(self.configured, input_name='configured'), namespace_, eol_))
+        if self.active is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sactive>%s</%sactive>%s' % (namespace_, self.gds_format_boolean(self.active, input_name='active'), namespace_, eol_))
+        if self.score is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sscore>%s</%sscore>%s' % (namespace_, self.gds_format_integer(self.score, input_name='score'), namespace_, eol_))
+        if self.global_maintenance is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sglobal_maintenance>%s</%sglobal_maintenance>%s' % (namespace_, self.gds_format_boolean(self.global_maintenance, input_name='global_maintenance'), namespace_, eol_))
+        if self.local_maintenance is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%slocal_maintenance>%s</%slocal_maintenance>%s' % (namespace_, self.gds_format_boolean(self.local_maintenance, input_name='local_maintenance'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='HostedEngine'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.configured is not None:
+            showIndent(outfile, level)
+            outfile.write('configured=%s,\n' % self.configured)
+        if self.active is not None:
+            showIndent(outfile, level)
+            outfile.write('active=%s,\n' % self.active)
+        if self.score is not None:
+            showIndent(outfile, level)
+            outfile.write('score=%d,\n' % self.score)
+        if self.global_maintenance is not None:
+            showIndent(outfile, level)
+            outfile.write('global_maintenance=%s,\n' % self.global_maintenance)
+        if self.local_maintenance is not None:
+            showIndent(outfile, level)
+            outfile.write('local_maintenance=%s,\n' % self.local_maintenance)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'configured':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'configured')
+            self.configured = ival_
+        elif nodeName_ == 'active':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'active')
+            self.active = ival_
+        elif nodeName_ == 'score':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'score')
+            self.score = ival_
+        elif nodeName_ == 'global_maintenance':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'global_maintenance')
+            self.global_maintenance = ival_
+        elif nodeName_ == 'local_maintenance':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'local_maintenance')
+            self.local_maintenance = ival_
+# end class HostedEngine
 
 
 class HostStates(GeneratedsSuper):
@@ -12133,7 +12307,7 @@ class VLAN(GeneratedsSuper):
 class Network(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, cluster=None, ip=None, vlan=None, stp=None, status=None, display=None, mtu=None, usages=None, required=None, profile_required=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, cluster=None, ip=None, vlan=None, stp=None, status=None, display=None, mtu=None, usages=None, required=None, profile_required=None, labels=None):
         super(Network, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.data_center = data_center
         self.cluster = cluster
@@ -12146,6 +12320,7 @@ class Network(BaseResource):
         self.usages = usages
         self.required = required
         self.profile_required = profile_required
+        self.labels = labels
     def factory(*args_, **kwargs_):
         if Network.subclass:
             return Network.subclass(*args_, **kwargs_)
@@ -12174,6 +12349,8 @@ class Network(BaseResource):
     def set_required(self, required): self.required = required
     def get_profile_required(self): return self.profile_required
     def set_profile_required(self, profile_required): self.profile_required = profile_required
+    def get_labels(self): return self.labels
+    def set_labels(self, labels): self.labels = labels
     def hasContent_(self):
         if (
             self.data_center is not None or
@@ -12187,6 +12364,7 @@ class Network(BaseResource):
             self.usages is not None or
             self.required is not None or
             self.profile_required is not None or
+            self.labels is not None or
             super(Network, self).hasContent_()
             ):
             return True
@@ -12243,6 +12421,8 @@ class Network(BaseResource):
         if self.profile_required is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sprofile_required>%s</%sprofile_required>%s' % (namespace_, self.gds_format_boolean(self.profile_required, input_name='profile_required'), namespace_, eol_))
+        if self.labels is not None:
+            self.labels.export(outfile, level, namespace_, name_='labels', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Network'):
         level += 1
         already_processed = set()
@@ -12304,6 +12484,12 @@ class Network(BaseResource):
         if self.profile_required is not None:
             showIndent(outfile, level)
             outfile.write('profile_required=%s,\n' % self.profile_required)
+        if self.labels is not None:
+            showIndent(outfile, level)
+            outfile.write('labels=model_.labels(\n')
+            self.labels.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -12385,6 +12571,10 @@ class Network(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'profile_required')
             self.profile_required = ival_
+        elif nodeName_ == 'labels':
+            obj_ = Labels.factory()
+            obj_.build(child_)
+            self.set_labels(obj_)
         super(Network, self).buildChildren(child_, node, nodeName_, True)
 # end class Network
 
@@ -21399,7 +21589,7 @@ class Snapshots(BaseResources):
 class HostNIC(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, host=None, network=None, mac=None, ip=None, vlan=None, bonding=None, boot_protocol=None, statistics=None, check_connectivity=None, speed=None, status=None, mtu=None, bridged=None, custom_configuration=None, override_configuration=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, host=None, network=None, mac=None, ip=None, vlan=None, bonding=None, boot_protocol=None, statistics=None, check_connectivity=None, speed=None, status=None, mtu=None, bridged=None, custom_configuration=None, override_configuration=None, labels=None):
         super(HostNIC, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.host = host
         self.network = network
@@ -21416,6 +21606,7 @@ class HostNIC(BaseResource):
         self.bridged = bridged
         self.custom_configuration = custom_configuration
         self.override_configuration = override_configuration
+        self.labels = labels
     def factory(*args_, **kwargs_):
         if HostNIC.subclass:
             return HostNIC.subclass(*args_, **kwargs_)
@@ -21452,6 +21643,8 @@ class HostNIC(BaseResource):
     def set_custom_configuration(self, custom_configuration): self.custom_configuration = custom_configuration
     def get_override_configuration(self): return self.override_configuration
     def set_override_configuration(self, override_configuration): self.override_configuration = override_configuration
+    def get_labels(self): return self.labels
+    def set_labels(self, labels): self.labels = labels
     def hasContent_(self):
         if (
             self.host is not None or
@@ -21469,6 +21662,7 @@ class HostNIC(BaseResource):
             self.bridged is not None or
             self.custom_configuration is not None or
             self.override_configuration is not None or
+            self.labels is not None or
             super(HostNIC, self).hasContent_()
             ):
             return True
@@ -21535,6 +21729,8 @@ class HostNIC(BaseResource):
         if self.override_configuration is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%soverride_configuration>%s</%soverride_configuration>%s' % (namespace_, self.gds_format_boolean(self.override_configuration, input_name='override_configuration'), namespace_, eol_))
+        if self.labels is not None:
+            self.labels.export(outfile, level, namespace_, name_='labels', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='HostNIC'):
         level += 1
         already_processed = set()
@@ -21614,6 +21810,12 @@ class HostNIC(BaseResource):
         if self.override_configuration is not None:
             showIndent(outfile, level)
             outfile.write('override_configuration=%s,\n' % self.override_configuration)
+        if self.labels is not None:
+            showIndent(outfile, level)
+            outfile.write('labels=model_.labels(\n')
+            self.labels.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -21715,6 +21917,10 @@ class HostNIC(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'override_configuration')
             self.override_configuration = ival_
+        elif nodeName_ == 'labels':
+            obj_ = Labels.factory()
+            obj_.build(child_)
+            self.set_labels(obj_)
         super(HostNIC, self).buildChildren(child_, node, nodeName_, True)
 # end class HostNIC
 
@@ -28754,7 +28960,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, status=None, fault=None, iscsi_target=None, power_management=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, status=None, fault=None, iscsi_target=None, power_management=None):
         super(Action, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -28790,6 +28996,7 @@ class Action(BaseResource):
         self.bricks = bricks
         self.job = job
         self.import_as_template = import_as_template
+        self.maintenance_enabled = maintenance_enabled
         self.status = status
         self.fault = fault
         if iscsi_target is None:
@@ -28871,6 +29078,8 @@ class Action(BaseResource):
     def set_job(self, job): self.job = job
     def get_import_as_template(self): return self.import_as_template
     def set_import_as_template(self, import_as_template): self.import_as_template = import_as_template
+    def get_maintenance_enabled(self): return self.maintenance_enabled
+    def set_maintenance_enabled(self, maintenance_enabled): self.maintenance_enabled = maintenance_enabled
     def get_status(self): return self.status
     def set_status(self, status): self.status = status
     def get_fault(self): return self.fault
@@ -28917,6 +29126,7 @@ class Action(BaseResource):
             self.bricks is not None or
             self.job is not None or
             self.import_as_template is not None or
+            self.maintenance_enabled is not None or
             self.status is not None or
             self.fault is not None or
             self.iscsi_target or
@@ -29035,6 +29245,9 @@ class Action(BaseResource):
         if self.import_as_template is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%simport_as_template>%s</%simport_as_template>%s' % (namespace_, self.gds_format_boolean(self.import_as_template, input_name='import_as_template'), namespace_, eol_))
+        if self.maintenance_enabled is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%smaintenance_enabled>%s</%smaintenance_enabled>%s' % (namespace_, self.gds_format_boolean(self.maintenance_enabled, input_name='maintenance_enabled'), namespace_, eol_))
         if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.fault is not None:
@@ -29207,6 +29420,9 @@ class Action(BaseResource):
         if self.import_as_template is not None:
             showIndent(outfile, level)
             outfile.write('import_as_template=%s,\n' % self.import_as_template)
+        if self.maintenance_enabled is not None:
+            showIndent(outfile, level)
+            outfile.write('maintenance_enabled=%s,\n' % self.maintenance_enabled)
         if self.status is not None:
             showIndent(outfile, level)
             outfile.write('status=model_.status(\n')
@@ -29456,6 +29672,16 @@ class Action(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'import_as_template')
             self.import_as_template = ival_
+        elif nodeName_ == 'maintenance_enabled':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'maintenance_enabled')
+            self.maintenance_enabled = ival_
         elif nodeName_ == 'status':
             obj_ = Status.factory()
             obj_.build(child_)
@@ -30889,7 +31115,7 @@ GDSClassesMapping = {
     'cpu_modes': CpuModes,
     'data_center_states': DataCenterStates,
     'transparent_hugepages': TransparentHugePages,
-    'step': Step,
+    'hosted_engine': HostedEngine,
     'ticket': Ticket,
     'permissions': Permissions,
     'bonding': Bonding,
@@ -30973,6 +31199,7 @@ GDSClassesMapping = {
     'storage_domains': StorageDomains,
     'network_configuration': NetworkConfiguration,
     'features': Features,
+    'step': Step,
     'bricks': GlusterBricks,
     'watchdogs': WatchDogs,
     'image': Image,
@@ -31319,6 +31546,7 @@ __all__ = [
     "HostNonOperationalDetails",
     "HostStates",
     "HostStorage",
+    "HostedEngine",
     "Hosts",
     "IP",
     "IPs",
@@ -31554,6 +31782,7 @@ _rootClassMap = {
                     "host_non_operational_details"  : HostNonOperationalDetails,
                     "host_states"                   : HostStates,
                     "host_storage"                  : HostStorage,
+                    "hosted_engine"                 : HostedEngine,
                     "hosts"                         : Hosts,
                     "image"                         : Image,
                     "images"                        : Images,
