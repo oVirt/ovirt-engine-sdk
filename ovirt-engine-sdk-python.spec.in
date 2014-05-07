@@ -40,6 +40,12 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS README LICENSE
 
 %changelog
+* Wed May 7 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.1.1-1
+- Added maintenance operation to VM.
+- Added hosted_engine element to Host.
+- Added labels to Network.
+- Added labels to HostNIC.
+
 * Wed Apr 23 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.1.0-1
 - Added actions to preview, commit and undo snapshots.
 - Added support for affinity groups.
