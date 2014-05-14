@@ -45,6 +45,8 @@ LEVELS = {'debug': logging.DEBUG,
           'error': logging.ERROR,
           'critical': logging.CRITICAL}
 
+GENERATE_DS_VERSION = "2.9a"
+
 
 class helpAction(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
@@ -136,6 +138,15 @@ def _call(args):
     except OSError, e:
         print >> sys.stderr, "Execution failed:", e
     return rc
+
+
+def _eval(args):
+    cmd = " ".join(args)
+    try:
+        out = subprocess.check_output(cmd, shell=True)
+    except OSError, e:
+        print >> sys.stderr, "Execution failed:", e
+    return out
 
 
 class symbolInterpret(object):
@@ -363,6 +374,11 @@ class paramsContext(symbolHandle):
         if _call(["which", "generateDS.py", ">/dev/null"]):
             logging.error('[ERROR] generateDS.py is not found, '
                           'please installed it')
+            exit(1)
+        version = _eval(["generateDS.py", "--version"])
+        if version != "generateDS.py version %s\n" % GENERATE_DS_VERSION:
+            sys.stderr.write("The version of generateDS.py isn't correct, "
+                             "it should be %s.\n" % GENERATE_DS_VERSION)
             exit(1)
         if not os.path.exists(self.files["schema"]):
             logging.error('[ERROR] can not find the file %s',
