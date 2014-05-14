@@ -45,7 +45,7 @@ LEVELS = {'debug': logging.DEBUG,
           'error': logging.ERROR,
           'critical': logging.CRITICAL}
 
-GENERATE_DS_VERSION = "2.9a"
+GENERATE_DS_VERSION = "2.12a"
 
 
 class helpAction(argparse.Action):
