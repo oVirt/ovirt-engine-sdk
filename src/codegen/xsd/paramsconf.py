@@ -31,54 +31,6 @@ modules = ["from ovirtsdk.utils.reflectionhelper import ReflectionHelper",
 # attributes of certain class, will be append to this calls in params.py
 _generatedsSuperAttribute = """
 # Begin NOT_GENERATED
-def __setattr__(self, item, value):
-    if (value is not None and
-        not isinstance(value, list) and
-        ReflectionHelper.isModuleMember(
-            sys.modules['ovirtsdk.infrastructure.brokers'],
-            type(value)) and
-        not ReflectionHelper.isModuleMember(sys.modules[__name__],
-            type(value)) and
-        value.__dict__.has_key('superclass') and
-        value.superclass is not None and
-        value.superclass != BaseResource):
-        if (ReflectionHelper.isModuleMember(
-                sys.modules['ovirtsdk.infrastructure.brokers'],
-                type(self)) and
-           self.__dict__.has_key('superclass') and
-           self.superclass is not None):
-            object.__setattr__(self.superclass, item, value.superclass)
-        else:
-            object.__setattr__(self, item, value.superclass)
-    elif (not isinstance(value, list) and
-         ReflectionHelper.isModuleMember(
-                 sys.modules['ovirtsdk.infrastructure.brokers'],
-                 type(self)) and
-         self.__dict__.has_key('superclass') and
-         self.superclass is not None and
-         not ReflectionHelper.isModuleMember(
-                 sys.modules['ovirtsdk.infrastructure.brokers'],
-                 type(value)) and
-         item is not 'superclass' and
-         item is not 'parentclass'):
-        object.__setattr__(self.superclass, item, value)
-    elif isinstance(value, list):
-        parsed_list = []
-        for obj in value:
-            if (ReflectionHelper.isModuleMember(
-                    sys.modules['ovirtsdk.infrastructure.brokers'],
-                    type(obj)) and
-               obj.__dict__.has_key('superclass') and
-               obj.superclass is not None and
-               item is not 'superclass' and
-               item is not 'parentclass'):
-                parsed_list.append(obj.superclass)
-            else:
-                parsed_list.append(obj)
-        object.__setattr__(self, item, parsed_list)
-    else:
-        object.__setattr__(self, item, value)
-
 def __eq__(self, other):
     return Comparator.compare(self, other)
 
