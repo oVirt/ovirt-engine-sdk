@@ -15,20 +15,59 @@
 #
 
 import StringIO
-from ovirtsdk.xml import params
+from ovirtsdk.infrastructure import common
 from ovirtsdk.utils.reflectionhelper import ReflectionHelper
+from ovirtsdk.xml import params
 import sys
 
 class ParseHelper():
     '''Provides parsing capabilities'''
 
     @staticmethod
+    def replaceDecorators(obj):
+        """
+        Returns the object that replaces the given one. If the object is a
+        resource decorator then it will be replaced by the corresponding
+        parameters object. Collection decorators will be replaced by None, as
+        then can't be serialized.
+        """
+
+        # Parameter objects don't need to be replaced themselves, but its
+        # attributes do:
+        if isinstance(obj, params.GeneratedsSuper):
+            for attr_name, attr_value in obj.__dict__.iteritems():
+                obj.__dict__[attr_name] = ParseHelper.replaceDecorators(attr_value)
+            return obj
+
+        # Resource decorators are replaced by the reference to the parameters
+        # object that they store in the "superclass" attribute, collections don't
+        # have this attribute, so they are replaced by None:
+        if isinstance(obj, common.Base):
+            try:
+               replacement = obj.superclass
+            except AttributeError:
+               replacement = None
+            return replacement
+
+        # Lists have to be iterated and the elements replaced:
+        if isinstance(obj, list):
+            replacement = []
+            for element in obj:
+                replacement.append(ParseHelper.replaceDecorators(element))
+            return replacement
+
+        # Other types of object don't need any replacement:
+        return obj
+
+    @staticmethod
     def toXml(entity):
         '''Parse entity to corresponding XML representation'''
 
-        if ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'],
-                                           type(entity)) and hasattr(entity, 'superclass'):
-            entity = entity.superclass
+        # The entity given may be a decorator, or it may contain a decorator
+        # deeply nested. Those decorators can't be serialized to XML, so we
+        # need to replace all references to decorators with the corresponding
+        # parameter objects:
+        entity = ParseHelper.replaceDecorators(entity)
 
         type_name = type(entity).__name__.lower()
         output = StringIO.StringIO()
