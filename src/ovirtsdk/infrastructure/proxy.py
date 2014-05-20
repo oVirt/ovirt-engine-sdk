@@ -131,6 +131,12 @@ class Proxy():
         @param persistent_auth: session based auth
         '''
 
+        # The Apache web server ignores the "Expect" header, so if this header
+        # was explicitly added by the user, then we need to add the alternative
+        # "X-Ovirt-Expect" as well:
+        if "Expect" in headers:
+            headers["X-Ovirt-Expect"] = headers["Expect"]
+
         response = conn.doRequest(
                    method=method,
                    url=self.__prefix + url,
