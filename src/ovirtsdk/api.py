@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-01-19 16:05:55.954861'''
+'''Generated at: 2014-05-22 18:27:26.017507'''
 
 import types
 import urlparse
@@ -33,6 +33,7 @@ from ovirtsdk.infrastructure.context import context
 from ovirtsdk.infrastructure.proxy import Proxy
 from ovirtsdk.infrastructure.cache import Mode
 
+from ovirtsdk.infrastructure.brokers import Bookmarks
 from ovirtsdk.infrastructure.brokers import Capabilities
 from ovirtsdk.infrastructure.brokers import Clusters
 from ovirtsdk.infrastructure.brokers import DataCenters
@@ -172,6 +173,7 @@ class API(object):
              typ=types.BooleanType
         )
 
+        self.bookmarks = Bookmarks(self.id)
         self.capabilities = Capabilities(self.id)
         self.clusters = Clusters(self.id)
         self.datacenters = DataCenters(self.id)
