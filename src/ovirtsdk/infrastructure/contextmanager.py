@@ -27,9 +27,10 @@ class ContextManager(OrderedDict):
         self.__lock = threading.RLock()
 
     def __getitem__(self, key):
-        with self.__lock:
-            if key not in self.data.keys():
-                OrderedDict.__setitem__(self, key, Cache())
+        if key not in self.data.keys():
+            with self.__lock:
+                if key not in self.data.keys():
+                    OrderedDict.__setitem__(self, key, Cache())
         return OrderedDict.__getitem__(self, key)
 
     def drop(self, key):
