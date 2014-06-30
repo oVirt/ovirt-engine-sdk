@@ -41,6 +41,7 @@ class RsdlCodegen(AbstractRsdlCodegen):
     # TODO:should be fixed on server side
     COLLECTION_TO_ENTITY_EXCEPTIONS = {
            'Capabilities': 'Capabilities',
+           'SchedulingPolicies': 'SchedulingPolicy',
            'Storage': 'Storage',
            'VersionCaps': 'VersionCaps',
     }
