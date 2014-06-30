@@ -39,11 +39,11 @@ class RsdlCodegen(AbstractRsdlCodegen):
     KNOWN_ACTIONS = ['get', 'add', 'delete', 'update']
 
     # TODO:should be fixed on server side
-    COLLECTION_TO_ENTITY_EXCEPTIONS = [
-           'Capabilities',
-           'Storage',
-           'VersionCaps'
-    ]
+    COLLECTION_TO_ENTITY_EXCEPTIONS = {
+           'Capabilities': 'Capabilities',
+           'Storage': 'Storage',
+           'VersionCaps': 'VersionCaps',
+    }
 
     # TODO:should be fixed on server side (naming inconsistency)
     NAMING_ENTITY_EXCEPTIONS = {
