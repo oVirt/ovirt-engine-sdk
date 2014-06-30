@@ -21,25 +21,34 @@ class StringUtils(object):
     PLURAL_SUFFIX = 's'
 
     @staticmethod
-    def toSingular(candidate, exceptions=[]):
+    def toSingular(candidate, exceptions={}):
         '''
         Converts string to singular form
         
         @param candidate: string to convert
         @param exceptions: plural form exceptions
         '''
-        if candidate and candidate.endswith(StringUtils.PLURAL_SUFFIX) \
-                and candidate not in exceptions:
-            return candidate[0:len(candidate) - 1]
+        if candidate is None:
+            return None
+        if candidate in exceptions:
+            return exceptions[candidate]
+        if candidate.endswith(StringUtils.PLURAL_SUFFIX):
+            return candidate[:-1]
         return candidate
 
     @staticmethod
-    def toPlural(candidate):
+    def toPlural(candidate, exceptions={}):
         '''
         Converts string to plural form
         
         @param candidate: string to convert
+        @param exceptions: plural form exceptions
         '''
-        if candidate and not candidate.endswith(StringUtils.PLURAL_SUFFIX):
+        if candidate is None:
+            return None
+        for plural, singular in exceptions.iteritems():
+            if candidate == singular:
+                return plural
+        if not candidate.endswith(StringUtils.PLURAL_SUFFIX):
             return candidate + StringUtils.PLURAL_SUFFIX
         return candidate
