@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-01-19 16:05:55.954861'''
+'''Generated at: 2014-07-04 12:03:46.372327'''
 
 import types
 import urlparse
@@ -33,6 +33,7 @@ from ovirtsdk.infrastructure.context import context
 from ovirtsdk.infrastructure.proxy import Proxy
 from ovirtsdk.infrastructure.cache import Mode
 
+from ovirtsdk.infrastructure.brokers import Bookmarks
 from ovirtsdk.infrastructure.brokers import Capabilities
 from ovirtsdk.infrastructure.brokers import Clusters
 from ovirtsdk.infrastructure.brokers import DataCenters
@@ -41,10 +42,13 @@ from ovirtsdk.infrastructure.brokers import Domains
 from ovirtsdk.infrastructure.brokers import Events
 from ovirtsdk.infrastructure.brokers import Groups
 from ovirtsdk.infrastructure.brokers import Hosts
+from ovirtsdk.infrastructure.brokers import InstanceTypes
 from ovirtsdk.infrastructure.brokers import Jobs
 from ovirtsdk.infrastructure.brokers import Networks
 from ovirtsdk.infrastructure.brokers import Permissions
 from ovirtsdk.infrastructure.brokers import Roles
+from ovirtsdk.infrastructure.brokers import SchedulingPolicies
+from ovirtsdk.infrastructure.brokers import SchedulingPolicyUnits
 from ovirtsdk.infrastructure.brokers import StorageConnections
 from ovirtsdk.infrastructure.brokers import StorageDomains
 from ovirtsdk.infrastructure.brokers import Tags
@@ -172,6 +176,7 @@ class API(object):
              typ=types.BooleanType
         )
 
+        self.bookmarks = Bookmarks(self.id)
         self.capabilities = Capabilities(self.id)
         self.clusters = Clusters(self.id)
         self.datacenters = DataCenters(self.id)
@@ -180,10 +185,13 @@ class API(object):
         self.events = Events(self.id)
         self.groups = Groups(self.id)
         self.hosts = Hosts(self.id)
+        self.instancetypes = InstanceTypes(self.id)
         self.jobs = Jobs(self.id)
         self.networks = Networks(self.id)
         self.permissions = Permissions(self.id)
         self.roles = Roles(self.id)
+        self.schedulingpolicies = SchedulingPolicies(self.id)
+        self.schedulingpolicyunits = SchedulingPolicyUnits(self.id)
         self.storageconnections = StorageConnections(self.id)
         self.storagedomains = StorageDomains(self.id)
         self.tags = Tags(self.id)
