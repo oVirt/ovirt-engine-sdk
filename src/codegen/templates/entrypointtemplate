@@ -37,7 +37,10 @@ class API(object):
         # when detected instance of the SDK proxy with
         # ref-count == 0
         if context.manager.has_key(self.__id):
-            self.disconnect()
+            try:
+                self.disconnect()
+            except DisconnectedError:
+                pass
 
         # Remove trailing slashes from the URL:
         url = url.rstrip('/')
