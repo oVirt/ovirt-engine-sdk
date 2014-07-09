@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-05-22 18:27:26.017507'''
+'''Generated at: 2014-07-09 12:07:23.980741'''
 
 import types
 import urlparse
@@ -42,10 +42,13 @@ from ovirtsdk.infrastructure.brokers import Domains
 from ovirtsdk.infrastructure.brokers import Events
 from ovirtsdk.infrastructure.brokers import Groups
 from ovirtsdk.infrastructure.brokers import Hosts
+from ovirtsdk.infrastructure.brokers import InstanceTypes
 from ovirtsdk.infrastructure.brokers import Jobs
 from ovirtsdk.infrastructure.brokers import Networks
 from ovirtsdk.infrastructure.brokers import Permissions
 from ovirtsdk.infrastructure.brokers import Roles
+from ovirtsdk.infrastructure.brokers import SchedulingPolicies
+from ovirtsdk.infrastructure.brokers import SchedulingPolicyUnits
 from ovirtsdk.infrastructure.brokers import StorageConnections
 from ovirtsdk.infrastructure.brokers import StorageDomains
 from ovirtsdk.infrastructure.brokers import Tags
@@ -70,7 +73,7 @@ class API(object):
         [@param ca_file: server ca_file for ssl enabled connection]
         [@param port: port to use (if not specified in url)]
         [@param timeout: request timeout]
-        [@param session_timeout: authentication session timeout (if persistent_auth is enabled)]
+        [@param session_timeout: authentication session timeout in minutes (if persistent_auth is enabled)]
         [@param persistent_auth: use persistent authentication (default is True)]
         [@param renew_session: automatically renew expired authentication session (default is False)]
         [@param insecure: signals to not demand site trustworthiness for ssl enabled connection (default is False)]
@@ -95,7 +98,10 @@ class API(object):
         # when detected instance of the SDK proxy with
         # ref-count == 0
         if context.manager.has_key(self.__id):
-            self.disconnect()
+            try:
+                self.disconnect()
+            except DisconnectedError:
+                pass
 
         # Remove trailing slashes from the URL:
         url = url.rstrip('/')
@@ -182,10 +188,13 @@ class API(object):
         self.events = Events(self.id)
         self.groups = Groups(self.id)
         self.hosts = Hosts(self.id)
+        self.instancetypes = InstanceTypes(self.id)
         self.jobs = Jobs(self.id)
         self.networks = Networks(self.id)
         self.permissions = Permissions(self.id)
         self.roles = Roles(self.id)
+        self.schedulingpolicies = SchedulingPolicies(self.id)
+        self.schedulingpolicyunits = SchedulingPolicyUnits(self.id)
         self.storageconnections = StorageConnections(self.id)
         self.storagedomains = StorageDomains(self.id)
         self.tags = Tags(self.id)
