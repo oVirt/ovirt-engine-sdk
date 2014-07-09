@@ -13163,42 +13163,6 @@ class Roles(Base):
             context=self.context
         )
 
-class SchedulingPolicie(params.SchedulingPolicie, Base):
-    def __init__(self, schedulingpolicie, context):
-        Base.__init__(self, context)
-        self.superclass = schedulingpolicie
-
-        #SUB_COLLECTIONS
-    def __new__(cls, schedulingpolicie, context):
-        if schedulingpolicie is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(schedulingpolicie, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def delete(self):
-        '''
-        @return None:
-        '''
-
-        url = '/schedulingpolicies/{schedulingpolicie:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {'{schedulingpolicie:id}': self.get_id()}
-            ),
-            headers={'Content-type':None}
-        )
-
 class SchedulingPolicies(Base):
     def __init__(self, context):
         Base.__init__(self, context)
@@ -13324,6 +13288,21 @@ class SchedulingPolicy(params.SchedulingPolicy, Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/schedulingpolicies/{schedulingpolicie:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{schedulingpolicy:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
 
     def update(self):
         '''
