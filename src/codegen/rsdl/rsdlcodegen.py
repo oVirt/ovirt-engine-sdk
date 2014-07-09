@@ -334,7 +334,7 @@ class RsdlCodegen(AbstractRsdlCodegen):
         @param collectionsHolder: collections holder
         '''
         resource = response_type if response_type is not None \
-                                 else collection[:len(collection) - 1]
+                                 else StringUtils.toSingular(collection, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS)
 
         if (not collectionsHolder.has_key(resource)):
             resource_body = Resource.resource(self.__toResourceType(resource), [], RsdlCodegen.KNOWN_WRAPPER_TYPES)
@@ -366,8 +366,8 @@ class RsdlCodegen(AbstractRsdlCodegen):
         @param collectionsHolder: collections holder
         @param collection_action: is action to be interpritated as collection action
         '''
-        resource = root_coll[:len(root_coll) - 1]
-        sub_resource = sub_coll[:len(sub_coll) - 1] if sub_coll is not None and not collection_action else None if sub_coll is None else sub_coll
+        resource = StringUtils.toSingular(root_coll, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS)
+        sub_resource = StringUtils.toSingular(sub_coll, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS) if sub_coll is not None and not collection_action else None if sub_coll is None else sub_coll
         action_name = self.__adaptActionName(action_name, sub_resource if sub_resource is not None
                                                                        else resource)
         if (sub_coll is None or sub_coll == '') and not force_sub_resource:
@@ -377,8 +377,8 @@ class RsdlCodegen(AbstractRsdlCodegen):
             collectionsHolder[resource]['body'] += action_body
         else:
             if not force_sub_resource:
-                nested_collection = root_coll[:len(root_coll) - 1] + sub_coll
-                nested_resource = nested_collection[:len(nested_collection) - 1] if not collection_action else nested_collection
+                nested_collection = StringUtils.toSingular(root_coll, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS) + sub_coll
+                nested_resource = StringUtils.toSingular(nested_collection, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS) if not collection_action else nested_collection
 
                 if (not collectionsHolder.has_key(nested_collection)and not force_sub_resource):
                     self.__extendSubCollection(root_coll, sub_coll, url, rel, http_method, body_type, link, response_type, collectionsHolder)
@@ -467,7 +467,7 @@ class RsdlCodegen(AbstractRsdlCodegen):
         '''
         root_res = StringUtils.toSingular(root_coll, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS)
         sub_res = response_type if response_type is not None \
-                                else sub_coll[:len(sub_coll) - 1]
+                                else StringUtils.toSingular(sub_coll, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS)
         sub_coll_type = root_res + sub_coll
         sub_res_type = StringUtils.toSingular(sub_coll_type, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS)
 
