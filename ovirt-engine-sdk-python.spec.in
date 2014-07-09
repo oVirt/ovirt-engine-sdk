@@ -40,6 +40,22 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS README LICENSE
 
 %changelog
+* Wed Jul 9 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.1-1
+- Added NUMA support.
+- Added actions to copy and move disks #1097681.
+- Added file_transfer_enabled and copy_paste_enabled elements to Display.
+- Added protocol element to Host.
+- Added support for Gluster volume profiling.
+- Added support for instance types.
+- Added support for quota.id parameter for disks.
+- Added support for random number generator device.
+- Added support for scheduling policies.
+- Added support storage domains disks sub-collection.
+- Added support to register VMs and templates.
+- Ignore errors when cleaning old connection #1116009.
+- Replace decorators before marshal #1024696.
+- Support X-Ovirt-Expect header #1093784.
+
 * Thu May 22 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.0-1
 - Update to version 2.12a of generateDS.py #1091688.
 - Regenerate for version 3.5 of the engine.
