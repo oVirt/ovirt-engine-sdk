@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-05-07 10:24:47.560092'''
+'''Generated at: 2014-07-10 10:33:39.730440'''
 
 
 from ovirtsdk.xml import params
@@ -4268,11 +4268,14 @@ class DataCenterNetworkLabels(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, label):
+    def add(self, label, expect=None, correlation_id=None):
 
         '''
         @type Label:
 
+        @param label.id: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Label:
         '''
@@ -4286,7 +4289,7 @@ class DataCenterNetworkLabels(Base):
                  '{network:id}': self.parentclass.get_id()}
             ),
             body=ParseHelper.toXml(label),
-            headers={}
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
         return DataCenterNetworkLabel(
@@ -8652,11 +8655,14 @@ class HostNicLabels(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, label):
+    def add(self, label, expect=None, correlation_id=None):
 
         '''
         @type Label:
 
+        @param label.id: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Label:
         '''
@@ -8670,7 +8676,7 @@ class HostNicLabels(Base):
                  '{nic:id}': self.parentclass.get_id()}
             ),
             body=ParseHelper.toXml(label),
-            headers={}
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
         return HostNicLabel(
@@ -10447,11 +10453,14 @@ class NetworkLabels(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, label):
+    def add(self, label, expect=None, correlation_id=None):
 
         '''
         @type Label:
 
+        @param label.id: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return Label:
         '''
@@ -10464,7 +10473,7 @@ class NetworkLabels(Base):
                 {'{network:id}': self.parentclass.get_id()}
             ),
             body=ParseHelper.toXml(label),
-            headers={}
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
         return NetworkLabel(
@@ -16227,10 +16236,11 @@ class VM(params.VM, Base):
 
         return result
 
-    def commit_snapshot(self, action=params.Action()):
+    def commit_snapshot(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Action:
         '''
@@ -16241,7 +16251,7 @@ class VM(params.VM, Base):
             method='POST',
             url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
             body=ParseHelper.toXml(action),
-            headers={}
+            headers={"Correlation-Id":correlation_id}
         )
 
         return result
@@ -16363,10 +16373,12 @@ class VM(params.VM, Base):
 
         return result
 
-    def preview_snapshot(self, action=params.Action()):
+    def preview_snapshot(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        @param action.snapshot.id: string
+        [@param correlation_id: any string]
 
         @return Action:
         '''
@@ -16377,7 +16389,7 @@ class VM(params.VM, Base):
             method='POST',
             url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
             body=ParseHelper.toXml(action),
-            headers={}
+            headers={"Correlation-Id":correlation_id}
         )
 
         return result
@@ -16564,10 +16576,11 @@ class VM(params.VM, Base):
 
         return result
 
-    def undo_snapshot(self, action=params.Action()):
+    def undo_snapshot(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        [@param correlation_id: any string]
 
         @return Action:
         '''
@@ -16578,7 +16591,7 @@ class VM(params.VM, Base):
             method='POST',
             url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
             body=ParseHelper.toXml(action),
-            headers={}
+            headers={"Correlation-Id":correlation_id}
         )
 
         return result
