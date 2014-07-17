@@ -471,6 +471,13 @@ class RsdlCodegen(AbstractRsdlCodegen):
         sub_coll_type = root_res + sub_coll
         sub_res_type = StringUtils.toSingular(sub_coll_type, RsdlCodegen.COLLECTION_TO_ENTITY_EXCEPTIONS)
 
+        # Avoid situations where the name of the resource type is the same than
+        # the name of the sub collection. Currently this only happens with the
+        # collection /hosts/{host:id}/storage, which is using a singular name
+        # instead of a plural name.
+        if sub_coll_type == sub_res_type:
+            sub_coll_type += "s"
+
         if (not collectionsHolder.has_key(sub_coll_type)):
             sub_coll_body = SubCollection.collection(sub_coll_type, root_res)
 
