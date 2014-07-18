@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-07-04 12:03:46.371533'''
+'''Generated at: 2014-07-18 11:08:57.366485'''
 
 
 from ovirtsdk.xml import params
@@ -5443,6 +5443,19 @@ class DataCenterNetworks(Base):
         @type Network:
 
         @param network.id|name: string
+        [@param network.description: string]
+        [@param network.comment: string]
+        [@param network.vlan.id: string]
+        [@param network.ip.address: string]
+        [@param network.ip.gateway: string]
+        [@param network.ip.netmask: string]
+        [@param network.stp: boolean]
+        [@param network.mtu: int]
+        [@param network.profile_required: boolean]
+        [@param network.usages.usage: collection]
+        {
+          [@ivar usage: string]
+        }
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -6680,14 +6693,14 @@ class DataCenters(Base):
         '''
         @type DataCenter:
 
+        @param datacenter.local: boolean
         @param datacenter.name: string
-        @param datacenter.version.major: int
-        @param datacenter.version.minor: int
-        [@param datacenter.storage_type: string]
-        [@param datacenter.local: boolean]
-        [@param datacenter.description: string]
         [@param datacenter.comment: string]
+        [@param datacenter.description: string]
         [@param datacenter.storage_format: string]
+        [@param datacenter.storage_type: string]
+        [@param datacenter.version.major: int]
+        [@param datacenter.version.minor: int]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -8620,7 +8633,7 @@ class Host(params.Host, Base):
         self.numanodes = HostNumaNodes(self, context)
         self.permissions = HostPermissions(self, context)
         self.statistics = HostStatistics(self, context)
-        self.storage = HostStorage(self, context)
+        self.storage = HostStorages(self, context)
         self.tags = HostTags(self, context)
 
     def __new__(cls, host, context):
@@ -10298,7 +10311,29 @@ class HostStatistics(Base):
             context=self.context
         )
 
-class HostStorage(Base):
+class HostStorage(params.HostStorage, Base):
+    def __init__(self, host, storage, context):
+        Base.__init__(self, context)
+        self.parentclass = host
+        self.superclass  =  storage
+
+        #SUB_COLLECTIONS
+    def __new__(cls, host, storage, context):
+        if storage is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(host, storage, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class HostStorages(Base):
 
     def __init__(self, host , context):
         Base.__init__(self, context)
@@ -12579,10 +12614,13 @@ class Networks(Base):
         [@param network.ip.address: string]
         [@param network.ip.gateway: string]
         [@param network.ip.netmask: string]
-        [@param network.display: boolean]
         [@param network.stp: boolean]
         [@param network.mtu: int]
         [@param network.profile_required: boolean]
+        [@param network.usages.usage: collection]
+        {
+          [@ivar usage: string]
+        }
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -13272,6 +13310,21 @@ class SchedulingPolicy(params.SchedulingPolicy, Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
+
+    def delete(self):
+        '''
+        @return None:
+        '''
+
+        url = '/schedulingpolicies/{schedulingpolicie:id}'
+
+        return self.__getProxy().delete(
+            url=UrlHelper.replace(
+                url,
+                {'{schedulingpolicy:id}': self.get_id()}
+            ),
+            headers={'Content-type':None}
+        )
 
     def update(self):
         '''
@@ -16590,6 +16643,7 @@ class Template(params.Template, Base):
         [@param template.serial_number.policy: string]
         [@param template.serial_number.value: string]
         [@param template.bios.boot_menu.enabled: boolean]
+        [@param template.start_paused: boolean]
         [@param correlation_id: any string]
 
         @return Template:
@@ -17824,6 +17878,9 @@ class Templates(Base):
         [@param template.serial_number.policy: string]
         [@param template.serial_number.value: string]
         [@param template.bios.boot_menu.enabled: boolean]
+        [@param template.cluster.id: string]
+        [@param template.cluster.name: string]
+        [@param template.start_paused: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -18815,6 +18872,7 @@ class VM(params.VM, Base):
         [@param vm.cpu.topology.cores: int]
         [@param vm.cpu_shares: int]
         [@param vm.memory: long]
+        [@param vm.memory_policy.guaranteed: long]
         [@param vm.high_availability.priority: int]
         [@param vm.high_availability.enabled: boolean]
         [@param vm.domain.name: string]
@@ -18858,6 +18916,7 @@ class VM(params.VM, Base):
         [@param vm.serial_number.value: string]
         [@param vm.bios.boot_menu.enabled: boolean]
         [@param vm.numa_tune_mode: string]
+        [@param vm.start_paused: boolean]
         [@param correlation_id: any string]
 
         @return VM:
@@ -20960,7 +21019,7 @@ class VMNumaNodes(Base):
         [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
 
-        @return NumaNodes:
+        @return VirtualNumaNodes:
         '''
 
         url = '/vms/{vm:id}/numanodes'
@@ -20994,7 +21053,7 @@ class VMNumaNodes(Base):
                     {'{vm:id}': self.parentclass.get_id()}
                 ),
                 headers={}
-            ).get_host_numa_node()
+            ).get_vm_numa_node()
 
             return VMNumaNode(
                 self.parentclass,
@@ -21015,7 +21074,7 @@ class VMNumaNodes(Base):
         [@param **kwargs: dict (property based filtering)"]
         [@param max: int (max results)]
 
-        @return NumaNodes:
+        @return VirtualNumaNodes:
         '''
 
         url = '/vms/{vm:id}/numanodes'
@@ -21029,7 +21088,7 @@ class VMNumaNodes(Base):
                 qargs={'max:matrix':max}
             ),
             headers={}
-        ).get_host_numa_node()
+        ).get_vm_numa_node()
 
         return ParseHelper.toSubCollection(
             VMNumaNode,
@@ -22668,6 +22727,7 @@ class VMs(Base):
           [@param vm.serial_number.value: string]
           [@param vm.bios.boot_menu.enabled: boolean]
           [@param vm.numa_tune_mode: string]
+          [@param vm.start_paused: boolean]
         Overload 2:
           @param vm.name: string
           @param vm.template.id|name: string
@@ -22748,6 +22808,7 @@ class VMs(Base):
           [@param vm.serial_number.value: string]
           [@param vm.bios.boot_menu.enabled: boolean]
           [@param vm.numa_tune_mode: string]
+          [@param vm.start_paused: boolean]
         Overload 3:
           @param vm.initialization.configuration.type: string
           @param vm.initialization.configuration.data: string
@@ -22826,6 +22887,7 @@ class VMs(Base):
           [@param vm.serial_number.value: string]
           [@param vm.bios.boot_menu.enabled: boolean]
           [@param vm.numa_tune_mode: string]
+          [@param vm.start_paused: boolean]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Fri Jul  4 12:03:45 2014 by generateDS.py version 2.12a.
+# Generated Fri Jul 18 11:08:55 2014 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -16660,7 +16660,7 @@ class InstanceTypes(BaseResources):
 class Template(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, version=None, serial_number=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, version=None, serial_number=None, start_paused=None, extensiontype_=None):
         super(Template, self).__init__(actions, href, id, name, description, comment, creation_status, link, extensiontype_, )
         self.vm = vm
         self.type_ = type_
@@ -16694,6 +16694,7 @@ class Template(BaseResource):
         self.permissions = permissions
         self.version = version
         self.serial_number = serial_number
+        self.start_paused = start_paused
         self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if Template.subclass:
@@ -16757,6 +16758,8 @@ class Template(BaseResource):
     def set_version(self, version): self.version = version
     def get_serial_number(self): return self.serial_number
     def set_serial_number(self, serial_number): self.serial_number = serial_number
+    def get_start_paused(self): return self.start_paused
+    def set_start_paused(self, start_paused): self.start_paused = start_paused
     def get_extensiontype_(self): return self.extensiontype_
     def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def hasContent_(self):
@@ -16789,6 +16792,7 @@ class Template(BaseResource):
             self.permissions is not None or
             self.version is not None or
             self.serial_number is not None or
+            self.start_paused is not None or
             super(Template, self).hasContent_()
         ):
             return True
@@ -16888,6 +16892,9 @@ class Template(BaseResource):
             self.version.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
         if self.serial_number is not None:
             self.serial_number.export(outfile, level, namespace_, name_='serial_number', pretty_print=pretty_print)
+        if self.start_paused is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sstart_paused>%s</%sstart_paused>%s' % (namespace_, self.gds_format_boolean(self.start_paused, input_name='start_paused'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='Template'):
         level += 1
         already_processed = set()
@@ -17036,6 +17043,9 @@ class Template(BaseResource):
             self.serial_number.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.start_paused is not None:
+            showIndent(outfile, level)
+            outfile.write('start_paused=%s,\n' % self.start_paused)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -17193,6 +17203,16 @@ class Template(BaseResource):
             obj_ = SerialNumber.factory()
             obj_.build(child_)
             self.serial_number = obj_
+        elif nodeName_ == 'start_paused':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'start_paused')
+            self.start_paused = ival_
         super(Template, self).buildChildren(child_, node, nodeName_, True)
 # end class Template
 
@@ -20682,7 +20702,7 @@ class SerialNumber(GeneratedsSuper):
 class VM(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, stop_reason=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, instance_type=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, serial_number=None, next_run_configuration_exists=None, numa_tune_mode=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, stop_reason=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, instance_type=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, serial_number=None, next_run_configuration_exists=None, numa_tune_mode=None, start_paused=None, extensiontype_=None):
         super(VM, self).__init__(actions, href, id, name, description, comment, creation_status, link, extensiontype_, )
         self.type_ = type_
         self.status = status
@@ -20748,6 +20768,7 @@ class VM(BaseResource):
         self.serial_number = serial_number
         self.next_run_configuration_exists = next_run_configuration_exists
         self.numa_tune_mode = numa_tune_mode
+        self.start_paused = start_paused
         self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if VM.subclass:
@@ -20859,6 +20880,8 @@ class VM(BaseResource):
     def set_next_run_configuration_exists(self, next_run_configuration_exists): self.next_run_configuration_exists = next_run_configuration_exists
     def get_numa_tune_mode(self): return self.numa_tune_mode
     def set_numa_tune_mode(self, numa_tune_mode): self.numa_tune_mode = numa_tune_mode
+    def get_start_paused(self): return self.start_paused
+    def set_start_paused(self, start_paused): self.start_paused = start_paused
     def get_extensiontype_(self): return self.extensiontype_
     def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def hasContent_(self):
@@ -20915,6 +20938,7 @@ class VM(BaseResource):
             self.serial_number is not None or
             self.next_run_configuration_exists is not None or
             self.numa_tune_mode is not None or
+            self.start_paused is not None or
             super(VM, self).hasContent_()
         ):
             return True
@@ -21068,6 +21092,9 @@ class VM(BaseResource):
         if self.numa_tune_mode is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%snuma_tune_mode>%s</%snuma_tune_mode>%s' % (namespace_, self.gds_format_string(quote_xml(self.numa_tune_mode).encode(ExternalEncoding), input_name='numa_tune_mode'), namespace_, eol_))
+        if self.start_paused is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sstart_paused>%s</%sstart_paused>%s' % (namespace_, self.gds_format_boolean(self.start_paused, input_name='start_paused'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='VM'):
         level += 1
         already_processed = set()
@@ -21342,6 +21369,9 @@ class VM(BaseResource):
         if self.numa_tune_mode is not None:
             showIndent(outfile, level)
             outfile.write('numa_tune_mode=%s,\n' % quote_python(self.numa_tune_mode).encode(ExternalEncoding))
+        if self.start_paused is not None:
+            showIndent(outfile, level)
+            outfile.write('start_paused=%s,\n' % self.start_paused)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -21607,6 +21637,16 @@ class VM(BaseResource):
             numa_tune_mode_ = child_.text
             numa_tune_mode_ = self.gds_validate_string(numa_tune_mode_, node, 'numa_tune_mode')
             self.numa_tune_mode = numa_tune_mode_
+        elif nodeName_ == 'start_paused':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'start_paused')
+            self.start_paused = ival_
         super(VM, self).buildChildren(child_, node, nodeName_, True)
 # end class VM
 
@@ -24816,8 +24856,8 @@ class Nics(BaseDevices):
 class Snapshot(VM):
     subclass = None
     superclass = VM
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, stop_reason=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, instance_type=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, serial_number=None, next_run_configuration_exists=None, numa_tune_mode=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
-        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, stop_reason, memory, cpu, cpu_shares, bios, os, high_availability, display, host, cluster, template, instance_type, storage_domain, start_time, stop_time, creation_time, origin, stateless, delete_protected, sso, rng_device, console, timezone, domain, custom_properties, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, tunnel_migration, migration_downtime, virtio_scsi, permissions, vmpool, cdroms, floppies, reported_devices, watchdogs, use_latest_template_version, serial_number, next_run_configuration_exists, numa_tune_mode, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, stop_reason=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, high_availability=None, display=None, host=None, cluster=None, template=None, instance_type=None, storage_domain=None, start_time=None, stop_time=None, creation_time=None, origin=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, custom_properties=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, serial_number=None, next_run_configuration_exists=None, numa_tune_mode=None, start_paused=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
+        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, stop_reason, memory, cpu, cpu_shares, bios, os, high_availability, display, host, cluster, template, instance_type, storage_domain, start_time, stop_time, creation_time, origin, stateless, delete_protected, sso, rng_device, console, timezone, domain, custom_properties, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, usb, tunnel_migration, migration_downtime, virtio_scsi, permissions, vmpool, cdroms, floppies, reported_devices, watchdogs, use_latest_template_version, serial_number, next_run_configuration_exists, numa_tune_mode, start_paused, )
         self.vm = vm
         if isinstance(date, basestring):
             initvalue_ = datetime_.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S')
@@ -33259,8 +33299,8 @@ class BrickProfileDetail(EntityProfileDetail):
 class InstanceType(Template):
     subclass = None
     superclass = Template
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, version=None, serial_number=None):
-        super(InstanceType, self).__init__(actions, href, id, name, description, comment, creation_status, link, vm, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, high_availability, display, stateless, delete_protected, sso, rng_device, console, timezone, domain, usb, tunnel_migration, migration_downtime, virtio_scsi, permissions, version, serial_number, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, version=None, serial_number=None, start_paused=None):
+        super(InstanceType, self).__init__(actions, href, id, name, description, comment, creation_status, link, vm, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, high_availability, display, stateless, delete_protected, sso, rng_device, console, timezone, domain, usb, tunnel_migration, migration_downtime, virtio_scsi, permissions, version, serial_number, start_paused, )
         pass
     def factory(*args_, **kwargs_):
         if InstanceType.subclass:

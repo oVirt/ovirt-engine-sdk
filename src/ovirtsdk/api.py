@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-07-04 12:03:46.372327'''
+'''Generated at: 2014-07-18 11:08:57.367882'''
 
 import types
 import urlparse
@@ -73,7 +73,7 @@ class API(object):
         [@param ca_file: server ca_file for ssl enabled connection]
         [@param port: port to use (if not specified in url)]
         [@param timeout: request timeout]
-        [@param session_timeout: authentication session timeout (if persistent_auth is enabled)]
+        [@param session_timeout: authentication session timeout in minutes (if persistent_auth is enabled)]
         [@param persistent_auth: use persistent authentication (default is True)]
         [@param renew_session: automatically renew expired authentication session (default is False)]
         [@param insecure: signals to not demand site trustworthiness for ssl enabled connection (default is False)]
@@ -98,7 +98,10 @@ class API(object):
         # when detected instance of the SDK proxy with
         # ref-count == 0
         if context.manager.has_key(self.__id):
-            self.disconnect()
+            try:
+                self.disconnect()
+            except DisconnectedError:
+                pass
 
         # Remove trailing slashes from the URL:
         url = url.rstrip('/')
