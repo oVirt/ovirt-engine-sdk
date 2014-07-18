@@ -40,6 +40,11 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS README LICENSE
 
 %changelog
+* Fri Jul 18 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.3-1
+- Fix naming conflict #1120502.
+- Fix parameters of add DataCenter #1104085.
+- Fix update VM optional parameters #1082594.
+
 * Wed Jul 9 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.2-1
 - Calculate singulars correctly #1114655.
 
