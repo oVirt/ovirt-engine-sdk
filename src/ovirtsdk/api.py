@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-07-09 12:07:23.980741'''
+'''Generated at: 2014-08-12 09:31:39.000729'''
 
 import types
 import urlparse
@@ -330,3 +330,4 @@ class API(object):
         if entry_point:
             return entry_point.product_info
         raise DisconnectedError
+

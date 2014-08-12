@@ -1,4 +1,3 @@
-
 #
 # Copyright (c) 2010 Red Hat, Inc.
 #
@@ -20,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-07-18 11:56:19.245554'''
+'''Generated at: 2014-08-12 09:31:39.000466'''
 
 
 from ovirtsdk.xml import params
@@ -7541,7 +7540,7 @@ class DomainUsers(Base):
                     {'{domain:id}': self.parentclass.get_id()}
                 ),
                 headers={}
-            ).get_owner()
+            ).get_user()
 
             return DomainUser(
                 self.parentclass,
@@ -7578,7 +7577,7 @@ class DomainUsers(Base):
                 qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}
             ),
             headers={}
-        ).get_owner()
+        ).get_user()
 
         return ParseHelper.toSubCollection(
             DomainUser,
@@ -18741,7 +18740,7 @@ class Users(Base):
             result = self.__getProxy().get(
                 url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                 headers={}
-            ).get_owner()
+            ).get_user()
 
             return User(
                 FilterHelper.getItem(
@@ -18768,7 +18767,7 @@ class Users(Base):
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={}
-        ).get_owner()
+        ).get_user()
 
         return ParseHelper.toCollection(
             User,
@@ -23712,4 +23711,5 @@ class VnicProfiles(Base):
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
+
 

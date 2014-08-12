@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Jul  9 12:07:21 2014 by generateDS.py version 2.12a.
+# Generated Tue Aug 12 09:31:37 2014 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -358,6 +358,54 @@ except ImportError, exp:
         def gds_reverse_node_mapping(cls, mapping):
             return dict(((v, k) for k, v in mapping.iteritems()))
         # Begin NOT_GENERATED
+        def __setattr__(self, item, value):
+            if (value is not None and
+                not isinstance(value, list) and
+                ReflectionHelper.isModuleMember(
+                    sys.modules['ovirtsdk.infrastructure.brokers'],
+                    type(value)) and
+                not ReflectionHelper.isModuleMember(sys.modules[__name__],
+                    type(value)) and
+                value.__dict__.has_key('superclass') and
+                value.superclass is not None and
+                value.superclass != BaseResource):
+                if (ReflectionHelper.isModuleMember(
+                        sys.modules['ovirtsdk.infrastructure.brokers'],
+                        type(self)) and
+                   self.__dict__.has_key('superclass') and
+                   self.superclass is not None):
+                    object.__setattr__(self.superclass, item, value.superclass)
+                else:
+                    object.__setattr__(self, item, value.superclass)
+            elif (not isinstance(value, list) and
+                 ReflectionHelper.isModuleMember(
+                         sys.modules['ovirtsdk.infrastructure.brokers'],
+                         type(self)) and
+                 self.__dict__.has_key('superclass') and
+                 self.superclass is not None and
+                 not ReflectionHelper.isModuleMember(
+                         sys.modules['ovirtsdk.infrastructure.brokers'],
+                         type(value)) and
+                 item is not 'superclass' and
+                 item is not 'parentclass'):
+                object.__setattr__(self.superclass, item, value)
+            elif isinstance(value, list):
+                parsed_list = []
+                for obj in value:
+                    if (ReflectionHelper.isModuleMember(
+                            sys.modules['ovirtsdk.infrastructure.brokers'],
+                            type(obj)) and
+                       obj.__dict__.has_key('superclass') and
+                       obj.superclass is not None and
+                       item is not 'superclass' and
+                       item is not 'parentclass'):
+                        parsed_list.append(obj.superclass)
+                    else:
+                        parsed_list.append(obj)
+                object.__setattr__(self, item, parsed_list)
+            else:
+                object.__setattr__(self, item, value)
+
         def __eq__(self, other):
             return Comparator.compare(self, other)
 
@@ -11392,7 +11440,8 @@ class Role(BaseResource):
             ival_ = self.gds_validate_boolean(ival_, node, 'administrative')
             self.administrative = ival_
         elif nodeName_ == 'user':
-            obj_ = User.factory()
+            class_obj_ = self.get_class_obj_(child_, User)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.user = obj_
         elif nodeName_ == 'permits':
@@ -11499,8 +11548,8 @@ class Roles(BaseResources):
 class User(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, domain=None, domain_entry_id=None, department=None, logged_in=None, namespace=None, last_name=None, user_name=None, password=None, email=None, roles=None, groups=None):
-        super(User, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, domain=None, domain_entry_id=None, department=None, logged_in=None, namespace=None, last_name=None, user_name=None, password=None, email=None, roles=None, groups=None, extensiontype_=None):
+        super(User, self).__init__(actions, href, id, name, description, comment, creation_status, link, extensiontype_, )
         self.domain = domain
         self.domain_entry_id = domain_entry_id
         self.department = department
@@ -11512,6 +11561,7 @@ class User(BaseResource):
         self.email = email
         self.roles = roles
         self.groups = groups
+        self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if User.subclass:
             return User.subclass(*args_, **kwargs_)
@@ -11540,6 +11590,8 @@ class User(BaseResource):
     def set_roles(self, roles): self.roles = roles
     def get_groups(self): return self.groups
     def set_groups(self, groups): self.groups = groups
+    def get_extensiontype_(self): return self.extensiontype_
+    def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def hasContent_(self):
         if (
             self.domain is not None or
@@ -11576,6 +11628,10 @@ class User(BaseResource):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='User'):
         super(User, self).exportAttributes(outfile, level, already_processed, namespace_, name_='User')
+        if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            outfile.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            outfile.write(' xsi:type="%s"' % self.extensiontype_)
     def exportChildren(self, outfile, level, namespace_='', name_='User', fromsubclass_=False, pretty_print=True):
         super(User, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
@@ -11672,6 +11728,10 @@ class User(BaseResource):
             self.buildChildren(child, node, nodeName_)
         return self
     def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('xsi:type', node)
+        if value is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            self.extensiontype_ = value
         super(User, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'domain':
@@ -11726,6 +11786,70 @@ class User(BaseResource):
             self.groups = obj_
         super(User, self).buildChildren(child_, node, nodeName_, True)
 # end class User
+
+
+class JobOwner(User):
+    subclass = None
+    superclass = User
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, domain=None, domain_entry_id=None, department=None, logged_in=None, namespace=None, last_name=None, user_name=None, password=None, email=None, roles=None, groups=None):
+        super(JobOwner, self).__init__(actions, href, id, name, description, comment, creation_status, link, domain, domain_entry_id, department, logged_in, namespace, last_name, user_name, password, email, roles, groups, )
+        pass
+    def factory(*args_, **kwargs_):
+        if JobOwner.subclass:
+            return JobOwner.subclass(*args_, **kwargs_)
+        else:
+            return JobOwner(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def hasContent_(self):
+        if (
+            super(JobOwner, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='JobOwner', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='JobOwner')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='JobOwner'):
+        super(JobOwner, self).exportAttributes(outfile, level, already_processed, namespace_, name_='JobOwner')
+    def exportChildren(self, outfile, level, namespace_='', name_='JobOwner', fromsubclass_=False, pretty_print=True):
+        super(JobOwner, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='JobOwner'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(JobOwner, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(JobOwner, self).exportLiteralChildren(outfile, level, name_)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(JobOwner, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        super(JobOwner, self).buildChildren(child_, node, nodeName_, True)
+        pass
+# end class JobOwner
 
 
 class Users(BaseResources):
@@ -11814,7 +11938,8 @@ class Users(BaseResources):
         super(Users, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'user':
-            obj_ = User.factory()
+            class_obj_ = self.get_class_obj_(child_, User)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.user.append(obj_)
         super(Users, self).buildChildren(child_, node, nodeName_, True)
@@ -12028,7 +12153,8 @@ class SSH(BaseResource):
             authentication_method_ = self.gds_validate_string(authentication_method_, node, 'authentication_method')
             self.authentication_method = authentication_method_
         elif nodeName_ == 'user':
-            obj_ = User.factory()
+            class_obj_ = self.get_class_obj_(child_, User)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.user = obj_
         super(SSH, self).buildChildren(child_, node, nodeName_, True)
@@ -12453,7 +12579,8 @@ class Permission(BaseResource):
             obj_.build(child_)
             self.role = obj_
         elif nodeName_ == 'user':
-            obj_ = User.factory()
+            class_obj_ = self.get_class_obj_(child_, User)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.user = obj_
         elif nodeName_ == 'group':
@@ -12687,7 +12814,8 @@ class Domain(BaseResource):
         super(Domain, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'user':
-            obj_ = User.factory()
+            class_obj_ = self.get_class_obj_(child_, User)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.user = obj_
         super(Domain, self).buildChildren(child_, node, nodeName_, True)
@@ -13038,7 +13166,8 @@ class Event(BaseResource):
             correlation_id_ = self.gds_validate_string(correlation_id_, node, 'correlation_id')
             self.correlation_id = correlation_id_
         elif nodeName_ == 'user':
-            obj_ = User.factory()
+            class_obj_ = self.get_class_obj_(child_, User)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.user = obj_
         elif nodeName_ == 'vm':
@@ -20036,7 +20165,8 @@ class AuthorizedKey(BaseResource):
         super(AuthorizedKey, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'user':
-            obj_ = User.factory()
+            class_obj_ = self.get_class_obj_(child_, User)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.user = obj_
         elif nodeName_ == 'key':
@@ -22411,7 +22541,8 @@ class Session(BaseResource):
             obj_.build(child_)
             self.ip = obj_
         elif nodeName_ == 'user':
-            obj_ = User.factory()
+            class_obj_ = self.get_class_obj_(child_, User)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.user = obj_
         elif nodeName_ == 'console_user':
@@ -26496,7 +26627,8 @@ class Tag(BaseResource):
             obj_.build(child_)
             self.template = obj_
         elif nodeName_ == 'user':
-            obj_ = User.factory()
+            class_obj_ = self.get_class_obj_(child_, User)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
             self.user = obj_
         elif nodeName_ == 'group':
@@ -31942,7 +32074,7 @@ class Job(BaseResource):
             outfile.write('),\n')
         if self.owner is not None:
             showIndent(outfile, level)
-            outfile.write('owner=model_.User(\n')
+            outfile.write('owner=model_.JobOwner(\n')
             self.owner.exportLiteral(outfile, level, name_='owner')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -31976,7 +32108,7 @@ class Job(BaseResource):
             obj_.build(child_)
             self.status = obj_
         elif nodeName_ == 'owner':
-            obj_ = User.factory()
+            obj_ = JobOwner.factory()
             obj_.build(child_)
             self.owner = obj_
         elif nodeName_ == 'start_time':
@@ -37000,7 +37132,7 @@ GDSClassesMapping = {
     'snapshots': Snapshots,
     'group': Group,
     'numa_node_pin': NumaNodePin,
-    'owner': User,
+    'owner': JobOwner,
     'rate': Rate,
     'brick_memoryinfo': GlusterBrickMemoryInfo,
     'reported_device_types': ReportedDeviceTypes,
@@ -37484,6 +37616,7 @@ __all__ = [
     "IpVersions",
     "IscsiDetails",
     "Job",
+    "JobOwner",
     "Jobs",
     "KSM",
     "KdumpStates",
@@ -37806,7 +37939,7 @@ _rootClassMap = {
                     "os"                            : OperatingSystem,
                     "os_types"                      : OsTypes,
                     "overcommit"                    : MemoryOverCommit,
-                    "owner"                         : User,
+                    "owner"                         : JobOwner,
                     "parameter"                     : Parameter,
                     "parameters_set"                : ParametersSet,
                     "parent"                        : TagParent,
