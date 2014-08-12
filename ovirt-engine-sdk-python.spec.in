@@ -40,6 +40,11 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS.md README.md LICENSE.md
 
 %changelog
+* Tue Aug 12 2014 Ravi Nori<rnori@redhat.com> - 3.5.0.4-1
+- Revert patch 0525e9d #1122546.
+- Update API fails in SDK & CLI #1122546.
+
+%changelog
 * Fri Jul 18 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.3-1
 - Fix naming conflict #1120502.
 - Fix parameters of add DataCenter #1104085.
