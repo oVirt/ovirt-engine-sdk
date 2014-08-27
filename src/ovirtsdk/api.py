@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-08-12 09:31:39.000729'''
+'''Generated at: 2014-08-27 18:00:51.000009'''
 
 import types
 import urlparse
@@ -36,7 +36,9 @@ from ovirtsdk.infrastructure.cache import Mode
 from ovirtsdk.infrastructure.brokers import Bookmarks
 from ovirtsdk.infrastructure.brokers import Capabilities
 from ovirtsdk.infrastructure.brokers import Clusters
+from ovirtsdk.infrastructure.brokers import CpuProfiles
 from ovirtsdk.infrastructure.brokers import DataCenters
+from ovirtsdk.infrastructure.brokers import DiskProfiles
 from ovirtsdk.infrastructure.brokers import Disks
 from ovirtsdk.infrastructure.brokers import Domains
 from ovirtsdk.infrastructure.brokers import Events
@@ -97,7 +99,7 @@ class API(object):
         # Implicitly disconnect and perform cleanup
         # when detected instance of the SDK proxy with
         # ref-count == 0
-        if context.manager.has_key(self.__id):
+        if context.manager.has_key(self.__id) and context.manager[self.__id].get('proxy') is not None:
             try:
                 self.disconnect()
             except DisconnectedError:
@@ -182,7 +184,9 @@ class API(object):
         self.bookmarks = Bookmarks(self.id)
         self.capabilities = Capabilities(self.id)
         self.clusters = Clusters(self.id)
+        self.cpuprofiles = CpuProfiles(self.id)
         self.datacenters = DataCenters(self.id)
+        self.diskprofiles = DiskProfiles(self.id)
         self.disks = Disks(self.id)
         self.domains = Domains(self.id)
         self.events = Events(self.id)
