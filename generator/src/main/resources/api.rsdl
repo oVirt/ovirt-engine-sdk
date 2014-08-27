@@ -551,6 +551,93 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
         </link>
+        <link href="/ovirt-engine/api/clusters/{cluster:id}/cpuprofiles" rel="add">
+            <description>add a new cpu profile for the cluster</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>CpuProfile</type>
+                    <parameters_set>
+                        <description>add a new cpu profile for the cluster</description>
+                        <parameter required="true" type="xs:string">
+                            <name>cpuprofile.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cpuprofile.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cpuprofile.qos.id</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>CpuProfile</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/clusters/{cluster:id}/cpuprofiles" rel="get">
+            <description>get the list of all cpu profiles for the cluster</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>CpuProfiles</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/clusters/{cluster:id}/cpuprofiles/{cpuprofile:id}" rel="delete">
+            <description>delete the specified cpu profile for the cluster</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/clusters/{cluster:id}/cpuprofiles/{cpuprofile:id}" rel="get">
+            <description>get the details of the specified cpu profile for the cluster</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>CpuProfile</type>
+            </response>
+        </link>
         <link href="/ovirt-engine/api/clusters/{cluster:id}/glusterhooks" rel="get">
             <request>
                 <http_method>GET</http_method>
@@ -1611,6 +1698,223 @@ or less indicates that the session should never timeout</description>
                 <type>Permission</type>
             </response>
         </link>
+        <link href="/ovirt-engine/api/cpuprofiles" rel="add">
+            <description>add a new cpu profile to the system</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>CpuProfile</type>
+                    <parameters_set>
+                        <description>add a new cpu profile to the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>cpuprofile.cluster.id</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>cpuprofile.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cpuprofile.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cpuprofile.qos.id</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>CpuProfile</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/cpuprofiles" rel="get">
+            <description>get the list of all cpu profiles in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>CpuProfiles</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/cpuprofiles/{cpuprofile:id}" rel="delete">
+            <description>delete the specified cpu profile in the system</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/cpuprofiles/{cpuprofile:id}" rel="get">
+            <description>get the details of the specified cpu profile in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>CpuProfile</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/cpuprofiles/{cpuprofile:id}" rel="update">
+            <description>update the specified cpu profile in the system</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>CpuProfile</type>
+                    <parameters_set>
+                        <description>update the specified cpu profile in the system</description>
+                        <parameter required="false" type="xs:string">
+                            <name>cpuprofile.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cpuprofile.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cpuprofile.qos.id</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>CpuProfile</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/cpuprofiles/{cpuprofile:id}/permissions" rel="add">
+            <description>add a new permission on the cpu profile in the system</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Permission</type>
+                    <parameters_set>
+                        <description>add a new user level permission on the cpu profile in the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>permission.user.id</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>permission.role.id</name>
+                        </parameter>
+                    </parameters_set>
+                    <parameters_set>
+                        <description>add a new group level permission on the cpu profile in the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>permission.group.id</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>permission.role.id</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Permission</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/cpuprofiles/{cpuprofile:id}/permissions" rel="get">
+            <description>get the list of all permissions on the cpu profile in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>Permissions</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/cpuprofiles/{cpuprofile:id}/permissions/{permission:id}" rel="delete">
+            <description>delete the specified permission for the cpu profile</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/cpuprofiles/{cpuprofile:id}/permissions/{permission:id}" rel="get">
+            <description>get details of the specified permission on the cpu profile in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Permission</type>
+            </response>
+        </link>
         <link href="/ovirt-engine/api/datacenters" rel="add">
             <description>add a new data center to the system</description>
             <request>
@@ -1657,6 +1961,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>datacenter.version.minor</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>datacenter.mac_pool.id</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -1794,6 +2101,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>datacenter.storage_format</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>datacenter.mac_pool.id</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -2150,6 +2460,41 @@ or less indicates that the session should never timeout</description>
                 <http_method>DELETE</http_method>
                 <body/>
             </request>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/clusters/{cluster:id}/cpuprofiles" rel="add">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>CpuProfile</type>
+                </body>
+            </request>
+            <response>
+                <type>CpuProfile</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/clusters/{cluster:id}/cpuprofiles" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>CpuProfiles</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/clusters/{cluster:id}/cpuprofiles/{cpuprofile:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/clusters/{cluster:id}/cpuprofiles/{cpuprofile:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>CpuProfile</type>
+            </response>
         </link>
         <link href="/ovirt-engine/api/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks" rel="get">
             <request>
@@ -2684,6 +3029,327 @@ or less indicates that the session should never timeout</description>
                 <type>Permission</type>
             </response>
         </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds" rel="add">
+            <description>add a new iSCSI Bond to the specified datacenter</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>IscsiBond</type>
+                    <parameters_set>
+                        <description>add a new iSCSI Bond to the datacenter</description>
+                        <parameter required="true" type="xs:string">
+                            <name>iscsibond.name</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>IscsiBond</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds" rel="get">
+            <description>get all iSCSI Bonds for the specified datacenter</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>IscsiBonds</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}" rel="delete">
+            <description>remove the specified iSCSI Bond from the datacenter</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>IscsiBond</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}" rel="update">
+            <description>update the specified iSCSI Bond</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>IscsiBond</type>
+                    <parameters_set>
+                        <description>update the specified iSCSI Bond</description>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>IscsiBond</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks" rel="add">
+            <description>specify list of networks contained in the iSCSI Bond</description>
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>Network</type>
+                </body>
+            </request>
+            <response>
+                <type>Network</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks" rel="get">
+            <description>gets the specified iSCSI Bond with the networks</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Networks</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Network</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}" rel="update">
+            <request>
+                <http_method>PUT</http_method>
+                <body>
+                    <type>Network</type>
+                </body>
+            </request>
+            <response>
+                <type>Network</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/labels" rel="add">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>Label</type>
+                </body>
+            </request>
+            <response>
+                <type>Label</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/labels" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Labels</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/labels/{label:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/labels/{label:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Label</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/permissions" rel="add">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>Permission</type>
+                </body>
+            </request>
+            <response>
+                <type>Permission</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/permissions" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Permissions</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/permissions/{permission:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/permissions/{permission:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Permission</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles" rel="add">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>VnicProfile</type>
+                </body>
+            </request>
+            <response>
+                <type>VnicProfile</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>VnicProfiles</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>VnicProfile</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions" rel="add">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>Permission</type>
+                </body>
+            </request>
+            <response>
+                <type>Permission</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Permissions</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Permission</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections" rel="add">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>StorageConnection</type>
+                </body>
+            </request>
+            <response>
+                <type>StorageConnection</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>StorageConnections</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <body>
+                    <type>Action</type>
+                </body>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>StorageConnection</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}" rel="update">
+            <request>
+                <http_method>PUT</http_method>
+                <body>
+                    <type>StorageConnection</type>
+                </body>
+            </request>
+            <response>
+                <type>StorageConnection</type>
+            </response>
+        </link>
         <link href="/ovirt-engine/api/datacenters/{datacenter:id}/networks" rel="add">
             <description>add a new network to the datacenter</description>
             <request>
@@ -3098,6 +3764,165 @@ or less indicates that the session should never timeout</description>
                 <type>Permission</type>
             </response>
         </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/qoss" rel="add">
+            <description>add a new QoS to the datacenter</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>QoS</type>
+                    <parameters_set>
+                        <description>add a new QoS to the datacenter</description>
+                        <parameter required="true" type="xs:string">
+                            <name>qos.name</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>qos.type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>qos.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_throughput</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_read_throughput</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_write_throughput</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_iops</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_read_iops</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_write_iops</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.cpu_limit</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>QoS</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/qoss" rel="get">
+            <description>get QoSs for the datacenter in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>QoSs</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/qoss/{qos:id}" rel="delete">
+            <description>delete the specified QoS in the datacenter</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/qoss/{qos:id}" rel="get">
+            <description>get the specified QoS in the datacenter</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>QoS</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/datacenters/{datacenter:id}/qoss/{qos:id}" rel="update">
+            <description>update the specified QoS in the datacenter</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>QoS</type>
+                    <parameters_set>
+                        <parameter required="false" type="xs:string">
+                            <name>qos.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>qos.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_throughput</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_read_throughput</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_write_throughput</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_iops</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_read_iops</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.max_write_iops</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.cpu_limit</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>QoS</type>
+            </response>
+        </link>
         <link href="/ovirt-engine/api/datacenters/{datacenter:id}/quotas" rel="get">
             <request>
                 <http_method>GET</http_method>
@@ -3324,6 +4149,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.quota.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.disk_profile.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -3565,6 +4393,223 @@ or less indicates that the session should never timeout</description>
                 <type>Statistic</type>
             </response>
         </link>
+        <link href="/ovirt-engine/api/diskprofiles" rel="add">
+            <description>add a new disk profile to the system</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>DiskProfile</type>
+                    <parameters_set>
+                        <description>add a new disk profile to the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>diskprofile.storagedomain.id</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>diskprofile.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>diskprofile.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>diskprofile.qos.id</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>DiskProfile</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/diskprofiles" rel="get">
+            <description>get the list of all disk profiles in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>DiskProfiles</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/diskprofiles/{diskprofile:id}" rel="delete">
+            <description>delete the specified disk profile in the system</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/diskprofiles/{diskprofile:id}" rel="get">
+            <description>get the details of the specified disk profile in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>DiskProfile</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/diskprofiles/{diskprofile:id}" rel="update">
+            <description>update the specified disk profile in the system</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>DiskProfile</type>
+                    <parameters_set>
+                        <description>update the specified disk profile in the system</description>
+                        <parameter required="false" type="xs:string">
+                            <name>diskprofile.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>diskprofile.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>diskprofile.qos.id</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>DiskProfile</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/diskprofiles/{diskprofile:id}/permissions" rel="add">
+            <description>add a new permission on the disk profile in the system</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Permission</type>
+                    <parameters_set>
+                        <description>add a new user level permission on the disk profile in the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>permission.user.id</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>permission.role.id</name>
+                        </parameter>
+                    </parameters_set>
+                    <parameters_set>
+                        <description>add a new group level permission on the disk profile in the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>permission.group.id</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>permission.role.id</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Permission</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/diskprofiles/{diskprofile:id}/permissions" rel="get">
+            <description>get the list of all permissions on the disk profile in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>Permissions</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/diskprofiles/{diskprofile:id}/permissions/{permission:id}" rel="delete">
+            <description>delete the specified permission for the disk profile</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/diskprofiles/{diskprofile:id}/permissions/{permission:id}" rel="get">
+            <description>get details of the specified permission on the disk profile in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Permission</type>
+            </response>
+        </link>
         <link href="/ovirt-engine/api/disks" rel="add">
             <description>add a new disk to the system</description>
             <request>
@@ -3623,6 +4668,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>disk.quota.id</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.disk_profile.id</name>
+                        </parameter>
                         <parameter required="false" type="collection">
                             <name>disk.storage_domains.storage_domain</name>
                             <parameters_set>
@@ -3636,9 +4684,6 @@ or less indicates that the session should never timeout</description>
                         <description>add a new lun disk to the system, this operation does not require size but requires lun connection details</description>
                         <parameter required="true" type="xs:string">
                             <name>disk.interface</name>
-                        </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>disk.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>disk.lun_storage.type</name>
@@ -3684,13 +4729,8 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>disk.sgio</name>
                         </parameter>
-                        <parameter required="false" type="collection">
-                            <name>disk.storage_domains.storage_domain</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>storage_domain.id|name</name>
-</parameter>
-                            </parameters_set>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.lun_storage.host</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -6770,6 +7810,159 @@ or less indicates that the session should never timeout</description>
                 <type>Statistic</type>
             </response>
         </link>
+        <link href="/ovirt-engine/api/macpools" rel="add">
+            <description>add the specified mac pool into the system</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>MacPool</type>
+                    <parameters_set>
+                        <description>add the specified mac pool into the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>macpool.name</name>
+                        </parameter>
+                        <parameter required="true" type="collection">
+                            <name>macpool.ranges.range</name>
+                            <parameters_set>
+<parameter required="true" type="xs:string">
+    <name>range.from</name>
+</parameter>
+<parameter required="true" type="xs:string">
+    <name>range.to</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>macpool.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>macpool.allow_duplicates</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>macpool.default_pool</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>MacPool</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/macpools" rel="get">
+            <description>get a list of mac pools in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>MacPools</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/macpools/{macpool:id}" rel="delete">
+            <description>delete the specified mac pool from the system</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body required="false">
+                    <parameters_set>
+                        <description>delete the specified data center from the system</description>
+                    </parameters_set>
+                </body>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/macpools/{macpool:id}" rel="get">
+            <description>get the details of the specified mac pool in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>MacPool</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/macpools/{macpool:id}" rel="update">
+            <description>update the specified mac pool in the system</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>MacPool</type>
+                    <parameters_set>
+                        <description>update the specified mac pool in the system</description>
+                        <parameter required="false" type="xs:string">
+                            <name>macpool.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>macpool.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>macpool.allow_duplicates</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>macpool.default_pool</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>macpool.ranges.range</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>range.from</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>range.to</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>MacPool</type>
+            </response>
+        </link>
         <link href="/ovirt-engine/api/networks" rel="add">
             <description>add a new network to the system</description>
             <request>
@@ -7957,10 +9150,10 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                 </url>
                 <body required="false">
-                    <type>Host</type>
+                    <type>Action</type>
                     <parameters_set>
                         <parameter required="false" type="xs:string">
-                            <name>host.id|name</name>
+                            <name>action.host.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -8429,6 +9622,93 @@ or less indicates that the session should never timeout</description>
                 <type>StorageDomain</type>
             </response>
         </link>
+        <link href="/ovirt-engine/api/storagedomains/{storagedomain:id}/diskprofiles" rel="add">
+            <description>add a new disk profile for the storage domain</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>DiskProfile</type>
+                    <parameters_set>
+                        <description>add a new disk profile for the storage domain</description>
+                        <parameter required="true" type="xs:string">
+                            <name>diskprofile.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>diskprofile.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>diskprofile.qos.id</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>DiskProfile</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/storagedomains/{storagedomain:id}/diskprofiles" rel="get">
+            <description>get the list of all disk profiles for the storage domain</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>DiskProfiles</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/storagedomains/{storagedomain:id}/diskprofiles/{diskprofile:id}" rel="delete">
+            <description>delete the specified disk profile for the storage domain</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="/ovirt-engine/api/storagedomains/{storagedomain:id}/diskprofiles/{diskprofile:id}" rel="get">
+            <description>get the details of the specified disk profile for the storage domain</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>DiskProfile</type>
+            </response>
+        </link>
         <link href="/ovirt-engine/api/storagedomains/{storagedomain:id}/disks" rel="add">
             <description>add a new disk to the storage domain</description>
             <request>
@@ -8494,6 +9774,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.quota.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.disk_profile.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -8843,7 +10126,18 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>BaseResource</type>
+                <type>Image</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/storagedomains/{storagedomain:id}/images/{image:id}/import" rel="import">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>Action</type>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
             </response>
         </link>
         <link href="/ovirt-engine/api/storagedomains/{storagedomain:id}/permissions" rel="add">
@@ -9667,6 +10961,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>template.start_paused</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.cpu_profile.id</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -9924,6 +11221,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>template.start_paused</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.cpu_profile.id</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -11448,6 +12748,22 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.disks.clone</name>
                         </parameter>
+                        <parameter required="false" type="collection">
+                            <name>vm.disks.disk</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>disk.id</name>
+</parameter>
+<parameter required="false" type="collection">
+    <name>storage_domains.storage_domain</name>
+    <parameters_set>
+        <parameter required="false" type="xs:string">
+            <name>storage_domain.id</name>
+        </parameter>
+    </parameters_set>
+</parameter>
+                            </parameters_set>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.tunnel_migration</name>
                         </parameter>
@@ -11513,6 +12829,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.start_paused</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.cpu_profile.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -11729,6 +13048,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.start_paused</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.cpu_profile.id</name>
+                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a virtual machine to the system from a configuration - requires the configuration type and the configuration data</description>
@@ -11876,6 +13198,22 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.disks.clone</name>
                         </parameter>
+                        <parameter required="false" type="collection">
+                            <name>vm.disks.disk</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>disk.id</name>
+</parameter>
+<parameter required="false" type="collection">
+    <name>storage_domains.storage_domain</name>
+    <parameters_set>
+        <parameter required="false" type="xs:string">
+            <name>storage_domain.id</name>
+        </parameter>
+    </parameters_set>
+</parameter>
+                            </parameters_set>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.tunnel_migration</name>
                         </parameter>
@@ -11941,6 +13279,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.start_paused</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.cpu_profile.id</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -12272,6 +13613,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.start_paused</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.cpu_profile.id</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -12591,6 +13935,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>disk.quota.id</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.disk_profile.id</name>
+                        </parameter>
                         <parameter required="false" type="collection">
                             <name>disk.storage_domains.storage_domain</name>
                             <parameters_set>
@@ -12604,9 +13951,6 @@ or less indicates that the session should never timeout</description>
                         <description>add a new direct lun disk to the virtual machine, this operation does not require size but needs lun connection details</description>
                         <parameter required="true" type="xs:string">
                             <name>disk.interface</name>
-                        </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>disk.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>disk.lun_storage.type</name>
@@ -12652,13 +13996,8 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>disk.sgio</name>
                         </parameter>
-                        <parameter required="false" type="collection">
-                            <name>disk.storage_domains.storage_domain</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>storage_domain.id|name</name>
-</parameter>
-                            </parameters_set>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.lun_storage.host</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -12800,6 +14139,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.quota.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.disk_profile.id</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.sgio</name>
