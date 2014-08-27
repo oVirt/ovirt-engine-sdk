@@ -91,7 +91,7 @@ public class RsdlCodegen extends AbstractCodegen {
         super("");
         this.rsdlPath = rsdlPath;
 
-        Map<String, String> map = XsdData.getInstance().getMap();
+        Map<String, String> map = XsdData.getInstance().getTypesByTag();
         List<String> names = new ArrayList<>(map.keySet());
         Collections.sort(names);
         for (String name : names) {
