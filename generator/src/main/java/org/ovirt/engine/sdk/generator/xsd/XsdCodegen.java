@@ -31,9 +31,7 @@ import java.util.regex.Pattern;
 import org.ovirt.engine.sdk.generator.common.AbstractCodegen;
 import org.ovirt.engine.sdk.generator.templates.AbstractTemplate;
 import org.ovirt.engine.sdk.generator.xsd.templates.FindRootClassTemplate;
-import org.ovirt.engine.sdk.generator.xsd.templates.GetRootTagTemplate;
 import org.ovirt.engine.sdk.generator.xsd.templates.ImportsTemplate;
-import org.ovirt.engine.sdk.generator.xsd.templates.ParseStringTemplate;
 import org.ovirt.engine.sdk.generator.xsd.templates.SuperAttributesTemplate;
 
 public class XsdCodegen extends AbstractCodegen {
@@ -94,13 +92,15 @@ public class XsdCodegen extends AbstractCodegen {
         addImports();
         fixExternalEncoding();
         addSuperAttributes();
-        replaceFunctions();
 
         // Generate the class map:
         source.add("");
         source.add(BEGIN_NOT_GENERATED);
         source.add("");
         generateClassMap();
+        source.add("");
+        source.add("");
+        generateTagsMap();
         source.add("");
         source.add("");
         appendFunctions();
@@ -166,33 +166,9 @@ public class XsdCodegen extends AbstractCodegen {
         addLines(lastIndex + 1, firstIndent + 4, lines);
     }
 
-    private void replaceFunctions() throws IOException {
-        replaceFunction("parseString", new ParseStringTemplate());
-        replaceFunction("get_root_tag", new GetRootTagTemplate());
-    }
-
-    private void replaceFunction(String name, AbstractTemplate template) throws IOException {
-        // Find the first and last line of the function:
-        int firstIndex = findFunctionFirstLine(name);
-        if (firstIndex == -1) {
-            throw new IOException("Can't find function \"" + name + "\".");
-        }
-        int lastIndex = findBlockLastLine(firstIndex);
-
-        // Delete the lines:
-        for (int index = firstIndex; index <= lastIndex; index++) {
-            source.remove(firstIndex);
-        }
-
-        // Insert the replacement function:
-        String text = template.evaluate();
-        String[] lines = text.split("\n");
-        addLines(firstIndex, 0, lines);
-    }
-
     private void generateClassMap() throws IOException {
         // Sort the names of the elements:
-        Map<String, String> map = XsdData.getInstance().getMap();
+        Map<String, String> map = XsdData.getInstance().getTypesByTag();
         List<String> names = new ArrayList<>(map.keySet());
         Collections.sort(names);
 
@@ -204,6 +180,22 @@ public class XsdCodegen extends AbstractCodegen {
             addLines(source.size(), 20, line);
         }
         addLines(source.size(), 16, "}");
+    }
+
+    private void generateTagsMap() throws IOException {
+        // Sort the type names:
+        Map<String, String> map = XsdData.getInstance().getTagsByType();
+        List<String> types = new ArrayList<>(map.keySet());
+        Collections.sort(types);
+
+        // Generate a list of pairs, each containing the type and the corresponding XML tag:
+        addLines(source.size(), 0, "_tag_for_type = {");
+        for (String type : types) {
+            String tag = map.get(type);
+            String line = String.format("%s: \"%s\",", type, tag);
+            addLines(source.size(), 4, line);
+        }
+        addLines(source.size(), 0, "}");
     }
 
     private void appendFunctions() throws IOException {

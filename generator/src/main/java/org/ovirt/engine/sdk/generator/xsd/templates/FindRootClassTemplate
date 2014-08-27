@@ -1,9 +1,10 @@
 def findRootClass(rootTag):
     """
-    Helper function that enables the generated code to locate the
-    root element.  The api does not explicitly list a root
-    element; hence, the generated code has a hard time deducing
-    which one it actually is.  This function will map the first
-    tag in the XML (i.e. the root) to an internal class.
+    This function was needed before version 2.12a of generateDS.py because the
+    generated code had no way to determine the type corresponding to an XML
+    type. This has been fixed, and generateDS.py generates now a map that
+    solves this problem. The function is preserved only for backwards
+    compatibility, as callers my be using it. Please refrain from using it in
+    new code as it may be removed in the future.
     """
     return _rootClassMap.get(rootTag)

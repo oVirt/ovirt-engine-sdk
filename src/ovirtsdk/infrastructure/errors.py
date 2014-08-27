@@ -56,7 +56,7 @@ class RequestError(Exception):
         # REST error
         if res and res.startswith(RESPONSE_FORMAT) and res.find(RESPONSE_FAULT_BODY) != -1:
             try:
-                f_detail = params.parseString(res)
+                f_detail = params.parseString(res, silence=True)
             except:
                 f_detail = ''
 

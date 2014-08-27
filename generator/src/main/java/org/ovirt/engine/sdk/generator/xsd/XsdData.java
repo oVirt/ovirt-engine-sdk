@@ -51,7 +51,17 @@ public class XsdData {
         return instance;
     }
 
-    private Map<String, String> map = new LinkedHashMap<>();
+    /**
+     * This maps stores the relationship between XML tag names and Python type names.
+     */
+    private Map<String, String> typesByTag = new LinkedHashMap<>();
+
+    /**
+     * This map stores the relationship between Python type names and XML tags. Note that this isn't the inverse of the
+     * previous one, as some types don't have a tag because they don't appear as top level element declarations in the
+     * XML schema, thus they can't appear as root elements in a valid XML document.
+     */
+    private Map<String, String> tagsByType = new LinkedHashMap<>();
 
     private XsdData() {
     }
@@ -119,7 +129,8 @@ public class XsdData {
         // Exclude the VM summary because it conflicts with the API summary:
         excluded.add("VmSummary");
 
-        // For each element declaration add an entry to the map:
+        // Populate the types by tag map, including all the element definitions that appear in the XML schema, even
+        // those that aren't top level and thus not valid as roots of valid XML documents:
         try {
             NodeList elements = (NodeList) xpath.evaluate("//xs:element", schema, XPathConstants.NODESET);
             for (int i = 0; i < elements.getLength(); i++) {
@@ -131,7 +142,7 @@ public class XsdData {
                     String name = nameAttr.getValue();
                     String type = typeAttr.getValue();
                     if (!type.startsWith("xs:") && !excluded.contains(type)) {
-                        map.put(name, type);
+                        typesByTag.put(name, type);
                     }
                 }
             }
@@ -141,16 +152,43 @@ public class XsdData {
         }
 
         // There are several conflicts with "version", so force it:
-        map.put("version", "VersionCaps");
+        typesByTag.put("version", "VersionCaps");
+
+        // Populate the tags by type name, including only the top level element definitions that appear in the XML
+        // schema, those that can appear as roots of valid XML documents:
+        try {
+            NodeList elements = (NodeList) xpath.evaluate("/xs:schema/xs:element", schema, XPathConstants.NODESET);
+            for (int i = 0; i < elements.getLength(); i++) {
+                Node element = elements.item(i);
+                NamedNodeMap attrs = element.getAttributes();
+                Attr nameAttr = (Attr) attrs.getNamedItem("name");
+                Attr typeAttr = (Attr) attrs.getNamedItem("type");
+                if (nameAttr != null && typeAttr != null) {
+                    String name = nameAttr.getValue();
+                    String type = typeAttr.getValue();
+                    if (!type.startsWith("xs:") && !excluded.contains(type)) {
+                        tagsByType.put(type, name);
+                    }
+                }
+            }
+        }
+        catch (XPathExpressionException exception) {
+            throw new IOException("Can't find elements.", exception);
+        }
+
     }
 
-    public Map<String, String> getMap() {
-        return map;
+    public Map<String, String> getTypesByTag() {
+        return typesByTag;
+    }
+
+    public Map<String, String> getTagsByType() {
+        return tagsByType;
     }
 
     public String getXmlWrapperType(String typeName) {
         String tn = typeName.toLowerCase();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
+        for (Map.Entry<String, String> entry : typesByTag.entrySet()) {
             String k = entry.getKey();
             String v = entry.getValue();
             if (v.toLowerCase().equals(tn) || k.toLowerCase().equals(tn) || k.replace("_", "").equals(tn)) {
@@ -164,7 +202,7 @@ public class XsdData {
         String tn = typeName.toLowerCase();
         String result = XML_TYPE_INSTANCE_EXCEPTIONS.get(tn);
         if (result == null) {
-            for (Map.Entry<String, String> entry : map.entrySet()) {
+            for (Map.Entry<String, String> entry : typesByTag.entrySet()) {
                 String v = entry.getValue();
                 if (v.toLowerCase().equals(tn)) {
                     result = entry.getKey();
@@ -181,7 +219,7 @@ public class XsdData {
     public String getXmlType(String typeName) {
         if (typeName != null && !typeName.isEmpty()) {
             String tn = typeName.toLowerCase();
-            for (Map.Entry<String, String> entry : map.entrySet()) {
+            for (Map.Entry<String, String> entry : typesByTag.entrySet()) {
                 String k = entry.getKey();
                 String v = entry.getValue();
                 if (v.toLowerCase().equals(tn) || k.toLowerCase().equals(tn)) {

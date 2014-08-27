@@ -156,7 +156,7 @@ class Proxy():
         '''
         if obj is not None and obj is not '':
             try:
-                return params.parseString(obj)
+                return params.parseString(obj, silence=True)
             except etree.XMLSyntaxError:
                 # raised when server replies in non-XML format,
                 # the motivation for this error is #915036
