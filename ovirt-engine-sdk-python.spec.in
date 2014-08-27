@@ -40,6 +40,11 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS.md README.md LICENSE.md
 
 %changelog
+* Wed Aug 27 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.5-1
+- Added support for QoS, including CPU and disk profiles.
+- Added support for iSCSI bonds.
+- Disconnect at constructor only if proxy found #996021.
+
 * Tue Aug 12 2014 Ravi Nori<rnori@redhat.com> - 3.5.0.4-1
 - Revert patch 0525e9d #1122546.
 - Update API fails in SDK & CLI #1122546.
@@ -137,7 +142,7 @@ sed -i 1d src/ovirtsdk/xml/params.py
   actions #1047654.
 - Add "stop_time" attribute to the VM class #1042854.
 
-* Wed  Dec 25 2013 Michael Pasternak <mpastern@redhat.com> - 3.4.0.1-1
+* Wed Dec 25 2013 Michael Pasternak <mpastern@redhat.com> - 3.4.0.1-1
 - to host.install() added ssh related details
 - to template added virtio_scsi.enabled
 - to vm added virtio_scsi.enabled
@@ -174,29 +179,29 @@ sed -i 1d src/ovirtsdk/xml/params.py
 - sdk ignores url attribute and hardcode /api #1038952
 - support automatic auth session invalidation #1018559
 
-* Wed  Oct 9 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.7-1
- - added fqdn property to GuestInfo
- - to DataCenterStorageDomainDisk added export() action
- - to StorageDomainDisk added export() action
- - to TemplateDisk added export() action
- - to VMDisk added export() action
- - to Disk added export() action
- - refine host add()/update() documentation
- - VCpuPin parameter rename
+* Wed Oct 9 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.7-1
+- added fqdn property to GuestInfo
+- to DataCenterStorageDomainDisk added export() action
+- to StorageDomainDisk added export() action
+- to TemplateDisk added export() action
+- to VMDisk added export() action
+- to Disk added export() action
+- refine host add()/update() documentation
+- VCpuPin parameter rename
 
-* Tue  Sep 3 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.6-1
- - added StorageDomainStorageConnection.delete(async) signature
- - added StorageDomainStorageConnections.add(storageconnection, expect, correlationId) signature
- - implement support for with-resources statement
- - in Cluster added glusterhooks (ClusterGlusterHooks) sub-collection
- - in DataCenterCluster added glusterhooks (DataCenterClusterGlusterhooks) sub-collection
- - in StorageDomain added images (StorageDomainImages) sub-collection
+* Tue Sep 3 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.6-1
+- added StorageDomainStorageConnection.delete(async) signature
+- added StorageDomainStorageConnections.add(storageconnection, expect, correlationId) signature
+- implement support for with-resources statement
+- in Cluster added glusterhooks (ClusterGlusterHooks) sub-collection
+- in DataCenterCluster added glusterhooks (DataCenterClusterGlusterhooks) sub-collection
+- in StorageDomain added images (StorageDomainImages) sub-collection
 
-* Wed  Aug 14 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.5-1
- - implicitly disconnect and perform cleanup
- - encapsulate context removal
+* Wed Aug 14 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.5-1
+- implicitly disconnect and perform cleanup
+- encapsulate context removal
 
-* Tue Aug  13 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.4-1
+* Tue Aug 13 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.4-1
 - added VnicProfiles root-collection
 - to network added VnicProfiles sub-collection
 - to storagedomain added StorageConnections sub-collection
@@ -213,37 +218,37 @@ sed -i 1d src/ovirtsdk/xml/params.py
 - added [vm.display.single_qxl_pci]
 - added [vm.cpu_shares]
 - to template added:
- * [@param template.console.enabled: boolean]
+  * [@param template.console.enabled: boolean]
 - to vm added:
- * [@param vm.console.enabled: boolean]
+  * [@param vm.console.enabled: boolean]
 - to Cluster added:
- * [@param cluster.comment: string]
- * [@param cluster.ballooning_enabled: boolean]
- * [@param cluster.tunnel_migration: boolean]
+  * [@param cluster.comment: string]
+  * [@param cluster.ballooning_enabled: boolean]
+  * [@param cluster.tunnel_migration: boolean]
 - to Host added:
- * [@param host.comment: string]
- * [@param host.ssh.port: int]
- * [@param host.ssh.fingerprint: string]
- * [@param host.ssh.authentication_type: string]
- * [@param host.ssh.password: string]
- * forceselectspm() action
+  * [@param host.comment: string]
+  * [@param host.ssh.port: int]
+  * [@param host.ssh.fingerprint: string]
+  * [@param host.ssh.authentication_type: string]
+  * [@param host.ssh.password: string]
+  * forceselectspm() action
 - to Network added:
- * [@param host.ssh.fingerprint: string]
- * [@param host.ssh.authentication_type: string]
- * [@param host.ssh.password: string]
- * forceselectspm() action
+  * [@param host.ssh.fingerprint: string]
+  * [@param host.ssh.authentication_type: string]
+  * [@param host.ssh.password: string]
+  * forceselectspm() action
 - to Network added:
- * [@param network.comment: string]
+  * [@param network.comment: string]
 - to StorageDomain
- * [@param storagedomain.comment: string]
+  * [@param storagedomain.comment: string]
 - to Template added:
- * [@param template.comment: string]
- * [@param template.permissions.clone: boolean]
+  * [@param template.comment: string]
+  * [@param template.permissions.clone: boolean]
 - to VM added:
- * [@param vm.comment: string]
- * [@param vm.permissions.clone: boolean]
+  * [@param vm.comment: string]
+  * [@param vm.permissions.clone: boolean]
 
-* Tue Jul  16 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.3-1
+* Tue Jul 16 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.3-1
 - rename package to ovirt-engine-sdk-python
 - added "watchdog" feature #947977
 - added "external tasks" feature #872719
@@ -262,63 +267,63 @@ sed -i 1d src/ovirtsdk/xml/params.py
 - to StorageDomains.add() added doc [@param storagedomain.storage_format: string]
 - to VM added new sub-collection VMApplications
 
-* Wed May  1 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.2-1
- - in ClusterGlusterVolumeBricks fixed add() parameters
- - to StorageDomainVM.delete() added async parameter
- - fixed parent tag parameter in the tags.add()/.update() methods
- - nic.network is no longer mandatory parameter for vnic creation
- - Implement Session-TTL header support #928313
- - refactor invocation flow #949189, #949187
- - user should not see admin permissions the DC #924357
+* Wed May 1 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.2-1
+- in ClusterGlusterVolumeBricks fixed add() parameters
+- to StorageDomainVM.delete() added async parameter
+- fixed parent tag parameter in the tags.add()/.update() methods
+- nic.network is no longer mandatory parameter for vnic creation
+- Implement Session-TTL header support #928313
+- refactor invocation flow #949189, #949187
+- user should not see admin permissions the DC #924357
 
-* Tue Apr  2 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.1-1
- - added new collection ClusterGlusterVolumeBrickStatistics
- - added NetUp 'cloned disk' importing capabilities
- - to ClusterGlusterVolumeBricks.list() added new argument "all_content"
- - to ClusterGlusterVolumeBricks.get() added new argument "all_content"
- - to host install method added new parameter "image"
- - to host add method added new parameter "display.address"
- - to vm add method added new parameter "vm.cpu.mode"
- - to vm add method added new overload for creating vm from snapshot
- - to cluster added tunnel_migration
- - to display added keyboard_layout
- - to display added smartcard_enabled
- - to DataCenter added Clusters sub-collection
- - to StorageDomain added Disks sub-collection
- - to Disks.list() added 'unregistered' argument
- - to Host added display.address
- - to Snapshot added commit/preview/undo actions
- - to vms.add() added overload for creating vm from snapshot
- - to hosts.add() added [@param host.display.address: string]
- - to vm.ticket() added [@param action.ticket.value: string]
- - return error if amount of fetched objects in X.get() is > 1 #890327
- - session based authentication for /localhost is broken #916285
- - explicitly ask for reply in xml
- - Add constructor parameter validate_cert_chain=True #915225
- - defend against malformed server reply
+* Tue Apr 2 2013 Michael Pasternak <mpastern@redhat.com> - 3.3.0.1-1
+- added new collection ClusterGlusterVolumeBrickStatistics
+- added NetUp 'cloned disk' importing capabilities
+- to ClusterGlusterVolumeBricks.list() added new argument "all_content"
+- to ClusterGlusterVolumeBricks.get() added new argument "all_content"
+- to host install method added new parameter "image"
+- to host add method added new parameter "display.address"
+- to vm add method added new parameter "vm.cpu.mode"
+- to vm add method added new overload for creating vm from snapshot
+- to cluster added tunnel_migration
+- to display added keyboard_layout
+- to display added smartcard_enabled
+- to DataCenter added Clusters sub-collection
+- to StorageDomain added Disks sub-collection
+- to Disks.list() added 'unregistered' argument
+- to Host added display.address
+- to Snapshot added commit/preview/undo actions
+- to vms.add() added overload for creating vm from snapshot
+- to hosts.add() added [@param host.display.address: string]
+- to vm.ticket() added [@param action.ticket.value: string]
+- return error if amount of fetched objects in X.get() is > 1 #890327
+- session based authentication for /localhost is broken #916285
+- explicitly ask for reply in xml
+- Add constructor parameter validate_cert_chain=True #915225
+- defend against malformed server reply
 
-* Sun Jan  13 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.8-1
- - fix date in ovirt-engine-sdk.spec.in
+* Sun Jan 13 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.8-1
+- fix date in ovirt-engine-sdk.spec.in
 
-* Sun Jan  13 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.7-1
- - events can be added now (user defined events)
- - events can be removed now
- - vm can be removed now, but it's disk/s kept (added disks.detach_only property to VMDisks)
- - to host add/update added power_management.agents parameter
- - host can be added now by using cluster.name (not only id)
- - to disk added permissions sub-collection
- - to NIC added "linked" property that can be changed to reach desired link state
- - to NIC added "plugged" property that can be changed to reach desired NIC state
- - to VM added ReportedDevices sub-collection (holds data reported by the guest agent)
- - to VMNIC added ReportedDevices sub-collection (holds data reported by the guest agent)
- - to PowerManagement added Agents collection
- - to VMDisk added move() action
- - to cluster added threads_as_cores property
- - to CpuTopology added "threads" property indicating amount of available threads
- - to Host added "libvirt_version" property
- - to Host added "hardware_information" property
+* Sun Jan 13 2013 Michael Pasternak <mpastern@redhat.com> - 3.2.0.7-1
+- events can be added now (user defined events)
+- events can be removed now
+- vm can be removed now, but it's disk/s kept (added disks.detach_only property to VMDisks)
+- to host add/update added power_management.agents parameter
+- host can be added now by using cluster.name (not only id)
+- to disk added permissions sub-collection
+- to NIC added "linked" property that can be changed to reach desired link state
+- to NIC added "plugged" property that can be changed to reach desired NIC state
+- to VM added ReportedDevices sub-collection (holds data reported by the guest agent)
+- to VMNIC added ReportedDevices sub-collection (holds data reported by the guest agent)
+- to PowerManagement added Agents collection
+- to VMDisk added move() action
+- to cluster added threads_as_cores property
+- to CpuTopology added "threads" property indicating amount of available threads
+- to Host added "libvirt_version" property
+- to Host added "hardware_information" property
 
-* Thu Dec  27 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.6-1
+* Thu Dec 27 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.6-1
 - to host added hooks sub-collection
 - added force flag the host.delete()
 - added host.power_management.pm_proxy collection
@@ -327,10 +332,10 @@ sed -i 1d src/ovirtsdk/xml/params.py
 - added deletion protection to the template/vm via .delete_protected
 - add print of the whole response body in debug mode #887808
 
-* Wed Nov  21 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.5-1
+* Wed Nov 21 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.5-1
 - httpsconnection.source_address is not supported on python26 #877897
 
-* Sun Nov  18 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.4-1
+* Sun Nov 18 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.4-1
 - cannot create simultaneous connections to multiple servers #853947
 - to StorageDomainVM.import() added action.exclusive parameter
 - to StorageDomainTemplate.import() added action.exclusive parameter
@@ -346,7 +351,7 @@ sed -i 1d src/ovirtsdk/xml/params.py
 - added certificate property to vm
 - Disk.lunStorage renamed to Disk.lun_storage
 
-* Thu Nov  1 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.3-1
+* Thu Nov 1 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.3-1
 - do not send /max header on name-based search
 - cannot fetch the disk using /alias #865407
 - restrict .get() methods to id/name
@@ -360,16 +365,16 @@ sed -i 1d src/ovirtsdk/xml/params.py
   - added TemplateDisk.copy()
   - added template.cpu.cpu_tune.vcpu_pin: at Templates.add()/VMs.add()
   - added VmPool.allocatevm()
-  - added size property to VmPools.add()
-  - from ClusterGlusterVolumes.add() params removed
-    access_protocols/access_control_list
+- added size property to VmPools.add()
+- from ClusterGlusterVolumes.add() params removed
+  - access_protocols/access_control_list
 
-* Thu Sep  20 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.2-1
+* Thu Sep 20 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.2-1
 - make /filter header global rather than method driven #857018
 - to host added max_scheduling_memory property
 - throw error when connecting to ssl site using http protocol
 
-* Sun Sep  9 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.1-1
+* Sun Sep 9 2012 Michael Pasternak <mpastern@redhat.com> - 3.2.0.1-1
 - to Disks.add() added /name arg
 - to disk.install() added r/oot_password arg
 - to Template.delete() added async/correlation_id args
@@ -386,14 +391,14 @@ sed -i 1d src/ovirtsdk/xml/params.py
 - add filter parameter to proxy ctr.
 - support app. server errors
 
-* Tue Aug  21 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.6-1
+* Tue Aug 21 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.6-1
 - make request error being capable to handle any type of response
 - verify credentials before storing proxy in cache
 - implement insecure flag #848046
 - implement server identity check
 - do not require optional params
 
-* Sun Aug  5 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.5-1
+* Sun Aug 5 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.5-1
 - implemented http header support
 - added custom_configuration flag to host NIC
 - added override_configuration flag for setupnetworks action
@@ -433,15 +438,15 @@ sed -i 1d src/ovirtsdk/xml/params.py
 - prevent stack overflow caused by comparisons creating infinite loops
 - fix error handling regression
 - implement support for 3+ period based URLs, new capabilities:    
-    - vm.snapshot.disks/nics collections support
-    - host/vm.nics.statistics collections support
-    - collection/resource.permits support
+  - vm.snapshot.disks/nics collections support
+  - host/vm.nics.statistics collections support
+  - collection/resource.permits support
 - rebase to latest api, new capabilities:
-    - gluster collections/resources
-    - quota support
-    - remove template disk (by storage domain)
-    - vm.payload support
-    - floating disk support
+  - gluster collections/resources
+  - quota support
+  - remove template disk (by storage domain)
+  - vm.payload support
+  - floating disk support
 - add __eqals__ to business entities #782891
 
 * Wed May 16 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.1-1alpha
@@ -469,13 +474,13 @@ sed -i 1d src/ovirtsdk/xml/params.py
     [@param storagdomain.storage.mount_options: string]
 - at Template/VM added:
   [@param template/vm.display.allow_reconnect: boolean]
--at Template/VM.add() added:
+- at Template/VM.add() added:
   [@param template/vm.display.allow_reconnect: boolean]
   [@param template/vm.vm.disks.disk: collection]
--added VMDisk.activate() method
--added VMDisk.deactivate() method
--added VMNic.activate() method
--added VMNic.deactivate() method
+- added VMDisk.activate() method
+- added VMDisk.deactivate() method
+- added VMNic.activate() method
+- added VMNic.deactivate() method
 
 * Wed Mar 28 2012 Michael Pasternak <mpastern@redhat.com> - 1.6.4
 - get rid of papyon dep.
