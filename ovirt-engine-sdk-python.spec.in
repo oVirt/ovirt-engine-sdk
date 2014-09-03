@@ -40,6 +40,10 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS.md README.md LICENSE.md
 
 %changelog
+* Wed Sep 3 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.6-1
+- Added support for network QoS.
+- Added support to enable/disable sound card to VM, pool and template.
+
 * Wed Aug 27 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.5-1
 - Added support for QoS, including CPU and disk profiles.
 - Added support for iSCSI bonds.
