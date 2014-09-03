@@ -3810,6 +3810,24 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>qos.cpu_limit</name>
                         </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_average</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_peak</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_burst</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_peak</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_burst</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -3909,6 +3927,24 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>qos.cpu_limit</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_average</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_peak</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_burst</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_peak</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_burst</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -4722,6 +4758,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.sgio</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.lun_storage.host</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -7373,6 +7412,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>instance_type.virtio_scsi.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>instance_type.soundcard_enabled</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -10745,6 +10787,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>template.virtio_scsi.enabled</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>template.soundcard_enabled</name>
+                        </parameter>
                         <parameter required="false" type="collection">
                             <name>template.vm.disks.disk</name>
                             <parameters_set>
@@ -11041,6 +11086,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>template.virtio_scsi.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>template.soundcard_enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.version.version_name</name>
@@ -12151,6 +12199,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>vmpool.description</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vmpool.soundcard_enabled</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -12605,6 +12656,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.virtio_scsi.enabled</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.soundcard_enabled</name>
+                        </parameter>
                         <parameter required="false" type="collection">
                             <name>vm.payloads.payload</name>
                             <parameters_set>
@@ -12828,6 +12882,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.virtio_scsi.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.soundcard_enabled</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>vm.payloads.payload</name>
@@ -13386,6 +13443,9 @@ or less indicates that the session should never timeout</description>
                             <name>vm.virtio_scsi.enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
+                            <name>vm.soundcard_enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
                             <name>vm.use_latest_template_version</name>
                         </parameter>
                         <parameter required="false" type="collection">
@@ -13815,6 +13875,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.sgio</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.lun_storage.host</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>

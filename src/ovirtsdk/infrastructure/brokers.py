@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-08-27 18:00:50.000830'''
+'''Generated at: 2014-09-03 18:27:07.000516'''
 
 
 from ovirtsdk.xml import params
@@ -7752,6 +7752,12 @@ class DataCenterQoS(params.QoS, Base):
         [@param qos.max_read_iops: int]
         [@param qos.max_write_iops: int]
         [@param qos.cpu_limit: int]
+        [@param qos.inbound_average: int]
+        [@param qos.inbound_peak: int]
+        [@param qos.inbound_burst: int]
+        [@param qos.outbound_average: int]
+        [@param qos.outbound_peak: int]
+        [@param qos.outbound_burst: int]
         [@param correlation_id: any string]
 
         @return QoS:
@@ -7806,6 +7812,12 @@ class DataCenterQoSs(Base):
         [@param qos.max_read_iops: int]
         [@param qos.max_write_iops: int]
         [@param qos.cpu_limit: int]
+        [@param qos.inbound_average: int]
+        [@param qos.inbound_peak: int]
+        [@param qos.inbound_burst: int]
+        [@param qos.outbound_average: int]
+        [@param qos.outbound_peak: int]
+        [@param qos.outbound_burst: int]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -9755,6 +9767,7 @@ class Disks(Base):
           [@param disk.wipe_after_delete: boolean]
           [@param disk.quota.id: string]
           [@param disk.sgio: string]
+          [@param disk.lun_storage.host: string]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -13777,6 +13790,7 @@ class InstanceTypes(Base):
         [@param instance_type.usb.type: string]
         [@param instance_type.migration_downtime: int]
         [@param instance_type.virtio_scsi.enabled: boolean]
+        [@param instance_type.soundcard_enabled: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -19357,6 +19371,7 @@ class Template(params.Template, Base):
         [@param template.tunnel_migration: boolean]
         [@param template.migration_downtime: int]
         [@param template.virtio_scsi.enabled: boolean]
+        [@param template.soundcard_enabled: boolean]
         [@param template.version.version_name: string]
         [@param template.serial_number.policy: string]
         [@param template.serial_number.value: string]
@@ -20577,6 +20592,7 @@ class Templates(Base):
         [@param template.tunnel_migration: boolean]
         [@param template.migration_downtime: int]
         [@param template.virtio_scsi.enabled: boolean]
+        [@param template.soundcard_enabled: boolean]
         [@param template.vm.disks.disk: collection]
         {
           [@ivar disk.id: string]
@@ -21614,6 +21630,7 @@ class VM(params.VM, Base):
         [@param vm.tunnel_migration: boolean]
         [@param vm.migration_downtime: int]
         [@param vm.virtio_scsi.enabled: boolean]
+        [@param vm.soundcard_enabled: boolean]
         [@param vm.use_latest_template_version: boolean]
         [@param vm.payloads.payload: collection]
         {
@@ -22944,6 +22961,7 @@ class VMDisks(Base):
           [@param disk.wipe_after_delete: boolean]
           [@param disk.quota.id: string]
           [@param disk.sgio: string]
+          [@param disk.lun_storage.host: string]
         Overload 3:
           @param disk.id: string
           [@param disk.active: boolean]
@@ -25428,6 +25446,7 @@ class VMs(Base):
           [@param vm.tunnel_migration: boolean]
           [@param vm.migration_downtime: int]
           [@param vm.virtio_scsi.enabled: boolean]
+          [@param vm.soundcard_enabled: boolean]
           [@param vm.payloads.payload: collection]
           {
             [@ivar payload.type: string]
@@ -25512,6 +25531,7 @@ class VMs(Base):
           [@param vm.tunnel_migration: boolean]
           [@param vm.migration_downtime: int]
           [@param vm.virtio_scsi.enabled: boolean]
+          [@param vm.soundcard_enabled: boolean]
           [@param vm.payloads.payload: collection]
           {
             [@ivar payload.type: string]
@@ -26018,6 +26038,7 @@ class VmPools(Base):
         [@param vmpool.max_user_vms: int]
         [@param vmpool.display.proxy: string]
         [@param vmpool.description: string]
+        [@param vmpool.soundcard_enabled: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
