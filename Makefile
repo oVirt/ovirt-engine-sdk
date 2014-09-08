@@ -1,6 +1,6 @@
 all: rpm
 
-rpmrelease:=0.4
+rpmrelease:=0.4$(rpmsuffix)
 rpmversion=3.6.0.0
 RPMTOP=$(shell bash -c "pwd -P")/rpmtop
 SPEC=ovirt-engine-sdk-python.spec
