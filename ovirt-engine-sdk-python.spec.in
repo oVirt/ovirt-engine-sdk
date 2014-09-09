@@ -40,6 +40,9 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS README LICENSE
 
 %changelog
+* Tue Sep 9 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.4.0-1
+- Added support for iSCSI bonds.
+
 * Thu Jul 10 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.3.0-1
 - Add expect and correlation_id parameters to network label related
   methods #1101531.
