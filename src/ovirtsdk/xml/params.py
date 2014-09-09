@@ -27739,6 +27739,211 @@ class AffinityGroups(BaseResources):
 # end class AffinityGroups
 
 
+class IscsiBond(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, storage_connections=None, networks=None):
+        super(IscsiBond, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        self.data_center = data_center
+        self.storage_connections = storage_connections
+        self.networks = networks
+    def factory(*args_, **kwargs_):
+        if IscsiBond.subclass:
+            return IscsiBond.subclass(*args_, **kwargs_)
+        else:
+            return IscsiBond(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_data_center(self): return self.data_center
+    def set_data_center(self, data_center): self.data_center = data_center
+    def get_storage_connections(self): return self.storage_connections
+    def set_storage_connections(self, storage_connections): self.storage_connections = storage_connections
+    def get_networks(self): return self.networks
+    def set_networks(self, networks): self.networks = networks
+    def hasContent_(self):
+        if (
+            self.data_center is not None or
+            self.storage_connections is not None or
+            self.networks is not None or
+            super(IscsiBond, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='IscsiBond', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='IscsiBond')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='IscsiBond'):
+        super(IscsiBond, self).exportAttributes(outfile, level, already_processed, namespace_, name_='IscsiBond')
+    def exportChildren(self, outfile, level, namespace_='', name_='IscsiBond', fromsubclass_=False, pretty_print=True):
+        super(IscsiBond, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.data_center is not None:
+            self.data_center.export(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
+        if self.storage_connections is not None:
+            self.storage_connections.export(outfile, level, namespace_, name_='storage_connections', pretty_print=pretty_print)
+        if self.networks is not None:
+            self.networks.export(outfile, level, namespace_, name_='networks', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='IscsiBond'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(IscsiBond, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(IscsiBond, self).exportLiteralChildren(outfile, level, name_)
+        if self.data_center is not None:
+            showIndent(outfile, level)
+            outfile.write('data_center=model_.data_center(\n')
+            self.data_center.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.storage_connections is not None:
+            showIndent(outfile, level)
+            outfile.write('storage_connections=model_.storage_connections(\n')
+            self.storage_connections.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.networks is not None:
+            showIndent(outfile, level)
+            outfile.write('networks=model_.networks(\n')
+            self.networks.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(IscsiBond, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'data_center':
+            obj_ = DataCenter.factory()
+            obj_.build(child_)
+            self.set_data_center(obj_)
+        elif nodeName_ == 'storage_connections':
+            obj_ = StorageConnections.factory()
+            obj_.build(child_)
+            self.set_storage_connections(obj_)
+        elif nodeName_ == 'networks':
+            obj_ = Networks.factory()
+            obj_.build(child_)
+            self.set_networks(obj_)
+        super(IscsiBond, self).buildChildren(child_, node, nodeName_, True)
+# end class IscsiBond
+
+
+class IscsiBonds(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, total=None, active=None, iscsi_bond=None):
+        super(IscsiBonds, self).__init__(actions, total, active, )
+        if iscsi_bond is None:
+            self.iscsi_bond = []
+        else:
+            self.iscsi_bond = iscsi_bond
+    def factory(*args_, **kwargs_):
+        if IscsiBonds.subclass:
+            return IscsiBonds.subclass(*args_, **kwargs_)
+        else:
+            return IscsiBonds(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_iscsi_bond(self): return self.iscsi_bond
+    def set_iscsi_bond(self, iscsi_bond): self.iscsi_bond = iscsi_bond
+    def add_iscsi_bond(self, value): self.iscsi_bond.append(value)
+    def insert_iscsi_bond(self, index, value): self.iscsi_bond[index] = value
+    def hasContent_(self):
+        if (
+            self.iscsi_bond or
+            super(IscsiBonds, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='IscsiBonds', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='IscsiBonds')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='IscsiBonds'):
+        super(IscsiBonds, self).exportAttributes(outfile, level, already_processed, namespace_, name_='IscsiBonds')
+    def exportChildren(self, outfile, level, namespace_='', name_='IscsiBonds', fromsubclass_=False, pretty_print=True):
+        super(IscsiBonds, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for iscsi_bond_ in self.iscsi_bond:
+            iscsi_bond_.export(outfile, level, namespace_, name_='iscsi_bond', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='IscsiBonds'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(IscsiBonds, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(IscsiBonds, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('iscsi_bond=[\n')
+        level += 1
+        for iscsi_bond_ in self.iscsi_bond:
+            showIndent(outfile, level)
+            outfile.write('model_.iscsi_bond(\n')
+            iscsi_bond_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(IscsiBonds, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'iscsi_bond':
+            obj_ = IscsiBond.factory()
+            obj_.build(child_)
+            self.iscsi_bond.append(obj_)
+        super(IscsiBonds, self).buildChildren(child_, node, nodeName_, True)
+# end class IscsiBonds
+
+
 class WatchDog(BaseDevice):
     subclass = None
     superclass = BaseDevice
@@ -31147,6 +31352,7 @@ GDSClassesMapping = {
     'vmpools': VmPools,
     'custom_property': CustomProperty,
     'vm_device_types': VmDeviceTypes,
+    'iscsi_bonds': IscsiBonds,
     'storage_types': StorageTypes,
     'network': Network,
     'headers': Headers,
@@ -31249,6 +31455,7 @@ GDSClassesMapping = {
     'gluster_volume_types': GlusterVolumeTypes,
     'roles': Roles,
     'permits': Permits,
+    'iscsi_bond': IscsiBond,
     'value': Value,
     'authorized_key': AuthorizedKey,
     'server_hook': GlusterServerHook,
@@ -31554,6 +31761,8 @@ __all__ = [
     "Images",
     "Initialization",
     "IpVersions",
+    "IscsiBond",
+    "IscsiBonds",
     "IscsiDetails",
     "Job",
     "Jobs",
@@ -31791,6 +32000,8 @@ _rootClassMap = {
                     "ip_versions"                   : IpVersions,
                     "ips"                           : IPs,
                     "iscsi"                         : IscsiDetails,
+                    "iscsi_bond"                    : IscsiBond,
+                    "iscsi_bonds"                   : IscsiBonds,
                     "job"                           : Job,
                     "jobs"                          : Jobs,
                     "keyValuePair"                  : KeyValuePair,
