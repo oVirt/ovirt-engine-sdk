@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-09-03 18:27:07.000516'''
+'''Generated at: 2014-09-10 14:16:22.000940'''
 
 
 from ovirtsdk.xml import params
@@ -20360,24 +20360,34 @@ class TemplateWatchDog(params.WatchDog, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None, correlation_id=None):
         '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
         @return None:
         '''
 
-        url = '/templates/{template:id}/watchdogs/{watchdog:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {'{template:id}' : self.parentclass.get_id(),
-                 '{watchdog:id}': self.get_id()}
-            ),
-            headers={'Content-type':None}
+        url = UrlHelper.replace(
+            '/templates/{template:id}/watchdogs/{watchdog:id}',
+            {'{template:id}' : self.parentclass.get_id(),
+             '{watchdog:id}': self.get_id()}
         )
 
-    def update(self):
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, correlation_id=None):
         '''
+        [@param watchdog.action: string]
+        [@param watchdog.model: string]
+        [@param correlation_id: any string]
+
         @return WatchDog:
         '''
 
@@ -20391,7 +20401,7 @@ class TemplateWatchDog(params.WatchDog, Base):
         result = self.__getProxy().update(
             url=SearchHelper.appendQuery(url, {}),
             body=ParseHelper.toXml(self.superclass),
-            headers={}
+            headers={"Correlation-Id":correlation_id}
         )
 
         return TemplateWatchDog(
@@ -20415,11 +20425,15 @@ class TemplateWatchDogs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, watchdog):
+    def add(self, watchdog, expect=None, correlation_id=None):
 
         '''
         @type WatchDog:
 
+        @param watchdog.action: string
+        @param watchdog.model: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return WatchDog:
         '''
@@ -20432,7 +20446,7 @@ class TemplateWatchDogs(Base):
                 {'{template:id}': self.parentclass.get_id()}
             ),
             body=ParseHelper.toXml(watchdog),
-            headers={}
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
         return TemplateWatchDog(
@@ -20497,9 +20511,10 @@ class TemplateWatchDogs(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return WatchDogs:
         '''
@@ -20507,10 +20522,14 @@ class TemplateWatchDogs(Base):
         url = '/templates/{template:id}/watchdogs'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {'{template:id}': self.parentclass.get_id()}
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{template:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_watchdog()
 
         return ParseHelper.toSubCollection(
