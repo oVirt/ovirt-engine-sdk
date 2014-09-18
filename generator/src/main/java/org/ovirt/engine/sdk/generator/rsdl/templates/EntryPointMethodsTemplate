@@ -35,6 +35,9 @@
         # Clear context
         context.manager.drop(self.id)
 
+        # Close all the connections in the pool:
+        proxy.close()
+
     def test(self, throw_exception=False):
         ''' test server connectivity '''
 

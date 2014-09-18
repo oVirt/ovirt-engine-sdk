@@ -13,6 +13,7 @@ BuildArch: noarch
 
 Requires: python
 Requires: python-lxml
+Requires: python-pycurl >= 7.19.0
 
 Provides:  ovirt-engine-sdk = %{version}-%{release}
 Obsoletes: ovirt-engine-sdk < 3.3.0.6

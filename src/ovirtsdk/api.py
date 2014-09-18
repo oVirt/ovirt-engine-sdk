@@ -20,8 +20,9 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-09-26 10:32:15.000591'''
+'''Generated at: 2014-09-26 16:26:32.000408'''
 
+import re
 import types
 import urlparse
 
@@ -106,27 +107,47 @@ class API(object):
             except DisconnectedError:
                 pass
 
-        # Remove trailing slashes from the URL:
-        url = url.rstrip('/')
+        # Parse the URL in order to simplify the manipluations that we are
+        # going to perform:
+        parsed_url = urlparse.urlparse(url)
+
+        # Remove trailing slashes from the path:
+        path = parsed_url.path
+        path = re.sub(r"/+$", "", path)
 
         # For backwards compatibility we need to support URLs that don't
         # contain a path, and in that case the path should be the old /api:
-        prefix = urlparse.urlparse(url).path
-        if prefix == '':
-            prefix = '/api'
-            url = url + prefix
+        if path == '':
+            path = '/api'
+
+        # If the URL doesn't explicitly specify the port but it is explicitly
+        # given as a parameter then we need to modify the URL so that it
+        # contains that port:
+        netloc = parsed_url.netloc
+        if parsed_url.port is None and port is not None:
+            netloc += ":%s" % port
+
+        # Rebuild the URL, ignoring everything but the scheme, network
+        # location and path (these aren't supported by the SDK):
+        parsed_url = urlparse.ParseResult(
+            scheme=parsed_url.scheme,
+            netloc=netloc,
+            path=path,
+            params="",
+            query="",
+            fragment=""
+        )
+        url = parsed_url.geturl()
 
         # Create the connection pool:
         pool = ConnectionsPool(
             url=url,
             username=username,
             password=password,
-            context=self.id,
+            context=context,
             key_file=key_file,
             cert_file=cert_file,
             ca_file=ca_file,
-            port=port,
-            strict=False,
             timeout=timeout,
             insecure=insecure,
             validate_cert_chain=validate_cert_chain,
@@ -137,7 +158,7 @@ class API(object):
         proxy = Proxy(
             pool,
             persistent_auth,
-            prefix
+            path
         )
 
         # Store filter to the context:
@@ -181,7 +202,6 @@ class API(object):
              Mode.R,
              typ=types.BooleanType
         )
-
         self.bookmarks = Bookmarks(self.id)
         self.capabilities = Capabilities(self.id)
         self.clusters = Clusters(self.id)
@@ -245,6 +265,9 @@ class API(object):
 
         # Clear context
         context.manager.drop(self.id)
+
+        # Close all the connections in the pool:
+        proxy.close()
 
     def test(self, throw_exception=False):
         ''' test server connectivity '''

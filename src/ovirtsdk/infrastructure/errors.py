@@ -43,29 +43,26 @@ class MissingParametersError(Exception):
         Exception.__init__(self, "[ERROR]::One of the following parameters has to be specified: %s." % params)
 
 class RequestError(Exception):
-    def __init__(self, response):
+    def __init__(self, response_code, response_reason, response_body):
         self.detail = None
         self.status = None
         self.reason = None
-        res = response.read()
         detail = ''
         RESPONSE_FORMAT = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
         RESPONSE_FAULT_BODY = '<fault>'
         APP_SERVER_RESPONSE_FORMAT = '<html><head><title>JBoss Web'
 
         # REST error
-        if res and res.startswith(RESPONSE_FORMAT) and res.find(RESPONSE_FAULT_BODY) != -1:
+        if response_body and response_body.startswith(RESPONSE_FORMAT) and response_body.find(RESPONSE_FAULT_BODY) != -1:
             try:
-                f_detail = params.parseString(res, silence=True)
+                f_detail = params.parseString(response_body, silence=True)
             except:
                 f_detail = ''
 
             if types.StringType != type(f_detail):
                 if isinstance(f_detail, params.Action) and f_detail.fault is not None:
-                    # self.reason = f_detail.fault.reason
                     detail = f_detail.fault.detail.lstrip()
                 else:
-                    # self.reason = response.reason
                     if f_detail and f_detail.detail:
                         detail = f_detail.detail.lstrip()
 
@@ -74,8 +71,8 @@ class RequestError(Exception):
                     detail = detail[1:len(detail) - 1]
 
         # application server error
-        elif res.startswith(APP_SERVER_RESPONSE_FORMAT):
-            detail = res
+        elif response_body.startswith(APP_SERVER_RESPONSE_FORMAT):
+            detail = response_body
             start = detail.find('<h1>')
             end = detail.find('</h1>')
             if start != -1 and end != -1:
@@ -83,11 +80,11 @@ class RequestError(Exception):
                 if detail and detail.endswith(' - '):
                     detail = detail[:len(detail) - 3]
         else:
-            detail = '\n' + res if res else ''
+            detail = '\n' + response_body if response_body else ''
 
         self.detail = detail
-        self.reason = response.reason
-        self.status = response.status
+        self.reason = response_reason
+        self.status = response_code
 
         Exception.__init__(self, '[ERROR]::oVirt API request failure.' + self.__str__())
 

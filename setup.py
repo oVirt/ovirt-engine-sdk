@@ -26,9 +26,9 @@ version_info = {
 
 setup(
     package_dir={ '': 'src' },
-    packages=[ 'ovirtsdk.infrastructure', 'ovirtsdk.utils', 'ovirtsdk.web', 'ovirtsdk.xml'],
+    packages=[ 'ovirtsdk.infrastructure', 'ovirtsdk.utils', 'ovirtsdk.xml'],
     py_modules=['ovirtsdk.api'],
-    install_requires=['lxml >= 2.2.3'],
+    install_requires=['lxml >= 2.2.3', 'pycurl >= 7.19.0'],
     entry_points={},
     **version_info
 )

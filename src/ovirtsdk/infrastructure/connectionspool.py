@@ -14,120 +14,168 @@
 # limitations under the License.
 #
 
-from Queue import Queue
-import thread
-import cookielib
-import urlparse
+import cStringIO
+import pycurl
+import threading
 
-from cookielib import DefaultCookiePolicy
-
-from ovirtsdk.web.connection import Connection
-from ovirtsdk.infrastructure.errors import ImmutableError
-from ovirtsdk.utils.synchronizationhelper import synchronized
+from ovirtsdk.infrastructure import errors
 
 
 class ConnectionsPool(object):
-    '''
-    ConnectionsManager used to manage pool of web connections
-    '''
-    def __init__(self, url, port, key_file, cert_file, ca_file, strict, timeout,
-                 username, password, context, count=20, insecure=False, validate_cert_chain=True,
-                 debug=False):
+    """Object used to manage pool of HTTP connections"""
 
-        self.__free_connections = Queue(0)
-        self.__busy_connections = {}
-
-        self.__plock = thread.allocate_lock()
-        self.__rlock = thread.allocate_lock()
-
+    def __init__(self, url, key_file, cert_file, ca_file, timeout, username,
+                 password, context, insecure, validate_cert_chain, debug):
+        # Save the URL and the context:
         self.__url = url
         self.__context = context
 
-        # Create the cookies policy and jar:
-        self.__cookies_jar = cookielib.CookieJar(
-                 policy=cookielib.DefaultCookiePolicy(
-                       strict_ns_domain=DefaultCookiePolicy.DomainStrictNoDots,
-                       allowed_domains=self.__getAllowedDomains(url)
-                 )
-            )
+        # Save the credentials:
+        self.__username = username
+        self.__password = password
 
-        for _ in range(count):
-            self.__free_connections.put(item=Connection(url=url, \
-                                                        port=port, \
-                                                        key_file=key_file, \
-                                                        cert_file=cert_file, \
-                                                        ca_file=ca_file, \
-                                                        strict=strict, \
-                                                        timeout=timeout, \
-                                                        username=username, \
-                                                        password=password,
-                                                        manager=self,
-                                                        insecure=insecure,
-                                                        validate_cert_chain=validate_cert_chain,
-                                                        debug=debug))
-    def getConnection(self, get_ttl=100):
-#        try:
-            with self.__plock:
-                conn = self.__free_connections.get(block=True, timeout=get_ttl)
-                self.__busy_connections[conn.get_id()] = conn
-                return conn
-#        except Empty, e:
-#                self.__extendQueue()
-#                return self.getConnection(get_ttl)
+        # The curl object can be used by several threads, but not
+        # simultaneously, so we need a lock to prevent that:
+        self.__curl_lock = threading.Lock()
 
-#    def __extendQueue(self):
-# TODO: add more connections if needed
-#        continue
+        # Create the curl handle that manages the pool of connections:
+        self.__curl = pycurl.Curl()
+        self.__curl.setopt(pycurl.COOKIEFILE, "/dev/null")
+        self.__curl.setopt(pycurl.COOKIEJAR, "/dev/null")
 
-    def getCookiesJar(self):
-        """
-        returns cookies container
-        """
-        return self.__cookies_jar
+        # Configure SSH parameters:
+        if url.startswith("https"):
+            if validate_cert_chain:
+                if not insecure and not ca_file:
+                    raise errors.NoCertificatesError
+            else:
+                ca_file = None
+            self.__curl.setopt(pycurl.SSL_VERIFYPEER, 0 if insecure else 1)
+            self.__curl.setopt(pycurl.SSL_VERIFYHOST, 0 if insecure else 2)
+            if ca_file is not None:
+                self.__curl.setopt(pycurl.CAINFO, ca_file)
+            if cert_file is not None and key_file is not None:
+                self.__curl.setopt(pycurl.SSLCERTTYPE, "PEM")
+                self.__curl.setopt(pycurl.SSLCERT, cert_file)
+                self.__curl.setopt(pycurl.SSLKEY, key_file)
 
-    @synchronized
-    def addCookieHeaders(self, request_adapter):
-        """
-        Adds the stored cookie/s to the request adapter:
-        """
-        self.getCookiesJar().add_cookie_header(request_adapter)
+        # Configure timeouts:
+        if timeout is not None:
+            self.__curl.setopt(pycurl.TIMEOUT, timeout)
 
-    @synchronized
-    def storeCookies(self, response_adapter, request_adapter):
-        """
-        Stores the cookie/s located in the response adapter in request adapter:
-        """
-        self.getCookiesJar().extract_cookies(response_adapter, request_adapter)
+        # Configure debug mode:
+        if debug:
+            self.__curl.setopt(pycurl.VERBOSE, 1)
+            self.__curl.setopt(pycurl.DEBUGFUNCTION, self.__curl_debug)
+
+    def do_request(self, method, url, body=None, headers={}, last=False,
+                   persistent_auth=True):
+        with self.__curl_lock:
+            try:
+                return self.__do_request(method, url, body, headers, last,
+                                         persistent_auth)
+            except pycurl.error, error:
+                raise errors.ConnectionError(error)
+
+    def __do_request(self, method, url, body, headers, last,
+                    persistent_auth):
+        # Set the method:
+        self.__curl.setopt(pycurl.CUSTOMREQUEST, method)
+
+        # Set the URL:
+        self.__curl.setopt(pycurl.URL, self.__url + url)
+
+        # Credentials should be sent only if there isn't a session:
+        if not self.__in_session():
+            self.__curl.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_BASIC)
+            self.__curl.setopt(pycurl.USERPWD, "%s:%s" % (self.__username, self.__password))
+
+        # Default headers:
+        header_lines = []
+        for header in headers.items():
+            header_lines.append("%s: %s" % header)
+        header_lines.append("Content-Type: application/xml")
+        header_lines.append("Accept: application/xml")
+
+        # Set the filter header:
+        fltr = self.__context.manager[self.__context].get("filter")
+        if fltr is not None:
+            header_lines.append("Filter: %s" % fltr)
+
+        # Set the session TTL header:
+        ttl = self.__context.manager[self.__context].get("session_timeout")
+        if ttl is not None:
+            header_lines.append("Session-TTL: %s" % ttl)
+
+        # Every request except the last one should indicate that we prefer
+        # to use persistent authentication:
+        if persistent_auth and not last:
+            header_lines.append("Prefer: persistent-auth")
+
+        # Copy headers and the request body to the curl object:
+        self.__curl.setopt(pycurl.HTTPHEADER, header_lines)
+        if body is not None:
+            self.__curl.setopt(pycurl.POSTFIELDS, body)
+
+        # Prepare the buffers to receive the response:
+        body_buffer = cStringIO.StringIO()
+        headers_buffer = cStringIO.StringIO()
+        self.__curl.setopt(pycurl.WRITEFUNCTION, body_buffer.write)
+        self.__curl.setopt(pycurl.HEADERFUNCTION, headers_buffer.write)
+
+        # Send the request and wait for the response:
+        self.__curl.perform()
+
+        # Extract the response code and body:
+        response_code = self.__curl.getinfo(pycurl.HTTP_CODE)
+        response_body = body_buffer.getvalue()
+
+        # The response code can be extracted directly, but culr doesn't
+        # have a method to extract the response message, so we have to
+        # parse the first header line to find it:
+        response_reason = ""
+        header_lines = headers_buffer.getvalue().split("\n")
+        if len(header_lines) >= 1:
+            response_line = header_lines[0]
+            response_fields = response_line.split()
+            if len(response_fields) >= 3:
+                response_reason = response_fields[2]
+
+        # Parse the received body only if there are no errors reported by
+        # the server (this needs review, as less than 400 doesn't guarantee
+        # a correct response, it could be a redirect, and many other
+        # things):
+        if response_code >= 400:
+            raise errors.RequestError(response_code, response_reason, response_body)
+
+        return response_body
+
+    def close(self):
+        with self.__curl_lock:
+            self.__curl.close()
+
+    @staticmethod
+    def __curl_debug(debug_type, debug_message):
+        prefix = "* "
+        if debug_type == pycurl.INFOTYPE_DATA_IN:
+            prefix = "< "
+        elif debug_type == pycurl.INFOTYPE_DATA_OUT:
+            prefix = "> "
+        elif debug_type == pycurl.INFOTYPE_HEADER_IN:
+            prefix = "< "
+        elif debug_type == pycurl.INFOTYPE_HEADER_OUT:
+            prefix = "> "
+        lines = debug_message.replace("\r\n", "\n").strip().split("\n")
+        for line in lines:
+            print("%s%s" % (prefix, line))
+
+    def __in_session(self):
+        for cookie_line in self.__curl.getinfo(pycurl.INFO_COOKIELIST):
+            cookie_fields = cookie_line.split("\t")
+            cookie_name = cookie_fields[5]
+            if cookie_name == "JSESSIONID":
+                return True
+        return False
 
     def get_url(self):
         return self.__url
-
-    @property
-    def context(self):
-        return self.__context
-
-    @synchronized
-    def __getAllowedDomains(self, url):
-        '''
-        fetches allowed domains for cookie
-        '''
-
-        LOCAL_HOST = 'localhost'
-        parsed_url = urlparse.urlparse(url)
-        domains = [parsed_url.hostname]
-
-        if parsed_url.hostname == LOCAL_HOST:
-            return domains.append(LOCAL_HOST + '.local')
-
-        return domains
-
-    def _freeResource(self, conn):
-        with self.__rlock:
-            conn = self.__busy_connections.pop(conn.get_id())
-            self.__free_connections.put_nowait(conn)
-
-    def __setattr__(self, name, value):
-        if name in ['__context', 'context']:
-            raise ImmutableError(name)
-        else:
-            super(ConnectionsPool, self).__setattr__(name, value)
