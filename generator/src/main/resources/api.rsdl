@@ -3816,6 +3816,24 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>qos.cpu_limit</name>
                         </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_average</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_peak</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_burst</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_peak</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_burst</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -3915,6 +3933,24 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>qos.cpu_limit</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_average</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_peak</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.inbound_burst</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_peak</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_burst</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -5670,7 +5706,7 @@ or less indicates that the session should never timeout</description>
                             <name>host.display.address</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>host.storage_manager.priority</name>
+                            <name>host.spm.priority</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>host.power_management.type</name>
@@ -5786,7 +5822,7 @@ or less indicates that the session should never timeout</description>
                             <name>host.display.address</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>host.storage_manager.priority</name>
+                            <name>host.spm.priority</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>host.power_management.type</name>
@@ -6016,7 +6052,7 @@ or less indicates that the session should never timeout</description>
                             <name>host.port</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>host.storage_manager.priority</name>
+                            <name>host.spm.priority</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>host.power_management.type</name>
@@ -6117,7 +6153,7 @@ or less indicates that the session should never timeout</description>
                             <name>host.port</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>host.storage_manager.priority</name>
+                            <name>host.spm.priority</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>host.power_management.type</name>
@@ -7382,6 +7418,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>instance_type.virtio_scsi.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>instance_type.soundcard_enabled</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -10907,6 +10946,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>template.virtio_scsi.enabled</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>template.soundcard_enabled</name>
+                        </parameter>
                         <parameter required="false" type="collection">
                             <name>template.vm.disks.disk</name>
                             <parameters_set>
@@ -11206,6 +11248,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>template.virtio_scsi.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>template.soundcard_enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.version.version_name</name>
@@ -11806,10 +11851,34 @@ or less indicates that the session should never timeout</description>
             </response>
         </link>
         <link href="/ovirt-engine/api/templates/{template:id}/watchdogs" rel="add">
+            <description>add a watchdog to the template identified by the given id</description>
             <request>
                 <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <body>
                     <type>WatchDog</type>
+                    <parameters_set>
+                        <description>add a watchdog to the template identified by the given id</description>
+                        <parameter required="true" type="xs:string">
+                            <name>watchdog.action</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>watchdog.model</name>
+                        </parameter>
+                    </parameters_set>
                 </body>
             </request>
             <response>
@@ -11817,8 +11886,17 @@ or less indicates that the session should never timeout</description>
             </response>
         </link>
         <link href="/ovirt-engine/api/templates/{template:id}/watchdogs" rel="get">
+            <description>get all the watchdogs for the template identified by the given id</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -11826,12 +11904,28 @@ or less indicates that the session should never timeout</description>
             </response>
         </link>
         <link href="/ovirt-engine/api/templates/{template:id}/watchdogs/{watchdog:id}" rel="delete">
+            <description>delete the watchdog for the template identified by the given id</description>
             <request>
                 <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
         </link>
         <link href="/ovirt-engine/api/templates/{template:id}/watchdogs/{watchdog:id}" rel="get">
+            <description>get the watchdog identified by the id for a given template</description>
             <request>
                 <http_method>GET</http_method>
                 <body/>
@@ -11841,10 +11935,30 @@ or less indicates that the session should never timeout</description>
             </response>
         </link>
         <link href="/ovirt-engine/api/templates/{template:id}/watchdogs/{watchdog:id}" rel="update">
+            <description>update the watchdog for the template identified by the given id</description>
             <request>
                 <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <body>
                     <type>WatchDog</type>
+                    <parameters_set>
+                        <description>update the watchdog for the template identified by the given id with a new action and model as specified in the request data</description>
+                        <parameter required="false" type="xs:string">
+                            <name>watchdog.action</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>watchdog.model</name>
+                        </parameter>
+                    </parameters_set>
                 </body>
             </request>
             <response>
@@ -12319,6 +12433,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>vmpool.description</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vmpool.soundcard_enabled</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -12773,6 +12890,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.virtio_scsi.enabled</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.soundcard_enabled</name>
+                        </parameter>
                         <parameter required="false" type="collection">
                             <name>vm.payloads.payload</name>
                             <parameters_set>
@@ -12999,6 +13119,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.virtio_scsi.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.soundcard_enabled</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>vm.payloads.payload</name>
@@ -13561,6 +13684,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.virtio_scsi.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.soundcard_enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.use_latest_template_version</name>
@@ -15871,6 +15997,7 @@ or less indicates that the session should never timeout</description>
             </request>
         </link>
         <link href="/ovirt-engine/api/vms/{vm:id}/watchdogs/{watchdog:id}" rel="get">
+            <description>get the watchdog identified by the id for a given virtual machine</description>
             <request>
                 <http_method>GET</http_method>
                 <body/>

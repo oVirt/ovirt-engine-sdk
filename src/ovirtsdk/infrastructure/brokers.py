@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-08-27 20:46:40.000663'''
+'''Generated at: 2014-09-26 10:32:15.000423'''
 
 
 from ovirtsdk.xml import params
@@ -7753,6 +7753,12 @@ class DataCenterQoS(params.QoS, Base):
         [@param qos.max_read_iops: int]
         [@param qos.max_write_iops: int]
         [@param qos.cpu_limit: int]
+        [@param qos.inbound_average: int]
+        [@param qos.inbound_peak: int]
+        [@param qos.inbound_burst: int]
+        [@param qos.outbound_average: int]
+        [@param qos.outbound_peak: int]
+        [@param qos.outbound_burst: int]
         [@param correlation_id: any string]
 
         @return QoS:
@@ -7807,6 +7813,12 @@ class DataCenterQoSs(Base):
         [@param qos.max_read_iops: int]
         [@param qos.max_write_iops: int]
         [@param qos.cpu_limit: int]
+        [@param qos.inbound_average: int]
+        [@param qos.inbound_peak: int]
+        [@param qos.inbound_burst: int]
+        [@param qos.outbound_average: int]
+        [@param qos.outbound_peak: int]
+        [@param qos.outbound_burst: int]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -11206,7 +11218,7 @@ class Host(params.Host, Base):
           [@param host.display.address: string]
           [@param host.cluster.id|name: string]
           [@param host.port: int]
-          [@param host.storage_manager.priority: int]
+          [@param host.spm.priority: int]
           [@param host.power_management.type: string]
           [@param host.power_management.enabled: boolean]
           [@param host.power_management.address: string]
@@ -11245,7 +11257,7 @@ class Host(params.Host, Base):
           [@param host.display.address: string]
           [@param host.cluster.id|name: string]
           [@param host.port: int]
-          [@param host.storage_manager.priority: int]
+          [@param host.spm.priority: int]
           [@param host.power_management.type: string]
           [@param host.power_management.automatic_pm_enabled: boolean]
           [@param host.power_management.enabled: boolean]
@@ -13154,7 +13166,7 @@ class Hosts(Base):
           [@param host.comment: string]
           [@param host.port: int]
           [@param host.display.address: string]
-          [@param host.storage_manager.priority: int]
+          [@param host.spm.priority: int]
           [@param host.power_management.type: string]
           [@param host.power_management.enabled: boolean]
           [@param host.power_management.address: string]
@@ -13198,7 +13210,7 @@ class Hosts(Base):
           [@param host.ssh.user.password: string]
           [@param host.port: int]
           [@param host.display.address: string]
-          [@param host.storage_manager.priority: int]
+          [@param host.spm.priority: int]
           [@param host.power_management.type: string]
           [@param host.power_management.automatic_pm_enabled: boolean]
           [@param host.power_management.enabled: boolean]
@@ -13780,6 +13792,7 @@ class InstanceTypes(Base):
         [@param instance_type.usb.type: string]
         [@param instance_type.migration_downtime: int]
         [@param instance_type.virtio_scsi.enabled: boolean]
+        [@param instance_type.soundcard_enabled: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -19534,6 +19547,7 @@ class Template(params.Template, Base):
         [@param template.tunnel_migration: boolean]
         [@param template.migration_downtime: int]
         [@param template.virtio_scsi.enabled: boolean]
+        [@param template.soundcard_enabled: boolean]
         [@param template.version.version_name: string]
         [@param template.serial_number.policy: string]
         [@param template.serial_number.value: string]
@@ -20523,24 +20537,34 @@ class TemplateWatchDog(params.WatchDog, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None, correlation_id=None):
         '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
         @return None:
         '''
 
-        url = '/templates/{template:id}/watchdogs/{watchdog:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {'{template:id}' : self.parentclass.get_id(),
-                 '{watchdog:id}': self.get_id()}
-            ),
-            headers={'Content-type':None}
+        url = UrlHelper.replace(
+            '/templates/{template:id}/watchdogs/{watchdog:id}',
+            {'{template:id}' : self.parentclass.get_id(),
+             '{watchdog:id}': self.get_id()}
         )
 
-    def update(self):
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, correlation_id=None):
         '''
+        [@param watchdog.action: string]
+        [@param watchdog.model: string]
+        [@param correlation_id: any string]
+
         @return WatchDog:
         '''
 
@@ -20554,7 +20578,7 @@ class TemplateWatchDog(params.WatchDog, Base):
         result = self.__getProxy().update(
             url=SearchHelper.appendQuery(url, {}),
             body=ParseHelper.toXml(self.superclass),
-            headers={}
+            headers={"Correlation-Id":correlation_id}
         )
 
         return TemplateWatchDog(
@@ -20578,11 +20602,15 @@ class TemplateWatchDogs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, watchdog):
+    def add(self, watchdog, expect=None, correlation_id=None):
 
         '''
         @type WatchDog:
 
+        @param watchdog.action: string
+        @param watchdog.model: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return WatchDog:
         '''
@@ -20595,7 +20623,7 @@ class TemplateWatchDogs(Base):
                 {'{template:id}': self.parentclass.get_id()}
             ),
             body=ParseHelper.toXml(watchdog),
-            headers={}
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
         return TemplateWatchDog(
@@ -20660,9 +20688,10 @@ class TemplateWatchDogs(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return WatchDogs:
         '''
@@ -20670,10 +20699,14 @@ class TemplateWatchDogs(Base):
         url = '/templates/{template:id}/watchdogs'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {'{template:id}': self.parentclass.get_id()}
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={'{template:id}': self.parentclass.get_id()}
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_watchdog()
 
         return ParseHelper.toSubCollection(
@@ -20755,6 +20788,7 @@ class Templates(Base):
         [@param template.tunnel_migration: boolean]
         [@param template.migration_downtime: int]
         [@param template.virtio_scsi.enabled: boolean]
+        [@param template.soundcard_enabled: boolean]
         [@param template.vm.disks.disk: collection]
         {
           [@ivar disk.id: string]
@@ -21793,6 +21827,7 @@ class VM(params.VM, Base):
         [@param vm.tunnel_migration: boolean]
         [@param vm.migration_downtime: int]
         [@param vm.virtio_scsi.enabled: boolean]
+        [@param vm.soundcard_enabled: boolean]
         [@param vm.use_latest_template_version: boolean]
         [@param vm.payloads.payload: collection]
         {
@@ -25609,6 +25644,7 @@ class VMs(Base):
           [@param vm.tunnel_migration: boolean]
           [@param vm.migration_downtime: int]
           [@param vm.virtio_scsi.enabled: boolean]
+          [@param vm.soundcard_enabled: boolean]
           [@param vm.payloads.payload: collection]
           {
             [@ivar payload.type: string]
@@ -25694,6 +25730,7 @@ class VMs(Base):
           [@param vm.tunnel_migration: boolean]
           [@param vm.migration_downtime: int]
           [@param vm.virtio_scsi.enabled: boolean]
+          [@param vm.soundcard_enabled: boolean]
           [@param vm.payloads.payload: collection]
           {
             [@ivar payload.type: string]
@@ -26202,6 +26239,7 @@ class VmPools(Base):
         [@param vmpool.max_user_vms: int]
         [@param vmpool.display.proxy: string]
         [@param vmpool.description: string]
+        [@param vmpool.soundcard_enabled: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 

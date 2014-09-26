@@ -40,6 +40,108 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS.md README.md LICENSE.md
 
 %changelog
+* Wed Sep 10 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.7-1
+- Added support for watchdog action and model #1129840.
+
+* Wed Sep 3 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.6-1
+- Added support for network QoS.
+- Added support to enable/disable sound card to VM, pool and template.
+
+* Wed Aug 27 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.5-1
+- Added support for QoS, including CPU and disk profiles.
+- Added support for iSCSI bonds.
+- Disconnect at constructor only if proxy found #996021.
+
+* Tue Aug 12 2014 Ravi Nori<rnori@redhat.com> - 3.5.0.4-1
+- Revert patch 0525e9d #1122546.
+- Update API fails in SDK & CLI #1122546.
+
+* Fri Jul 18 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.3-1
+- Fix naming conflict #1120502.
+- Fix parameters of add DataCenter #1104085.
+- Fix update VM optional parameters #1082594.
+
+* Wed Jul 9 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.2-1
+- Calculate singulars correctly #1114655.
+
+* Wed Jul 9 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.1-1
+- Added NUMA support.
+- Added actions to copy and move disks #1097681.
+- Added file_transfer_enabled and copy_paste_enabled elements to Display.
+- Added protocol element to Host.
+- Added support for Gluster volume profiling.
+- Added support for instance types.
+- Added support for quota.id parameter for disks.
+- Added support for random number generator device.
+- Added support for scheduling policies.
+- Added support storage domains disks sub-collection.
+- Added support to register VMs and templates.
+- Ignore errors when cleaning old connection #1116009.
+- Replace decorators before marshal #1024696.
+- Support X-Ovirt-Expect header #1093784.
+
+* Thu May 22 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.0-1
+- Update to version 2.12a of generateDS.py #1091688.
+- Regenerate for version 3.5 of the engine.
+- Added action to undelete events.
+- Added base_interface to host_nic.
+- Added boot_menu to VM and template.
+- Added custom properties to host_nic.
+- Added disksnapshots sub-collection to storagedomains.
+- Added domain_entry_id to users and groups.
+- Added sessions sub-collection to vms.
+- Added support for Gluster volume statistics.
+- Added support for VM and template custom serial numbers.
+- Added support for bookmarks.
+- Added support for deleting VM disk snapshots.
+- Added support for reporting VM SELinux configuration.
+- Added support for reporting VM kdump configuration.
+- Added support for reporting architecture capabilities.
+- Added tags sub-collection to templates.
+
+* Wed May 7 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.1.1-1
+- Added maintenance operation to VM.
+- Added hosted_engine element to Host.
+- Added labels to Network.
+- Added labels to HostNIC.
+
+* Wed Apr 23 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.1.0-1
+- Added actions to preview, commit and undo snapshots.
+- Added support for affinity groups.
+- Added support to import a VM as template.
+- Removed external_id from users and groups.
+- Renamed cloud_init.hostname to cloud_init.host.address.
+
+* Wed Apr 16 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.7-1
+- Add support for filtering kwargs based on attributes.
+- Add check of SSL server name.
+- No new lines in basic auth token #1085837.
+
+* Fri Feb 28 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.6-1
+- Removed ip.mtu parameter from host NIC update operation #1049611.
+
+* Thu Feb 27 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.5-1
+- Added template versions support.
+
+* Tue Feb 18 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.4-1
+- Added all_content parameter to relevant methods.
+- Added disks collection to Snapshot.
+- Added external_id property to User and Group #1059894.
+- Added ha_reservation property to Cluster #1059892.
+- Added ksm.enabled property to Cluster #1059892.
+- Added local property to DataCenter.
+- Added migration_downtime property to VM and Template.
+- Added network label support.
+- Added power_management.automatic_pm_enabled property to Host.
+- Added reboot method to VM.
+- Added sso.methods property to VM and Template #1059893.
+- Removed storage_type property from DataCenter.
+- Use /api if the URL doesn't have a path #1066036.
+- Remove trailing slashes from URL prefix #1063746.
+
+* Tue Jan 28 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.3-1
+- Use relative paths #1038952.
+
 * Thu Jan 9 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.4.0.2-1
 - Add "UsageMessage" class to represent detailed error messages
   returned by the engine #867794.
