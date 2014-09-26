@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-09-26 16:26:32.000408'''
+'''Generated at: 2014-09-26 16:58:52.000515'''
 
 import re
 import types
@@ -64,14 +64,17 @@ from ovirtsdk.infrastructure.brokers import VnicProfiles
 
 
 class API(object):
-    def __init__(self, url, username, password, key_file=None, cert_file=None,
-                 ca_file=None, port=None, timeout=None, session_timeout=None, persistent_auth=True,
-                 renew_session=False, insecure=False, validate_cert_chain=True, filter=False, debug=False):  # @ReservedAssignment
+    def __init__(self, url, username=None, password=None, key_file=None,
+                 cert_file=None, ca_file=None, port=None, timeout=None,
+                 session_timeout=None, persistent_auth=True,
+                 renew_session=False, insecure=False,
+                 validate_cert_chain=True, filter=False, debug=False,
+                 kerberos=False): # @ReservedAssignment
 
         '''
         @param url: server url (format "http/s://server[:port]/ovirt-engine/api")
-        @param username: user (format user@domain)
-        @param password: password
+        [@param username: user (format user@domain)]
+        [@param password: password]
         [@param key_file: client PEM key_file for ssl enabled connection]
         [@param cert_file: client PEM cert_file for ssl enabled connection]
         [@param ca_file: server ca_file for ssl enabled connection]
@@ -84,6 +87,7 @@ class API(object):
         [@param validate_cert_chain: validate the server's CA certificate (default is True)]
         [@param filter: enables user-api filtering (default is False)]
         [@param debug: debug (format True|False)]
+        [@param kerberos: use Kerberos authentication (default is False)]
 
         @raise NoCertificatesError: raised when CA certificate is not provided for SSL site (can be disabled using 'insecure=True' argument).
         @raise UnsecuredConnectionAttemptError: raised when HTTP protocol is used in url against server running HTTPS.
@@ -151,7 +155,8 @@ class API(object):
             timeout=timeout,
             insecure=insecure,
             validate_cert_chain=validate_cert_chain,
-            debug=debug
+            debug=debug,
+            kerberos=kerberos
         )
 
         # Create the proxy:

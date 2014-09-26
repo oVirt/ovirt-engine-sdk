@@ -25,7 +25,8 @@ class ConnectionsPool(object):
     """Object used to manage pool of HTTP connections"""
 
     def __init__(self, url, key_file, cert_file, ca_file, timeout, username,
-                 password, context, insecure, validate_cert_chain, debug):
+                 password, context, insecure, validate_cert_chain, debug,
+                 kerberos):
         # Save the URL and the context:
         self.__url = url
         self.__context = context
@@ -33,6 +34,7 @@ class ConnectionsPool(object):
         # Save the credentials:
         self.__username = username
         self.__password = password
+        self.__kerberos = kerberos
 
         # The curl object can be used by several threads, but not
         # simultaneously, so we need a lock to prevent that:
@@ -85,8 +87,11 @@ class ConnectionsPool(object):
         # Set the URL:
         self.__curl.setopt(pycurl.URL, self.__url + url)
 
-        # Credentials should be sent only if there isn't a session:
-        if not self.__in_session():
+        # Basic credentials should be sent only if there isn't a session:
+        if self.__kerberos:
+            self.__curl.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_GSSNEGOTIATE)
+            self.__curl.setopt(pycurl.USERPWD, ":")
+        elif not self.__in_session():
             self.__curl.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_BASIC)
             self.__curl.setopt(pycurl.USERPWD, "%s:%s" % (self.__username, self.__password))
 
