@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-09-26 16:58:52.000515'''
+'''Generated at: 2014-10-28 11:29:50.000012'''
 
 import re
 import types
@@ -49,6 +49,7 @@ from ovirtsdk.infrastructure.brokers import InstanceTypes
 from ovirtsdk.infrastructure.brokers import Jobs
 from ovirtsdk.infrastructure.brokers import MacPools
 from ovirtsdk.infrastructure.brokers import Networks
+from ovirtsdk.infrastructure.brokers import OperatingSystemInfos
 from ovirtsdk.infrastructure.brokers import Permissions
 from ovirtsdk.infrastructure.brokers import Roles
 from ovirtsdk.infrastructure.brokers import SchedulingPolicies
@@ -222,6 +223,7 @@ class API(object):
         self.jobs = Jobs(self.id)
         self.macpools = MacPools(self.id)
         self.networks = Networks(self.id)
+        self.operatingsysteminfos = OperatingSystemInfos(self.id)
         self.permissions = Permissions(self.id)
         self.roles = Roles(self.id)
         self.schedulingpolicies = SchedulingPolicies(self.id)

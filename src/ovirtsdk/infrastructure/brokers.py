@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-09-26 10:32:15.000423'''
+'''Generated at: 2014-10-28 11:29:49.000863'''
 
 
 from ovirtsdk.xml import params
@@ -338,6 +338,10 @@ class Cluster(params.Cluster, Base):
         [@param cluster.cpu.architecture: string]
         [@param cluster.display.proxy: string]
         [@param cluster.ksm.enabled: boolean]
+        [@param cluster.fencing_policy.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_sd_active.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_connectivity_broken.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_connectivity_broken.threshold: int]
         [@param correlation_id: any string]
 
         @return Cluster:
@@ -2544,6 +2548,10 @@ class Clusters(Base):
         [@param cluster.cpu.architecture: string]
         [@param cluster.display.proxy: string]
         [@param cluster.ksm.enabled: boolean]
+        [@param cluster.fencing_policy.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_sd_active.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_connectivity_broken.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_connectivity_broken.threshold: int]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -15405,6 +15413,98 @@ class Networks(Base):
             context=self.context
         )
 
+class OperatingSystemInfo(params.OperatingSystemInfo, Base):
+    def __init__(self, operatingsysteminfo, context):
+        Base.__init__(self, context)
+        self.superclass = operatingsysteminfo
+
+        #SUB_COLLECTIONS
+    def __new__(cls, operatingsysteminfo, context):
+        if operatingsysteminfo is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(operatingsysteminfo, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class OperatingSystemInfos(Base):
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return OperatingSystemInfos:
+        '''
+
+        url = '/operatingsystems'
+
+        if id:
+            try :
+                return OperatingSystemInfo(
+                    self.__getProxy().get(
+                                url=UrlHelper.append(url, id),
+                                headers={}
+                    ),
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                    url=url,
+                    headers={}
+            ).get_operating_system()
+
+            return OperatingSystemInfo(
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)]
+
+        @return OperatingSystemInfos:
+        '''
+
+        url='/operatingsystems'
+
+        result = self.__getProxy().get(
+            url=url
+        ).get_operating_system()
+
+        return ParseHelper.toCollection(
+            OperatingSystemInfo,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )
 class Permission(params.Permission, Base):
     def __init__(self, permission, context):
         Base.__init__(self, context)
@@ -18771,10 +18871,11 @@ class StorageDomainTemplates(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, max=None, unregistered=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param max: int (max results)]
+        [@param unregistered: boolean (true|false)]
 
         @return Templates:
         '''
@@ -18787,7 +18888,7 @@ class StorageDomainTemplates(Base):
                     url=url,
                     args={'{storagedomain:id}': self.parentclass.get_id()}
                 ),
-                qargs={'max:matrix':max}
+                qargs={'max:matrix':max,'unregistered:matrix':unregistered}
             ),
             headers={}
         ).get_template()
@@ -19103,10 +19204,11 @@ class StorageDomainVMs(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, max=None, unregistered=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param max: int (max results)]
+        [@param unregistered: boolean (true|false)]
 
         @return VMs:
         '''
@@ -19119,7 +19221,7 @@ class StorageDomainVMs(Base):
                     url=url,
                     args={'{storagedomain:id}': self.parentclass.get_id()}
                 ),
-                qargs={'max:matrix':max}
+                qargs={'max:matrix':max,'unregistered:matrix':unregistered}
             ),
             headers={}
         ).get_vm()
@@ -21804,6 +21906,7 @@ class VM(params.VM, Base):
         [@param vm.cpu_shares: int]
         [@param vm.memory: long]
         [@param vm.memory_policy.guaranteed: long]
+        [@param vm.memory_policy.ballooning: boolean]
         [@param vm.high_availability.priority: int]
         [@param vm.high_availability.enabled: boolean]
         [@param vm.domain.name: string]
@@ -22075,6 +22178,7 @@ class VM(params.VM, Base):
         {
           [@ivar disk.id: string]
           [@ivar disk.image_id: string]
+          [@ivar disk.snapshot.id: string]
         }
         [@param correlation_id: any string]
 
@@ -25609,6 +25713,7 @@ class VMs(Base):
           [@param vm.cpu.architecture: string]
           [@param vm.memory: long]
           [@param vm.memory_policy.guaranteed: long]
+          [@param vm.memory_policy.ballooning: boolean]
           [@param vm.high_availability.priority: int]
           [@param vm.high_availability.enabled: boolean]
           [@param vm.domain.name: string]
@@ -25707,6 +25812,7 @@ class VMs(Base):
           [@param vm.cpu.architecture: string]
           [@param vm.memory: long]
           [@param vm.memory_policy.guaranteed: long]
+          [@param vm.memory_policy.ballooning: boolean]
           [@param vm.high_availability.priority: int]
           [@param vm.high_availability.enabled: boolean]
           [@param vm.domain.name: string]
@@ -25783,6 +25889,7 @@ class VMs(Base):
           [@param vm.cpu.topology.cores: int]
           [@param vm.memory: long]
           [@param vm.memory_policy.guaranteed: long]
+          [@param vm.memory_policy.ballooning: boolean]
           [@param vm.high_availability.priority: int]
           [@param vm.high_availability.enabled: boolean]
           [@param vm.domain.name: string]

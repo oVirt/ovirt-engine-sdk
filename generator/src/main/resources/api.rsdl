@@ -215,6 +215,18 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.ksm.enabled</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.skip_if_sd_active.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.skip_if_connectivity_broken.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>cluster.fencing_policy.skip_if_connectivity_broken.threshold</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -392,6 +404,18 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.ksm.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.skip_if_sd_active.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.skip_if_connectivity_broken.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>cluster.fencing_policy.skip_if_connectivity_broken.threshold</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -8483,6 +8507,26 @@ or less indicates that the session should never timeout</description>
                 <type>Permission</type>
             </response>
         </link>
+        <link href="/ovirt-engine/api/operatingsystems" rel="get">
+            <description>get the list of all Operating Systems</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>OperatingSystemInfos</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/operatingsystems/{operatingsystem:id}" rel="get">
+            <description>get the details of the specified Operating System</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>OperatingSystemInfo</type>
+            </response>
+        </link>
         <link href="/ovirt-engine/api/permissions" rel="add">
             <description>add a new permission on the system</description>
             <request>
@@ -9932,14 +9976,6 @@ or less indicates that the session should never timeout</description>
             <description>get the details of the specified disk in the storage domain</description>
             <request>
                 <http_method>GET</http_method>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:boolean" context="matrix">
-                            <name>unregistered</name>
-                            <value>true|false</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
                 <body/>
             </request>
             <response>
@@ -10354,6 +10390,10 @@ or less indicates that the session should never timeout</description>
                             <name>max</name>
                             <value>max results</value>
                         </parameter>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>unregistered</name>
+                            <value>true|false</value>
+                        </parameter>
                     </parameters_set>
                 </url>
                 <body/>
@@ -10513,6 +10553,10 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int" context="matrix">
                             <name>max</name>
                             <value>max results</value>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>unregistered</name>
+                            <value>true|false</value>
                         </parameter>
                     </parameters_set>
                 </url>
@@ -12797,6 +12841,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory_policy.guaranteed</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.memory_policy.ballooning</name>
+                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.high_availability.priority</name>
                         </parameter>
@@ -13055,6 +13102,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory_policy.guaranteed</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.memory_policy.ballooning</name>
+                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.high_availability.priority</name>
                         </parameter>
@@ -13258,6 +13308,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory_policy.guaranteed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.memory_policy.ballooning</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.high_availability.priority</name>
@@ -13619,6 +13672,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory_policy.guaranteed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.memory_policy.ballooning</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.high_availability.priority</name>
@@ -15209,6 +15265,9 @@ or less indicates that the session should never timeout</description>
 </parameter>
 <parameter required="false" type="xs:string">
     <name>disk.image_id</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>disk.snapshot.id</name>
 </parameter>
                             </parameters_set>
                         </parameter>
