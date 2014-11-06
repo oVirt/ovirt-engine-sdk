@@ -19,17 +19,18 @@ import pycurl
 import threading
 
 from ovirtsdk.infrastructure import errors
+from ovirtsdk.infrastructure.context import context
 
 
 class ConnectionsPool(object):
     """Object used to manage pool of HTTP connections"""
 
     def __init__(self, url, key_file, cert_file, ca_file, timeout, username,
-                 password, context, insecure, validate_cert_chain, debug,
+                 password, context_key, insecure, validate_cert_chain, debug,
                  kerberos):
-        # Save the URL and the context:
+        # Save the URL and the context key:
         self.__url = url
-        self.__context = context
+        self.__context_key = context_key
 
         # Save the credentials:
         self.__username = username
@@ -103,12 +104,12 @@ class ConnectionsPool(object):
         header_lines.append("Accept: application/xml")
 
         # Set the filter header:
-        fltr = self.__context.manager[self.__context].get("filter")
+        fltr = context.manager[self.__context_key].get("filter")
         if fltr is not None:
             header_lines.append("Filter: %s" % fltr)
 
         # Set the session TTL header:
-        ttl = self.__context.manager[self.__context].get("session_timeout")
+        ttl = context.manager[self.__context_key].get("session_timeout")
         if ttl is not None:
             header_lines.append("Session-TTL: %s" % ttl)
 
