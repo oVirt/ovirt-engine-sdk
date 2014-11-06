@@ -21,7 +21,7 @@ $docs$
 
             return $resource_type$(
                         FilterHelper.getItem(
-                            result,
+                            FilterHelper.filter(result, {'alias':alias}),
                             query="alias=" + alias
                         ),
                         self.context

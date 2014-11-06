@@ -23,7 +23,7 @@ $docs$
 
             return $resource_type$(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
