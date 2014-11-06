@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-10-28 11:29:49.000863'''
+'''Generated at: 2014-11-11 11:58:35.000736'''
 
 
 from ovirtsdk.xml import params
@@ -2599,7 +2599,7 @@ class Clusters(Base):
 
             return Cluster(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
@@ -8946,7 +8946,7 @@ class DataCenters(Base):
 
             return DataCenter(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
@@ -9823,7 +9823,7 @@ class Disks(Base):
 
             return Disk(
                         FilterHelper.getItem(
-                            result,
+                            FilterHelper.filter(result, {'alias':alias}),
                             query="alias=" + alias
                         ),
                         self.context
@@ -10315,7 +10315,7 @@ class Events(Base):
 
             return Event(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
@@ -11131,7 +11131,7 @@ class Groups(Base):
 
             return Group(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
@@ -13297,7 +13297,7 @@ class Hosts(Base):
 
             return Host(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
@@ -15382,7 +15382,7 @@ class Networks(Base):
 
             return Network(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
@@ -19356,7 +19356,7 @@ class StorageDomains(Base):
 
             return StorageDomain(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
@@ -20962,7 +20962,7 @@ class Templates(Base):
 
             return Template(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
@@ -21780,7 +21780,7 @@ class Users(Base):
 
             return User(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
@@ -25995,7 +25995,7 @@ class VMs(Base):
 
             return VM(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
@@ -26394,7 +26394,7 @@ class VmPools(Base):
 
             return VmPool(
                 FilterHelper.getItem(
-                    result,
+                    FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
                 ),
                 self.context
