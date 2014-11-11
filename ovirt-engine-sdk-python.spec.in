@@ -40,6 +40,9 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS.md README.md LICENSE.md
 
 %changelog
+* Tue Nov 11 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.8-1
+- Apply filter by name/alias after get #1155678.
+
 * Wed Sep 10 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.7-1
 - Added support for watchdog action and model #1129840.
 
