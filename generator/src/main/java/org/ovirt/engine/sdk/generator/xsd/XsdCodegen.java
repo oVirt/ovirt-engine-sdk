@@ -312,23 +312,6 @@ public class XsdCodegen extends AbstractCodegen {
     }
 
     /**
-     * Finds the index of the line where the given function starts.
-     *
-     * @param name the name of the function
-     * @return the index of the line where the function starts or -1 if no such function exists
-     */
-    private int findFunctionFirstLine(String name) {
-        Pattern pattern = Pattern.compile(" *def ([0-9a-zA-Z_]+)\\([^\\)]*\\):");
-        for (int i = 0; i < source.size(); i++) {
-            Matcher matcher = pattern.matcher(source.get(i));
-            if (matcher.matches() && name.equals(matcher.group(1))) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
      * Finds the index of the last line of the block that starts in the given line.
      *
      * @param first the index of the first line of the block
