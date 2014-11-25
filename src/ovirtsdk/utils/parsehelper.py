@@ -50,7 +50,7 @@ class ParseHelper():
 
         # Generate the XML document:
         output = StringIO.StringIO()
-        entity.export(output, 0, name_=entity_tag)
+        entity.export_(output, 0, name_=entity_tag)
         return output.getvalue()
 
     @staticmethod

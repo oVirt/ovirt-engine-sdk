@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Tue Oct 28 11:29:48 2014 by generateDS.py version 2.12a.
+# Generated Tue Nov 25 16:37:07 2014 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -559,7 +559,7 @@ class MixedContainer:
         return self.value
     def getName(self):
         return self.name
-    def export(self, outfile, level, name, namespace, pretty_print=True):
+    def export_(self, outfile, level, name, namespace, pretty_print=True):
         if self.category == MixedContainer.CategoryText:
             # Prevent exporting empty content as empty lines.
             if self.value.strip():
@@ -567,7 +567,7 @@ class MixedContainer:
         elif self.category == MixedContainer.CategorySimple:
             self.exportSimple(outfile, level, name)
         else:    # category == MixedContainer.CategoryComplex
-            self.value.export(outfile, level, namespace, name, pretty_print)
+            self.value.export_(outfile, level, namespace, name, pretty_print)
     def exportSimple(self, outfile, level, name):
         if self.content_type == MixedContainer.TypeString:
             outfile.write('<%s>%s</%s>' % (
@@ -695,7 +695,7 @@ class KeyValuePair(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='KeyValuePair', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='KeyValuePair', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -780,7 +780,7 @@ class LinkCapabilities(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='LinkCapabilities', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='LinkCapabilities', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -866,7 +866,7 @@ class DetailedLinks(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DetailedLinks', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DetailedLinks', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -890,7 +890,7 @@ class DetailedLinks(GeneratedsSuper):
         else:
             eol_ = ''
         for link_ in self.link:
-            link_.export(outfile, level, namespace_, name_='link', pretty_print=pretty_print)
+            link_.export_(outfile, level, namespace_, name_='link', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='DetailedLinks'):
         level += 1
         already_processed = set()
@@ -956,7 +956,7 @@ class Link(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Link', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Link', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1058,7 +1058,7 @@ class ApiSummary(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ApiSummary', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ApiSummary', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1082,13 +1082,13 @@ class ApiSummary(GeneratedsSuper):
         else:
             eol_ = ''
         if self.vms is not None:
-            self.vms.export(outfile, level, namespace_, name_='vms', pretty_print=pretty_print)
+            self.vms.export_(outfile, level, namespace_, name_='vms', pretty_print=pretty_print)
         if self.hosts is not None:
-            self.hosts.export(outfile, level, namespace_, name_='hosts', pretty_print=pretty_print)
+            self.hosts.export_(outfile, level, namespace_, name_='hosts', pretty_print=pretty_print)
         if self.users is not None:
-            self.users.export(outfile, level, namespace_, name_='users', pretty_print=pretty_print)
+            self.users.export_(outfile, level, namespace_, name_='users', pretty_print=pretty_print)
         if self.storage_domains is not None:
-            self.storage_domains.export(outfile, level, namespace_, name_='storage_domains', pretty_print=pretty_print)
+            self.storage_domains.export_(outfile, level, namespace_, name_='storage_domains', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='ApiSummary'):
         level += 1
         already_processed = set()
@@ -1175,7 +1175,7 @@ class Fault(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Fault', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Fault', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1264,7 +1264,7 @@ class UsageMessage(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='UsageMessage', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='UsageMessage', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1291,7 +1291,7 @@ class UsageMessage(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smessage>%s</%smessage>%s' % (namespace_, self.gds_format_string(quote_xml(self.message).encode(ExternalEncoding), input_name='message'), namespace_, eol_))
         if self.detailedLink is not None:
-            self.detailedLink.export(outfile, level, namespace_, name_='detailedLink', pretty_print=pretty_print)
+            self.detailedLink.export_(outfile, level, namespace_, name_='detailedLink', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='UsageMessage'):
         level += 1
         already_processed = set()
@@ -1352,7 +1352,7 @@ class GracePeriod(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GracePeriod', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GracePeriod', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1495,7 +1495,7 @@ class IscsiDetails(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='IscsiDetails', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='IscsiDetails', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1751,7 +1751,7 @@ class Actions(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Actions', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Actions', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1775,7 +1775,7 @@ class Actions(GeneratedsSuper):
         else:
             eol_ = ''
         for link_ in self.link:
-            link_.export(outfile, level, namespace_, name_='link', pretty_print=pretty_print)
+            link_.export_(outfile, level, namespace_, name_='link', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Actions'):
         level += 1
         already_processed = set()
@@ -1839,7 +1839,7 @@ class Status(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Status', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Status', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1929,7 +1929,7 @@ class Usages(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Usages', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Usages', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2015,7 +2015,7 @@ class CreationStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CreationStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CreationStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2100,7 +2100,7 @@ class Value(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Value', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Value', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2200,7 +2200,7 @@ class Values(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Values', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Values', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2226,7 +2226,7 @@ class Values(GeneratedsSuper):
         else:
             eol_ = ''
         for value_ in self.value:
-            value_.export(outfile, level, namespace_, name_='value', pretty_print=pretty_print)
+            value_.export_(outfile, level, namespace_, name_='value', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Values'):
         level += 1
         already_processed = set()
@@ -2299,7 +2299,7 @@ class CpuTopology(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CpuTopology', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CpuTopology', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2405,7 +2405,7 @@ class VCpuPin(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VCpuPin', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VCpuPin', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2495,7 +2495,7 @@ class CpuTune(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CpuTune', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CpuTune', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2519,7 +2519,7 @@ class CpuTune(GeneratedsSuper):
         else:
             eol_ = ''
         for vcpu_pin_ in self.vcpu_pin:
-            vcpu_pin_.export(outfile, level, namespace_, name_='vcpu_pin', pretty_print=pretty_print)
+            vcpu_pin_.export_(outfile, level, namespace_, name_='vcpu_pin', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CpuTune'):
         level += 1
         already_processed = set()
@@ -2609,7 +2609,7 @@ class CPU(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CPU', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CPU', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2635,7 +2635,7 @@ class CPU(GeneratedsSuper):
         else:
             eol_ = ''
         if self.topology is not None:
-            self.topology.export(outfile, level, namespace_, name_='topology', pretty_print=pretty_print)
+            self.topology.export_(outfile, level, namespace_, name_='topology', pretty_print=pretty_print)
         if self.level is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%slevel>%s</%slevel>%s' % (namespace_, self.gds_format_integer(self.level, input_name='level'), namespace_, eol_))
@@ -2646,7 +2646,7 @@ class CPU(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sspeed>%s</%sspeed>%s' % (namespace_, self.gds_format_float(self.speed, input_name='speed'), namespace_, eol_))
         if self.cpu_tune is not None:
-            self.cpu_tune.export(outfile, level, namespace_, name_='cpu_tune', pretty_print=pretty_print)
+            self.cpu_tune.export_(outfile, level, namespace_, name_='cpu_tune', pretty_print=pretty_print)
         if self.mode is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smode>%s</%smode>%s' % (namespace_, self.gds_format_string(quote_xml(self.mode).encode(ExternalEncoding), input_name='mode'), namespace_, eol_))
@@ -2654,7 +2654,7 @@ class CPU(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sarchitecture>%s</%sarchitecture>%s' % (namespace_, self.gds_format_string(quote_xml(self.architecture).encode(ExternalEncoding), input_name='architecture'), namespace_, eol_))
         if self.cores is not None:
-            self.cores.export(outfile, level, namespace_, name_='cores', pretty_print=pretty_print)
+            self.cores.export_(outfile, level, namespace_, name_='cores', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CPU'):
         level += 1
         already_processed = set()
@@ -2781,7 +2781,7 @@ class CPUs(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CPUs', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CPUs', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2805,7 +2805,7 @@ class CPUs(GeneratedsSuper):
         else:
             eol_ = ''
         for cpu_ in self.cpu:
-            cpu_.export(outfile, level, namespace_, name_='cpu', pretty_print=pretty_print)
+            cpu_.export_(outfile, level, namespace_, name_='cpu', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CPUs'):
         level += 1
         already_processed = set()
@@ -2872,7 +2872,7 @@ class TemplateVersion(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='TemplateVersion', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='TemplateVersion', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2896,7 +2896,7 @@ class TemplateVersion(GeneratedsSuper):
         else:
             eol_ = ''
         if self.base_template is not None:
-            self.base_template.export(outfile, level, namespace_, name_='base_template', pretty_print=pretty_print)
+            self.base_template.export_(outfile, level, namespace_, name_='base_template', pretty_print=pretty_print)
         if self.version_number is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sversion_number>%s</%sversion_number>%s' % (namespace_, self.gds_format_integer(self.version_number, input_name='version_number'), namespace_, eol_))
@@ -2979,7 +2979,7 @@ class SupportedVersions(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SupportedVersions', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SupportedVersions', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3003,7 +3003,7 @@ class SupportedVersions(GeneratedsSuper):
         else:
             eol_ = ''
         for version_ in self.version:
-            version_.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
+            version_.export_(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='SupportedVersions'):
         level += 1
         already_processed = set()
@@ -3063,7 +3063,7 @@ class ErrorHandling(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ErrorHandling', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ErrorHandling', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3143,7 +3143,7 @@ class Features(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Features', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Features', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3167,7 +3167,7 @@ class Features(GeneratedsSuper):
         else:
             eol_ = ''
         for feature_ in self.feature:
-            feature_.export(outfile, level, namespace_, name_='feature', pretty_print=pretty_print)
+            feature_.export_(outfile, level, namespace_, name_='feature', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Features'):
         level += 1
         already_processed = set()
@@ -3231,7 +3231,7 @@ class FenceTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='FenceTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='FenceTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3317,7 +3317,7 @@ class StorageTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='StorageTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='StorageTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3403,7 +3403,7 @@ class ConfigurationTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ConfigurationTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ConfigurationTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3489,7 +3489,7 @@ class StorageDomainTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='StorageDomainTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='StorageDomainTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3575,7 +3575,7 @@ class VmTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VmTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VmTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3661,7 +3661,7 @@ class BootDevices(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='BootDevices', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='BootDevices', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3747,7 +3747,7 @@ class DisplayTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DisplayTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DisplayTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3833,7 +3833,7 @@ class NicInterfaces(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='NicInterfaces', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='NicInterfaces', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3919,7 +3919,7 @@ class OsTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='OsTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='OsTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4005,7 +4005,7 @@ class DiskFormats(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DiskFormats', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DiskFormats', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4091,7 +4091,7 @@ class DiskInterfaces(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DiskInterfaces', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DiskInterfaces', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4177,7 +4177,7 @@ class VmAffinities(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VmAffinities', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VmAffinities', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4263,7 +4263,7 @@ class BootProtocols(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='BootProtocols', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='BootProtocols', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4349,7 +4349,7 @@ class ErrorHandlingOptions(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ErrorHandlingOptions', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ErrorHandlingOptions', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4435,7 +4435,7 @@ class StorageFormats(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='StorageFormats', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='StorageFormats', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4521,7 +4521,7 @@ class NfsVersions(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='NfsVersions', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='NfsVersions', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4607,7 +4607,7 @@ class ReportedDeviceTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ReportedDeviceTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ReportedDeviceTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4693,7 +4693,7 @@ class IpVersions(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='IpVersions', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='IpVersions', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4779,7 +4779,7 @@ class CpuModes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CpuModes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CpuModes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4865,7 +4865,7 @@ class ScsiGenericIoOptions(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ScsiGenericIoOptions', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ScsiGenericIoOptions', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -4951,7 +4951,7 @@ class PayloadEncodings(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='PayloadEncodings', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='PayloadEncodings', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5037,7 +5037,7 @@ class WatchdogActions(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='WatchdogActions', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='WatchdogActions', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5123,7 +5123,7 @@ class WatchdogModels(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='WatchdogModels', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='WatchdogModels', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5209,7 +5209,7 @@ class SnapshotStatuses(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SnapshotStatuses', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SnapshotStatuses', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5295,7 +5295,7 @@ class SsoMethods(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SsoMethods', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SsoMethods', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5381,7 +5381,7 @@ class KdumpStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='KdumpStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='KdumpStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5467,7 +5467,7 @@ class SpmStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SpmStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SpmStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5557,7 +5557,7 @@ class ArchitectureCapability(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ArchitectureCapability', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ArchitectureCapability', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5653,7 +5653,7 @@ class ArchitectureCapabilities(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ArchitectureCapabilities', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ArchitectureCapabilities', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5677,7 +5677,7 @@ class ArchitectureCapabilities(GeneratedsSuper):
         else:
             eol_ = ''
         for architecture_capability_ in self.architecture_capability:
-            architecture_capability_.export(outfile, level, namespace_, name_='architecture_capability', pretty_print=pretty_print)
+            architecture_capability_.export_(outfile, level, namespace_, name_='architecture_capability', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='ArchitectureCapabilities'):
         level += 1
         already_processed = set()
@@ -5741,7 +5741,7 @@ class SerialNumberPolicies(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SerialNumberPolicies', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SerialNumberPolicies', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5827,7 +5827,7 @@ class SELinuxModes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SELinuxModes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SELinuxModes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5913,7 +5913,7 @@ class SchedulingPolicyUnitTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SchedulingPolicyUnitTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SchedulingPolicyUnitTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -5997,7 +5997,7 @@ class ActionableResource(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ActionableResource', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ActionableResource', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -6025,7 +6025,7 @@ class ActionableResource(GeneratedsSuper):
         else:
             eol_ = ''
         if self.actions is not None:
-            self.actions.export(outfile, level, namespace_, name_='actions', pretty_print=pretty_print)
+            self.actions.export_(outfile, level, namespace_, name_='actions', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='ActionableResource'):
         level += 1
         already_processed = set()
@@ -6113,7 +6113,7 @@ class BaseResource(ActionableResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='BaseResource', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='BaseResource', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -6157,9 +6157,9 @@ class BaseResource(ActionableResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scomment>%s</%scomment>%s' % (namespace_, self.gds_format_string(quote_xml(self.comment).encode(ExternalEncoding), input_name='comment'), namespace_, eol_))
         if self.creation_status is not None:
-            self.creation_status.export(outfile, level, namespace_, name_='creation_status', pretty_print=pretty_print)
+            self.creation_status.export_(outfile, level, namespace_, name_='creation_status', pretty_print=pretty_print)
         for link_ in self.link:
-            link_.export(outfile, level, namespace_, name_='link', pretty_print=pretty_print)
+            link_.export_(outfile, level, namespace_, name_='link', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='BaseResource'):
         level += 1
         already_processed = set()
@@ -6281,7 +6281,7 @@ class BaseResources(ActionableResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='BaseResources', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='BaseResources', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -6392,7 +6392,7 @@ class Option(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Option', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Option', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -6490,7 +6490,7 @@ class Options(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Options', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Options', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -6514,7 +6514,7 @@ class Options(GeneratedsSuper):
         else:
             eol_ = ''
         for option_ in self.option:
-            option_.export(outfile, level, namespace_, name_='option', pretty_print=pretty_print)
+            option_.export_(outfile, level, namespace_, name_='option', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Options'):
         level += 1
         already_processed = set()
@@ -6583,7 +6583,7 @@ class MacPool(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='MacPool', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='MacPool', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -6614,7 +6614,7 @@ class MacPool(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdefault_pool>%s</%sdefault_pool>%s' % (namespace_, self.gds_format_boolean(self.default_pool, input_name='default_pool'), namespace_, eol_))
         if self.ranges is not None:
-            self.ranges.export(outfile, level, namespace_, name_='ranges', pretty_print=pretty_print)
+            self.ranges.export_(outfile, level, namespace_, name_='ranges', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='MacPool'):
         level += 1
         already_processed = set()
@@ -6702,7 +6702,7 @@ class MacPools(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='MacPools', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='MacPools', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -6727,7 +6727,7 @@ class MacPools(BaseResources):
         else:
             eol_ = ''
         for mac_pool_ in self.mac_pool:
-            mac_pool_.export(outfile, level, namespace_, name_='mac_pool', pretty_print=pretty_print)
+            mac_pool_.export_(outfile, level, namespace_, name_='mac_pool', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='MacPools'):
         level += 1
         already_processed = set()
@@ -6792,7 +6792,7 @@ class Range(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Range', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Range', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -6882,7 +6882,7 @@ class Ranges(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Ranges', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Ranges', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -6906,7 +6906,7 @@ class Ranges(GeneratedsSuper):
         else:
             eol_ = ''
         for range_ in self.range:
-            range_.export(outfile, level, namespace_, name_='range', pretty_print=pretty_print)
+            range_.export_(outfile, level, namespace_, name_='range', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Ranges'):
         level += 1
         already_processed = set()
@@ -6991,7 +6991,7 @@ class DataCenter(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DataCenter', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DataCenter', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -7025,13 +7025,13 @@ class DataCenter(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstorage_format>%s</%sstorage_format>%s' % (namespace_, self.gds_format_string(quote_xml(self.storage_format).encode(ExternalEncoding), input_name='storage_format'), namespace_, eol_))
         if self.version is not None:
-            self.version.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
+            self.version.export_(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
         if self.supported_versions is not None:
-            self.supported_versions.export(outfile, level, namespace_, name_='supported_versions', pretty_print=pretty_print)
+            self.supported_versions.export_(outfile, level, namespace_, name_='supported_versions', pretty_print=pretty_print)
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.mac_pool is not None:
-            self.mac_pool.export(outfile, level, namespace_, name_='mac_pool', pretty_print=pretty_print)
+            self.mac_pool.export_(outfile, level, namespace_, name_='mac_pool', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='DataCenter'):
         level += 1
         already_processed = set()
@@ -7151,7 +7151,7 @@ class DataCenters(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DataCenters', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DataCenters', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -7176,7 +7176,7 @@ class DataCenters(BaseResources):
         else:
             eol_ = ''
         for data_center_ in self.data_center:
-            data_center_.export(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
+            data_center_.export_(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='DataCenters'):
         level += 1
         already_processed = set()
@@ -7242,7 +7242,7 @@ class DataCenterStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DataCenterStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DataCenterStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -7327,7 +7327,7 @@ class SkipIfConnectivityBroken(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SkipIfConnectivityBroken', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SkipIfConnectivityBroken', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -7422,7 +7422,7 @@ class SkipIfSDActive(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SkipIfSDActive', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SkipIfSDActive', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -7511,7 +7511,7 @@ class FencingPolicy(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='FencingPolicy', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='FencingPolicy', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -7538,9 +7538,9 @@ class FencingPolicy(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%senabled>%s</%senabled>%s' % (namespace_, self.gds_format_boolean(self.enabled, input_name='enabled'), namespace_, eol_))
         if self.skip_if_sd_active is not None:
-            self.skip_if_sd_active.export(outfile, level, namespace_, name_='skip_if_sd_active', pretty_print=pretty_print)
+            self.skip_if_sd_active.export_(outfile, level, namespace_, name_='skip_if_sd_active', pretty_print=pretty_print)
         if self.skip_if_connectivity_broken is not None:
-            self.skip_if_connectivity_broken.export(outfile, level, namespace_, name_='skip_if_connectivity_broken', pretty_print=pretty_print)
+            self.skip_if_connectivity_broken.export_(outfile, level, namespace_, name_='skip_if_connectivity_broken', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='FencingPolicy'):
         level += 1
         already_processed = set()
@@ -7617,7 +7617,7 @@ class MemoryOverCommit(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='MemoryOverCommit', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='MemoryOverCommit', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -7703,7 +7703,7 @@ class MemoryPolicy(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='MemoryPolicy', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='MemoryPolicy', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -7733,9 +7733,9 @@ class MemoryPolicy(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sballooning>%s</%sballooning>%s' % (namespace_, self.gds_format_boolean(self.ballooning, input_name='ballooning'), namespace_, eol_))
         if self.overcommit is not None:
-            self.overcommit.export(outfile, level, namespace_, name_='overcommit', pretty_print=pretty_print)
+            self.overcommit.export_(outfile, level, namespace_, name_='overcommit', pretty_print=pretty_print)
         if self.transparent_hugepages is not None:
-            self.transparent_hugepages.export(outfile, level, namespace_, name_='transparent_hugepages', pretty_print=pretty_print)
+            self.transparent_hugepages.export_(outfile, level, namespace_, name_='transparent_hugepages', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='MemoryPolicy'):
         level += 1
         already_processed = set()
@@ -7823,7 +7823,7 @@ class Console(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Console', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Console', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -7900,7 +7900,7 @@ class VirtIO_SCSI(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VirtIO_SCSI', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VirtIO_SCSI', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -7983,7 +7983,7 @@ class SchedulingPolicyThresholds(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SchedulingPolicyThresholds', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SchedulingPolicyThresholds', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -8098,7 +8098,7 @@ class SchedulingPolicyUnit(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SchedulingPolicyUnit', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SchedulingPolicyUnit', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -8132,7 +8132,7 @@ class SchedulingPolicyUnit(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%senabled>%s</%senabled>%s' % (namespace_, self.gds_format_boolean(self.enabled, input_name='enabled'), namespace_, eol_))
         if self.properties is not None:
-            self.properties.export(outfile, level, namespace_, name_='properties', pretty_print=pretty_print)
+            self.properties.export_(outfile, level, namespace_, name_='properties', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='SchedulingPolicyUnit'):
         level += 1
         already_processed = set()
@@ -8228,7 +8228,7 @@ class SchedulingPolicyUnits(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SchedulingPolicyUnits', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SchedulingPolicyUnits', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -8253,7 +8253,7 @@ class SchedulingPolicyUnits(BaseResources):
         else:
             eol_ = ''
         for scheduling_policy_unit_ in self.scheduling_policy_unit:
-            scheduling_policy_unit_.export(outfile, level, namespace_, name_='scheduling_policy_unit', pretty_print=pretty_print)
+            scheduling_policy_unit_.export_(outfile, level, namespace_, name_='scheduling_policy_unit', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='SchedulingPolicyUnits'):
         level += 1
         already_processed = set()
@@ -8320,7 +8320,7 @@ class Filter(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Filter', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Filter', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -8345,7 +8345,7 @@ class Filter(BaseResource):
         else:
             eol_ = ''
         if self.scheduling_policy_unit is not None:
-            self.scheduling_policy_unit.export(outfile, level, namespace_, name_='scheduling_policy_unit', pretty_print=pretty_print)
+            self.scheduling_policy_unit.export_(outfile, level, namespace_, name_='scheduling_policy_unit', pretty_print=pretty_print)
         if self.position is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sposition>%s</%sposition>%s' % (namespace_, self.gds_format_integer(self.position, input_name='position'), namespace_, eol_))
@@ -8421,7 +8421,7 @@ class Filters(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Filters', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Filters', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -8446,7 +8446,7 @@ class Filters(BaseResources):
         else:
             eol_ = ''
         for filter_ in self.filter:
-            filter_.export(outfile, level, namespace_, name_='filter', pretty_print=pretty_print)
+            filter_.export_(outfile, level, namespace_, name_='filter', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Filters'):
         level += 1
         already_processed = set()
@@ -8517,7 +8517,7 @@ class Weight(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Weight', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Weight', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -8542,9 +8542,9 @@ class Weight(BaseResource):
         else:
             eol_ = ''
         if self.scheduling_policy is not None:
-            self.scheduling_policy.export(outfile, level, namespace_, name_='scheduling_policy', pretty_print=pretty_print)
+            self.scheduling_policy.export_(outfile, level, namespace_, name_='scheduling_policy', pretty_print=pretty_print)
         if self.scheduling_policy_unit is not None:
-            self.scheduling_policy_unit.export(outfile, level, namespace_, name_='scheduling_policy_unit', pretty_print=pretty_print)
+            self.scheduling_policy_unit.export_(outfile, level, namespace_, name_='scheduling_policy_unit', pretty_print=pretty_print)
         if self.factor is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sfactor>%s</%sfactor>%s' % (namespace_, self.gds_format_integer(self.factor, input_name='factor'), namespace_, eol_))
@@ -8630,7 +8630,7 @@ class Weights(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Weights', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Weights', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -8655,7 +8655,7 @@ class Weights(BaseResources):
         else:
             eol_ = ''
         for weight_ in self.weight:
-            weight_.export(outfile, level, namespace_, name_='weight', pretty_print=pretty_print)
+            weight_.export_(outfile, level, namespace_, name_='weight', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Weights'):
         level += 1
         already_processed = set()
@@ -8722,7 +8722,7 @@ class Balance(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Balance', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Balance', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -8747,9 +8747,9 @@ class Balance(BaseResource):
         else:
             eol_ = ''
         if self.scheduling_policy is not None:
-            self.scheduling_policy.export(outfile, level, namespace_, name_='scheduling_policy', pretty_print=pretty_print)
+            self.scheduling_policy.export_(outfile, level, namespace_, name_='scheduling_policy', pretty_print=pretty_print)
         if self.scheduling_policy_unit is not None:
-            self.scheduling_policy_unit.export(outfile, level, namespace_, name_='scheduling_policy_unit', pretty_print=pretty_print)
+            self.scheduling_policy_unit.export_(outfile, level, namespace_, name_='scheduling_policy_unit', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Balance'):
         level += 1
         already_processed = set()
@@ -8816,7 +8816,7 @@ class Balances(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Balances', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Balances', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -8841,7 +8841,7 @@ class Balances(BaseResources):
         else:
             eol_ = ''
         if self.balance is not None:
-            self.balance.export(outfile, level, namespace_, name_='balance', pretty_print=pretty_print)
+            self.balance.export_(outfile, level, namespace_, name_='balance', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Balances'):
         level += 1
         already_processed = set()
@@ -8914,7 +8914,7 @@ class SchedulingPolicy(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SchedulingPolicy', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SchedulingPolicy', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -8942,7 +8942,7 @@ class SchedulingPolicy(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%spolicy>%s</%spolicy>%s' % (namespace_, self.gds_format_string(quote_xml(self.policy).encode(ExternalEncoding), input_name='policy'), namespace_, eol_))
         if self.thresholds is not None:
-            self.thresholds.export(outfile, level, namespace_, name_='thresholds', pretty_print=pretty_print)
+            self.thresholds.export_(outfile, level, namespace_, name_='thresholds', pretty_print=pretty_print)
         if self.locked is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%slocked>%s</%slocked>%s' % (namespace_, self.gds_format_boolean(self.locked, input_name='locked'), namespace_, eol_))
@@ -8950,7 +8950,7 @@ class SchedulingPolicy(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdefault_policy>%s</%sdefault_policy>%s' % (namespace_, self.gds_format_boolean(self.default_policy, input_name='default_policy'), namespace_, eol_))
         if self.properties is not None:
-            self.properties.export(outfile, level, namespace_, name_='properties', pretty_print=pretty_print)
+            self.properties.export_(outfile, level, namespace_, name_='properties', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='SchedulingPolicy'):
         level += 1
         already_processed = set()
@@ -9126,7 +9126,7 @@ class Cluster(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Cluster', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Cluster', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -9151,19 +9151,19 @@ class Cluster(BaseResource):
         else:
             eol_ = ''
         if self.cpu is not None:
-            self.cpu.export(outfile, level, namespace_, name_='cpu', pretty_print=pretty_print)
+            self.cpu.export_(outfile, level, namespace_, name_='cpu', pretty_print=pretty_print)
         if self.data_center is not None:
-            self.data_center.export(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
+            self.data_center.export_(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
         if self.memory_policy is not None:
-            self.memory_policy.export(outfile, level, namespace_, name_='memory_policy', pretty_print=pretty_print)
+            self.memory_policy.export_(outfile, level, namespace_, name_='memory_policy', pretty_print=pretty_print)
         if self.scheduling_policy is not None:
-            self.scheduling_policy.export(outfile, level, namespace_, name_='scheduling_policy', pretty_print=pretty_print)
+            self.scheduling_policy.export_(outfile, level, namespace_, name_='scheduling_policy', pretty_print=pretty_print)
         if self.version is not None:
-            self.version.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
+            self.version.export_(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
         if self.supported_versions is not None:
-            self.supported_versions.export(outfile, level, namespace_, name_='supported_versions', pretty_print=pretty_print)
+            self.supported_versions.export_(outfile, level, namespace_, name_='supported_versions', pretty_print=pretty_print)
         if self.error_handling is not None:
-            self.error_handling.export(outfile, level, namespace_, name_='error_handling', pretty_print=pretty_print)
+            self.error_handling.export_(outfile, level, namespace_, name_='error_handling', pretty_print=pretty_print)
         if self.virt_service is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%svirt_service>%s</%svirt_service>%s' % (namespace_, self.gds_format_boolean(self.virt_service, input_name='virt_service'), namespace_, eol_))
@@ -9189,15 +9189,15 @@ class Cluster(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sballooning_enabled>%s</%sballooning_enabled>%s' % (namespace_, self.gds_format_boolean(self.ballooning_enabled, input_name='ballooning_enabled'), namespace_, eol_))
         if self.display is not None:
-            self.display.export(outfile, level, namespace_, name_='display', pretty_print=pretty_print)
+            self.display.export_(outfile, level, namespace_, name_='display', pretty_print=pretty_print)
         if self.ksm is not None:
-            self.ksm.export(outfile, level, namespace_, name_='ksm', pretty_print=pretty_print)
+            self.ksm.export_(outfile, level, namespace_, name_='ksm', pretty_print=pretty_print)
         if self.serial_number is not None:
-            self.serial_number.export(outfile, level, namespace_, name_='serial_number', pretty_print=pretty_print)
+            self.serial_number.export_(outfile, level, namespace_, name_='serial_number', pretty_print=pretty_print)
         if self.required_rng_sources is not None:
-            self.required_rng_sources.export(outfile, level, namespace_, name_='required_rng_sources', pretty_print=pretty_print)
+            self.required_rng_sources.export_(outfile, level, namespace_, name_='required_rng_sources', pretty_print=pretty_print)
         if self.fencing_policy is not None:
-            self.fencing_policy.export(outfile, level, namespace_, name_='fencing_policy', pretty_print=pretty_print)
+            self.fencing_policy.export_(outfile, level, namespace_, name_='fencing_policy', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Cluster'):
         level += 1
         already_processed = set()
@@ -9474,7 +9474,7 @@ class Clusters(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Clusters', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Clusters', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -9499,7 +9499,7 @@ class Clusters(BaseResources):
         else:
             eol_ = ''
         for cluster_ in self.cluster:
-            cluster_.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            cluster_.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Clusters'):
         level += 1
         already_processed = set()
@@ -9583,7 +9583,7 @@ class Agent(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Agent', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Agent', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -9618,7 +9618,7 @@ class Agent(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%spassword>%s</%spassword>%s' % (namespace_, self.gds_format_string(quote_xml(self.password).encode(ExternalEncoding), input_name='password'), namespace_, eol_))
         if self.options is not None:
-            self.options.export(outfile, level, namespace_, name_='options', pretty_print=pretty_print)
+            self.options.export_(outfile, level, namespace_, name_='options', pretty_print=pretty_print)
         if self.concurrent is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sconcurrent>%s</%sconcurrent>%s' % (namespace_, self.gds_format_boolean(self.concurrent, input_name='concurrent'), namespace_, eol_))
@@ -9733,7 +9733,7 @@ class Agents(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Agents', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Agents', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -9757,7 +9757,7 @@ class Agents(GeneratedsSuper):
         else:
             eol_ = ''
         for agent_ in self.agent:
-            agent_.export(outfile, level, namespace_, name_='agent', pretty_print=pretty_print)
+            agent_.export_(outfile, level, namespace_, name_='agent', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Agents'):
         level += 1
         already_processed = set()
@@ -9855,7 +9855,7 @@ class PowerManagement(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='PowerManagement', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='PowerManagement', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -9893,13 +9893,13 @@ class PowerManagement(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%spassword>%s</%spassword>%s' % (namespace_, self.gds_format_string(quote_xml(self.password).encode(ExternalEncoding), input_name='password'), namespace_, eol_))
         if self.options is not None:
-            self.options.export(outfile, level, namespace_, name_='options', pretty_print=pretty_print)
+            self.options.export_(outfile, level, namespace_, name_='options', pretty_print=pretty_print)
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.pm_proxies is not None:
-            self.pm_proxies.export(outfile, level, namespace_, name_='pm_proxies', pretty_print=pretty_print)
+            self.pm_proxies.export_(outfile, level, namespace_, name_='pm_proxies', pretty_print=pretty_print)
         if self.agents is not None:
-            self.agents.export(outfile, level, namespace_, name_='agents', pretty_print=pretty_print)
+            self.agents.export_(outfile, level, namespace_, name_='agents', pretty_print=pretty_print)
         if self.automatic_pm_enabled is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sautomatic_pm_enabled>%s</%sautomatic_pm_enabled>%s' % (namespace_, self.gds_format_boolean(self.automatic_pm_enabled, input_name='automatic_pm_enabled'), namespace_, eol_))
@@ -10059,7 +10059,7 @@ class PowerManagementStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='PowerManagementStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='PowerManagementStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -10164,7 +10164,7 @@ class HardwareInformation(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='HardwareInformation', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='HardwareInformation', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -10206,7 +10206,7 @@ class HardwareInformation(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sfamily>%s</%sfamily>%s' % (namespace_, self.gds_format_string(quote_xml(self.family).encode(ExternalEncoding), input_name='family'), namespace_, eol_))
         if self.supported_rng_sources is not None:
-            self.supported_rng_sources.export(outfile, level, namespace_, name_='supported_rng_sources', pretty_print=pretty_print)
+            self.supported_rng_sources.export_(outfile, level, namespace_, name_='supported_rng_sources', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='HardwareInformation'):
         level += 1
         already_processed = set()
@@ -10306,7 +10306,7 @@ class PowerManagers(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='PowerManagers', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='PowerManagers', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -10330,7 +10330,7 @@ class PowerManagers(GeneratedsSuper):
         else:
             eol_ = ''
         for power_management_ in self.power_management:
-            power_management_.export(outfile, level, namespace_, name_='power_management', pretty_print=pretty_print)
+            power_management_.export_(outfile, level, namespace_, name_='power_management', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='PowerManagers'):
         level += 1
         already_processed = set()
@@ -10389,7 +10389,7 @@ class KSM(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='KSM', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='KSM', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -10470,7 +10470,7 @@ class TransparentHugePages(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='TransparentHugePages', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='TransparentHugePages', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -10555,7 +10555,7 @@ class Certificate(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Certificate', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Certificate', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -10640,7 +10640,7 @@ class SELinux(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SELinux', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SELinux', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -10849,7 +10849,7 @@ class Host(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Host', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Host', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -10877,11 +10877,11 @@ class Host(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%saddress>%s</%saddress>%s' % (namespace_, self.gds_format_string(quote_xml(self.address).encode(ExternalEncoding), input_name='address'), namespace_, eol_))
         if self.certificate is not None:
-            self.certificate.export(outfile, level, namespace_, name_='certificate', pretty_print=pretty_print)
+            self.certificate.export_(outfile, level, namespace_, name_='certificate', pretty_print=pretty_print)
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.cluster is not None:
-            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
         if self.port is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sport>%s</%sport>%s' % (namespace_, self.gds_format_integer(self.port, input_name='port'), namespace_, eol_))
@@ -10889,30 +10889,30 @@ class Host(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stype>%s</%stype>%s' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_, eol_))
         if self.storage_manager is not None:
-            self.storage_manager.export(outfile, level, namespace_, name_='storage_manager', pretty_print=pretty_print)
+            self.storage_manager.export_(outfile, level, namespace_, name_='storage_manager', pretty_print=pretty_print)
         if self.spm is not None:
-            self.spm.export(outfile, level, namespace_, name_='spm', pretty_print=pretty_print)
+            self.spm.export_(outfile, level, namespace_, name_='spm', pretty_print=pretty_print)
         if self.version is not None:
-            self.version.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
+            self.version.export_(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
         if self.hardware_information is not None:
-            self.hardware_information.export(outfile, level, namespace_, name_='hardware_information', pretty_print=pretty_print)
+            self.hardware_information.export_(outfile, level, namespace_, name_='hardware_information', pretty_print=pretty_print)
         if self.power_management is not None:
-            self.power_management.export(outfile, level, namespace_, name_='power_management', pretty_print=pretty_print)
+            self.power_management.export_(outfile, level, namespace_, name_='power_management', pretty_print=pretty_print)
         if self.ksm is not None:
-            self.ksm.export(outfile, level, namespace_, name_='ksm', pretty_print=pretty_print)
+            self.ksm.export_(outfile, level, namespace_, name_='ksm', pretty_print=pretty_print)
         if self.transparent_hugepages is not None:
-            self.transparent_hugepages.export(outfile, level, namespace_, name_='transparent_hugepages', pretty_print=pretty_print)
+            self.transparent_hugepages.export_(outfile, level, namespace_, name_='transparent_hugepages', pretty_print=pretty_print)
         if self.iscsi is not None:
-            self.iscsi.export(outfile, level, namespace_, name_='iscsi', pretty_print=pretty_print)
+            self.iscsi.export_(outfile, level, namespace_, name_='iscsi', pretty_print=pretty_print)
         if self.root_password is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sroot_password>%s</%sroot_password>%s' % (namespace_, self.gds_format_string(quote_xml(self.root_password).encode(ExternalEncoding), input_name='root_password'), namespace_, eol_))
         if self.ssh is not None:
-            self.ssh.export(outfile, level, namespace_, name_='ssh', pretty_print=pretty_print)
+            self.ssh.export_(outfile, level, namespace_, name_='ssh', pretty_print=pretty_print)
         if self.statistics is not None:
-            self.statistics.export(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
+            self.statistics.export_(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
         if self.cpu is not None:
-            self.cpu.export(outfile, level, namespace_, name_='cpu', pretty_print=pretty_print)
+            self.cpu.export_(outfile, level, namespace_, name_='cpu', pretty_print=pretty_print)
         if self.memory is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smemory>%s</%smemory>%s' % (namespace_, self.gds_format_integer(self.memory, input_name='memory'), namespace_, eol_))
@@ -10920,7 +10920,7 @@ class Host(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smax_scheduling_memory>%s</%smax_scheduling_memory>%s' % (namespace_, self.gds_format_integer(self.max_scheduling_memory, input_name='max_scheduling_memory'), namespace_, eol_))
         if self.summary is not None:
-            self.summary.export(outfile, level, namespace_, name_='summary', pretty_print=pretty_print)
+            self.summary.export_(outfile, level, namespace_, name_='summary', pretty_print=pretty_print)
         if self.override_iptables is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%soverride_iptables>%s</%soverride_iptables>%s' % (namespace_, self.gds_format_boolean(self.override_iptables, input_name='override_iptables'), namespace_, eol_))
@@ -10931,20 +10931,20 @@ class Host(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sreboot_after_installation>%s</%sreboot_after_installation>%s' % (namespace_, self.gds_format_boolean(self.reboot_after_installation, input_name='reboot_after_installation'), namespace_, eol_))
         if self.os is not None:
-            self.os.export(outfile, level, namespace_, name_='os', pretty_print=pretty_print)
+            self.os.export_(outfile, level, namespace_, name_='os', pretty_print=pretty_print)
         if self.hooks is not None:
-            self.hooks.export(outfile, level, namespace_, name_='hooks', pretty_print=pretty_print)
+            self.hooks.export_(outfile, level, namespace_, name_='hooks', pretty_print=pretty_print)
         if self.libvirt_version is not None:
-            self.libvirt_version.export(outfile, level, namespace_, name_='libvirt_version', pretty_print=pretty_print)
+            self.libvirt_version.export_(outfile, level, namespace_, name_='libvirt_version', pretty_print=pretty_print)
         if self.display is not None:
-            self.display.export(outfile, level, namespace_, name_='display', pretty_print=pretty_print)
+            self.display.export_(outfile, level, namespace_, name_='display', pretty_print=pretty_print)
         if self.hosted_engine is not None:
-            self.hosted_engine.export(outfile, level, namespace_, name_='hosted_engine', pretty_print=pretty_print)
+            self.hosted_engine.export_(outfile, level, namespace_, name_='hosted_engine', pretty_print=pretty_print)
         if self.kdump_status is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%skdump_status>%s</%skdump_status>%s' % (namespace_, self.gds_format_string(quote_xml(self.kdump_status).encode(ExternalEncoding), input_name='kdump_status'), namespace_, eol_))
         if self.selinux is not None:
-            self.selinux.export(outfile, level, namespace_, name_='selinux', pretty_print=pretty_print)
+            self.selinux.export_(outfile, level, namespace_, name_='selinux', pretty_print=pretty_print)
         if self.auto_numa_status is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sauto_numa_status>%s</%sauto_numa_status>%s' % (namespace_, self.gds_format_string(quote_xml(self.auto_numa_status).encode(ExternalEncoding), input_name='auto_numa_status'), namespace_, eol_))
@@ -11340,7 +11340,7 @@ class StorageManager(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='StorageManager', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='StorageManager', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -11422,7 +11422,7 @@ class SPM(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SPM', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SPM', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -11449,7 +11449,7 @@ class SPM(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%spriority>%s</%spriority>%s' % (namespace_, self.gds_format_integer(self.priority, input_name='priority'), namespace_, eol_))
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='SPM'):
         level += 1
         already_processed = set()
@@ -11529,7 +11529,7 @@ class HostedEngine(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='HostedEngine', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='HostedEngine', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -11677,7 +11677,7 @@ class HostStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='HostStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='HostStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -11763,7 +11763,7 @@ class HostNonOperationalDetails(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='HostNonOperationalDetails', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='HostNonOperationalDetails', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -11852,7 +11852,7 @@ class VmSummary(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VmSummary', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VmSummary', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -11966,7 +11966,7 @@ class Hosts(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Hosts', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Hosts', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -11991,7 +11991,7 @@ class Hosts(BaseResources):
         else:
             eol_ = ''
         for host_ in self.host:
-            host_.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            host_.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Hosts'):
         level += 1
         already_processed = set()
@@ -12058,7 +12058,7 @@ class Permit(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Permit', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Permit', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -12086,7 +12086,7 @@ class Permit(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sadministrative>%s</%sadministrative>%s' % (namespace_, self.gds_format_boolean(self.administrative, input_name='administrative'), namespace_, eol_))
         if self.role is not None:
-            self.role.export(outfile, level, namespace_, name_='role', pretty_print=pretty_print)
+            self.role.export_(outfile, level, namespace_, name_='role', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Permit'):
         level += 1
         already_processed = set()
@@ -12161,7 +12161,7 @@ class Permits(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Permits', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Permits', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -12186,7 +12186,7 @@ class Permits(BaseResources):
         else:
             eol_ = ''
         for permit_ in self.permit:
-            permit_.export(outfile, level, namespace_, name_='permit', pretty_print=pretty_print)
+            permit_.export_(outfile, level, namespace_, name_='permit', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Permits'):
         level += 1
         already_processed = set()
@@ -12261,7 +12261,7 @@ class Role(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Role', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Role', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -12292,9 +12292,9 @@ class Role(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sadministrative>%s</%sadministrative>%s' % (namespace_, self.gds_format_boolean(self.administrative, input_name='administrative'), namespace_, eol_))
         if self.user is not None:
-            self.user.export(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
+            self.user.export_(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
         if self.permits is not None:
-            self.permits.export(outfile, level, namespace_, name_='permits', pretty_print=pretty_print)
+            self.permits.export_(outfile, level, namespace_, name_='permits', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Role'):
         level += 1
         already_processed = set()
@@ -12392,7 +12392,7 @@ class Roles(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Roles', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Roles', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -12417,7 +12417,7 @@ class Roles(BaseResources):
         else:
             eol_ = ''
         for role_ in self.role:
-            role_.export(outfile, level, namespace_, name_='role', pretty_print=pretty_print)
+            role_.export_(outfile, level, namespace_, name_='role', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Roles'):
         level += 1
         already_processed = set()
@@ -12524,7 +12524,7 @@ class User(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='User', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='User', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -12549,7 +12549,7 @@ class User(BaseResource):
         else:
             eol_ = ''
         if self.domain is not None:
-            self.domain.export(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
+            self.domain.export_(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
         if self.domain_entry_id is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdomain_entry_id>%s</%sdomain_entry_id>%s' % (namespace_, self.gds_format_string(quote_xml(self.domain_entry_id).encode(ExternalEncoding), input_name='domain_entry_id'), namespace_, eol_))
@@ -12578,9 +12578,9 @@ class User(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%semail>%s</%semail>%s' % (namespace_, self.gds_format_string(quote_xml(self.email).encode(ExternalEncoding), input_name='email'), namespace_, eol_))
         if self.roles is not None:
-            self.roles.export(outfile, level, namespace_, name_='roles', pretty_print=pretty_print)
+            self.roles.export_(outfile, level, namespace_, name_='roles', pretty_print=pretty_print)
         if self.groups is not None:
-            self.groups.export(outfile, level, namespace_, name_='groups', pretty_print=pretty_print)
+            self.groups.export_(outfile, level, namespace_, name_='groups', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='User'):
         level += 1
         already_processed = set()
@@ -12731,7 +12731,7 @@ class Users(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Users', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Users', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -12756,7 +12756,7 @@ class Users(BaseResources):
         else:
             eol_ = ''
         for user_ in self.user:
-            user_.export(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
+            user_.export_(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Users'):
         level += 1
         already_processed = set()
@@ -12822,7 +12822,7 @@ class AuthenticationMethod(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='AuthenticationMethod', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='AuthenticationMethod', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -12917,7 +12917,7 @@ class SSH(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SSH', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SSH', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -12951,7 +12951,7 @@ class SSH(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sauthentication_method>%s</%sauthentication_method>%s' % (namespace_, self.gds_format_string(quote_xml(self.authentication_method).encode(ExternalEncoding), input_name='authentication_method'), namespace_, eol_))
         if self.user is not None:
-            self.user.export(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
+            self.user.export_(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='SSH'):
         level += 1
         already_processed = set()
@@ -13045,7 +13045,7 @@ class Group(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Group', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Group', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -13070,7 +13070,7 @@ class Group(BaseResource):
         else:
             eol_ = ''
         if self.domain is not None:
-            self.domain.export(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
+            self.domain.export_(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
         if self.domain_entry_id is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdomain_entry_id>%s</%sdomain_entry_id>%s' % (namespace_, self.gds_format_string(quote_xml(self.domain_entry_id).encode(ExternalEncoding), input_name='domain_entry_id'), namespace_, eol_))
@@ -13078,7 +13078,7 @@ class Group(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%snamespace>%s</%snamespace>%s' % (namespace_, self.gds_format_string(quote_xml(self.namespace).encode(ExternalEncoding), input_name='namespace'), namespace_, eol_))
         if self.roles is not None:
-            self.roles.export(outfile, level, namespace_, name_='roles', pretty_print=pretty_print)
+            self.roles.export_(outfile, level, namespace_, name_='roles', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Group'):
         level += 1
         already_processed = set()
@@ -13164,7 +13164,7 @@ class Groups(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Groups', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Groups', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -13189,7 +13189,7 @@ class Groups(BaseResources):
         else:
             eol_ = ''
         for group_ in self.group:
-            group_.export(outfile, level, namespace_, name_='group', pretty_print=pretty_print)
+            group_.export_(outfile, level, namespace_, name_='group', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Groups'):
         level += 1
         already_processed = set()
@@ -13292,7 +13292,7 @@ class Permission(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Permission', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Permission', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -13317,27 +13317,27 @@ class Permission(BaseResource):
         else:
             eol_ = ''
         if self.role is not None:
-            self.role.export(outfile, level, namespace_, name_='role', pretty_print=pretty_print)
+            self.role.export_(outfile, level, namespace_, name_='role', pretty_print=pretty_print)
         if self.user is not None:
-            self.user.export(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
+            self.user.export_(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
         if self.group is not None:
-            self.group.export(outfile, level, namespace_, name_='group', pretty_print=pretty_print)
+            self.group.export_(outfile, level, namespace_, name_='group', pretty_print=pretty_print)
         if self.data_center is not None:
-            self.data_center.export(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
+            self.data_center.export_(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
         if self.cluster is not None:
-            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.storage_domain is not None:
-            self.storage_domain.export(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
+            self.storage_domain.export_(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
         if self.vmpool is not None:
-            self.vmpool.export(outfile, level, namespace_, name_='vmpool', pretty_print=pretty_print)
+            self.vmpool.export_(outfile, level, namespace_, name_='vmpool', pretty_print=pretty_print)
         if self.template is not None:
-            self.template.export(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
+            self.template.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
         if self.disk is not None:
-            self.disk.export(outfile, level, namespace_, name_='disk', pretty_print=pretty_print)
+            self.disk.export_(outfile, level, namespace_, name_='disk', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Permission'):
         level += 1
         already_processed = set()
@@ -13506,7 +13506,7 @@ class Permissions(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Permissions', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Permissions', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -13531,7 +13531,7 @@ class Permissions(BaseResources):
         else:
             eol_ = ''
         for permission_ in self.permission:
-            permission_.export(outfile, level, namespace_, name_='permission', pretty_print=pretty_print)
+            permission_.export_(outfile, level, namespace_, name_='permission', pretty_print=pretty_print)
         if self.clone is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sclone>%s</%sclone>%s' % (namespace_, self.gds_format_boolean(self.clone, input_name='clone'), namespace_, eol_))
@@ -13610,7 +13610,7 @@ class Domain(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Domain', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Domain', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -13635,7 +13635,7 @@ class Domain(BaseResource):
         else:
             eol_ = ''
         if self.user is not None:
-            self.user.export(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
+            self.user.export_(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Domain'):
         level += 1
         already_processed = set()
@@ -13697,7 +13697,7 @@ class Domains(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Domains', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Domains', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -13722,7 +13722,7 @@ class Domains(BaseResources):
         else:
             eol_ = ''
         for domain_ in self.domain:
-            domain_.export(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
+            domain_.export_(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Domains'):
         level += 1
         already_processed = set()
@@ -13845,7 +13845,7 @@ class Event(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Event', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Event', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -13882,19 +13882,19 @@ class Event(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scorrelation_id>%s</%scorrelation_id>%s' % (namespace_, self.gds_format_string(quote_xml(self.correlation_id).encode(ExternalEncoding), input_name='correlation_id'), namespace_, eol_))
         if self.user is not None:
-            self.user.export(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
+            self.user.export_(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
         if self.storage_domain is not None:
-            self.storage_domain.export(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
+            self.storage_domain.export_(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.template is not None:
-            self.template.export(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
+            self.template.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
         if self.cluster is not None:
-            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
         if self.data_center is not None:
-            self.data_center.export(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
+            self.data_center.export_(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
         if self.origin is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sorigin>%s</%sorigin>%s' % (namespace_, self.gds_format_string(quote_xml(self.origin).encode(ExternalEncoding), input_name='origin'), namespace_, eol_))
@@ -14098,7 +14098,7 @@ class Events(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Events', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Events', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -14123,7 +14123,7 @@ class Events(BaseResources):
         else:
             eol_ = ''
         for event_ in self.event:
-            event_.export(outfile, level, namespace_, name_='event', pretty_print=pretty_print)
+            event_.export_(outfile, level, namespace_, name_='event', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Events'):
         level += 1
         already_processed = set()
@@ -14194,7 +14194,7 @@ class File(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='File', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='File', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -14225,7 +14225,7 @@ class File(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stype>%s</%stype>%s' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_, eol_))
         if self.storage_domain is not None:
-            self.storage_domain.export(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
+            self.storage_domain.export_(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='File'):
         level += 1
         already_processed = set()
@@ -14301,7 +14301,7 @@ class Files(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Files', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Files', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -14326,7 +14326,7 @@ class Files(BaseResources):
         else:
             eol_ = ''
         for file_ in self.file:
-            file_.export(outfile, level, namespace_, name_='file', pretty_print=pretty_print)
+            file_.export_(outfile, level, namespace_, name_='file', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Files'):
         level += 1
         already_processed = set()
@@ -14389,7 +14389,7 @@ class Image(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Image', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Image', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -14414,7 +14414,7 @@ class Image(BaseResource):
         else:
             eol_ = ''
         if self.storage_domain is not None:
-            self.storage_domain.export(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
+            self.storage_domain.export_(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Image'):
         level += 1
         already_processed = set()
@@ -14476,7 +14476,7 @@ class Images(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Images', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Images', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -14501,7 +14501,7 @@ class Images(BaseResources):
         else:
             eol_ = ''
         for image_ in self.image:
-            image_.export(outfile, level, namespace_, name_='image', pretty_print=pretty_print)
+            image_.export_(outfile, level, namespace_, name_='image', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Images'):
         level += 1
         already_processed = set()
@@ -14572,7 +14572,7 @@ class Hook(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Hook', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Hook', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -14603,7 +14603,7 @@ class Hook(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smd5>%s</%smd5>%s' % (namespace_, self.gds_format_string(quote_xml(self.md5).encode(ExternalEncoding), input_name='md5'), namespace_, eol_))
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Hook'):
         level += 1
         already_processed = set()
@@ -14679,7 +14679,7 @@ class Hooks(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Hooks', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Hooks', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -14704,7 +14704,7 @@ class Hooks(BaseResources):
         else:
             eol_ = ''
         for hook_ in self.hook:
-            hook_.export(outfile, level, namespace_, name_='hook', pretty_print=pretty_print)
+            hook_.export_(outfile, level, namespace_, name_='hook', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Hooks'):
         level += 1
         already_processed = set()
@@ -14775,7 +14775,7 @@ class IP(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='IP', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='IP', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -14886,7 +14886,7 @@ class IPs(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='IPs', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='IPs', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -14911,7 +14911,7 @@ class IPs(BaseResources):
         else:
             eol_ = ''
         for ip_ in self.ip:
-            ip_.export(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
+            ip_.export_(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='IPs'):
         level += 1
         already_processed = set()
@@ -14973,7 +14973,7 @@ class MAC(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='MAC', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='MAC', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -15045,7 +15045,7 @@ class VLAN(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VLAN', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VLAN', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -15165,7 +15165,7 @@ class Network(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Network', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Network', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -15190,18 +15190,18 @@ class Network(BaseResource):
         else:
             eol_ = ''
         if self.data_center is not None:
-            self.data_center.export(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
+            self.data_center.export_(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
         if self.cluster is not None:
-            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
         if self.ip is not None:
-            self.ip.export(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
+            self.ip.export_(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
         if self.vlan is not None:
-            self.vlan.export(outfile, level, namespace_, name_='vlan', pretty_print=pretty_print)
+            self.vlan.export_(outfile, level, namespace_, name_='vlan', pretty_print=pretty_print)
         if self.stp is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstp>%s</%sstp>%s' % (namespace_, self.gds_format_boolean(self.stp, input_name='stp'), namespace_, eol_))
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.display is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdisplay>%s</%sdisplay>%s' % (namespace_, self.gds_format_boolean(self.display, input_name='display'), namespace_, eol_))
@@ -15209,7 +15209,7 @@ class Network(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smtu>%s</%smtu>%s' % (namespace_, self.gds_format_integer(self.mtu, input_name='mtu'), namespace_, eol_))
         if self.usages is not None:
-            self.usages.export(outfile, level, namespace_, name_='usages', pretty_print=pretty_print)
+            self.usages.export_(outfile, level, namespace_, name_='usages', pretty_print=pretty_print)
         if self.required is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%srequired>%s</%srequired>%s' % (namespace_, self.gds_format_boolean(self.required, input_name='required'), namespace_, eol_))
@@ -15217,7 +15217,7 @@ class Network(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sprofile_required>%s</%sprofile_required>%s' % (namespace_, self.gds_format_boolean(self.profile_required, input_name='profile_required'), namespace_, eol_))
         if self.labels is not None:
-            self.labels.export(outfile, level, namespace_, name_='labels', pretty_print=pretty_print)
+            self.labels.export_(outfile, level, namespace_, name_='labels', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Network'):
         level += 1
         already_processed = set()
@@ -15400,7 +15400,7 @@ class NetworkStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='NetworkStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='NetworkStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -15488,7 +15488,7 @@ class Networks(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Networks', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Networks', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -15513,7 +15513,7 @@ class Networks(BaseResources):
         else:
             eol_ = ''
         for network_ in self.network:
-            network_.export(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
+            network_.export_(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Networks'):
         level += 1
         already_processed = set()
@@ -15580,7 +15580,7 @@ class Label(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Label', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Label', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -15605,9 +15605,9 @@ class Label(BaseResource):
         else:
             eol_ = ''
         if self.network is not None:
-            self.network.export(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
+            self.network.export_(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
         if self.host_nic is not None:
-            self.host_nic.export(outfile, level, namespace_, name_='host_nic', pretty_print=pretty_print)
+            self.host_nic.export_(outfile, level, namespace_, name_='host_nic', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Label'):
         level += 1
         already_processed = set()
@@ -15679,7 +15679,7 @@ class Labels(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Labels', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Labels', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -15704,7 +15704,7 @@ class Labels(BaseResources):
         else:
             eol_ = ''
         for label_ in self.label:
-            label_.export(outfile, level, namespace_, name_='label', pretty_print=pretty_print)
+            label_.export_(outfile, level, namespace_, name_='label', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Labels'):
         level += 1
         already_processed = set()
@@ -15779,7 +15779,7 @@ class VnicProfile(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VnicProfile', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VnicProfile', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -15804,14 +15804,14 @@ class VnicProfile(BaseResource):
         else:
             eol_ = ''
         if self.network is not None:
-            self.network.export(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
+            self.network.export_(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
         if self.port_mirroring is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sport_mirroring>%s</%sport_mirroring>%s' % (namespace_, self.gds_format_boolean(self.port_mirroring, input_name='port_mirroring'), namespace_, eol_))
         if self.custom_properties is not None:
-            self.custom_properties.export(outfile, level, namespace_, name_='custom_properties', pretty_print=pretty_print)
+            self.custom_properties.export_(outfile, level, namespace_, name_='custom_properties', pretty_print=pretty_print)
         if self.qos is not None:
-            self.qos.export(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
+            self.qos.export_(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VnicProfile'):
         level += 1
         already_processed = set()
@@ -15906,7 +15906,7 @@ class VnicProfiles(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VnicProfiles', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VnicProfiles', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -15931,7 +15931,7 @@ class VnicProfiles(BaseResources):
         else:
             eol_ = ''
         for vnic_profile_ in self.vnic_profile:
-            vnic_profile_.export(outfile, level, namespace_, name_='vnic_profile', pretty_print=pretty_print)
+            vnic_profile_.export_(outfile, level, namespace_, name_='vnic_profile', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VnicProfiles'):
         level += 1
         already_processed = set()
@@ -16055,7 +16055,7 @@ class LogicalUnit(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='LogicalUnit', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='LogicalUnit', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -16316,7 +16316,7 @@ class VolumeGroup(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VolumeGroup', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VolumeGroup', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -16345,7 +16345,7 @@ class VolumeGroup(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sname>%s</%sname>%s' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_, eol_))
         for logical_unit_ in self.logical_unit:
-            logical_unit_.export(outfile, level, namespace_, name_='logical_unit', pretty_print=pretty_print)
+            logical_unit_.export_(outfile, level, namespace_, name_='logical_unit', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VolumeGroup'):
         level += 1
         already_processed = set()
@@ -16488,7 +16488,7 @@ class Storage(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Storage', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Storage', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -16537,9 +16537,9 @@ class Storage(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%snfs_retrans>%s</%snfs_retrans>%s' % (namespace_, self.gds_format_integer(self.nfs_retrans, input_name='nfs_retrans'), namespace_, eol_))
         for logical_unit_ in self.logical_unit:
-            logical_unit_.export(outfile, level, namespace_, name_='logical_unit', pretty_print=pretty_print)
+            logical_unit_.export_(outfile, level, namespace_, name_='logical_unit', pretty_print=pretty_print)
         if self.volume_group is not None:
-            self.volume_group.export(outfile, level, namespace_, name_='volume_group', pretty_print=pretty_print)
+            self.volume_group.export_(outfile, level, namespace_, name_='volume_group', pretty_print=pretty_print)
         if self.override_luns is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%soverride_luns>%s</%soverride_luns>%s' % (namespace_, self.gds_format_boolean(self.override_luns, input_name='override_luns'), namespace_, eol_))
@@ -16559,7 +16559,7 @@ class Storage(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sportal>%s</%sportal>%s' % (namespace_, self.gds_format_string(quote_xml(self.portal).encode(ExternalEncoding), input_name='portal'), namespace_, eol_))
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Storage'):
         level += 1
         already_processed = set()
@@ -16810,7 +16810,7 @@ class StorageConnection(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='StorageConnection', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='StorageConnection', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -16874,7 +16874,7 @@ class StorageConnection(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sportal>%s</%sportal>%s' % (namespace_, self.gds_format_string(quote_xml(self.portal).encode(ExternalEncoding), input_name='portal'), namespace_, eol_))
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='StorageConnection'):
         level += 1
         already_processed = set()
@@ -17078,7 +17078,7 @@ class StorageDomain(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='StorageDomain', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='StorageDomain', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -17103,19 +17103,19 @@ class StorageDomain(BaseResource):
         else:
             eol_ = ''
         if self.data_center is not None:
-            self.data_center.export(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
+            self.data_center.export_(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
         if self.type_ is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stype>%s</%stype>%s' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_, eol_))
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.master is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smaster>%s</%smaster>%s' % (namespace_, self.gds_format_boolean(self.master, input_name='master'), namespace_, eol_))
         if self.storage is not None:
-            self.storage.export(outfile, level, namespace_, name_='storage', pretty_print=pretty_print)
+            self.storage.export_(outfile, level, namespace_, name_='storage', pretty_print=pretty_print)
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.format is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sformat>%s</%sformat>%s' % (namespace_, self.gds_format_boolean(self.format, input_name='format'), namespace_, eol_))
@@ -17309,7 +17309,7 @@ class StorageDomainStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='StorageDomainStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='StorageDomainStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -17397,7 +17397,7 @@ class StorageDomains(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='StorageDomains', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='StorageDomains', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -17422,7 +17422,7 @@ class StorageDomains(BaseResources):
         else:
             eol_ = ''
         for storage_domain_ in self.storage_domain:
-            storage_domain_.export(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
+            storage_domain_.export_(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='StorageDomains'):
         level += 1
         already_processed = set()
@@ -17490,7 +17490,7 @@ class StorageConnections(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='StorageConnections', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='StorageConnections', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -17515,7 +17515,7 @@ class StorageConnections(BaseResources):
         else:
             eol_ = ''
         for storage_connection_ in self.storage_connection:
-            storage_connection_.export(outfile, level, namespace_, name_='storage_connection', pretty_print=pretty_print)
+            storage_connection_.export_(outfile, level, namespace_, name_='storage_connection', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='StorageConnections'):
         level += 1
         already_processed = set()
@@ -17583,7 +17583,7 @@ class InstanceTypes(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='InstanceTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='InstanceTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -17608,7 +17608,7 @@ class InstanceTypes(BaseResources):
         else:
             eol_ = ''
         for instance_type_ in self.instance_type:
-            instance_type_.export(outfile, level, namespace_, name_='instance_type', pretty_print=pretty_print)
+            instance_type_.export_(outfile, level, namespace_, name_='instance_type', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='InstanceTypes'):
         level += 1
         already_processed = set()
@@ -17676,7 +17676,7 @@ class Templates(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Templates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Templates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -17701,7 +17701,7 @@ class Templates(BaseResources):
         else:
             eol_ = ''
         for template_ in self.template:
-            template_.export(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
+            template_.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Templates'):
         level += 1
         already_processed = set()
@@ -17768,7 +17768,7 @@ class TemplateStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='TemplateStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='TemplateStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -17849,7 +17849,7 @@ class Bios(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Bios', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Bios', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -17873,7 +17873,7 @@ class Bios(GeneratedsSuper):
         else:
             eol_ = ''
         if self.boot_menu is not None:
-            self.boot_menu.export(outfile, level, namespace_, name_='boot_menu', pretty_print=pretty_print)
+            self.boot_menu.export_(outfile, level, namespace_, name_='boot_menu', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Bios'):
         level += 1
         already_processed = set()
@@ -17926,7 +17926,7 @@ class BootMenu(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='BootMenu', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='BootMenu', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -18008,7 +18008,7 @@ class Boot(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Boot', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Boot', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -18103,7 +18103,7 @@ class OperatingSystem(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='OperatingSystem', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='OperatingSystem', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -18129,7 +18129,7 @@ class OperatingSystem(GeneratedsSuper):
         else:
             eol_ = ''
         for boot_ in self.boot:
-            boot_.export(outfile, level, namespace_, name_='boot', pretty_print=pretty_print)
+            boot_.export_(outfile, level, namespace_, name_='boot', pretty_print=pretty_print)
         if self.kernel is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%skernel>%s</%skernel>%s' % (namespace_, self.gds_format_string(quote_xml(self.kernel).encode(ExternalEncoding), input_name='kernel'), namespace_, eol_))
@@ -18140,7 +18140,7 @@ class OperatingSystem(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scmdline>%s</%scmdline>%s' % (namespace_, self.gds_format_string(quote_xml(self.cmdline).encode(ExternalEncoding), input_name='cmdline'), namespace_, eol_))
         if self.version is not None:
-            self.version.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
+            self.version.export_(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='OperatingSystem'):
         level += 1
         already_processed = set()
@@ -18237,7 +18237,7 @@ class Sso(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Sso', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Sso', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -18261,7 +18261,7 @@ class Sso(GeneratedsSuper):
         else:
             eol_ = ''
         if self.methods is not None:
-            self.methods.export(outfile, level, namespace_, name_='methods', pretty_print=pretty_print)
+            self.methods.export_(outfile, level, namespace_, name_='methods', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Sso'):
         level += 1
         already_processed = set()
@@ -18319,7 +18319,7 @@ class Methods(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Methods', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Methods', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -18343,7 +18343,7 @@ class Methods(GeneratedsSuper):
         else:
             eol_ = ''
         for method_ in self.method:
-            method_.export(outfile, level, namespace_, name_='method', pretty_print=pretty_print)
+            method_.export_(outfile, level, namespace_, name_='method', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Methods'):
         level += 1
         already_processed = set()
@@ -18403,7 +18403,7 @@ class Method(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Method', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Method', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -18478,7 +18478,7 @@ class Rate(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Rate', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Rate', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -18576,7 +18576,7 @@ class RngSources(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='RngSources', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='RngSources', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -18661,7 +18661,7 @@ class RngDevice(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='RngDevice', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='RngDevice', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -18685,7 +18685,7 @@ class RngDevice(GeneratedsSuper):
         else:
             eol_ = ''
         if self.rate is not None:
-            self.rate.export(outfile, level, namespace_, name_='rate', pretty_print=pretty_print)
+            self.rate.export_(outfile, level, namespace_, name_='rate', pretty_print=pretty_print)
         if self.source is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssource>%s</%ssource>%s' % (namespace_, self.gds_format_string(quote_xml(self.source).encode(ExternalEncoding), input_name='source'), namespace_, eol_))
@@ -18752,7 +18752,7 @@ class HighAvailability(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='HighAvailability', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='HighAvailability', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -18895,7 +18895,7 @@ class Display(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Display', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Display', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -18940,7 +18940,7 @@ class Display(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sallow_override>%s</%sallow_override>%s' % (namespace_, self.gds_format_boolean(self.allow_override, input_name='allow_override'), namespace_, eol_))
         if self.certificate is not None:
-            self.certificate.export(outfile, level, namespace_, name_='certificate', pretty_print=pretty_print)
+            self.certificate.export_(outfile, level, namespace_, name_='certificate', pretty_print=pretty_print)
         if self.smartcard_enabled is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssmartcard_enabled>%s</%ssmartcard_enabled>%s' % (namespace_, self.gds_format_boolean(self.smartcard_enabled, input_name='smartcard_enabled'), namespace_, eol_))
@@ -19138,7 +19138,7 @@ class Ticket(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Ticket', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Ticket', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -19234,7 +19234,7 @@ class CustomProperty(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CustomProperty', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CustomProperty', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -19332,7 +19332,7 @@ class CustomProperties(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CustomProperties', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CustomProperties', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -19356,7 +19356,7 @@ class CustomProperties(GeneratedsSuper):
         else:
             eol_ = ''
         for custom_property_ in self.custom_property:
-            custom_property_.export(outfile, level, namespace_, name_='custom_property', pretty_print=pretty_print)
+            custom_property_.export_(outfile, level, namespace_, name_='custom_property', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CustomProperties'):
         level += 1
         already_processed = set()
@@ -19419,7 +19419,7 @@ class Property(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Property', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Property', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -19509,7 +19509,7 @@ class Properties(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Properties', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Properties', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -19533,7 +19533,7 @@ class Properties(GeneratedsSuper):
         else:
             eol_ = ''
         for property_ in self.property:
-            property_.export(outfile, level, namespace_, name_='property', pretty_print=pretty_print)
+            property_.export_(outfile, level, namespace_, name_='property', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Properties'):
         level += 1
         already_processed = set()
@@ -19597,7 +19597,7 @@ class Payloads(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Payloads', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Payloads', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -19621,7 +19621,7 @@ class Payloads(GeneratedsSuper):
         else:
             eol_ = ''
         for payload_ in self.payload:
-            payload_.export(outfile, level, namespace_, name_='payload', pretty_print=pretty_print)
+            payload_.export_(outfile, level, namespace_, name_='payload', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Payloads'):
         level += 1
         already_processed = set()
@@ -19687,7 +19687,7 @@ class Payload(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Payload', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Payload', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -19713,7 +19713,7 @@ class Payload(GeneratedsSuper):
         else:
             eol_ = ''
         if self.files is not None:
-            self.files.export(outfile, level, namespace_, name_='files', pretty_print=pretty_print)
+            self.files.export_(outfile, level, namespace_, name_='files', pretty_print=pretty_print)
         if self.volume_id is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%svolume_id>%s</%svolume_id>%s' % (namespace_, self.gds_format_string(quote_xml(self.volume_id).encode(ExternalEncoding), input_name='volume_id'), namespace_, eol_))
@@ -19787,7 +19787,7 @@ class VmDeviceTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VmDeviceTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VmDeviceTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -19872,7 +19872,7 @@ class Configuration(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Configuration', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Configuration', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -20037,7 +20037,7 @@ class Initialization(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Initialization', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Initialization', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -20061,9 +20061,9 @@ class Initialization(GeneratedsSuper):
         else:
             eol_ = ''
         if self.configuration is not None:
-            self.configuration.export(outfile, level, namespace_, name_='configuration', pretty_print=pretty_print)
+            self.configuration.export_(outfile, level, namespace_, name_='configuration', pretty_print=pretty_print)
         if self.cloud_init is not None:
-            self.cloud_init.export(outfile, level, namespace_, name_='cloud_init', pretty_print=pretty_print)
+            self.cloud_init.export_(outfile, level, namespace_, name_='cloud_init', pretty_print=pretty_print)
         if self.host_name is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%shost_name>%s</%shost_name>%s' % (namespace_, self.gds_format_string(quote_xml(self.host_name).encode(ExternalEncoding), input_name='host_name'), namespace_, eol_))
@@ -20089,7 +20089,7 @@ class Initialization(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdns_search>%s</%sdns_search>%s' % (namespace_, self.gds_format_string(quote_xml(self.dns_search).encode(ExternalEncoding), input_name='dns_search'), namespace_, eol_))
         if self.nic_configurations is not None:
-            self.nic_configurations.export(outfile, level, namespace_, name_='nic_configurations', pretty_print=pretty_print)
+            self.nic_configurations.export_(outfile, level, namespace_, name_='nic_configurations', pretty_print=pretty_print)
         if self.windows_license_key is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%swindows_license_key>%s</%swindows_license_key>%s' % (namespace_, self.gds_format_string(quote_xml(self.windows_license_key).encode(ExternalEncoding), input_name='windows_license_key'), namespace_, eol_))
@@ -20334,7 +20334,7 @@ class DNS(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DNS', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DNS', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -20358,9 +20358,9 @@ class DNS(GeneratedsSuper):
         else:
             eol_ = ''
         if self.servers is not None:
-            self.servers.export(outfile, level, namespace_, name_='servers', pretty_print=pretty_print)
+            self.servers.export_(outfile, level, namespace_, name_='servers', pretty_print=pretty_print)
         if self.search_domains is not None:
-            self.search_domains.export(outfile, level, namespace_, name_='search_domains', pretty_print=pretty_print)
+            self.search_domains.export_(outfile, level, namespace_, name_='search_domains', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='DNS'):
         level += 1
         already_processed = set()
@@ -20429,7 +20429,7 @@ class AuthorizedKey(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='AuthorizedKey', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='AuthorizedKey', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -20454,7 +20454,7 @@ class AuthorizedKey(BaseResource):
         else:
             eol_ = ''
         if self.user is not None:
-            self.user.export(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
+            self.user.export_(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
         if self.key is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%skey>%s</%skey>%s' % (namespace_, self.gds_format_string(quote_xml(self.key).encode(ExternalEncoding), input_name='key'), namespace_, eol_))
@@ -20526,7 +20526,7 @@ class AuthorizedKeys(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='AuthorizedKeys', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='AuthorizedKeys', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -20551,7 +20551,7 @@ class AuthorizedKeys(BaseResources):
         else:
             eol_ = ''
         for authorized_key_ in self.authorized_key:
-            authorized_key_.export(outfile, level, namespace_, name_='authorized_key', pretty_print=pretty_print)
+            authorized_key_.export_(outfile, level, namespace_, name_='authorized_key', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='AuthorizedKeys'):
         level += 1
         already_processed = set()
@@ -20636,7 +20636,7 @@ class CloudInit(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CloudInit', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CloudInit', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -20660,11 +20660,11 @@ class CloudInit(GeneratedsSuper):
         else:
             eol_ = ''
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.authorized_keys is not None:
-            self.authorized_keys.export(outfile, level, namespace_, name_='authorized_keys', pretty_print=pretty_print)
+            self.authorized_keys.export_(outfile, level, namespace_, name_='authorized_keys', pretty_print=pretty_print)
         if self.network_configuration is not None:
-            self.network_configuration.export(outfile, level, namespace_, name_='network_configuration', pretty_print=pretty_print)
+            self.network_configuration.export_(outfile, level, namespace_, name_='network_configuration', pretty_print=pretty_print)
         if self.regenerate_ssh_keys is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sregenerate_ssh_keys>%s</%sregenerate_ssh_keys>%s' % (namespace_, self.gds_format_boolean(self.regenerate_ssh_keys, input_name='regenerate_ssh_keys'), namespace_, eol_))
@@ -20672,9 +20672,9 @@ class CloudInit(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stimezone>%s</%stimezone>%s' % (namespace_, self.gds_format_string(quote_xml(self.timezone).encode(ExternalEncoding), input_name='timezone'), namespace_, eol_))
         if self.users is not None:
-            self.users.export(outfile, level, namespace_, name_='users', pretty_print=pretty_print)
+            self.users.export_(outfile, level, namespace_, name_='users', pretty_print=pretty_print)
         if self.files is not None:
-            self.files.export(outfile, level, namespace_, name_='files', pretty_print=pretty_print)
+            self.files.export_(outfile, level, namespace_, name_='files', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CloudInit'):
         level += 1
         already_processed = set()
@@ -20791,7 +20791,7 @@ class NetworkConfiguration(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='NetworkConfiguration', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='NetworkConfiguration', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -20815,9 +20815,9 @@ class NetworkConfiguration(GeneratedsSuper):
         else:
             eol_ = ''
         if self.nics is not None:
-            self.nics.export(outfile, level, namespace_, name_='nics', pretty_print=pretty_print)
+            self.nics.export_(outfile, level, namespace_, name_='nics', pretty_print=pretty_print)
         if self.dns is not None:
-            self.dns.export(outfile, level, namespace_, name_='dns', pretty_print=pretty_print)
+            self.dns.export_(outfile, level, namespace_, name_='dns', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='NetworkConfiguration'):
         level += 1
         already_processed = set()
@@ -20884,7 +20884,7 @@ class VmPlacementPolicy(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VmPlacementPolicy', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VmPlacementPolicy', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -20908,7 +20908,7 @@ class VmPlacementPolicy(GeneratedsSuper):
         else:
             eol_ = ''
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.affinity is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%saffinity>%s</%saffinity>%s' % (namespace_, self.gds_format_string(quote_xml(self.affinity).encode(ExternalEncoding), input_name='affinity'), namespace_, eol_))
@@ -20975,7 +20975,7 @@ class GuestInfo(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GuestInfo', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GuestInfo', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -20999,7 +20999,7 @@ class GuestInfo(GeneratedsSuper):
         else:
             eol_ = ''
         if self.ips is not None:
-            self.ips.export(outfile, level, namespace_, name_='ips', pretty_print=pretty_print)
+            self.ips.export_(outfile, level, namespace_, name_='ips', pretty_print=pretty_print)
         if self.fqdn is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sfqdn>%s</%sfqdn>%s' % (namespace_, self.gds_format_string(quote_xml(self.fqdn).encode(ExternalEncoding), input_name='fqdn'), namespace_, eol_))
@@ -21066,7 +21066,7 @@ class SerialNumber(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SerialNumber', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SerialNumber', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -21268,7 +21268,7 @@ class VmBase(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VmBase', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VmBase', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -21300,23 +21300,23 @@ class VmBase(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stype>%s</%stype>%s' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_, eol_))
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.memory is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smemory>%s</%smemory>%s' % (namespace_, self.gds_format_integer(self.memory, input_name='memory'), namespace_, eol_))
         if self.cpu is not None:
-            self.cpu.export(outfile, level, namespace_, name_='cpu', pretty_print=pretty_print)
+            self.cpu.export_(outfile, level, namespace_, name_='cpu', pretty_print=pretty_print)
         if self.cpu_shares is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scpu_shares>%s</%scpu_shares>%s' % (namespace_, self.gds_format_integer(self.cpu_shares, input_name='cpu_shares'), namespace_, eol_))
         if self.bios is not None:
-            self.bios.export(outfile, level, namespace_, name_='bios', pretty_print=pretty_print)
+            self.bios.export_(outfile, level, namespace_, name_='bios', pretty_print=pretty_print)
         if self.os is not None:
-            self.os.export(outfile, level, namespace_, name_='os', pretty_print=pretty_print)
+            self.os.export_(outfile, level, namespace_, name_='os', pretty_print=pretty_print)
         if self.cluster is not None:
-            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
         if self.storage_domain is not None:
-            self.storage_domain.export(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
+            self.storage_domain.export_(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
         if self.creation_time is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%screation_time>%s</%screation_time>%s' % (namespace_, self.gds_format_datetime(self.creation_time, input_name='creation_time'), namespace_, eol_))
@@ -21330,22 +21330,22 @@ class VmBase(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdelete_protected>%s</%sdelete_protected>%s' % (namespace_, self.gds_format_boolean(self.delete_protected, input_name='delete_protected'), namespace_, eol_))
         if self.high_availability is not None:
-            self.high_availability.export(outfile, level, namespace_, name_='high_availability', pretty_print=pretty_print)
+            self.high_availability.export_(outfile, level, namespace_, name_='high_availability', pretty_print=pretty_print)
         if self.display is not None:
-            self.display.export(outfile, level, namespace_, name_='display', pretty_print=pretty_print)
+            self.display.export_(outfile, level, namespace_, name_='display', pretty_print=pretty_print)
         if self.sso is not None:
-            self.sso.export(outfile, level, namespace_, name_='sso', pretty_print=pretty_print)
+            self.sso.export_(outfile, level, namespace_, name_='sso', pretty_print=pretty_print)
         if self.rng_device is not None:
-            self.rng_device.export(outfile, level, namespace_, name_='rng_device', pretty_print=pretty_print)
+            self.rng_device.export_(outfile, level, namespace_, name_='rng_device', pretty_print=pretty_print)
         if self.console is not None:
-            self.console.export(outfile, level, namespace_, name_='console', pretty_print=pretty_print)
+            self.console.export_(outfile, level, namespace_, name_='console', pretty_print=pretty_print)
         if self.timezone is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stimezone>%s</%stimezone>%s' % (namespace_, self.gds_format_string(quote_xml(self.timezone).encode(ExternalEncoding), input_name='timezone'), namespace_, eol_))
         if self.domain is not None:
-            self.domain.export(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
+            self.domain.export_(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
         if self.usb is not None:
-            self.usb.export(outfile, level, namespace_, name_='usb', pretty_print=pretty_print)
+            self.usb.export_(outfile, level, namespace_, name_='usb', pretty_print=pretty_print)
         if self.soundcard_enabled is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssoundcard_enabled>%s</%ssoundcard_enabled>%s' % (namespace_, self.gds_format_boolean(self.soundcard_enabled, input_name='soundcard_enabled'), namespace_, eol_))
@@ -21356,14 +21356,14 @@ class VmBase(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smigration_downtime>%s</%smigration_downtime>%s' % (namespace_, self.gds_format_integer(self.migration_downtime, input_name='migration_downtime'), namespace_, eol_))
         if self.virtio_scsi is not None:
-            self.virtio_scsi.export(outfile, level, namespace_, name_='virtio_scsi', pretty_print=pretty_print)
+            self.virtio_scsi.export_(outfile, level, namespace_, name_='virtio_scsi', pretty_print=pretty_print)
         if self.serial_number is not None:
-            self.serial_number.export(outfile, level, namespace_, name_='serial_number', pretty_print=pretty_print)
+            self.serial_number.export_(outfile, level, namespace_, name_='serial_number', pretty_print=pretty_print)
         if self.start_paused is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstart_paused>%s</%sstart_paused>%s' % (namespace_, self.gds_format_boolean(self.start_paused, input_name='start_paused'), namespace_, eol_))
         if self.cpu_profile is not None:
-            self.cpu_profile.export(outfile, level, namespace_, name_='cpu_profile', pretty_print=pretty_print)
+            self.cpu_profile.export_(outfile, level, namespace_, name_='cpu_profile', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VmBase'):
         level += 1
         already_processed = set()
@@ -21815,7 +21815,7 @@ class VM(VmBase):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VM', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VM', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -21847,11 +21847,11 @@ class VM(VmBase):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstop_reason>%s</%sstop_reason>%s' % (namespace_, self.gds_format_string(quote_xml(self.stop_reason).encode(ExternalEncoding), input_name='stop_reason'), namespace_, eol_))
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.template is not None:
-            self.template.export(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
+            self.template.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
         if self.instance_type is not None:
-            self.instance_type.export(outfile, level, namespace_, name_='instance_type', pretty_print=pretty_print)
+            self.instance_type.export_(outfile, level, namespace_, name_='instance_type', pretty_print=pretty_print)
         if self.start_time is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstart_time>%s</%sstart_time>%s' % (namespace_, self.gds_format_datetime(self.start_time, input_name='start_time'), namespace_, eol_))
@@ -21859,39 +21859,39 @@ class VM(VmBase):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstop_time>%s</%sstop_time>%s' % (namespace_, self.gds_format_datetime(self.stop_time, input_name='stop_time'), namespace_, eol_))
         if self.custom_properties is not None:
-            self.custom_properties.export(outfile, level, namespace_, name_='custom_properties', pretty_print=pretty_print)
+            self.custom_properties.export_(outfile, level, namespace_, name_='custom_properties', pretty_print=pretty_print)
         if self.payloads is not None:
-            self.payloads.export(outfile, level, namespace_, name_='payloads', pretty_print=pretty_print)
+            self.payloads.export_(outfile, level, namespace_, name_='payloads', pretty_print=pretty_print)
         if self.statistics is not None:
-            self.statistics.export(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
+            self.statistics.export_(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
         if self.disks is not None:
-            self.disks.export(outfile, level, namespace_, name_='disks', pretty_print=pretty_print)
+            self.disks.export_(outfile, level, namespace_, name_='disks', pretty_print=pretty_print)
         if self.initialization is not None:
-            self.initialization.export(outfile, level, namespace_, name_='initialization', pretty_print=pretty_print)
+            self.initialization.export_(outfile, level, namespace_, name_='initialization', pretty_print=pretty_print)
         if self.nics is not None:
-            self.nics.export(outfile, level, namespace_, name_='nics', pretty_print=pretty_print)
+            self.nics.export_(outfile, level, namespace_, name_='nics', pretty_print=pretty_print)
         if self.tags is not None:
-            self.tags.export(outfile, level, namespace_, name_='tags', pretty_print=pretty_print)
+            self.tags.export_(outfile, level, namespace_, name_='tags', pretty_print=pretty_print)
         if self.snapshots is not None:
-            self.snapshots.export(outfile, level, namespace_, name_='snapshots', pretty_print=pretty_print)
+            self.snapshots.export_(outfile, level, namespace_, name_='snapshots', pretty_print=pretty_print)
         if self.placement_policy is not None:
-            self.placement_policy.export(outfile, level, namespace_, name_='placement_policy', pretty_print=pretty_print)
+            self.placement_policy.export_(outfile, level, namespace_, name_='placement_policy', pretty_print=pretty_print)
         if self.memory_policy is not None:
-            self.memory_policy.export(outfile, level, namespace_, name_='memory_policy', pretty_print=pretty_print)
+            self.memory_policy.export_(outfile, level, namespace_, name_='memory_policy', pretty_print=pretty_print)
         if self.guest_info is not None:
-            self.guest_info.export(outfile, level, namespace_, name_='guest_info', pretty_print=pretty_print)
+            self.guest_info.export_(outfile, level, namespace_, name_='guest_info', pretty_print=pretty_print)
         if self.quota is not None:
-            self.quota.export(outfile, level, namespace_, name_='quota', pretty_print=pretty_print)
+            self.quota.export_(outfile, level, namespace_, name_='quota', pretty_print=pretty_print)
         if self.vmpool is not None:
-            self.vmpool.export(outfile, level, namespace_, name_='vmpool', pretty_print=pretty_print)
+            self.vmpool.export_(outfile, level, namespace_, name_='vmpool', pretty_print=pretty_print)
         if self.cdroms is not None:
-            self.cdroms.export(outfile, level, namespace_, name_='cdroms', pretty_print=pretty_print)
+            self.cdroms.export_(outfile, level, namespace_, name_='cdroms', pretty_print=pretty_print)
         if self.floppies is not None:
-            self.floppies.export(outfile, level, namespace_, name_='floppies', pretty_print=pretty_print)
+            self.floppies.export_(outfile, level, namespace_, name_='floppies', pretty_print=pretty_print)
         if self.reported_devices is not None:
-            self.reported_devices.export(outfile, level, namespace_, name_='reported_devices', pretty_print=pretty_print)
+            self.reported_devices.export_(outfile, level, namespace_, name_='reported_devices', pretty_print=pretty_print)
         if self.watchdogs is not None:
-            self.watchdogs.export(outfile, level, namespace_, name_='watchdogs', pretty_print=pretty_print)
+            self.watchdogs.export_(outfile, level, namespace_, name_='watchdogs', pretty_print=pretty_print)
         if self.use_latest_template_version is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%suse_latest_template_version>%s</%suse_latest_template_version>%s' % (namespace_, self.gds_format_boolean(self.use_latest_template_version, input_name='use_latest_template_version'), namespace_, eol_))
@@ -21902,7 +21902,7 @@ class VM(VmBase):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%snuma_tune_mode>%s</%snuma_tune_mode>%s' % (namespace_, self.gds_format_string(quote_xml(self.numa_tune_mode).encode(ExternalEncoding), input_name='numa_tune_mode'), namespace_, eol_))
         if self.permissions is not None:
-            self.permissions.export(outfile, level, namespace_, name_='permissions', pretty_print=pretty_print)
+            self.permissions.export_(outfile, level, namespace_, name_='permissions', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VM'):
         level += 1
         already_processed = set()
@@ -22223,7 +22223,7 @@ class VMs(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VMs', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VMs', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -22248,7 +22248,7 @@ class VMs(BaseResources):
         else:
             eol_ = ''
         for vm_ in self.vm:
-            vm_.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            vm_.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VMs'):
         level += 1
         already_processed = set()
@@ -22317,7 +22317,7 @@ class ReportedDevices(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ReportedDevices', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ReportedDevices', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -22342,7 +22342,7 @@ class ReportedDevices(BaseResources):
         else:
             eol_ = ''
         for reported_device_ in self.reported_device:
-            reported_device_.export(outfile, level, namespace_, name_='reported_device', pretty_print=pretty_print)
+            reported_device_.export_(outfile, level, namespace_, name_='reported_device', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='ReportedDevices'):
         level += 1
         already_processed = set()
@@ -22417,7 +22417,7 @@ class ReportedDevice(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ReportedDevice', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ReportedDevice', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -22445,11 +22445,11 @@ class ReportedDevice(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stype>%s</%stype>%s' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_, eol_))
         if self.mac is not None:
-            self.mac.export(outfile, level, namespace_, name_='mac', pretty_print=pretty_print)
+            self.mac.export_(outfile, level, namespace_, name_='mac', pretty_print=pretty_print)
         if self.ips is not None:
-            self.ips.export(outfile, level, namespace_, name_='ips', pretty_print=pretty_print)
+            self.ips.export_(outfile, level, namespace_, name_='ips', pretty_print=pretty_print)
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='ReportedDevice'):
         level += 1
         already_processed = set()
@@ -22539,7 +22539,7 @@ class PreviewVMs(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='PreviewVMs', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='PreviewVMs', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -22564,7 +22564,7 @@ class PreviewVMs(BaseResources):
         else:
             eol_ = ''
         for preview_vm_ in self.preview_vm:
-            preview_vm_.export(outfile, level, namespace_, name_='preview_vm', pretty_print=pretty_print)
+            preview_vm_.export_(outfile, level, namespace_, name_='preview_vm', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='PreviewVMs'):
         level += 1
         already_processed = set()
@@ -22631,7 +22631,7 @@ class VmStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VmStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VmStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -22717,7 +22717,7 @@ class VmPauseDetails(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VmPauseDetails', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VmPauseDetails', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -22803,7 +22803,7 @@ class PmProxyTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='PmProxyTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='PmProxyTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -22902,7 +22902,7 @@ class Session(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Session', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Session', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -22927,14 +22927,14 @@ class Session(BaseResource):
         else:
             eol_ = ''
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
         if self.protocol is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sprotocol>%s</%sprotocol>%s' % (namespace_, self.gds_format_string(quote_xml(self.protocol).encode(ExternalEncoding), input_name='protocol'), namespace_, eol_))
         if self.ip is not None:
-            self.ip.export(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
+            self.ip.export_(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
         if self.user is not None:
-            self.user.export(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
+            self.user.export_(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
         if self.console_user is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sconsole_user>%s</%sconsole_user>%s' % (namespace_, self.gds_format_boolean(self.console_user, input_name='console_user'), namespace_, eol_))
@@ -23040,7 +23040,7 @@ class Sessions(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Sessions', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Sessions', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -23065,7 +23065,7 @@ class Sessions(BaseResources):
         else:
             eol_ = ''
         for session_ in self.session:
-            session_.export(outfile, level, namespace_, name_='session', pretty_print=pretty_print)
+            session_.export_(outfile, level, namespace_, name_='session', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Sessions'):
         level += 1
         already_processed = set()
@@ -23156,7 +23156,7 @@ class VmPool(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VmPool', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VmPool', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -23184,9 +23184,9 @@ class VmPool(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssize>%s</%ssize>%s' % (namespace_, self.gds_format_integer(self.size, input_name='size'), namespace_, eol_))
         if self.cluster is not None:
-            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
         if self.template is not None:
-            self.template.export(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
+            self.template.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
         if self.prestarted_vms is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sprestarted_vms>%s</%sprestarted_vms>%s' % (namespace_, self.gds_format_integer(self.prestarted_vms, input_name='prestarted_vms'), namespace_, eol_))
@@ -23194,9 +23194,9 @@ class VmPool(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smax_user_vms>%s</%smax_user_vms>%s' % (namespace_, self.gds_format_integer(self.max_user_vms, input_name='max_user_vms'), namespace_, eol_))
         if self.display is not None:
-            self.display.export(outfile, level, namespace_, name_='display', pretty_print=pretty_print)
+            self.display.export_(outfile, level, namespace_, name_='display', pretty_print=pretty_print)
         if self.rng_device is not None:
-            self.rng_device.export(outfile, level, namespace_, name_='rng_device', pretty_print=pretty_print)
+            self.rng_device.export_(outfile, level, namespace_, name_='rng_device', pretty_print=pretty_print)
         if self.soundcard_enabled is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssoundcard_enabled>%s</%ssoundcard_enabled>%s' % (namespace_, self.gds_format_boolean(self.soundcard_enabled, input_name='soundcard_enabled'), namespace_, eol_))
@@ -23338,7 +23338,7 @@ class VmPools(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VmPools', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VmPools', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -23363,7 +23363,7 @@ class VmPools(BaseResources):
         else:
             eol_ = ''
         for vmpool_ in self.vmpool:
-            vmpool_.export(outfile, level, namespace_, name_='vmpool', pretty_print=pretty_print)
+            vmpool_.export_(outfile, level, namespace_, name_='vmpool', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VmPools'):
         level += 1
         already_processed = set()
@@ -23433,7 +23433,7 @@ class BaseDevice(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='BaseDevice', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='BaseDevice', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -23462,9 +23462,9 @@ class BaseDevice(BaseResource):
         else:
             eol_ = ''
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
         if self.template is not None:
-            self.template.export(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
+            self.template.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='BaseDevice'):
         level += 1
         already_processed = set()
@@ -23536,7 +23536,7 @@ class BaseDevices(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='BaseDevices', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='BaseDevices', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -23611,7 +23611,7 @@ class Application(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Application', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Application', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -23636,7 +23636,7 @@ class Application(BaseResource):
         else:
             eol_ = ''
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Application'):
         level += 1
         already_processed = set()
@@ -23699,7 +23699,7 @@ class Applications(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Applications', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Applications', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -23724,7 +23724,7 @@ class Applications(BaseResources):
         else:
             eol_ = ''
         for application_ in self.application:
-            application_.export(outfile, level, namespace_, name_='application', pretty_print=pretty_print)
+            application_.export_(outfile, level, namespace_, name_='application', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Applications'):
         level += 1
         already_processed = set()
@@ -23787,7 +23787,7 @@ class CdRom(BaseDevice):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CdRom', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CdRom', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -23812,7 +23812,7 @@ class CdRom(BaseDevice):
         else:
             eol_ = ''
         if self.file is not None:
-            self.file.export(outfile, level, namespace_, name_='file', pretty_print=pretty_print)
+            self.file.export_(outfile, level, namespace_, name_='file', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CdRom'):
         level += 1
         already_processed = set()
@@ -23874,7 +23874,7 @@ class CdRoms(BaseDevices):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CdRoms', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CdRoms', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -23899,7 +23899,7 @@ class CdRoms(BaseDevices):
         else:
             eol_ = ''
         for cdrom_ in self.cdrom:
-            cdrom_.export(outfile, level, namespace_, name_='cdrom', pretty_print=pretty_print)
+            cdrom_.export_(outfile, level, namespace_, name_='cdrom', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CdRoms'):
         level += 1
         already_processed = set()
@@ -23962,7 +23962,7 @@ class Floppy(BaseDevice):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Floppy', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Floppy', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -23987,7 +23987,7 @@ class Floppy(BaseDevice):
         else:
             eol_ = ''
         if self.file is not None:
-            self.file.export(outfile, level, namespace_, name_='file', pretty_print=pretty_print)
+            self.file.export_(outfile, level, namespace_, name_='file', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Floppy'):
         level += 1
         already_processed = set()
@@ -24049,7 +24049,7 @@ class Floppies(BaseDevices):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Floppies', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Floppies', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -24074,7 +24074,7 @@ class Floppies(BaseDevices):
         else:
             eol_ = ''
         for floppy_ in self.floppy:
-            floppy_.export(outfile, level, namespace_, name_='floppy', pretty_print=pretty_print)
+            floppy_.export_(outfile, level, namespace_, name_='floppy', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Floppies'):
         level += 1
         already_processed = set()
@@ -24236,7 +24236,7 @@ class Disk(BaseDevice):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Disk', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Disk', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -24271,9 +24271,9 @@ class Disk(BaseDevice):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%simage_id>%s</%simage_id>%s' % (namespace_, self.gds_format_string(quote_xml(self.image_id).encode(ExternalEncoding), input_name='image_id'), namespace_, eol_))
         if self.storage_domain is not None:
-            self.storage_domain.export(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
+            self.storage_domain.export_(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
         if self.storage_domains is not None:
-            self.storage_domains.export(outfile, level, namespace_, name_='storage_domains', pretty_print=pretty_print)
+            self.storage_domains.export_(outfile, level, namespace_, name_='storage_domains', pretty_print=pretty_print)
         if self.size is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssize>%s</%ssize>%s' % (namespace_, self.gds_format_integer(self.size, input_name='size'), namespace_, eol_))
@@ -24287,7 +24287,7 @@ class Disk(BaseDevice):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sactual_size>%s</%sactual_size>%s' % (namespace_, self.gds_format_integer(self.actual_size, input_name='actual_size'), namespace_, eol_))
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.interface is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sinterface>%s</%sinterface>%s' % (namespace_, self.gds_format_string(quote_xml(self.interface).encode(ExternalEncoding), input_name='interface'), namespace_, eol_))
@@ -24310,7 +24310,7 @@ class Disk(BaseDevice):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%spropagate_errors>%s</%spropagate_errors>%s' % (namespace_, self.gds_format_boolean(self.propagate_errors, input_name='propagate_errors'), namespace_, eol_))
         if self.statistics is not None:
-            self.statistics.export(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
+            self.statistics.export_(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
         if self.active is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sactive>%s</%sactive>%s' % (namespace_, self.gds_format_boolean(self.active, input_name='active'), namespace_, eol_))
@@ -24318,16 +24318,16 @@ class Disk(BaseDevice):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sread_only>%s</%sread_only>%s' % (namespace_, self.gds_format_boolean(self.read_only, input_name='read_only'), namespace_, eol_))
         if self.quota is not None:
-            self.quota.export(outfile, level, namespace_, name_='quota', pretty_print=pretty_print)
+            self.quota.export_(outfile, level, namespace_, name_='quota', pretty_print=pretty_print)
         if self.lun_storage is not None:
-            self.lun_storage.export(outfile, level, namespace_, name_='lun_storage', pretty_print=pretty_print)
+            self.lun_storage.export_(outfile, level, namespace_, name_='lun_storage', pretty_print=pretty_print)
         if self.sgio is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssgio>%s</%ssgio>%s' % (namespace_, self.gds_format_string(quote_xml(self.sgio).encode(ExternalEncoding), input_name='sgio'), namespace_, eol_))
         if self.snapshot is not None:
-            self.snapshot.export(outfile, level, namespace_, name_='snapshot', pretty_print=pretty_print)
+            self.snapshot.export_(outfile, level, namespace_, name_='snapshot', pretty_print=pretty_print)
         if self.disk_profile is not None:
-            self.disk_profile.export(outfile, level, namespace_, name_='disk_profile', pretty_print=pretty_print)
+            self.disk_profile.export_(outfile, level, namespace_, name_='disk_profile', pretty_print=pretty_print)
         if self.logical_name is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%slogical_name>%s</%slogical_name>%s' % (namespace_, self.gds_format_string(quote_xml(self.logical_name).encode(ExternalEncoding), input_name='logical_name'), namespace_, eol_))
@@ -24647,7 +24647,7 @@ class Disks(BaseDevices):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Disks', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Disks', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -24672,7 +24672,7 @@ class Disks(BaseDevices):
         else:
             eol_ = ''
         for disk_ in self.disk:
-            disk_.export(outfile, level, namespace_, name_='disk', pretty_print=pretty_print)
+            disk_.export_(outfile, level, namespace_, name_='disk', pretty_print=pretty_print)
         if self.clone is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sclone>%s</%sclone>%s' % (namespace_, self.gds_format_boolean(self.clone, input_name='clone'), namespace_, eol_))
@@ -24768,7 +24768,7 @@ class DiskSnapshot(Disk):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DiskSnapshot', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DiskSnapshot', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -24793,7 +24793,7 @@ class DiskSnapshot(Disk):
         else:
             eol_ = ''
         if self.disk is not None:
-            self.disk.export(outfile, level, namespace_, name_='disk', pretty_print=pretty_print)
+            self.disk.export_(outfile, level, namespace_, name_='disk', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='DiskSnapshot'):
         level += 1
         already_processed = set()
@@ -24856,7 +24856,7 @@ class DiskSnapshots(BaseDevices):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DiskSnapshots', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DiskSnapshots', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -24881,7 +24881,7 @@ class DiskSnapshots(BaseDevices):
         else:
             eol_ = ''
         for disk_snapshot_ in self.disk_snapshot:
-            disk_snapshot_.export(outfile, level, namespace_, name_='disk_snapshot', pretty_print=pretty_print)
+            disk_snapshot_.export_(outfile, level, namespace_, name_='disk_snapshot', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='DiskSnapshots'):
         level += 1
         already_processed = set()
@@ -24947,7 +24947,7 @@ class DiskStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DiskStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DiskStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -25028,7 +25028,7 @@ class PortMirroring(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='PortMirroring', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='PortMirroring', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -25052,7 +25052,7 @@ class PortMirroring(GeneratedsSuper):
         else:
             eol_ = ''
         if self.networks is not None:
-            self.networks.export(outfile, level, namespace_, name_='networks', pretty_print=pretty_print)
+            self.networks.export_(outfile, level, namespace_, name_='networks', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='PortMirroring'):
         level += 1
         already_processed = set()
@@ -25151,7 +25151,7 @@ class NIC(BaseDevice):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='NIC', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='NIC', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -25176,7 +25176,7 @@ class NIC(BaseDevice):
         else:
             eol_ = ''
         if self.network is not None:
-            self.network.export(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
+            self.network.export_(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
         if self.linked is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%slinked>%s</%slinked>%s' % (namespace_, self.gds_format_boolean(self.linked, input_name='linked'), namespace_, eol_))
@@ -25184,9 +25184,9 @@ class NIC(BaseDevice):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sinterface>%s</%sinterface>%s' % (namespace_, self.gds_format_string(quote_xml(self.interface).encode(ExternalEncoding), input_name='interface'), namespace_, eol_))
         if self.mac is not None:
-            self.mac.export(outfile, level, namespace_, name_='mac', pretty_print=pretty_print)
+            self.mac.export_(outfile, level, namespace_, name_='mac', pretty_print=pretty_print)
         if self.statistics is not None:
-            self.statistics.export(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
+            self.statistics.export_(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
         if self.active is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sactive>%s</%sactive>%s' % (namespace_, self.gds_format_boolean(self.active, input_name='active'), namespace_, eol_))
@@ -25194,11 +25194,11 @@ class NIC(BaseDevice):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%splugged>%s</%splugged>%s' % (namespace_, self.gds_format_boolean(self.plugged, input_name='plugged'), namespace_, eol_))
         if self.port_mirroring is not None:
-            self.port_mirroring.export(outfile, level, namespace_, name_='port_mirroring', pretty_print=pretty_print)
+            self.port_mirroring.export_(outfile, level, namespace_, name_='port_mirroring', pretty_print=pretty_print)
         if self.reported_devices is not None:
-            self.reported_devices.export(outfile, level, namespace_, name_='reported_devices', pretty_print=pretty_print)
+            self.reported_devices.export_(outfile, level, namespace_, name_='reported_devices', pretty_print=pretty_print)
         if self.vnic_profile is not None:
-            self.vnic_profile.export(outfile, level, namespace_, name_='vnic_profile', pretty_print=pretty_print)
+            self.vnic_profile.export_(outfile, level, namespace_, name_='vnic_profile', pretty_print=pretty_print)
         if self.boot_protocol is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sboot_protocol>%s</%sboot_protocol>%s' % (namespace_, self.gds_format_string(quote_xml(self.boot_protocol).encode(ExternalEncoding), input_name='boot_protocol'), namespace_, eol_))
@@ -25382,7 +25382,7 @@ class Nics(BaseDevices):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Nics', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Nics', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -25407,7 +25407,7 @@ class Nics(BaseDevices):
         else:
             eol_ = ''
         for nic_ in self.nic:
-            nic_.export(outfile, level, namespace_, name_='nic', pretty_print=pretty_print)
+            nic_.export_(outfile, level, namespace_, name_='nic', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Nics'):
         level += 1
         already_processed = set()
@@ -25486,7 +25486,7 @@ class Snapshot(VM):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Snapshot', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Snapshot', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -25511,7 +25511,7 @@ class Snapshot(VM):
         else:
             eol_ = ''
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
         if self.date is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdate>%s</%sdate>%s' % (namespace_, self.gds_format_datetime(self.date, input_name='date'), namespace_, eol_))
@@ -25614,7 +25614,7 @@ class Snapshots(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Snapshots', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Snapshots', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -25639,7 +25639,7 @@ class Snapshots(BaseResources):
         else:
             eol_ = ''
         for snapshot_ in self.snapshot:
-            snapshot_.export(outfile, level, namespace_, name_='snapshot', pretty_print=pretty_print)
+            snapshot_.export_(outfile, level, namespace_, name_='snapshot', pretty_print=pretty_print)
         if self.collapse_snapshots is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scollapse_snapshots>%s</%scollapse_snapshots>%s' % (namespace_, self.gds_format_boolean(self.collapse_snapshots, input_name='collapse_snapshots'), namespace_, eol_))
@@ -25786,7 +25786,7 @@ class HostNIC(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='HostNIC', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='HostNIC', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -25811,25 +25811,25 @@ class HostNIC(BaseResource):
         else:
             eol_ = ''
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.network is not None:
-            self.network.export(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
+            self.network.export_(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
         if self.mac is not None:
-            self.mac.export(outfile, level, namespace_, name_='mac', pretty_print=pretty_print)
+            self.mac.export_(outfile, level, namespace_, name_='mac', pretty_print=pretty_print)
         if self.ip is not None:
-            self.ip.export(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
+            self.ip.export_(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
         if self.base_interface is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sbase_interface>%s</%sbase_interface>%s' % (namespace_, self.gds_format_string(quote_xml(self.base_interface).encode(ExternalEncoding), input_name='base_interface'), namespace_, eol_))
         if self.vlan is not None:
-            self.vlan.export(outfile, level, namespace_, name_='vlan', pretty_print=pretty_print)
+            self.vlan.export_(outfile, level, namespace_, name_='vlan', pretty_print=pretty_print)
         if self.bonding is not None:
-            self.bonding.export(outfile, level, namespace_, name_='bonding', pretty_print=pretty_print)
+            self.bonding.export_(outfile, level, namespace_, name_='bonding', pretty_print=pretty_print)
         if self.boot_protocol is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sboot_protocol>%s</%sboot_protocol>%s' % (namespace_, self.gds_format_string(quote_xml(self.boot_protocol).encode(ExternalEncoding), input_name='boot_protocol'), namespace_, eol_))
         if self.statistics is not None:
-            self.statistics.export(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
+            self.statistics.export_(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
         if self.check_connectivity is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scheck_connectivity>%s</%scheck_connectivity>%s' % (namespace_, self.gds_format_boolean(self.check_connectivity, input_name='check_connectivity'), namespace_, eol_))
@@ -25837,7 +25837,7 @@ class HostNIC(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sspeed>%s</%sspeed>%s' % (namespace_, self.gds_format_integer(self.speed, input_name='speed'), namespace_, eol_))
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.mtu is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smtu>%s</%smtu>%s' % (namespace_, self.gds_format_integer(self.mtu, input_name='mtu'), namespace_, eol_))
@@ -25851,9 +25851,9 @@ class HostNIC(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%soverride_configuration>%s</%soverride_configuration>%s' % (namespace_, self.gds_format_boolean(self.override_configuration, input_name='override_configuration'), namespace_, eol_))
         if self.labels is not None:
-            self.labels.export(outfile, level, namespace_, name_='labels', pretty_print=pretty_print)
+            self.labels.export_(outfile, level, namespace_, name_='labels', pretty_print=pretty_print)
         if self.properties is not None:
-            self.properties.export(outfile, level, namespace_, name_='properties', pretty_print=pretty_print)
+            self.properties.export_(outfile, level, namespace_, name_='properties', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='HostNIC'):
         level += 1
         already_processed = set()
@@ -26093,7 +26093,7 @@ class HostNics(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='HostNics', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='HostNics', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -26118,7 +26118,7 @@ class HostNics(BaseResources):
         else:
             eol_ = ''
         for host_nic_ in self.host_nic:
-            host_nic_.export(outfile, level, namespace_, name_='host_nic', pretty_print=pretty_print)
+            host_nic_.export_(outfile, level, namespace_, name_='host_nic', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='HostNics'):
         level += 1
         already_processed = set()
@@ -26191,7 +26191,7 @@ class GuestNicConfiguration(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GuestNicConfiguration', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GuestNicConfiguration', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -26218,7 +26218,7 @@ class GuestNicConfiguration(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sname>%s</%sname>%s' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_, eol_))
         if self.ip is not None:
-            self.ip.export(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
+            self.ip.export_(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
         if self.boot_protocol is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sboot_protocol>%s</%sboot_protocol>%s' % (namespace_, self.gds_format_string(quote_xml(self.boot_protocol).encode(ExternalEncoding), input_name='boot_protocol'), namespace_, eol_))
@@ -26309,7 +26309,7 @@ class GuestNicsConfiguration(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GuestNicsConfiguration', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GuestNicsConfiguration', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -26333,7 +26333,7 @@ class GuestNicsConfiguration(GeneratedsSuper):
         else:
             eol_ = ''
         for nic_configuration_ in self.nic_configuration:
-            nic_configuration_.export(outfile, level, namespace_, name_='nic_configuration', pretty_print=pretty_print)
+            nic_configuration_.export_(outfile, level, namespace_, name_='nic_configuration', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GuestNicsConfiguration'):
         level += 1
         already_processed = set()
@@ -26397,7 +26397,7 @@ class HostNICStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='HostNICStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='HostNICStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -26483,7 +26483,7 @@ class Slaves(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Slaves', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Slaves', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -26507,7 +26507,7 @@ class Slaves(GeneratedsSuper):
         else:
             eol_ = ''
         for host_nic_ in self.host_nic:
-            host_nic_.export(outfile, level, namespace_, name_='host_nic', pretty_print=pretty_print)
+            host_nic_.export_(outfile, level, namespace_, name_='host_nic', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Slaves'):
         level += 1
         already_processed = set()
@@ -26570,7 +26570,7 @@ class Bonding(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Bonding', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Bonding', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -26594,9 +26594,9 @@ class Bonding(GeneratedsSuper):
         else:
             eol_ = ''
         if self.options is not None:
-            self.options.export(outfile, level, namespace_, name_='options', pretty_print=pretty_print)
+            self.options.export_(outfile, level, namespace_, name_='options', pretty_print=pretty_print)
         if self.slaves is not None:
-            self.slaves.export(outfile, level, namespace_, name_='slaves', pretty_print=pretty_print)
+            self.slaves.export_(outfile, level, namespace_, name_='slaves', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Bonding'):
         level += 1
         already_processed = set()
@@ -26666,7 +26666,7 @@ class HostStorage(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='HostStorage', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='HostStorage', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -26691,7 +26691,7 @@ class HostStorage(BaseResources):
         else:
             eol_ = ''
         for storage_ in self.storage:
-            storage_.export(outfile, level, namespace_, name_='storage', pretty_print=pretty_print)
+            storage_.export_(outfile, level, namespace_, name_='storage', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='HostStorage'):
         level += 1
         already_processed = set()
@@ -26754,7 +26754,7 @@ class Bookmark(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Bookmark', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Bookmark', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -26839,7 +26839,7 @@ class Bookmarks(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Bookmarks', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Bookmarks', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -26864,7 +26864,7 @@ class Bookmarks(BaseResources):
         else:
             eol_ = ''
         for bookmark_ in self.bookmark:
-            bookmark_.export(outfile, level, namespace_, name_='bookmark', pretty_print=pretty_print)
+            bookmark_.export_(outfile, level, namespace_, name_='bookmark', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Bookmarks'):
         level += 1
         already_processed = set()
@@ -26925,7 +26925,7 @@ class TagParent(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='TagParent', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='TagParent', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -26949,7 +26949,7 @@ class TagParent(GeneratedsSuper):
         else:
             eol_ = ''
         if self.tag is not None:
-            self.tag.export(outfile, level, namespace_, name_='tag', pretty_print=pretty_print)
+            self.tag.export_(outfile, level, namespace_, name_='tag', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='TagParent'):
         level += 1
         already_processed = set()
@@ -27024,7 +27024,7 @@ class Tag(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Tag', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Tag', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -27049,17 +27049,17 @@ class Tag(BaseResource):
         else:
             eol_ = ''
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
         if self.template is not None:
-            self.template.export(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
+            self.template.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
         if self.user is not None:
-            self.user.export(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
+            self.user.export_(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
         if self.group is not None:
-            self.group.export(outfile, level, namespace_, name_='group', pretty_print=pretty_print)
+            self.group.export_(outfile, level, namespace_, name_='group', pretty_print=pretty_print)
         if self.parent is not None:
-            self.parent.export(outfile, level, namespace_, name_='parent', pretty_print=pretty_print)
+            self.parent.export_(outfile, level, namespace_, name_='parent', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Tag'):
         level += 1
         already_processed = set()
@@ -27173,7 +27173,7 @@ class Tags(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Tags', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Tags', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -27198,7 +27198,7 @@ class Tags(BaseResources):
         else:
             eol_ = ''
         for tag_ in self.tag:
-            tag_.export(outfile, level, namespace_, name_='tag', pretty_print=pretty_print)
+            tag_.export_(outfile, level, namespace_, name_='tag', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Tags'):
         level += 1
         already_processed = set()
@@ -27263,7 +27263,7 @@ class Usb(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Usb', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Usb', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -27368,7 +27368,7 @@ class Quota(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Quota', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Quota', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -27393,13 +27393,13 @@ class Quota(BaseResource):
         else:
             eol_ = ''
         if self.data_center is not None:
-            self.data_center.export(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
+            self.data_center.export_(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
         if self.vms is not None:
-            self.vms.export(outfile, level, namespace_, name_='vms', pretty_print=pretty_print)
+            self.vms.export_(outfile, level, namespace_, name_='vms', pretty_print=pretty_print)
         if self.disks is not None:
-            self.disks.export(outfile, level, namespace_, name_='disks', pretty_print=pretty_print)
+            self.disks.export_(outfile, level, namespace_, name_='disks', pretty_print=pretty_print)
         if self.users is not None:
-            self.users.export(outfile, level, namespace_, name_='users', pretty_print=pretty_print)
+            self.users.export_(outfile, level, namespace_, name_='users', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Quota'):
         level += 1
         already_processed = set()
@@ -27491,7 +27491,7 @@ class Quotas(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Quotas', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Quotas', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -27516,7 +27516,7 @@ class Quotas(BaseResources):
         else:
             eol_ = ''
         for quota_ in self.quota:
-            quota_.export(outfile, level, namespace_, name_='quota', pretty_print=pretty_print)
+            quota_.export_(outfile, level, namespace_, name_='quota', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Quotas'):
         level += 1
         already_processed = set()
@@ -27582,7 +27582,7 @@ class Url(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Url', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Url', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -27606,7 +27606,7 @@ class Url(GeneratedsSuper):
         else:
             eol_ = ''
         for parameters_set_ in self.parameters_set:
-            parameters_set_.export(outfile, level, namespace_, name_='parameters_set', pretty_print=pretty_print)
+            parameters_set_.export_(outfile, level, namespace_, name_='parameters_set', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Url'):
         level += 1
         already_processed = set()
@@ -27677,7 +27677,7 @@ class Body(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Body', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Body', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -27706,7 +27706,7 @@ class Body(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stype>%s</%stype>%s' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_, eol_))
         for parameters_set_ in self.parameters_set:
-            parameters_set_.export(outfile, level, namespace_, name_='parameters_set', pretty_print=pretty_print)
+            parameters_set_.export_(outfile, level, namespace_, name_='parameters_set', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Body'):
         level += 1
         already_processed = set()
@@ -27798,7 +27798,7 @@ class Request(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Request', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Request', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -27825,11 +27825,11 @@ class Request(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%shttp_method>%s</%shttp_method>%s' % (namespace_, self.gds_format_string(quote_xml(self.http_method).encode(ExternalEncoding), input_name='http_method'), namespace_, eol_))
         if self.headers is not None:
-            self.headers.export(outfile, level, namespace_, name_='headers', pretty_print=pretty_print)
+            self.headers.export_(outfile, level, namespace_, name_='headers', pretty_print=pretty_print)
         if self.url is not None:
-            self.url.export(outfile, level, namespace_, name_='url', pretty_print=pretty_print)
+            self.url.export_(outfile, level, namespace_, name_='url', pretty_print=pretty_print)
         if self.body is not None:
-            self.body.export(outfile, level, namespace_, name_='body', pretty_print=pretty_print)
+            self.body.export_(outfile, level, namespace_, name_='body', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Request'):
         level += 1
         already_processed = set()
@@ -27910,7 +27910,7 @@ class Response(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Response', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Response', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -28004,7 +28004,7 @@ class Parameter(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Parameter', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Parameter', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -28041,7 +28041,7 @@ class Parameter(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%svalue>%s</%svalue>%s' % (namespace_, self.gds_format_string(quote_xml(self.value).encode(ExternalEncoding), input_name='value'), namespace_, eol_))
         if self.parameters_set is not None:
-            self.parameters_set.export(outfile, level, namespace_, name_='parameters_set', pretty_print=pretty_print)
+            self.parameters_set.export_(outfile, level, namespace_, name_='parameters_set', pretty_print=pretty_print)
         if self.deprecated is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdeprecated>%s</%sdeprecated>%s' % (namespace_, self.gds_format_boolean(self.deprecated, input_name='deprecated'), namespace_, eol_))
@@ -28157,7 +28157,7 @@ class Header(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Header', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Header', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -28272,7 +28272,7 @@ class Headers(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Headers', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Headers', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -28296,7 +28296,7 @@ class Headers(GeneratedsSuper):
         else:
             eol_ = ''
         for header_ in self.header:
-            header_.export(outfile, level, namespace_, name_='header', pretty_print=pretty_print)
+            header_.export_(outfile, level, namespace_, name_='header', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Headers'):
         level += 1
         already_processed = set()
@@ -28368,7 +28368,7 @@ class ParametersSet(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ParametersSet', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ParametersSet', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -28398,7 +28398,7 @@ class ParametersSet(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdescription>%s</%sdescription>%s' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_, eol_))
         for parameter_ in self.parameter:
-            parameter_.export(outfile, level, namespace_, name_='parameter', pretty_print=pretty_print)
+            parameter_.export_(outfile, level, namespace_, name_='parameter', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='ParametersSet'):
         level += 1
         already_processed = set()
@@ -28483,7 +28483,7 @@ class Schema(Link):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Schema', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Schema', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -28593,7 +28593,7 @@ class RSDL(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='RSDL', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='RSDL', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -28625,13 +28625,13 @@ class RSDL(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdescription>%s</%sdescription>%s' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_, eol_))
         if self.version is not None:
-            self.version.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
+            self.version.export_(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
         if self.schema is not None:
-            self.schema.export(outfile, level, namespace_, name_='schema', pretty_print=pretty_print)
+            self.schema.export_(outfile, level, namespace_, name_='schema', pretty_print=pretty_print)
         if self.general is not None:
-            self.general.export(outfile, level, namespace_, name_='general', pretty_print=pretty_print)
+            self.general.export_(outfile, level, namespace_, name_='general', pretty_print=pretty_print)
         if self.links is not None:
-            self.links.export(outfile, level, namespace_, name_='links', pretty_print=pretty_print)
+            self.links.export_(outfile, level, namespace_, name_='links', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='RSDL'):
         level += 1
         already_processed = set()
@@ -28766,7 +28766,7 @@ class GlusterVolume(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterVolume', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterVolume', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -28791,12 +28791,12 @@ class GlusterVolume(BaseResource):
         else:
             eol_ = ''
         if self.cluster is not None:
-            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
         if self.volume_type is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%svolume_type>%s</%svolume_type>%s' % (namespace_, self.gds_format_string(quote_xml(self.volume_type).encode(ExternalEncoding), input_name='volume_type'), namespace_, eol_))
         if self.transport_types is not None:
-            self.transport_types.export(outfile, level, namespace_, name_='transport_types', pretty_print=pretty_print)
+            self.transport_types.export_(outfile, level, namespace_, name_='transport_types', pretty_print=pretty_print)
         if self.replica_count is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sreplica_count>%s</%sreplica_count>%s' % (namespace_, self.gds_format_integer(self.replica_count, input_name='replica_count'), namespace_, eol_))
@@ -28804,11 +28804,11 @@ class GlusterVolume(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstripe_count>%s</%sstripe_count>%s' % (namespace_, self.gds_format_integer(self.stripe_count, input_name='stripe_count'), namespace_, eol_))
         if self.bricks is not None:
-            self.bricks.export(outfile, level, namespace_, name_='bricks', pretty_print=pretty_print)
+            self.bricks.export_(outfile, level, namespace_, name_='bricks', pretty_print=pretty_print)
         if self.options is not None:
-            self.options.export(outfile, level, namespace_, name_='options', pretty_print=pretty_print)
+            self.options.export_(outfile, level, namespace_, name_='options', pretty_print=pretty_print)
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterVolume'):
         level += 1
         already_processed = set()
@@ -28937,7 +28937,7 @@ class GlusterVolumeTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterVolumeTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterVolumeTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -29023,7 +29023,7 @@ class TransportTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='TransportTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='TransportTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -29109,7 +29109,7 @@ class GlusterStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -29197,7 +29197,7 @@ class GlusterVolumes(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterVolumes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterVolumes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -29222,7 +29222,7 @@ class GlusterVolumes(BaseResources):
         else:
             eol_ = ''
         for gluster_volume_ in self.gluster_volume:
-            gluster_volume_.export(outfile, level, namespace_, name_='gluster_volume', pretty_print=pretty_print)
+            gluster_volume_.export_(outfile, level, namespace_, name_='gluster_volume', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterVolumes'):
         level += 1
         already_processed = set()
@@ -29295,7 +29295,7 @@ class GlusterClient(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterClient', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterClient', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -29419,7 +29419,7 @@ class GlusterClients(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterClients', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterClients', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -29444,7 +29444,7 @@ class GlusterClients(BaseResources):
         else:
             eol_ = ''
         for gluster_client_ in self.gluster_client:
-            gluster_client_.export(outfile, level, namespace_, name_='gluster_client', pretty_print=pretty_print)
+            gluster_client_.export_(outfile, level, namespace_, name_='gluster_client', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterClients'):
         level += 1
         already_processed = set()
@@ -29533,7 +29533,7 @@ class GlusterMemoryPool(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterMemoryPool', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterMemoryPool', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -29713,7 +29713,7 @@ class GlusterMemoryPools(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterMemoryPools', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterMemoryPools', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -29738,7 +29738,7 @@ class GlusterMemoryPools(BaseResources):
         else:
             eol_ = ''
         for memory_pool_ in self.memory_pool:
-            memory_pool_.export(outfile, level, namespace_, name_='memory_pool', pretty_print=pretty_print)
+            memory_pool_.export_(outfile, level, namespace_, name_='memory_pool', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterMemoryPools'):
         level += 1
         already_processed = set()
@@ -29799,7 +29799,7 @@ class GlusterBrickMemoryInfo(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterBrickMemoryInfo', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterBrickMemoryInfo', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -29823,7 +29823,7 @@ class GlusterBrickMemoryInfo(GeneratedsSuper):
         else:
             eol_ = ''
         if self.memory_pools is not None:
-            self.memory_pools.export(outfile, level, namespace_, name_='memory_pools', pretty_print=pretty_print)
+            self.memory_pools.export_(outfile, level, namespace_, name_='memory_pools', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterBrickMemoryInfo'):
         level += 1
         already_processed = set()
@@ -29905,7 +29905,7 @@ class GlusterBrickAdvancedDetails(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterBrickAdvancedDetails', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterBrickAdvancedDetails', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -29949,9 +29949,9 @@ class GlusterBrickAdvancedDetails(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sfs_name>%s</%sfs_name>%s' % (namespace_, self.gds_format_string(quote_xml(self.fs_name).encode(ExternalEncoding), input_name='fs_name'), namespace_, eol_))
         if self.gluster_clients is not None:
-            self.gluster_clients.export(outfile, level, namespace_, name_='gluster_clients', pretty_print=pretty_print)
+            self.gluster_clients.export_(outfile, level, namespace_, name_='gluster_clients', pretty_print=pretty_print)
         if self.memory_pools is not None:
-            self.memory_pools.export(outfile, level, namespace_, name_='memory_pools', pretty_print=pretty_print)
+            self.memory_pools.export_(outfile, level, namespace_, name_='memory_pools', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterBrickAdvancedDetails'):
         level += 1
         already_processed = set()
@@ -30077,7 +30077,7 @@ class GlusterBrick(GlusterBrickAdvancedDetails):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterBrick', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterBrick', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -30102,7 +30102,7 @@ class GlusterBrick(GlusterBrickAdvancedDetails):
         else:
             eol_ = ''
         if self.gluster_volume is not None:
-            self.gluster_volume.export(outfile, level, namespace_, name_='gluster_volume', pretty_print=pretty_print)
+            self.gluster_volume.export_(outfile, level, namespace_, name_='gluster_volume', pretty_print=pretty_print)
         if self.server_id is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sserver_id>%s</%sserver_id>%s' % (namespace_, self.gds_format_string(quote_xml(self.server_id).encode(ExternalEncoding), input_name='server_id'), namespace_, eol_))
@@ -30110,7 +30110,7 @@ class GlusterBrick(GlusterBrickAdvancedDetails):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sbrick_dir>%s</%sbrick_dir>%s' % (namespace_, self.gds_format_string(quote_xml(self.brick_dir).encode(ExternalEncoding), input_name='brick_dir'), namespace_, eol_))
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterBrick'):
         level += 1
         already_processed = set()
@@ -30204,7 +30204,7 @@ class GlusterBricks(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterBricks', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterBricks', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -30235,7 +30235,7 @@ class GlusterBricks(BaseResources):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstripe_count>%s</%sstripe_count>%s' % (namespace_, self.gds_format_integer(self.stripe_count, input_name='stripe_count'), namespace_, eol_))
         for brick_ in self.brick:
-            brick_.export(outfile, level, namespace_, name_='brick', pretty_print=pretty_print)
+            brick_.export_(outfile, level, namespace_, name_='brick', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterBricks'):
         level += 1
         already_processed = set()
@@ -30323,7 +30323,7 @@ class Stages(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Stages', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Stages', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -30409,7 +30409,7 @@ class HookStates(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='HookStates', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='HookStates', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -30495,7 +30495,7 @@ class ContentTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ContentTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ContentTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -30583,7 +30583,7 @@ class GlusterServerHooks(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterServerHooks', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterServerHooks', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -30608,7 +30608,7 @@ class GlusterServerHooks(BaseResources):
         else:
             eol_ = ''
         for server_hook_ in self.server_hook:
-            server_hook_.export(outfile, level, namespace_, name_='server_hook', pretty_print=pretty_print)
+            server_hook_.export_(outfile, level, namespace_, name_='server_hook', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterServerHooks'):
         level += 1
         already_processed = set()
@@ -30683,7 +30683,7 @@ class GlusterServerHook(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterServerHook', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterServerHook', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -30708,12 +30708,12 @@ class GlusterServerHook(BaseResource):
         else:
             eol_ = ''
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.content_type is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scontent_type>%s</%scontent_type>%s' % (namespace_, self.gds_format_string(quote_xml(self.content_type).encode(ExternalEncoding), input_name='content_type'), namespace_, eol_))
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.checksum is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%schecksum>%s</%schecksum>%s' % (namespace_, self.gds_format_string(quote_xml(self.checksum).encode(ExternalEncoding), input_name='checksum'), namespace_, eol_))
@@ -30833,7 +30833,7 @@ class GlusterHook(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterHook', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterHook', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -30858,7 +30858,7 @@ class GlusterHook(BaseResource):
         else:
             eol_ = ''
         if self.cluster is not None:
-            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
         if self.gluster_command is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sgluster_command>%s</%sgluster_command>%s' % (namespace_, self.gds_format_string(quote_xml(self.gluster_command).encode(ExternalEncoding), input_name='gluster_command'), namespace_, eol_))
@@ -30881,9 +30881,9 @@ class GlusterHook(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sconflicts>%s</%sconflicts>%s' % (namespace_, self.gds_format_string(quote_xml(self.conflicts).encode(ExternalEncoding), input_name='conflicts'), namespace_, eol_))
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.server_hooks is not None:
-            self.server_hooks.export(outfile, level, namespace_, name_='server_hooks', pretty_print=pretty_print)
+            self.server_hooks.export_(outfile, level, namespace_, name_='server_hooks', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterHook'):
         level += 1
         already_processed = set()
@@ -31018,7 +31018,7 @@ class GlusterHooks(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterHooks', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterHooks', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -31043,7 +31043,7 @@ class GlusterHooks(BaseResources):
         else:
             eol_ = ''
         for gluster_hook_ in self.gluster_hook:
-            gluster_hook_.export(outfile, level, namespace_, name_='gluster_hook', pretty_print=pretty_print)
+            gluster_hook_.export_(outfile, level, namespace_, name_='gluster_hook', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterHooks'):
         level += 1
         already_processed = set()
@@ -31110,7 +31110,7 @@ class GlusterVolumeProfileDetails(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GlusterVolumeProfileDetails', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GlusterVolumeProfileDetails', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -31135,9 +31135,9 @@ class GlusterVolumeProfileDetails(BaseResource):
         else:
             eol_ = ''
         if self.brick_profile_details is not None:
-            self.brick_profile_details.export(outfile, level, namespace_, name_='brick_profile_details', pretty_print=pretty_print)
+            self.brick_profile_details.export_(outfile, level, namespace_, name_='brick_profile_details', pretty_print=pretty_print)
         if self.nfs_profile_details is not None:
-            self.nfs_profile_details.export(outfile, level, namespace_, name_='nfs_profile_details', pretty_print=pretty_print)
+            self.nfs_profile_details.export_(outfile, level, namespace_, name_='nfs_profile_details', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GlusterVolumeProfileDetails'):
         level += 1
         already_processed = set()
@@ -31207,7 +31207,7 @@ class BrickProfileDetails(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='BrickProfileDetails', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='BrickProfileDetails', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -31231,7 +31231,7 @@ class BrickProfileDetails(GeneratedsSuper):
         else:
             eol_ = ''
         for brick_profile_detail_ in self.brick_profile_detail:
-            brick_profile_detail_.export(outfile, level, namespace_, name_='brick_profile_detail', pretty_print=pretty_print)
+            brick_profile_detail_.export_(outfile, level, namespace_, name_='brick_profile_detail', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='BrickProfileDetails'):
         level += 1
         already_processed = set()
@@ -31295,7 +31295,7 @@ class NfsProfileDetails(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='NfsProfileDetails', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='NfsProfileDetails', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -31319,7 +31319,7 @@ class NfsProfileDetails(GeneratedsSuper):
         else:
             eol_ = ''
         for nfs_profile_detail_ in self.nfs_profile_detail:
-            nfs_profile_detail_.export(outfile, level, namespace_, name_='nfs_profile_detail', pretty_print=pretty_print)
+            nfs_profile_detail_.export_(outfile, level, namespace_, name_='nfs_profile_detail', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='NfsProfileDetails'):
         level += 1
         already_processed = set()
@@ -31386,7 +31386,7 @@ class EntityProfileDetail(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='EntityProfileDetail', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='EntityProfileDetail', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -31414,7 +31414,7 @@ class EntityProfileDetail(GeneratedsSuper):
         else:
             eol_ = ''
         for profile_detail_ in self.profile_detail:
-            profile_detail_.export(outfile, level, namespace_, name_='profile_detail', pretty_print=pretty_print)
+            profile_detail_.export_(outfile, level, namespace_, name_='profile_detail', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='EntityProfileDetail'):
         level += 1
         already_processed = set()
@@ -31478,7 +31478,7 @@ class NfsProfileDetail(EntityProfileDetail):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='NfsProfileDetail', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='NfsProfileDetail', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -31587,7 +31587,7 @@ class ProfileDetail(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ProfileDetail', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ProfileDetail', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -31617,11 +31617,11 @@ class ProfileDetail(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sduration>%s</%sduration>%s' % (namespace_, self.gds_format_integer(self.duration, input_name='duration'), namespace_, eol_))
         for statistic_ in self.statistic:
-            statistic_.export(outfile, level, namespace_, name_='statistic', pretty_print=pretty_print)
+            statistic_.export_(outfile, level, namespace_, name_='statistic', pretty_print=pretty_print)
         for block_statistic_ in self.block_statistic:
-            block_statistic_.export(outfile, level, namespace_, name_='block_statistic', pretty_print=pretty_print)
+            block_statistic_.export_(outfile, level, namespace_, name_='block_statistic', pretty_print=pretty_print)
         for fop_statistic_ in self.fop_statistic:
-            fop_statistic_.export(outfile, level, namespace_, name_='fop_statistic', pretty_print=pretty_print)
+            fop_statistic_.export_(outfile, level, namespace_, name_='fop_statistic', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='ProfileDetail'):
         level += 1
         already_processed = set()
@@ -31735,7 +31735,7 @@ class BlockStatistic(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='BlockStatistic', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='BlockStatistic', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -31759,7 +31759,7 @@ class BlockStatistic(GeneratedsSuper):
         else:
             eol_ = ''
         for statistic_ in self.statistic:
-            statistic_.export(outfile, level, namespace_, name_='statistic', pretty_print=pretty_print)
+            statistic_.export_(outfile, level, namespace_, name_='statistic', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='BlockStatistic'):
         level += 1
         already_processed = set()
@@ -31827,7 +31827,7 @@ class FopStatistic(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='FopStatistic', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='FopStatistic', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -31854,7 +31854,7 @@ class FopStatistic(GeneratedsSuper):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sname>%s</%sname>%s' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_, eol_))
         for statistic_ in self.statistic:
-            statistic_.export(outfile, level, namespace_, name_='statistic', pretty_print=pretty_print)
+            statistic_.export_(outfile, level, namespace_, name_='statistic', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='FopStatistic'):
         level += 1
         already_processed = set()
@@ -31925,7 +31925,7 @@ class PmProxies(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='PmProxies', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='PmProxies', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -31949,7 +31949,7 @@ class PmProxies(GeneratedsSuper):
         else:
             eol_ = ''
         for pm_proxy_ in self.pm_proxy:
-            pm_proxy_.export(outfile, level, namespace_, name_='pm_proxy', pretty_print=pretty_print)
+            pm_proxy_.export_(outfile, level, namespace_, name_='pm_proxy', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='PmProxies'):
         level += 1
         already_processed = set()
@@ -32008,7 +32008,7 @@ class PmProxy(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='PmProxy', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='PmProxy', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -32088,7 +32088,7 @@ class StepTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='StepTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='StepTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -32211,7 +32211,7 @@ class Step(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Step', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Step', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -32236,9 +32236,9 @@ class Step(BaseResource):
         else:
             eol_ = ''
         if self.parent_step is not None:
-            self.parent_step.export(outfile, level, namespace_, name_='parent_step', pretty_print=pretty_print)
+            self.parent_step.export_(outfile, level, namespace_, name_='parent_step', pretty_print=pretty_print)
         if self.job is not None:
-            self.job.export(outfile, level, namespace_, name_='job', pretty_print=pretty_print)
+            self.job.export_(outfile, level, namespace_, name_='job', pretty_print=pretty_print)
         if self.type_ is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stype>%s</%stype>%s' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_, eol_))
@@ -32246,7 +32246,7 @@ class Step(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%snumber>%s</%snumber>%s' % (namespace_, self.gds_format_integer(self.number, input_name='number'), namespace_, eol_))
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.start_time is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstart_time>%s</%sstart_time>%s' % (namespace_, self.gds_format_datetime(self.start_time, input_name='start_time'), namespace_, eol_))
@@ -32392,7 +32392,7 @@ class Steps(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Steps', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Steps', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -32417,7 +32417,7 @@ class Steps(BaseResources):
         else:
             eol_ = ''
         for step_ in self.step:
-            step_.export(outfile, level, namespace_, name_='step', pretty_print=pretty_print)
+            step_.export_(outfile, level, namespace_, name_='step', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Steps'):
         level += 1
         already_processed = set()
@@ -32516,7 +32516,7 @@ class Job(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Job', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Job', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -32541,9 +32541,9 @@ class Job(BaseResource):
         else:
             eol_ = ''
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.owner is not None:
-            self.owner.export(outfile, level, namespace_, name_='owner', pretty_print=pretty_print)
+            self.owner.export_(outfile, level, namespace_, name_='owner', pretty_print=pretty_print)
         if self.start_time is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstart_time>%s</%sstart_time>%s' % (namespace_, self.gds_format_datetime(self.start_time, input_name='start_time'), namespace_, eol_))
@@ -32677,7 +32677,7 @@ class Jobs(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Jobs', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Jobs', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -32702,7 +32702,7 @@ class Jobs(BaseResources):
         else:
             eol_ = ''
         for job_ in self.job:
-            job_.export(outfile, level, namespace_, name_='job', pretty_print=pretty_print)
+            job_.export_(outfile, level, namespace_, name_='job', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Jobs'):
         level += 1
         already_processed = set()
@@ -32773,7 +32773,7 @@ class AffinityGroup(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='AffinityGroup', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='AffinityGroup', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -32798,7 +32798,7 @@ class AffinityGroup(BaseResource):
         else:
             eol_ = ''
         if self.cluster is not None:
-            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
         if self.positive is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%spositive>%s</%spositive>%s' % (namespace_, self.gds_format_boolean(self.positive, input_name='positive'), namespace_, eol_))
@@ -32892,7 +32892,7 @@ class AffinityGroups(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='AffinityGroups', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='AffinityGroups', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -32917,7 +32917,7 @@ class AffinityGroups(BaseResources):
         else:
             eol_ = ''
         for affinity_group_ in self.affinity_group:
-            affinity_group_.export(outfile, level, namespace_, name_='affinity_group', pretty_print=pretty_print)
+            affinity_group_.export_(outfile, level, namespace_, name_='affinity_group', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='AffinityGroups'):
         level += 1
         already_processed = set()
@@ -33003,7 +33003,7 @@ class NumaNode(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='NumaNode', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='NumaNode', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -33032,7 +33032,7 @@ class NumaNode(BaseResource):
         else:
             eol_ = ''
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.index is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sindex>%s</%sindex>%s' % (namespace_, self.gds_format_integer(self.index, input_name='index'), namespace_, eol_))
@@ -33040,9 +33040,9 @@ class NumaNode(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smemory>%s</%smemory>%s' % (namespace_, self.gds_format_integer(self.memory, input_name='memory'), namespace_, eol_))
         if self.cpu is not None:
-            self.cpu.export(outfile, level, namespace_, name_='cpu', pretty_print=pretty_print)
+            self.cpu.export_(outfile, level, namespace_, name_='cpu', pretty_print=pretty_print)
         if self.statistics is not None:
-            self.statistics.export(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
+            self.statistics.export_(outfile, level, namespace_, name_='statistics', pretty_print=pretty_print)
         if self.node_distance is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%snode_distance>%s</%snode_distance>%s' % (namespace_, self.gds_format_string(quote_xml(self.node_distance).encode(ExternalEncoding), input_name='node_distance'), namespace_, eol_))
@@ -33210,7 +33210,7 @@ class QoS(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='QoS', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='QoS', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -33238,7 +33238,7 @@ class QoS(BaseResource):
         else:
             eol_ = ''
         if self.data_center is not None:
-            self.data_center.export(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
+            self.data_center.export_(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
         if self.max_throughput is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smax_throughput>%s</%smax_throughput>%s' % (namespace_, self.gds_format_integer(self.max_throughput, input_name='max_throughput'), namespace_, eol_))
@@ -33493,7 +33493,7 @@ class NumaNodes(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='NumaNodes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='NumaNodes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -33522,7 +33522,7 @@ class NumaNodes(BaseResources):
         else:
             eol_ = ''
         for host_numa_node_ in self.host_numa_node:
-            host_numa_node_.export(outfile, level, namespace_, name_='host_numa_node', pretty_print=pretty_print)
+            host_numa_node_.export_(outfile, level, namespace_, name_='host_numa_node', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='NumaNodes'):
         level += 1
         already_processed = set()
@@ -33594,7 +33594,7 @@ class VirtualNumaNode(NumaNode):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VirtualNumaNode', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VirtualNumaNode', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -33619,9 +33619,9 @@ class VirtualNumaNode(NumaNode):
         else:
             eol_ = ''
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
         if self.numa_node_pins is not None:
-            self.numa_node_pins.export(outfile, level, namespace_, name_='numa_node_pins', pretty_print=pretty_print)
+            self.numa_node_pins.export_(outfile, level, namespace_, name_='numa_node_pins', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VirtualNumaNode'):
         level += 1
         already_processed = set()
@@ -33694,7 +33694,7 @@ class VirtualNumaNodes(NumaNodes):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VirtualNumaNodes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VirtualNumaNodes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -33719,7 +33719,7 @@ class VirtualNumaNodes(NumaNodes):
         else:
             eol_ = ''
         for vm_numa_node_ in self.vm_numa_node:
-            vm_numa_node_.export(outfile, level, namespace_, name_='vm_numa_node', pretty_print=pretty_print)
+            vm_numa_node_.export_(outfile, level, namespace_, name_='vm_numa_node', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VirtualNumaNodes'):
         level += 1
         already_processed = set()
@@ -33787,7 +33787,7 @@ class QoSs(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='QoSs', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='QoSs', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -33812,7 +33812,7 @@ class QoSs(BaseResources):
         else:
             eol_ = ''
         for qos_ in self.qos:
-            qos_.export(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
+            qos_.export_(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='QoSs'):
         level += 1
         already_processed = set()
@@ -33878,7 +33878,7 @@ class NumaNodePins(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='NumaNodePins', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='NumaNodePins', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -33902,7 +33902,7 @@ class NumaNodePins(GeneratedsSuper):
         else:
             eol_ = ''
         for numa_node_pin_ in self.numa_node_pin:
-            numa_node_pin_.export(outfile, level, namespace_, name_='numa_node_pin', pretty_print=pretty_print)
+            numa_node_pin_.export_(outfile, level, namespace_, name_='numa_node_pin', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='NumaNodePins'):
         level += 1
         already_processed = set()
@@ -33967,7 +33967,7 @@ class NumaNodePin(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='NumaNodePin', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='NumaNodePin', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -33996,7 +33996,7 @@ class NumaNodePin(GeneratedsSuper):
         else:
             eol_ = ''
         if self.host_numa_node is not None:
-            self.host_numa_node.export(outfile, level, namespace_, name_='host_numa_node', pretty_print=pretty_print)
+            self.host_numa_node.export_(outfile, level, namespace_, name_='host_numa_node', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='NumaNodePin'):
         level += 1
         already_processed = set()
@@ -34077,7 +34077,7 @@ class Cores(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Cores', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Cores', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -34101,7 +34101,7 @@ class Cores(GeneratedsSuper):
         else:
             eol_ = ''
         for core_ in self.core:
-            core_.export(outfile, level, namespace_, name_='core', pretty_print=pretty_print)
+            core_.export_(outfile, level, namespace_, name_='core', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Cores'):
         level += 1
         already_processed = set()
@@ -34164,7 +34164,7 @@ class Core(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Core', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Core', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -34257,7 +34257,7 @@ class QosTypes(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='QosTypes', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='QosTypes', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -34348,7 +34348,7 @@ class IscsiBond(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='IscsiBond', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='IscsiBond', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -34373,11 +34373,11 @@ class IscsiBond(BaseResource):
         else:
             eol_ = ''
         if self.data_center is not None:
-            self.data_center.export(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
+            self.data_center.export_(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
         if self.storage_connections is not None:
-            self.storage_connections.export(outfile, level, namespace_, name_='storage_connections', pretty_print=pretty_print)
+            self.storage_connections.export_(outfile, level, namespace_, name_='storage_connections', pretty_print=pretty_print)
         if self.networks is not None:
-            self.networks.export(outfile, level, namespace_, name_='networks', pretty_print=pretty_print)
+            self.networks.export_(outfile, level, namespace_, name_='networks', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='IscsiBond'):
         level += 1
         already_processed = set()
@@ -34459,7 +34459,7 @@ class IscsiBonds(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='IscsiBonds', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='IscsiBonds', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -34484,7 +34484,7 @@ class IscsiBonds(BaseResources):
         else:
             eol_ = ''
         for iscsi_bond_ in self.iscsi_bond:
-            iscsi_bond_.export(outfile, level, namespace_, name_='iscsi_bond', pretty_print=pretty_print)
+            iscsi_bond_.export_(outfile, level, namespace_, name_='iscsi_bond', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='IscsiBonds'):
         level += 1
         already_processed = set()
@@ -34551,7 +34551,7 @@ class DiskProfile(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DiskProfile', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DiskProfile', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -34576,9 +34576,9 @@ class DiskProfile(BaseResource):
         else:
             eol_ = ''
         if self.qos is not None:
-            self.qos.export(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
+            self.qos.export_(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
         if self.storage_domain is not None:
-            self.storage_domain.export(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
+            self.storage_domain.export_(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='DiskProfile'):
         level += 1
         already_processed = set()
@@ -34650,7 +34650,7 @@ class DiskProfiles(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DiskProfiles', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DiskProfiles', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -34675,7 +34675,7 @@ class DiskProfiles(BaseResources):
         else:
             eol_ = ''
         for disk_profile_ in self.disk_profile:
-            disk_profile_.export(outfile, level, namespace_, name_='disk_profile', pretty_print=pretty_print)
+            disk_profile_.export_(outfile, level, namespace_, name_='disk_profile', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='DiskProfiles'):
         level += 1
         already_processed = set()
@@ -34742,7 +34742,7 @@ class CpuProfile(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CpuProfile', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CpuProfile', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -34767,9 +34767,9 @@ class CpuProfile(BaseResource):
         else:
             eol_ = ''
         if self.qos is not None:
-            self.qos.export(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
+            self.qos.export_(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
         if self.cluster is not None:
-            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CpuProfile'):
         level += 1
         already_processed = set()
@@ -34841,7 +34841,7 @@ class CpuProfiles(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CpuProfiles', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='CpuProfiles', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -34866,7 +34866,7 @@ class CpuProfiles(BaseResources):
         else:
             eol_ = ''
         for cpu_profile_ in self.cpu_profile:
-            cpu_profile_.export(outfile, level, namespace_, name_='cpu_profile', pretty_print=pretty_print)
+            cpu_profile_.export_(outfile, level, namespace_, name_='cpu_profile', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CpuProfiles'):
         level += 1
         already_processed = set()
@@ -34926,7 +34926,7 @@ class OperatingSystemInfo(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='OperatingSystemInfo', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='OperatingSystemInfo', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -34998,7 +34998,7 @@ class OperatingSystemInfos(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='OperatingSystemInfos', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='OperatingSystemInfos', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -35023,7 +35023,7 @@ class OperatingSystemInfos(BaseResources):
         else:
             eol_ = ''
         for operating_system_ in self.operating_system:
-            operating_system_.export(outfile, level, namespace_, name_='operating_system', pretty_print=pretty_print)
+            operating_system_.export_(outfile, level, namespace_, name_='operating_system', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='OperatingSystemInfos'):
         level += 1
         already_processed = set()
@@ -35086,7 +35086,7 @@ class BrickProfileDetail(EntityProfileDetail):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='BrickProfileDetail', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='BrickProfileDetail', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -35111,7 +35111,7 @@ class BrickProfileDetail(EntityProfileDetail):
         else:
             eol_ = ''
         if self.brick is not None:
-            self.brick.export(outfile, level, namespace_, name_='brick', pretty_print=pretty_print)
+            self.brick.export_(outfile, level, namespace_, name_='brick', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='BrickProfileDetail'):
         level += 1
         already_processed = set()
@@ -35179,7 +35179,7 @@ class Template(VmBase):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Template', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Template', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -35208,11 +35208,11 @@ class Template(VmBase):
         else:
             eol_ = ''
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
         if self.version is not None:
-            self.version.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
+            self.version.export_(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
         if self.permissions is not None:
-            self.permissions.export(outfile, level, namespace_, name_='permissions', pretty_print=pretty_print)
+            self.permissions.export_(outfile, level, namespace_, name_='permissions', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Template'):
         level += 1
         already_processed = set()
@@ -35291,7 +35291,7 @@ class InstanceType(Template):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='InstanceType', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='InstanceType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -35362,7 +35362,7 @@ class WatchDog(BaseDevice):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='WatchDog', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='WatchDog', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -35457,7 +35457,7 @@ class WatchDogs(BaseDevices):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='WatchDogs', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='WatchDogs', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -35482,7 +35482,7 @@ class WatchDogs(BaseDevices):
         else:
             eol_ = ''
         for watchdog_ in self.watchdog:
-            watchdog_.export(outfile, level, namespace_, name_='watchdog', pretty_print=pretty_print)
+            watchdog_.export_(outfile, level, namespace_, name_='watchdog', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='WatchDogs'):
         level += 1
         already_processed = set()
@@ -35581,7 +35581,7 @@ class Feature(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Feature', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Feature', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -35606,25 +35606,25 @@ class Feature(BaseResource):
         else:
             eol_ = ''
         if self.transparent_hugepages is not None:
-            self.transparent_hugepages.export(outfile, level, namespace_, name_='transparent_hugepages', pretty_print=pretty_print)
+            self.transparent_hugepages.export_(outfile, level, namespace_, name_='transparent_hugepages', pretty_print=pretty_print)
         if self.gluster_volumes is not None:
-            self.gluster_volumes.export(outfile, level, namespace_, name_='gluster_volumes', pretty_print=pretty_print)
+            self.gluster_volumes.export_(outfile, level, namespace_, name_='gluster_volumes', pretty_print=pretty_print)
         if self.vm_device_types is not None:
-            self.vm_device_types.export(outfile, level, namespace_, name_='vm_device_types', pretty_print=pretty_print)
+            self.vm_device_types.export_(outfile, level, namespace_, name_='vm_device_types', pretty_print=pretty_print)
         if self.storage_types is not None:
-            self.storage_types.export(outfile, level, namespace_, name_='storage_types', pretty_print=pretty_print)
+            self.storage_types.export_(outfile, level, namespace_, name_='storage_types', pretty_print=pretty_print)
         if self.storage_domain is not None:
-            self.storage_domain.export(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
+            self.storage_domain.export_(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
         if self.nic is not None:
-            self.nic.export(outfile, level, namespace_, name_='nic', pretty_print=pretty_print)
+            self.nic.export_(outfile, level, namespace_, name_='nic', pretty_print=pretty_print)
         if self.api is not None:
-            self.api.export(outfile, level, namespace_, name_='api', pretty_print=pretty_print)
+            self.api.export_(outfile, level, namespace_, name_='api', pretty_print=pretty_print)
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.url is not None:
-            self.url.export(outfile, level, namespace_, name_='url', pretty_print=pretty_print)
+            self.url.export_(outfile, level, namespace_, name_='url', pretty_print=pretty_print)
         if self.headers is not None:
-            self.headers.export(outfile, level, namespace_, name_='headers', pretty_print=pretty_print)
+            self.headers.export_(outfile, level, namespace_, name_='headers', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Feature'):
         level += 1
         already_processed = set()
@@ -35785,7 +35785,7 @@ class SchedulingPolicies(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SchedulingPolicies', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SchedulingPolicies', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -35810,7 +35810,7 @@ class SchedulingPolicies(BaseResources):
         else:
             eol_ = ''
         for scheduling_policy_ in self.scheduling_policy:
-            scheduling_policy_.export(outfile, level, namespace_, name_='scheduling_policy', pretty_print=pretty_print)
+            scheduling_policy_.export_(outfile, level, namespace_, name_='scheduling_policy', pretty_print=pretty_print)
         for policy_ in self.policy:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%spolicy>%s</%spolicy>%s' % (namespace_, self.gds_format_string(quote_xml(policy_).encode(ExternalEncoding), input_name='policy'), namespace_, eol_))
@@ -35902,7 +35902,7 @@ class Capabilities(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Capabilities', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Capabilities', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -35927,11 +35927,11 @@ class Capabilities(BaseResources):
         else:
             eol_ = ''
         for version_ in self.version:
-            version_.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
+            version_.export_(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
         if self.permits is not None:
-            self.permits.export(outfile, level, namespace_, name_='permits', pretty_print=pretty_print)
+            self.permits.export_(outfile, level, namespace_, name_='permits', pretty_print=pretty_print)
         if self.scheduling_policies is not None:
-            self.scheduling_policies.export(outfile, level, namespace_, name_='scheduling_policies', pretty_print=pretty_print)
+            self.scheduling_policies.export_(outfile, level, namespace_, name_='scheduling_policies', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Capabilities'):
         level += 1
         already_processed = set()
@@ -36022,7 +36022,7 @@ class ProductInfo(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='ProductInfo', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='ProductInfo', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -36050,7 +36050,7 @@ class ProductInfo(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%svendor>%s</%svendor>%s' % (namespace_, self.gds_format_string(quote_xml(self.vendor).encode(ExternalEncoding), input_name='vendor'), namespace_, eol_))
         if self.version is not None:
-            self.version.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
+            self.version.export_(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
         if self.full_version is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sfull_version>%s</%sfull_version>%s' % (namespace_, self.gds_format_string(quote_xml(self.full_version).encode(ExternalEncoding), input_name='full_version'), namespace_, eol_))
@@ -36139,7 +36139,7 @@ class Version(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Version', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Version', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -36286,7 +36286,7 @@ class Statistics(BaseResources):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Statistics', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Statistics', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -36311,7 +36311,7 @@ class Statistics(BaseResources):
         else:
             eol_ = ''
         for statistic_ in self.statistic:
-            statistic_.export(outfile, level, namespace_, name_='statistic', pretty_print=pretty_print)
+            statistic_.export_(outfile, level, namespace_, name_='statistic', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Statistics'):
         level += 1
         already_processed = set()
@@ -36424,7 +36424,7 @@ class Statistic(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Statistic', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Statistic', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -36449,7 +36449,7 @@ class Statistic(BaseResource):
         else:
             eol_ = ''
         if self.values is not None:
-            self.values.export(outfile, level, namespace_, name_='values', pretty_print=pretty_print)
+            self.values.export_(outfile, level, namespace_, name_='values', pretty_print=pretty_print)
         if self.type_ is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stype>%s</%stype>%s' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_, eol_))
@@ -36457,23 +36457,23 @@ class Statistic(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sunit>%s</%sunit>%s' % (namespace_, self.gds_format_string(quote_xml(self.unit).encode(ExternalEncoding), input_name='unit'), namespace_, eol_))
         if self.disk is not None:
-            self.disk.export(outfile, level, namespace_, name_='disk', pretty_print=pretty_print)
+            self.disk.export_(outfile, level, namespace_, name_='disk', pretty_print=pretty_print)
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.host_nic is not None:
-            self.host_nic.export(outfile, level, namespace_, name_='host_nic', pretty_print=pretty_print)
+            self.host_nic.export_(outfile, level, namespace_, name_='host_nic', pretty_print=pretty_print)
         if self.host_numa_node is not None:
-            self.host_numa_node.export(outfile, level, namespace_, name_='host_numa_node', pretty_print=pretty_print)
+            self.host_numa_node.export_(outfile, level, namespace_, name_='host_numa_node', pretty_print=pretty_print)
         if self.nic is not None:
-            self.nic.export(outfile, level, namespace_, name_='nic', pretty_print=pretty_print)
+            self.nic.export_(outfile, level, namespace_, name_='nic', pretty_print=pretty_print)
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
         if self.brick is not None:
-            self.brick.export(outfile, level, namespace_, name_='brick', pretty_print=pretty_print)
+            self.brick.export_(outfile, level, namespace_, name_='brick', pretty_print=pretty_print)
         if self.step is not None:
-            self.step.export(outfile, level, namespace_, name_='step', pretty_print=pretty_print)
+            self.step.export_(outfile, level, namespace_, name_='step', pretty_print=pretty_print)
         if self.gluster_volume is not None:
-            self.gluster_volume.export(outfile, level, namespace_, name_='gluster_volume', pretty_print=pretty_print)
+            self.gluster_volume.export_(outfile, level, namespace_, name_='gluster_volume', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Statistic'):
         level += 1
         already_processed = set()
@@ -36643,7 +36643,7 @@ class Creation(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Creation', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Creation', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -36668,9 +36668,9 @@ class Creation(BaseResource):
         else:
             eol_ = ''
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.fault is not None:
-            self.fault.export(outfile, level, namespace_, name_='fault', pretty_print=pretty_print)
+            self.fault.export_(outfile, level, namespace_, name_='fault', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Creation'):
         level += 1
         already_processed = set()
@@ -36894,7 +36894,7 @@ class Action(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='Action', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='Action', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -36922,16 +36922,16 @@ class Action(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sasync>%s</%sasync>%s' % (namespace_, self.gds_format_boolean(self.async, input_name='async'), namespace_, eol_))
         if self.grace_period is not None:
-            self.grace_period.export(outfile, level, namespace_, name_='grace_period', pretty_print=pretty_print)
+            self.grace_period.export_(outfile, level, namespace_, name_='grace_period', pretty_print=pretty_print)
         if self.host is not None:
-            self.host.export(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.network is not None:
-            self.network.export(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
+            self.network.export_(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
         if self.root_password is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sroot_password>%s</%sroot_password>%s' % (namespace_, self.gds_format_string(quote_xml(self.root_password).encode(ExternalEncoding), input_name='root_password'), namespace_, eol_))
         if self.ssh is not None:
-            self.ssh.export(outfile, level, namespace_, name_='ssh', pretty_print=pretty_print)
+            self.ssh.export_(outfile, level, namespace_, name_='ssh', pretty_print=pretty_print)
         if self.image is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%simage>%s</%simage>%s' % (namespace_, self.gds_format_string(quote_xml(self.image).encode(ExternalEncoding), input_name='image'), namespace_, eol_))
@@ -36939,13 +36939,13 @@ class Action(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sfence_type>%s</%sfence_type>%s' % (namespace_, self.gds_format_string(quote_xml(self.fence_type).encode(ExternalEncoding), input_name='fence_type'), namespace_, eol_))
         if self.ticket is not None:
-            self.ticket.export(outfile, level, namespace_, name_='ticket', pretty_print=pretty_print)
+            self.ticket.export_(outfile, level, namespace_, name_='ticket', pretty_print=pretty_print)
         if self.iscsi is not None:
-            self.iscsi.export(outfile, level, namespace_, name_='iscsi', pretty_print=pretty_print)
+            self.iscsi.export_(outfile, level, namespace_, name_='iscsi', pretty_print=pretty_print)
         if self.storage_domain is not None:
-            self.storage_domain.export(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
+            self.storage_domain.export_(outfile, level, namespace_, name_='storage_domain', pretty_print=pretty_print)
         if self.cluster is not None:
-            self.cluster.export(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
+            self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
         if self.discard_snapshots is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdiscard_snapshots>%s</%sdiscard_snapshots>%s' % (namespace_, self.gds_format_boolean(self.discard_snapshots, input_name='discard_snapshots'), namespace_, eol_))
@@ -36953,13 +36953,13 @@ class Action(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sexclusive>%s</%sexclusive>%s' % (namespace_, self.gds_format_boolean(self.exclusive, input_name='exclusive'), namespace_, eol_))
         if self.vm is not None:
-            self.vm.export(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
         if self.snapshot is not None:
-            self.snapshot.export(outfile, level, namespace_, name_='snapshot', pretty_print=pretty_print)
+            self.snapshot.export_(outfile, level, namespace_, name_='snapshot', pretty_print=pretty_print)
         if self.template is not None:
-            self.template.export(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
+            self.template.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
         if self.host_nics is not None:
-            self.host_nics.export(outfile, level, namespace_, name_='host_nics', pretty_print=pretty_print)
+            self.host_nics.export_(outfile, level, namespace_, name_='host_nics', pretty_print=pretty_print)
         if self.check_connectivity is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scheck_connectivity>%s</%scheck_connectivity>%s' % (namespace_, self.gds_format_boolean(self.check_connectivity, input_name='check_connectivity'), namespace_, eol_))
@@ -36973,12 +36973,12 @@ class Action(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sforce>%s</%sforce>%s' % (namespace_, self.gds_format_boolean(self.force, input_name='force'), namespace_, eol_))
         if self.option is not None:
-            self.option.export(outfile, level, namespace_, name_='option', pretty_print=pretty_print)
+            self.option.export_(outfile, level, namespace_, name_='option', pretty_print=pretty_print)
         if self.fix_layout is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sfix_layout>%s</%sfix_layout>%s' % (namespace_, self.gds_format_boolean(self.fix_layout, input_name='fix_layout'), namespace_, eol_))
         if self.brick is not None:
-            self.brick.export(outfile, level, namespace_, name_='brick', pretty_print=pretty_print)
+            self.brick.export_(outfile, level, namespace_, name_='brick', pretty_print=pretty_print)
         if self.detach is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdetach>%s</%sdetach>%s' % (namespace_, self.gds_format_boolean(self.detach, input_name='detach'), namespace_, eol_))
@@ -36989,7 +36989,7 @@ class Action(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%srestore_memory>%s</%srestore_memory>%s' % (namespace_, self.gds_format_boolean(self.restore_memory, input_name='restore_memory'), namespace_, eol_))
         if self.disks is not None:
-            self.disks.export(outfile, level, namespace_, name_='disks', pretty_print=pretty_print)
+            self.disks.export_(outfile, level, namespace_, name_='disks', pretty_print=pretty_print)
         if self.succeeded is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssucceeded>%s</%ssucceeded>%s' % (namespace_, self.gds_format_boolean(self.succeeded, input_name='succeeded'), namespace_, eol_))
@@ -36997,9 +36997,9 @@ class Action(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sresolution_type>%s</%sresolution_type>%s' % (namespace_, self.gds_format_string(quote_xml(self.resolution_type).encode(ExternalEncoding), input_name='resolution_type'), namespace_, eol_))
         if self.bricks is not None:
-            self.bricks.export(outfile, level, namespace_, name_='bricks', pretty_print=pretty_print)
+            self.bricks.export_(outfile, level, namespace_, name_='bricks', pretty_print=pretty_print)
         if self.job is not None:
-            self.job.export(outfile, level, namespace_, name_='job', pretty_print=pretty_print)
+            self.job.export_(outfile, level, namespace_, name_='job', pretty_print=pretty_print)
         if self.import_as_template is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%simport_as_template>%s</%simport_as_template>%s' % (namespace_, self.gds_format_boolean(self.import_as_template, input_name='import_as_template'), namespace_, eol_))
@@ -37007,14 +37007,14 @@ class Action(BaseResource):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smaintenance_enabled>%s</%smaintenance_enabled>%s' % (namespace_, self.gds_format_boolean(self.maintenance_enabled, input_name='maintenance_enabled'), namespace_, eol_))
         if self.status is not None:
-            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+            self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.fault is not None:
-            self.fault.export(outfile, level, namespace_, name_='fault', pretty_print=pretty_print)
+            self.fault.export_(outfile, level, namespace_, name_='fault', pretty_print=pretty_print)
         for iscsi_target_ in self.iscsi_target:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%siscsi_target>%s</%siscsi_target>%s' % (namespace_, self.gds_format_string(quote_xml(iscsi_target_).encode(ExternalEncoding), input_name='iscsi_target'), namespace_, eol_))
         if self.power_management is not None:
-            self.power_management.export(outfile, level, namespace_, name_='power_management', pretty_print=pretty_print)
+            self.power_management.export_(outfile, level, namespace_, name_='power_management', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Action'):
         level += 1
         already_processed = set()
@@ -37481,7 +37481,7 @@ class SpecialObjects(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='SpecialObjects', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='SpecialObjects', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -37564,7 +37564,7 @@ class API(BaseResource):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='API', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='API', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -37589,11 +37589,11 @@ class API(BaseResource):
         else:
             eol_ = ''
         if self.special_objects is not None:
-            self.special_objects.export(outfile, level, namespace_, name_='special_objects', pretty_print=pretty_print)
+            self.special_objects.export_(outfile, level, namespace_, name_='special_objects', pretty_print=pretty_print)
         if self.product_info is not None:
-            self.product_info.export(outfile, level, namespace_, name_='product_info', pretty_print=pretty_print)
+            self.product_info.export_(outfile, level, namespace_, name_='product_info', pretty_print=pretty_print)
         if self.summary is not None:
-            self.summary.export(outfile, level, namespace_, name_='summary', pretty_print=pretty_print)
+            self.summary.export_(outfile, level, namespace_, name_='summary', pretty_print=pretty_print)
         if self.time is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stime>%s</%stime>%s' % (namespace_, self.gds_format_datetime(self.time, input_name='time'), namespace_, eol_))
@@ -37695,7 +37695,7 @@ class DetailedLink(Link):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='DetailedLink', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='DetailedLink', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -37727,11 +37727,11 @@ class DetailedLink(Link):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sdescription>%s</%sdescription>%s' % (namespace_, self.gds_format_string(quote_xml(self.description).encode(ExternalEncoding), input_name='description'), namespace_, eol_))
         if self.request is not None:
-            self.request.export(outfile, level, namespace_, name_='request', pretty_print=pretty_print)
+            self.request.export_(outfile, level, namespace_, name_='request', pretty_print=pretty_print)
         if self.response is not None:
-            self.response.export(outfile, level, namespace_, name_='response', pretty_print=pretty_print)
+            self.response.export_(outfile, level, namespace_, name_='response', pretty_print=pretty_print)
         if self.linkCapabilities is not None:
-            self.linkCapabilities.export(outfile, level, namespace_, name_='linkCapabilities', pretty_print=pretty_print)
+            self.linkCapabilities.export_(outfile, level, namespace_, name_='linkCapabilities', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='DetailedLink'):
         level += 1
         already_processed = set()
@@ -37819,7 +37819,7 @@ class GeneralMetadata(DetailedLink):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='GeneralMetadata', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='GeneralMetadata', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -38151,7 +38151,7 @@ class VersionCaps(Version):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='VersionCaps', namespacedef_='', pretty_print=True):
+    def export_(self, outfile, level, namespace_='', name_='VersionCaps', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -38179,131 +38179,131 @@ class VersionCaps(Version):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scurrent>%s</%scurrent>%s' % (namespace_, self.gds_format_boolean(self.current, input_name='current'), namespace_, eol_))
         if self.features is not None:
-            self.features.export(outfile, level, namespace_, name_='features', pretty_print=pretty_print)
+            self.features.export_(outfile, level, namespace_, name_='features', pretty_print=pretty_print)
         if self.cpus is not None:
-            self.cpus.export(outfile, level, namespace_, name_='cpus', pretty_print=pretty_print)
+            self.cpus.export_(outfile, level, namespace_, name_='cpus', pretty_print=pretty_print)
         if self.power_managers is not None:
-            self.power_managers.export(outfile, level, namespace_, name_='power_managers', pretty_print=pretty_print)
+            self.power_managers.export_(outfile, level, namespace_, name_='power_managers', pretty_print=pretty_print)
         if self.fence_types is not None:
-            self.fence_types.export(outfile, level, namespace_, name_='fence_types', pretty_print=pretty_print)
+            self.fence_types.export_(outfile, level, namespace_, name_='fence_types', pretty_print=pretty_print)
         if self.storage_types is not None:
-            self.storage_types.export(outfile, level, namespace_, name_='storage_types', pretty_print=pretty_print)
+            self.storage_types.export_(outfile, level, namespace_, name_='storage_types', pretty_print=pretty_print)
         if self.configuration_types is not None:
-            self.configuration_types.export(outfile, level, namespace_, name_='configuration_types', pretty_print=pretty_print)
+            self.configuration_types.export_(outfile, level, namespace_, name_='configuration_types', pretty_print=pretty_print)
         if self.storage_domain_types is not None:
-            self.storage_domain_types.export(outfile, level, namespace_, name_='storage_domain_types', pretty_print=pretty_print)
+            self.storage_domain_types.export_(outfile, level, namespace_, name_='storage_domain_types', pretty_print=pretty_print)
         if self.vm_types is not None:
-            self.vm_types.export(outfile, level, namespace_, name_='vm_types', pretty_print=pretty_print)
+            self.vm_types.export_(outfile, level, namespace_, name_='vm_types', pretty_print=pretty_print)
         if self.boot_devices is not None:
-            self.boot_devices.export(outfile, level, namespace_, name_='boot_devices', pretty_print=pretty_print)
+            self.boot_devices.export_(outfile, level, namespace_, name_='boot_devices', pretty_print=pretty_print)
         if self.display_types is not None:
-            self.display_types.export(outfile, level, namespace_, name_='display_types', pretty_print=pretty_print)
+            self.display_types.export_(outfile, level, namespace_, name_='display_types', pretty_print=pretty_print)
         if self.nic_interfaces is not None:
-            self.nic_interfaces.export(outfile, level, namespace_, name_='nic_interfaces', pretty_print=pretty_print)
+            self.nic_interfaces.export_(outfile, level, namespace_, name_='nic_interfaces', pretty_print=pretty_print)
         if self.os_types is not None:
-            self.os_types.export(outfile, level, namespace_, name_='os_types', pretty_print=pretty_print)
+            self.os_types.export_(outfile, level, namespace_, name_='os_types', pretty_print=pretty_print)
         if self.disk_formats is not None:
-            self.disk_formats.export(outfile, level, namespace_, name_='disk_formats', pretty_print=pretty_print)
+            self.disk_formats.export_(outfile, level, namespace_, name_='disk_formats', pretty_print=pretty_print)
         if self.disk_interfaces is not None:
-            self.disk_interfaces.export(outfile, level, namespace_, name_='disk_interfaces', pretty_print=pretty_print)
+            self.disk_interfaces.export_(outfile, level, namespace_, name_='disk_interfaces', pretty_print=pretty_print)
         if self.vm_affinities is not None:
-            self.vm_affinities.export(outfile, level, namespace_, name_='vm_affinities', pretty_print=pretty_print)
+            self.vm_affinities.export_(outfile, level, namespace_, name_='vm_affinities', pretty_print=pretty_print)
         if self.custom_properties is not None:
-            self.custom_properties.export(outfile, level, namespace_, name_='custom_properties', pretty_print=pretty_print)
+            self.custom_properties.export_(outfile, level, namespace_, name_='custom_properties', pretty_print=pretty_print)
         if self.boot_protocols is not None:
-            self.boot_protocols.export(outfile, level, namespace_, name_='boot_protocols', pretty_print=pretty_print)
+            self.boot_protocols.export_(outfile, level, namespace_, name_='boot_protocols', pretty_print=pretty_print)
         if self.error_handling is not None:
-            self.error_handling.export(outfile, level, namespace_, name_='error_handling', pretty_print=pretty_print)
+            self.error_handling.export_(outfile, level, namespace_, name_='error_handling', pretty_print=pretty_print)
         if self.storage_formats is not None:
-            self.storage_formats.export(outfile, level, namespace_, name_='storage_formats', pretty_print=pretty_print)
+            self.storage_formats.export_(outfile, level, namespace_, name_='storage_formats', pretty_print=pretty_print)
         if self.creation_states is not None:
-            self.creation_states.export(outfile, level, namespace_, name_='creation_states', pretty_print=pretty_print)
+            self.creation_states.export_(outfile, level, namespace_, name_='creation_states', pretty_print=pretty_print)
         if self.power_management_states is not None:
-            self.power_management_states.export(outfile, level, namespace_, name_='power_management_states', pretty_print=pretty_print)
+            self.power_management_states.export_(outfile, level, namespace_, name_='power_management_states', pretty_print=pretty_print)
         if self.host_states is not None:
-            self.host_states.export(outfile, level, namespace_, name_='host_states', pretty_print=pretty_print)
+            self.host_states.export_(outfile, level, namespace_, name_='host_states', pretty_print=pretty_print)
         if self.host_non_operational_details is not None:
-            self.host_non_operational_details.export(outfile, level, namespace_, name_='host_non_operational_details', pretty_print=pretty_print)
+            self.host_non_operational_details.export_(outfile, level, namespace_, name_='host_non_operational_details', pretty_print=pretty_print)
         if self.network_states is not None:
-            self.network_states.export(outfile, level, namespace_, name_='network_states', pretty_print=pretty_print)
+            self.network_states.export_(outfile, level, namespace_, name_='network_states', pretty_print=pretty_print)
         if self.storage_domain_states is not None:
-            self.storage_domain_states.export(outfile, level, namespace_, name_='storage_domain_states', pretty_print=pretty_print)
+            self.storage_domain_states.export_(outfile, level, namespace_, name_='storage_domain_states', pretty_print=pretty_print)
         if self.template_states is not None:
-            self.template_states.export(outfile, level, namespace_, name_='template_states', pretty_print=pretty_print)
+            self.template_states.export_(outfile, level, namespace_, name_='template_states', pretty_print=pretty_print)
         if self.vm_states is not None:
-            self.vm_states.export(outfile, level, namespace_, name_='vm_states', pretty_print=pretty_print)
+            self.vm_states.export_(outfile, level, namespace_, name_='vm_states', pretty_print=pretty_print)
         if self.vm_pause_details is not None:
-            self.vm_pause_details.export(outfile, level, namespace_, name_='vm_pause_details', pretty_print=pretty_print)
+            self.vm_pause_details.export_(outfile, level, namespace_, name_='vm_pause_details', pretty_print=pretty_print)
         if self.disk_states is not None:
-            self.disk_states.export(outfile, level, namespace_, name_='disk_states', pretty_print=pretty_print)
+            self.disk_states.export_(outfile, level, namespace_, name_='disk_states', pretty_print=pretty_print)
         if self.host_nic_states is not None:
-            self.host_nic_states.export(outfile, level, namespace_, name_='host_nic_states', pretty_print=pretty_print)
+            self.host_nic_states.export_(outfile, level, namespace_, name_='host_nic_states', pretty_print=pretty_print)
         if self.data_center_states is not None:
-            self.data_center_states.export(outfile, level, namespace_, name_='data_center_states', pretty_print=pretty_print)
+            self.data_center_states.export_(outfile, level, namespace_, name_='data_center_states', pretty_print=pretty_print)
         if self.vm_device_types is not None:
-            self.vm_device_types.export(outfile, level, namespace_, name_='vm_device_types', pretty_print=pretty_print)
+            self.vm_device_types.export_(outfile, level, namespace_, name_='vm_device_types', pretty_print=pretty_print)
         if self.permits is not None:
-            self.permits.export(outfile, level, namespace_, name_='permits', pretty_print=pretty_print)
+            self.permits.export_(outfile, level, namespace_, name_='permits', pretty_print=pretty_print)
         if self.scheduling_policies is not None:
-            self.scheduling_policies.export(outfile, level, namespace_, name_='scheduling_policies', pretty_print=pretty_print)
+            self.scheduling_policies.export_(outfile, level, namespace_, name_='scheduling_policies', pretty_print=pretty_print)
         if self.usages is not None:
-            self.usages.export(outfile, level, namespace_, name_='usages', pretty_print=pretty_print)
+            self.usages.export_(outfile, level, namespace_, name_='usages', pretty_print=pretty_print)
         if self.nfs_versions is not None:
-            self.nfs_versions.export(outfile, level, namespace_, name_='nfs_versions', pretty_print=pretty_print)
+            self.nfs_versions.export_(outfile, level, namespace_, name_='nfs_versions', pretty_print=pretty_print)
         if self.pm_proxy_types is not None:
-            self.pm_proxy_types.export(outfile, level, namespace_, name_='pm_proxy_types', pretty_print=pretty_print)
+            self.pm_proxy_types.export_(outfile, level, namespace_, name_='pm_proxy_types', pretty_print=pretty_print)
         if self.cpu_modes is not None:
-            self.cpu_modes.export(outfile, level, namespace_, name_='cpu_modes', pretty_print=pretty_print)
+            self.cpu_modes.export_(outfile, level, namespace_, name_='cpu_modes', pretty_print=pretty_print)
         if self.sgio_options is not None:
-            self.sgio_options.export(outfile, level, namespace_, name_='sgio_options', pretty_print=pretty_print)
+            self.sgio_options.export_(outfile, level, namespace_, name_='sgio_options', pretty_print=pretty_print)
         if self.watchdog_models is not None:
-            self.watchdog_models.export(outfile, level, namespace_, name_='watchdog_models', pretty_print=pretty_print)
+            self.watchdog_models.export_(outfile, level, namespace_, name_='watchdog_models', pretty_print=pretty_print)
         if self.watchdog_actions is not None:
-            self.watchdog_actions.export(outfile, level, namespace_, name_='watchdog_actions', pretty_print=pretty_print)
+            self.watchdog_actions.export_(outfile, level, namespace_, name_='watchdog_actions', pretty_print=pretty_print)
         if self.authentication_methods is not None:
-            self.authentication_methods.export(outfile, level, namespace_, name_='authentication_methods', pretty_print=pretty_print)
+            self.authentication_methods.export_(outfile, level, namespace_, name_='authentication_methods', pretty_print=pretty_print)
         if self.kdump_states is not None:
-            self.kdump_states.export(outfile, level, namespace_, name_='kdump_states', pretty_print=pretty_print)
+            self.kdump_states.export_(outfile, level, namespace_, name_='kdump_states', pretty_print=pretty_print)
         if self.spm_states is not None:
-            self.spm_states.export(outfile, level, namespace_, name_='spm_states', pretty_print=pretty_print)
+            self.spm_states.export_(outfile, level, namespace_, name_='spm_states', pretty_print=pretty_print)
         if self.step_types is not None:
-            self.step_types.export(outfile, level, namespace_, name_='step_types', pretty_print=pretty_print)
+            self.step_types.export_(outfile, level, namespace_, name_='step_types', pretty_print=pretty_print)
         if self.payload_encodings is not None:
-            self.payload_encodings.export(outfile, level, namespace_, name_='payload_encodings', pretty_print=pretty_print)
+            self.payload_encodings.export_(outfile, level, namespace_, name_='payload_encodings', pretty_print=pretty_print)
         if self.gluster_volume_types is not None:
-            self.gluster_volume_types.export(outfile, level, namespace_, name_='gluster_volume_types', pretty_print=pretty_print)
+            self.gluster_volume_types.export_(outfile, level, namespace_, name_='gluster_volume_types', pretty_print=pretty_print)
         if self.transport_types is not None:
-            self.transport_types.export(outfile, level, namespace_, name_='transport_types', pretty_print=pretty_print)
+            self.transport_types.export_(outfile, level, namespace_, name_='transport_types', pretty_print=pretty_print)
         if self.gluster_volume_states is not None:
-            self.gluster_volume_states.export(outfile, level, namespace_, name_='gluster_volume_states', pretty_print=pretty_print)
+            self.gluster_volume_states.export_(outfile, level, namespace_, name_='gluster_volume_states', pretty_print=pretty_print)
         if self.brick_states is not None:
-            self.brick_states.export(outfile, level, namespace_, name_='brick_states', pretty_print=pretty_print)
+            self.brick_states.export_(outfile, level, namespace_, name_='brick_states', pretty_print=pretty_print)
         if self.reported_device_types is not None:
-            self.reported_device_types.export(outfile, level, namespace_, name_='reported_device_types', pretty_print=pretty_print)
+            self.reported_device_types.export_(outfile, level, namespace_, name_='reported_device_types', pretty_print=pretty_print)
         if self.ip_versions is not None:
-            self.ip_versions.export(outfile, level, namespace_, name_='ip_versions', pretty_print=pretty_print)
+            self.ip_versions.export_(outfile, level, namespace_, name_='ip_versions', pretty_print=pretty_print)
         if self.snapshot_statuses is not None:
-            self.snapshot_statuses.export(outfile, level, namespace_, name_='snapshot_statuses', pretty_print=pretty_print)
+            self.snapshot_statuses.export_(outfile, level, namespace_, name_='snapshot_statuses', pretty_print=pretty_print)
         if self.content_types is not None:
-            self.content_types.export(outfile, level, namespace_, name_='content_types', pretty_print=pretty_print)
+            self.content_types.export_(outfile, level, namespace_, name_='content_types', pretty_print=pretty_print)
         if self.hook_states is not None:
-            self.hook_states.export(outfile, level, namespace_, name_='hook_states', pretty_print=pretty_print)
+            self.hook_states.export_(outfile, level, namespace_, name_='hook_states', pretty_print=pretty_print)
         if self.stages is not None:
-            self.stages.export(outfile, level, namespace_, name_='stages', pretty_print=pretty_print)
+            self.stages.export_(outfile, level, namespace_, name_='stages', pretty_print=pretty_print)
         if self.sso_methods is not None:
-            self.sso_methods.export(outfile, level, namespace_, name_='sso_methods', pretty_print=pretty_print)
+            self.sso_methods.export_(outfile, level, namespace_, name_='sso_methods', pretty_print=pretty_print)
         if self.architecture_capabilities is not None:
-            self.architecture_capabilities.export(outfile, level, namespace_, name_='architecture_capabilities', pretty_print=pretty_print)
+            self.architecture_capabilities.export_(outfile, level, namespace_, name_='architecture_capabilities', pretty_print=pretty_print)
         if self.serial_number_policies is not None:
-            self.serial_number_policies.export(outfile, level, namespace_, name_='serial_number_policies', pretty_print=pretty_print)
+            self.serial_number_policies.export_(outfile, level, namespace_, name_='serial_number_policies', pretty_print=pretty_print)
         if self.selinux_modes is not None:
-            self.selinux_modes.export(outfile, level, namespace_, name_='selinux_modes', pretty_print=pretty_print)
+            self.selinux_modes.export_(outfile, level, namespace_, name_='selinux_modes', pretty_print=pretty_print)
         if self.rng_sources is not None:
-            self.rng_sources.export(outfile, level, namespace_, name_='rng_sources', pretty_print=pretty_print)
+            self.rng_sources.export_(outfile, level, namespace_, name_='rng_sources', pretty_print=pretty_print)
         if self.scheduling_policy_unit_types is not None:
-            self.scheduling_policy_unit_types.export(outfile, level, namespace_, name_='scheduling_policy_unit_types', pretty_print=pretty_print)
+            self.scheduling_policy_unit_types.export_(outfile, level, namespace_, name_='scheduling_policy_unit_types', pretty_print=pretty_print)
         if self.qos_types is not None:
-            self.qos_types.export(outfile, level, namespace_, name_='qos_types', pretty_print=pretty_print)
+            self.qos_types.export_(outfile, level, namespace_, name_='qos_types', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VersionCaps'):
         level += 1
         already_processed = set()
@@ -39322,7 +39322,7 @@ def parse(inFileName, silence=False):
     doc = None
     if not silence:
         sys.stdout.write('<?xml version="1.0" ?>\n')
-        rootObj.export(
+        rootObj.export_(
             sys.stdout, 0, name_=rootTag,
             namespacedef_='',
             pretty_print=True)
@@ -39366,7 +39366,7 @@ def parseString(inString, silence=False):
     doc = None
     if not silence:
         sys.stdout.write('<?xml version="1.0" ?>\n')
-        rootObj.export(
+        rootObj.export_(
             sys.stdout, 0, name_="keyValuePair",
             namespacedef_='')
     return rootObj
