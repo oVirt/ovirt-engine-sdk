@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Sep 10 14:16:20 2014 by generateDS.py version 2.12a.
+# Generated Fri Jan 16 20:21:10 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -5442,6 +5442,92 @@ class KdumpStates(GeneratedsSuper):
 # end class KdumpStates
 
 
+class SpmStates(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, spm_state=None):
+        if spm_state is None:
+            self.spm_state = []
+        else:
+            self.spm_state = spm_state
+    def factory(*args_, **kwargs_):
+        if SpmStates.subclass:
+            return SpmStates.subclass(*args_, **kwargs_)
+        else:
+            return SpmStates(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_spm_state(self): return self.spm_state
+    def set_spm_state(self, spm_state): self.spm_state = spm_state
+    def add_spm_state(self, value): self.spm_state.append(value)
+    def insert_spm_state(self, index, value): self.spm_state[index] = value
+    def hasContent_(self):
+        if (
+            self.spm_state
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='SpmStates', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='SpmStates')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='SpmStates'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='SpmStates', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for spm_state_ in self.spm_state:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sspm_state>%s</%sspm_state>%s' % (namespace_, self.gds_format_string(quote_xml(spm_state_).encode(ExternalEncoding), input_name='spm_state'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='SpmStates'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('spm_state=[\n')
+        level += 1
+        for spm_state_ in self.spm_state:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(spm_state_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'spm_state':
+            spm_state_ = child_.text
+            spm_state_ = self.gds_validate_string(spm_state_, node, 'spm_state')
+            self.spm_state.append(spm_state_)
+# end class SpmStates
+
+
 class ArchitectureCapability(GeneratedsSuper):
     subclass = None
     superclass = None
@@ -9895,7 +9981,7 @@ class SELinux(GeneratedsSuper):
 class Host(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, ssh=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, protocol=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None, display=None, hosted_engine=None, kdump_status=None, selinux=None, auto_numa_status=None, numa_supported=None, live_snapshot_support=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, spm=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, ssh=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, protocol=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None, display=None, hosted_engine=None, kdump_status=None, selinux=None, auto_numa_status=None, numa_supported=None, live_snapshot_support=None):
         super(Host, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.address = address
         self.certificate = certificate
@@ -9904,6 +9990,7 @@ class Host(BaseResource):
         self.port = port
         self.type_ = type_
         self.storage_manager = storage_manager
+        self.spm = spm
         self.version = version
         self.hardware_information = hardware_information
         self.power_management = power_management
@@ -9950,6 +10037,8 @@ class Host(BaseResource):
     def set_type(self, type_): self.type_ = type_
     def get_storage_manager(self): return self.storage_manager
     def set_storage_manager(self, storage_manager): self.storage_manager = storage_manager
+    def get_spm(self): return self.spm
+    def set_spm(self, spm): self.spm = spm
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
     def get_hardware_information(self): return self.hardware_information
@@ -10011,6 +10100,7 @@ class Host(BaseResource):
             self.port is not None or
             self.type_ is not None or
             self.storage_manager is not None or
+            self.spm is not None or
             self.version is not None or
             self.hardware_information is not None or
             self.power_management is not None or
@@ -10083,6 +10173,8 @@ class Host(BaseResource):
             outfile.write('<%stype>%s</%stype>%s' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_, eol_))
         if self.storage_manager is not None:
             self.storage_manager.export(outfile, level, namespace_, name_='storage_manager', pretty_print=pretty_print)
+        if self.spm is not None:
+            self.spm.export(outfile, level, namespace_, name_='spm', pretty_print=pretty_print)
         if self.version is not None:
             self.version.export(outfile, level, namespace_, name_='version', pretty_print=pretty_print)
         if self.hardware_information is not None:
@@ -10186,6 +10278,12 @@ class Host(BaseResource):
             showIndent(outfile, level)
             outfile.write('storage_manager=model_.StorageManager(\n')
             self.storage_manager.exportLiteral(outfile, level, name_='storage_manager')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.spm is not None:
+            showIndent(outfile, level)
+            outfile.write('spm=model_.SPM(\n')
+            self.spm.exportLiteral(outfile, level, name_='spm')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.version is not None:
@@ -10356,6 +10454,10 @@ class Host(BaseResource):
             obj_ = StorageManager.factory()
             obj_.build(child_)
             self.storage_manager = obj_
+        elif nodeName_ == 'spm':
+            obj_ = SPM.factory()
+            obj_.build(child_)
+            self.spm = obj_
         elif nodeName_ == 'version':
             class_obj_ = self.get_class_obj_(child_, Version)
             obj_ = class_obj_.factory()
@@ -10577,6 +10679,101 @@ class StorageManager(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class StorageManager
+
+
+class SPM(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, priority=None, status=None):
+        self.priority = priority
+        self.status = status
+    def factory(*args_, **kwargs_):
+        if SPM.subclass:
+            return SPM.subclass(*args_, **kwargs_)
+        else:
+            return SPM(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_priority(self): return self.priority
+    def set_priority(self, priority): self.priority = priority
+    def get_status(self): return self.status
+    def set_status(self, status): self.status = status
+    def hasContent_(self):
+        if (
+            self.priority is not None or
+            self.status is not None
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='SPM', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='SPM')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='SPM'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='SPM', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.priority is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%spriority>%s</%spriority>%s' % (namespace_, self.gds_format_integer(self.priority, input_name='priority'), namespace_, eol_))
+        if self.status is not None:
+            self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='SPM'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.priority is not None:
+            showIndent(outfile, level)
+            outfile.write('priority=%d,\n' % self.priority)
+        if self.status is not None:
+            showIndent(outfile, level)
+            outfile.write('status=model_.status(\n')
+            self.status.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'priority':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'priority')
+            self.priority = ival_
+        elif nodeName_ == 'status':
+            obj_ = Status.factory()
+            obj_.build(child_)
+            self.status = obj_
+# end class SPM
 
 
 class HostedEngine(GeneratedsSuper):
@@ -10822,6 +11019,92 @@ class HostStates(GeneratedsSuper):
             host_state_ = self.gds_validate_string(host_state_, node, 'host_state')
             self.host_state.append(host_state_)
 # end class HostStates
+
+
+class HostProtocols(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, host_protocol=None):
+        if host_protocol is None:
+            self.host_protocol = []
+        else:
+            self.host_protocol = host_protocol
+    def factory(*args_, **kwargs_):
+        if HostProtocols.subclass:
+            return HostProtocols.subclass(*args_, **kwargs_)
+        else:
+            return HostProtocols(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_host_protocol(self): return self.host_protocol
+    def set_host_protocol(self, host_protocol): self.host_protocol = host_protocol
+    def add_host_protocol(self, value): self.host_protocol.append(value)
+    def insert_host_protocol(self, index, value): self.host_protocol[index] = value
+    def hasContent_(self):
+        if (
+            self.host_protocol
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='HostProtocols', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='HostProtocols')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='HostProtocols'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='HostProtocols', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for host_protocol_ in self.host_protocol:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%shost_protocol>%s</%shost_protocol>%s' % (namespace_, self.gds_format_string(quote_xml(host_protocol_).encode(ExternalEncoding), input_name='host_protocol'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='HostProtocols'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('host_protocol=[\n')
+        level += 1
+        for host_protocol_ in self.host_protocol:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(host_protocol_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'host_protocol':
+            host_protocol_ = child_.text
+            host_protocol_ = self.gds_validate_string(host_protocol_, node, 'host_protocol')
+            self.host_protocol.append(host_protocol_)
+# end class HostProtocols
 
 
 class HostNonOperationalDetails(GeneratedsSuper):
@@ -16101,7 +16384,7 @@ class StorageConnection(BaseResource):
 class StorageDomain(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, type_=None, status=None, master=None, storage=None, host=None, format=None, destroy=None, available=None, used=None, committed=None, storage_format=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, type_=None, status=None, master=None, storage=None, host=None, format=None, destroy=None, available=None, used=None, committed=None, storage_format=None, import_=None):
         super(StorageDomain, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.data_center = data_center
         self.type_ = type_
@@ -16115,6 +16398,7 @@ class StorageDomain(BaseResource):
         self.used = used
         self.committed = committed
         self.storage_format = storage_format
+        self.import_ = import_
     def factory(*args_, **kwargs_):
         if StorageDomain.subclass:
             return StorageDomain.subclass(*args_, **kwargs_)
@@ -16145,6 +16429,8 @@ class StorageDomain(BaseResource):
     def set_committed(self, committed): self.committed = committed
     def get_storage_format(self): return self.storage_format
     def set_storage_format(self, storage_format): self.storage_format = storage_format
+    def get_import(self): return self.import_
+    def set_import(self, import_): self.import_ = import_
     def hasContent_(self):
         if (
             self.data_center is not None or
@@ -16159,6 +16445,7 @@ class StorageDomain(BaseResource):
             self.used is not None or
             self.committed is not None or
             self.storage_format is not None or
+            self.import_ is not None or
             super(StorageDomain, self).hasContent_()
         ):
             return True
@@ -16220,6 +16507,9 @@ class StorageDomain(BaseResource):
         if self.storage_format is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstorage_format>%s</%sstorage_format>%s' % (namespace_, self.gds_format_string(quote_xml(self.storage_format).encode(ExternalEncoding), input_name='storage_format'), namespace_, eol_))
+        if self.import_ is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%simport>%s</%simport>%s' % (namespace_, self.gds_format_boolean(self.import_, input_name='import'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='StorageDomain'):
         level += 1
         already_processed = set()
@@ -16278,6 +16568,9 @@ class StorageDomain(BaseResource):
         if self.storage_format is not None:
             showIndent(outfile, level)
             outfile.write('storage_format=%s,\n' % quote_python(self.storage_format).encode(ExternalEncoding))
+        if self.import_ is not None:
+            showIndent(outfile, level)
+            outfile.write('import_=%s,\n' % self.import_)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -16366,6 +16659,16 @@ class StorageDomain(BaseResource):
             storage_format_ = child_.text
             storage_format_ = self.gds_validate_string(storage_format_, node, 'storage_format')
             self.storage_format = storage_format_
+        elif nodeName_ == 'import':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'import')
+            self.import_ = ival_
         super(StorageDomain, self).buildChildren(child_, node, nodeName_, True)
 # end class StorageDomain
 
@@ -16738,7 +17041,7 @@ class InstanceTypes(BaseResources):
 class Template(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, version=None, serial_number=None, cpu_profile=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, custom_properties=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, version=None, serial_number=None, cpu_profile=None, extensiontype_=None):
         super(Template, self).__init__(actions, href, id, name, description, comment, creation_status, link, extensiontype_, )
         self.vm = vm
         self.type_ = type_
@@ -16765,6 +17068,7 @@ class Template(BaseResource):
         self.console = console
         self.timezone = timezone
         self.domain = domain
+        self.custom_properties = custom_properties
         self.usb = usb
         self.soundcard_enabled = soundcard_enabled
         self.tunnel_migration = tunnel_migration
@@ -16823,6 +17127,8 @@ class Template(BaseResource):
     def set_timezone(self, timezone): self.timezone = timezone
     def get_domain(self): return self.domain
     def set_domain(self, domain): self.domain = domain
+    def get_custom_properties(self): return self.custom_properties
+    def set_custom_properties(self, custom_properties): self.custom_properties = custom_properties
     def get_usb(self): return self.usb
     def set_usb(self, usb): self.usb = usb
     def get_soundcard_enabled(self): return self.soundcard_enabled
@@ -16866,6 +17172,7 @@ class Template(BaseResource):
             self.console is not None or
             self.timezone is not None or
             self.domain is not None or
+            self.custom_properties is not None or
             self.usb is not None or
             self.soundcard_enabled is not None or
             self.tunnel_migration is not None or
@@ -16958,6 +17265,8 @@ class Template(BaseResource):
             outfile.write('<%stimezone>%s</%stimezone>%s' % (namespace_, self.gds_format_string(quote_xml(self.timezone).encode(ExternalEncoding), input_name='timezone'), namespace_, eol_))
         if self.domain is not None:
             self.domain.export(outfile, level, namespace_, name_='domain', pretty_print=pretty_print)
+        if self.custom_properties is not None:
+            self.custom_properties.export(outfile, level, namespace_, name_='custom_properties', pretty_print=pretty_print)
         if self.usb is not None:
             self.usb.export(outfile, level, namespace_, name_='usb', pretty_print=pretty_print)
         if self.soundcard_enabled is not None:
@@ -17089,6 +17398,12 @@ class Template(BaseResource):
             showIndent(outfile, level)
             outfile.write('domain=model_.domain(\n')
             self.domain.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.custom_properties is not None:
+            showIndent(outfile, level)
+            outfile.write('custom_properties=model_.CustomProperties(\n')
+            self.custom_properties.exportLiteral(outfile, level, name_='custom_properties')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.usb is not None:
@@ -17255,6 +17570,10 @@ class Template(BaseResource):
             obj_ = Domain.factory()
             obj_.build(child_)
             self.domain = obj_
+        elif nodeName_ == 'custom_properties':
+            obj_ = CustomProperties.factory()
+            obj_.build(child_)
+            self.custom_properties = obj_
         elif nodeName_ == 'usb':
             obj_ = Usb.factory()
             obj_.build(child_)
@@ -23683,7 +24002,7 @@ class Floppies(BaseDevices):
 class Disk(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, template=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, snapshot=None, disk_profile=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, template=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, snapshot=None, disk_profile=None, logical_name=None, extensiontype_=None):
         super(Disk, self).__init__(actions, href, id, name, description, comment, creation_status, link, vm, template, extensiontype_, )
         self.alias = alias
         self.image_id = image_id
@@ -23709,6 +24028,7 @@ class Disk(BaseDevice):
         self.sgio = sgio
         self.snapshot = snapshot
         self.disk_profile = disk_profile
+        self.logical_name = logical_name
         self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if Disk.subclass:
@@ -23764,6 +24084,8 @@ class Disk(BaseDevice):
     def set_snapshot(self, snapshot): self.snapshot = snapshot
     def get_disk_profile(self): return self.disk_profile
     def set_disk_profile(self, disk_profile): self.disk_profile = disk_profile
+    def get_logical_name(self): return self.logical_name
+    def set_logical_name(self, logical_name): self.logical_name = logical_name
     def get_extensiontype_(self): return self.extensiontype_
     def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def hasContent_(self):
@@ -23792,6 +24114,7 @@ class Disk(BaseDevice):
             self.sgio is not None or
             self.snapshot is not None or
             self.disk_profile is not None or
+            self.logical_name is not None or
             super(Disk, self).hasContent_()
         ):
             return True
@@ -23889,6 +24212,9 @@ class Disk(BaseDevice):
             self.snapshot.export(outfile, level, namespace_, name_='snapshot', pretty_print=pretty_print)
         if self.disk_profile is not None:
             self.disk_profile.export(outfile, level, namespace_, name_='disk_profile', pretty_print=pretty_print)
+        if self.logical_name is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%slogical_name>%s</%slogical_name>%s' % (namespace_, self.gds_format_string(quote_xml(self.logical_name).encode(ExternalEncoding), input_name='logical_name'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='Disk'):
         level += 1
         already_processed = set()
@@ -23995,6 +24321,9 @@ class Disk(BaseDevice):
             self.disk_profile.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.logical_name is not None:
+            showIndent(outfile, level)
+            outfile.write('logical_name=%s,\n' % quote_python(self.logical_name).encode(ExternalEncoding))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -24159,6 +24488,10 @@ class Disk(BaseDevice):
             obj_ = DiskProfile.factory()
             obj_.build(child_)
             self.disk_profile = obj_
+        elif nodeName_ == 'logical_name':
+            logical_name_ = child_.text
+            logical_name_ = self.gds_validate_string(logical_name_, node, 'logical_name')
+            self.logical_name = logical_name_
         super(Disk, self).buildChildren(child_, node, nodeName_, True)
 # end class Disk
 
@@ -24300,8 +24633,8 @@ class Disks(BaseDevices):
 class DiskSnapshot(Disk):
     subclass = None
     superclass = Disk
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, template=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, snapshot=None, disk_profile=None, disk=None):
-        super(DiskSnapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, vm, template, alias, image_id, storage_domain, storage_domains, size, type_, provisioned_size, actual_size, status, interface, format, sparse, bootable, shareable, wipe_after_delete, propagate_errors, statistics, active, read_only, quota, lun_storage, sgio, snapshot, disk_profile, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, template=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, snapshot=None, disk_profile=None, logical_name=None, disk=None):
+        super(DiskSnapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, vm, template, alias, image_id, storage_domain, storage_domains, size, type_, provisioned_size, actual_size, status, interface, format, sparse, bootable, shareable, wipe_after_delete, propagate_errors, statistics, active, read_only, quota, lun_storage, sgio, snapshot, disk_profile, logical_name, )
         self.disk = disk
     def factory(*args_, **kwargs_):
         if DiskSnapshot.subclass:
@@ -34543,8 +34876,8 @@ class BrickProfileDetail(EntityProfileDetail):
 class InstanceType(Template):
     subclass = None
     superclass = Template
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, version=None, serial_number=None, cpu_profile=None):
-        super(InstanceType, self).__init__(actions, href, id, name, description, comment, creation_status, link, vm, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, high_availability, display, stateless, delete_protected, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, permissions, version, serial_number, cpu_profile, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, high_availability=None, display=None, stateless=None, delete_protected=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, custom_properties=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, permissions=None, version=None, serial_number=None, cpu_profile=None):
+        super(InstanceType, self).__init__(actions, href, id, name, description, comment, creation_status, link, vm, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, high_availability, display, stateless, delete_protected, sso, rng_device, console, timezone, domain, custom_properties, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, permissions, version, serial_number, cpu_profile, )
         pass
     def factory(*args_, **kwargs_):
         if InstanceType.subclass:
@@ -35986,7 +36319,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, status=None, fault=None, iscsi_target=None, power_management=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, status=None, fault=None, iscsi_target=None, power_management=None):
         super(Action, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -36023,6 +36356,7 @@ class Action(BaseResource):
         self.job = job
         self.import_as_template = import_as_template
         self.maintenance_enabled = maintenance_enabled
+        self.storage_domains = storage_domains
         self.status = status
         self.fault = fault
         if iscsi_target is None:
@@ -36106,6 +36440,8 @@ class Action(BaseResource):
     def set_import_as_template(self, import_as_template): self.import_as_template = import_as_template
     def get_maintenance_enabled(self): return self.maintenance_enabled
     def set_maintenance_enabled(self, maintenance_enabled): self.maintenance_enabled = maintenance_enabled
+    def get_storage_domains(self): return self.storage_domains
+    def set_storage_domains(self, storage_domains): self.storage_domains = storage_domains
     def get_status(self): return self.status
     def set_status(self, status): self.status = status
     def get_fault(self): return self.fault
@@ -36153,6 +36489,7 @@ class Action(BaseResource):
             self.job is not None or
             self.import_as_template is not None or
             self.maintenance_enabled is not None or
+            self.storage_domains is not None or
             self.status is not None or
             self.fault is not None or
             self.iscsi_target or
@@ -36274,6 +36611,8 @@ class Action(BaseResource):
         if self.maintenance_enabled is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%smaintenance_enabled>%s</%smaintenance_enabled>%s' % (namespace_, self.gds_format_boolean(self.maintenance_enabled, input_name='maintenance_enabled'), namespace_, eol_))
+        if self.storage_domains is not None:
+            self.storage_domains.export(outfile, level, namespace_, name_='storage_domains', pretty_print=pretty_print)
         if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.fault is not None:
@@ -36449,6 +36788,12 @@ class Action(BaseResource):
         if self.maintenance_enabled is not None:
             showIndent(outfile, level)
             outfile.write('maintenance_enabled=%s,\n' % self.maintenance_enabled)
+        if self.storage_domains is not None:
+            showIndent(outfile, level)
+            outfile.write('storage_domains=model_.storage_domains(\n')
+            self.storage_domains.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.status is not None:
             showIndent(outfile, level)
             outfile.write('status=model_.status(\n')
@@ -36710,6 +37055,10 @@ class Action(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'maintenance_enabled')
             self.maintenance_enabled = ival_
+        elif nodeName_ == 'storage_domains':
+            obj_ = StorageDomains.factory()
+            obj_.build(child_)
+            self.storage_domains = obj_
         elif nodeName_ == 'status':
             obj_ = Status.factory()
             obj_.build(child_)
@@ -37148,7 +37497,7 @@ class GeneralMetadata(DetailedLink):
 class VersionCaps(Version):
     subclass = None
     superclass = Version
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, configuration_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, sgio_options=None, watchdog_models=None, watchdog_actions=None, authentication_methods=None, kdump_states=None, step_types=None, payload_encodings=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None, snapshot_statuses=None, content_types=None, hook_states=None, stages=None, sso_methods=None, architecture_capabilities=None, serial_number_policies=None, selinux_modes=None, rng_sources=None, scheduling_policy_unit_types=None, qos_types=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, configuration_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_protocols=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, sgio_options=None, watchdog_models=None, watchdog_actions=None, authentication_methods=None, kdump_states=None, spm_states=None, step_types=None, payload_encodings=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None, snapshot_statuses=None, content_types=None, hook_states=None, stages=None, sso_methods=None, architecture_capabilities=None, serial_number_policies=None, selinux_modes=None, rng_sources=None, scheduling_policy_unit_types=None, qos_types=None):
         super(VersionCaps, self).__init__(actions, href, id, name, description, comment, creation_status, link, major, full_version, build_, minor, revision, )
         self.current = current
         self.features = features
@@ -37173,6 +37522,7 @@ class VersionCaps(Version):
         self.creation_states = creation_states
         self.power_management_states = power_management_states
         self.host_states = host_states
+        self.host_protocols = host_protocols
         self.host_non_operational_details = host_non_operational_details
         self.network_states = network_states
         self.storage_domain_states = storage_domain_states
@@ -37194,6 +37544,7 @@ class VersionCaps(Version):
         self.watchdog_actions = watchdog_actions
         self.authentication_methods = authentication_methods
         self.kdump_states = kdump_states
+        self.spm_states = spm_states
         self.step_types = step_types
         self.payload_encodings = payload_encodings
         self.gluster_volume_types = gluster_volume_types
@@ -37265,6 +37616,8 @@ class VersionCaps(Version):
     def set_power_management_states(self, power_management_states): self.power_management_states = power_management_states
     def get_host_states(self): return self.host_states
     def set_host_states(self, host_states): self.host_states = host_states
+    def get_host_protocols(self): return self.host_protocols
+    def set_host_protocols(self, host_protocols): self.host_protocols = host_protocols
     def get_host_non_operational_details(self): return self.host_non_operational_details
     def set_host_non_operational_details(self, host_non_operational_details): self.host_non_operational_details = host_non_operational_details
     def get_network_states(self): return self.network_states
@@ -37307,6 +37660,8 @@ class VersionCaps(Version):
     def set_authentication_methods(self, authentication_methods): self.authentication_methods = authentication_methods
     def get_kdump_states(self): return self.kdump_states
     def set_kdump_states(self, kdump_states): self.kdump_states = kdump_states
+    def get_spm_states(self): return self.spm_states
+    def set_spm_states(self, spm_states): self.spm_states = spm_states
     def get_step_types(self): return self.step_types
     def set_step_types(self, step_types): self.step_types = step_types
     def get_payload_encodings(self): return self.payload_encodings
@@ -37370,6 +37725,7 @@ class VersionCaps(Version):
             self.creation_states is not None or
             self.power_management_states is not None or
             self.host_states is not None or
+            self.host_protocols is not None or
             self.host_non_operational_details is not None or
             self.network_states is not None or
             self.storage_domain_states is not None or
@@ -37391,6 +37747,7 @@ class VersionCaps(Version):
             self.watchdog_actions is not None or
             self.authentication_methods is not None or
             self.kdump_states is not None or
+            self.spm_states is not None or
             self.step_types is not None or
             self.payload_encodings is not None or
             self.gluster_volume_types is not None or
@@ -37486,6 +37843,8 @@ class VersionCaps(Version):
             self.power_management_states.export(outfile, level, namespace_, name_='power_management_states', pretty_print=pretty_print)
         if self.host_states is not None:
             self.host_states.export(outfile, level, namespace_, name_='host_states', pretty_print=pretty_print)
+        if self.host_protocols is not None:
+            self.host_protocols.export(outfile, level, namespace_, name_='host_protocols', pretty_print=pretty_print)
         if self.host_non_operational_details is not None:
             self.host_non_operational_details.export(outfile, level, namespace_, name_='host_non_operational_details', pretty_print=pretty_print)
         if self.network_states is not None:
@@ -37528,6 +37887,8 @@ class VersionCaps(Version):
             self.authentication_methods.export(outfile, level, namespace_, name_='authentication_methods', pretty_print=pretty_print)
         if self.kdump_states is not None:
             self.kdump_states.export(outfile, level, namespace_, name_='kdump_states', pretty_print=pretty_print)
+        if self.spm_states is not None:
+            self.spm_states.export(outfile, level, namespace_, name_='spm_states', pretty_print=pretty_print)
         if self.step_types is not None:
             self.step_types.export(outfile, level, namespace_, name_='step_types', pretty_print=pretty_print)
         if self.payload_encodings is not None:
@@ -37711,6 +38072,12 @@ class VersionCaps(Version):
             self.host_states.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.host_protocols is not None:
+            showIndent(outfile, level)
+            outfile.write('host_protocols=model_.host_protocols(\n')
+            self.host_protocols.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.host_non_operational_details is not None:
             showIndent(outfile, level)
             outfile.write('host_non_operational_details=model_.host_non_operational_details(\n')
@@ -37835,6 +38202,12 @@ class VersionCaps(Version):
             showIndent(outfile, level)
             outfile.write('kdump_states=model_.kdump_states(\n')
             self.kdump_states.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.spm_states is not None:
+            showIndent(outfile, level)
+            outfile.write('spm_states=model_.spm_states(\n')
+            self.spm_states.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.step_types is not None:
@@ -38059,6 +38432,10 @@ class VersionCaps(Version):
             obj_ = HostStates.factory()
             obj_.build(child_)
             self.host_states = obj_
+        elif nodeName_ == 'host_protocols':
+            obj_ = HostProtocols.factory()
+            obj_.build(child_)
+            self.host_protocols = obj_
         elif nodeName_ == 'host_non_operational_details':
             obj_ = HostNonOperationalDetails.factory()
             obj_.build(child_)
@@ -38143,6 +38520,10 @@ class VersionCaps(Version):
             obj_ = KdumpStates.factory()
             obj_.build(child_)
             self.kdump_states = obj_
+        elif nodeName_ == 'spm_states':
+            obj_ = SpmStates.factory()
+            obj_.build(child_)
+            self.spm_states = obj_
         elif nodeName_ == 'step_types':
             obj_ = StepTypes.factory()
             obj_.build(child_)
@@ -38227,6 +38608,7 @@ GDSClassesMapping = {
     'qos': QoS,
     'memory_pool': GlusterMemoryPool,
     'boot_menu': BootMenu,
+    'gluster_volume_types': GlusterVolumeTypes,
     'selinux': SELinux,
     'thresholds': SchedulingPolicyThresholds,
     'labels': Labels,
@@ -38275,6 +38657,7 @@ GDSClassesMapping = {
     'ticket': Ticket,
     'servers': Hosts,
     'vm_numa_node': VirtualNumaNode,
+    'host_protocols': HostProtocols,
     'permissions': Permissions,
     'bonding': Bonding,
     'gluster_volume_states': GlusterStates,
@@ -38438,7 +38821,7 @@ GDSClassesMapping = {
     'storage_domain_types': StorageDomainTypes,
     'disk_profiles': DiskProfiles,
     'vmpool': VmPool,
-    'gluster_volume_types': GlusterVolumeTypes,
+    'spm_states': SpmStates,
     'scheduling_policy_units': SchedulingPolicyUnits,
     'roles': Roles,
     'architecture_capabilities': ArchitectureCapabilities,
@@ -38469,6 +38852,7 @@ GDSClassesMapping = {
     'transport_types': TransportTypes,
     'tag': Tag,
     'brick_states': GlusterStates,
+    'spm': SPM,
     'file': File,
     'data_center': DataCenter,
     'lun_storage': Storage,
@@ -38776,6 +39160,7 @@ __all__ = [
     "HostNICStates",
     "HostNics",
     "HostNonOperationalDetails",
+    "HostProtocols",
     "HostStates",
     "HostStorage",
     "HostedEngine",
@@ -38863,6 +39248,7 @@ __all__ = [
     "Roles",
     "SELinux",
     "SELinuxModes",
+    "SPM",
     "SSH",
     "SchedulingPolicies",
     "SchedulingPolicy",
@@ -38881,6 +39267,7 @@ __all__ = [
     "SnapshotStatuses",
     "Snapshots",
     "SpecialObjects",
+    "SpmStates",
     "Sso",
     "SsoMethods",
     "Stages",
@@ -39070,6 +39457,7 @@ _rootClassMap = {
                     "host_non_operational_details"  : HostNonOperationalDetails,
                     "host_numa_node"                : NumaNode,
                     "host_numa_nodes"               : NumaNodes,
+                    "host_protocols"                : HostProtocols,
                     "host_states"                   : HostStates,
                     "host_storage"                  : HostStorage,
                     "hosted_engine"                 : HostedEngine,
@@ -39188,6 +39576,8 @@ _rootClassMap = {
                     "snapshot_statuses"             : SnapshotStatuses,
                     "snapshots"                     : Snapshots,
                     "special_objects"               : SpecialObjects,
+                    "spm"                           : SPM,
+                    "spm_states"                    : SpmStates,
                     "ssh"                           : SSH,
                     "sso"                           : Sso,
                     "sso_methods"                   : SsoMethods,
@@ -39372,6 +39762,7 @@ _tag_for_type = {
     HostNICStates: "host_nic_states",
     HostNics: "host_nics",
     HostNonOperationalDetails: "host_non_operational_details",
+    HostProtocols: "host_protocols",
     HostStates: "host_states",
     HostStorage: "host_storage",
     HostedEngine: "hosted_engine",
@@ -39453,6 +39844,7 @@ _tag_for_type = {
     Roles: "roles",
     SELinux: "selinux",
     SELinuxModes: "selinux_modes",
+    SPM: "spm",
     SSH: "ssh",
     SchedulingPolicies: "scheduling_policies",
     SchedulingPolicy: "scheduling_policy",
@@ -39470,6 +39862,7 @@ _tag_for_type = {
     SnapshotStatuses: "snapshot_statuses",
     Snapshots: "snapshots",
     SpecialObjects: "special_objects",
+    SpmStates: "spm_states",
     Sso: "sso",
     SsoMethods: "sso_methods",
     Stages: "stages",

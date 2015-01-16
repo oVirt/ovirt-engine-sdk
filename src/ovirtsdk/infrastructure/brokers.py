@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-11-11 12:05:56.000709'''
+'''Generated at: 2015-01-16 20:21:11.000734'''
 
 
 from ovirtsdk.xml import params
@@ -9015,7 +9015,7 @@ class Disk(params.Disk, Base):
         '''
         @type Action:
 
-        @param storagedomain.id|name: string
+        @param action.storage_domain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
@@ -9038,7 +9038,7 @@ class Disk(params.Disk, Base):
         '''
         @type Action:
 
-        @param storagedomain.id|name: string
+        @param action.storage_domain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
@@ -9061,7 +9061,7 @@ class Disk(params.Disk, Base):
         '''
         @type Action:
 
-        @param storagedomain.id|name: string
+        @param action.storage_domain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
@@ -11216,7 +11216,7 @@ class Host(params.Host, Base):
           [@param host.display.address: string]
           [@param host.cluster.id|name: string]
           [@param host.port: int]
-          [@param host.storage_manager.priority: int]
+          [@param host.spm.priority: int]
           [@param host.power_management.type: string]
           [@param host.power_management.enabled: boolean]
           [@param host.power_management.address: string]
@@ -11255,7 +11255,7 @@ class Host(params.Host, Base):
           [@param host.display.address: string]
           [@param host.cluster.id|name: string]
           [@param host.port: int]
-          [@param host.storage_manager.priority: int]
+          [@param host.spm.priority: int]
           [@param host.power_management.type: string]
           [@param host.power_management.automatic_pm_enabled: boolean]
           [@param host.power_management.enabled: boolean]
@@ -11452,6 +11452,7 @@ class Host(params.Host, Base):
         Overload 1:
           [@param action.root_password: string]
           [@param action.image: string]
+          [@param action.host.override_iptables: boolean]
         Overload 2:
           [@param action.ssh.port: int]
           [@param action.ssh.fingerprint: string]
@@ -11461,6 +11462,7 @@ class Host(params.Host, Base):
           [@param action.image: string]
           [@param action.async: boolean]
           [@param action.grace_period.expiry: long]
+          [@param action.host.override_iptables: boolean]
         [@param correlation_id: any string]
 
         @return Action:
@@ -11514,6 +11516,28 @@ class Host(params.Host, Base):
         '''
 
         url = '/hosts/{host:id}/iscsilogin'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def unregisteredstoragedomainsdiscover(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param action.iscsi.address: string
+        @param action.target: string
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/hosts/{host:id}/unregisteredstoragedomainsdiscover'
 
         result = self.__getProxy().request(
             method='POST',
@@ -13164,7 +13188,7 @@ class Hosts(Base):
           [@param host.comment: string]
           [@param host.port: int]
           [@param host.display.address: string]
-          [@param host.storage_manager.priority: int]
+          [@param host.spm.priority: int]
           [@param host.power_management.type: string]
           [@param host.power_management.enabled: boolean]
           [@param host.power_management.address: string]
@@ -13208,7 +13232,7 @@ class Hosts(Base):
           [@param host.ssh.user.password: string]
           [@param host.port: int]
           [@param host.display.address: string]
-          [@param host.storage_manager.priority: int]
+          [@param host.spm.priority: int]
           [@param host.power_management.type: string]
           [@param host.power_management.automatic_pm_enabled: boolean]
           [@param host.power_management.enabled: boolean]
@@ -18595,10 +18619,11 @@ class StorageDomainTemplates(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, max=None, unregistered=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param max: int (max results)]
+        [@param unregistered: boolean (true|false)]
 
         @return Templates:
         '''
@@ -18611,7 +18636,7 @@ class StorageDomainTemplates(Base):
                     url=url,
                     args={'{storagedomain:id}': self.parentclass.get_id()}
                 ),
-                qargs={'max:matrix':max}
+                qargs={'max:matrix':max,'unregistered:matrix':unregistered}
             ),
             headers={}
         ).get_template()
@@ -18927,10 +18952,11 @@ class StorageDomainVMs(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, max=None, unregistered=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param max: int (max results)]
+        [@param unregistered: boolean (true|false)]
 
         @return VMs:
         '''
@@ -18943,7 +18969,7 @@ class StorageDomainVMs(Base):
                     url=url,
                     args={'{storagedomain:id}': self.parentclass.get_id()}
                 ),
-                qargs={'max:matrix':max}
+                qargs={'max:matrix':max,'unregistered:matrix':unregistered}
             ),
             headers={}
         ).get_vm()
@@ -19004,13 +19030,21 @@ class StorageDomains(Base):
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
           @param storagedomain.storage.type: string
+          @param storagedomain.import: boolean
+          [@param storagedomain.storage.address: string]
+          [@param storagedomain.format: boolean]
+          [@param storagedomain.comment: string]
+        Overload 3:
+          @param storagedomain.host.id|name: string
+          @param storagedomain.type: string
+          @param storagedomain.storage.type: string
           @param storagedomain.format: boolean
           @param storagedomain.storage.address: string
           @param storagedomain.storage.path: string
           [@param storagedomain.name: string]
           [@param storagedomain.comment: string]
           [@param storagedomain.storage_format: string]
-        Overload 3:
+        Overload 4:
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
           @param storagedomain.storage.type: string
@@ -19019,7 +19053,7 @@ class StorageDomains(Base):
           [@param storagedomain.name: string]
           [@param storagedomain.comment: string]
           [@param storagedomain.storage_format: string]
-        Overload 4:
+        Overload 5:
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
           @param storagedomain.storage.type: string
@@ -21626,6 +21660,7 @@ class VM(params.VM, Base):
         [@param vm.cpu_shares: int]
         [@param vm.memory: long]
         [@param vm.memory_policy.guaranteed: long]
+        [@param vm.memory_policy.ballooning: boolean]
         [@param vm.high_availability.priority: int]
         [@param vm.high_availability.enabled: boolean]
         [@param vm.domain.name: string]
@@ -21847,6 +21882,7 @@ class VM(params.VM, Base):
         [@param action.async: boolean]
         [@param action.force: boolean]
         [@param action.grace_period.expiry: long]
+        [@param action.cluster.id: string]
         [@param correlation_id: any string]
 
         @return Action:
@@ -21896,6 +21932,7 @@ class VM(params.VM, Base):
         {
           [@ivar disk.id: string]
           [@ivar disk.image_id: string]
+          [@ivar disk.snapshot.id: string]
         }
         [@param correlation_id: any string]
 
@@ -25430,6 +25467,7 @@ class VMs(Base):
           [@param vm.cpu.architecture: string]
           [@param vm.memory: long]
           [@param vm.memory_policy.guaranteed: long]
+          [@param vm.memory_policy.ballooning: boolean]
           [@param vm.high_availability.priority: int]
           [@param vm.high_availability.enabled: boolean]
           [@param vm.domain.name: string]
@@ -25527,6 +25565,7 @@ class VMs(Base):
           [@param vm.cpu.architecture: string]
           [@param vm.memory: long]
           [@param vm.memory_policy.guaranteed: long]
+          [@param vm.memory_policy.ballooning: boolean]
           [@param vm.high_availability.priority: int]
           [@param vm.high_availability.enabled: boolean]
           [@param vm.domain.name: string]
@@ -25602,6 +25641,7 @@ class VMs(Base):
           [@param vm.cpu.topology.cores: int]
           [@param vm.memory: long]
           [@param vm.memory_policy.guaranteed: long]
+          [@param vm.memory_policy.ballooning: boolean]
           [@param vm.high_availability.priority: int]
           [@param vm.high_availability.enabled: boolean]
           [@param vm.domain.name: string]

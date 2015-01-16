@@ -205,6 +205,8 @@
       <xs:element name="import_as_template" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
       <!-- for VM hosted engine maintenance actions -->
       <xs:element name="maintenance_enabled" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+      <!-- for getting storage domains which are candidates to be imported -->
+      <xs:element ref="storage_domains" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:group>
 
@@ -613,6 +615,7 @@
           <xs:element ref="creation_states" minOccurs="0"/>
           <xs:element ref="power_management_states" minOccurs="0"/>
           <xs:element ref="host_states" minOccurs="0"/>
+          <xs:element ref="host_protocols" minOccurs="0"/>
           <xs:element ref="host_non_operational_details" minOccurs="0"/>
           <xs:element ref="network_states" minOccurs="0"/>
           <xs:element ref="storage_domain_states" minOccurs="0"/>
@@ -634,6 +637,7 @@
           <xs:element ref="watchdog_actions" minOccurs="0"/>
           <xs:element ref="authentication_methods" minOccurs="0"/>
           <xs:element ref="kdump_states" minOccurs="0"/>
+          <xs:element ref="spm_states" minOccurs="0"/>
           <!--  External tasks -->
           <xs:element ref="step_types" minOccurs="0"/>
           <xs:element ref="payload_encodings" minOccurs="0"/>
@@ -1083,6 +1087,20 @@
         <xs:annotation>
           <xs:appinfo>
             <jaxb:property name="KdumpStates"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="spm_states" type="SpmStates"/>
+
+  <xs:complexType name="SpmStates">
+    <xs:sequence>
+      <xs:element name="spm_state" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:appinfo>
+            <jaxb:property name="SpmStates"/>
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
@@ -1711,7 +1729,10 @@
                e.g. the standard VDSM port 54321 -->
           <xs:element name="port" type="xs:unsignedShort" minOccurs="0"/>
           <xs:element name="type" type="xs:string" minOccurs="0"/>
+          <!-- This element is deprecated because it uses a mix of attributes and text content, which makes it
+               impossible to send the values independently. Use the the "spm" element instead. -->
           <xs:element name="storage_manager" type="StorageManager" minOccurs="0"/>
+          <xs:element name="spm" type="SPM" minOccurs="0"/>
           <xs:element name="version" type="Version" minOccurs="0"/>
           <xs:element ref="hardware_information" minOccurs="0"/>
           <xs:element ref="power_management" minOccurs="0"/>
@@ -1747,6 +1768,8 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <!-- This element is deprecated because it uses a mix of attributes and text content, which makes it
+       impossible to send the values independently. Use the the "spm" element instead. -->
   <xs:element name="storage_manager" type="StorageManager"/>
 
   <xs:complexType name="StorageManager">
@@ -1761,6 +1784,16 @@
         </xs:attribute>
       </xs:extension>
     </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:element name="spm" type="SPM"/>
+
+  <xs:complexType name="SPM">
+    <xs:sequence>
+      <xs:element name="priority" type="xs:int" minOccurs="0" maxOccurs="1"/>
+
+      <xs:element ref="status" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:element name="hosted_engine" type="HostedEngine"/>
@@ -1783,6 +1816,20 @@
         <xs:annotation>
           <xs:appinfo>
             <jaxb:property name="HostStates"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="host_protocols" type="HostProtocols"/>
+
+  <xs:complexType name="HostProtocols">
+    <xs:sequence>
+      <xs:element name="host_protocol" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:appinfo>
+            <jaxb:property name="HostProtocols"/>
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
@@ -2530,6 +2577,7 @@
           <xs:element name="used" type="xs:long" minOccurs="0"/>
           <xs:element name="committed" type="xs:long" minOccurs="0"/>
           <xs:element name="storage_format" type="xs:string" minOccurs="0"/>
+          <xs:element name="import" type="xs:boolean" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -2633,6 +2681,7 @@
           <xs:element ref="console" minOccurs="0" maxOccurs="1"/>
           <xs:element name="timezone" type="xs:string" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="domain" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="custom_properties" type="CustomProperties" minOccurs="0"/>
           <xs:element ref="usb" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="soundcard_enabled" minOccurs="0" maxOccurs="1"/>
           <xs:element name="tunnel_migration" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
@@ -3422,6 +3471,7 @@
           <xs:element name="sgio" type="xs:string" minOccurs="0"/>
           <xs:element ref="snapshot" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="disk_profile" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="logical_name" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

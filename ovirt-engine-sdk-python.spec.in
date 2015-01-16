@@ -40,6 +40,20 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS.md README.md LICENSE.md
 
 %changelog
+* Fri Jan 16 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.1.0-0
+- Added support for the operations to move, copy and export disks using
+  the top level disks collection #1169376.
+- Replaced storage_manager with spm #1146457.
+- Added support for reconfigure firewall (override_iptables) to the host
+  installation action #1179613.
+- Added support for importing block storage domains #1181681.
+- Fixed support for listing unregistered VMs #1148715.
+- Added support for setting memory ballooning #1149188.
+- Added support for specifying cluster during migration #1150191.
+- Added snapshot id to documentation of preview action #1150071.
+- Added custom_properties to templates #1166632.
+- Added logical_name to disks #1063597.
+
 * Tue Nov 11 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.8-1
 - Apply filter by name/alias after get #1155678.
 

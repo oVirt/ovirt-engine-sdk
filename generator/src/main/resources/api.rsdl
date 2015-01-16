@@ -4849,7 +4849,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>copy a disk to a different storage domain</description>
                         <parameter required="true" type="xs:string">
-                            <name>storagedomain.id|name</name>
+                            <name>action.storage_domain.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
@@ -4885,7 +4885,7 @@ or less indicates that the session should never timeout</description>
                     <type>Action</type>
                     <parameters_set>
                         <parameter required="true" type="xs:string">
-                            <name>storagedomain.id|name</name>
+                            <name>action.storage_domain.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
@@ -4923,7 +4923,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>move a disk to a different storage domain</description>
                         <parameter required="true" type="xs:string">
-                            <name>storagedomain.id|name</name>
+                            <name>action.storage_domain.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
@@ -5700,7 +5700,7 @@ or less indicates that the session should never timeout</description>
                             <name>host.display.address</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>host.storage_manager.priority</name>
+                            <name>host.spm.priority</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>host.power_management.type</name>
@@ -5816,7 +5816,7 @@ or less indicates that the session should never timeout</description>
                             <name>host.display.address</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>host.storage_manager.priority</name>
+                            <name>host.spm.priority</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>host.power_management.type</name>
@@ -6046,7 +6046,7 @@ or less indicates that the session should never timeout</description>
                             <name>host.port</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>host.storage_manager.priority</name>
+                            <name>host.spm.priority</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>host.power_management.type</name>
@@ -6147,7 +6147,7 @@ or less indicates that the session should never timeout</description>
                             <name>host.port</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>host.storage_manager.priority</name>
+                            <name>host.spm.priority</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>host.power_management.type</name>
@@ -6484,6 +6484,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>action.image</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.host.override_iptables</name>
+                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>install vdsm and other packages required to get the host ready to be used in the engine providing thre ssh password</description>
@@ -6510,6 +6513,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>action.grace_period.expiry</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.host.override_iptables</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -7324,6 +7330,37 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Tag</type>
+            </response>
+        </link>
+        <link href="/ovirt-engine/api/hosts/{host:id}/unregisteredstoragedomainsdiscover" rel="unregisteredstoragedomainsdiscover">
+            <description>Discover the Storage Domains which are candidiates to be imported to the setup</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Action</type>
+                    <parameters_set>
+                        <description>Discover the Storage Domains which are candidiates to be imported to the setup</description>
+                        <parameter required="true" type="xs:string">
+                            <name>action.iscsi.address</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>action.target</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
             </response>
         </link>
         <link href="/ovirt-engine/api/instancetypes" rel="add">
@@ -9228,6 +9265,30 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
+                        <description>Import an existing block storage domain to the system using the targets already connected to the host</description>
+                        <parameter required="true" type="xs:string">
+                            <name>storagedomain.host.id|name</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>storagedomain.type</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>storagedomain.storage.type</name>
+                        </parameter>
+                        <parameter required="true" type="xs:boolean">
+                            <name>storagedomain.import</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storagedomain.storage.address</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.format</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storagedomain.comment</name>
+                        </parameter>
+                    </parameters_set>
+                    <parameters_set>
                         <description>add a new storage domain to the system using the storage on the given host and path</description>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.host.id|name</name>
@@ -9773,14 +9834,6 @@ or less indicates that the session should never timeout</description>
             <description>get the details of the specified disk in the storage domain</description>
             <request>
                 <http_method>GET</http_method>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:boolean" context="matrix">
-                            <name>unregistered</name>
-                            <value>true|false</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
                 <body/>
             </request>
             <response>
@@ -10195,6 +10248,10 @@ or less indicates that the session should never timeout</description>
                             <name>max</name>
                             <value>max results</value>
                         </parameter>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>unregistered</name>
+                            <value>true|false</value>
+                        </parameter>
                     </parameters_set>
                 </url>
                 <body/>
@@ -10354,6 +10411,10 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int" context="matrix">
                             <name>max</name>
                             <value>max results</value>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>unregistered</name>
+                            <value>true|false</value>
                         </parameter>
                     </parameters_set>
                 </url>
@@ -12632,6 +12693,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory_policy.guaranteed</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.memory_policy.ballooning</name>
+                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.high_availability.priority</name>
                         </parameter>
@@ -12887,6 +12951,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory_policy.guaranteed</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.memory_policy.ballooning</name>
+                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.high_availability.priority</name>
                         </parameter>
@@ -13087,6 +13154,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory_policy.guaranteed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.memory_policy.ballooning</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.high_availability.priority</name>
@@ -13445,6 +13515,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory_policy.guaranteed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm.memory_policy.ballooning</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.high_availability.priority</name>
@@ -14422,6 +14495,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:long">
                             <name>action.grace_period.expiry</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.cluster.id</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -15032,6 +15108,9 @@ or less indicates that the session should never timeout</description>
 </parameter>
 <parameter required="false" type="xs:string">
     <name>disk.image_id</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>disk.snapshot.id</name>
 </parameter>
                             </parameters_set>
                         </parameter>
