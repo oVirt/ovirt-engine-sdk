@@ -40,7 +40,7 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS.md README.md LICENSE.md
 
 %changelog
-* Fri Jan 16 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.1.0-0
+* Fri Jan 16 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.1.0-1
 - Added support for the operations to move, copy and export disks using
   the top level disks collection #1169376.
 - Replaced storage_manager with spm #1146457.
