@@ -1,6 +1,6 @@
     def update(self$headers_method_params_str$):
 $docs$
-        url = '$url$'
+        url = '/$url$'
 
         result = self.__getProxy().update(
             url=UrlHelper.replace(

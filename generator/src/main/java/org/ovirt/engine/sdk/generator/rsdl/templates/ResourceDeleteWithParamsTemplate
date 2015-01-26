@@ -1,7 +1,7 @@
     def delete(self, $combined_method_params$):
 $docs$
         url = UrlHelper.replace(
-            '$url$',
+            '/$url$',
             {'{$resource_name_lc$:id}': self.get_id()}
         )
 

@@ -97,8 +97,7 @@ public class UrlUtils {
 
     private static LinkedHashMap<String, String> getPeriods(DetailedLink link) {
         String url = link.getHref();
-        List<String> sUrl = new ArrayList<>(Arrays.asList(url.split("/")));
-        sUrl.remove(0);
+        List<String> sUrl = Arrays.asList(url.split("/"));
         return listToDict(sUrl);
     }
 

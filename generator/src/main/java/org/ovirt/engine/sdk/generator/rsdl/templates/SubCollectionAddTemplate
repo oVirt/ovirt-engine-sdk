@@ -1,7 +1,7 @@
     def add(self, $resource_to_add$$headers_method_params_str$):
 
 $docs$
-        url = '$url$'
+        url = '/$url$'
 
         result = self.__getProxy().add(
             url=UrlHelper.replace(

@@ -8,7 +8,7 @@
   <groupId>org.ovirt.engine.sdk</groupId>
   <artifactId>python-generator</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
 
   <name>Python SDK generator</name>
   <description>This is Python SDK generator for oVirt virtualization</description>
@@ -28,10 +28,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Default values used when retrieving the XML schema and the RSDL from
-         a live engine: -->
-    <api.url>https://localhost/ovirt-engine/api</api.url>
-    <api.user>admin@internal</api.user>
-    <api.password>letmein!</api.password>
+         a the engine artifacts: -->
+    <engine.version>3.6.0-SNAPSHOT</engine.version>
 
   </properties>
 
@@ -87,14 +85,14 @@
 
   <profiles>
 
-    <!-- This profile is used to download the XML schema and the RSDL from a
-         live engine and update local copies. To run it use the validate phase
-         and enable the profile:
+    <!-- This profile is used to extract the XML schema and the RSDL from a
+         the engine artifacts. To run it use the validate phase and enable
+         the profile:
 
          mvn validate -Pupdate-metadata
 
-         After doing this remember to add update the files in the source
-         control system. -->
+         After doing this remember to update the files in the source control
+         system. -->
     <profile>
       <id>update-metadata</id>
       <build>
@@ -105,40 +103,28 @@
             <version>1.2.1</version>
             <executions>
               <execution>
-                <id>update-schema</id>
+                <id>update-metadata</id>
                 <phase>validate</phase>
                 <goals>
-                  <goal>exec</goal>
+                  <goal>java</goal>
                 </goals>
                 <configuration>
-                  <executable>wget</executable>
+                  <mainClass>org.ovirt.engine.api.rsdl.RsdlIOManager</mainClass>
                   <arguments>
-                    <argument>--http-user=${api.user}</argument>
-                    <argument>--http-password=${api.password}</argument>
-                    <argument>--no-check-certificate</argument>
-                    <argument>--output-document=${basedir}/src/main/resources/api.xsd</argument>
-                    <argument>${api.url}?schema</argument>
+                    <argument>${basedir}/src/main/resources/</argument>
                   </arguments>
-                </configuration>
-              </execution>
-              <execution>
-                <id>update-rsdl</id>
-                <phase>validate</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <executable>wget</executable>
-                  <arguments>
-                    <argument>--http-user=${api.user}</argument>
-                    <argument>--http-password=${api.password}</argument>
-                    <argument>--no-check-certificate</argument>
-                    <argument>--output-document=${basedir}/src/main/resources/api.rsdl</argument>
-                    <argument>${api.url}?rsdl</argument>
-                  </arguments>
+                  <includePluginDependencies>true</includePluginDependencies>
+                  <includeProjectDependencies>false</includeProjectDependencies>
                 </configuration>
               </execution>
             </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.ovirt.engine.api</groupId>
+                <artifactId>restapi-definition</artifactId>
+                <version>${engine.version}</version>
+              </dependency>
+            </dependencies>
           </plugin>
         </plugins>
       </build>
@@ -173,8 +159,10 @@
                     <argument>--xsd</argument>
                     <argument>${basedir}/src/main/resources/api.xsd</argument>
                     <argument>--rsdl</argument>
-                    <argument>${basedir}/src/main/resources/api.rsdl</argument>
+                    <argument>${basedir}/src/main/resources/rsdl.xml</argument>
                   </arguments>
+                  <includePluginDependencies>false</includePluginDependencies>
+                  <includeProjectDependencies>true</includeProjectDependencies>
                 </configuration>
               </execution>
             </executions>

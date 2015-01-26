@@ -1,6 +1,6 @@
     def update(self$combined_method_params$):
 $docs$
-        url = '$url$'
+        url = '/$url$'
         url = UrlHelper.replace(
             url,
             $url_identifiers_replacments$

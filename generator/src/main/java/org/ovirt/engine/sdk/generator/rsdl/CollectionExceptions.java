@@ -38,12 +38,12 @@ public class CollectionExceptions {
         // Capabilities resource has unique structure which is not
         // fully comply with RESTful collection pattern, but preserved
         // in sake of backward compatibility
-        if (url.equals("/capabilities")) {
+        if (url.equals("capabilities")) {
             CollectionGetCapabilitiesTemplate template = new CollectionGetCapabilitiesTemplate();
             return template.evaluate();
         }
 
-        if (url.equals("/disks")) {
+        if (url.equals("disks")) {
             Map<String, String> docsParams = new LinkedHashMap<>();
             docsParams.put("id   : string (the id of the entity)", "False");
             docsParams.put("alias: string (the alias of the entity)", "False");

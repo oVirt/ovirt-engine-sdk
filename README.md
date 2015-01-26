@@ -17,56 +17,31 @@ Generating
 ----------
 
 Most of the source code of the Python SDK is automatically generated from the
-metadata provided by the oVirt Engine. The code generator is a Java program
-that resides in the `generator` directory. In order to run it you will need
-first to build it, using Maven:
+metadata provided by the oVirt Engine artifacts. The code generator is a Java
+program that resides in the `generator` directory. In order to run it you will
+need first to build it, using Maven:
 
     $ cd generator
     $ mvn clean install
 
 Then you will need to place the files containing the XML schema of entities and
 the RSDL in the `src/main/resources` directory. This can be done manually, but
-it is better to download them from a live engine, running the following
-command:
+it is better to extract them from the engine Maven artifacts, running the
+following command:
 
-    $ mvn validate -Pupdate-metadata \
-    -Dapi.url="https://localhost/ovirt-engine/api" \
-    -Dapi.user="admin@internal" \
-    -Dapi.password="letmein!"
+    $ mvn validate -Pupdate-metadata -Dengine.version="3.6.0-SNAPSHOT"
 
-This will use the `wget` command to download the files, so make sure that you
-have it installed.
+This requires that the Maven artifacts are available either locally or in an
+accessible remote Maven repository. As those artifacts aren't currently
+published to any public Maven repository, this means that you will have to
+build the engine first.
 
-The `api.url`, `api.user` and `api.password` properties are optional, and their
-default values are as in the above example. If you are going to use this
-frequently it may be convenient to put them in your `~/.m2/settins.xml` file,
-something like this:
-
-    <settings
-      xmlns="http://maven.apache.org/POM/4.0.0"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
-
-      <activeProfiles>
-        <activeProfile>api</activeProfile>
-      </activeProfiles>
-
-      <profiles>
-        <profile>
-          <id>api</id>
-          <properties>
-            <api.url>https://localhost/ovirt-engine/api</api.url>
-            <api.user>admin@internal</api.user>
-            <api.password>mypass</api.password>
-          </properties>
-        </profile>
-      </profiles>
-
-    </settings>
-
-If you do this then to download the files just run this:
-
-    $ mvn validate -Pupdate-metadata
+The `engine.version` property is used to indicate which version of the metadata
+should be extracted. You may have several versions of the engine artifacts
+available, so it is important to select the right one. The default value of
+this property corresponds to the branch of the SDK that you are using, so
+usually you won't need to specify this in the command line, instead of that you
+should change the value in the `pom.xml` file.
 
 With the metadata files in place you can update the generate source code as
 follows:
@@ -92,7 +67,7 @@ Releasing
 ---------
 
 In order to do a new release the first thing to do is to decide what will be
-the release number. Curently the release numbers of the Python SDK have for
+the release number. Curently the release numbers of the Python SDK have four
 numbers, separated by dots. The first three numbers correspond to the version
 of the engine that was used in the last generation. So if last generation was
 for engine 3.5.7 then the version number should be 3.5.7.`x`. The value of `x`

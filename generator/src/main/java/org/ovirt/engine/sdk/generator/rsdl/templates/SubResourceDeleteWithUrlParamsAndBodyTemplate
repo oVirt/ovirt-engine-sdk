@@ -1,7 +1,7 @@
     def delete(self, $body_type_lc$$body_instance_str$, $combined_method_params$):
 $docs$
         url = UrlHelper.replace(
-            '$url$',
+            '/$url$',
 $url_identifyiers$
         )
 

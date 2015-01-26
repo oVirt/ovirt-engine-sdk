@@ -107,15 +107,7 @@ public class RsdlCodegen extends AbstractCodegen {
 
         Set<String> usedRels = new HashSet<>();
 
-        // Get all the links from the RSDL document and make them relative:
-        List<DetailedLink> links = rsdl.getLinks().getLinks();
-        for (DetailedLink link : links) {
-            String href = link.getHref();
-            href = href.replaceFirst("^/ovirt-engine/api", "");
-            link.setHref(href);
-        }
-
-        for (DetailedLink link : links) {
+        for (DetailedLink link : rsdl.getLinks().getLinks()) {
             String responseType = null;
             String bodyType = null;
 
@@ -140,7 +132,7 @@ public class RsdlCodegen extends AbstractCodegen {
                 }
 
                 // Get relations:
-                String[] splittedUrl = url.trim().substring(1).split("/");
+                String[] splittedUrl = url.trim().split("/");
 
                 // Append resource/method/rel
                 appendResource(

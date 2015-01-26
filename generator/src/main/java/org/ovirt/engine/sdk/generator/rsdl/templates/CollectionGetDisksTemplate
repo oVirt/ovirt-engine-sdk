@@ -1,6 +1,6 @@
     def get(self, alias=None, $headers_method_params_str$id=None):
 $docs$
-        url = '$url$'
+        url = '/$url$'
 
         if id:
             try :

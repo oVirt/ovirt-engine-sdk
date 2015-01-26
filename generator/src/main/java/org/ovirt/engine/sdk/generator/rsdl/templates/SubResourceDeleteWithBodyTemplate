@@ -1,6 +1,6 @@
     def delete(self, $body_type_lc$$body_instance_str$):
 $docs$
-        url = '$url$'
+        url = '/$url$'
 
         return self.__getProxy().delete(
             url=UrlHelper.replace(url,

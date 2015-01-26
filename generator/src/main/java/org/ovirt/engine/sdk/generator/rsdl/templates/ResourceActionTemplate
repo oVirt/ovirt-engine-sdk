@@ -1,6 +1,6 @@
     def $action_name$(self$method_params$, $body_type_lc$=params.$body_type$()$headers_method_params_str$):
 $docs$
-        url = '$url$'
+        url = '/$url$'
 
         result = self.__getProxy().request(
             method='$method$',

@@ -80,7 +80,7 @@ public class Collection {
         // Capabilities resource has unique structure which is not
         // fully comply with RESTful collection pattern, but preserved
         // in sake of backward compatibility
-        if (url.equals("/capabilities")) {
+        if (url.equals("capabilities")) {
             return CollectionExceptions.get(
                 url,
                 link,
@@ -95,7 +95,7 @@ public class Collection {
 
         // /disks search-by-name paradigm was broken by the engine
         // should be fixed later on
-        if (url.equals("/disks")) {
+        if (url.equals("disks")) {
             return CollectionExceptions.get(
                 url,
                 link,
@@ -151,7 +151,7 @@ public class Collection {
         // Capabilities resource has unique structure which is not
         // fully comply with RESTful collection pattern, but preserved
         // in sake of backward compatibility
-        if (url.equals("/capabilities")) {
+        if (url.equals("capabilities")) {
             return CollectionExceptions.list();
         }
         else if (!prmsStr.isEmpty() || !headersMethodParamsStr.isEmpty()) {
