@@ -2,7 +2,9 @@
 $docs$
         url = UrlHelper.replace(
             '/$url$',
-            {'{$resource_name_lc$:id}': self.get_id()}
+            {
+                '{$resource_name_lc$:id}': self.get_id(),
+            }
         )
 
         return self.__getProxy().delete(

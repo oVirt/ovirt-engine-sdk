@@ -40,8 +40,8 @@ public class UrlUtils {
         if (!replacementCandidates.isEmpty()) {
             for (int i = 0; i < replacementCandidatesLen; i++) {
                 if (replacementCandidates.size() == 1) {
-                    url += (!continues? offset: "") + "{'" + replacementCandidates.get(i) + "': " +
-                        generateParentClassIdentifiers(replacementCandidatesLen - i) + "}";
+                    url += (!continues? offset: "") + "{\n" + offset + "    '" + replacementCandidates.get(i) + "': " +
+                        generateParentClassIdentifiers(replacementCandidatesLen - i) + ",\n" + offset + "}";
                     return url;
                 }
                 else {
@@ -53,21 +53,19 @@ public class UrlUtils {
                         replacementOffset = i;
                     }
                     if (i == 0) {
-                        url += (!continues? offset: "") + "{'" + replacementCandidates.get(i) + "' : " +
-                            generateParentClassIdentifiers(replacementCandidatesLen - replacementOffset);
+                        url += (!continues? offset: "") + "{\n" + offset + "    '" + replacementCandidates.get(i) + "': " +
+                            generateParentClassIdentifiers(replacementCandidatesLen - replacementOffset) + ",\n";
                         if (replacementCandidates.size() == 1) {
                             return url;
                         }
                     }
                     else if (i != replacementCandidatesLen - 1) {
-                        url += ",\n";
-                        url += offset + " '" + replacementCandidates.get(i) + "': " +
-                            generateParentClassIdentifiers(replacementCandidatesLen - replacementOffset);
+                        url += offset + "    '" + replacementCandidates.get(i) + "': " +
+                            generateParentClassIdentifiers(replacementCandidatesLen - replacementOffset) + ",\n";
                     }
                     else {
-                        url += ",\n";
-                        url += offset + " '" + replacementCandidates.get(i) + "': " +
-                            generateParentClassIdentifiers(replacementCandidatesLen - replacementOffset) + "}";
+                        url += offset + "    '" + replacementCandidates.get(i) + "': " +
+                            generateParentClassIdentifiers(replacementCandidatesLen - replacementOffset) + ",\n" +offset + "}";
                     }
                 }
             }

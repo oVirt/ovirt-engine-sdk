@@ -5,7 +5,9 @@ $docs$
         result = self.__getProxy().update(
             url=UrlHelper.replace(
                 url,
-                {'{$resource_name_lc$:id}': self.get_id()}
+                {
+                    '{$resource_name_lc$:id}': self.get_id(),
+                }
             ),
             body=ParseHelper.toXml(self.superclass),
             headers=$headers_map_params_str$

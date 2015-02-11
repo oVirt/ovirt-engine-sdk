@@ -161,7 +161,7 @@ public class SubCollection {
             values.put("url_params",
                 UrlUtils.generateUrlIdentifiersReplacements(
                     link,
-                    "                ",
+                    "                    ",
                     true,
                     true
                 )

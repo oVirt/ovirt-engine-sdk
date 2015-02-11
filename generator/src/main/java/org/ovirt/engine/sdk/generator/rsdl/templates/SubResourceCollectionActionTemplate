@@ -6,10 +6,13 @@ $docs$
             method='$method$',
             url=UrlHelper.replace(
                 url,
-                {'{$parent_resource_name_lc$:id}' : self.parentclass.get_id()}
+                {
+                    '{$parent_resource_name_lc$:id}': self.parentclass.get_id(),
+                }
             ),
             body=ParseHelper.toXml($body_type_lc$),
-            headers=$headers_map_params_str$)
+            headers=$headers_map_params_str$
+        )
 
         return result
 
