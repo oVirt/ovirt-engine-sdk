@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-11-25 16:37:09.000488'''
+'''Generated at: 2015-02-18 10:17:03.000745'''
 
 
 from ovirtsdk.xml import params
@@ -9037,7 +9037,10 @@ class Disk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{disk:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{disk:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -9060,7 +9063,10 @@ class Disk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{disk:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{disk:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -9083,7 +9089,10 @@ class Disk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{disk:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{disk:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -11327,7 +11336,10 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{host:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -11359,7 +11371,10 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{host:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -11381,7 +11396,10 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{host:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -11403,7 +11421,10 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{host:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -11426,7 +11447,10 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{host:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -11448,7 +11472,10 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{host:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -11480,7 +11507,10 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{host:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -11503,7 +11533,10 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{host:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -11527,7 +11560,10 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{host:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{host:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -13915,7 +13951,10 @@ class Job(params.Job, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{job:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{job:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -13939,7 +13978,10 @@ class Job(params.Job, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{job:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{job:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -19691,7 +19733,10 @@ class Template(params.Template, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{template:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{template:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -21983,7 +22028,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={}
         )
@@ -22004,7 +22052,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22024,7 +22075,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22046,7 +22100,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22071,7 +22128,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22091,7 +22151,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22114,7 +22177,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22138,7 +22204,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22161,7 +22230,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22189,7 +22261,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22209,7 +22284,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22231,7 +22309,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22304,7 +22385,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22326,7 +22410,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22348,7 +22435,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22371,7 +22461,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -22391,7 +22484,10 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vm:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vm:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -26134,7 +26230,10 @@ class VmPool(params.VmPool, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(url, {'{vmpool:id}': self.get_id()}),
+            url=UrlHelper.replace(
+                url,
+                {'{vmpool:id}': self.get_id()}
+            ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
         )
@@ -26778,5 +26877,4 @@ class VnicProfiles(Base):
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
-
 
