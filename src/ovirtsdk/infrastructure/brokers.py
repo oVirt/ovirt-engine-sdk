@@ -1782,7 +1782,7 @@ class ClusterGlusterVolumeBricks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, glusterbricks, expect=None, correlation_id=None):
+    def add(self, brick, expect=None, correlation_id=None):
 
         '''
         @type GlusterBricks:
@@ -1810,7 +1810,7 @@ class ClusterGlusterVolumeBricks(Base):
                     '{glustervolume:id}': self.parentclass.get_id(),
                 }
             ),
-            body=ParseHelper.toXml(glusterbricks),
+            body=ParseHelper.toXml(brick),
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
@@ -4656,7 +4656,7 @@ class DataCenterClusterGlustervolumeBricks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, glusterbricks):
+    def add(self, brick):
 
         '''
         @type GlusterBricks:
@@ -4676,7 +4676,7 @@ class DataCenterClusterGlustervolumeBricks(Base):
                     '{glustervolume:id}': self.parentclass.get_id(),
                 }
             ),
-            body=ParseHelper.toXml(glusterbricks),
+            body=ParseHelper.toXml(brick),
             headers={}
         )
 
