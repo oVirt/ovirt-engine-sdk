@@ -10139,7 +10139,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>BaseResource</type>
+                <type>DiskSnapshot</type>
             </response>
         </link>
         <link href="storagedomains/{storagedomain:id}/files" rel="get">
