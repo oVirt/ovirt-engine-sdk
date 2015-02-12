@@ -16971,7 +16971,7 @@ class SchedulingPolicy(params.SchedulingPolicy, Base):
             url=UrlHelper.replace(
                 url,
                 {
-                    '{schedulingpolicy:id}': self.get_id(),
+                    '{schedulingpolicie:id}': self.get_id(),
                 }
             ),
             headers={'Content-type':None}
@@ -16988,7 +16988,7 @@ class SchedulingPolicy(params.SchedulingPolicy, Base):
             url=UrlHelper.replace(
                 url,
                 {
-                    '{schedulingpolicy:id}': self.get_id(),
+                    '{schedulingpolicie:id}': self.get_id(),
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
