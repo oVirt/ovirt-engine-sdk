@@ -35,8 +35,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.io.FileUtils;
 import org.ovirt.engine.sdk.generator.common.AbstractCodegen;
-import org.ovirt.engine.sdk.generator.utils.FileUtils;
 import org.ovirt.engine.sdk.generator.utils.StringUtils;
 import org.ovirt.engine.sdk.generator.utils.TypeUtils;
 import org.ovirt.engine.sdk.generator.xsd.XsdData;
@@ -48,8 +48,8 @@ import org.ovirt.engine.sdk.entities.RSDL;
  * Provides RSDL related generator capabilities.
  */
 public class RsdlCodegen extends AbstractCodegen {
-    private static final String BROKERS_FILE = "../src/ovirtsdk/infrastructure/brokers.py";
-    private static final String ENTRY_POINT_FILE = "../src/ovirtsdk/api.py";
+    private static final File BROKERS_FILE = new File("../src/ovirtsdk/infrastructure/brokers.py");
+    private static final File ENTRY_POINT_FILE = new File("../src/ovirtsdk/api.py");
 
     private static final Set<String> KNOWN_ACTIONS = setOf(
         "get",
@@ -157,7 +157,7 @@ public class RsdlCodegen extends AbstractCodegen {
     /**
      * Persist generated content.
      */
-    private void persist() {
+    private void persist() throws IOException {
         String brokersFile = "";
         String apiFile = "";
 
@@ -194,8 +194,8 @@ public class RsdlCodegen extends AbstractCodegen {
 
         apiFile += EntryPoint.entryPoint(rootCollCandidates, collCandidates);
 
-        FileUtils.saveFile(BROKERS_FILE, brokersFile);
-        FileUtils.saveFile(ENTRY_POINT_FILE, apiFile);
+        FileUtils.writeStringToFile(BROKERS_FILE, brokersFile);
+        FileUtils.writeStringToFile(ENTRY_POINT_FILE, apiFile);
     }
 
     private void appendResource(
