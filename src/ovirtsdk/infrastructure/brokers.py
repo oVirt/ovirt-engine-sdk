@@ -13538,7 +13538,7 @@ class HostStatistics(Base):
             context=self.context
         )
 
-class HostStorage(params.HostStorage, Base):
+class HostStorage(params.Storage, Base):
     def __init__(self, host, storage, context):
         Base.__init__(self, context)
         self.parentclass = host
