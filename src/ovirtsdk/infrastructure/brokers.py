@@ -34,27 +34,6 @@ from ovirtsdk.infrastructure.errors import DisconnectedError
 from ovirtsdk.infrastructure.errors import RequestError
 
 
-class Action(params.Action, Base):
-    def __init__(self, action, context):
-        Base.__init__(self, context)
-        self.superclass = action
-
-        #SUB_COLLECTIONS
-    def __new__(cls, action, context):
-        if action is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(action, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
 class Bookmark(params.Bookmark, Base):
     def __init__(self, bookmark, context):
         Base.__init__(self, context)
