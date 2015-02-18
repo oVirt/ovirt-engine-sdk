@@ -25184,7 +25184,7 @@ class VMNics(Base):
             context=self.context
         )
 
-class VMNumaNode(params.NumaNode, Base):
+class VMNumaNode(params.VirtualNumaNode, Base):
     def __init__(self, vm, numanode, context):
         Base.__init__(self, context)
         self.parentclass = vm
@@ -25284,7 +25284,7 @@ class VMNumaNodes(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, virtualnumanode, expect=None, correlation_id=None):
+    def add(self, vmnumanode, expect=None, correlation_id=None):
 
         '''
         @type VirtualNumaNode:
@@ -25314,7 +25314,7 @@ class VMNumaNodes(Base):
                     '{vm:id}': self.parentclass.get_id(),
                 }
             ),
-            body=ParseHelper.toXml(virtualnumanode),
+            body=ParseHelper.toXml(vmnumanode),
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
