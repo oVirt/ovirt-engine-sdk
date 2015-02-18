@@ -6,12 +6,12 @@ $docs$
             url=UrlHelper.replace(
                 url,
                 {
-                    '{$resource_name_lc$:id}': self.get_id(),
+                    '{$entity_name$:id}': self.get_id(),
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
             headers=$headers_map_params_str$
         )
 
-        return $actual_self_name$(result, self.context)
+        return $entity_broker_type$(result, self.context)
 

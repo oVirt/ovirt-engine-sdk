@@ -1,14 +1,14 @@
-class $encapsulating_entity$(params.$sub_res_type$, Base):
-    def __init__(self, $parent$, $encapsulated_entity$, context):
+class $broker_type$(params.$entity_type$, Base):
+    def __init__(self, $parentclass_parameter_name$, $superclass_parameter_name$, context):
         Base.__init__(self, context)
-        self.parentclass = $parent$
-        self.superclass  =  $encapsulated_entity$
+        self.parentclass = $parentclass_parameter_name$
+        self.superclass  =  $superclass_parameter_name$
 
-$fixme$
-    def __new__(cls, $parent$, $encapsulated_entity$, context):
-        if $encapsulated_entity$ is None: return None
+        #SUB_COLLECTIONS
+    def __new__(cls, $parentclass_parameter_name$, $superclass_parameter_name$, context):
+        if $superclass_parameter_name$ is None: return None
         obj = object.__new__(cls)
-        obj.__init__($parent$, $encapsulated_entity$, context)
+        obj.__init__($parentclass_parameter_name$, $superclass_parameter_name$, context)
         return obj
 
     def __getProxy(self):

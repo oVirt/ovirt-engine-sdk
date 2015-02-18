@@ -7,10 +7,10 @@ $docs$
                 url,
                 $url_params$
             )
-        ).get_$actual_resource_name_lc$()
+        ).get_$getter_name$()
 
         return ParseHelper.toSubCollection(
-            $encapsulating_resource$,
+            $entity_broker_type$,
             self.parentclass,
             FilterHelper.filter(
                 result,

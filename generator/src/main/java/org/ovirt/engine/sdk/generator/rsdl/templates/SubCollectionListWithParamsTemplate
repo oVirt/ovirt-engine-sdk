@@ -11,10 +11,10 @@ $docs$
                 qargs=$url_query_params$
             ),
             headers=$headers_map_params_str$
-        ).get_$actual_resource_name_lc$()
+        ).get_$getter_name$()
 
         return ParseHelper.toSubCollection(
-            $encapsulating_resource$,
+            $entity_broker_type$,
             self.parentclass,
             FilterHelper.filter(
                 result,

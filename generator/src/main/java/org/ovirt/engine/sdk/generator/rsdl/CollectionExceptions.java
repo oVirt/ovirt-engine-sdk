@@ -26,28 +26,25 @@ import org.ovirt.engine.sdk.entities.DetailedLink;
 
 public class CollectionExceptions {
     public static String get(
-        String url,
         DetailedLink link,
-        String prmsStr,
-        Map<String, String> methodParams,
-        Map<String, String> urlParams,
-        String headersMethodParamsStr, String headersMapParamsStr,
+        String headersMethodParamsStr,
+        String headersMapParamsStr,
         Map<String, String> collectionGetTemplateValues
     )
     {
         // Capabilities resource has unique structure which is not
         // fully comply with RESTful collection pattern, but preserved
         // in sake of backward compatibility
-        if (url.equals("capabilities")) {
+        if (link.getHref().equals("capabilities")) {
             CollectionGetCapabilitiesTemplate template = new CollectionGetCapabilitiesTemplate();
             return template.evaluate();
         }
 
-        if (url.equals("disks")) {
+        if (link.getHref().equals("disks")) {
             Map<String, String> docsParams = new LinkedHashMap<>();
             docsParams.put("id   : string (the id of the entity)", "False");
             docsParams.put("alias: string (the alias of the entity)", "False");
-            String docs = Documentation.document(link, docsParams, new LinkedHashMap<String, String>());
+            String docs = Documentation.document(link, docsParams, new LinkedHashMap<>());
             collectionGetTemplateValues.put("docs", docs);
             collectionGetTemplateValues.put("headers_method_params_str", headersMethodParamsStr);
             collectionGetTemplateValues.put("headers_map_params_str", headersMapParamsStr);
@@ -57,7 +54,6 @@ public class CollectionExceptions {
         }
 
         return "";
-
     }
 
     public static String list() {

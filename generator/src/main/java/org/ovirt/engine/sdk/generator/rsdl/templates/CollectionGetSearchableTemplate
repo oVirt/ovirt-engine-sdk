@@ -4,7 +4,7 @@ $docs$
 
         if id:
             try :
-                return $resource_type$(
+                return $entity_broker_type$(
                     self.__getProxy().get(
                         url=UrlHelper.append(url, id),
                         headers=$headers_map_params_str$
@@ -19,9 +19,9 @@ $docs$
             result = self.__getProxy().get(
                 url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
                 headers=$headers_map_params_str$
-            ).get_$resource_name_lc$()
+            ).get_$getter_name$()
 
-            return $resource_type$(
+            return $entity_broker_type$(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name

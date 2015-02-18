@@ -1,13 +1,13 @@
-class $xml_entity$(params.$xml_entity$, Base):
-    def __init__(self, $xml_entity_lc$, context):
+class $broker_type$(params.$entity_type$, Base):
+    def __init__(self, $superclass_parameter_name$, context):
         Base.__init__(self, context)
-        self.superclass = $xml_entity_lc$
+        self.superclass = $superclass_parameter_name$
 
-$fixme$
-    def __new__(cls, $xml_entity_lc$, context):
-        if $xml_entity_lc$ is None: return None
+        #SUB_COLLECTIONS
+    def __new__(cls, $superclass_parameter_name$, context):
+        if $superclass_parameter_name$ is None: return None
         obj = object.__new__(cls)
-        obj.__init__($xml_entity_lc$, context)
+        obj.__init__($superclass_parameter_name$, context)
         return obj
 
     def __getProxy(self):

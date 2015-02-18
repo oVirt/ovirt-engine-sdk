@@ -16,8 +16,6 @@
 
 package org.ovirt.engine.sdk.generator.rsdl;
 
-import static org.ovirt.engine.sdk.generator.utils.StringUtils.firstNotNull;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -31,8 +29,8 @@ import org.ovirt.engine.sdk.generator.templates.AbstractTemplate;
 import org.ovirt.engine.sdk.generator.utils.HeaderUtils;
 import org.ovirt.engine.sdk.generator.utils.ParamUtils;
 import org.ovirt.engine.sdk.generator.utils.ParamsContainer;
-import org.ovirt.engine.sdk.generator.xsd.XsdData;
 import org.ovirt.engine.sdk.entities.DetailedLink;
+import org.ovirt.engine.sdk.generator.utils.Tree;
 
 public class Collection {
     public static String collection(String collectionName) {
@@ -41,15 +39,8 @@ public class Collection {
         return template.evaluate();
     }
 
-    public static String get(
-        String url,
-        String resourceType,
-        DetailedLink link,
-        Map<String, String> knownWrapperTypes
-    )
-    {
-        String actualResourceType = knownWrapperTypes.get(resourceType.toLowerCase());
-        String actualResourceNameLc = XsdData.getInstance().getXmlTypeInstance(resourceType.toLowerCase()).toLowerCase();
+    public static String get(Tree<Location> collectionTree, DetailedLink link) {
+        Tree<Location> entityLocation = collectionTree.getChild(LocationRules::isEntity);
 
         Object[] result = ParamUtils.getMethodParamsByUrlParamsMeta(link);
         String prmsStr = (String) result[0];
@@ -65,28 +56,24 @@ public class Collection {
         }
 
         Map<String, String> values = new LinkedHashMap<>();
-        values.put("url", url);
-        values.put("resource_name_lc", actualResourceNameLc);
+        values.put("url", link.getHref());
+        values.put("entity_broker_type", BrokerRules.getBrokerType(entityLocation));
+        values.put("getter_name", SchemaRules.getElementName(collectionTree));
         values.put("headers_method_params_str", headersMethodParamsStr);
         values.put("headers_map_params_str", headersMapParamsStr);
-        values.put("resource_type", actualResourceType != null ? actualResourceType : resourceType);
 
         Map<String, String> docsParams = new LinkedHashMap<>();
         docsParams.put(ParamsContainer.ID_SEARCH_PARAM, "False");
         docsParams.put(ParamsContainer.NAME_SEARCH_PARAM, "False");
-        String docs = Documentation.document(link, docsParams, new LinkedHashMap<String, String>());
+        String docs = Documentation.document(link, docsParams, new LinkedHashMap<>());
         values.put("docs", docs);
 
         // Capabilities resource has unique structure which is not
         // fully comply with RESTful collection pattern, but preserved
         // in sake of backward compatibility
-        if (url.equals("capabilities")) {
+        if (link.getHref().equals("capabilities")) {
             return CollectionExceptions.get(
-                url,
-                link,
-                prmsStr,
-                methodParams,
-                urlParams,
+                    link,
                 headersMethodParamsStr,
                 headersMapParamsStr,
                 values
@@ -95,13 +82,9 @@ public class Collection {
 
         // /disks search-by-name paradigm was broken by the engine
         // should be fixed later on
-        if (url.equals("disks")) {
+        if (link.getHref().equals("disks")) {
             return CollectionExceptions.get(
-                url,
-                link,
-                prmsStr,
-                methodParams,
-                urlParams,
+                    link,
                 headersMethodParamsStr,
                 headersMapParamsStr,
                 values
@@ -120,16 +103,8 @@ public class Collection {
         return template.evaluate();
     }
 
-    public static String list(
-        String url,
-        String resourceType,
-        DetailedLink link,
-        Map<String,
-        String> knownWrapperTypes
-    )
-    {
-        String actualResourceType = knownWrapperTypes.get(resourceType.toLowerCase());
-        String actualResourceNameLc = XsdData.getInstance().getXmlTypeInstance(resourceType.toLowerCase()).toLowerCase();
+    public static String list(Tree<Location> collectionTree, DetailedLink link) {
+        Tree<Location> entityTree = collectionTree.getChild(LocationRules::isEntity);
 
         Object[] result = ParamUtils.getMethodParamsByUrlParamsMeta(link);
         String prmsStr = (String) result[0];
@@ -144,14 +119,14 @@ public class Collection {
         methodParams.put("**kwargs", "**kwargs");
 
         Map<String, String> values = new LinkedHashMap<>();
-        values.put("url", url);
-        values.put("resource_name_lc", actualResourceNameLc);
-        values.put("resource_type", actualResourceType != null ? actualResourceType : resourceType);
+        values.put("url", link.getHref());
+        values.put("entity_broker_type", BrokerRules.getBrokerType(entityTree));
+        values.put("getter_name", SchemaRules.getElementName(collectionTree));
 
         // Capabilities resource has unique structure which is not
         // fully comply with RESTful collection pattern, but preserved
         // in sake of backward compatibility
-        if (url.equals("capabilities")) {
+        if (link.getHref().equals("capabilities")) {
             return CollectionExceptions.list();
         }
         else if (!prmsStr.isEmpty() || !headersMethodParamsStr.isEmpty()) {
@@ -182,7 +157,7 @@ public class Collection {
         else {
             Map<String, String> docsParams = new LinkedHashMap<>();
             docsParams.put(ParamsContainer.KWARGS_PARAMS, "False");
-            String docs = Documentation.document(link, docsParams, new LinkedHashMap<String, String>());
+            String docs = Documentation.document(link, docsParams, new LinkedHashMap<>());
             values.put("docs", docs);
 
             CollectionListNotSearchableTemplate template = new CollectionListNotSearchableTemplate();
@@ -191,15 +166,9 @@ public class Collection {
         }
     }
 
-    public static String add(
-        String url,
-        String bodyType,
-        String responseType,
-        DetailedLink link,
-        Map<String, String> knownWrapperTypes
-    )
-    {
-        String actualResourceType = knownWrapperTypes.get(responseType.toLowerCase());
+    public static String add(Tree<Location> collectionTree, DetailedLink link) {
+        Tree<Location> entityTree = collectionTree.getChild(LocationRules::isEntity);
+        String elementName = SchemaRules.getElementName(collectionTree);
 
         String[] result = HeaderUtils.generateMethodParams(link);
         String headersMethodParamsStr = result[0];
@@ -210,12 +179,12 @@ public class Collection {
             headersMethodParamsStr;
 
         CollectionAddTemplate template = new CollectionAddTemplate();
-        template.set("url", url);
-        template.set("resource_to_add_lc", bodyType.toLowerCase());
+        template.set("url", link.getHref());
+        template.set("parameter_name", elementName.replaceAll("_", ""));
+        template.set("entity_broker_type", BrokerRules.getBrokerType(entityTree));
         template.set("headers_method_params_str", headersMethodParamsStr);
         template.set("docs", Documentation.document(link));
         template.set("headers_map_params_str", headersMapParamsStr);
-        template.set("resource_type", firstNotNull(actualResourceType, responseType));
 
         return template.evaluate();
     }

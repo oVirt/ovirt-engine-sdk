@@ -20,9 +20,6 @@ import org.ovirt.engine.sdk.generator.rsdl.RsdlCodegen;
 import org.ovirt.engine.sdk.generator.xsd.XsdData;
 import org.ovirt.engine.sdk.generator.xsd.XsdCodegen;
 
-/**
- * oVirt ovirt-engine-sdk-python generator suite
- */
 public class Main {
     public static void main(String[] args) throws Exception {
         // Parse the command line parameters:
@@ -55,13 +52,10 @@ public class Main {
         // Build the class map:
         XsdData.getInstance().load(xsdPath);
 
-        // Generate api entities from the XSD schema:
-        new XsdCodegen(xsdPath).generate();
+        // Generate parameter classes:
+        new XsdCodegen().generate(xsdPath);
 
-        // #2 - generate api entities decorators by RSDL and SDK entry point
-        new RsdlCodegen(rsdlPath).generate();
-
-        // #3 - exit
-        System.exit(0);
+        // Generate broker classes:
+        new RsdlCodegen().generate(rsdlPath);
     }
 }

@@ -12,7 +12,7 @@ $docs$
             headers=$headers_map_params_str$
         )
 
-        return $returned_type$(
+        return $entity_broker_type$(
             self.parentclass,
             result,
             self.context

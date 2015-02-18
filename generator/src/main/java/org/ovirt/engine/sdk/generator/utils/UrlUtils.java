@@ -17,97 +17,63 @@
 package org.ovirt.engine.sdk.generator.utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
+import java.util.Collections;
 import java.util.List;
 
-import org.ovirt.engine.sdk.entities.DetailedLink;
+import org.ovirt.engine.sdk.generator.rsdl.Location;
+import org.ovirt.engine.sdk.generator.rsdl.LocationRules;
+
+import static java.util.stream.Collectors.toList;
 
 public class UrlUtils {
     /**
      * Replaces identifiers with real names.
      */
-    public static String generateUrlIdentifiersReplacements(
-        DetailedLink link,
-        String offset,
-        boolean continues,
-        boolean isCollection
-    )
-    {
-        String url = "";
-        List<String> replacementCandidates = getReplacementCandidates(getPeriods(link));
-        int replacementCandidatesLen = replacementCandidates.size();
-        if (!replacementCandidates.isEmpty()) {
-            for (int i = 0; i < replacementCandidatesLen; i++) {
-                if (replacementCandidates.size() == 1) {
-                    url += (!continues? offset: "") + "{\n" + offset + "    '" + replacementCandidates.get(i) + "': " +
-                        generateParentClassIdentifiers(replacementCandidatesLen - i) + ",\n" + offset + "}";
-                    return url;
-                }
-                else {
-                    int replacementOffset;
-                    if (!isCollection) {
-                        replacementOffset = i + 1;
+    public static String generateUrlIdentifiersReplacements(Tree<Location> location, String offset) {
+        List<Tree<Location>> branch = location.getBranch();
+        Collections.reverse(branch);
+
+        List<String> items = new ArrayList<>();
+        for (String variable : getReplacementCandidates(location)) {
+            int distance = LocationRules.isEntity(location)? 0: 1;
+            for (Tree<Location> current : branch) {
+                if (LocationRules.isVariable(current)) {
+                    if (current.getLabel().equals(variable)) {
+                        break;
                     }
-                    else {
-                        replacementOffset = i;
-                    }
-                    if (i == 0) {
-                        url += (!continues? offset: "") + "{\n" + offset + "    '" + replacementCandidates.get(i) + "': " +
-                            generateParentClassIdentifiers(replacementCandidatesLen - replacementOffset) + ",\n";
-                        if (replacementCandidates.size() == 1) {
-                            return url;
-                        }
-                    }
-                    else if (i != replacementCandidatesLen - 1) {
-                        url += offset + "    '" + replacementCandidates.get(i) + "': " +
-                            generateParentClassIdentifiers(replacementCandidatesLen - replacementOffset) + ",\n";
-                    }
-                    else {
-                        url += offset + "    '" + replacementCandidates.get(i) + "': " +
-                            generateParentClassIdentifiers(replacementCandidatesLen - replacementOffset) + ",\n" +offset + "}";
-                    }
+                    distance += 1;
                 }
             }
+            items.add("'" + variable + "': " + generateParentClassIdentifiers(distance) + ",");
         }
 
-        return url;
+        StringBuilder buffer = new StringBuilder();
+        buffer.append("{\n");
+        for (String line : items) {
+            buffer.append(offset);
+            buffer.append("    ");
+            buffer.append(line);
+            buffer.append("\n");
+        }
+        buffer.append(offset);
+        buffer.append("}");
+        return buffer.toString();
     }
 
     private static String generateParentClassIdentifiers(int num) {
-        String res = "self";
+        StringBuilder buffer = new StringBuilder();
+        buffer.append("self");
         for (int i = 0; i < num; i++) {
-            res += ".parentclass";
+            buffer.append(".parentclass");
         }
-        res += ".get_id()";
-        return res;
+        buffer.append(".get_id()");
+        return buffer.toString();
     }
 
-    private static List<String> getReplacementCandidates(LinkedHashMap<String, String> resources) {
-        List<String> cands = new ArrayList<>();
-        for (String item : resources.values()) {
-            if (item != null && item.endsWith(":id}")) {
-                cands.add(item);
-            }
-        }
-        return cands;
-    }
-
-    private static LinkedHashMap<String, String> getPeriods(DetailedLink link) {
-        String url = link.getHref();
-        List<String> sUrl = Arrays.asList(url.split("/"));
-        return listToDict(sUrl);
-    }
-
-    private static LinkedHashMap<String, String> listToDict(List<String> lst) {
-        LinkedHashMap<String, String> dct = new LinkedHashMap<>();
-        for (int i = 0; i < lst.size(); i++) {
-            if (i % 2 == 0) {
-                String coll = lst.get(i);
-                String res = i + 1 < lst.size()? lst.get(i + 1): null;
-                dct.put(coll, res);
-            }
-        }
-        return dct;
+    private static List<String> getReplacementCandidates(Tree<Location> location) {
+        return location.getBranch().stream()
+           .filter(LocationRules::isVariable)
+           .map(Tree::getLabel)
+           .collect(toList());
     }
 }

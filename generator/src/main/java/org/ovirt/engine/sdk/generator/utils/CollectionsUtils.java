@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class CollectionsUtils {
-    public static final <T> Set<T> setOf(T... values) {
+    public static <T> Set<T> setOf(T... values) {
         Set<T> set = new HashSet<>();
         for (T value : values) {
             set.add(value);

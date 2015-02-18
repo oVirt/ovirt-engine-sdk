@@ -37,7 +37,7 @@ public class Documentation {
     );
 
     public static String document(DetailedLink link) {
-        return document(link, new LinkedHashMap<String, String>(), new LinkedHashMap<String, String>());
+        return document(link, new LinkedHashMap<>(), new LinkedHashMap<>());
     }
 
     public static String document(
@@ -448,7 +448,6 @@ public class Documentation {
         result[1] = optParams;
         return result;
     }
-
 
     private static String getRequestType(DetailedLink link) {
         if (!link.getRel().equals("update") &&

@@ -1,8 +1,8 @@
-class $sub_collection_name$(Base):
+class $broker_type$(Base):
 
-    def __init__(self, $parent_resource_name_lc$ , context):
+    def __init__(self, $parentclass_parameter_name$ , context):
         Base.__init__(self, context)
-        self.parentclass = $parent_resource_name_lc$
+        self.parentclass = $parentclass_parameter_name$
 
     def __getProxy(self):
         proxy = context.manager[self.context].get('proxy')

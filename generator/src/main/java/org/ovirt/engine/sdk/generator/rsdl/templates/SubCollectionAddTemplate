@@ -1,4 +1,4 @@
-    def add(self, $resource_to_add$$headers_method_params_str$):
+    def add(self, $parameter_name$$headers_method_params_str$):
 
 $docs$
         url = '/$url$'
@@ -8,11 +8,11 @@ $docs$
                 url,
                 $url_params$
             ),
-            body=ParseHelper.toXml($resource_to_add$),
+            body=ParseHelper.toXml($parameter_name$),
             headers=$headers_map_params_str$
         )
 
-        return $encapsulating_entity$(
+        return $entity_broker_type$(
             self.parentclass,
             result,
             self.context

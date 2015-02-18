@@ -16,10 +16,9 @@
 
 package org.ovirt.engine.sdk.generator.xsd;
 
-import static org.ovirt.engine.sdk.generator.utils.CollectionsUtils.mapOf;
-
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -27,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -34,18 +34,13 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class XsdData {
     private static final XsdData instance = new XsdData();
-
-    private static final Map<String, String> XML_TYPE_INSTANCE_EXCEPTIONS = mapOf(
-        "template", "Template"
-    );
 
     public static XsdData getInstance() {
         return instance;
@@ -62,6 +57,22 @@ public class XsdData {
      * XML schema, thus they can't appear as root elements in a valid XML document.
      */
     private Map<String, String> tagsByType = new LinkedHashMap<>();
+
+    /**
+     * This map contains the DOM trees of all the top level element definitions that appear in the XML schema, indexed
+     * by name.
+     */
+    private Map<String, Element> elementsIndex = new HashMap<>();
+
+    /**
+     * This map contains the DOM trees of all the complex types that appear in the XML schema, indexed by name.
+     */
+    private Map<String, Element> complexTypesIndex = new HashMap<>();
+
+    /**
+     * We will create and reuse this XPath expression.
+     */
+    private XPath xpath;
 
     private XsdData() {
     }
@@ -80,7 +91,7 @@ public class XsdData {
         }
 
         // Prepare the xpath engine with the required namespace mapping:
-        XPath xpath = XPathFactory.newInstance().newXPath();
+        xpath = XPathFactory.newInstance().newXPath();
         xpath.setNamespaceContext(
             new NamespaceContext() {
                 @Override
@@ -105,17 +116,16 @@ public class XsdData {
             }
         );
 
+        // Populate the indexes:
+        populateElementsIndex(schema);
+        populateComplexTypesIndex(schema);
+
         // Exclude all the simple types:
         Set<String> excluded = new HashSet<>();
-        try {
-            NodeList names = (NodeList) xpath.evaluate("//xs:simpleType/@name", schema, XPathConstants.NODESET);
-            for (int i = 0; i < names.getLength(); i++) {
-                Node name = names.item(i);
-                excluded.add(name.getNodeValue());
-            }
-        }
-        catch (XPathExpressionException exception) {
-            throw new IOException("Can't find simple types.", exception);
+        NodeList nodes = (NodeList) evaluate("//xs:simpleType/@name", schema, XPathConstants.NODESET);
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Node name = nodes.item(i);
+            excluded.add(name.getNodeValue());
         }
 
         // Exclude infrastructure types:
@@ -131,24 +141,16 @@ public class XsdData {
 
         // Populate the types by tag map, including all the element definitions that appear in the XML schema, even
         // those that aren't top level and thus not valid as roots of valid XML documents:
-        try {
-            NodeList elements = (NodeList) xpath.evaluate("//xs:element", schema, XPathConstants.NODESET);
-            for (int i = 0; i < elements.getLength(); i++) {
-                Node element = elements.item(i);
-                NamedNodeMap attrs = element.getAttributes();
-                Attr nameAttr = (Attr) attrs.getNamedItem("name");
-                Attr typeAttr = (Attr) attrs.getNamedItem("type");
-                if (nameAttr != null && typeAttr != null) {
-                    String name = nameAttr.getValue();
-                    String type = typeAttr.getValue();
-                    if (!type.startsWith("xs:") && !excluded.contains(type)) {
-                        typesByTag.put(name, type);
-                    }
+        NodeList elements = (NodeList) evaluate("//xs:element", schema, XPathConstants.NODESET);
+        for (int i = 0; i < elements.getLength(); i++) {
+            Element element = (Element) elements.item(i);
+            String name = element.getAttribute("name");
+            String type = element.getAttribute("type");
+            if (!name.isEmpty() && !type.isEmpty()) {
+                if (!type.startsWith("xs:") && !excluded.contains(type)) {
+                    typesByTag.put(name, type);
                 }
             }
-        }
-        catch (XPathExpressionException exception) {
-            throw new IOException("Can't find elements.", exception);
         }
 
         // There are several conflicts with "version", so force it:
@@ -156,26 +158,48 @@ public class XsdData {
 
         // Populate the tags by type name, including only the top level element definitions that appear in the XML
         // schema, those that can appear as roots of valid XML documents:
-        try {
-            NodeList elements = (NodeList) xpath.evaluate("/xs:schema/xs:element", schema, XPathConstants.NODESET);
-            for (int i = 0; i < elements.getLength(); i++) {
-                Node element = elements.item(i);
-                NamedNodeMap attrs = element.getAttributes();
-                Attr nameAttr = (Attr) attrs.getNamedItem("name");
-                Attr typeAttr = (Attr) attrs.getNamedItem("type");
-                if (nameAttr != null && typeAttr != null) {
-                    String name = nameAttr.getValue();
-                    String type = typeAttr.getValue();
-                    if (!type.startsWith("xs:") && !excluded.contains(type)) {
-                        tagsByType.put(type, name);
-                    }
+        elements = (NodeList) evaluate("/xs:schema/xs:element", schema, XPathConstants.NODESET);
+        for (int i = 0; i < elements.getLength(); i++) {
+            Element element = (Element) elements.item(i);
+            String name = element.getAttribute("name");
+            String type = element.getAttribute("type");
+            if (!name.isEmpty() && !type.isEmpty()) {
+                if (!type.startsWith("xs:") && !excluded.contains(type)) {
+                    tagsByType.put(type, name);
                 }
             }
         }
-        catch (XPathExpressionException exception) {
-            throw new IOException("Can't find elements.", exception);
-        }
+    }
 
+    private void populateElementsIndex(Document schema) {
+        NodeList nodes = (NodeList) evaluate("/xs:schema/xs:element", schema, XPathConstants.NODESET);
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Element node = (Element) nodes.item(i);
+            String name = node.getAttribute("name");
+            if (!name.isEmpty()) {
+                elementsIndex.put(name, node);
+            }
+        }
+    }
+
+    private void populateComplexTypesIndex(Document schema) {
+        NodeList nodes = (NodeList) evaluate("/xs:schema/xs:complexType", schema, XPathConstants.NODESET);
+        for (int i = 0; i < nodes.getLength(); i++) {
+            Element node = (Element) nodes.item(i);
+            String name = node.getAttribute("name");
+            if (!name.isEmpty()) {
+                complexTypesIndex.put(name, node);
+            }
+        }
+    }
+
+    private Object evaluate(String expression, Object item, QName returnType) {
+        try {
+            return xpath.evaluate(expression, item, returnType);
+        }
+        catch (XPathExpressionException exception) {
+            throw new RuntimeException("Can't evaluate XPath expression \"" + expression + "\".");
+        }
     }
 
     public Map<String, String> getTypesByTag() {
@@ -186,47 +210,120 @@ public class XsdData {
         return tagsByType;
     }
 
-    public String getXmlWrapperType(String typeName) {
-        String tn = typeName.toLowerCase();
-        for (Map.Entry<String, String> entry : typesByTag.entrySet()) {
-            String k = entry.getKey();
-            String v = entry.getValue();
-            if (v.toLowerCase().equals(tn) || k.toLowerCase().equals(tn) || k.replace("_", "").equals(tn)) {
-                return v;
-            }
+    /**
+     * Checks if the complex type represented by the given DOM node is an extension (directly or recursively) of the
+     * complex type with the given name.
+     *
+     * @param node the DOM node representing the complex type
+     * @param name the name of the base complex type
+     */
+    private boolean isExtensionOf(Element node, String name) {
+        String base = (String) evaluate(
+            "xs:complexContent/" +
+            "xs:extension/" +
+            "@base",
+            node,
+            XPathConstants.STRING
+        );
+        if (base == null) {
+            return false;
         }
-        return typeName;
+        if (base.equals(name)) {
+            return false;
+        }
+        Element next = getComplexType(base);
+        if (next == null) {
+            return false;
+        }
+        return isExtensionOf(next, name);
     }
 
-    public String getXmlTypeInstance(String typeName) {
-        String tn = typeName.toLowerCase();
-        String result = XML_TYPE_INSTANCE_EXCEPTIONS.get(tn);
-        if (result == null) {
-            for (Map.Entry<String, String> entry : typesByTag.entrySet()) {
-                String v = entry.getValue();
-                if (v.toLowerCase().equals(tn)) {
-                    result = entry.getKey();
-                    break;
-                }
-            }
-            if (result == null) {
-                result = typeName;
-            }
-        }
-        return result;
+    public Element getElement(String name) {
+        return elementsIndex.get(name);
+    }
+    public Element getComplexType(String name) {
+        return complexTypesIndex.get(name);
     }
 
-    public String getXmlType(String typeName) {
-        if (typeName != null && !typeName.isEmpty()) {
-            String tn = typeName.toLowerCase();
-            for (Map.Entry<String, String> entry : typesByTag.entrySet()) {
-                String k = entry.getKey();
-                String v = entry.getValue();
-                if (v.toLowerCase().equals(tn) || k.toLowerCase().equals(tn)) {
-                    return v;
+    public String getEntityElementForCollectionType(String collectionType) {
+        Element collectionTypeNode = getComplexType(collectionType);
+        if (collectionTypeNode == null) {
+            return null;
+        }
+        return getEntityElementForCollectionType(collectionTypeNode);
+    }
+
+    private String getEntityElementForCollectionType(Element collectionTypeNode) {
+        NodeList contentNodes = (NodeList) evaluate(
+            "xs:complexContent/" +
+            "xs:extension/" +
+            "xs:sequence/" +
+            "xs:element",
+            collectionTypeNode,
+            XPathConstants.NODESET
+        );
+        String entityElement = null;
+        for (int i = 0; entityElement == null && i < contentNodes.getLength(); i++) {
+            Element contentNode = (Element) contentNodes.item(i);
+            String ref = contentNode.getAttribute("ref");
+            if (!ref.isEmpty()) {
+                entityElement = ref;
+            }
+        }
+        if (entityElement == null) {
+            for (int i = 0; entityElement == null && i < contentNodes.getLength(); i++) {
+                Element contentNode = (Element) contentNodes.item(i);
+                String name = contentNode.getAttribute("name");
+                String type = contentNode.getAttribute("type");
+                if (!name.isEmpty() && !type.isEmpty()) {
+                    entityElement = name;
                 }
             }
         }
-        return null;
+        return entityElement;
+    }
+
+    public String getEntityTypeForCollectionType(String collectionType) {
+        Element collectionTypeNode = getComplexType(collectionType);
+        if (collectionTypeNode == null) {
+            return null;
+        }
+        return getEntityTypeForCollectionType(collectionTypeNode);
+    }
+
+    private String getEntityTypeForCollectionType(Element collectionTypeNode) {
+        NodeList contentNodes = (NodeList) evaluate(
+            "xs:complexContent/" +
+            "xs:extension/" +
+            "xs:sequence/" +
+            "xs:element",
+            collectionTypeNode,
+            XPathConstants.NODESET
+        );
+        String entityType = null;
+        for (int i = 0; entityType == null && i < contentNodes.getLength(); i++) {
+            Element contentNode = (Element) contentNodes.item(i);
+            String ref = contentNode.getAttribute("ref");
+            if (!ref.isEmpty()) {
+                Element elementNode = getElement(ref);
+                if (elementNode != null) {
+                    String type = elementNode.getAttribute("type");
+                    if (!type.isEmpty()) {
+                        entityType = type;
+                    }
+                }
+            }
+        }
+        if (entityType == null) {
+            for (int i = 0; entityType == null && i < contentNodes.getLength(); i++) {
+                Element element = (Element) contentNodes.item(i);
+                String name = element.getAttribute("name");
+                String type = element.getAttribute("type");
+                if (!name.isEmpty() && !type.isEmpty()) {
+                    entityType = type;
+                }
+            }
+        }
+        return entityType;
     }
 }

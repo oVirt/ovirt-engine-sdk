@@ -63,6 +63,8 @@ public class CodeHolder {
     }
 
     public void appendBody(String newBody) {
-        body.append(newBody);
+        if (newBody != null) {
+            body.append(newBody);
+        }
     }
 }

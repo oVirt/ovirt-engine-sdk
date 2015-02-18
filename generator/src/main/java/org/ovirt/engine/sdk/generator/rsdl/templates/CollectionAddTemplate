@@ -1,12 +1,12 @@
-    def add(self, $resource_to_add_lc$$headers_method_params_str$):
+    def add(self, $parameter_name$$headers_method_params_str$):
 $docs$
         url = '/$url$'
 
         result = self.__getProxy().add(
            url=url,
-           body=ParseHelper.toXml($resource_to_add_lc$),
+           body=ParseHelper.toXml($parameter_name$),
            headers=$headers_map_params_str$
         )
 
-        return $resource_type$(result, self.context)
+        return $entity_broker_type$(result, self.context)
 

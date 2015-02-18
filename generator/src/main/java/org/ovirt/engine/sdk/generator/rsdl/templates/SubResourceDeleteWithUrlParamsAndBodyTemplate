@@ -2,7 +2,7 @@
 $docs$
         url = UrlHelper.replace(
             '/$url$',
-$url_identifyiers$
+            $url_identifyiers$
         )
 
         return self.__getProxy().delete(

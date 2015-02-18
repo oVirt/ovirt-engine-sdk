@@ -4,10 +4,10 @@ $docs$
 
         result = self.__getProxy().get(
             url=url
-        ).get_$resource_name_lc$()
+        ).get_$getter_name$()
 
         return ParseHelper.toCollection(
-            $resource_type$,
+            $entity_broker_type$,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
