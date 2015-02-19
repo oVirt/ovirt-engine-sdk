@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-01-16 20:21:11.000734'''
+'''Generated at: 2015-02-19 13:20:49.000671'''
 
 
 from ovirtsdk.xml import params
@@ -13280,10 +13280,11 @@ class Hosts(Base):
 
         return Host(result, self.context)
 
-    def get(self, name=None, id=None):
+    def get(self, name=None, all_content=None, id=None):
         '''
         [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
+        [@param all_content: true|false]
 
         @return Hosts:
         '''
@@ -13295,7 +13296,7 @@ class Hosts(Base):
                 return Host(
                     self.__getProxy().get(
                         url=UrlHelper.append(url, id),
-                        headers={}
+                        headers={"All-Content":all_content}
                     ),
                     self.context
                 )
@@ -13306,7 +13307,7 @@ class Hosts(Base):
         elif name:
             result = self.__getProxy().get(
                 url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                headers={}
+                headers={"All-Content":all_content}
             ).get_host()
 
             return Host(
@@ -13319,12 +13320,13 @@ class Hosts(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, all_content=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
+        [@param all_content: true|false]
 
         @return Hosts:
         '''
@@ -13333,7 +13335,7 @@ class Hosts(Base):
 
         result = self.__getProxy().get(
             url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-            headers={}
+            headers={"All-Content":all_content}
         ).get_host()
 
         return ParseHelper.toCollection(
@@ -16794,6 +16796,27 @@ class StorageDomain(params.StorageDomain, Base):
         )
 
         return StorageDomain(result, self.context)
+
+    def isattached(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param action.host.id: string
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/storagedomains/{storagedomain:id}/isattached'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(url, {'{storagedomain:id}': self.get_id()}),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
 
 class StorageDomainDisk(params.Disk, Base):
     def __init__(self, storagedomain, disk, context):

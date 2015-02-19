@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Fri Jan 16 20:21:10 2015 by generateDS.py version 2.12a.
+# Generated Thu Feb 19 13:20:48 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -16384,7 +16384,7 @@ class StorageConnection(BaseResource):
 class StorageDomain(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, type_=None, status=None, master=None, storage=None, host=None, format=None, destroy=None, available=None, used=None, committed=None, storage_format=None, import_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, type_=None, status=None, master=None, storage=None, host=None, format=None, destroy=None, available=None, used=None, committed=None, storage_format=None, import_=None, is_attached=None):
         super(StorageDomain, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.data_center = data_center
         self.type_ = type_
@@ -16399,6 +16399,7 @@ class StorageDomain(BaseResource):
         self.committed = committed
         self.storage_format = storage_format
         self.import_ = import_
+        self.is_attached = is_attached
     def factory(*args_, **kwargs_):
         if StorageDomain.subclass:
             return StorageDomain.subclass(*args_, **kwargs_)
@@ -16431,6 +16432,8 @@ class StorageDomain(BaseResource):
     def set_storage_format(self, storage_format): self.storage_format = storage_format
     def get_import(self): return self.import_
     def set_import(self, import_): self.import_ = import_
+    def get_is_attached(self): return self.is_attached
+    def set_is_attached(self, is_attached): self.is_attached = is_attached
     def hasContent_(self):
         if (
             self.data_center is not None or
@@ -16446,6 +16449,7 @@ class StorageDomain(BaseResource):
             self.committed is not None or
             self.storage_format is not None or
             self.import_ is not None or
+            self.is_attached is not None or
             super(StorageDomain, self).hasContent_()
         ):
             return True
@@ -16510,6 +16514,9 @@ class StorageDomain(BaseResource):
         if self.import_ is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%simport>%s</%simport>%s' % (namespace_, self.gds_format_boolean(self.import_, input_name='import'), namespace_, eol_))
+        if self.is_attached is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sis_attached>%s</%sis_attached>%s' % (namespace_, self.gds_format_boolean(self.is_attached, input_name='is_attached'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='StorageDomain'):
         level += 1
         already_processed = set()
@@ -16571,6 +16578,9 @@ class StorageDomain(BaseResource):
         if self.import_ is not None:
             showIndent(outfile, level)
             outfile.write('import_=%s,\n' % self.import_)
+        if self.is_attached is not None:
+            showIndent(outfile, level)
+            outfile.write('is_attached=%s,\n' % self.is_attached)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -16669,6 +16679,16 @@ class StorageDomain(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'import')
             self.import_ = ival_
+        elif nodeName_ == 'is_attached':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'is_attached')
+            self.is_attached = ival_
         super(StorageDomain, self).buildChildren(child_, node, nodeName_, True)
 # end class StorageDomain
 
