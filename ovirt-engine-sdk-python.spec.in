@@ -40,6 +40,10 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS.md README.md LICENSE.md
 
 %changelog
+* Thu Feb 19 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.2.0-1
+- Added All-Content support to hosts #1194185.
+- Added isattached action to storage domain #1179246.
+
 * Fri Jan 16 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.1.0-1
 - Added support for the operations to move, copy and export disks using
   the top level disks collection #1169376.
