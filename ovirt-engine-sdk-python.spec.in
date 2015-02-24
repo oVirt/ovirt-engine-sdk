@@ -38,7 +38,9 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %files
 %{python_sitelib}/ovirtsdk
 %{python_sitelib}/ovirt_engine_sdk_python-*-info
-%doc AUTHORS.md README.md LICENSE.md
+%doc AUTHORS.md
+%doc LICENSE.txt
+%doc README.md
 
 %changelog
 * Tue Oct 28 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.6.0.0-0

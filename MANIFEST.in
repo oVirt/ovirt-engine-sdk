@@ -1,4 +1,4 @@
 include setup.py
-include README.md AUTHORS.md LICENSE.md MANIFEST.in
+include README.md AUTHORS.md LICENSE.txt MANIFEST.in
 recursive-include src/ovirtsdk *.py
 recursive-exclude src/codegen *.*
