@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2014-10-28 11:29:50.000012'''
+'''Generated at: 2015-02-24 15:32:07.000053'''
 
 import re
 import types
@@ -37,31 +37,35 @@ from ovirtsdk.infrastructure.cache import Mode
 from ovirtsdk.infrastructure.brokers import Bookmarks
 from ovirtsdk.infrastructure.brokers import Capabilities
 from ovirtsdk.infrastructure.brokers import Clusters
-from ovirtsdk.infrastructure.brokers import CpuProfiles
-from ovirtsdk.infrastructure.brokers import DataCenters
-from ovirtsdk.infrastructure.brokers import DiskProfiles
+from ovirtsdk.infrastructure.brokers import Cpuprofiles
+from ovirtsdk.infrastructure.brokers import Datacenters
+from ovirtsdk.infrastructure.brokers import Diskprofiles
 from ovirtsdk.infrastructure.brokers import Disks
 from ovirtsdk.infrastructure.brokers import Domains
 from ovirtsdk.infrastructure.brokers import Events
+from ovirtsdk.infrastructure.brokers import Externalhostproviders
 from ovirtsdk.infrastructure.brokers import Groups
 from ovirtsdk.infrastructure.brokers import Hosts
-from ovirtsdk.infrastructure.brokers import InstanceTypes
+from ovirtsdk.infrastructure.brokers import Instancetypes
 from ovirtsdk.infrastructure.brokers import Jobs
-from ovirtsdk.infrastructure.brokers import MacPools
+from ovirtsdk.infrastructure.brokers import Katelloerrata
+from ovirtsdk.infrastructure.brokers import Macpools
 from ovirtsdk.infrastructure.brokers import Networks
-from ovirtsdk.infrastructure.brokers import OperatingSystemInfos
+from ovirtsdk.infrastructure.brokers import Openstackimageproviders
+from ovirtsdk.infrastructure.brokers import Openstacknetworkproviders
+from ovirtsdk.infrastructure.brokers import Operatingsystems
 from ovirtsdk.infrastructure.brokers import Permissions
 from ovirtsdk.infrastructure.brokers import Roles
-from ovirtsdk.infrastructure.brokers import SchedulingPolicies
-from ovirtsdk.infrastructure.brokers import SchedulingPolicyUnits
-from ovirtsdk.infrastructure.brokers import StorageConnections
-from ovirtsdk.infrastructure.brokers import StorageDomains
+from ovirtsdk.infrastructure.brokers import Schedulingpolicies
+from ovirtsdk.infrastructure.brokers import Schedulingpolicyunits
+from ovirtsdk.infrastructure.brokers import Storageconnections
+from ovirtsdk.infrastructure.brokers import Storagedomains
 from ovirtsdk.infrastructure.brokers import Tags
 from ovirtsdk.infrastructure.brokers import Templates
 from ovirtsdk.infrastructure.brokers import Users
-from ovirtsdk.infrastructure.brokers import VMs
-from ovirtsdk.infrastructure.brokers import VmPools
-from ovirtsdk.infrastructure.brokers import VnicProfiles
+from ovirtsdk.infrastructure.brokers import Vmpools
+from ovirtsdk.infrastructure.brokers import Vms
+from ovirtsdk.infrastructure.brokers import Vnicprofiles
 
 
 class API(object):
@@ -211,31 +215,35 @@ class API(object):
         self.bookmarks = Bookmarks(self.id)
         self.capabilities = Capabilities(self.id)
         self.clusters = Clusters(self.id)
-        self.cpuprofiles = CpuProfiles(self.id)
-        self.datacenters = DataCenters(self.id)
-        self.diskprofiles = DiskProfiles(self.id)
+        self.cpuprofiles = Cpuprofiles(self.id)
+        self.datacenters = Datacenters(self.id)
+        self.diskprofiles = Diskprofiles(self.id)
         self.disks = Disks(self.id)
         self.domains = Domains(self.id)
         self.events = Events(self.id)
+        self.externalhostproviders = Externalhostproviders(self.id)
         self.groups = Groups(self.id)
         self.hosts = Hosts(self.id)
-        self.instancetypes = InstanceTypes(self.id)
+        self.instancetypes = Instancetypes(self.id)
         self.jobs = Jobs(self.id)
-        self.macpools = MacPools(self.id)
+        self.katelloerrata = Katelloerrata(self.id)
+        self.macpools = Macpools(self.id)
         self.networks = Networks(self.id)
-        self.operatingsysteminfos = OperatingSystemInfos(self.id)
+        self.openstackimageproviders = Openstackimageproviders(self.id)
+        self.openstacknetworkproviders = Openstacknetworkproviders(self.id)
+        self.operatingsystems = Operatingsystems(self.id)
         self.permissions = Permissions(self.id)
         self.roles = Roles(self.id)
-        self.schedulingpolicies = SchedulingPolicies(self.id)
-        self.schedulingpolicyunits = SchedulingPolicyUnits(self.id)
-        self.storageconnections = StorageConnections(self.id)
-        self.storagedomains = StorageDomains(self.id)
+        self.schedulingpolicies = Schedulingpolicies(self.id)
+        self.schedulingpolicyunits = Schedulingpolicyunits(self.id)
+        self.storageconnections = Storageconnections(self.id)
+        self.storagedomains = Storagedomains(self.id)
         self.tags = Tags(self.id)
         self.templates = Templates(self.id)
         self.users = Users(self.id)
-        self.vms = VMs(self.id)
-        self.vmpools = VmPools(self.id)
-        self.vnicprofiles = VnicProfiles(self.id)
+        self.vmpools = Vmpools(self.id)
+        self.vms = Vms(self.id)
+        self.vnicprofiles = Vnicprofiles(self.id)
 
 
     @property
@@ -366,4 +374,3 @@ class API(object):
         if entry_point:
             return entry_point.product_info
         raise DisconnectedError
-

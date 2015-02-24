@@ -205,6 +205,10 @@
       <xs:element name="import_as_template" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
       <!-- for VM hosted engine maintenance actions -->
       <xs:element name="maintenance_enabled" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+      <!-- for getting storage domains which are candidates to be imported -->
+      <xs:element ref="storage_domains" minOccurs="0" maxOccurs="1"/>
+      <!-- For import Glance disk -->
+      <xs:element ref="disk" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:group>
 
@@ -613,6 +617,7 @@
           <xs:element ref="creation_states" minOccurs="0"/>
           <xs:element ref="power_management_states" minOccurs="0"/>
           <xs:element ref="host_states" minOccurs="0"/>
+          <xs:element ref="host_protocols" minOccurs="0"/>
           <xs:element ref="host_non_operational_details" minOccurs="0"/>
           <xs:element ref="network_states" minOccurs="0"/>
           <xs:element ref="storage_domain_states" minOccurs="0"/>
@@ -656,6 +661,9 @@
           <xs:element ref="rng_sources" minOccurs="0" />
           <xs:element ref="scheduling_policy_unit_types" minOccurs="0" />
           <xs:element ref="qos_types" minOccurs="0" />
+          <xs:element ref="inheritable_booleans" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="network_plugin_types" minOccurs="0"/>
+          <xs:element ref="message_broker_types" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -1104,6 +1112,34 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:element name="network_plugin_types" type="NetworkPluginTypes"/>
+
+  <xs:complexType name="NetworkPluginTypes">
+    <xs:sequence>
+      <xs:element name="network_plugin_type" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:appinfo>
+            <jaxb:property name="NetworkPluginTypes"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="message_broker_types" type="MessageBrokerTypes"/>
+
+  <xs:complexType name="MessageBrokerTypes">
+    <xs:sequence>
+      <xs:element name="message_broker_type" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:appinfo>
+            <jaxb:property name="MessageBrokerTypes"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
   <!-- Architecture Capabilities -->
 
   <xs:element name="architecture_capability" type="ArchitectureCapability"/>
@@ -1214,7 +1250,17 @@
      <xs:complexContent>
       <xs:extension base="ActionableResource">
         <xs:sequence>
+          <!-- The "size" of the collection is the actual number of items
+               returned as a result. For example, when using the "max"
+               parameter the set of returned items may be different than
+               the total. -->
+          <xs:element name="size" type="xs:unsignedInt" minOccurs="0"/>
+
+          <!-- The "total" is the total number of items that match the
+               restrictions given by the caller, regardless of the value
+               of the "max" parameter. -->
           <xs:element name="total" type="xs:unsignedInt" minOccurs="0"/>
+
           <xs:element name="active" type="xs:unsignedInt" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
@@ -1241,6 +1287,20 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:element name="inheritable_booleans" type="InheritableBooleans" />
+
+  <xs:complexType name="InheritableBooleans">
+    <xs:sequence>
+      <xs:element name="inheritable_boolean" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:appinfo>
+            <jaxb:property name="InheritableBooleans" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
   <!-- Mac Pools-->
   <xs:element name="mac_pool" type="MacPool"/>
   <xs:element name="mac_pools" type="MacPools"/>
@@ -1249,8 +1309,8 @@
     <xs:complexContent>
       <xs:extension base="BaseResource">
         <xs:sequence>
-          <xs:element name="allow_duplicates" type="xs:boolean" minOccurs="1"/>
-          <xs:element name="default_pool" type="xs:boolean" minOccurs="0"/>
+          <xs:element name="allow_duplicates" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="default_pool" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="ranges" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
       </xs:extension>
@@ -1652,6 +1712,8 @@
           <xs:element ref="serial_number" minOccurs="0" maxOccurs="1" />
           <xs:element name="required_rng_sources" type="RngSources" minOccurs="0" maxOccurs="1" />
           <xs:element ref="fencing_policy"  minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="migration" minOccurs="0" maxOccurs="1" />
+          <xs:element name="management_network" type="Network" minOccurs="0" maxOccurs="1"/>
           <!-- Also a rel="networks" link -->
         </xs:sequence>
       </xs:extension>
@@ -1676,29 +1738,40 @@
   <!-- Hosts -->
   <xs:element name="agent" type="Agent"/>
   <xs:complexType name="Agent">
-    <xs:sequence>
-      <xs:element name="address" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="username" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="password" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      <xs:element ref="options" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="concurrent" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="order" type="xs:int" minOccurs="0" maxOccurs="1"/>
-    </xs:sequence>
-    <xs:attribute name="type" type="xs:string"/>
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element name="address" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="username" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="password" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="options" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="concurrent" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="order" type="xs:int" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="port" type="xs:int" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="host" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="type" type="xs:string"/>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
+
 
   <xs:element name="agents" type="Agents"/>
 
   <xs:complexType name="Agents">
-    <xs:sequence>
-      <xs:element name="agent" type="Agent" minOccurs="0" maxOccurs="unbounded">
-        <xs:annotation>
-          <xs:appinfo>
-            <jaxb:property name="Agents"/>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:element>
-    </xs:sequence>
+      <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element name="agent" type="Agent" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="Agents"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:element name="power_management" type="PowerManagement"/>
@@ -1779,11 +1852,34 @@
 
   <xs:element name="certificate" type="Certificate"/>
 
+  <xs:element name="certificates" type="Certificates"/>
+
   <xs:complexType name="Certificate">
-    <xs:sequence>
-      <xs:element name="organization" type="xs:string" minOccurs="0" maxOccurs="1"/>
-      <xs:element name="subject" type="xs:string" minOccurs="0" maxOccurs="1"/>
-    </xs:sequence>
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element name="organization" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="subject" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="content" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Certificates">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="certificate" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="Certificates"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 
   <xs:element name="selinux" type="SELinux" />
@@ -1844,6 +1940,8 @@
 	  <xs:element name="auto_numa_status" type="xs:string" minOccurs="0" maxOccurs="1"/>
           <xs:element name="numa_supported" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
           <xs:element name="live_snapshot_support" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="katello_errata"  minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="external_host_provider" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -1897,6 +1995,20 @@
         <xs:annotation>
           <xs:appinfo>
             <jaxb:property name="HostStates"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="host_protocols" type="HostProtocols"/>
+
+  <xs:complexType name="HostProtocols">
+    <xs:sequence>
+      <xs:element name="host_protocol" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:appinfo>
+            <jaxb:property name="HostProtocols"/>
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
@@ -2630,7 +2742,17 @@
     <xs:complexContent>
       <xs:extension base="BaseResource">
         <xs:sequence>
+          <!-- This is used to link to the Data Center that the Storage Domain
+               is attached to. It is preserved for backwards compatibility, as
+               the Storage Domain may be attached to multiple Data Centers (if
+               it is an ISO domain). Use the "data_centers" element
+               instead. -->
           <xs:element ref="data_center" minOccurs="0"/>
+
+          <!-- This is a set of links to the data centers that the Storage
+               Domain is attached to. -->
+          <xs:element ref="data_centers" minOccurs="0" maxOccurs="1"/>
+
           <xs:element name="type" type="xs:string" minOccurs="0"/>
           <xs:element ref="status" minOccurs="0" maxOccurs="1"/>
           <xs:element name="master" type="xs:boolean" minOccurs="0"/>
@@ -2644,6 +2766,9 @@
           <xs:element name="used" type="xs:long" minOccurs="0"/>
           <xs:element name="committed" type="xs:long" minOccurs="0"/>
           <xs:element name="storage_format" type="xs:string" minOccurs="0"/>
+          <xs:element name="wipe_after_delete" type="xs:boolean" minOccurs="0"/>
+          <xs:element name="import" type="xs:boolean" minOccurs="0"/>
+          <xs:element name="is_attached" type="xs:boolean" minOccurs="0"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -3091,6 +3216,15 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:element name="migration" type="MigrationOptions" />
+
+  <xs:complexType name="MigrationOptions">
+    <xs:sequence>
+      <xs:element name="auto_converge" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="compressed" type="xs:string" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="VmBase">
     <xs:annotation>
       <xs:appinfo>
@@ -3128,6 +3262,10 @@
           <xs:element ref="serial_number" minOccurs="0" maxOccurs="1" />
           <xs:element name="start_paused" type="xs:boolean" minOccurs="0" maxOccurs="1" />
           <xs:element ref="cpu_profile" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="migration" minOccurs="0" maxOccurs="1" />
+          <xs:element name="custom_properties" type="CustomProperties" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="custom_emulated_machine" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="custom_cpu_model" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -3151,7 +3289,7 @@
           <xs:element ref="instance_type" minOccurs="0" maxOccurs="1"/>
           <xs:element name="start_time" type="xs:dateTime" minOccurs="0"/>
           <xs:element name="stop_time" type="xs:dateTime" minOccurs="0"/>
-          <xs:element name="custom_properties" type="CustomProperties" minOccurs="0"/>
+          <xs:element name="run_once" type="xs:boolean" minOccurs="0" maxOccurs="1" />
           <xs:element name="payloads" type="Payloads" minOccurs="0"/>
           <xs:element name="statistics" type="Statistics" minOccurs="0" maxOccurs="1"/>
           <xs:element name="disks" type="Disks" minOccurs="0" maxOccurs="1"/>
@@ -3373,8 +3511,15 @@
     <xs:complexContent>
       <xs:extension base="BaseResource">
         <xs:sequence>
-          <xs:element ref="vm" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="template" minOccurs="0" maxOccurs="1"/>
+          <!-- Rerefences to the virtual machines that are using this
+               device (a device may be used by several virtual machines,
+               for example a shared disk my be used by two or more
+               virtual machines simultaneously): -->
+          <xs:element ref="vms" minOccurs="0" maxOccurs="1"/>
+
+          <!-- Don't use this element, use "vms" instead: -->
+          <xs:element ref="vm" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -4930,6 +5075,432 @@
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
+  </xs:complexType>
+
+  <!-- External providers: -->
+  <xs:complexType name="ExternalProvider">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element name="url" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="requires_authentication" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="username" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="password" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="properties" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- External host providers: -->
+  <xs:element name="external_host_provider" type="ExternalHostProvider"/>
+
+  <xs:complexType name="ExternalHostProvider">
+    <xs:complexContent>
+      <xs:extension base="ExternalProvider"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="external_host_providers" type="ExternalHostProviders"/>
+
+  <xs:complexType name="ExternalHostProviders">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="external_host_provider" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="External_HostProviders"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="external_host" type="ExternalHost"/>
+
+  <xs:element name="external_hosts" type="ExternalHosts"/>
+
+  <xs:complexType name="ExternalHost">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element ref="external_host_provider" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="address" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ExternalHosts">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="external_host" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="ExternalHosts"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="external_discovered_host" type="ExternalDiscoveredHost"/>
+
+  <xs:element name="external_discovered_hosts" type="ExternalDiscoveredHosts"/>
+
+  <xs:complexType name="ExternalDiscoveredHost">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element name="ip" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="mac" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="subnet_name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="last_report" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="external_host_provider" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ExternalDiscoveredHosts">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="external_discovered_host" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="ExternalDiscoveredHosts"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="external_host_group" type="ExternalHostGroup"/>
+
+  <xs:element name="external_host_groups" type="ExternalHostGroups"/>
+
+  <xs:complexType name="ExternalHostGroup">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element name="architecture_name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="operating_system_name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="domain_name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="subnet_name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="external_host_provider" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ExternalHostGroups">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="external_host_group" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="ExternalHostGroups"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="external_compute_resource" type="ExternalComputeResource"/>
+
+  <xs:element name="external_compute_resources" type="ExternalComputeResources"/>
+
+  <xs:complexType name="ExternalComputeResource">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element name="provider" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="user" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="url" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="external_host_provider" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ExternalComputeResources">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="external_compute_resource" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="ExternalComputeResources"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- OpenStack providers: -->
+  <xs:element name="openstack_provider" type="OpenStackProvider"/>
+
+  <xs:complexType name="OpenStackProvider">
+    <xs:complexContent>
+      <xs:extension base="ExternalProvider">
+        <xs:sequence>
+          <xs:element name="tenant_name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- OpenStack image providers: -->
+  <xs:element name="openstack_image_provider" type="OpenStackImageProvider"/>
+
+  <xs:complexType name="OpenStackImageProvider">
+    <xs:complexContent>
+      <xs:extension base="OpenStackProvider"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="openstack_image_providers" type="OpenStackImageProviders"/>
+
+  <xs:complexType name="OpenStackImageProviders">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="openstack_image_provider" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="OpenStackImageProviders"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="openstack_image" type="OpenStackImage"/>
+
+  <xs:element name="openstack_images" type="OpenStackImages"/>
+
+  <xs:complexType name="OpenStackImage">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element ref="openstack_image_provider" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OpenStackImages">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="openstack_image" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="OpenStackImages"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- OpenStack network providers: -->
+  <xs:element name="openstack_network_provider" type="OpenStackNetworkProvider"/>
+
+  <xs:complexType name="OpenStackNetworkProvider">
+    <xs:complexContent>
+      <xs:extension base="OpenStackProvider">
+        <xs:sequence>
+          <xs:element name="plugin_type" type="xs:string" minOccurs="1" maxOccurs="1"/>
+          <xs:element ref="agent_configuration" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="agent_configuration" type="AgentConfiguration"/>
+
+  <xs:complexType name="AgentConfiguration">
+    <xs:sequence>
+      <xs:element name="network_mappings" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="broker_type" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="address" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="port" type="xs:int" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="username" type="xs:string" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="password" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="openstack_network_providers" type="OpenStackNetworkProviders"/>
+
+  <xs:complexType name="OpenStackNetworkProviders">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="openstack_network_provider" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="OpenStackNetworkProviders"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="openstack_network" type="OpenStackNetwork"/>
+
+  <xs:element name="openstack_networks" type="OpenStackNetworks"/>
+
+  <xs:complexType name="OpenStackNetwork">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element ref="openstack_network_provider" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OpenStackNetworks">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="openstack_network" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="OpenStackNetworks"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="openstack_subnet" type="OpenStackSubnet"/>
+
+  <xs:element name="openstack_subnets" type="OpenStackSubnets"/>
+
+  <xs:element name="dns_servers" type="DnsServers"/>
+
+  <xs:complexType name="DnsServers">
+    <xs:sequence>
+      <xs:element name="dns_server" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:appinfo>
+            <jaxb:property name="DnsServers"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="OpenStackSubnet">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element name="cidr" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="ip_version" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="gateway" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="dns_servers" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="openstack_network" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OpenStackSubnets">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="openstack_subnet" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="OpenStackSubnets"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="katello_errata" type="KatelloErrata"/>
+
+  <xs:element name="katello_erratum" type="KatelloErratum"/>
+
+  <xs:complexType name="KatelloErratum">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="type" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="issued" type="xs:dateTime" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="severity" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="solution" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="summary" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="packages" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="host" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="KatelloErrata">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="katello_erratum" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="KatelloErrata"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+ <xs:element name="packages" type="Packages"/>
+
+ <xs:element name="package" type="Package"/>
+
+  <xs:complexType name="Packages">
+    <xs:sequence>
+      <xs:element ref="package" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:appinfo>
+            <jaxb:property name="Packages"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Package">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
   </xs:complexType>
 
 </xs:schema>

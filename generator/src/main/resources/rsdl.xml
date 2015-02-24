@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<rsdl href="/ovirt-engine/api?rsdl" rel="rsdl">
+<rsdl href="?rsdl" rel="rsdl">
     <description>The oVirt RESTful API description language.</description>
-    <version major="3" minor="5" build="0" revision="0"/>
-    <schema href="/ovirt-engine/api?schema" rel="schema">
+    <schema href="?schema" rel="schema">
         <name>ovirt-engine-api-schema.xsd</name>
         <description>oVirt API entities schema.</description>
     </schema>
@@ -94,7 +93,7 @@ or less indicates that the session should never timeout</description>
                 <type>Capabilities</type>
             </response>
         </link>
-        <link href="capabilities/{capabilitie:id}" rel="get">
+        <link href="capabilities/{capability:id}" rel="get">
             <request>
                 <http_method>GET</http_method>
                 <body/>
@@ -226,6 +225,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>cluster.fencing_policy.skip_if_connectivity_broken.threshold</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.management_network.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -2235,6 +2237,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.ksm.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.management_network.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -4879,7 +4884,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>copy a disk to a different storage domain</description>
                         <parameter required="true" type="xs:string">
-                            <name>storagedomain.id|name</name>
+                            <name>action.storage_domain.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
@@ -4915,7 +4920,7 @@ or less indicates that the session should never timeout</description>
                     <type>Action</type>
                     <parameters_set>
                         <parameter required="true" type="xs:string">
-                            <name>storagedomain.id|name</name>
+                            <name>action.storage_domain.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
@@ -4953,7 +4958,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>move a disk to a different storage domain</description>
                         <parameter required="true" type="xs:string">
-                            <name>storagedomain.id|name</name>
+                            <name>action.storage_domain.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
@@ -5284,6 +5289,328 @@ or less indicates that the session should never timeout</description>
                 <type>Event</type>
             </response>
         </link>
+        <link href="externalhostproviders" rel="add">
+            <description>add a new external host provider to the system</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>ExternalHostProvider</type>
+                    <parameters_set>
+                        <description>add a new external host provider to the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>external_host_provider.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>external_host_provider.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>external_host_provider.url</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>external_host_provider.requires_authentication</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>external_host_provider.username</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>external_host_provider.password</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>ExternalHostProvider</type>
+            </response>
+        </link>
+        <link href="externalhostproviders" rel="get">
+            <description>get the list of all external host providers in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>ExternalHostProviders</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}" rel="delete">
+            <description>delete the specified external host provider in the system</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}" rel="get">
+            <description>get the details of the specified external host provider in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>ExternalHostProvider</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}" rel="update">
+            <description>update the specified external host provider in the system</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>ExternalHostProvider</type>
+                    <parameters_set>
+                        <description>update the specified external host provider in the system</description>
+                        <parameter required="false" type="xs:string">
+                            <name>external_host_provider.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>external_host_provider.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>external_host_provider.requires_authentication</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>external_host_provider.username</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>external_host_provider.password</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>ExternalHostProvider</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/certificates" rel="get">
+            <description>get the list of certificates of the external host provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>Certificates</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/certificates/{certificate:id}" rel="get">
+            <description>get the details of the specified certificate of the external host provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Certificate</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/computeresources" rel="get">
+            <description>get the list of compute resources from the external host provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>ExternalComputeResources</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/computeresources/{computeresource:id}" rel="get">
+            <description>get the details of the specified compute resource from the external host provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>ExternalComputeResource</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/discoveredhosts" rel="get">
+            <description>get the list of discovered hosts from the external host provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>ExternalDiscoveredHosts</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/discoveredhosts/{discoveredhost:id}" rel="get">
+            <description>get the details of the specified discovered host from the external host provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>ExternalDiscoveredHost</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/hostgroups" rel="get">
+            <description>get the list of host groups from the external host provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>ExternalHostGroups</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/hostgroups/{hostgroup:id}" rel="get">
+            <description>get the details of the specified host group from the external host provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>ExternalHostGroup</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/hosts" rel="get">
+            <description>get the list of hosts from the external host provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>ExternalHosts</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/hosts/{host:id}" rel="get">
+            <description>get the details of the specified host from the external host provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>ExternalHost</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/importcertificates" rel="importcertificates">
+            <description>import the SSL certificates of the external host provider</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Action</type>
+                    <parameters_set/>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
+        <link href="externalhostproviders/{externalhostprovider:id}/testconnectivity" rel="testconnectivity">
+            <description>test the connectivity to the external external host provider</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Action</type>
+                    <parameters_set/>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
         <link href="groups" rel="add">
             <description>add a new group to the system</description>
             <request>
@@ -5304,6 +5631,12 @@ or less indicates that the session should never timeout</description>
                         <description>add a new group to the system</description>
                         <parameter required="true" type="xs:string">
                             <name>group.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>group.namespace</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>group.principal</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -5941,6 +6274,10 @@ or less indicates that the session should never timeout</description>
                         <name>Filter</name>
                         <value>true|false</value>
                     </header>
+                    <header required="false">
+                        <name>All-Content</name>
+                        <value>true|false</value>
+                    </header>
                 </headers>
                 <url>
                     <parameters_set>
@@ -6010,6 +6347,10 @@ or less indicates that the session should never timeout</description>
                 <headers>
                     <header required="false">
                         <name>Filter</name>
+                        <value>true|false</value>
+                    </header>
+                    <header required="false">
+                        <name>All-Content</name>
                         <value>true|false</value>
                     </header>
                 </headers>
@@ -6145,6 +6486,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>host.power_management.kdump_detection</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>host.external_host_provider.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -6407,7 +6751,7 @@ or less indicates that the session should never timeout</description>
             </response>
         </link>
         <link href="hosts/{host:id}/fence" rel="fence">
-            <description>initiate the fence operation on the host which has become non-responsive after multiple retries to connect to it</description>
+            <description>perform fencing operation (start/stop/status) on the host.</description>
             <request>
                 <http_method>POST</http_method>
                 <headers>
@@ -6423,7 +6767,7 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Action</type>
                     <parameters_set>
-                        <description>initiate the fence operation on the host which has become non-responsive after multiple retries to connect to it</description>
+                        <description>perform fencing operation (start/stop/status) on the host.</description>
                         <parameter required="true" type="xs:string">
                             <name>action.fence_type</name>
                         </parameter>
@@ -6438,6 +6782,161 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Action</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/fenceagents" rel="add">
+            <description>add a new fencing-agent to the host</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Agent</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>agent.address</name>
+                        </parameter>
+                        <parameter required="true" type="xs:int">
+                            <name>agent.order</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>agent.type</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>agent.username</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>agent.password</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>agent.port</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>agent.options</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>option.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>option.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Agent</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/fenceagents" rel="get">
+            <description>get all fencing agents defined for this host</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Agents</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/fenceagents/{fenceagent:id}" rel="delete">
+            <description>delete the specified fencing agent</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="hosts/{host:id}/fenceagents/{fenceagent:id}" rel="get">
+            <description>get the fencing agent with the specified ID.</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Agent</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/fenceagents/{fenceagent:id}" rel="update">
+            <description>update a fencing-agent</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Agent</type>
+                    <parameters_set>
+                        <parameter required="false" type="xs:string">
+                            <name>agent.address</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>agent.order</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>agent.type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>agent.username</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>agent.password</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>agent.port</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>agent.options</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>option.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>option.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Agent</type>
             </response>
         </link>
         <link href="hosts/{host:id}/forceselectspm" rel="forceselectspm">
@@ -6514,6 +7013,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>action.image</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.host.override_iptables</name>
+                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>install vdsm and other packages required to get the host ready to be used in the engine providing thre ssh password</description>
@@ -6540,6 +7042,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>action.grace_period.expiry</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.host.override_iptables</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -6617,6 +7122,33 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Action</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/katelloerrata" rel="get">
+            <description>get the list of errata available for the host</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>KatelloErrata</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/katelloerrata/{katelloerrata:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>KatelloErratum</type>
             </response>
         </link>
         <link href="hosts/{host:id}/nics" rel="add">
@@ -7356,6 +7888,37 @@ or less indicates that the session should never timeout</description>
                 <type>Tag</type>
             </response>
         </link>
+        <link href="hosts/{host:id}/unregisteredstoragedomainsdiscover" rel="unregisteredstoragedomainsdiscover">
+            <description>Discover the Storage Domains which are candidiates to be imported to the setup</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Action</type>
+                    <parameters_set>
+                        <description>Discover the Storage Domains which are candidiates to be imported to the setup</description>
+                        <parameter required="true" type="xs:string">
+                            <name>action.iscsi.address</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>action.target</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
         <link href="instancetypes" rel="add">
             <description>add a new instance type to the system</description>
             <request>
@@ -7445,6 +8008,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>instance_type.soundcard_enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>instance_type.custom_emulated_machine</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>instance_type.custom_cpu_model</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -7871,6 +8440,33 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Statistic</type>
+            </response>
+        </link>
+        <link href="katelloerrata" rel="get">
+            <description>get the list of errata available for the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>KatelloErrata</type>
+            </response>
+        </link>
+        <link href="katelloerrata/{katelloerrata:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>KatelloErratum</type>
             </response>
         </link>
         <link href="macpools" rel="add">
@@ -8507,6 +9103,548 @@ or less indicates that the session should never timeout</description>
                 <type>Permission</type>
             </response>
         </link>
+        <link href="openstackimageproviders" rel="add">
+            <description>add a new OpenStack image provider to the system</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>OpenStackImageProvider</type>
+                    <parameters_set>
+                        <description>add a new OpenStack image provider to the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>openstack_image_provider.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.url</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>openstack_image_provider.requires_authentication</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.username</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.password</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>openstack_image_provider.properties.property</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>property.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>property.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>OpenStackImageProvider</type>
+            </response>
+        </link>
+        <link href="openstackimageproviders" rel="get">
+            <description>get the list of all OpenStack image providers in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackImageProviders</type>
+            </response>
+        </link>
+        <link href="openstackimageproviders/{openstackimageprovider:id}" rel="delete">
+            <description>delete the specified OpenStack image provider in the system</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="openstackimageproviders/{openstackimageprovider:id}" rel="get">
+            <description>get the details of the specified OpenStack image provider in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackImageProvider</type>
+            </response>
+        </link>
+        <link href="openstackimageproviders/{openstackimageprovider:id}" rel="update">
+            <description>update the specified OpenStack image provider in the system</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>OpenStackImageProvider</type>
+                    <parameters_set>
+                        <description>update the specified OpenStack image provider in the system</description>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>openstack_image_provider.requires_authentication</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.username</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.password</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>openstack_image_provider.properties.property</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>property.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>property.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>OpenStackImageProvider</type>
+            </response>
+        </link>
+        <link href="openstackimageproviders/{openstackimageprovider:id}/certificates" rel="get">
+            <description>get the list of certificates of the OpenStack image provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>Certificates</type>
+            </response>
+        </link>
+        <link href="openstackimageproviders/{openstackimageprovider:id}/certificates/{certificate:id}" rel="get">
+            <description>get the details of the specified certificate of the OpenStack image provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Certificate</type>
+            </response>
+        </link>
+        <link href="openstackimageproviders/{openstackimageprovider:id}/images" rel="get">
+            <description>get the list of images from the OpenStack image provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackImages</type>
+            </response>
+        </link>
+        <link href="openstackimageproviders/{openstackimageprovider:id}/images/{image:id}" rel="get">
+            <description>get the details of the specified image from the OpenStack image provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackImage</type>
+            </response>
+        </link>
+        <link href="openstackimageproviders/{openstackimageprovider:id}/images/{image:id}/import" rel="import">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>Action</type>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
+        <link href="openstackimageproviders/{openstackimageprovider:id}/importcertificates" rel="importcertificates">
+            <description>import the SSL certificates of the OpenStack image provider</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Action</type>
+                    <parameters_set/>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
+        <link href="openstackimageproviders/{openstackimageprovider:id}/testconnectivity" rel="testconnectivity">
+            <description>test the connectivity to the external OpenStack imageprovider</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Action</type>
+                    <parameters_set/>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders" rel="add">
+            <description>add a new OpenStack network provider to the system</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>OpenStackNetworkProvider</type>
+                    <parameters_set>
+                        <description>add a new OpenStack network provider to the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>openstack_network_provider.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.url</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>openstack_network_provider.requires_authentication</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.username</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.password</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>openstack_network_provider.properties.property</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>property.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>property.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>OpenStackNetworkProvider</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders" rel="get">
+            <description>get the list of all OpenStack network providers in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackNetworkProviders</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}" rel="delete">
+            <description>delete the specified OpenStack network provider in the system</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}" rel="get">
+            <description>get the details of the specified OpenStack network provider in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackNetworkProvider</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}" rel="update">
+            <description>update the specified OpenStack network provider in the system</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>OpenStackNetworkProvider</type>
+                    <parameters_set>
+                        <description>update the specified OpenStack network provider in the system</description>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>openstack_network_provider.requires_authentication</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.username</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.password</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>openstack_network_provider.properties.property</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>property.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>property.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>OpenStackNetworkProvider</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}/certificates" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Certificates</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}/certificates/{certificate:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Certificate</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}/importcertificates" rel="importcertificates">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>Action</type>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}/networks" rel="get">
+            <description>get the list of networks from the OpenStack network provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackNetworks</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}/networks/{network:id}" rel="get">
+            <description>get the details of the specified network from the OpenStack network provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackNetwork</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}/networks/{network:id}/subnets" rel="add">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>OpenStackSubnet</type>
+                </body>
+            </request>
+            <response>
+                <type>OpenStackSubnet</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}/networks/{network:id}/subnets" rel="get">
+            <description>get the list of sub-networks from the OpenStack network provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackSubnets</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}/networks/{network:id}/subnets/{subnet:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <body/>
+            </request>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}/networks/{network:id}/subnets/{subnet:id}" rel="get">
+            <description>get the details of the specified sub-network from the OpenStack network provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackSubnet</type>
+            </response>
+        </link>
+        <link href="openstacknetworkproviders/{openstacknetworkprovider:id}/testconnectivity" rel="testconnectivity">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>Action</type>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
         <link href="operatingsystems" rel="get">
             <description>get the list of all Operating Systems</description>
             <request>
@@ -8905,131 +10043,444 @@ or less indicates that the session should never timeout</description>
                 <type>SchedulingPolicies</type>
             </response>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}" rel="delete">
+        <link href="schedulingpolicies/{schedulingpolicy:id}" rel="delete">
+            <description>delete the specified user defined scheduling policy in the system</description>
             <request>
                 <http_method>DELETE</http_method>
-                <body/>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body required="false">
+                    <parameters_set>
+                        <description>delete the specified user defined scheduling policy in the system</description>
+                    </parameters_set>
+                </body>
             </request>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}" rel="get">
+        <link href="schedulingpolicies/{schedulingpolicy:id}" rel="get">
+            <description>get the details of the specified scheduling policy in the system</description>
             <request>
                 <http_method>GET</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Filter</name>
+                        <value>true|false</value>
+                    </header>
+                </headers>
                 <body/>
             </request>
             <response>
                 <type>SchedulingPolicy</type>
             </response>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}" rel="update">
+        <link href="schedulingpolicies/{schedulingpolicy:id}" rel="update">
+            <description>update the specified user defined scheduling policy in the system</description>
             <request>
                 <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <body>
                     <type>SchedulingPolicy</type>
+                    <parameters_set>
+                        <description>update the specified user defined scheduling policy in the system</description>
+                        <parameter required="false" type="xs:string">
+                            <name>schedulingpolicy.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>schedulingpolicy.description</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>schedulingpolicy.properties.property</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>property.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>property.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
                 </body>
             </request>
             <response>
                 <type>SchedulingPolicy</type>
             </response>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/balances" rel="add">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/balances" rel="add">
+            <description>add a balance module to a specified user defined scheduling policy</description>
             <request>
                 <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <body>
                     <type>Balance</type>
+                    <parameters_set>
+                        <description>add a balance module to a specified user defined scheduling policy</description>
+                        <parameter required="true" type="xs:string">
+                            <name>balance.scheduling_policy_unit.id</name>
+                        </parameter>
+                    </parameters_set>
                 </body>
             </request>
             <response>
                 <type>Balance</type>
             </response>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/balances" rel="get">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/balances" rel="get">
+            <description>get a list of specified scheduling policy balance modules</description>
             <request>
                 <http_method>GET</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Filter</name>
+                        <value>true|false</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>case_sensitive</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
                 <type>Balances</type>
             </response>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/balances/{balance:id}" rel="delete">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/balances/{balance:id}" rel="delete">
+            <description>delete a balance module from specified user defined scheduling policy</description>
             <request>
                 <http_method>DELETE</http_method>
-                <body/>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body required="false">
+                    <parameters_set>
+                        <description>delete a balance module from specified user defined scheduling policy</description>
+                    </parameters_set>
+                </body>
             </request>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/balances/{balance:id}" rel="get">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/balances/{balance:id}" rel="get">
+            <description>get a specified scheduling policy balance module</description>
             <request>
                 <http_method>GET</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Filter</name>
+                        <value>true|false</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>case_sensitive</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
                 <type>Balance</type>
             </response>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/filters" rel="add">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/filters" rel="add">
+            <description>add a filter to a specified user defined scheduling policy</description>
             <request>
                 <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <body>
                     <type>Filter</type>
+                    <parameters_set>
+                        <description>add a new scheduling policy to the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>filter.scheduling_policy_unit.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>filter.scheduling_policy_unit.position</name>
+                        </parameter>
+                    </parameters_set>
                 </body>
             </request>
             <response>
                 <type>Filter</type>
             </response>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/filters" rel="get">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/filters" rel="get">
+            <description>get a list of specified scheduling policy filters</description>
             <request>
                 <http_method>GET</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Filter</name>
+                        <value>true|false</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>case_sensitive</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
                 <type>Filters</type>
             </response>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/filters/{filter:id}" rel="delete">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/filters/{filter:id}" rel="delete">
+            <description>delete a filter from specified user defined scheduling policy</description>
             <request>
                 <http_method>DELETE</http_method>
-                <body/>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body required="false">
+                    <parameters_set>
+                        <description>delete the specified scheduling policy in the system</description>
+                    </parameters_set>
+                </body>
             </request>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/filters/{filter:id}" rel="get">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/filters/{filter:id}" rel="get">
+            <description>get a specified scheduling policy filter</description>
             <request>
                 <http_method>GET</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Filter</name>
+                        <value>true|false</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>case_sensitive</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
                 <type>Filter</type>
             </response>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/weights" rel="add">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/weights" rel="add">
+            <description>add a weight to a specified user defined scheduling policy</description>
             <request>
                 <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <body>
                     <type>Weight</type>
+                    <parameters_set>
+                        <description>add a weight to a specified user defined scheduling policy</description>
+                        <parameter required="true" type="xs:string">
+                            <name>weight.scheduling_policy_unit.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>weight.scheduling_policy_unit.factor</name>
+                        </parameter>
+                    </parameters_set>
                 </body>
             </request>
             <response>
                 <type>Weight</type>
             </response>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/weights" rel="get">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/weights" rel="get">
+            <description>get a list of specified scheduling policy weights</description>
             <request>
                 <http_method>GET</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Filter</name>
+                        <value>true|false</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>case_sensitive</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
                 <type>Weights</type>
             </response>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/weights/{weight:id}" rel="delete">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/weights/{weight:id}" rel="delete">
+            <description>delete a weight from specified user defined scheduling policy</description>
             <request>
                 <http_method>DELETE</http_method>
-                <body/>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body required="false">
+                    <parameters_set>
+                        <description>delete a weight from specified user defined scheduling policy</description>
+                    </parameters_set>
+                </body>
             </request>
         </link>
-        <link href="schedulingpolicies/{schedulingpolicie:id}/weights/{weight:id}" rel="get">
+        <link href="schedulingpolicies/{schedulingpolicy:id}/weights/{weight:id}" rel="get">
+            <description>get a specified scheduling policy weight</description>
             <request>
                 <http_method>GET</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Filter</name>
+                        <value>true|false</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>case_sensitive</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -9429,6 +10880,33 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.storage_format</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.wipe_after_delete</name>
+                        </parameter>
+                    </parameters_set>
+                    <parameters_set>
+                        <description>Import an existing block storage domain to the system using the targets already connected to the host</description>
+                        <parameter required="true" type="xs:string">
+                            <name>storagedomain.host.id|name</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>storagedomain.type</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>storagedomain.storage.type</name>
+                        </parameter>
+                        <parameter required="true" type="xs:boolean">
+                            <name>storagedomain.import</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storagedomain.storage.address</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.format</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storagedomain.comment</name>
+                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new storage domain to the system using the storage on the given host and path</description>
@@ -9459,6 +10937,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.storage_format</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.wipe_after_delete</name>
+                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new storage domain to the system using the storage on the localhost at the given path</description>
@@ -9485,6 +10966,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.storage_format</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.wipe_after_delete</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -9521,6 +11005,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.storage_format</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.wipe_after_delete</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -9697,6 +11184,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>storagedomain.storage.override_luns</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.wipe_after_delete</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -10209,6 +11699,41 @@ or less indicates that the session should never timeout</description>
                 <http_method>POST</http_method>
                 <body>
                     <type>Action</type>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
+        <link href="storagedomains/{storagedomain:id}/isattached" rel="isattached">
+            <description>Querying if the Storage Domain is already attached to a Data Center by the is_attached boolean field, which is part of the storage server. IMPORTANT, Executing this API will cause the Host to disconnect from the Storage Domain.</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>Action</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>action.host.id</name>
+                        </parameter>
+                    </parameters_set>
                 </body>
             </request>
             <response>
@@ -10993,6 +12518,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>template.soundcard_enabled</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.custom_emulated_machine</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.custom_cpu_model</name>
+                        </parameter>
                         <parameter required="false" type="collection">
                             <name>template.vm.disks.disk</name>
                             <parameters_set>
@@ -11049,6 +12580,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.cpu_profile.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.migration.auto_converge</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.migration.compressed</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -11297,6 +12834,12 @@ or less indicates that the session should never timeout</description>
                             <name>template.soundcard_enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
+                            <name>template.custom_emulated_machine</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.custom_cpu_model</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
                             <name>template.version.version_name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
@@ -11313,6 +12856,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.cpu_profile.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.migration.auto_converge</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.migration.compressed</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -12036,6 +13585,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>user.domain.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>user.namespace</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>user.principal</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -12940,6 +14495,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.soundcard_enabled</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.custom_emulated_machine</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.custom_cpu_model</name>
+                        </parameter>
                         <parameter required="false" type="collection">
                             <name>vm.payloads.payload</name>
                             <parameters_set>
@@ -12999,6 +14560,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.cpu_profile.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.migration.auto_converge</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.migration.compressed</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -13173,6 +14740,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.soundcard_enabled</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.custom_emulated_machine</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.custom_cpu_model</name>
+                        </parameter>
                         <parameter required="false" type="collection">
                             <name>vm.payloads.payload</name>
                             <parameters_set>
@@ -13223,6 +14796,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.cpu_profile.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.migration.auto_converge</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.migration.compressed</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -13458,6 +15037,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.cpu_profile.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.migration.auto_converge</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.migration.compressed</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -13744,6 +15329,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.soundcard_enabled</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.custom_emulated_machine</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.custom_cpu_model</name>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.use_latest_template_version</name>
                         </parameter>
@@ -13797,6 +15388,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.cpu_profile.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.migration.auto_converge</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.migration.compressed</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -14654,6 +16251,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>action.grace_period.expiry</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.cluster.id</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -15670,6 +17270,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>action.vm.initialization.cloud_init.host.address</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.custom_emulated_machine</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.custom_cpu_model</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>action.vm.initialization.cloud_init.network_configuration.nics.nic</name>
