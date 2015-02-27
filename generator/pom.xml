@@ -164,7 +164,7 @@
                   <goal>java</goal>
                 </goals>
                 <configuration>
-                  <mainClass>org.ovirt.engine.sdk.generator.Main</mainClass>
+                  <mainClass>org.ovirt.engine.sdk.generator.python.Main</mainClass>
                   <arguments>
                     <argument>--xsd</argument>
                     <argument>${basedir}/src/main/resources/api.xsd</argument>
