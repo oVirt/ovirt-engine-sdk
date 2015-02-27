@@ -17,6 +17,7 @@
 package org.ovirt.engine.sdk.generator.xsd;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -51,7 +52,7 @@ public class XsdCodegen {
     /**
      * Generates parameter classes.
      */
-    public void generate(String xsdPath) throws IOException {
+    public void generate() throws IOException {
         // Check that the version of generateDS.py is correct:
         String version = runCommand("generateDS.py", "--version");
         if (!version.equals("generateDS.py version " + GENERATE_DS_VERSION)) {
@@ -60,8 +61,11 @@ public class XsdCodegen {
             );
         }
 
+        // Get the location of the XML schemma file:
+        File xsdFile = XsdData.getInstance().getFile();
+
         // Run the generateDS.py program to generate the params.py file:
-        runCommand("generateDS.py", "-f", "-o", XSD_PARAMS_FILE, xsdPath);
+        runCommand("generateDS.py", "-f", "-o", XSD_PARAMS_FILE, xsdFile.getAbsolutePath());
 
         // Load all the lines of the params.py file in memory so that we can modify them easily:
         try (BufferedReader in = new BufferedReader(new FileReader(XSD_PARAMS_FILE))) {

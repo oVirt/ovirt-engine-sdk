@@ -26,23 +26,14 @@ import static org.ovirt.engine.sdk.generator.utils.CollectionsUtils.setOf;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.FileUtils;
 import org.ovirt.engine.sdk.entities.DetailedLink;
-import org.ovirt.engine.sdk.entities.RSDL;
-import org.ovirt.engine.sdk.entities.Response;
 import org.ovirt.engine.sdk.generator.utils.Tree;
 
 /**
@@ -61,75 +52,19 @@ public class RsdlCodegen {
     );
 
     /**
-     * The root of the tree of locations.
-     */
-    private Tree<Location> root = new Tree<>();
-
-    /**
      * The keys of this map are the names of the broker types, and the content is the generated code.
      */
     private Map<String, CodeHolder> code = new LinkedHashMap<>();
 
-    public void generate(String rsdlPath) throws IOException {
-        // Load the RSDL document:
-        RSDL rsdl = loadRsdl(rsdlPath);
-
-        // The RSDL provided by the server doesn't include some links that are needed by the code generator, so we need
-        // to add them explicitly:
-        addMissingLinks(rsdl);
-
-        // Build the tree of URLs scanning all the links:
-        root.set(new Location());
-        for (DetailedLink link : rsdl.getLinks().getLinks()) {
-            List<String> path = Arrays.asList(link.getHref().split("/"));
-            Tree<Location> tree = root.getDescendant(path);
-            if (tree == null) {
-                tree = root.addDescendant(path);
-            }
-            Location location = tree.get();
-            if (location == null) {
-                location = new Location();
-                tree.set(location);
-            }
-            location.addLink(link);
-        }
-
-        // Get all the tree nodes:
-        List<Tree<Location>> locations = root.getDescendants();
-
-        // The previous process may have created intermediate nodes without a location object associated, and that may
-        // cause null pointer exceptions later, so to avoid that we need to make sure that all the nodes of the tree
-        // have a location, even if it is empty:
-        for (Tree<Location> tree : locations) {
-            Location location = tree.get();
-            if (location == null) {
-                location = new Location();
-                tree.set(location);
-            }
-        }
+    public void generate() throws IOException {
+        // Get the root of the tree of locations:
+        Tree<Location> root = RsdlData.getInstance().getRoot();
 
         // Generate the code:
-        locations.forEach(this::generateCode);
+        root.getDescendants().forEach(this::generateCode);
 
         // Store the generated code:
         persist();
-    }
-
-    private void addMissingLinks(RSDL rsdl) {
-        addMissingLink(rsdl, "users/{user:id}/roles/{role:id}", "Role");
-        addMissingLink(rsdl, "users/{user:id}/roles/{role:id}/permits/{permit:id}", "Permit");
-        addMissingLink(rsdl, "groups/{group:id}/roles/{role:id}", "Role");
-        addMissingLink(rsdl, "groups/{group:id}/roles/{role:id}/permits/{permit:id}", "Permit");
-    }
-
-    private void addMissingLink(RSDL rsdl, String href, String type) {
-        DetailedLink link = new DetailedLink();
-        link.setHref(href);
-        link.setRel("get");
-        Response response = new Response();
-        response.setType(type);
-        link.setResponse(response);
-        rsdl.getLinks().getLinks().add(link);
     }
 
     /**
@@ -375,19 +310,6 @@ public class RsdlCodegen {
             String updateMethod = SubResource.update(entityTree, link);
             holder.appendBody(updateMethod);
             break;
-        }
-    }
-
-    private RSDL loadRsdl(String rsdlPath) throws IOException {
-        try {
-            JAXBContext context = JAXBContext.newInstance(RSDL.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            Source source = new StreamSource(new File(rsdlPath));
-            JAXBElement<RSDL> element = unmarshaller.unmarshal(source, RSDL.class);
-            return element.getValue();
-        }
-        catch (JAXBException exception) {
-            throw new IOException(exception);
         }
     }
 }

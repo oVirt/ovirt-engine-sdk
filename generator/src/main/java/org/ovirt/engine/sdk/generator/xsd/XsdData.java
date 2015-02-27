@@ -40,11 +40,22 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class XsdData {
+    /**
+     * This is a singleton, and this is the reference to the instance.
+     */
     private static final XsdData instance = new XsdData();
 
+    /**
+     * Get the reference to the instance of this singleton.
+     */
     public static XsdData getInstance() {
         return instance;
     }
+
+    /**
+     * The file containing the RSDL metadata.
+     */
+    private File file;
 
     /**
      * This maps stores the relationship between XML tag names and Python type names.
@@ -74,17 +85,30 @@ public class XsdData {
      */
     private XPath xpath;
 
-    private XsdData() {
+    /**
+     * Returns the file that contains the XML schema.
+     */
+    public File getFile() {
+        return file;
     }
 
-    public void load(String xsd) throws IOException {
+    /**
+     * Loads the XML schema from a file.
+     *
+     * @param file the file that contains the XML schema
+     * @throws IOException if something fails while loading the schema
+     */
+    public void load(File file) throws IOException {
+        // Save the reference to the file:
+        this.file = file;
+
         // Parse the XML schema document:
         Document schema;
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setNamespaceAware(true);
             DocumentBuilder parser = factory.newDocumentBuilder();
-            schema = parser.parse(new File(xsd));
+            schema = parser.parse(file);
         }
         catch (Exception exception) {
             throw new IOException("Can't parse XML schema.", exception);

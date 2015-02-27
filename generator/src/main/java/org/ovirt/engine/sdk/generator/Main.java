@@ -17,26 +17,29 @@
 package org.ovirt.engine.sdk.generator;
 
 import org.ovirt.engine.sdk.generator.rsdl.RsdlCodegen;
+import org.ovirt.engine.sdk.generator.rsdl.RsdlData;
 import org.ovirt.engine.sdk.generator.xsd.XsdData;
 import org.ovirt.engine.sdk.generator.xsd.XsdCodegen;
+
+import java.io.File;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         // Parse the command line parameters:
-        String xsdPath = null;
-        String rsdlPath = null;
+        File xsdFile = null;
+        File rsdlFile = null;
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
             case "--xsd":
                 i++;
                 if (i < args.length) {
-                    xsdPath = args[i];
+                    xsdFile = new File(args[i]);
                 }
                 break;
             case "--rsdl":
                 i++;
                 if (i < args.length) {
-                    rsdlPath = args[i];
+                    rsdlFile = new File(args[i]);
                 }
                 break;
             default:
@@ -44,18 +47,19 @@ public class Main {
                 System.exit(1);
             }
         }
-        if (xsdPath == null || rsdlPath == null) {
+        if (xsdFile == null || rsdlFile == null) {
             System.err.println("Missing required parameters.");
             System.exit(1);
         }
 
-        // Build the class map:
-        XsdData.getInstance().load(xsdPath);
+        // Load the XML schema and the RSDL metadata:
+        XsdData.getInstance().load(xsdFile);
+        RsdlData.getInstance().load(rsdlFile);
 
         // Generate parameter classes:
-        new XsdCodegen().generate(xsdPath);
+        new XsdCodegen().generate();
 
         // Generate broker classes:
-        new RsdlCodegen().generate(rsdlPath);
+        new RsdlCodegen().generate();
     }
 }
