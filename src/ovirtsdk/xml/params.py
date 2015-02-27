@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Tue Feb 24 15:32:05 2015 by generateDS.py version 2.12a.
+# Generated Fri Feb 27 16:20:52 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -10058,11 +10058,11 @@ class Agent(BaseResource):
 # end class Agent
 
 
-class Agents(BaseResource):
+class Agents(BaseResources):
     subclass = None
-    superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, agent=None):
-        super(Agents, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+    superclass = BaseResources
+    def __init__(self, actions=None, size=None, total=None, active=None, agent=None):
+        super(Agents, self).__init__(actions, size, total, active, )
         if agent is None:
             self.agent = []
         else:

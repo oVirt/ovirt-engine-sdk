@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-02-24 15:32:06.000878'''
+'''Generated at: 2015-02-27 16:20:53.000749'''
 
 
 from ovirtsdk.xml import params
@@ -243,36 +243,15 @@ class Capabilities(Base):
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
-class Capability(params.VersionCaps, Base):
-    def __init__(self, versioncaps, context):
-        Base.__init__(self, context)
-        self.superclass = versioncaps
-
-        #SUB_COLLECTIONS
-    def __new__(cls, versioncaps, context):
-        if versioncaps is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(versioncaps, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
 class Cluster(params.Cluster, Base):
     def __init__(self, cluster, context):
         Base.__init__(self, context)
         self.superclass = cluster
 
-        self.affinitygroups = ClusterAffinitygroups(self, context)
-        self.cpuprofiles = ClusterCpuprofiles(self, context)
-        self.glusterhooks = ClusterGlusterhooks(self, context)
-        self.glustervolumes = ClusterGlustervolumes(self, context)
+        self.affinitygroups = ClusterAffinityGroups(self, context)
+        self.cpuprofiles = ClusterCpuProfiles(self, context)
+        self.glusterhooks = ClusterGlusterHooks(self, context)
+        self.glustervolumes = ClusterGlusterVolumes(self, context)
         self.networks = ClusterNetworks(self, context)
         self.permissions = ClusterPermissions(self, context)
 
@@ -368,13 +347,13 @@ class Cluster(params.Cluster, Base):
 
         return Cluster(result, self.context)
 
-class ClusterAffinitygroup(params.AffinityGroup, Base):
+class ClusterAffinityGroup(params.AffinityGroup, Base):
     def __init__(self, cluster, affinitygroup, context):
         Base.__init__(self, context)
         self.parentclass = cluster
         self.superclass  =  affinitygroup
 
-        self.vms = ClusterAffinitygroupVms(self, context)
+        self.vms = ClusterAffinityGroupVMs(self, context)
 
     def __new__(cls, cluster, affinitygroup, context):
         if affinitygroup is None: return None
@@ -433,13 +412,13 @@ class ClusterAffinitygroup(params.AffinityGroup, Base):
             headers={}
         )
 
-        return ClusterAffinitygroup(
+        return ClusterAffinityGroup(
             self.parentclass,
             result,
             self.context
         )
 
-class ClusterAffinitygroupVm(params.VM, Base):
+class ClusterAffinityGroupVM(params.VM, Base):
     def __init__(self, affinitygroup, vm, context):
         Base.__init__(self, context)
         self.parentclass = affinitygroup
@@ -480,7 +459,7 @@ class ClusterAffinitygroupVm(params.VM, Base):
             headers={'Content-type':None}
         )
 
-class ClusterAffinitygroupVms(Base):
+class ClusterAffinityGroupVMs(Base):
 
     def __init__(self, affinitygroup , context):
         Base.__init__(self, context)
@@ -520,7 +499,7 @@ class ClusterAffinitygroupVms(Base):
             headers={"Expect":expect}
         )
 
-        return ClusterAffinitygroupVm(
+        return ClusterAffinityGroupVM(
             self.parentclass,
             result,
             self.context
@@ -553,7 +532,7 @@ class ClusterAffinitygroupVms(Base):
                     headers={}
                 )
 
-                return ClusterAffinitygroupVm(
+                return ClusterAffinityGroupVM(
                     self.parentclass,
                     result,
                     self.context
@@ -574,7 +553,7 @@ class ClusterAffinitygroupVms(Base):
                 headers={}
             ).get_vm()
 
-            return ClusterAffinitygroupVm(
+            return ClusterAffinityGroupVM(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -613,7 +592,7 @@ class ClusterAffinitygroupVms(Base):
         ).get_vm()
 
         return ParseHelper.toSubCollection(
-            ClusterAffinitygroupVm,
+            ClusterAffinityGroupVM,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -622,7 +601,7 @@ class ClusterAffinitygroupVms(Base):
             context=self.context
         )
 
-class ClusterAffinitygroups(Base):
+class ClusterAffinityGroups(Base):
 
     def __init__(self, cluster , context):
         Base.__init__(self, context)
@@ -663,7 +642,7 @@ class ClusterAffinitygroups(Base):
             headers={"Expect":expect}
         )
 
-        return ClusterAffinitygroup(
+        return ClusterAffinityGroup(
             self.parentclass,
             result,
             self.context
@@ -695,7 +674,7 @@ class ClusterAffinitygroups(Base):
                     headers={}
                 )
 
-                return ClusterAffinitygroup(
+                return ClusterAffinityGroup(
                     self.parentclass,
                     result,
                     self.context
@@ -715,7 +694,7 @@ class ClusterAffinitygroups(Base):
                 headers={}
             ).get_affinity_group()
 
-            return ClusterAffinitygroup(
+            return ClusterAffinityGroup(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -753,7 +732,7 @@ class ClusterAffinitygroups(Base):
         ).get_affinity_group()
 
         return ParseHelper.toSubCollection(
-            ClusterAffinitygroup,
+            ClusterAffinityGroup,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -762,7 +741,7 @@ class ClusterAffinitygroups(Base):
             context=self.context
         )
 
-class ClusterCpuprofile(params.CpuProfile, Base):
+class ClusterCpuProfile(params.CpuProfile, Base):
     def __init__(self, cluster, cpuprofile, context):
         Base.__init__(self, context)
         self.parentclass = cluster
@@ -808,7 +787,7 @@ class ClusterCpuprofile(params.CpuProfile, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class ClusterCpuprofiles(Base):
+class ClusterCpuProfiles(Base):
 
     def __init__(self, cluster , context):
         Base.__init__(self, context)
@@ -850,7 +829,7 @@ class ClusterCpuprofiles(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return ClusterCpuprofile(
+        return ClusterCpuProfile(
             self.parentclass,
             result,
             self.context
@@ -882,7 +861,7 @@ class ClusterCpuprofiles(Base):
                     headers={}
                 )
 
-                return ClusterCpuprofile(
+                return ClusterCpuProfile(
                     self.parentclass,
                     result,
                     self.context
@@ -902,7 +881,7 @@ class ClusterCpuprofiles(Base):
                 headers={}
             ).get_cpu_profile()
 
-            return ClusterCpuprofile(
+            return ClusterCpuProfile(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -940,7 +919,7 @@ class ClusterCpuprofiles(Base):
         ).get_cpu_profile()
 
         return ParseHelper.toSubCollection(
-            ClusterCpuprofile,
+            ClusterCpuProfile,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -949,7 +928,7 @@ class ClusterCpuprofiles(Base):
             context=self.context
         )
 
-class ClusterGlusterhook(params.GlusterHook, Base):
+class ClusterGlusterHook(params.GlusterHook, Base):
     def __init__(self, cluster, glusterhook, context):
         Base.__init__(self, context)
         self.parentclass = cluster
@@ -1081,7 +1060,7 @@ class ClusterGlusterhook(params.GlusterHook, Base):
 
         return result
 
-class ClusterGlusterhooks(Base):
+class ClusterGlusterHooks(Base):
 
     def __init__(self, cluster , context):
         Base.__init__(self, context)
@@ -1122,7 +1101,7 @@ class ClusterGlusterhooks(Base):
                     headers={}
                 )
 
-                return ClusterGlusterhook(
+                return ClusterGlusterHook(
                     self.parentclass,
                     result,
                     self.context
@@ -1142,7 +1121,7 @@ class ClusterGlusterhooks(Base):
                 headers={}
             ).get_gluster_hook()
 
-            return ClusterGlusterhook(
+            return ClusterGlusterHook(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -1175,7 +1154,7 @@ class ClusterGlusterhooks(Base):
         ).get_gluster_hook()
 
         return ParseHelper.toSubCollection(
-            ClusterGlusterhook,
+            ClusterGlusterHook,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -1184,14 +1163,14 @@ class ClusterGlusterhooks(Base):
             context=self.context
         )
 
-class ClusterGlustervolume(params.GlusterVolume, Base):
+class ClusterGlusterVolume(params.GlusterVolume, Base):
     def __init__(self, cluster, glustervolume, context):
         Base.__init__(self, context)
         self.parentclass = cluster
         self.superclass  =  glustervolume
 
-        self.bricks = ClusterGlustervolumeBricks(self, context)
-        self.statistics = ClusterGlustervolumeStatistics(self, context)
+        self.bricks = ClusterGlusterVolumeGlusterBricks(self, context)
+        self.statistics = ClusterGlusterVolumeStatistics(self, context)
 
     def __new__(cls, cluster, glustervolume, context):
         if glustervolume is None: return None
@@ -1578,13 +1557,13 @@ class ClusterGlustervolume(params.GlusterVolume, Base):
 
         return result
 
-class ClusterGlustervolumeBrick(params.GlusterBrick, Base):
+class ClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
     def __init__(self, glustervolume, glusterbrick, context):
         Base.__init__(self, context)
         self.parentclass = glustervolume
         self.superclass  =  glusterbrick
 
-        self.statistics = ClusterGlustervolumeBrickStatistics(self, context)
+        self.statistics = ClusterGlusterVolumeGlusterBrickStatistics(self, context)
 
     def __new__(cls, glustervolume, glusterbrick, context):
         if glusterbrick is None: return None
@@ -1652,7 +1631,7 @@ class ClusterGlustervolumeBrick(params.GlusterBrick, Base):
 
         return result
 
-class ClusterGlustervolumeBrickStatistic(params.Statistic, Base):
+class ClusterGlusterVolumeGlusterBrickStatistic(params.Statistic, Base):
     def __init__(self, glusterbrick, statistic, context):
         Base.__init__(self, context)
         self.parentclass = glusterbrick
@@ -1674,7 +1653,7 @@ class ClusterGlustervolumeBrickStatistic(params.Statistic, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class ClusterGlustervolumeBrickStatistics(Base):
+class ClusterGlusterVolumeGlusterBrickStatistics(Base):
 
     def __init__(self, glusterbrick , context):
         Base.__init__(self, context)
@@ -1717,7 +1696,7 @@ class ClusterGlustervolumeBrickStatistics(Base):
                     headers={}
                 )
 
-                return ClusterGlustervolumeBrickStatistic(
+                return ClusterGlusterVolumeGlusterBrickStatistic(
                     self.parentclass,
                     result,
                     self.context
@@ -1739,7 +1718,7 @@ class ClusterGlustervolumeBrickStatistics(Base):
                 headers={}
             ).get_statistic()
 
-            return ClusterGlustervolumeBrickStatistic(
+            return ClusterGlusterVolumeGlusterBrickStatistic(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -1779,7 +1758,7 @@ class ClusterGlustervolumeBrickStatistics(Base):
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
-            ClusterGlustervolumeBrickStatistic,
+            ClusterGlusterVolumeGlusterBrickStatistic,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -1788,7 +1767,7 @@ class ClusterGlustervolumeBrickStatistics(Base):
             context=self.context
         )
 
-class ClusterGlustervolumeBricks(Base):
+class ClusterGlusterVolumeGlusterBricks(Base):
 
     def __init__(self, glustervolume , context):
         Base.__init__(self, context)
@@ -1835,7 +1814,7 @@ class ClusterGlustervolumeBricks(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return ClusterGlustervolumeBrick(
+        return ClusterGlusterVolumeGlusterBrick(
             self.parentclass,
             result,
             self.context
@@ -1869,7 +1848,7 @@ class ClusterGlustervolumeBricks(Base):
                     headers={"All-Content":all_content}
                 )
 
-                return ClusterGlustervolumeBrick(
+                return ClusterGlusterVolumeGlusterBrick(
                     self.parentclass,
                     result,
                     self.context
@@ -1890,7 +1869,7 @@ class ClusterGlustervolumeBricks(Base):
                 headers={"All-Content":all_content}
             ).get_brick()
 
-            return ClusterGlustervolumeBrick(
+            return ClusterGlusterVolumeGlusterBrick(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -1929,7 +1908,7 @@ class ClusterGlustervolumeBricks(Base):
         ).get_brick()
 
         return ParseHelper.toSubCollection(
-            ClusterGlustervolumeBrick,
+            ClusterGlusterVolumeGlusterBrick,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -1938,7 +1917,7 @@ class ClusterGlustervolumeBricks(Base):
             context=self.context
         )
 
-class ClusterGlustervolumeStatistic(params.Statistic, Base):
+class ClusterGlusterVolumeStatistic(params.Statistic, Base):
     def __init__(self, glustervolume, statistic, context):
         Base.__init__(self, context)
         self.parentclass = glustervolume
@@ -1960,7 +1939,7 @@ class ClusterGlustervolumeStatistic(params.Statistic, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class ClusterGlustervolumeStatistics(Base):
+class ClusterGlusterVolumeStatistics(Base):
 
     def __init__(self, glustervolume , context):
         Base.__init__(self, context)
@@ -2002,7 +1981,7 @@ class ClusterGlustervolumeStatistics(Base):
                     headers={}
                 )
 
-                return ClusterGlustervolumeStatistic(
+                return ClusterGlusterVolumeStatistic(
                     self.parentclass,
                     result,
                     self.context
@@ -2023,7 +2002,7 @@ class ClusterGlustervolumeStatistics(Base):
                 headers={}
             ).get_statistic()
 
-            return ClusterGlustervolumeStatistic(
+            return ClusterGlusterVolumeStatistic(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -2057,7 +2036,7 @@ class ClusterGlustervolumeStatistics(Base):
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
-            ClusterGlustervolumeStatistic,
+            ClusterGlusterVolumeStatistic,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -2066,7 +2045,7 @@ class ClusterGlustervolumeStatistics(Base):
             context=self.context
         )
 
-class ClusterGlustervolumes(Base):
+class ClusterGlusterVolumes(Base):
 
     def __init__(self, cluster , context):
         Base.__init__(self, context)
@@ -2123,7 +2102,7 @@ class ClusterGlustervolumes(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return ClusterGlustervolume(
+        return ClusterGlusterVolume(
             self.parentclass,
             result,
             self.context
@@ -2155,7 +2134,7 @@ class ClusterGlustervolumes(Base):
                     headers={}
                 )
 
-                return ClusterGlustervolume(
+                return ClusterGlusterVolume(
                     self.parentclass,
                     result,
                     self.context
@@ -2175,7 +2154,7 @@ class ClusterGlustervolumes(Base):
                 headers={}
             ).get_gluster_volume()
 
-            return ClusterGlustervolume(
+            return ClusterGlusterVolume(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -2214,7 +2193,7 @@ class ClusterGlustervolumes(Base):
         ).get_gluster_volume()
 
         return ParseHelper.toSubCollection(
-            ClusterGlustervolume,
+            ClusterGlusterVolume,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -2765,12 +2744,12 @@ class Clusters(Base):
             context=self.context
         )
 
-class Cpuprofile(params.CpuProfile, Base):
+class CpuProfile(params.CpuProfile, Base):
     def __init__(self, cpuprofile, context):
         Base.__init__(self, context)
         self.superclass = cpuprofile
 
-        self.permissions = CpuprofilePermissions(self, context)
+        self.permissions = CpuProfilePermissions(self, context)
 
     def __new__(cls, cpuprofile, context):
         if cpuprofile is None: return None
@@ -2833,9 +2812,9 @@ class Cpuprofile(params.CpuProfile, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return Cpuprofile(result, self.context)
+        return CpuProfile(result, self.context)
 
-class CpuprofilePermission(params.Permission, Base):
+class CpuProfilePermission(params.Permission, Base):
     def __init__(self, cpuprofile, permission, context):
         Base.__init__(self, context)
         self.parentclass = cpuprofile
@@ -2881,7 +2860,7 @@ class CpuprofilePermission(params.Permission, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class CpuprofilePermissions(Base):
+class CpuProfilePermissions(Base):
 
     def __init__(self, cpuprofile , context):
         Base.__init__(self, context)
@@ -2926,7 +2905,7 @@ class CpuprofilePermissions(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return CpuprofilePermission(
+        return CpuProfilePermission(
             self.parentclass,
             result,
             self.context
@@ -2958,7 +2937,7 @@ class CpuprofilePermissions(Base):
                     headers={}
                 )
 
-                return CpuprofilePermission(
+                return CpuProfilePermission(
                     self.parentclass,
                     result,
                     self.context
@@ -2978,7 +2957,7 @@ class CpuprofilePermissions(Base):
                 headers={}
             ).get_permission()
 
-            return CpuprofilePermission(
+            return CpuProfilePermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -3016,7 +2995,7 @@ class CpuprofilePermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            CpuprofilePermission,
+            CpuProfilePermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -3025,7 +3004,7 @@ class CpuprofilePermissions(Base):
             context=self.context
         )
 
-class Cpuprofiles(Base):
+class CpuProfiles(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -3060,7 +3039,7 @@ class Cpuprofiles(Base):
            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return Cpuprofile(result, self.context)
+        return CpuProfile(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -3074,7 +3053,7 @@ class Cpuprofiles(Base):
 
         if id:
             try :
-                return Cpuprofile(
+                return CpuProfile(
                     self.__getProxy().get(
                                 url=UrlHelper.append(url, id),
                                 headers={}
@@ -3091,7 +3070,7 @@ class Cpuprofiles(Base):
                     headers={}
             ).get_cpu_profile()
 
-            return Cpuprofile(
+            return CpuProfile(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -3118,23 +3097,23 @@ class Cpuprofiles(Base):
         ).get_cpu_profile()
 
         return ParseHelper.toCollection(
-            Cpuprofile,
+            CpuProfile,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
 
-class Datacenter(params.DataCenter, Base):
+class DataCenter(params.DataCenter, Base):
     def __init__(self, datacenter, context):
         Base.__init__(self, context)
         self.superclass = datacenter
 
-        self.clusters = DatacenterClusters(self, context)
-        self.iscsibonds = DatacenterIscsibonds(self, context)
-        self.networks = DatacenterNetworks(self, context)
-        self.permissions = DatacenterPermissions(self, context)
-        self.qoss = DatacenterQoss(self, context)
-        self.quotas = DatacenterQuotas(self, context)
-        self.storagedomains = DatacenterStoragedomains(self, context)
+        self.clusters = DataCenterClusters(self, context)
+        self.iscsibonds = DataCenterIscsiBonds(self, context)
+        self.networks = DataCenterNetworks(self, context)
+        self.permissions = DataCenterPermissions(self, context)
+        self.qoss = DataCenterQoSs(self, context)
+        self.quotas = DataCenterQuotas(self, context)
+        self.storagedomains = DataCenterStorageDomains(self, context)
 
     def __new__(cls, datacenter, context):
         if datacenter is None: return None
@@ -3208,20 +3187,20 @@ class Datacenter(params.DataCenter, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return Datacenter(result, self.context)
+        return DataCenter(result, self.context)
 
-class DatacenterCluster(params.Cluster, Base):
+class DataCenterCluster(params.Cluster, Base):
     def __init__(self, datacenter, cluster, context):
         Base.__init__(self, context)
         self.parentclass = datacenter
         self.superclass  =  cluster
 
-        self.affinitygroups = DatacenterClusterAffinitygroups(self, context)
-        self.cpuprofiles = DatacenterClusterCpuprofiles(self, context)
-        self.glusterhooks = DatacenterClusterGlusterhooks(self, context)
-        self.glustervolumes = DatacenterClusterGlustervolumes(self, context)
-        self.networks = DatacenterClusterNetworks(self, context)
-        self.permissions = DatacenterClusterPermissions(self, context)
+        self.affinitygroups = DataCenterClusterAffinityGroups(self, context)
+        self.cpuprofiles = DataCenterClusterCpuProfiles(self, context)
+        self.glusterhooks = DataCenterClusterGlusterHooks(self, context)
+        self.glustervolumes = DataCenterClusterGlusterVolumes(self, context)
+        self.networks = DataCenterClusterNetworks(self, context)
+        self.permissions = DataCenterClusterPermissions(self, context)
 
     def __new__(cls, datacenter, cluster, context):
         if cluster is None: return None
@@ -3312,19 +3291,19 @@ class DatacenterCluster(params.Cluster, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return DatacenterCluster(
+        return DataCenterCluster(
             self.parentclass,
             result,
             self.context
         )
 
-class DatacenterClusterAffinitygroup(params.AffinityGroup, Base):
+class DataCenterClusterAffinityGroup(params.AffinityGroup, Base):
     def __init__(self, cluster, affinitygroup, context):
         Base.__init__(self, context)
         self.parentclass = cluster
         self.superclass  =  affinitygroup
 
-        self.vms = DatacenterClusterAffinitygroupVms(self, context)
+        self.vms = DataCenterClusterAffinityGroupVMs(self, context)
 
     def __new__(cls, cluster, affinitygroup, context):
         if affinitygroup is None: return None
@@ -3381,13 +3360,13 @@ class DatacenterClusterAffinitygroup(params.AffinityGroup, Base):
             headers={}
         )
 
-        return DatacenterClusterAffinitygroup(
+        return DataCenterClusterAffinityGroup(
             self.parentclass,
             result,
             self.context
         )
 
-class DatacenterClusterAffinitygroupVm(params.VM, Base):
+class DataCenterClusterAffinityGroupVM(params.VM, Base):
     def __init__(self, affinitygroup, vm, context):
         Base.__init__(self, context)
         self.parentclass = affinitygroup
@@ -3429,7 +3408,7 @@ class DatacenterClusterAffinitygroupVm(params.VM, Base):
             headers={'Content-type':None}
         )
 
-class DatacenterClusterAffinitygroupVms(Base):
+class DataCenterClusterAffinityGroupVMs(Base):
 
     def __init__(self, affinitygroup , context):
         Base.__init__(self, context)
@@ -3468,7 +3447,7 @@ class DatacenterClusterAffinitygroupVms(Base):
             headers={}
         )
 
-        return DatacenterClusterAffinitygroupVm(
+        return DataCenterClusterAffinityGroupVM(
             self.parentclass,
             result,
             self.context
@@ -3502,7 +3481,7 @@ class DatacenterClusterAffinitygroupVms(Base):
                     headers={}
                 )
 
-                return DatacenterClusterAffinitygroupVm(
+                return DataCenterClusterAffinityGroupVM(
                     self.parentclass,
                     result,
                     self.context
@@ -3524,7 +3503,7 @@ class DatacenterClusterAffinitygroupVms(Base):
                 headers={}
             ).get_vm()
 
-            return DatacenterClusterAffinitygroupVm(
+            return DataCenterClusterAffinityGroupVM(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -3559,7 +3538,7 @@ class DatacenterClusterAffinitygroupVms(Base):
         ).get_vm()
 
         return ParseHelper.toSubCollection(
-            DatacenterClusterAffinitygroupVm,
+            DataCenterClusterAffinityGroupVM,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -3568,7 +3547,7 @@ class DatacenterClusterAffinitygroupVms(Base):
             context=self.context
         )
 
-class DatacenterClusterAffinitygroups(Base):
+class DataCenterClusterAffinityGroups(Base):
 
     def __init__(self, cluster , context):
         Base.__init__(self, context)
@@ -3606,7 +3585,7 @@ class DatacenterClusterAffinitygroups(Base):
             headers={}
         )
 
-        return DatacenterClusterAffinitygroup(
+        return DataCenterClusterAffinityGroup(
             self.parentclass,
             result,
             self.context
@@ -3639,7 +3618,7 @@ class DatacenterClusterAffinitygroups(Base):
                     headers={}
                 )
 
-                return DatacenterClusterAffinitygroup(
+                return DataCenterClusterAffinityGroup(
                     self.parentclass,
                     result,
                     self.context
@@ -3660,7 +3639,7 @@ class DatacenterClusterAffinitygroups(Base):
                 headers={}
             ).get_affinity_group()
 
-            return DatacenterClusterAffinitygroup(
+            return DataCenterClusterAffinityGroup(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -3694,7 +3673,7 @@ class DatacenterClusterAffinitygroups(Base):
         ).get_affinity_group()
 
         return ParseHelper.toSubCollection(
-            DatacenterClusterAffinitygroup,
+            DataCenterClusterAffinityGroup,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -3703,7 +3682,7 @@ class DatacenterClusterAffinitygroups(Base):
             context=self.context
         )
 
-class DatacenterClusterCpuprofile(params.CpuProfile, Base):
+class DataCenterClusterCpuProfile(params.CpuProfile, Base):
     def __init__(self, cluster, cpuprofile, context):
         Base.__init__(self, context)
         self.parentclass = cluster
@@ -3744,7 +3723,7 @@ class DatacenterClusterCpuprofile(params.CpuProfile, Base):
             headers={'Content-type':None}
         )
 
-class DatacenterClusterCpuprofiles(Base):
+class DataCenterClusterCpuProfiles(Base):
 
     def __init__(self, cluster , context):
         Base.__init__(self, context)
@@ -3782,7 +3761,7 @@ class DatacenterClusterCpuprofiles(Base):
             headers={}
         )
 
-        return DatacenterClusterCpuprofile(
+        return DataCenterClusterCpuProfile(
             self.parentclass,
             result,
             self.context
@@ -3815,7 +3794,7 @@ class DatacenterClusterCpuprofiles(Base):
                     headers={}
                 )
 
-                return DatacenterClusterCpuprofile(
+                return DataCenterClusterCpuProfile(
                     self.parentclass,
                     result,
                     self.context
@@ -3836,7 +3815,7 @@ class DatacenterClusterCpuprofiles(Base):
                 headers={}
             ).get_cpu_profile()
 
-            return DatacenterClusterCpuprofile(
+            return DataCenterClusterCpuProfile(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -3870,7 +3849,7 @@ class DatacenterClusterCpuprofiles(Base):
         ).get_cpu_profile()
 
         return ParseHelper.toSubCollection(
-            DatacenterClusterCpuprofile,
+            DataCenterClusterCpuProfile,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -3879,7 +3858,7 @@ class DatacenterClusterCpuprofiles(Base):
             context=self.context
         )
 
-class DatacenterClusterGlusterhook(params.GlusterHook, Base):
+class DataCenterClusterGlusterHook(params.GlusterHook, Base):
     def __init__(self, cluster, glusterhook, context):
         Base.__init__(self, context)
         self.parentclass = cluster
@@ -3998,7 +3977,7 @@ class DatacenterClusterGlusterhook(params.GlusterHook, Base):
 
         return result
 
-class DatacenterClusterGlusterhooks(Base):
+class DataCenterClusterGlusterHooks(Base):
 
     def __init__(self, cluster , context):
         Base.__init__(self, context)
@@ -4040,7 +4019,7 @@ class DatacenterClusterGlusterhooks(Base):
                     headers={}
                 )
 
-                return DatacenterClusterGlusterhook(
+                return DataCenterClusterGlusterHook(
                     self.parentclass,
                     result,
                     self.context
@@ -4061,7 +4040,7 @@ class DatacenterClusterGlusterhooks(Base):
                 headers={}
             ).get_gluster_hook()
 
-            return DatacenterClusterGlusterhook(
+            return DataCenterClusterGlusterHook(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -4095,7 +4074,7 @@ class DatacenterClusterGlusterhooks(Base):
         ).get_gluster_hook()
 
         return ParseHelper.toSubCollection(
-            DatacenterClusterGlusterhook,
+            DataCenterClusterGlusterHook,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -4104,14 +4083,14 @@ class DatacenterClusterGlusterhooks(Base):
             context=self.context
         )
 
-class DatacenterClusterGlustervolume(params.GlusterVolume, Base):
+class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
     def __init__(self, cluster, glustervolume, context):
         Base.__init__(self, context)
         self.parentclass = cluster
         self.superclass  =  glustervolume
 
-        self.bricks = DatacenterClusterGlustervolumeBricks(self, context)
-        self.statistics = DatacenterClusterGlustervolumeStatistics(self, context)
+        self.bricks = DataCenterClusterGlusterVolumeGlusterBricks(self, context)
+        self.statistics = DataCenterClusterGlusterVolumeStatistics(self, context)
 
     def __new__(cls, cluster, glustervolume, context):
         if glustervolume is None: return None
@@ -4459,13 +4438,13 @@ class DatacenterClusterGlustervolume(params.GlusterVolume, Base):
 
         return result
 
-class DatacenterClusterGlustervolumeBrick(params.GlusterBrick, Base):
+class DataCenterClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
     def __init__(self, glustervolume, glusterbrick, context):
         Base.__init__(self, context)
         self.parentclass = glustervolume
         self.superclass  =  glusterbrick
 
-        self.statistics = DatacenterClusterGlustervolumeBrickStatistics(self, context)
+        self.statistics = DataCenterClusterGlusterVolumeGlusterBrickStatistics(self, context)
 
     def __new__(cls, glustervolume, glusterbrick, context):
         if glusterbrick is None: return None
@@ -4529,7 +4508,7 @@ class DatacenterClusterGlustervolumeBrick(params.GlusterBrick, Base):
 
         return result
 
-class DatacenterClusterGlustervolumeBrickStatistic(params.Statistic, Base):
+class DataCenterClusterGlusterVolumeGlusterBrickStatistic(params.Statistic, Base):
     def __init__(self, glusterbrick, statistic, context):
         Base.__init__(self, context)
         self.parentclass = glusterbrick
@@ -4551,7 +4530,7 @@ class DatacenterClusterGlustervolumeBrickStatistic(params.Statistic, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class DatacenterClusterGlustervolumeBrickStatistics(Base):
+class DataCenterClusterGlusterVolumeGlusterBrickStatistics(Base):
 
     def __init__(self, glusterbrick , context):
         Base.__init__(self, context)
@@ -4595,7 +4574,7 @@ class DatacenterClusterGlustervolumeBrickStatistics(Base):
                     headers={}
                 )
 
-                return DatacenterClusterGlustervolumeBrickStatistic(
+                return DataCenterClusterGlusterVolumeGlusterBrickStatistic(
                     self.parentclass,
                     result,
                     self.context
@@ -4618,7 +4597,7 @@ class DatacenterClusterGlustervolumeBrickStatistics(Base):
                 headers={}
             ).get_statistic()
 
-            return DatacenterClusterGlustervolumeBrickStatistic(
+            return DataCenterClusterGlusterVolumeGlusterBrickStatistic(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -4654,7 +4633,7 @@ class DatacenterClusterGlustervolumeBrickStatistics(Base):
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
-            DatacenterClusterGlustervolumeBrickStatistic,
+            DataCenterClusterGlusterVolumeGlusterBrickStatistic,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -4663,7 +4642,7 @@ class DatacenterClusterGlustervolumeBrickStatistics(Base):
             context=self.context
         )
 
-class DatacenterClusterGlustervolumeBricks(Base):
+class DataCenterClusterGlusterVolumeGlusterBricks(Base):
 
     def __init__(self, glustervolume , context):
         Base.__init__(self, context)
@@ -4702,7 +4681,7 @@ class DatacenterClusterGlustervolumeBricks(Base):
             headers={}
         )
 
-        return DatacenterClusterGlustervolumeBrick(
+        return DataCenterClusterGlusterVolumeGlusterBrick(
             self.parentclass,
             result,
             self.context
@@ -4736,7 +4715,7 @@ class DatacenterClusterGlustervolumeBricks(Base):
                     headers={}
                 )
 
-                return DatacenterClusterGlustervolumeBrick(
+                return DataCenterClusterGlusterVolumeGlusterBrick(
                     self.parentclass,
                     result,
                     self.context
@@ -4758,7 +4737,7 @@ class DatacenterClusterGlustervolumeBricks(Base):
                 headers={}
             ).get_brick()
 
-            return DatacenterClusterGlustervolumeBrick(
+            return DataCenterClusterGlusterVolumeGlusterBrick(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -4793,7 +4772,7 @@ class DatacenterClusterGlustervolumeBricks(Base):
         ).get_brick()
 
         return ParseHelper.toSubCollection(
-            DatacenterClusterGlustervolumeBrick,
+            DataCenterClusterGlusterVolumeGlusterBrick,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -4802,7 +4781,7 @@ class DatacenterClusterGlustervolumeBricks(Base):
             context=self.context
         )
 
-class DatacenterClusterGlustervolumeStatistic(params.Statistic, Base):
+class DataCenterClusterGlusterVolumeStatistic(params.Statistic, Base):
     def __init__(self, glustervolume, statistic, context):
         Base.__init__(self, context)
         self.parentclass = glustervolume
@@ -4824,7 +4803,7 @@ class DatacenterClusterGlustervolumeStatistic(params.Statistic, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class DatacenterClusterGlustervolumeStatistics(Base):
+class DataCenterClusterGlusterVolumeStatistics(Base):
 
     def __init__(self, glustervolume , context):
         Base.__init__(self, context)
@@ -4867,7 +4846,7 @@ class DatacenterClusterGlustervolumeStatistics(Base):
                     headers={}
                 )
 
-                return DatacenterClusterGlustervolumeStatistic(
+                return DataCenterClusterGlusterVolumeStatistic(
                     self.parentclass,
                     result,
                     self.context
@@ -4889,7 +4868,7 @@ class DatacenterClusterGlustervolumeStatistics(Base):
                 headers={}
             ).get_statistic()
 
-            return DatacenterClusterGlustervolumeStatistic(
+            return DataCenterClusterGlusterVolumeStatistic(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -4924,7 +4903,7 @@ class DatacenterClusterGlustervolumeStatistics(Base):
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
-            DatacenterClusterGlustervolumeStatistic,
+            DataCenterClusterGlusterVolumeStatistic,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -4933,7 +4912,7 @@ class DatacenterClusterGlustervolumeStatistics(Base):
             context=self.context
         )
 
-class DatacenterClusterGlustervolumes(Base):
+class DataCenterClusterGlusterVolumes(Base):
 
     def __init__(self, cluster , context):
         Base.__init__(self, context)
@@ -4971,7 +4950,7 @@ class DatacenterClusterGlustervolumes(Base):
             headers={}
         )
 
-        return DatacenterClusterGlustervolume(
+        return DataCenterClusterGlusterVolume(
             self.parentclass,
             result,
             self.context
@@ -5004,7 +4983,7 @@ class DatacenterClusterGlustervolumes(Base):
                     headers={}
                 )
 
-                return DatacenterClusterGlustervolume(
+                return DataCenterClusterGlusterVolume(
                     self.parentclass,
                     result,
                     self.context
@@ -5025,7 +5004,7 @@ class DatacenterClusterGlustervolumes(Base):
                 headers={}
             ).get_gluster_volume()
 
-            return DatacenterClusterGlustervolume(
+            return DataCenterClusterGlusterVolume(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -5059,7 +5038,7 @@ class DatacenterClusterGlustervolumes(Base):
         ).get_gluster_volume()
 
         return ParseHelper.toSubCollection(
-            DatacenterClusterGlustervolume,
+            DataCenterClusterGlusterVolume,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -5068,7 +5047,7 @@ class DatacenterClusterGlustervolumes(Base):
             context=self.context
         )
 
-class DatacenterClusterNetwork(params.Network, Base):
+class DataCenterClusterNetwork(params.Network, Base):
     def __init__(self, cluster, network, context):
         Base.__init__(self, context)
         self.parentclass = cluster
@@ -5143,13 +5122,13 @@ class DatacenterClusterNetwork(params.Network, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return DatacenterClusterNetwork(
+        return DataCenterClusterNetwork(
             self.parentclass,
             result,
             self.context
         )
 
-class DatacenterClusterNetworks(Base):
+class DataCenterClusterNetworks(Base):
 
     def __init__(self, cluster , context):
         Base.__init__(self, context)
@@ -5194,7 +5173,7 @@ class DatacenterClusterNetworks(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return DatacenterClusterNetwork(
+        return DataCenterClusterNetwork(
             self.parentclass,
             result,
             self.context
@@ -5227,7 +5206,7 @@ class DatacenterClusterNetworks(Base):
                     headers={}
                 )
 
-                return DatacenterClusterNetwork(
+                return DataCenterClusterNetwork(
                     self.parentclass,
                     result,
                     self.context
@@ -5248,7 +5227,7 @@ class DatacenterClusterNetworks(Base):
                 headers={}
             ).get_network()
 
-            return DatacenterClusterNetwork(
+            return DataCenterClusterNetwork(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -5287,7 +5266,7 @@ class DatacenterClusterNetworks(Base):
         ).get_network()
 
         return ParseHelper.toSubCollection(
-            DatacenterClusterNetwork,
+            DataCenterClusterNetwork,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -5296,7 +5275,7 @@ class DatacenterClusterNetworks(Base):
             context=self.context
         )
 
-class DatacenterClusterPermission(params.Permission, Base):
+class DataCenterClusterPermission(params.Permission, Base):
     def __init__(self, cluster, permission, context):
         Base.__init__(self, context)
         self.parentclass = cluster
@@ -5343,7 +5322,7 @@ class DatacenterClusterPermission(params.Permission, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class DatacenterClusterPermissions(Base):
+class DataCenterClusterPermissions(Base):
 
     def __init__(self, cluster , context):
         Base.__init__(self, context)
@@ -5389,7 +5368,7 @@ class DatacenterClusterPermissions(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return DatacenterClusterPermission(
+        return DataCenterClusterPermission(
             self.parentclass,
             result,
             self.context
@@ -5422,7 +5401,7 @@ class DatacenterClusterPermissions(Base):
                     headers={}
                 )
 
-                return DatacenterClusterPermission(
+                return DataCenterClusterPermission(
                     self.parentclass,
                     result,
                     self.context
@@ -5443,7 +5422,7 @@ class DatacenterClusterPermissions(Base):
                 headers={}
             ).get_permission()
 
-            return DatacenterClusterPermission(
+            return DataCenterClusterPermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -5482,7 +5461,7 @@ class DatacenterClusterPermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            DatacenterClusterPermission,
+            DataCenterClusterPermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -5491,7 +5470,7 @@ class DatacenterClusterPermissions(Base):
             context=self.context
         )
 
-class DatacenterClusters(Base):
+class DataCenterClusters(Base):
 
     def __init__(self, datacenter , context):
         Base.__init__(self, context)
@@ -5557,7 +5536,7 @@ class DatacenterClusters(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return DatacenterCluster(
+        return DataCenterCluster(
             self.parentclass,
             result,
             self.context
@@ -5589,7 +5568,7 @@ class DatacenterClusters(Base):
                     headers={}
                 )
 
-                return DatacenterCluster(
+                return DataCenterCluster(
                     self.parentclass,
                     result,
                     self.context
@@ -5609,7 +5588,7 @@ class DatacenterClusters(Base):
                 headers={}
             ).get_cluster()
 
-            return DatacenterCluster(
+            return DataCenterCluster(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -5647,7 +5626,7 @@ class DatacenterClusters(Base):
         ).get_cluster()
 
         return ParseHelper.toSubCollection(
-            DatacenterCluster,
+            DataCenterCluster,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -5656,14 +5635,14 @@ class DatacenterClusters(Base):
             context=self.context
         )
 
-class DatacenterIscsibond(params.IscsiBond, Base):
+class DataCenterIscsiBond(params.IscsiBond, Base):
     def __init__(self, datacenter, iscsibond, context):
         Base.__init__(self, context)
         self.parentclass = datacenter
         self.superclass  =  iscsibond
 
-        self.networks = DatacenterIscsibondNetworks(self, context)
-        self.storageconnections = DatacenterIscsibondStorageconnections(self, context)
+        self.networks = DataCenterIscsiBondNetworks(self, context)
+        self.storageconnections = DataCenterIscsiBondStorageConnections(self, context)
 
     def __new__(cls, datacenter, iscsibond, context):
         if iscsibond is None: return None
@@ -5720,21 +5699,21 @@ class DatacenterIscsibond(params.IscsiBond, Base):
             headers={"Expect":expect}
         )
 
-        return DatacenterIscsibond(
+        return DataCenterIscsiBond(
             self.parentclass,
             result,
             self.context
         )
 
-class DatacenterIscsibondNetwork(params.Network, Base):
+class DataCenterIscsiBondNetwork(params.Network, Base):
     def __init__(self, iscsibond, network, context):
         Base.__init__(self, context)
         self.parentclass = iscsibond
         self.superclass  =  network
 
-        self.labels = DatacenterIscsibondNetworkLabels(self, context)
-        self.permissions = DatacenterIscsibondNetworkPermissions(self, context)
-        self.vnicprofiles = DatacenterIscsibondNetworkVnicprofiles(self, context)
+        self.labels = DataCenterIscsiBondNetworkLabels(self, context)
+        self.permissions = DataCenterIscsiBondNetworkPermissions(self, context)
+        self.vnicprofiles = DataCenterIscsiBondNetworkVnicProfiles(self, context)
 
     def __new__(cls, iscsibond, network, context):
         if network is None: return None
@@ -5791,13 +5770,13 @@ class DatacenterIscsibondNetwork(params.Network, Base):
             headers={}
         )
 
-        return DatacenterIscsibondNetwork(
+        return DataCenterIscsiBondNetwork(
             self.parentclass,
             result,
             self.context
         )
 
-class DatacenterIscsibondNetworkLabel(params.Label, Base):
+class DataCenterIscsiBondNetworkLabel(params.Label, Base):
     def __init__(self, network, label, context):
         Base.__init__(self, context)
         self.parentclass = network
@@ -5839,7 +5818,7 @@ class DatacenterIscsibondNetworkLabel(params.Label, Base):
             headers={'Content-type':None}
         )
 
-class DatacenterIscsibondNetworkLabels(Base):
+class DataCenterIscsiBondNetworkLabels(Base):
 
     def __init__(self, network , context):
         Base.__init__(self, context)
@@ -5878,7 +5857,7 @@ class DatacenterIscsibondNetworkLabels(Base):
             headers={}
         )
 
-        return DatacenterIscsibondNetworkLabel(
+        return DataCenterIscsiBondNetworkLabel(
             self.parentclass,
             result,
             self.context
@@ -5912,7 +5891,7 @@ class DatacenterIscsibondNetworkLabels(Base):
                     headers={}
                 )
 
-                return DatacenterIscsibondNetworkLabel(
+                return DataCenterIscsiBondNetworkLabel(
                     self.parentclass,
                     result,
                     self.context
@@ -5934,7 +5913,7 @@ class DatacenterIscsibondNetworkLabels(Base):
                 headers={}
             ).get_label()
 
-            return DatacenterIscsibondNetworkLabel(
+            return DataCenterIscsiBondNetworkLabel(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -5969,7 +5948,7 @@ class DatacenterIscsibondNetworkLabels(Base):
         ).get_label()
 
         return ParseHelper.toSubCollection(
-            DatacenterIscsibondNetworkLabel,
+            DataCenterIscsiBondNetworkLabel,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -5978,7 +5957,7 @@ class DatacenterIscsibondNetworkLabels(Base):
             context=self.context
         )
 
-class DatacenterIscsibondNetworkPermission(params.Permission, Base):
+class DataCenterIscsiBondNetworkPermission(params.Permission, Base):
     def __init__(self, network, permission, context):
         Base.__init__(self, context)
         self.parentclass = network
@@ -6020,7 +5999,7 @@ class DatacenterIscsibondNetworkPermission(params.Permission, Base):
             headers={'Content-type':None}
         )
 
-class DatacenterIscsibondNetworkPermissions(Base):
+class DataCenterIscsiBondNetworkPermissions(Base):
 
     def __init__(self, network , context):
         Base.__init__(self, context)
@@ -6059,7 +6038,7 @@ class DatacenterIscsibondNetworkPermissions(Base):
             headers={}
         )
 
-        return DatacenterIscsibondNetworkPermission(
+        return DataCenterIscsiBondNetworkPermission(
             self.parentclass,
             result,
             self.context
@@ -6093,7 +6072,7 @@ class DatacenterIscsibondNetworkPermissions(Base):
                     headers={}
                 )
 
-                return DatacenterIscsibondNetworkPermission(
+                return DataCenterIscsiBondNetworkPermission(
                     self.parentclass,
                     result,
                     self.context
@@ -6115,7 +6094,7 @@ class DatacenterIscsibondNetworkPermissions(Base):
                 headers={}
             ).get_permission()
 
-            return DatacenterIscsibondNetworkPermission(
+            return DataCenterIscsiBondNetworkPermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -6150,7 +6129,7 @@ class DatacenterIscsibondNetworkPermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            DatacenterIscsibondNetworkPermission,
+            DataCenterIscsiBondNetworkPermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -6159,13 +6138,13 @@ class DatacenterIscsibondNetworkPermissions(Base):
             context=self.context
         )
 
-class DatacenterIscsibondNetworkVnicprofile(params.VnicProfile, Base):
+class DataCenterIscsiBondNetworkVnicProfile(params.VnicProfile, Base):
     def __init__(self, network, vnicprofile, context):
         Base.__init__(self, context)
         self.parentclass = network
         self.superclass  =  vnicprofile
 
-        self.permissions = DatacenterIscsibondNetworkVnicprofilePermissions(self, context)
+        self.permissions = DataCenterIscsiBondNetworkVnicProfilePermissions(self, context)
 
     def __new__(cls, network, vnicprofile, context):
         if vnicprofile is None: return None
@@ -6202,7 +6181,7 @@ class DatacenterIscsibondNetworkVnicprofile(params.VnicProfile, Base):
             headers={'Content-type':None}
         )
 
-class DatacenterIscsibondNetworkVnicprofilePermission(params.Permission, Base):
+class DataCenterIscsiBondNetworkVnicProfilePermission(params.Permission, Base):
     def __init__(self, vnicprofile, permission, context):
         Base.__init__(self, context)
         self.parentclass = vnicprofile
@@ -6245,7 +6224,7 @@ class DatacenterIscsibondNetworkVnicprofilePermission(params.Permission, Base):
             headers={'Content-type':None}
         )
 
-class DatacenterIscsibondNetworkVnicprofilePermissions(Base):
+class DataCenterIscsiBondNetworkVnicProfilePermissions(Base):
 
     def __init__(self, vnicprofile , context):
         Base.__init__(self, context)
@@ -6285,7 +6264,7 @@ class DatacenterIscsibondNetworkVnicprofilePermissions(Base):
             headers={}
         )
 
-        return DatacenterIscsibondNetworkVnicprofilePermission(
+        return DataCenterIscsiBondNetworkVnicProfilePermission(
             self.parentclass,
             result,
             self.context
@@ -6320,7 +6299,7 @@ class DatacenterIscsibondNetworkVnicprofilePermissions(Base):
                     headers={}
                 )
 
-                return DatacenterIscsibondNetworkVnicprofilePermission(
+                return DataCenterIscsiBondNetworkVnicProfilePermission(
                     self.parentclass,
                     result,
                     self.context
@@ -6343,7 +6322,7 @@ class DatacenterIscsibondNetworkVnicprofilePermissions(Base):
                 headers={}
             ).get_permission()
 
-            return DatacenterIscsibondNetworkVnicprofilePermission(
+            return DataCenterIscsiBondNetworkVnicProfilePermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -6379,7 +6358,7 @@ class DatacenterIscsibondNetworkVnicprofilePermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            DatacenterIscsibondNetworkVnicprofilePermission,
+            DataCenterIscsiBondNetworkVnicProfilePermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -6388,7 +6367,7 @@ class DatacenterIscsibondNetworkVnicprofilePermissions(Base):
             context=self.context
         )
 
-class DatacenterIscsibondNetworkVnicprofiles(Base):
+class DataCenterIscsiBondNetworkVnicProfiles(Base):
 
     def __init__(self, network , context):
         Base.__init__(self, context)
@@ -6427,7 +6406,7 @@ class DatacenterIscsibondNetworkVnicprofiles(Base):
             headers={}
         )
 
-        return DatacenterIscsibondNetworkVnicprofile(
+        return DataCenterIscsiBondNetworkVnicProfile(
             self.parentclass,
             result,
             self.context
@@ -6461,7 +6440,7 @@ class DatacenterIscsibondNetworkVnicprofiles(Base):
                     headers={}
                 )
 
-                return DatacenterIscsibondNetworkVnicprofile(
+                return DataCenterIscsiBondNetworkVnicProfile(
                     self.parentclass,
                     result,
                     self.context
@@ -6483,7 +6462,7 @@ class DatacenterIscsibondNetworkVnicprofiles(Base):
                 headers={}
             ).get_vnic_profile()
 
-            return DatacenterIscsibondNetworkVnicprofile(
+            return DataCenterIscsiBondNetworkVnicProfile(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -6518,7 +6497,7 @@ class DatacenterIscsibondNetworkVnicprofiles(Base):
         ).get_vnic_profile()
 
         return ParseHelper.toSubCollection(
-            DatacenterIscsibondNetworkVnicprofile,
+            DataCenterIscsiBondNetworkVnicProfile,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -6527,7 +6506,7 @@ class DatacenterIscsibondNetworkVnicprofiles(Base):
             context=self.context
         )
 
-class DatacenterIscsibondNetworks(Base):
+class DataCenterIscsiBondNetworks(Base):
 
     def __init__(self, iscsibond , context):
         Base.__init__(self, context)
@@ -6565,7 +6544,7 @@ class DatacenterIscsibondNetworks(Base):
             headers={}
         )
 
-        return DatacenterIscsibondNetwork(
+        return DataCenterIscsiBondNetwork(
             self.parentclass,
             result,
             self.context
@@ -6598,7 +6577,7 @@ class DatacenterIscsibondNetworks(Base):
                     headers={}
                 )
 
-                return DatacenterIscsibondNetwork(
+                return DataCenterIscsiBondNetwork(
                     self.parentclass,
                     result,
                     self.context
@@ -6619,7 +6598,7 @@ class DatacenterIscsibondNetworks(Base):
                 headers={}
             ).get_network()
 
-            return DatacenterIscsibondNetwork(
+            return DataCenterIscsiBondNetwork(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -6653,7 +6632,7 @@ class DatacenterIscsibondNetworks(Base):
         ).get_network()
 
         return ParseHelper.toSubCollection(
-            DatacenterIscsibondNetwork,
+            DataCenterIscsiBondNetwork,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -6662,7 +6641,7 @@ class DatacenterIscsibondNetworks(Base):
             context=self.context
         )
 
-class DatacenterIscsibondStorageconnection(params.StorageConnection, Base):
+class DataCenterIscsiBondStorageConnection(params.StorageConnection, Base):
     def __init__(self, iscsibond, storageconnection, context):
         Base.__init__(self, context)
         self.parentclass = iscsibond
@@ -6744,13 +6723,13 @@ class DatacenterIscsibondStorageconnection(params.StorageConnection, Base):
             headers={}
         )
 
-        return DatacenterIscsibondStorageconnection(
+        return DataCenterIscsiBondStorageConnection(
             self.parentclass,
             result,
             self.context
         )
 
-class DatacenterIscsibondStorageconnections(Base):
+class DataCenterIscsiBondStorageConnections(Base):
 
     def __init__(self, iscsibond , context):
         Base.__init__(self, context)
@@ -6788,7 +6767,7 @@ class DatacenterIscsibondStorageconnections(Base):
             headers={}
         )
 
-        return DatacenterIscsibondStorageconnection(
+        return DataCenterIscsiBondStorageConnection(
             self.parentclass,
             result,
             self.context
@@ -6821,7 +6800,7 @@ class DatacenterIscsibondStorageconnections(Base):
                     headers={}
                 )
 
-                return DatacenterIscsibondStorageconnection(
+                return DataCenterIscsiBondStorageConnection(
                     self.parentclass,
                     result,
                     self.context
@@ -6842,7 +6821,7 @@ class DatacenterIscsibondStorageconnections(Base):
                 headers={}
             ).get_storage_connection()
 
-            return DatacenterIscsibondStorageconnection(
+            return DataCenterIscsiBondStorageConnection(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -6876,7 +6855,7 @@ class DatacenterIscsibondStorageconnections(Base):
         ).get_storage_connection()
 
         return ParseHelper.toSubCollection(
-            DatacenterIscsibondStorageconnection,
+            DataCenterIscsiBondStorageConnection,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -6885,7 +6864,7 @@ class DatacenterIscsibondStorageconnections(Base):
             context=self.context
         )
 
-class DatacenterIscsibonds(Base):
+class DataCenterIscsiBonds(Base):
 
     def __init__(self, datacenter , context):
         Base.__init__(self, context)
@@ -6924,7 +6903,7 @@ class DatacenterIscsibonds(Base):
             headers={"Expect":expect}
         )
 
-        return DatacenterIscsibond(
+        return DataCenterIscsiBond(
             self.parentclass,
             result,
             self.context
@@ -6956,7 +6935,7 @@ class DatacenterIscsibonds(Base):
                     headers={}
                 )
 
-                return DatacenterIscsibond(
+                return DataCenterIscsiBond(
                     self.parentclass,
                     result,
                     self.context
@@ -6976,7 +6955,7 @@ class DatacenterIscsibonds(Base):
                 headers={}
             ).get_iscsi_bond()
 
-            return DatacenterIscsibond(
+            return DataCenterIscsiBond(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -7009,7 +6988,7 @@ class DatacenterIscsibonds(Base):
         ).get_iscsi_bond()
 
         return ParseHelper.toSubCollection(
-            DatacenterIscsibond,
+            DataCenterIscsiBond,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -7018,15 +6997,15 @@ class DatacenterIscsibonds(Base):
             context=self.context
         )
 
-class DatacenterNetwork(params.Network, Base):
+class DataCenterNetwork(params.Network, Base):
     def __init__(self, datacenter, network, context):
         Base.__init__(self, context)
         self.parentclass = datacenter
         self.superclass  =  network
 
-        self.labels = DatacenterNetworkLabels(self, context)
-        self.permissions = DatacenterNetworkPermissions(self, context)
-        self.vnicprofiles = DatacenterNetworkVnicprofiles(self, context)
+        self.labels = DataCenterNetworkLabels(self, context)
+        self.permissions = DataCenterNetworkPermissions(self, context)
+        self.vnicprofiles = DataCenterNetworkVnicProfiles(self, context)
 
     def __new__(cls, datacenter, network, context):
         if network is None: return None
@@ -7094,13 +7073,13 @@ class DatacenterNetwork(params.Network, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return DatacenterNetwork(
+        return DataCenterNetwork(
             self.parentclass,
             result,
             self.context
         )
 
-class DatacenterNetworkLabel(params.Label, Base):
+class DataCenterNetworkLabel(params.Label, Base):
     def __init__(self, network, label, context):
         Base.__init__(self, context)
         self.parentclass = network
@@ -7147,7 +7126,7 @@ class DatacenterNetworkLabel(params.Label, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class DatacenterNetworkLabels(Base):
+class DataCenterNetworkLabels(Base):
 
     def __init__(self, network , context):
         Base.__init__(self, context)
@@ -7188,7 +7167,7 @@ class DatacenterNetworkLabels(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return DatacenterNetworkLabel(
+        return DataCenterNetworkLabel(
             self.parentclass,
             result,
             self.context
@@ -7221,7 +7200,7 @@ class DatacenterNetworkLabels(Base):
                     headers={}
                 )
 
-                return DatacenterNetworkLabel(
+                return DataCenterNetworkLabel(
                     self.parentclass,
                     result,
                     self.context
@@ -7242,7 +7221,7 @@ class DatacenterNetworkLabels(Base):
                 headers={}
             ).get_label()
 
-            return DatacenterNetworkLabel(
+            return DataCenterNetworkLabel(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -7276,7 +7255,7 @@ class DatacenterNetworkLabels(Base):
         ).get_label()
 
         return ParseHelper.toSubCollection(
-            DatacenterNetworkLabel,
+            DataCenterNetworkLabel,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -7285,7 +7264,7 @@ class DatacenterNetworkLabels(Base):
             context=self.context
         )
 
-class DatacenterNetworkPermission(params.Permission, Base):
+class DataCenterNetworkPermission(params.Permission, Base):
     def __init__(self, network, permission, context):
         Base.__init__(self, context)
         self.parentclass = network
@@ -7326,7 +7305,7 @@ class DatacenterNetworkPermission(params.Permission, Base):
             headers={'Content-type':None}
         )
 
-class DatacenterNetworkPermissions(Base):
+class DataCenterNetworkPermissions(Base):
 
     def __init__(self, network , context):
         Base.__init__(self, context)
@@ -7364,7 +7343,7 @@ class DatacenterNetworkPermissions(Base):
             headers={}
         )
 
-        return DatacenterNetworkPermission(
+        return DataCenterNetworkPermission(
             self.parentclass,
             result,
             self.context
@@ -7397,7 +7376,7 @@ class DatacenterNetworkPermissions(Base):
                     headers={}
                 )
 
-                return DatacenterNetworkPermission(
+                return DataCenterNetworkPermission(
                     self.parentclass,
                     result,
                     self.context
@@ -7418,7 +7397,7 @@ class DatacenterNetworkPermissions(Base):
                 headers={}
             ).get_permission()
 
-            return DatacenterNetworkPermission(
+            return DataCenterNetworkPermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -7452,7 +7431,7 @@ class DatacenterNetworkPermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            DatacenterNetworkPermission,
+            DataCenterNetworkPermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -7461,13 +7440,13 @@ class DatacenterNetworkPermissions(Base):
             context=self.context
         )
 
-class DatacenterNetworkVnicprofile(params.VnicProfile, Base):
+class DataCenterNetworkVnicProfile(params.VnicProfile, Base):
     def __init__(self, network, vnicprofile, context):
         Base.__init__(self, context)
         self.parentclass = network
         self.superclass  =  vnicprofile
 
-        self.permissions = DatacenterNetworkVnicprofilePermissions(self, context)
+        self.permissions = DataCenterNetworkVnicProfilePermissions(self, context)
 
     def __new__(cls, network, vnicprofile, context):
         if vnicprofile is None: return None
@@ -7503,7 +7482,7 @@ class DatacenterNetworkVnicprofile(params.VnicProfile, Base):
             headers={'Content-type':None}
         )
 
-class DatacenterNetworkVnicprofilePermission(params.Permission, Base):
+class DataCenterNetworkVnicProfilePermission(params.Permission, Base):
     def __init__(self, vnicprofile, permission, context):
         Base.__init__(self, context)
         self.parentclass = vnicprofile
@@ -7545,7 +7524,7 @@ class DatacenterNetworkVnicprofilePermission(params.Permission, Base):
             headers={'Content-type':None}
         )
 
-class DatacenterNetworkVnicprofilePermissions(Base):
+class DataCenterNetworkVnicProfilePermissions(Base):
 
     def __init__(self, vnicprofile , context):
         Base.__init__(self, context)
@@ -7584,7 +7563,7 @@ class DatacenterNetworkVnicprofilePermissions(Base):
             headers={}
         )
 
-        return DatacenterNetworkVnicprofilePermission(
+        return DataCenterNetworkVnicProfilePermission(
             self.parentclass,
             result,
             self.context
@@ -7618,7 +7597,7 @@ class DatacenterNetworkVnicprofilePermissions(Base):
                     headers={}
                 )
 
-                return DatacenterNetworkVnicprofilePermission(
+                return DataCenterNetworkVnicProfilePermission(
                     self.parentclass,
                     result,
                     self.context
@@ -7640,7 +7619,7 @@ class DatacenterNetworkVnicprofilePermissions(Base):
                 headers={}
             ).get_permission()
 
-            return DatacenterNetworkVnicprofilePermission(
+            return DataCenterNetworkVnicProfilePermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -7675,7 +7654,7 @@ class DatacenterNetworkVnicprofilePermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            DatacenterNetworkVnicprofilePermission,
+            DataCenterNetworkVnicProfilePermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -7684,7 +7663,7 @@ class DatacenterNetworkVnicprofilePermissions(Base):
             context=self.context
         )
 
-class DatacenterNetworkVnicprofiles(Base):
+class DataCenterNetworkVnicProfiles(Base):
 
     def __init__(self, network , context):
         Base.__init__(self, context)
@@ -7722,7 +7701,7 @@ class DatacenterNetworkVnicprofiles(Base):
             headers={}
         )
 
-        return DatacenterNetworkVnicprofile(
+        return DataCenterNetworkVnicProfile(
             self.parentclass,
             result,
             self.context
@@ -7755,7 +7734,7 @@ class DatacenterNetworkVnicprofiles(Base):
                     headers={}
                 )
 
-                return DatacenterNetworkVnicprofile(
+                return DataCenterNetworkVnicProfile(
                     self.parentclass,
                     result,
                     self.context
@@ -7776,7 +7755,7 @@ class DatacenterNetworkVnicprofiles(Base):
                 headers={}
             ).get_vnic_profile()
 
-            return DatacenterNetworkVnicprofile(
+            return DataCenterNetworkVnicProfile(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -7810,7 +7789,7 @@ class DatacenterNetworkVnicprofiles(Base):
         ).get_vnic_profile()
 
         return ParseHelper.toSubCollection(
-            DatacenterNetworkVnicprofile,
+            DataCenterNetworkVnicProfile,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -7819,7 +7798,7 @@ class DatacenterNetworkVnicprofiles(Base):
             context=self.context
         )
 
-class DatacenterNetworks(Base):
+class DataCenterNetworks(Base):
 
     def __init__(self, datacenter , context):
         Base.__init__(self, context)
@@ -7872,7 +7851,7 @@ class DatacenterNetworks(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return DatacenterNetwork(
+        return DataCenterNetwork(
             self.parentclass,
             result,
             self.context
@@ -7904,7 +7883,7 @@ class DatacenterNetworks(Base):
                     headers={}
                 )
 
-                return DatacenterNetwork(
+                return DataCenterNetwork(
                     self.parentclass,
                     result,
                     self.context
@@ -7924,7 +7903,7 @@ class DatacenterNetworks(Base):
                 headers={}
             ).get_network()
 
-            return DatacenterNetwork(
+            return DataCenterNetwork(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -7962,7 +7941,7 @@ class DatacenterNetworks(Base):
         ).get_network()
 
         return ParseHelper.toSubCollection(
-            DatacenterNetwork,
+            DataCenterNetwork,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -7971,7 +7950,7 @@ class DatacenterNetworks(Base):
             context=self.context
         )
 
-class DatacenterPermission(params.Permission, Base):
+class DataCenterPermission(params.Permission, Base):
     def __init__(self, datacenter, permission, context):
         Base.__init__(self, context)
         self.parentclass = datacenter
@@ -8017,7 +7996,7 @@ class DatacenterPermission(params.Permission, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class DatacenterPermissions(Base):
+class DataCenterPermissions(Base):
 
     def __init__(self, datacenter , context):
         Base.__init__(self, context)
@@ -8062,7 +8041,7 @@ class DatacenterPermissions(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return DatacenterPermission(
+        return DataCenterPermission(
             self.parentclass,
             result,
             self.context
@@ -8094,7 +8073,7 @@ class DatacenterPermissions(Base):
                     headers={}
                 )
 
-                return DatacenterPermission(
+                return DataCenterPermission(
                     self.parentclass,
                     result,
                     self.context
@@ -8114,7 +8093,7 @@ class DatacenterPermissions(Base):
                 headers={}
             ).get_permission()
 
-            return DatacenterPermission(
+            return DataCenterPermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -8147,7 +8126,7 @@ class DatacenterPermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            DatacenterPermission,
+            DataCenterPermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -8156,7 +8135,7 @@ class DatacenterPermissions(Base):
             context=self.context
         )
 
-class DatacenterQos(params.QoS, Base):
+class DataCenterQoS(params.QoS, Base):
     def __init__(self, datacenter, qos, context):
         Base.__init__(self, context)
         self.parentclass = datacenter
@@ -8239,13 +8218,13 @@ class DatacenterQos(params.QoS, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return DatacenterQos(
+        return DataCenterQoS(
             self.parentclass,
             result,
             self.context
         )
 
-class DatacenterQoss(Base):
+class DataCenterQoSs(Base):
 
     def __init__(self, datacenter , context):
         Base.__init__(self, context)
@@ -8300,7 +8279,7 @@ class DatacenterQoss(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return DatacenterQos(
+        return DataCenterQoS(
             self.parentclass,
             result,
             self.context
@@ -8332,7 +8311,7 @@ class DatacenterQoss(Base):
                     headers={}
                 )
 
-                return DatacenterQos(
+                return DataCenterQoS(
                     self.parentclass,
                     result,
                     self.context
@@ -8352,7 +8331,7 @@ class DatacenterQoss(Base):
                 headers={}
             ).get_qos()
 
-            return DatacenterQos(
+            return DataCenterQoS(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -8390,7 +8369,7 @@ class DatacenterQoss(Base):
         ).get_qos()
 
         return ParseHelper.toSubCollection(
-            DatacenterQos,
+            DataCenterQoS,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -8399,7 +8378,7 @@ class DatacenterQoss(Base):
             context=self.context
         )
 
-class DatacenterQuota(params.Quota, Base):
+class DataCenterQuota(params.Quota, Base):
     def __init__(self, datacenter, quota, context):
         Base.__init__(self, context)
         self.parentclass = datacenter
@@ -8421,7 +8400,7 @@ class DatacenterQuota(params.Quota, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class DatacenterQuotas(Base):
+class DataCenterQuotas(Base):
 
     def __init__(self, datacenter , context):
         Base.__init__(self, context)
@@ -8462,7 +8441,7 @@ class DatacenterQuotas(Base):
                     headers={}
                 )
 
-                return DatacenterQuota(
+                return DataCenterQuota(
                     self.parentclass,
                     result,
                     self.context
@@ -8482,7 +8461,7 @@ class DatacenterQuotas(Base):
                 headers={}
             ).get_quota()
 
-            return DatacenterQuota(
+            return DataCenterQuota(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -8515,7 +8494,7 @@ class DatacenterQuotas(Base):
         ).get_quota()
 
         return ParseHelper.toSubCollection(
-            DatacenterQuota,
+            DataCenterQuota,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -8524,13 +8503,13 @@ class DatacenterQuotas(Base):
             context=self.context
         )
 
-class DatacenterStoragedomain(params.StorageDomain, Base):
+class DataCenterStorageDomain(params.StorageDomain, Base):
     def __init__(self, datacenter, storagedomain, context):
         Base.__init__(self, context)
         self.parentclass = datacenter
         self.superclass  =  storagedomain
 
-        self.disks = DatacenterStoragedomainDisks(self, context)
+        self.disks = DataCenterStorageDomainDisks(self, context)
 
     def __new__(cls, datacenter, storagedomain, context):
         if storagedomain is None: return None
@@ -8627,14 +8606,14 @@ class DatacenterStoragedomain(params.StorageDomain, Base):
 
         return result
 
-class DatacenterStoragedomainDisk(params.Disk, Base):
+class DataCenterStorageDomainDisk(params.Disk, Base):
     def __init__(self, storagedomain, disk, context):
         Base.__init__(self, context)
         self.parentclass = storagedomain
         self.superclass  =  disk
 
-        self.permissions = DatacenterStoragedomainDiskPermissions(self, context)
-        self.statistics = DatacenterStoragedomainDiskStatistics(self, context)
+        self.permissions = DataCenterStorageDomainDiskPermissions(self, context)
+        self.statistics = DataCenterStorageDomainDiskStatistics(self, context)
 
     def __new__(cls, storagedomain, disk, context):
         if disk is None: return None
@@ -8758,7 +8737,7 @@ class DatacenterStoragedomainDisk(params.Disk, Base):
 
         return result
 
-class DatacenterStoragedomainDiskPermission(params.Permission, Base):
+class DataCenterStorageDomainDiskPermission(params.Permission, Base):
     def __init__(self, disk, permission, context):
         Base.__init__(self, context)
         self.parentclass = disk
@@ -8800,7 +8779,7 @@ class DatacenterStoragedomainDiskPermission(params.Permission, Base):
             headers={'Content-type':None}
         )
 
-class DatacenterStoragedomainDiskPermissions(Base):
+class DataCenterStorageDomainDiskPermissions(Base):
 
     def __init__(self, disk , context):
         Base.__init__(self, context)
@@ -8839,7 +8818,7 @@ class DatacenterStoragedomainDiskPermissions(Base):
             headers={}
         )
 
-        return DatacenterStoragedomainDiskPermission(
+        return DataCenterStorageDomainDiskPermission(
             self.parentclass,
             result,
             self.context
@@ -8873,7 +8852,7 @@ class DatacenterStoragedomainDiskPermissions(Base):
                     headers={}
                 )
 
-                return DatacenterStoragedomainDiskPermission(
+                return DataCenterStorageDomainDiskPermission(
                     self.parentclass,
                     result,
                     self.context
@@ -8895,7 +8874,7 @@ class DatacenterStoragedomainDiskPermissions(Base):
                 headers={}
             ).get_permission()
 
-            return DatacenterStoragedomainDiskPermission(
+            return DataCenterStorageDomainDiskPermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -8930,7 +8909,7 @@ class DatacenterStoragedomainDiskPermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            DatacenterStoragedomainDiskPermission,
+            DataCenterStorageDomainDiskPermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -8939,7 +8918,7 @@ class DatacenterStoragedomainDiskPermissions(Base):
             context=self.context
         )
 
-class DatacenterStoragedomainDiskStatistic(params.Statistic, Base):
+class DataCenterStorageDomainDiskStatistic(params.Statistic, Base):
     def __init__(self, disk, statistic, context):
         Base.__init__(self, context)
         self.parentclass = disk
@@ -8961,7 +8940,7 @@ class DatacenterStoragedomainDiskStatistic(params.Statistic, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class DatacenterStoragedomainDiskStatistics(Base):
+class DataCenterStorageDomainDiskStatistics(Base):
 
     def __init__(self, disk , context):
         Base.__init__(self, context)
@@ -9004,7 +8983,7 @@ class DatacenterStoragedomainDiskStatistics(Base):
                     headers={}
                 )
 
-                return DatacenterStoragedomainDiskStatistic(
+                return DataCenterStorageDomainDiskStatistic(
                     self.parentclass,
                     result,
                     self.context
@@ -9026,7 +9005,7 @@ class DatacenterStoragedomainDiskStatistics(Base):
                 headers={}
             ).get_statistic()
 
-            return DatacenterStoragedomainDiskStatistic(
+            return DataCenterStorageDomainDiskStatistic(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -9061,7 +9040,7 @@ class DatacenterStoragedomainDiskStatistics(Base):
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
-            DatacenterStoragedomainDiskStatistic,
+            DataCenterStorageDomainDiskStatistic,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -9070,7 +9049,7 @@ class DatacenterStoragedomainDiskStatistics(Base):
             context=self.context
         )
 
-class DatacenterStoragedomainDisks(Base):
+class DataCenterStorageDomainDisks(Base):
 
     def __init__(self, storagedomain , context):
         Base.__init__(self, context)
@@ -9143,7 +9122,7 @@ class DatacenterStoragedomainDisks(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return DatacenterStoragedomainDisk(
+        return DataCenterStorageDomainDisk(
             self.parentclass,
             result,
             self.context
@@ -9176,7 +9155,7 @@ class DatacenterStoragedomainDisks(Base):
                     headers={}
                 )
 
-                return DatacenterStoragedomainDisk(
+                return DataCenterStorageDomainDisk(
                     self.parentclass,
                     result,
                     self.context
@@ -9197,7 +9176,7 @@ class DatacenterStoragedomainDisks(Base):
                 headers={}
             ).get_disk()
 
-            return DatacenterStoragedomainDisk(
+            return DataCenterStorageDomainDisk(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -9239,7 +9218,7 @@ class DatacenterStoragedomainDisks(Base):
         ).get_disk()
 
         return ParseHelper.toSubCollection(
-            DatacenterStoragedomainDisk,
+            DataCenterStorageDomainDisk,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -9248,7 +9227,7 @@ class DatacenterStoragedomainDisks(Base):
             context=self.context
         )
 
-class DatacenterStoragedomains(Base):
+class DataCenterStorageDomains(Base):
 
     def __init__(self, datacenter , context):
         Base.__init__(self, context)
@@ -9288,7 +9267,7 @@ class DatacenterStoragedomains(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return DatacenterStoragedomain(
+        return DataCenterStorageDomain(
             self.parentclass,
             result,
             self.context
@@ -9320,7 +9299,7 @@ class DatacenterStoragedomains(Base):
                     headers={}
                 )
 
-                return DatacenterStoragedomain(
+                return DataCenterStorageDomain(
                     self.parentclass,
                     result,
                     self.context
@@ -9340,7 +9319,7 @@ class DatacenterStoragedomains(Base):
                 headers={}
             ).get_storage_domain()
 
-            return DatacenterStoragedomain(
+            return DataCenterStorageDomain(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -9378,7 +9357,7 @@ class DatacenterStoragedomains(Base):
         ).get_storage_domain()
 
         return ParseHelper.toSubCollection(
-            DatacenterStoragedomain,
+            DataCenterStorageDomain,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -9387,7 +9366,7 @@ class DatacenterStoragedomains(Base):
             context=self.context
         )
 
-class Datacenters(Base):
+class DataCenters(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -9427,7 +9406,7 @@ class Datacenters(Base):
            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return Datacenter(result, self.context)
+        return DataCenter(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -9441,7 +9420,7 @@ class Datacenters(Base):
 
         if id:
             try :
-                return Datacenter(
+                return DataCenter(
                     self.__getProxy().get(
                         url=UrlHelper.append(url, id),
                         headers={}
@@ -9458,7 +9437,7 @@ class Datacenters(Base):
                 headers={}
             ).get_data_center()
 
-            return Datacenter(
+            return DataCenter(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -9486,7 +9465,7 @@ class Datacenters(Base):
         ).get_data_center()
 
         return ParseHelper.toCollection(
-            Datacenter,
+            DataCenter,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
@@ -9797,6 +9776,364 @@ class DiskPermissions(Base):
             context=self.context
         )
 
+class DiskProfile(params.DiskProfile, Base):
+    def __init__(self, diskprofile, context):
+        Base.__init__(self, context)
+        self.superclass = diskprofile
+
+        self.permissions = DiskProfilePermissions(self, context)
+
+    def __new__(cls, diskprofile, context):
+        if diskprofile is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(diskprofile, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/diskprofiles/{diskprofile:id}',
+            {
+                '{diskprofile:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, correlation_id=None):
+        '''
+        [@param diskprofile.name: string]
+        [@param diskprofile.description: string]
+        [@param diskprofile.qos.id: string]
+        [@param correlation_id: any string]
+
+        @return DiskProfile:
+        '''
+
+        url = '/diskprofiles/{diskprofile:id}'
+
+        result = self.__getProxy().update(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{diskprofile:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return DiskProfile(result, self.context)
+
+class DiskProfilePermission(params.Permission, Base):
+    def __init__(self, diskprofile, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = diskprofile
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, diskprofile, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(diskprofile, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/diskprofiles/{diskprofile:id}/permissions/{permission:id}',
+            {
+                '{diskprofile:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class DiskProfilePermissions(Base):
+
+    def __init__(self, diskprofile , context):
+        Base.__init__(self, context)
+        self.parentclass = diskprofile
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission, expect=None, correlation_id=None):
+
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.group.id: string
+          @param permission.role.id: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Permission:
+        '''
+
+        url = '/diskprofiles/{diskprofile:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{diskprofile:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return DiskProfilePermission(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/diskprofiles/{diskprofile:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{diskprofile:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DiskProfilePermission(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{diskprofile:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_permission()
+
+            return DiskProfilePermission(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Permissions:
+        '''
+
+        url = '/diskprofiles/{diskprofile:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{diskprofile:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            DiskProfilePermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DiskProfiles(Base):
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, diskprofile, expect=None, correlation_id=None):
+        '''
+        @type DiskProfile:
+
+        @param diskprofile.storagedomain.id: string
+        @param diskprofile.name: string
+        [@param diskprofile.description: string]
+        [@param diskprofile.qos.id: string]
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return DiskProfile:
+        '''
+
+        url = '/diskprofiles'
+
+        result = self.__getProxy().add(
+           url=url,
+           body=ParseHelper.toXml(diskprofile),
+           headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return DiskProfile(result, self.context)
+
+    def get(self, name=None, id=None):
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return DiskProfiles:
+        '''
+
+        url = '/diskprofiles'
+
+        if id:
+            try :
+                return DiskProfile(
+                    self.__getProxy().get(
+                                url=UrlHelper.append(url, id),
+                                headers={}
+                    ),
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                    url=url,
+                    headers={}
+            ).get_disk_profile()
+
+            return DiskProfile(
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param max: int (max results)]
+
+        @return DiskProfiles:
+        '''
+
+        url='/diskprofiles'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            headers={}
+        ).get_disk_profile()
+
+        return ParseHelper.toCollection(
+            DiskProfile,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )
+
 class DiskStatistic(params.Statistic, Base):
     def __init__(self, disk, statistic, context):
         Base.__init__(self, context)
@@ -9924,364 +10261,6 @@ class DiskStatistics(Base):
                 result,
                 kwargs
             ),
-            context=self.context
-        )
-
-class Diskprofile(params.DiskProfile, Base):
-    def __init__(self, diskprofile, context):
-        Base.__init__(self, context)
-        self.superclass = diskprofile
-
-        self.permissions = DiskprofilePermissions(self, context)
-
-    def __new__(cls, diskprofile, context):
-        if diskprofile is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(diskprofile, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/diskprofiles/{diskprofile:id}',
-            {
-                '{diskprofile:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
-    def update(self, correlation_id=None):
-        '''
-        [@param diskprofile.name: string]
-        [@param diskprofile.description: string]
-        [@param diskprofile.qos.id: string]
-        [@param correlation_id: any string]
-
-        @return DiskProfile:
-        '''
-
-        url = '/diskprofiles/{diskprofile:id}'
-
-        result = self.__getProxy().update(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{diskprofile:id}': self.get_id(),
-                }
-            ),
-            body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
-        )
-
-        return Diskprofile(result, self.context)
-
-class DiskprofilePermission(params.Permission, Base):
-    def __init__(self, diskprofile, permission, context):
-        Base.__init__(self, context)
-        self.parentclass = diskprofile
-        self.superclass  =  permission
-
-        #SUB_COLLECTIONS
-    def __new__(cls, diskprofile, permission, context):
-        if permission is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(diskprofile, permission, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/diskprofiles/{diskprofile:id}/permissions/{permission:id}',
-            {
-                '{diskprofile:id}': self.parentclass.get_id(),
-                '{permission:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
-class DiskprofilePermissions(Base):
-
-    def __init__(self, diskprofile , context):
-        Base.__init__(self, context)
-        self.parentclass = diskprofile
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def add(self, permission, expect=None, correlation_id=None):
-
-        '''
-        @type Permission:
-
-        Overload 1:
-          @param permission.user.id: string
-          @param permission.role.id: string
-        Overload 2:
-          @param permission.group.id: string
-          @param permission.role.id: string
-        [@param expect: 201-created]
-        [@param correlation_id: any string]
-
-        @return Permission:
-        '''
-
-        url = '/diskprofiles/{diskprofile:id}/permissions'
-
-        result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{diskprofile:id}': self.parentclass.get_id(),
-                }
-            ),
-            body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
-        )
-
-        return DiskprofilePermission(
-            self.parentclass,
-            result,
-            self.context
-        )
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return Permissions:
-        '''
-
-        url = '/diskprofiles/{diskprofile:id}/permissions'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{diskprofile:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return DiskprofilePermission(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{diskprofile:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_permission()
-
-            return DiskprofilePermission(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, max=None, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
-
-        @return Permissions:
-        '''
-
-        url = '/diskprofiles/{diskprofile:id}/permissions'
-
-        result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{diskprofile:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
-        ).get_permission()
-
-        return ParseHelper.toSubCollection(
-            DiskprofilePermission,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class Diskprofiles(Base):
-    def __init__(self, context):
-        Base.__init__(self, context)
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def add(self, diskprofile, expect=None, correlation_id=None):
-        '''
-        @type DiskProfile:
-
-        @param diskprofile.storagedomain.id: string
-        @param diskprofile.name: string
-        [@param diskprofile.description: string]
-        [@param diskprofile.qos.id: string]
-        [@param expect: 201-created]
-        [@param correlation_id: any string]
-
-        @return DiskProfile:
-        '''
-
-        url = '/diskprofiles'
-
-        result = self.__getProxy().add(
-           url=url,
-           body=ParseHelper.toXml(diskprofile),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
-        )
-
-        return Diskprofile(result, self.context)
-
-    def get(self, name=None, id=None):
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return DiskProfiles:
-        '''
-
-        url = '/diskprofiles'
-
-        if id:
-            try :
-                return Diskprofile(
-                    self.__getProxy().get(
-                                url=UrlHelper.append(url, id),
-                                headers={}
-                    ),
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                    url=url,
-                    headers={}
-            ).get_disk_profile()
-
-            return Diskprofile(
-                FilterHelper.getItem(
-                    FilterHelper.filter(result, {'name':name}),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-
-    def list(self, max=None, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param max: int (max results)]
-
-        @return DiskProfiles:
-        '''
-
-        url='/diskprofiles'
-
-        result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
-            headers={}
-        ).get_disk_profile()
-
-        return ParseHelper.toCollection(
-            Diskprofile,
-            FilterHelper.filter(result, kwargs),
             context=self.context
         )
 
@@ -10922,16 +10901,16 @@ class Events(Base):
             context=self.context
         )
 
-class Externalhostprovider(params.ExternalHostProvider, Base):
+class ExternalHostProvider(params.ExternalHostProvider, Base):
     def __init__(self, externalhostprovider, context):
         Base.__init__(self, context)
         self.superclass = externalhostprovider
 
-        self.certificates = ExternalhostproviderCertificates(self, context)
-        self.computeresources = ExternalhostproviderComputeresources(self, context)
-        self.discoveredhosts = ExternalhostproviderDiscoveredhosts(self, context)
-        self.hostgroups = ExternalhostproviderHostgroups(self, context)
-        self.hosts = ExternalhostproviderHosts(self, context)
+        self.certificates = ExternalHostProviderCertificates(self, context)
+        self.computeresources = ExternalHostProviderExternalComputeResources(self, context)
+        self.discoveredhosts = ExternalHostProviderExternalDiscoveredHosts(self, context)
+        self.hostgroups = ExternalHostProviderExternalHostGroups(self, context)
+        self.hosts = ExternalHostProviderExternalHosts(self, context)
 
     def __new__(cls, externalhostprovider, context):
         if externalhostprovider is None: return None
@@ -10996,7 +10975,7 @@ class Externalhostprovider(params.ExternalHostProvider, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return Externalhostprovider(result, self.context)
+        return ExternalHostProvider(result, self.context)
 
     def importcertificates(self, action=params.Action(), correlation_id=None):
         '''
@@ -11048,7 +11027,7 @@ class Externalhostprovider(params.ExternalHostProvider, Base):
 
         return result
 
-class ExternalhostproviderCertificate(params.Certificate, Base):
+class ExternalHostProviderCertificate(params.Certificate, Base):
     def __init__(self, externalhostprovider, certificate, context):
         Base.__init__(self, context)
         self.parentclass = externalhostprovider
@@ -11070,7 +11049,7 @@ class ExternalhostproviderCertificate(params.Certificate, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class ExternalhostproviderCertificates(Base):
+class ExternalHostProviderCertificates(Base):
 
     def __init__(self, externalhostprovider , context):
         Base.__init__(self, context)
@@ -11111,7 +11090,7 @@ class ExternalhostproviderCertificates(Base):
                     headers={}
                 )
 
-                return ExternalhostproviderCertificate(
+                return ExternalHostProviderCertificate(
                     self.parentclass,
                     result,
                     self.context
@@ -11131,7 +11110,7 @@ class ExternalhostproviderCertificates(Base):
                 headers={}
             ).get_certificate()
 
-            return ExternalhostproviderCertificate(
+            return ExternalHostProviderCertificate(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -11169,7 +11148,7 @@ class ExternalhostproviderCertificates(Base):
         ).get_certificate()
 
         return ParseHelper.toSubCollection(
-            ExternalhostproviderCertificate,
+            ExternalHostProviderCertificate,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -11178,7 +11157,7 @@ class ExternalhostproviderCertificates(Base):
             context=self.context
         )
 
-class ExternalhostproviderComputeresource(params.ExternalComputeResource, Base):
+class ExternalHostProviderExternalComputeResource(params.ExternalComputeResource, Base):
     def __init__(self, externalhostprovider, externalcomputeresource, context):
         Base.__init__(self, context)
         self.parentclass = externalhostprovider
@@ -11200,7 +11179,7 @@ class ExternalhostproviderComputeresource(params.ExternalComputeResource, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class ExternalhostproviderComputeresources(Base):
+class ExternalHostProviderExternalComputeResources(Base):
 
     def __init__(self, externalhostprovider , context):
         Base.__init__(self, context)
@@ -11241,7 +11220,7 @@ class ExternalhostproviderComputeresources(Base):
                     headers={}
                 )
 
-                return ExternalhostproviderComputeresource(
+                return ExternalHostProviderExternalComputeResource(
                     self.parentclass,
                     result,
                     self.context
@@ -11261,7 +11240,7 @@ class ExternalhostproviderComputeresources(Base):
                 headers={}
             ).get_external_compute_resource()
 
-            return ExternalhostproviderComputeresource(
+            return ExternalHostProviderExternalComputeResource(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -11299,7 +11278,7 @@ class ExternalhostproviderComputeresources(Base):
         ).get_external_compute_resource()
 
         return ParseHelper.toSubCollection(
-            ExternalhostproviderComputeresource,
+            ExternalHostProviderExternalComputeResource,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -11308,7 +11287,7 @@ class ExternalhostproviderComputeresources(Base):
             context=self.context
         )
 
-class ExternalhostproviderDiscoveredhost(params.ExternalDiscoveredHost, Base):
+class ExternalHostProviderExternalDiscoveredHost(params.ExternalDiscoveredHost, Base):
     def __init__(self, externalhostprovider, externaldiscoveredhost, context):
         Base.__init__(self, context)
         self.parentclass = externalhostprovider
@@ -11330,7 +11309,7 @@ class ExternalhostproviderDiscoveredhost(params.ExternalDiscoveredHost, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class ExternalhostproviderDiscoveredhosts(Base):
+class ExternalHostProviderExternalDiscoveredHosts(Base):
 
     def __init__(self, externalhostprovider , context):
         Base.__init__(self, context)
@@ -11371,7 +11350,7 @@ class ExternalhostproviderDiscoveredhosts(Base):
                     headers={}
                 )
 
-                return ExternalhostproviderDiscoveredhost(
+                return ExternalHostProviderExternalDiscoveredHost(
                     self.parentclass,
                     result,
                     self.context
@@ -11391,7 +11370,7 @@ class ExternalhostproviderDiscoveredhosts(Base):
                 headers={}
             ).get_external_discovered_host()
 
-            return ExternalhostproviderDiscoveredhost(
+            return ExternalHostProviderExternalDiscoveredHost(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -11429,7 +11408,7 @@ class ExternalhostproviderDiscoveredhosts(Base):
         ).get_external_discovered_host()
 
         return ParseHelper.toSubCollection(
-            ExternalhostproviderDiscoveredhost,
+            ExternalHostProviderExternalDiscoveredHost,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -11438,7 +11417,7 @@ class ExternalhostproviderDiscoveredhosts(Base):
             context=self.context
         )
 
-class ExternalhostproviderHost(params.ExternalHost, Base):
+class ExternalHostProviderExternalHost(params.ExternalHost, Base):
     def __init__(self, externalhostprovider, externalhost, context):
         Base.__init__(self, context)
         self.parentclass = externalhostprovider
@@ -11460,7 +11439,7 @@ class ExternalhostproviderHost(params.ExternalHost, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class ExternalhostproviderHostgroup(params.ExternalHostGroup, Base):
+class ExternalHostProviderExternalHostGroup(params.ExternalHostGroup, Base):
     def __init__(self, externalhostprovider, externalhostgroup, context):
         Base.__init__(self, context)
         self.parentclass = externalhostprovider
@@ -11482,7 +11461,7 @@ class ExternalhostproviderHostgroup(params.ExternalHostGroup, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class ExternalhostproviderHostgroups(Base):
+class ExternalHostProviderExternalHostGroups(Base):
 
     def __init__(self, externalhostprovider , context):
         Base.__init__(self, context)
@@ -11523,7 +11502,7 @@ class ExternalhostproviderHostgroups(Base):
                     headers={}
                 )
 
-                return ExternalhostproviderHostgroup(
+                return ExternalHostProviderExternalHostGroup(
                     self.parentclass,
                     result,
                     self.context
@@ -11543,7 +11522,7 @@ class ExternalhostproviderHostgroups(Base):
                 headers={}
             ).get_external_host_group()
 
-            return ExternalhostproviderHostgroup(
+            return ExternalHostProviderExternalHostGroup(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -11581,7 +11560,7 @@ class ExternalhostproviderHostgroups(Base):
         ).get_external_host_group()
 
         return ParseHelper.toSubCollection(
-            ExternalhostproviderHostgroup,
+            ExternalHostProviderExternalHostGroup,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -11590,7 +11569,7 @@ class ExternalhostproviderHostgroups(Base):
             context=self.context
         )
 
-class ExternalhostproviderHosts(Base):
+class ExternalHostProviderExternalHosts(Base):
 
     def __init__(self, externalhostprovider , context):
         Base.__init__(self, context)
@@ -11631,7 +11610,7 @@ class ExternalhostproviderHosts(Base):
                     headers={}
                 )
 
-                return ExternalhostproviderHost(
+                return ExternalHostProviderExternalHost(
                     self.parentclass,
                     result,
                     self.context
@@ -11651,7 +11630,7 @@ class ExternalhostproviderHosts(Base):
                 headers={}
             ).get_external_host()
 
-            return ExternalhostproviderHost(
+            return ExternalHostProviderExternalHost(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -11689,7 +11668,7 @@ class ExternalhostproviderHosts(Base):
         ).get_external_host()
 
         return ParseHelper.toSubCollection(
-            ExternalhostproviderHost,
+            ExternalHostProviderExternalHost,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -11698,7 +11677,7 @@ class ExternalhostproviderHosts(Base):
             context=self.context
         )
 
-class Externalhostproviders(Base):
+class ExternalHostProviders(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -11735,7 +11714,7 @@ class Externalhostproviders(Base):
            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return Externalhostprovider(result, self.context)
+        return ExternalHostProvider(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -11749,7 +11728,7 @@ class Externalhostproviders(Base):
 
         if id:
             try :
-                return Externalhostprovider(
+                return ExternalHostProvider(
                     self.__getProxy().get(
                                 url=UrlHelper.append(url, id),
                                 headers={}
@@ -11766,7 +11745,7 @@ class Externalhostproviders(Base):
                     headers={}
             ).get_external_host_provider()
 
-            return Externalhostprovider(
+            return ExternalHostProvider(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -11793,7 +11772,7 @@ class Externalhostproviders(Base):
         ).get_external_host_provider()
 
         return ParseHelper.toCollection(
-            Externalhostprovider,
+            ExternalHostProvider,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
@@ -12658,14 +12637,14 @@ class Host(params.Host, Base):
         Base.__init__(self, context)
         self.superclass = host
 
-        self.fenceagents = HostFenceagents(self, context)
+        self.fenceagents = HostAgents(self, context)
         self.hooks = HostHooks(self, context)
-        self.katelloerrata = HostKatelloerrata(self, context)
-        self.nics = HostNics(self, context)
-        self.numanodes = HostNumanodes(self, context)
+        self.katelloerrata = HostKatelloErrata(self, context)
+        self.nics = HostNICs(self, context)
+        self.numanodes = HostNumaNodes(self, context)
         self.permissions = HostPermissions(self, context)
         self.statistics = HostStatistics(self, context)
-        self.storage = HostStorage(self, context)
+        self.storage = HostStorages(self, context)
         self.tags = HostTags(self, context)
 
     def __new__(cls, host, context):
@@ -13106,7 +13085,7 @@ class Host(params.Host, Base):
 
         return result
 
-class HostFenceagent(params.Agent, Base):
+class HostAgent(params.Agent, Base):
     def __init__(self, host, agent, context):
         Base.__init__(self, context)
         self.parentclass = host
@@ -13186,13 +13165,13 @@ class HostFenceagent(params.Agent, Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return HostFenceagent(
+        return HostAgent(
             self.parentclass,
             result,
             self.context
         )
 
-class HostFenceagents(Base):
+class HostAgents(Base):
 
     def __init__(self, host , context):
         Base.__init__(self, context)
@@ -13242,7 +13221,7 @@ class HostFenceagents(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return HostFenceagent(
+        return HostAgent(
             self.parentclass,
             result,
             self.context
@@ -13274,7 +13253,7 @@ class HostFenceagents(Base):
                     headers={}
                 )
 
-                return HostFenceagent(
+                return HostAgent(
                     self.parentclass,
                     result,
                     self.context
@@ -13294,7 +13273,7 @@ class HostFenceagents(Base):
                 headers={}
             ).get_agent()
 
-            return HostFenceagent(
+            return HostAgent(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -13327,7 +13306,7 @@ class HostFenceagents(Base):
         ).get_agent()
 
         return ParseHelper.toSubCollection(
-            HostFenceagent,
+            HostAgent,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -13461,7 +13440,7 @@ class HostHooks(Base):
             context=self.context
         )
 
-class HostKatelloerrata(Base):
+class HostKatelloErrata(Base):
 
     def __init__(self, host , context):
         Base.__init__(self, context)
@@ -13502,7 +13481,7 @@ class HostKatelloerrata(Base):
                     headers={}
                 )
 
-                return HostKatelloerrata(
+                return HostKatelloErratum(
                     self.parentclass,
                     result,
                     self.context
@@ -13522,7 +13501,7 @@ class HostKatelloerrata(Base):
                 headers={}
             ).get_katello_erratum()
 
-            return HostKatelloerrata(
+            return HostKatelloErratum(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -13560,7 +13539,7 @@ class HostKatelloerrata(Base):
         ).get_katello_erratum()
 
         return ParseHelper.toSubCollection(
-            HostKatelloerrata,
+            HostKatelloErratum,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -13569,14 +13548,36 @@ class HostKatelloerrata(Base):
             context=self.context
         )
 
-class HostNic(params.HostNIC, Base):
+class HostKatelloErratum(params.KatelloErratum, Base):
+    def __init__(self, host, katelloerratum, context):
+        Base.__init__(self, context)
+        self.parentclass = host
+        self.superclass  =  katelloerratum
+
+        #SUB_COLLECTIONS
+    def __new__(cls, host, katelloerratum, context):
+        if katelloerratum is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(host, katelloerratum, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class HostNIC(params.HostNIC, Base):
     def __init__(self, host, hostnic, context):
         Base.__init__(self, context)
         self.parentclass = host
         self.superclass  =  hostnic
 
-        self.labels = HostNicLabels(self, context)
-        self.statistics = HostNicStatistics(self, context)
+        self.labels = HostNICLabels(self, context)
+        self.statistics = HostNICStatistics(self, context)
 
     def __new__(cls, host, hostnic, context):
         if hostnic is None: return None
@@ -13657,7 +13658,7 @@ class HostNic(params.HostNIC, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return HostNic(
+        return HostNIC(
             self.parentclass,
             result,
             self.context
@@ -13720,7 +13721,7 @@ class HostNic(params.HostNIC, Base):
 
         return result
 
-class HostNicLabel(params.Label, Base):
+class HostNICLabel(params.Label, Base):
     def __init__(self, hostnic, label, context):
         Base.__init__(self, context)
         self.parentclass = hostnic
@@ -13767,7 +13768,7 @@ class HostNicLabel(params.Label, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class HostNicLabels(Base):
+class HostNICLabels(Base):
 
     def __init__(self, hostnic , context):
         Base.__init__(self, context)
@@ -13808,7 +13809,7 @@ class HostNicLabels(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return HostNicLabel(
+        return HostNICLabel(
             self.parentclass,
             result,
             self.context
@@ -13841,7 +13842,7 @@ class HostNicLabels(Base):
                     headers={}
                 )
 
-                return HostNicLabel(
+                return HostNICLabel(
                     self.parentclass,
                     result,
                     self.context
@@ -13862,7 +13863,7 @@ class HostNicLabels(Base):
                 headers={}
             ).get_label()
 
-            return HostNicLabel(
+            return HostNICLabel(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -13896,7 +13897,7 @@ class HostNicLabels(Base):
         ).get_label()
 
         return ParseHelper.toSubCollection(
-            HostNicLabel,
+            HostNICLabel,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -13905,7 +13906,7 @@ class HostNicLabels(Base):
             context=self.context
         )
 
-class HostNicStatistic(params.Statistic, Base):
+class HostNICStatistic(params.Statistic, Base):
     def __init__(self, hostnic, statistic, context):
         Base.__init__(self, context)
         self.parentclass = hostnic
@@ -13927,7 +13928,7 @@ class HostNicStatistic(params.Statistic, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class HostNicStatistics(Base):
+class HostNICStatistics(Base):
 
     def __init__(self, hostnic , context):
         Base.__init__(self, context)
@@ -13969,7 +13970,7 @@ class HostNicStatistics(Base):
                     headers={}
                 )
 
-                return HostNicStatistic(
+                return HostNICStatistic(
                     self.parentclass,
                     result,
                     self.context
@@ -13990,7 +13991,7 @@ class HostNicStatistics(Base):
                 headers={}
             ).get_statistic()
 
-            return HostNicStatistic(
+            return HostNICStatistic(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -14029,7 +14030,7 @@ class HostNicStatistics(Base):
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
-            HostNicStatistic,
+            HostNICStatistic,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -14038,7 +14039,7 @@ class HostNicStatistics(Base):
             context=self.context
         )
 
-class HostNics(Base):
+class HostNICs(Base):
 
     def __init__(self, host , context):
         Base.__init__(self, context)
@@ -14089,7 +14090,7 @@ class HostNics(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return HostNic(
+        return HostNIC(
             self.parentclass,
             result,
             self.context
@@ -14121,7 +14122,7 @@ class HostNics(Base):
                     headers={}
                 )
 
-                return HostNic(
+                return HostNIC(
                     self.parentclass,
                     result,
                     self.context
@@ -14141,7 +14142,7 @@ class HostNics(Base):
                 headers={}
             ).get_host_nic()
 
-            return HostNic(
+            return HostNIC(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -14179,7 +14180,7 @@ class HostNics(Base):
         ).get_host_nic()
 
         return ParseHelper.toSubCollection(
-            HostNic,
+            HostNIC,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -14245,13 +14246,13 @@ class HostNics(Base):
 
         return result
 
-class HostNumanode(params.NumaNode, Base):
+class HostNumaNode(params.NumaNode, Base):
     def __init__(self, host, numanode, context):
         Base.__init__(self, context)
         self.parentclass = host
         self.superclass  =  numanode
 
-        self.statistics = HostNumanodeStatistics(self, context)
+        self.statistics = HostNumaNodeStatistics(self, context)
 
     def __new__(cls, host, numanode, context):
         if numanode is None: return None
@@ -14268,7 +14269,7 @@ class HostNumanode(params.NumaNode, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class HostNumanodeStatistic(params.Statistic, Base):
+class HostNumaNodeStatistic(params.Statistic, Base):
     def __init__(self, numanode, statistic, context):
         Base.__init__(self, context)
         self.parentclass = numanode
@@ -14290,7 +14291,7 @@ class HostNumanodeStatistic(params.Statistic, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class HostNumanodeStatistics(Base):
+class HostNumaNodeStatistics(Base):
 
     def __init__(self, numanode , context):
         Base.__init__(self, context)
@@ -14332,7 +14333,7 @@ class HostNumanodeStatistics(Base):
                     headers={}
                 )
 
-                return HostNumanodeStatistic(
+                return HostNumaNodeStatistic(
                     self.parentclass,
                     result,
                     self.context
@@ -14353,7 +14354,7 @@ class HostNumanodeStatistics(Base):
                 headers={}
             ).get_statistic()
 
-            return HostNumanodeStatistic(
+            return HostNumaNodeStatistic(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -14392,7 +14393,7 @@ class HostNumanodeStatistics(Base):
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
-            HostNumanodeStatistic,
+            HostNumaNodeStatistic,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -14401,7 +14402,7 @@ class HostNumanodeStatistics(Base):
             context=self.context
         )
 
-class HostNumanodes(Base):
+class HostNumaNodes(Base):
 
     def __init__(self, host , context):
         Base.__init__(self, context)
@@ -14442,7 +14443,7 @@ class HostNumanodes(Base):
                     headers={}
                 )
 
-                return HostNumanode(
+                return HostNumaNode(
                     self.parentclass,
                     result,
                     self.context
@@ -14462,7 +14463,7 @@ class HostNumanodes(Base):
                 headers={}
             ).get_host_numa_node()
 
-            return HostNumanode(
+            return HostNumaNode(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -14500,7 +14501,7 @@ class HostNumanodes(Base):
         ).get_host_numa_node()
 
         return ParseHelper.toSubCollection(
-            HostNumanode,
+            HostNumaNode,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -14829,7 +14830,29 @@ class HostStatistics(Base):
             context=self.context
         )
 
-class HostStorage(Base):
+class HostStorage(params.Storage, Base):
+    def __init__(self, host, storage, context):
+        Base.__init__(self, context)
+        self.parentclass = host
+        self.superclass  =  storage
+
+        #SUB_COLLECTIONS
+    def __new__(cls, host, storage, context):
+        if storage is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(host, storage, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class HostStorages(Base):
 
     def __init__(self, host , context):
         Base.__init__(self, context)
@@ -15303,13 +15326,13 @@ class Hosts(Base):
             context=self.context
         )
 
-class Instancetype(params.InstanceType, Base):
+class InstanceType(params.InstanceType, Base):
     def __init__(self, instancetype, context):
         Base.__init__(self, context)
         self.superclass = instancetype
 
-        self.nics = InstancetypeNics(self, context)
-        self.watchdogs = InstancetypeWatchdogs(self, context)
+        self.nics = InstanceTypeNICs(self, context)
+        self.watchdogs = InstanceTypeWatchDogs(self, context)
 
     def __new__(cls, instancetype, context):
         if instancetype is None: return None
@@ -15367,9 +15390,9 @@ class Instancetype(params.InstanceType, Base):
             headers={}
         )
 
-        return Instancetype(result, self.context)
+        return InstanceType(result, self.context)
 
-class InstancetypeNic(params.NIC, Base):
+class InstanceTypeNIC(params.NIC, Base):
     def __init__(self, instancetype, nic, context):
         Base.__init__(self, context)
         self.parentclass = instancetype
@@ -15429,13 +15452,13 @@ class InstancetypeNic(params.NIC, Base):
             headers={}
         )
 
-        return InstancetypeNic(
+        return InstanceTypeNIC(
             self.parentclass,
             result,
             self.context
         )
 
-class InstancetypeNics(Base):
+class InstanceTypeNICs(Base):
 
     def __init__(self, instancetype , context):
         Base.__init__(self, context)
@@ -15472,7 +15495,7 @@ class InstancetypeNics(Base):
             headers={}
         )
 
-        return InstancetypeNic(
+        return InstanceTypeNIC(
             self.parentclass,
             result,
             self.context
@@ -15504,7 +15527,7 @@ class InstancetypeNics(Base):
                     headers={}
                 )
 
-                return InstancetypeNic(
+                return InstanceTypeNIC(
                     self.parentclass,
                     result,
                     self.context
@@ -15524,7 +15547,7 @@ class InstancetypeNics(Base):
                 headers={}
             ).get_nic()
 
-            return InstancetypeNic(
+            return InstanceTypeNIC(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -15557,7 +15580,7 @@ class InstancetypeNics(Base):
         ).get_nic()
 
         return ParseHelper.toSubCollection(
-            InstancetypeNic,
+            InstanceTypeNIC,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -15566,7 +15589,7 @@ class InstancetypeNics(Base):
             context=self.context
         )
 
-class InstancetypeWatchdog(params.WatchDog, Base):
+class InstanceTypeWatchDog(params.WatchDog, Base):
     def __init__(self, instancetype, watchdog, context):
         Base.__init__(self, context)
         self.parentclass = instancetype
@@ -15626,13 +15649,13 @@ class InstancetypeWatchdog(params.WatchDog, Base):
             headers={}
         )
 
-        return InstancetypeWatchdog(
+        return InstanceTypeWatchDog(
             self.parentclass,
             result,
             self.context
         )
 
-class InstancetypeWatchdogs(Base):
+class InstanceTypeWatchDogs(Base):
 
     def __init__(self, instancetype , context):
         Base.__init__(self, context)
@@ -15669,7 +15692,7 @@ class InstancetypeWatchdogs(Base):
             headers={}
         )
 
-        return InstancetypeWatchdog(
+        return InstanceTypeWatchDog(
             self.parentclass,
             result,
             self.context
@@ -15701,7 +15724,7 @@ class InstancetypeWatchdogs(Base):
                     headers={}
                 )
 
-                return InstancetypeWatchdog(
+                return InstanceTypeWatchDog(
                     self.parentclass,
                     result,
                     self.context
@@ -15721,7 +15744,7 @@ class InstancetypeWatchdogs(Base):
                 headers={}
             ).get_watchdog()
 
-            return InstancetypeWatchdog(
+            return InstanceTypeWatchDog(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -15754,7 +15777,7 @@ class InstancetypeWatchdogs(Base):
         ).get_watchdog()
 
         return ParseHelper.toSubCollection(
-            InstancetypeWatchdog,
+            InstanceTypeWatchDog,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -15763,7 +15786,7 @@ class InstancetypeWatchdogs(Base):
             context=self.context
         )
 
-class Instancetypes(Base):
+class InstanceTypes(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -15820,7 +15843,7 @@ class Instancetypes(Base):
            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return Instancetype(result, self.context)
+        return InstanceType(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -15834,7 +15857,7 @@ class Instancetypes(Base):
 
         if id:
             try :
-                return Instancetype(
+                return InstanceType(
                     self.__getProxy().get(
                                 url=UrlHelper.append(url, id),
                                 headers={}
@@ -15851,7 +15874,7 @@ class Instancetypes(Base):
                     headers={}
             ).get_instance_type()
 
-            return Instancetype(
+            return InstanceType(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -15878,7 +15901,7 @@ class Instancetypes(Base):
         ).get_instance_type()
 
         return ParseHelper.toCollection(
-            Instancetype,
+            InstanceType,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
@@ -16386,7 +16409,7 @@ class Jobs(Base):
             context=self.context
         )
 
-class Katelloerrata(Base):
+class KatelloErrata(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -16411,7 +16434,7 @@ class Katelloerrata(Base):
 
         if id:
             try :
-                return Katelloerrata(
+                return KatelloErratum(
                     self.__getProxy().get(
                                 url=UrlHelper.append(url, id),
                                 headers={}
@@ -16428,7 +16451,7 @@ class Katelloerrata(Base):
                     headers={}
             ).get_katello_erratum()
 
-            return Katelloerrata(
+            return KatelloErratum(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -16455,12 +16478,33 @@ class Katelloerrata(Base):
         ).get_katello_erratum()
 
         return ParseHelper.toCollection(
-            Katelloerrata,
+            KatelloErratum,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
 
-class Macpool(params.MacPool, Base):
+class KatelloErratum(params.KatelloErratum, Base):
+    def __init__(self, katelloerratum, context):
+        Base.__init__(self, context)
+        self.superclass = katelloerratum
+
+        #SUB_COLLECTIONS
+    def __new__(cls, katelloerratum, context):
+        if katelloerratum is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(katelloerratum, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class MacPool(params.MacPool, Base):
     def __init__(self, macpool, context):
         Base.__init__(self, context)
         self.superclass = macpool
@@ -16533,9 +16577,9 @@ class Macpool(params.MacPool, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return Macpool(result, self.context)
+        return MacPool(result, self.context)
 
-class Macpools(Base):
+class MacPools(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -16575,7 +16619,7 @@ class Macpools(Base):
            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return Macpool(result, self.context)
+        return MacPool(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -16589,7 +16633,7 @@ class Macpools(Base):
 
         if id:
             try :
-                return Macpool(
+                return MacPool(
                     self.__getProxy().get(
                                 url=UrlHelper.append(url, id),
                                 headers={}
@@ -16606,7 +16650,7 @@ class Macpools(Base):
                     headers={}
             ).get_mac_pool()
 
-            return Macpool(
+            return MacPool(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -16633,7 +16677,7 @@ class Macpools(Base):
         ).get_mac_pool()
 
         return ParseHelper.toCollection(
-            Macpool,
+            MacPool,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
@@ -16645,7 +16689,7 @@ class Network(params.Network, Base):
 
         self.labels = NetworkLabels(self, context)
         self.permissions = NetworkPermissions(self, context)
-        self.vnicprofiles = NetworkVnicprofiles(self, context)
+        self.vnicprofiles = NetworkVnicProfiles(self, context)
 
     def __new__(cls, network, context):
         if network is None: return None
@@ -17087,13 +17131,13 @@ class NetworkPermissions(Base):
             context=self.context
         )
 
-class NetworkVnicprofile(params.VnicProfile, Base):
+class NetworkVnicProfile(params.VnicProfile, Base):
     def __init__(self, network, vnicprofile, context):
         Base.__init__(self, context)
         self.parentclass = network
         self.superclass  =  vnicprofile
 
-        self.permissions = NetworkVnicprofilePermissions(self, context)
+        self.permissions = NetworkVnicProfilePermissions(self, context)
 
     def __new__(cls, network, vnicprofile, context):
         if vnicprofile is None: return None
@@ -17134,7 +17178,7 @@ class NetworkVnicprofile(params.VnicProfile, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class NetworkVnicprofilePermission(params.Permission, Base):
+class NetworkVnicProfilePermission(params.Permission, Base):
     def __init__(self, vnicprofile, permission, context):
         Base.__init__(self, context)
         self.parentclass = vnicprofile
@@ -17175,7 +17219,7 @@ class NetworkVnicprofilePermission(params.Permission, Base):
             headers={'Content-type':None}
         )
 
-class NetworkVnicprofilePermissions(Base):
+class NetworkVnicProfilePermissions(Base):
 
     def __init__(self, vnicprofile , context):
         Base.__init__(self, context)
@@ -17213,7 +17257,7 @@ class NetworkVnicprofilePermissions(Base):
             headers={}
         )
 
-        return NetworkVnicprofilePermission(
+        return NetworkVnicProfilePermission(
             self.parentclass,
             result,
             self.context
@@ -17246,7 +17290,7 @@ class NetworkVnicprofilePermissions(Base):
                     headers={}
                 )
 
-                return NetworkVnicprofilePermission(
+                return NetworkVnicProfilePermission(
                     self.parentclass,
                     result,
                     self.context
@@ -17267,7 +17311,7 @@ class NetworkVnicprofilePermissions(Base):
                 headers={}
             ).get_permission()
 
-            return NetworkVnicprofilePermission(
+            return NetworkVnicProfilePermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -17301,7 +17345,7 @@ class NetworkVnicprofilePermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            NetworkVnicprofilePermission,
+            NetworkVnicProfilePermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -17310,7 +17354,7 @@ class NetworkVnicprofilePermissions(Base):
             context=self.context
         )
 
-class NetworkVnicprofiles(Base):
+class NetworkVnicProfiles(Base):
 
     def __init__(self, network , context):
         Base.__init__(self, context)
@@ -17357,7 +17401,7 @@ class NetworkVnicprofiles(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return NetworkVnicprofile(
+        return NetworkVnicProfile(
             self.parentclass,
             result,
             self.context
@@ -17389,7 +17433,7 @@ class NetworkVnicprofiles(Base):
                     headers={}
                 )
 
-                return NetworkVnicprofile(
+                return NetworkVnicProfile(
                     self.parentclass,
                     result,
                     self.context
@@ -17409,7 +17453,7 @@ class NetworkVnicprofiles(Base):
                 headers={}
             ).get_vnic_profile()
 
-            return NetworkVnicprofile(
+            return NetworkVnicProfile(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -17447,7 +17491,7 @@ class NetworkVnicprofiles(Base):
         ).get_vnic_profile()
 
         return ParseHelper.toSubCollection(
-            NetworkVnicprofile,
+            NetworkVnicProfile,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -17566,13 +17610,13 @@ class Networks(Base):
             context=self.context
         )
 
-class Openstackimageprovider(params.OpenStackImageProvider, Base):
+class OpenStackImageProvider(params.OpenStackImageProvider, Base):
     def __init__(self, openstackimageprovider, context):
         Base.__init__(self, context)
         self.superclass = openstackimageprovider
 
-        self.certificates = OpenstackimageproviderCertificates(self, context)
-        self.images = OpenstackimageproviderImages(self, context)
+        self.certificates = OpenStackImageProviderCertificates(self, context)
+        self.images = OpenStackImageProviderOpenStackImages(self, context)
 
     def __new__(cls, openstackimageprovider, context):
         if openstackimageprovider is None: return None
@@ -17642,7 +17686,7 @@ class Openstackimageprovider(params.OpenStackImageProvider, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return Openstackimageprovider(result, self.context)
+        return OpenStackImageProvider(result, self.context)
 
     def importcertificates(self, action=params.Action(), correlation_id=None):
         '''
@@ -17694,7 +17738,7 @@ class Openstackimageprovider(params.OpenStackImageProvider, Base):
 
         return result
 
-class OpenstackimageproviderCertificate(params.Certificate, Base):
+class OpenStackImageProviderCertificate(params.Certificate, Base):
     def __init__(self, openstackimageprovider, certificate, context):
         Base.__init__(self, context)
         self.parentclass = openstackimageprovider
@@ -17716,7 +17760,7 @@ class OpenstackimageproviderCertificate(params.Certificate, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class OpenstackimageproviderCertificates(Base):
+class OpenStackImageProviderCertificates(Base):
 
     def __init__(self, openstackimageprovider , context):
         Base.__init__(self, context)
@@ -17757,7 +17801,7 @@ class OpenstackimageproviderCertificates(Base):
                     headers={}
                 )
 
-                return OpenstackimageproviderCertificate(
+                return OpenStackImageProviderCertificate(
                     self.parentclass,
                     result,
                     self.context
@@ -17777,7 +17821,7 @@ class OpenstackimageproviderCertificates(Base):
                 headers={}
             ).get_certificate()
 
-            return OpenstackimageproviderCertificate(
+            return OpenStackImageProviderCertificate(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -17815,7 +17859,7 @@ class OpenstackimageproviderCertificates(Base):
         ).get_certificate()
 
         return ParseHelper.toSubCollection(
-            OpenstackimageproviderCertificate,
+            OpenStackImageProviderCertificate,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -17824,7 +17868,7 @@ class OpenstackimageproviderCertificates(Base):
             context=self.context
         )
 
-class OpenstackimageproviderImage(params.OpenStackImage, Base):
+class OpenStackImageProviderOpenStackImage(params.OpenStackImage, Base):
     def __init__(self, openstackimageprovider, openstackimage, context):
         Base.__init__(self, context)
         self.parentclass = openstackimageprovider
@@ -17871,7 +17915,7 @@ class OpenstackimageproviderImage(params.OpenStackImage, Base):
 
         return result
 
-class OpenstackimageproviderImages(Base):
+class OpenStackImageProviderOpenStackImages(Base):
 
     def __init__(self, openstackimageprovider , context):
         Base.__init__(self, context)
@@ -17912,7 +17956,7 @@ class OpenstackimageproviderImages(Base):
                     headers={}
                 )
 
-                return OpenstackimageproviderImage(
+                return OpenStackImageProviderOpenStackImage(
                     self.parentclass,
                     result,
                     self.context
@@ -17932,7 +17976,7 @@ class OpenstackimageproviderImages(Base):
                 headers={}
             ).get_openstack_image()
 
-            return OpenstackimageproviderImage(
+            return OpenStackImageProviderOpenStackImage(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -17970,7 +18014,7 @@ class OpenstackimageproviderImages(Base):
         ).get_openstack_image()
 
         return ParseHelper.toSubCollection(
-            OpenstackimageproviderImage,
+            OpenStackImageProviderOpenStackImage,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -17979,7 +18023,7 @@ class OpenstackimageproviderImages(Base):
             context=self.context
         )
 
-class Openstackimageproviders(Base):
+class OpenStackImageProviders(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -18021,7 +18065,7 @@ class Openstackimageproviders(Base):
            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return Openstackimageprovider(result, self.context)
+        return OpenStackImageProvider(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -18035,7 +18079,7 @@ class Openstackimageproviders(Base):
 
         if id:
             try :
-                return Openstackimageprovider(
+                return OpenStackImageProvider(
                     self.__getProxy().get(
                                 url=UrlHelper.append(url, id),
                                 headers={}
@@ -18052,7 +18096,7 @@ class Openstackimageproviders(Base):
                     headers={}
             ).get_openstack_image_provider()
 
-            return Openstackimageprovider(
+            return OpenStackImageProvider(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -18079,18 +18123,18 @@ class Openstackimageproviders(Base):
         ).get_openstack_image_provider()
 
         return ParseHelper.toCollection(
-            Openstackimageprovider,
+            OpenStackImageProvider,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
 
-class Openstacknetworkprovider(params.OpenStackNetworkProvider, Base):
+class OpenStackNetworkProvider(params.OpenStackNetworkProvider, Base):
     def __init__(self, openstacknetworkprovider, context):
         Base.__init__(self, context)
         self.superclass = openstacknetworkprovider
 
-        self.certificates = OpenstacknetworkproviderCertificates(self, context)
-        self.networks = OpenstacknetworkproviderNetworks(self, context)
+        self.certificates = OpenStackNetworkProviderCertificates(self, context)
+        self.networks = OpenStackNetworkProviderOpenStackNetworks(self, context)
 
     def __new__(cls, openstacknetworkprovider, context):
         if openstacknetworkprovider is None: return None
@@ -18160,7 +18204,7 @@ class Openstacknetworkprovider(params.OpenStackNetworkProvider, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return Openstacknetworkprovider(result, self.context)
+        return OpenStackNetworkProvider(result, self.context)
 
     def importcertificates(self, action=params.Action()):
         '''
@@ -18210,7 +18254,7 @@ class Openstacknetworkprovider(params.OpenStackNetworkProvider, Base):
 
         return result
 
-class OpenstacknetworkproviderCertificate(params.Certificate, Base):
+class OpenStackNetworkProviderCertificate(params.Certificate, Base):
     def __init__(self, openstacknetworkprovider, certificate, context):
         Base.__init__(self, context)
         self.parentclass = openstacknetworkprovider
@@ -18232,7 +18276,7 @@ class OpenstacknetworkproviderCertificate(params.Certificate, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class OpenstacknetworkproviderCertificates(Base):
+class OpenStackNetworkProviderCertificates(Base):
 
     def __init__(self, openstacknetworkprovider , context):
         Base.__init__(self, context)
@@ -18273,7 +18317,7 @@ class OpenstacknetworkproviderCertificates(Base):
                     headers={}
                 )
 
-                return OpenstacknetworkproviderCertificate(
+                return OpenStackNetworkProviderCertificate(
                     self.parentclass,
                     result,
                     self.context
@@ -18293,7 +18337,7 @@ class OpenstacknetworkproviderCertificates(Base):
                 headers={}
             ).get_certificate()
 
-            return OpenstacknetworkproviderCertificate(
+            return OpenStackNetworkProviderCertificate(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -18326,7 +18370,7 @@ class OpenstacknetworkproviderCertificates(Base):
         ).get_certificate()
 
         return ParseHelper.toSubCollection(
-            OpenstacknetworkproviderCertificate,
+            OpenStackNetworkProviderCertificate,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -18335,13 +18379,13 @@ class OpenstacknetworkproviderCertificates(Base):
             context=self.context
         )
 
-class OpenstacknetworkproviderNetwork(params.OpenStackNetwork, Base):
+class OpenStackNetworkProviderOpenStackNetwork(params.OpenStackNetwork, Base):
     def __init__(self, openstacknetworkprovider, openstacknetwork, context):
         Base.__init__(self, context)
         self.parentclass = openstacknetworkprovider
         self.superclass  =  openstacknetwork
 
-        self.subnets = OpenstacknetworkproviderNetworkSubnets(self, context)
+        self.subnets = OpenStackNetworkProviderOpenStackNetworkOpenStackSubnets(self, context)
 
     def __new__(cls, openstacknetworkprovider, openstacknetwork, context):
         if openstacknetwork is None: return None
@@ -18358,7 +18402,7 @@ class OpenstacknetworkproviderNetwork(params.OpenStackNetwork, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class OpenstacknetworkproviderNetworkSubnet(params.OpenStackSubnet, Base):
+class OpenStackNetworkProviderOpenStackNetworkOpenStackSubnet(params.OpenStackSubnet, Base):
     def __init__(self, openstacknetwork, openstacksubnet, context):
         Base.__init__(self, context)
         self.parentclass = openstacknetwork
@@ -18399,7 +18443,7 @@ class OpenstacknetworkproviderNetworkSubnet(params.OpenStackSubnet, Base):
             headers={'Content-type':None}
         )
 
-class OpenstacknetworkproviderNetworkSubnets(Base):
+class OpenStackNetworkProviderOpenStackNetworkOpenStackSubnets(Base):
 
     def __init__(self, openstacknetwork , context):
         Base.__init__(self, context)
@@ -18437,7 +18481,7 @@ class OpenstacknetworkproviderNetworkSubnets(Base):
             headers={}
         )
 
-        return OpenstacknetworkproviderNetworkSubnet(
+        return OpenStackNetworkProviderOpenStackNetworkOpenStackSubnet(
             self.parentclass,
             result,
             self.context
@@ -18470,7 +18514,7 @@ class OpenstacknetworkproviderNetworkSubnets(Base):
                     headers={}
                 )
 
-                return OpenstacknetworkproviderNetworkSubnet(
+                return OpenStackNetworkProviderOpenStackNetworkOpenStackSubnet(
                     self.parentclass,
                     result,
                     self.context
@@ -18491,7 +18535,7 @@ class OpenstacknetworkproviderNetworkSubnets(Base):
                 headers={}
             ).get_openstack_subnet()
 
-            return OpenstacknetworkproviderNetworkSubnet(
+            return OpenStackNetworkProviderOpenStackNetworkOpenStackSubnet(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -18530,7 +18574,7 @@ class OpenstacknetworkproviderNetworkSubnets(Base):
         ).get_openstack_subnet()
 
         return ParseHelper.toSubCollection(
-            OpenstacknetworkproviderNetworkSubnet,
+            OpenStackNetworkProviderOpenStackNetworkOpenStackSubnet,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -18539,7 +18583,7 @@ class OpenstacknetworkproviderNetworkSubnets(Base):
             context=self.context
         )
 
-class OpenstacknetworkproviderNetworks(Base):
+class OpenStackNetworkProviderOpenStackNetworks(Base):
 
     def __init__(self, openstacknetworkprovider , context):
         Base.__init__(self, context)
@@ -18580,7 +18624,7 @@ class OpenstacknetworkproviderNetworks(Base):
                     headers={}
                 )
 
-                return OpenstacknetworkproviderNetwork(
+                return OpenStackNetworkProviderOpenStackNetwork(
                     self.parentclass,
                     result,
                     self.context
@@ -18600,7 +18644,7 @@ class OpenstacknetworkproviderNetworks(Base):
                 headers={}
             ).get_openstack_network()
 
-            return OpenstacknetworkproviderNetwork(
+            return OpenStackNetworkProviderOpenStackNetwork(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -18638,7 +18682,7 @@ class OpenstacknetworkproviderNetworks(Base):
         ).get_openstack_network()
 
         return ParseHelper.toSubCollection(
-            OpenstacknetworkproviderNetwork,
+            OpenStackNetworkProviderOpenStackNetwork,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -18647,7 +18691,7 @@ class OpenstacknetworkproviderNetworks(Base):
             context=self.context
         )
 
-class Openstacknetworkproviders(Base):
+class OpenStackNetworkProviders(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -18689,7 +18733,7 @@ class Openstacknetworkproviders(Base):
            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return Openstacknetworkprovider(result, self.context)
+        return OpenStackNetworkProvider(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -18703,7 +18747,7 @@ class Openstacknetworkproviders(Base):
 
         if id:
             try :
-                return Openstacknetworkprovider(
+                return OpenStackNetworkProvider(
                     self.__getProxy().get(
                                 url=UrlHelper.append(url, id),
                                 headers={}
@@ -18720,7 +18764,7 @@ class Openstacknetworkproviders(Base):
                     headers={}
             ).get_openstack_network_provider()
 
-            return Openstacknetworkprovider(
+            return OpenStackNetworkProvider(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -18747,12 +18791,12 @@ class Openstacknetworkproviders(Base):
         ).get_openstack_network_provider()
 
         return ParseHelper.toCollection(
-            Openstacknetworkprovider,
+            OpenStackNetworkProvider,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
 
-class Operatingsystem(params.OperatingSystemInfo, Base):
+class OperatingSystemInfo(params.OperatingSystemInfo, Base):
     def __init__(self, operatingsysteminfo, context):
         Base.__init__(self, context)
         self.superclass = operatingsysteminfo
@@ -18773,7 +18817,7 @@ class Operatingsystem(params.OperatingSystemInfo, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class Operatingsystems(Base):
+class OperatingSystemInfos(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -18798,7 +18842,7 @@ class Operatingsystems(Base):
 
         if id:
             try :
-                return Operatingsystem(
+                return OperatingSystemInfo(
                     self.__getProxy().get(
                                 url=UrlHelper.append(url, id),
                                 headers={}
@@ -18815,7 +18859,7 @@ class Operatingsystems(Base):
                     headers={}
             ).get_operating_system()
 
-            return Operatingsystem(
+            return OperatingSystemInfo(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -18840,7 +18884,7 @@ class Operatingsystems(Base):
         ).get_operating_system()
 
         return ParseHelper.toCollection(
-            Operatingsystem,
+            OperatingSystemInfo,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
@@ -19346,7 +19390,7 @@ class Roles(Base):
             context=self.context
         )
 
-class Schedulingpolicies(Base):
+class SchedulingPolicies(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -19384,7 +19428,7 @@ class Schedulingpolicies(Base):
            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return Schedulingpolicy(result, self.context)
+        return SchedulingPolicy(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -19398,7 +19442,7 @@ class Schedulingpolicies(Base):
 
         if id:
             try :
-                return Schedulingpolicy(
+                return SchedulingPolicy(
                     self.__getProxy().get(
                                 url=UrlHelper.append(url, id),
                                 headers={}
@@ -19415,7 +19459,7 @@ class Schedulingpolicies(Base):
                     headers={}
             ).get_scheduling_policy()
 
-            return Schedulingpolicy(
+            return SchedulingPolicy(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -19443,19 +19487,19 @@ class Schedulingpolicies(Base):
         ).get_scheduling_policy()
 
         return ParseHelper.toCollection(
-            Schedulingpolicy,
+            SchedulingPolicy,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
 
-class Schedulingpolicy(params.SchedulingPolicy, Base):
+class SchedulingPolicy(params.SchedulingPolicy, Base):
     def __init__(self, schedulingpolicy, context):
         Base.__init__(self, context)
         self.superclass = schedulingpolicy
 
-        self.balances = SchedulingpolicyBalances(self, context)
-        self.filters = SchedulingpolicyFilters(self, context)
-        self.weights = SchedulingpolicyWeights(self, context)
+        self.balances = SchedulingPolicyBalances(self, context)
+        self.filters = SchedulingPolicyFilters(self, context)
+        self.weights = SchedulingPolicyWeights(self, context)
 
     def __new__(cls, schedulingpolicy, context):
         if schedulingpolicy is None: return None
@@ -19522,9 +19566,9 @@ class Schedulingpolicy(params.SchedulingPolicy, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return Schedulingpolicy(result, self.context)
+        return SchedulingPolicy(result, self.context)
 
-class SchedulingpolicyBalance(params.Balance, Base):
+class SchedulingPolicyBalance(params.Balance, Base):
     def __init__(self, schedulingpolicy, balance, context):
         Base.__init__(self, context)
         self.parentclass = schedulingpolicy
@@ -19570,7 +19614,7 @@ class SchedulingpolicyBalance(params.Balance, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class SchedulingpolicyBalances(Base):
+class SchedulingPolicyBalances(Base):
 
     def __init__(self, schedulingpolicy , context):
         Base.__init__(self, context)
@@ -19610,7 +19654,7 @@ class SchedulingpolicyBalances(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return SchedulingpolicyBalance(
+        return SchedulingPolicyBalance(
             self.parentclass,
             result,
             self.context
@@ -19642,7 +19686,7 @@ class SchedulingpolicyBalances(Base):
                     headers={}
                 )
 
-                return SchedulingpolicyBalance(
+                return SchedulingPolicyBalance(
                     self.parentclass,
                     result,
                     self.context
@@ -19662,7 +19706,7 @@ class SchedulingpolicyBalances(Base):
                 headers={}
             ).get_balance()
 
-            return SchedulingpolicyBalance(
+            return SchedulingPolicyBalance(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -19701,7 +19745,7 @@ class SchedulingpolicyBalances(Base):
         ).get_balance()
 
         return ParseHelper.toSubCollection(
-            SchedulingpolicyBalance,
+            SchedulingPolicyBalance,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -19710,7 +19754,7 @@ class SchedulingpolicyBalances(Base):
             context=self.context
         )
 
-class SchedulingpolicyFilter(params.Filter, Base):
+class SchedulingPolicyFilter(params.Filter, Base):
     def __init__(self, schedulingpolicy, filter, context):
         Base.__init__(self, context)
         self.parentclass = schedulingpolicy
@@ -19756,7 +19800,7 @@ class SchedulingpolicyFilter(params.Filter, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class SchedulingpolicyFilters(Base):
+class SchedulingPolicyFilters(Base):
 
     def __init__(self, schedulingpolicy , context):
         Base.__init__(self, context)
@@ -19797,7 +19841,7 @@ class SchedulingpolicyFilters(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return SchedulingpolicyFilter(
+        return SchedulingPolicyFilter(
             self.parentclass,
             result,
             self.context
@@ -19829,7 +19873,7 @@ class SchedulingpolicyFilters(Base):
                     headers={}
                 )
 
-                return SchedulingpolicyFilter(
+                return SchedulingPolicyFilter(
                     self.parentclass,
                     result,
                     self.context
@@ -19849,7 +19893,7 @@ class SchedulingpolicyFilters(Base):
                 headers={}
             ).get_filter()
 
-            return SchedulingpolicyFilter(
+            return SchedulingPolicyFilter(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -19888,7 +19932,7 @@ class SchedulingpolicyFilters(Base):
         ).get_filter()
 
         return ParseHelper.toSubCollection(
-            SchedulingpolicyFilter,
+            SchedulingPolicyFilter,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -19897,7 +19941,126 @@ class SchedulingpolicyFilters(Base):
             context=self.context
         )
 
-class SchedulingpolicyWeight(params.Weight, Base):
+class SchedulingPolicyUnit(params.SchedulingPolicyUnit, Base):
+    def __init__(self, schedulingpolicyunit, context):
+        Base.__init__(self, context)
+        self.superclass = schedulingpolicyunit
+
+        #SUB_COLLECTIONS
+    def __new__(cls, schedulingpolicyunit, context):
+        if schedulingpolicyunit is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(schedulingpolicyunit, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/schedulingpolicyunits/{schedulingpolicyunit:id}',
+            {
+                '{schedulingpolicyunit:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class SchedulingPolicyUnits(Base):
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return SchedulingPolicyUnits:
+        '''
+
+        url = '/schedulingpolicyunits'
+
+        if id:
+            try :
+                return SchedulingPolicyUnit(
+                    self.__getProxy().get(
+                                url=UrlHelper.append(url, id),
+                                headers={}
+                    ),
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                    url=url,
+                    headers={}
+            ).get_scheduling_policy_unit()
+
+            return SchedulingPolicyUnit(
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+
+    def list(self, case_sensitive=True, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
+
+        @return SchedulingPolicyUnits:
+        '''
+
+        url='/schedulingpolicyunits'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(url, {'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            headers={}
+        ).get_scheduling_policy_unit()
+
+        return ParseHelper.toCollection(
+            SchedulingPolicyUnit,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )
+
+class SchedulingPolicyWeight(params.Weight, Base):
     def __init__(self, schedulingpolicy, weight, context):
         Base.__init__(self, context)
         self.parentclass = schedulingpolicy
@@ -19943,7 +20106,7 @@ class SchedulingpolicyWeight(params.Weight, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class SchedulingpolicyWeights(Base):
+class SchedulingPolicyWeights(Base):
 
     def __init__(self, schedulingpolicy , context):
         Base.__init__(self, context)
@@ -19984,7 +20147,7 @@ class SchedulingpolicyWeights(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return SchedulingpolicyWeight(
+        return SchedulingPolicyWeight(
             self.parentclass,
             result,
             self.context
@@ -20016,7 +20179,7 @@ class SchedulingpolicyWeights(Base):
                     headers={}
                 )
 
-                return SchedulingpolicyWeight(
+                return SchedulingPolicyWeight(
                     self.parentclass,
                     result,
                     self.context
@@ -20036,7 +20199,7 @@ class SchedulingpolicyWeights(Base):
                 headers={}
             ).get_weight()
 
-            return SchedulingpolicyWeight(
+            return SchedulingPolicyWeight(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -20075,7 +20238,7 @@ class SchedulingpolicyWeights(Base):
         ).get_weight()
 
         return ParseHelper.toSubCollection(
-            SchedulingpolicyWeight,
+            SchedulingPolicyWeight,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -20084,126 +20247,7 @@ class SchedulingpolicyWeights(Base):
             context=self.context
         )
 
-class Schedulingpolicyunit(params.SchedulingPolicyUnit, Base):
-    def __init__(self, schedulingpolicyunit, context):
-        Base.__init__(self, context)
-        self.superclass = schedulingpolicyunit
-
-        #SUB_COLLECTIONS
-    def __new__(cls, schedulingpolicyunit, context):
-        if schedulingpolicyunit is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(schedulingpolicyunit, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/schedulingpolicyunits/{schedulingpolicyunit:id}',
-            {
-                '{schedulingpolicyunit:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
-class Schedulingpolicyunits(Base):
-    def __init__(self, context):
-        Base.__init__(self, context)
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def get(self, name=None, id=None):
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return SchedulingPolicyUnits:
-        '''
-
-        url = '/schedulingpolicyunits'
-
-        if id:
-            try :
-                return Schedulingpolicyunit(
-                    self.__getProxy().get(
-                                url=UrlHelper.append(url, id),
-                                headers={}
-                    ),
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                    url=url,
-                    headers={}
-            ).get_scheduling_policy_unit()
-
-            return Schedulingpolicyunit(
-                FilterHelper.getItem(
-                    FilterHelper.filter(result, {'name':name}),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-
-    def list(self, case_sensitive=True, max=None, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param case_sensitive: boolean (true|false)]
-        [@param max: int (max results)]
-
-        @return SchedulingPolicyUnits:
-        '''
-
-        url='/schedulingpolicyunits'
-
-        result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-            headers={}
-        ).get_scheduling_policy_unit()
-
-        return ParseHelper.toCollection(
-            Schedulingpolicyunit,
-            FilterHelper.filter(result, kwargs),
-            context=self.context
-        )
-
-class Storageconnection(params.StorageConnection, Base):
+class StorageConnection(params.StorageConnection, Base):
     def __init__(self, storageconnection, context):
         Base.__init__(self, context)
         self.superclass = storageconnection
@@ -20290,9 +20334,9 @@ class Storageconnection(params.StorageConnection, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return Storageconnection(result, self.context)
+        return StorageConnection(result, self.context)
 
-class Storageconnections(Base):
+class StorageConnections(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -20346,7 +20390,7 @@ class Storageconnections(Base):
            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return Storageconnection(result, self.context)
+        return StorageConnection(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -20360,7 +20404,7 @@ class Storageconnections(Base):
 
         if id:
             try :
-                return Storageconnection(
+                return StorageConnection(
                     self.__getProxy().get(
                                 url=UrlHelper.append(url, id),
                                 headers={}
@@ -20377,7 +20421,7 @@ class Storageconnections(Base):
                     headers={}
             ).get_storage_connection()
 
-            return Storageconnection(
+            return StorageConnection(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -20402,24 +20446,24 @@ class Storageconnections(Base):
         ).get_storage_connection()
 
         return ParseHelper.toCollection(
-            Storageconnection,
+            StorageConnection,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
-class Storagedomain(params.StorageDomain, Base):
+class StorageDomain(params.StorageDomain, Base):
     def __init__(self, storagedomain, context):
         Base.__init__(self, context)
         self.superclass = storagedomain
 
-        self.diskprofiles = StoragedomainDiskprofiles(self, context)
-        self.disks = StoragedomainDisks(self, context)
-        self.disksnapshots = StoragedomainDisksnapshots(self, context)
-        self.files = StoragedomainFiles(self, context)
-        self.images = StoragedomainImages(self, context)
-        self.permissions = StoragedomainPermissions(self, context)
-        self.storageconnections = StoragedomainStorageconnections(self, context)
-        self.templates = StoragedomainTemplates(self, context)
-        self.vms = StoragedomainVms(self, context)
+        self.diskprofiles = StorageDomainDiskProfiles(self, context)
+        self.disks = StorageDomainDisks(self, context)
+        self.disksnapshots = StorageDomainDiskSnapshots(self, context)
+        self.files = StorageDomainFiles(self, context)
+        self.images = StorageDomainImages(self, context)
+        self.permissions = StorageDomainPermissions(self, context)
+        self.storageconnections = StorageDomainStorageConnections(self, context)
+        self.templates = StorageDomainTemplates(self, context)
+        self.vms = StorageDomainVMs(self, context)
 
     def __new__(cls, storagedomain, context):
         if storagedomain is None: return None
@@ -20507,7 +20551,7 @@ class Storagedomain(params.StorageDomain, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return Storagedomain(result, self.context)
+        return StorageDomain(result, self.context)
 
     def isattached(self, action=params.Action(), correlation_id=None):
         '''
@@ -20535,14 +20579,14 @@ class Storagedomain(params.StorageDomain, Base):
 
         return result
 
-class StoragedomainDisk(params.Disk, Base):
+class StorageDomainDisk(params.Disk, Base):
     def __init__(self, storagedomain, disk, context):
         Base.__init__(self, context)
         self.parentclass = storagedomain
         self.superclass  =  disk
 
-        self.permissions = StoragedomainDiskPermissions(self, context)
-        self.statistics = StoragedomainDiskStatistics(self, context)
+        self.permissions = StorageDomainDiskPermissions(self, context)
+        self.statistics = StorageDomainDiskStatistics(self, context)
 
     def __new__(cls, storagedomain, disk, context):
         if disk is None: return None
@@ -20662,7 +20706,7 @@ class StoragedomainDisk(params.Disk, Base):
 
         return result
 
-class StoragedomainDiskPermission(params.Permission, Base):
+class StorageDomainDiskPermission(params.Permission, Base):
     def __init__(self, disk, permission, context):
         Base.__init__(self, context)
         self.parentclass = disk
@@ -20703,7 +20747,7 @@ class StoragedomainDiskPermission(params.Permission, Base):
             headers={'Content-type':None}
         )
 
-class StoragedomainDiskPermissions(Base):
+class StorageDomainDiskPermissions(Base):
 
     def __init__(self, disk , context):
         Base.__init__(self, context)
@@ -20741,7 +20785,7 @@ class StoragedomainDiskPermissions(Base):
             headers={}
         )
 
-        return StoragedomainDiskPermission(
+        return StorageDomainDiskPermission(
             self.parentclass,
             result,
             self.context
@@ -20774,7 +20818,7 @@ class StoragedomainDiskPermissions(Base):
                     headers={}
                 )
 
-                return StoragedomainDiskPermission(
+                return StorageDomainDiskPermission(
                     self.parentclass,
                     result,
                     self.context
@@ -20795,7 +20839,7 @@ class StoragedomainDiskPermissions(Base):
                 headers={}
             ).get_permission()
 
-            return StoragedomainDiskPermission(
+            return StorageDomainDiskPermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -20829,7 +20873,7 @@ class StoragedomainDiskPermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            StoragedomainDiskPermission,
+            StorageDomainDiskPermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -20838,135 +20882,7 @@ class StoragedomainDiskPermissions(Base):
             context=self.context
         )
 
-class StoragedomainDiskStatistic(params.Statistic, Base):
-    def __init__(self, disk, statistic, context):
-        Base.__init__(self, context)
-        self.parentclass = disk
-        self.superclass  =  statistic
-
-        #SUB_COLLECTIONS
-    def __new__(cls, disk, statistic, context):
-        if statistic is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(disk, statistic, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-class StoragedomainDiskStatistics(Base):
-
-    def __init__(self, disk , context):
-        Base.__init__(self, context)
-        self.parentclass = disk
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return Statistics:
-        '''
-
-        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                                '{disk:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return StoragedomainDiskStatistic(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                        '{disk:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_statistic()
-
-            return StoragedomainDiskStatistic(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-
-        @return Statistics:
-        '''
-
-        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
-
-        result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                    '{disk:id}': self.parentclass.get_id(),
-                }
-            )
-        ).get_statistic()
-
-        return ParseHelper.toSubCollection(
-            StoragedomainDiskStatistic,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class StoragedomainDiskprofile(params.DiskProfile, Base):
+class StorageDomainDiskProfile(params.DiskProfile, Base):
     def __init__(self, storagedomain, diskprofile, context):
         Base.__init__(self, context)
         self.parentclass = storagedomain
@@ -21012,7 +20928,7 @@ class StoragedomainDiskprofile(params.DiskProfile, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class StoragedomainDiskprofiles(Base):
+class StorageDomainDiskProfiles(Base):
 
     def __init__(self, storagedomain , context):
         Base.__init__(self, context)
@@ -21054,7 +20970,7 @@ class StoragedomainDiskprofiles(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return StoragedomainDiskprofile(
+        return StorageDomainDiskProfile(
             self.parentclass,
             result,
             self.context
@@ -21086,7 +21002,7 @@ class StoragedomainDiskprofiles(Base):
                     headers={}
                 )
 
-                return StoragedomainDiskprofile(
+                return StorageDomainDiskProfile(
                     self.parentclass,
                     result,
                     self.context
@@ -21106,7 +21022,7 @@ class StoragedomainDiskprofiles(Base):
                 headers={}
             ).get_disk_profile()
 
-            return StoragedomainDiskprofile(
+            return StorageDomainDiskProfile(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -21144,7 +21060,7 @@ class StoragedomainDiskprofiles(Base):
         ).get_disk_profile()
 
         return ParseHelper.toSubCollection(
-            StoragedomainDiskprofile,
+            StorageDomainDiskProfile,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -21153,7 +21069,289 @@ class StoragedomainDiskprofiles(Base):
             context=self.context
         )
 
-class StoragedomainDisks(Base):
+class StorageDomainDiskSnapshot(params.DiskSnapshot, Base):
+    def __init__(self, storagedomain, disksnapshot, context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomain
+        self.superclass  =  disksnapshot
+
+        #SUB_COLLECTIONS
+    def __new__(cls, storagedomain, disksnapshot, context):
+        if disksnapshot is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(storagedomain, disksnapshot, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/storagedomains/{storagedomain:id}/disksnapshots/{disksnapshot:id}',
+            {
+                '{storagedomain:id}': self.parentclass.get_id(),
+                '{disksnapshot:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class StorageDomainDiskSnapshots(Base):
+
+    def __init__(self, storagedomain , context):
+        Base.__init__(self, context)
+        self.parentclass = storagedomain
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return DiskSnapshots:
+        '''
+
+        url = '/storagedomains/{storagedomain:id}/disksnapshots'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{storagedomain:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return StorageDomainDiskSnapshot(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_disk_snapshot()
+
+            return StorageDomainDiskSnapshot(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return DiskSnapshots:
+        '''
+
+        url = '/storagedomains/{storagedomain:id}/disksnapshots'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_disk_snapshot()
+
+        return ParseHelper.toSubCollection(
+            StorageDomainDiskSnapshot,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class StorageDomainDiskStatistic(params.Statistic, Base):
+    def __init__(self, disk, statistic, context):
+        Base.__init__(self, context)
+        self.parentclass = disk
+        self.superclass  =  statistic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, disk, statistic, context):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(disk, statistic, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class StorageDomainDiskStatistics(Base):
+
+    def __init__(self, disk , context):
+        Base.__init__(self, context)
+        self.parentclass = disk
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Statistics:
+        '''
+
+        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                                '{disk:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return StorageDomainDiskStatistic(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                        '{disk:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_statistic()
+
+            return StorageDomainDiskStatistic(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Statistics:
+        '''
+
+        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/statistics'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                    '{disk:id}': self.parentclass.get_id(),
+                }
+            )
+        ).get_statistic()
+
+        return ParseHelper.toSubCollection(
+            StorageDomainDiskStatistic,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class StorageDomainDisks(Base):
 
     def __init__(self, storagedomain , context):
         Base.__init__(self, context)
@@ -21225,7 +21423,7 @@ class StoragedomainDisks(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return StoragedomainDisk(
+        return StorageDomainDisk(
             self.parentclass,
             result,
             self.context
@@ -21257,7 +21455,7 @@ class StoragedomainDisks(Base):
                     headers={}
                 )
 
-                return StoragedomainDisk(
+                return StorageDomainDisk(
                     self.parentclass,
                     result,
                     self.context
@@ -21277,7 +21475,7 @@ class StoragedomainDisks(Base):
                 headers={}
             ).get_disk()
 
-            return StoragedomainDisk(
+            return StorageDomainDisk(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -21318,7 +21516,7 @@ class StoragedomainDisks(Base):
         ).get_disk()
 
         return ParseHelper.toSubCollection(
-            StoragedomainDisk,
+            StorageDomainDisk,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -21327,161 +21525,7 @@ class StoragedomainDisks(Base):
             context=self.context
         )
 
-class StoragedomainDisksnapshot(params.DiskSnapshot, Base):
-    def __init__(self, storagedomain, disksnapshot, context):
-        Base.__init__(self, context)
-        self.parentclass = storagedomain
-        self.superclass  =  disksnapshot
-
-        #SUB_COLLECTIONS
-    def __new__(cls, storagedomain, disksnapshot, context):
-        if disksnapshot is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(storagedomain, disksnapshot, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/storagedomains/{storagedomain:id}/disksnapshots/{disksnapshot:id}',
-            {
-                '{storagedomain:id}': self.parentclass.get_id(),
-                '{disksnapshot:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
-class StoragedomainDisksnapshots(Base):
-
-    def __init__(self, storagedomain , context):
-        Base.__init__(self, context)
-        self.parentclass = storagedomain
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return DiskSnapshots:
-        '''
-
-        url = '/storagedomains/{storagedomain:id}/disksnapshots'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{storagedomain:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return StoragedomainDisksnapshot(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{storagedomain:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_disk_snapshot()
-
-            return StoragedomainDisksnapshot(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, max=None, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
-
-        @return DiskSnapshots:
-        '''
-
-        url = '/storagedomains/{storagedomain:id}/disksnapshots'
-
-        result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{storagedomain:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
-        ).get_disk_snapshot()
-
-        return ParseHelper.toSubCollection(
-            StoragedomainDisksnapshot,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class StoragedomainFile(params.File, Base):
+class StorageDomainFile(params.File, Base):
     def __init__(self, storagedomain, file, context):
         Base.__init__(self, context)
         self.parentclass = storagedomain
@@ -21503,7 +21547,7 @@ class StoragedomainFile(params.File, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class StoragedomainFiles(Base):
+class StorageDomainFiles(Base):
 
     def __init__(self, storagedomain , context):
         Base.__init__(self, context)
@@ -21544,7 +21588,7 @@ class StoragedomainFiles(Base):
                     headers={}
                 )
 
-                return StoragedomainFile(
+                return StorageDomainFile(
                     self.parentclass,
                     result,
                     self.context
@@ -21564,7 +21608,7 @@ class StoragedomainFiles(Base):
                 headers={}
             ).get_file()
 
-            return StoragedomainFile(
+            return StorageDomainFile(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -21604,7 +21648,7 @@ class StoragedomainFiles(Base):
         ).get_file()
 
         return ParseHelper.toSubCollection(
-            StoragedomainFile,
+            StorageDomainFile,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -21613,7 +21657,7 @@ class StoragedomainFiles(Base):
             context=self.context
         )
 
-class StoragedomainImage(params.Image, Base):
+class StorageDomainImage(params.Image, Base):
     def __init__(self, storagedomain, image, context):
         Base.__init__(self, context)
         self.parentclass = storagedomain
@@ -21660,7 +21704,7 @@ class StoragedomainImage(params.Image, Base):
 
         return result
 
-class StoragedomainImages(Base):
+class StorageDomainImages(Base):
 
     def __init__(self, storagedomain , context):
         Base.__init__(self, context)
@@ -21701,7 +21745,7 @@ class StoragedomainImages(Base):
                     headers={}
                 )
 
-                return StoragedomainImage(
+                return StorageDomainImage(
                     self.parentclass,
                     result,
                     self.context
@@ -21721,7 +21765,7 @@ class StoragedomainImages(Base):
                 headers={}
             ).get_image()
 
-            return StoragedomainImage(
+            return StorageDomainImage(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -21759,7 +21803,7 @@ class StoragedomainImages(Base):
         ).get_image()
 
         return ParseHelper.toSubCollection(
-            StoragedomainImage,
+            StorageDomainImage,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -21768,7 +21812,7 @@ class StoragedomainImages(Base):
             context=self.context
         )
 
-class StoragedomainPermission(params.Permission, Base):
+class StorageDomainPermission(params.Permission, Base):
     def __init__(self, storagedomain, permission, context):
         Base.__init__(self, context)
         self.parentclass = storagedomain
@@ -21814,7 +21858,7 @@ class StoragedomainPermission(params.Permission, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class StoragedomainPermissions(Base):
+class StorageDomainPermissions(Base):
 
     def __init__(self, storagedomain , context):
         Base.__init__(self, context)
@@ -21859,7 +21903,7 @@ class StoragedomainPermissions(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return StoragedomainPermission(
+        return StorageDomainPermission(
             self.parentclass,
             result,
             self.context
@@ -21891,7 +21935,7 @@ class StoragedomainPermissions(Base):
                     headers={}
                 )
 
-                return StoragedomainPermission(
+                return StorageDomainPermission(
                     self.parentclass,
                     result,
                     self.context
@@ -21911,7 +21955,7 @@ class StoragedomainPermissions(Base):
                 headers={}
             ).get_permission()
 
-            return StoragedomainPermission(
+            return StorageDomainPermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -21949,7 +21993,7 @@ class StoragedomainPermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            StoragedomainPermission,
+            StorageDomainPermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -21958,7 +22002,7 @@ class StoragedomainPermissions(Base):
             context=self.context
         )
 
-class StoragedomainStorageconnection(params.StorageConnection, Base):
+class StorageDomainStorageConnection(params.StorageConnection, Base):
     def __init__(self, storagedomain, storageconnection, context):
         Base.__init__(self, context)
         self.parentclass = storagedomain
@@ -22003,7 +22047,7 @@ class StoragedomainStorageconnection(params.StorageConnection, Base):
             headers={"Content-type":None}
         )
 
-class StoragedomainStorageconnections(Base):
+class StorageDomainStorageConnections(Base):
 
     def __init__(self, storagedomain , context):
         Base.__init__(self, context)
@@ -22043,7 +22087,7 @@ class StoragedomainStorageconnections(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return StoragedomainStorageconnection(
+        return StorageDomainStorageConnection(
             self.parentclass,
             result,
             self.context
@@ -22075,7 +22119,7 @@ class StoragedomainStorageconnections(Base):
                     headers={}
                 )
 
-                return StoragedomainStorageconnection(
+                return StorageDomainStorageConnection(
                     self.parentclass,
                     result,
                     self.context
@@ -22095,7 +22139,7 @@ class StoragedomainStorageconnections(Base):
                 headers={}
             ).get_storage_connection()
 
-            return StoragedomainStorageconnection(
+            return StorageDomainStorageConnection(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -22133,7 +22177,7 @@ class StoragedomainStorageconnections(Base):
         ).get_storage_connection()
 
         return ParseHelper.toSubCollection(
-            StoragedomainStorageconnection,
+            StorageDomainStorageConnection,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -22142,13 +22186,13 @@ class StoragedomainStorageconnections(Base):
             context=self.context
         )
 
-class StoragedomainTemplate(params.Template, Base):
+class StorageDomainTemplate(params.Template, Base):
     def __init__(self, storagedomain, template, context):
         Base.__init__(self, context)
         self.parentclass = storagedomain
         self.superclass  =  template
 
-        self.disks = StoragedomainTemplateDisks(self, context)
+        self.disks = StorageDomainTemplateDisks(self, context)
 
     def __new__(cls, storagedomain, template, context):
         if template is None: return None
@@ -22256,7 +22300,7 @@ class StoragedomainTemplate(params.Template, Base):
 
         return result
 
-class StoragedomainTemplateDisk(params.Disk, Base):
+class StorageDomainTemplateDisk(params.Disk, Base):
     def __init__(self, template, disk, context):
         Base.__init__(self, context)
         self.parentclass = template
@@ -22278,7 +22322,7 @@ class StoragedomainTemplateDisk(params.Disk, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class StoragedomainTemplateDisks(Base):
+class StorageDomainTemplateDisks(Base):
 
     def __init__(self, template , context):
         Base.__init__(self, context)
@@ -22320,7 +22364,7 @@ class StoragedomainTemplateDisks(Base):
                     headers={}
                 )
 
-                return StoragedomainTemplateDisk(
+                return StorageDomainTemplateDisk(
                     self.parentclass,
                     result,
                     self.context
@@ -22341,7 +22385,7 @@ class StoragedomainTemplateDisks(Base):
                 headers={}
             ).get_disk()
 
-            return StoragedomainTemplateDisk(
+            return StorageDomainTemplateDisk(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -22375,7 +22419,7 @@ class StoragedomainTemplateDisks(Base):
         ).get_disk()
 
         return ParseHelper.toSubCollection(
-            StoragedomainTemplateDisk,
+            StorageDomainTemplateDisk,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -22384,7 +22428,7 @@ class StoragedomainTemplateDisks(Base):
             context=self.context
         )
 
-class StoragedomainTemplates(Base):
+class StorageDomainTemplates(Base):
 
     def __init__(self, storagedomain , context):
         Base.__init__(self, context)
@@ -22425,7 +22469,7 @@ class StoragedomainTemplates(Base):
                     headers={}
                 )
 
-                return StoragedomainTemplate(
+                return StorageDomainTemplate(
                     self.parentclass,
                     result,
                     self.context
@@ -22445,7 +22489,7 @@ class StoragedomainTemplates(Base):
                 headers={}
             ).get_template()
 
-            return StoragedomainTemplate(
+            return StorageDomainTemplate(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -22484,7 +22528,7 @@ class StoragedomainTemplates(Base):
         ).get_template()
 
         return ParseHelper.toSubCollection(
-            StoragedomainTemplate,
+            StorageDomainTemplate,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -22493,13 +22537,13 @@ class StoragedomainTemplates(Base):
             context=self.context
         )
 
-class StoragedomainVm(params.VM, Base):
+class StorageDomainVM(params.VM, Base):
     def __init__(self, storagedomain, vm, context):
         Base.__init__(self, context)
         self.parentclass = storagedomain
         self.superclass  =  vm
 
-        self.disks = StoragedomainVmDisks(self, context)
+        self.disks = StorageDomainVMDisks(self, context)
 
     def __new__(cls, storagedomain, vm, context):
         if vm is None: return None
@@ -22607,7 +22651,7 @@ class StoragedomainVm(params.VM, Base):
 
         return result
 
-class StoragedomainVmDisk(params.Disk, Base):
+class StorageDomainVMDisk(params.Disk, Base):
     def __init__(self, vm, disk, context):
         Base.__init__(self, context)
         self.parentclass = vm
@@ -22629,7 +22673,7 @@ class StoragedomainVmDisk(params.Disk, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class StoragedomainVmDisks(Base):
+class StorageDomainVMDisks(Base):
 
     def __init__(self, vm , context):
         Base.__init__(self, context)
@@ -22671,7 +22715,7 @@ class StoragedomainVmDisks(Base):
                     headers={}
                 )
 
-                return StoragedomainVmDisk(
+                return StorageDomainVMDisk(
                     self.parentclass,
                     result,
                     self.context
@@ -22692,7 +22736,7 @@ class StoragedomainVmDisks(Base):
                 headers={}
             ).get_disk()
 
-            return StoragedomainVmDisk(
+            return StorageDomainVMDisk(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -22726,7 +22770,7 @@ class StoragedomainVmDisks(Base):
         ).get_disk()
 
         return ParseHelper.toSubCollection(
-            StoragedomainVmDisk,
+            StorageDomainVMDisk,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -22735,7 +22779,7 @@ class StoragedomainVmDisks(Base):
             context=self.context
         )
 
-class StoragedomainVms(Base):
+class StorageDomainVMs(Base):
 
     def __init__(self, storagedomain , context):
         Base.__init__(self, context)
@@ -22776,7 +22820,7 @@ class StoragedomainVms(Base):
                     headers={}
                 )
 
-                return StoragedomainVm(
+                return StorageDomainVM(
                     self.parentclass,
                     result,
                     self.context
@@ -22796,7 +22840,7 @@ class StoragedomainVms(Base):
                 headers={}
             ).get_vm()
 
-            return StoragedomainVm(
+            return StorageDomainVM(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -22835,7 +22879,7 @@ class StoragedomainVms(Base):
         ).get_vm()
 
         return ParseHelper.toSubCollection(
-            StoragedomainVm,
+            StorageDomainVM,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -22844,7 +22888,7 @@ class StoragedomainVms(Base):
             context=self.context
         )
 
-class Storagedomains(Base):
+class StorageDomains(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -22943,7 +22987,7 @@ class Storagedomains(Base):
            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return Storagedomain(result, self.context)
+        return StorageDomain(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -22957,7 +23001,7 @@ class Storagedomains(Base):
 
         if id:
             try :
-                return Storagedomain(
+                return StorageDomain(
                     self.__getProxy().get(
                         url=UrlHelper.append(url, id),
                         headers={}
@@ -22974,7 +23018,7 @@ class Storagedomains(Base):
                 headers={}
             ).get_storage_domain()
 
-            return Storagedomain(
+            return StorageDomain(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -23002,7 +23046,7 @@ class Storagedomains(Base):
         ).get_storage_domain()
 
         return ParseHelper.toCollection(
-            Storagedomain,
+            StorageDomain,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
@@ -23177,12 +23221,12 @@ class Template(params.Template, Base):
         Base.__init__(self, context)
         self.superclass = template
 
-        self.cdroms = TemplateCdroms(self, context)
+        self.cdroms = TemplateCdRoms(self, context)
         self.disks = TemplateDisks(self, context)
-        self.nics = TemplateNics(self, context)
+        self.nics = TemplateNICs(self, context)
         self.permissions = TemplatePermissions(self, context)
         self.tags = TemplateTags(self, context)
-        self.watchdogs = TemplateWatchdogs(self, context)
+        self.watchdogs = TemplateWatchDogs(self, context)
 
     def __new__(cls, template, context):
         if template is None: return None
@@ -23335,7 +23379,7 @@ class Template(params.Template, Base):
 
         return result
 
-class TemplateCdrom(params.CdRom, Base):
+class TemplateCdRom(params.CdRom, Base):
     def __init__(self, template, cdrom, context):
         Base.__init__(self, context)
         self.parentclass = template
@@ -23357,7 +23401,7 @@ class TemplateCdrom(params.CdRom, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class TemplateCdroms(Base):
+class TemplateCdRoms(Base):
 
     def __init__(self, template , context):
         Base.__init__(self, context)
@@ -23398,7 +23442,7 @@ class TemplateCdroms(Base):
                     headers={}
                 )
 
-                return TemplateCdrom(
+                return TemplateCdRom(
                     self.parentclass,
                     result,
                     self.context
@@ -23418,7 +23462,7 @@ class TemplateCdroms(Base):
                 headers={}
             ).get_cdrom()
 
-            return TemplateCdrom(
+            return TemplateCdRom(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -23456,7 +23500,7 @@ class TemplateCdroms(Base):
         ).get_cdrom()
 
         return ParseHelper.toSubCollection(
-            TemplateCdrom,
+            TemplateCdRom,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -23683,7 +23727,7 @@ class TemplateDisks(Base):
             context=self.context
         )
 
-class TemplateNic(params.NIC, Base):
+class TemplateNIC(params.NIC, Base):
     def __init__(self, template, nic, context):
         Base.__init__(self, context)
         self.parentclass = template
@@ -23768,13 +23812,13 @@ class TemplateNic(params.NIC, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return TemplateNic(
+        return TemplateNIC(
             self.parentclass,
             result,
             self.context
         )
 
-class TemplateNics(Base):
+class TemplateNICs(Base):
 
     def __init__(self, template , context):
         Base.__init__(self, context)
@@ -23830,7 +23874,7 @@ class TemplateNics(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return TemplateNic(
+        return TemplateNIC(
             self.parentclass,
             result,
             self.context
@@ -23862,7 +23906,7 @@ class TemplateNics(Base):
                     headers={}
                 )
 
-                return TemplateNic(
+                return TemplateNIC(
                     self.parentclass,
                     result,
                     self.context
@@ -23882,7 +23926,7 @@ class TemplateNics(Base):
                 headers={}
             ).get_nic()
 
-            return TemplateNic(
+            return TemplateNIC(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -23920,7 +23964,7 @@ class TemplateNics(Base):
         ).get_nic()
 
         return ParseHelper.toSubCollection(
-            TemplateNic,
+            TemplateNIC,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -24304,7 +24348,7 @@ class TemplateTags(Base):
             context=self.context
         )
 
-class TemplateWatchdog(params.WatchDog, Base):
+class TemplateWatchDog(params.WatchDog, Base):
     def __init__(self, template, watchdog, context):
         Base.__init__(self, context)
         self.parentclass = template
@@ -24374,13 +24418,13 @@ class TemplateWatchdog(params.WatchDog, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return TemplateWatchdog(
+        return TemplateWatchDog(
             self.parentclass,
             result,
             self.context
         )
 
-class TemplateWatchdogs(Base):
+class TemplateWatchDogs(Base):
 
     def __init__(self, template , context):
         Base.__init__(self, context)
@@ -24421,7 +24465,7 @@ class TemplateWatchdogs(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return TemplateWatchdog(
+        return TemplateWatchDog(
             self.parentclass,
             result,
             self.context
@@ -24453,7 +24497,7 @@ class TemplateWatchdogs(Base):
                     headers={}
                 )
 
-                return TemplateWatchdog(
+                return TemplateWatchDog(
                     self.parentclass,
                     result,
                     self.context
@@ -24473,7 +24517,7 @@ class TemplateWatchdogs(Base):
                 headers={}
             ).get_watchdog()
 
-            return TemplateWatchdog(
+            return TemplateWatchDog(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -24511,7 +24555,7 @@ class TemplateWatchdogs(Base):
         ).get_watchdog()
 
         return ParseHelper.toSubCollection(
-            TemplateWatchdog,
+            TemplateWatchDog,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -25554,23 +25598,23 @@ class Users(Base):
             context=self.context
         )
 
-class Vm(params.VM, Base):
+class VM(params.VM, Base):
     def __init__(self, vm, context):
         Base.__init__(self, context)
         self.superclass = vm
 
-        self.applications = VmApplications(self, context)
-        self.cdroms = VmCdroms(self, context)
-        self.disks = VmDisks(self, context)
-        self.nics = VmNics(self, context)
-        self.numanodes = VmNumanodes(self, context)
-        self.permissions = VmPermissions(self, context)
-        self.reporteddevices = VmReporteddevices(self, context)
-        self.sessions = VmSessions(self, context)
-        self.snapshots = VmSnapshots(self, context)
-        self.statistics = VmStatistics(self, context)
-        self.tags = VmTags(self, context)
-        self.watchdogs = VmWatchdogs(self, context)
+        self.applications = VMApplications(self, context)
+        self.cdroms = VMCdRoms(self, context)
+        self.disks = VMDisks(self, context)
+        self.nics = VMNICs(self, context)
+        self.numanodes = VMVirtualNumaNodes(self, context)
+        self.permissions = VMPermissions(self, context)
+        self.reporteddevices = VMReportedDevices(self, context)
+        self.sessions = VMSessions(self, context)
+        self.snapshots = VMSnapshots(self, context)
+        self.statistics = VMStatistics(self, context)
+        self.tags = VMTags(self, context)
+        self.watchdogs = VMWatchDogs(self, context)
 
     def __new__(cls, vm, context):
         if vm is None: return None
@@ -25720,7 +25764,7 @@ class Vm(params.VM, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return Vm(result, self.context)
+        return VM(result, self.context)
 
     def cancelmigration(self, action=params.Action()):
         '''
@@ -26237,7 +26281,7 @@ class Vm(params.VM, Base):
 
         return result
 
-class VmApplication(params.Application, Base):
+class VMApplication(params.Application, Base):
     def __init__(self, vm, application, context):
         Base.__init__(self, context)
         self.parentclass = vm
@@ -26259,7 +26303,7 @@ class VmApplication(params.Application, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class VmApplications(Base):
+class VMApplications(Base):
 
     def __init__(self, vm , context):
         Base.__init__(self, context)
@@ -26300,7 +26344,7 @@ class VmApplications(Base):
                     headers={}
                 )
 
-                return VmApplication(
+                return VMApplication(
                     self.parentclass,
                     result,
                     self.context
@@ -26320,7 +26364,7 @@ class VmApplications(Base):
                 headers={}
             ).get_application()
 
-            return VmApplication(
+            return VMApplication(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -26353,7 +26397,7 @@ class VmApplications(Base):
         ).get_application()
 
         return ParseHelper.toSubCollection(
-            VmApplication,
+            VMApplication,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -26362,7 +26406,7 @@ class VmApplications(Base):
             context=self.context
         )
 
-class VmCdrom(params.CdRom, Base):
+class VMCdRom(params.CdRom, Base):
     def __init__(self, vm, cdrom, context):
         Base.__init__(self, context)
         self.parentclass = vm
@@ -26433,13 +26477,13 @@ class VmCdrom(params.CdRom, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return VmCdrom(
+        return VMCdRom(
             self.parentclass,
             result,
             self.context
         )
 
-class VmCdroms(Base):
+class VMCdRoms(Base):
 
     def __init__(self, vm , context):
         Base.__init__(self, context)
@@ -26479,7 +26523,7 @@ class VmCdroms(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return VmCdrom(
+        return VMCdRom(
             self.parentclass,
             result,
             self.context
@@ -26511,7 +26555,7 @@ class VmCdroms(Base):
                     headers={}
                 )
 
-                return VmCdrom(
+                return VMCdRom(
                     self.parentclass,
                     result,
                     self.context
@@ -26531,7 +26575,7 @@ class VmCdroms(Base):
                 headers={}
             ).get_cdrom()
 
-            return VmCdrom(
+            return VMCdRom(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -26570,7 +26614,7 @@ class VmCdroms(Base):
         ).get_cdrom()
 
         return ParseHelper.toSubCollection(
-            VmCdrom,
+            VMCdRom,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -26579,14 +26623,14 @@ class VmCdroms(Base):
             context=self.context
         )
 
-class VmDisk(params.Disk, Base):
+class VMDisk(params.Disk, Base):
     def __init__(self, vm, disk, context):
         Base.__init__(self, context)
         self.parentclass = vm
         self.superclass  =  disk
 
-        self.permissions = VmDiskPermissions(self, context)
-        self.statistics = VmDiskStatistics(self, context)
+        self.permissions = VMDiskPermissions(self, context)
+        self.statistics = VMDiskStatistics(self, context)
 
     def __new__(cls, vm, disk, context):
         if disk is None: return None
@@ -26668,7 +26712,7 @@ class VmDisk(params.Disk, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return VmDisk(
+        return VMDisk(
             self.parentclass,
             result,
             self.context
@@ -26788,7 +26832,7 @@ class VmDisk(params.Disk, Base):
 
         return result
 
-class VmDiskPermission(params.Permission, Base):
+class VMDiskPermission(params.Permission, Base):
     def __init__(self, disk, permission, context):
         Base.__init__(self, context)
         self.parentclass = disk
@@ -26829,7 +26873,7 @@ class VmDiskPermission(params.Permission, Base):
             headers={'Content-type':None}
         )
 
-class VmDiskPermissions(Base):
+class VMDiskPermissions(Base):
 
     def __init__(self, disk , context):
         Base.__init__(self, context)
@@ -26867,7 +26911,7 @@ class VmDiskPermissions(Base):
             headers={}
         )
 
-        return VmDiskPermission(
+        return VMDiskPermission(
             self.parentclass,
             result,
             self.context
@@ -26900,7 +26944,7 @@ class VmDiskPermissions(Base):
                     headers={}
                 )
 
-                return VmDiskPermission(
+                return VMDiskPermission(
                     self.parentclass,
                     result,
                     self.context
@@ -26921,7 +26965,7 @@ class VmDiskPermissions(Base):
                 headers={}
             ).get_permission()
 
-            return VmDiskPermission(
+            return VMDiskPermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -26955,7 +26999,7 @@ class VmDiskPermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            VmDiskPermission,
+            VMDiskPermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -26964,7 +27008,7 @@ class VmDiskPermissions(Base):
             context=self.context
         )
 
-class VmDiskStatistic(params.Statistic, Base):
+class VMDiskStatistic(params.Statistic, Base):
     def __init__(self, disk, statistic, context):
         Base.__init__(self, context)
         self.parentclass = disk
@@ -26986,7 +27030,7 @@ class VmDiskStatistic(params.Statistic, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class VmDiskStatistics(Base):
+class VMDiskStatistics(Base):
 
     def __init__(self, disk , context):
         Base.__init__(self, context)
@@ -27028,7 +27072,7 @@ class VmDiskStatistics(Base):
                     headers={}
                 )
 
-                return VmDiskStatistic(
+                return VMDiskStatistic(
                     self.parentclass,
                     result,
                     self.context
@@ -27049,7 +27093,7 @@ class VmDiskStatistics(Base):
                 headers={}
             ).get_statistic()
 
-            return VmDiskStatistic(
+            return VMDiskStatistic(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -27083,7 +27127,7 @@ class VmDiskStatistics(Base):
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
-            VmDiskStatistic,
+            VMDiskStatistic,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -27092,7 +27136,7 @@ class VmDiskStatistics(Base):
             context=self.context
         )
 
-class VmDisks(Base):
+class VMDisks(Base):
 
     def __init__(self, vm , context):
         Base.__init__(self, context)
@@ -27176,7 +27220,7 @@ class VmDisks(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return VmDisk(
+        return VMDisk(
             self.parentclass,
             result,
             self.context
@@ -27208,7 +27252,7 @@ class VmDisks(Base):
                     headers={}
                 )
 
-                return VmDisk(
+                return VMDisk(
                     self.parentclass,
                     result,
                     self.context
@@ -27228,7 +27272,7 @@ class VmDisks(Base):
                 headers={}
             ).get_disk()
 
-            return VmDisk(
+            return VMDisk(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -27266,7 +27310,7 @@ class VmDisks(Base):
         ).get_disk()
 
         return ParseHelper.toSubCollection(
-            VmDisk,
+            VMDisk,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -27275,14 +27319,14 @@ class VmDisks(Base):
             context=self.context
         )
 
-class VmNic(params.NIC, Base):
+class VMNIC(params.NIC, Base):
     def __init__(self, vm, nic, context):
         Base.__init__(self, context)
         self.parentclass = vm
         self.superclass  =  nic
 
-        self.reporteddevices = VmNicReporteddevices(self, context)
-        self.statistics = VmNicStatistics(self, context)
+        self.reporteddevices = VMNICReportedDevices(self, context)
+        self.statistics = VMNICStatistics(self, context)
 
     def __new__(cls, vm, nic, context):
         if nic is None: return None
@@ -27363,7 +27407,7 @@ class VmNic(params.NIC, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return VmNic(
+        return VMNIC(
             self.parentclass,
             result,
             self.context
@@ -27421,7 +27465,7 @@ class VmNic(params.NIC, Base):
 
         return result
 
-class VmNicReporteddevice(params.ReportedDevice, Base):
+class VMNICReportedDevice(params.ReportedDevice, Base):
     def __init__(self, nic, reporteddevice, context):
         Base.__init__(self, context)
         self.parentclass = nic
@@ -27443,7 +27487,7 @@ class VmNicReporteddevice(params.ReportedDevice, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class VmNicReporteddevices(Base):
+class VMNICReportedDevices(Base):
 
     def __init__(self, nic , context):
         Base.__init__(self, context)
@@ -27485,7 +27529,7 @@ class VmNicReporteddevices(Base):
                     headers={}
                 )
 
-                return VmNicReporteddevice(
+                return VMNICReportedDevice(
                     self.parentclass,
                     result,
                     self.context
@@ -27506,7 +27550,7 @@ class VmNicReporteddevices(Base):
                 headers={}
             ).get_reported_device()
 
-            return VmNicReporteddevice(
+            return VMNICReportedDevice(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -27540,7 +27584,7 @@ class VmNicReporteddevices(Base):
         ).get_reported_device()
 
         return ParseHelper.toSubCollection(
-            VmNicReporteddevice,
+            VMNICReportedDevice,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -27549,7 +27593,7 @@ class VmNicReporteddevices(Base):
             context=self.context
         )
 
-class VmNicStatistic(params.Statistic, Base):
+class VMNICStatistic(params.Statistic, Base):
     def __init__(self, nic, statistic, context):
         Base.__init__(self, context)
         self.parentclass = nic
@@ -27571,7 +27615,7 @@ class VmNicStatistic(params.Statistic, Base):
         #still available at client's code.
         raise DisconnectedError
 
-class VmNicStatistics(Base):
+class VMNICStatistics(Base):
 
     def __init__(self, nic , context):
         Base.__init__(self, context)
@@ -27613,7 +27657,7 @@ class VmNicStatistics(Base):
                     headers={}
                 )
 
-                return VmNicStatistic(
+                return VMNICStatistic(
                     self.parentclass,
                     result,
                     self.context
@@ -27634,7 +27678,7 @@ class VmNicStatistics(Base):
                 headers={}
             ).get_statistic()
 
-            return VmNicStatistic(
+            return VMNICStatistic(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -27668,7 +27712,7 @@ class VmNicStatistics(Base):
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
-            VmNicStatistic,
+            VMNICStatistic,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -27677,7 +27721,7 @@ class VmNicStatistics(Base):
             context=self.context
         )
 
-class VmNics(Base):
+class VMNICs(Base):
 
     def __init__(self, vm , context):
         Base.__init__(self, context)
@@ -27734,7 +27778,7 @@ class VmNics(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return VmNic(
+        return VMNIC(
             self.parentclass,
             result,
             self.context
@@ -27767,7 +27811,7 @@ class VmNics(Base):
                     headers={"All-Content":all_content}
                 )
 
-                return VmNic(
+                return VMNIC(
                     self.parentclass,
                     result,
                     self.context
@@ -27787,7 +27831,7 @@ class VmNics(Base):
                 headers={"All-Content":all_content}
             ).get_nic()
 
-            return VmNic(
+            return VMNIC(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -27826,7 +27870,7 @@ class VmNics(Base):
         ).get_nic()
 
         return ParseHelper.toSubCollection(
-            VmNic,
+            VMNIC,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -27835,7 +27879,1400 @@ class VmNics(Base):
             context=self.context
         )
 
-class VmNumanode(params.VirtualNumaNode, Base):
+class VMPermission(params.Permission, Base):
+    def __init__(self, vm, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vm, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vm, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/vms/{vm:id}/permissions/{permission:id}',
+            {
+                '{vm:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class VMPermissions(Base):
+
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission, expect=None, correlation_id=None):
+
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.group.id: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Permission:
+        '''
+
+        url = '/vms/{vm:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return VMPermission(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/vms/{vm:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMPermission(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_permission()
+
+            return VMPermission(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Permissions:
+        '''
+
+        url = '/vms/{vm:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            VMPermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMReportedDevice(params.ReportedDevice, Base):
+    def __init__(self, vm, reporteddevice, context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+        self.superclass  =  reporteddevice
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vm, reporteddevice, context):
+        if reporteddevice is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vm, reporteddevice, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class VMReportedDevices(Base):
+
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return ReportedDevices:
+        '''
+
+        url = '/vms/{vm:id}/reporteddevices'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMReportedDevice(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_reported_device()
+
+            return VMReportedDevice(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return ReportedDevices:
+        '''
+
+        url = '/vms/{vm:id}/reporteddevices'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.get_id(),
+                }
+            )
+        ).get_reported_device()
+
+        return ParseHelper.toSubCollection(
+            VMReportedDevice,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMSession(params.Session, Base):
+    def __init__(self, vm, session, context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+        self.superclass  =  session
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vm, session, context):
+        if session is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vm, session, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class VMSessions(Base):
+
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Sessions:
+        '''
+
+        url = '/vms/{vm:id}/sessions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMSession(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_session()
+
+            return VMSession(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Sessions:
+        '''
+
+        url = '/vms/{vm:id}/sessions'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.get_id(),
+                }
+            )
+        ).get_session()
+
+        return ParseHelper.toSubCollection(
+            VMSession,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMSnapshot(params.Snapshot, Base):
+    def __init__(self, vm, snapshot, context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+        self.superclass  =  snapshot
+
+        self.cdroms = VMSnapshotCdRoms(self, context)
+        self.disks = VMSnapshotDisks(self, context)
+        self.nics = VMSnapshotNics(self, context)
+
+    def __new__(cls, vm, snapshot, context):
+        if snapshot is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vm, snapshot, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/vms/{vm:id}/snapshots/{snapshot:id}',
+            {
+                '{vm:id}': self.parentclass.get_id(),
+                '{snapshot:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def restore(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param action.restore_memory: boolean]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param action.disks.disk: collection]
+        {
+          [@ivar disk.id: string]
+          [@ivar disk.image_id: string]
+        }
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/restore'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.get_id(),
+                    '{snapshot:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+class VMSnapshotCdRom(params.CdRom, Base):
+    def __init__(self, snapshot, cdrom, context):
+        Base.__init__(self, context)
+        self.parentclass = snapshot
+        self.superclass  =  cdrom
+
+        #SUB_COLLECTIONS
+    def __new__(cls, snapshot, cdrom, context):
+        if cdrom is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(snapshot, cdrom, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class VMSnapshotCdRoms(Base):
+
+    def __init__(self, snapshot , context):
+        Base.__init__(self, context)
+        self.parentclass = snapshot
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return CdRoms:
+        '''
+
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.parentclass.get_id(),
+                                '{snapshot:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMSnapshotCdRom(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.parentclass.get_id(),
+                        '{snapshot:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_cdrom()
+
+            return VMSnapshotCdRom(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return CdRoms:
+        '''
+
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.parentclass.get_id(),
+                    '{snapshot:id}': self.parentclass.get_id(),
+                }
+            )
+        ).get_cdrom()
+
+        return ParseHelper.toSubCollection(
+            VMSnapshotCdRom,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMSnapshotDisk(params.Disk, Base):
+    def __init__(self, snapshot, disk, context):
+        Base.__init__(self, context)
+        self.parentclass = snapshot
+        self.superclass  =  disk
+
+        #SUB_COLLECTIONS
+    def __new__(cls, snapshot, disk, context):
+        if disk is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(snapshot, disk, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/vms/{vm:id}/snapshots/{snapshot:id}/disks/{disk:id}',
+            {
+                '{vm:id}': self.parentclass.parentclass.get_id(),
+                '{snapshot:id}': self.parentclass.get_id(),
+                '{disk:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class VMSnapshotDisks(Base):
+
+    def __init__(self, snapshot , context):
+        Base.__init__(self, context)
+        self.parentclass = snapshot
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Disks:
+        '''
+
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/disks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.parentclass.get_id(),
+                                '{snapshot:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMSnapshotDisk(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.parentclass.get_id(),
+                        '{snapshot:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_disk()
+
+            return VMSnapshotDisk(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Disks:
+        '''
+
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/disks'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.parentclass.get_id(),
+                    '{snapshot:id}': self.parentclass.get_id(),
+                }
+            )
+        ).get_disk()
+
+        return ParseHelper.toSubCollection(
+            VMSnapshotDisk,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMSnapshotNIC(params.NIC, Base):
+    def __init__(self, snapshot, nic, context):
+        Base.__init__(self, context)
+        self.parentclass = snapshot
+        self.superclass  =  nic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, snapshot, nic, context):
+        if nic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(snapshot, nic, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class VMSnapshotNics(Base):
+
+    def __init__(self, snapshot , context):
+        Base.__init__(self, context)
+        self.parentclass = snapshot
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Nics:
+        '''
+
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/nics'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.parentclass.get_id(),
+                                '{snapshot:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMSnapshotNIC(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.parentclass.get_id(),
+                        '{snapshot:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_nic()
+
+            return VMSnapshotNIC(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Nics:
+        '''
+
+        url = '/vms/{vm:id}/snapshots/{snapshot:id}/nics'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.parentclass.get_id(),
+                    '{snapshot:id}': self.parentclass.get_id(),
+                }
+            )
+        ).get_nic()
+
+        return ParseHelper.toSubCollection(
+            VMSnapshotNIC,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMSnapshots(Base):
+
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, snapshot, expect=None, correlation_id=None):
+
+        '''
+        @type Snapshot:
+
+        @param snapshot.description: string
+        [@param snapshot.persist_memorystate: boolean]
+        [@param snapshot.disks.disk: collection]
+        {
+          [@ivar disk.id: string]
+        }
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Snapshot:
+        '''
+
+        url = '/vms/{vm:id}/snapshots'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(snapshot),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return VMSnapshot(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, all_content=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+        [@param all_content: true|false]
+
+        @return Snapshots:
+        '''
+
+        url = '/vms/{vm:id}/snapshots'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={"All-Content":all_content}
+                )
+
+                return VMSnapshot(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={"All-Content":all_content}
+            ).get_snapshot()
+
+            return VMSnapshot(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, all_content=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+        [@param all_content: true|false]
+
+        @return Snapshots:
+        '''
+
+        url = '/vms/{vm:id}/snapshots'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={"All-Content":all_content}
+        ).get_snapshot()
+
+        return ParseHelper.toSubCollection(
+            VMSnapshot,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMStatistic(params.Statistic, Base):
+    def __init__(self, vm, statistic, context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+        self.superclass  =  statistic
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vm, statistic, context):
+        if statistic is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vm, statistic, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class VMStatistics(Base):
+
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Statistics:
+        '''
+
+        url = '/vms/{vm:id}/statistics'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMStatistic(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_statistic()
+
+            return VMStatistic(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Statistics:
+        '''
+
+        url = '/vms/{vm:id}/statistics'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_statistic()
+
+        return ParseHelper.toSubCollection(
+            VMStatistic,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMTag(params.Tag, Base):
+    def __init__(self, vm, tag, context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+        self.superclass  =  tag
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vm, tag, context):
+        if tag is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vm, tag, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/vms/{vm:id}/tags/{tag:id}',
+            {
+                '{vm:id}': self.parentclass.get_id(),
+                '{tag:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class VMTags(Base):
+
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, tag, expect=None, correlation_id=None):
+
+        '''
+        @type Tag:
+
+        @param tag.id|name: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Tag:
+        '''
+
+        url = '/vms/{vm:id}/tags'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(tag),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return VMTag(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Tags:
+        '''
+
+        url = '/vms/{vm:id}/tags'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMTag(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_tag()
+
+            return VMTag(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Tags:
+        '''
+
+        url = '/vms/{vm:id}/tags'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_tag()
+
+        return ParseHelper.toSubCollection(
+            VMTag,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMVirtualNumaNode(params.VirtualNumaNode, Base):
     def __init__(self, vm, virtualnumanode, context):
         Base.__init__(self, context)
         self.parentclass = vm
@@ -27914,13 +29351,13 @@ class VmNumanode(params.VirtualNumaNode, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return VmNumanode(
+        return VMVirtualNumaNode(
             self.parentclass,
             result,
             self.context
         )
 
-class VmNumanodes(Base):
+class VMVirtualNumaNodes(Base):
 
     def __init__(self, vm , context):
         Base.__init__(self, context)
@@ -27969,7 +29406,7 @@ class VmNumanodes(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return VmNumanode(
+        return VMVirtualNumaNode(
             self.parentclass,
             result,
             self.context
@@ -28001,7 +29438,7 @@ class VmNumanodes(Base):
                     headers={}
                 )
 
-                return VmNumanode(
+                return VMVirtualNumaNode(
                     self.parentclass,
                     result,
                     self.context
@@ -28021,7 +29458,7 @@ class VmNumanodes(Base):
                 headers={}
             ).get_vm_numa_node()
 
-            return VmNumanode(
+            return VMVirtualNumaNode(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -28059,7 +29496,7 @@ class VmNumanodes(Base):
         ).get_vm_numa_node()
 
         return ParseHelper.toSubCollection(
-            VmNumanode,
+            VMVirtualNumaNode,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -28068,1400 +29505,7 @@ class VmNumanodes(Base):
             context=self.context
         )
 
-class VmPermission(params.Permission, Base):
-    def __init__(self, vm, permission, context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-        self.superclass  =  permission
-
-        #SUB_COLLECTIONS
-    def __new__(cls, vm, permission, context):
-        if permission is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vm, permission, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/vms/{vm:id}/permissions/{permission:id}',
-            {
-                '{vm:id}': self.parentclass.get_id(),
-                '{permission:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
-class VmPermissions(Base):
-
-    def __init__(self, vm , context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def add(self, permission, expect=None, correlation_id=None):
-
-        '''
-        @type Permission:
-
-        Overload 1:
-          @param permission.user.id: string
-          @param permission.role.id: string
-        Overload 2:
-          @param permission.role.id: string
-          @param permission.group.id: string
-        [@param expect: 201-created]
-        [@param correlation_id: any string]
-
-        @return Permission:
-        '''
-
-        url = '/vms/{vm:id}/permissions'
-
-        result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
-            ),
-            body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
-        )
-
-        return VmPermission(
-            self.parentclass,
-            result,
-            self.context
-        )
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return Permissions:
-        '''
-
-        url = '/vms/{vm:id}/permissions'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{vm:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return VmPermission(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{vm:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_permission()
-
-            return VmPermission(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, max=None, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
-
-        @return Permissions:
-        '''
-
-        url = '/vms/{vm:id}/permissions'
-
-        result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{vm:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
-        ).get_permission()
-
-        return ParseHelper.toSubCollection(
-            VmPermission,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class VmReporteddevice(params.ReportedDevice, Base):
-    def __init__(self, vm, reporteddevice, context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-        self.superclass  =  reporteddevice
-
-        #SUB_COLLECTIONS
-    def __new__(cls, vm, reporteddevice, context):
-        if reporteddevice is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vm, reporteddevice, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-class VmReporteddevices(Base):
-
-    def __init__(self, vm , context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return ReportedDevices:
-        '''
-
-        url = '/vms/{vm:id}/reporteddevices'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{vm:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return VmReporteddevice(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{vm:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_reported_device()
-
-            return VmReporteddevice(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-
-        @return ReportedDevices:
-        '''
-
-        url = '/vms/{vm:id}/reporteddevices'
-
-        result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
-            )
-        ).get_reported_device()
-
-        return ParseHelper.toSubCollection(
-            VmReporteddevice,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class VmSession(params.Session, Base):
-    def __init__(self, vm, session, context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-        self.superclass  =  session
-
-        #SUB_COLLECTIONS
-    def __new__(cls, vm, session, context):
-        if session is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vm, session, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-class VmSessions(Base):
-
-    def __init__(self, vm , context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return Sessions:
-        '''
-
-        url = '/vms/{vm:id}/sessions'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{vm:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return VmSession(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{vm:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_session()
-
-            return VmSession(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-
-        @return Sessions:
-        '''
-
-        url = '/vms/{vm:id}/sessions'
-
-        result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
-            )
-        ).get_session()
-
-        return ParseHelper.toSubCollection(
-            VmSession,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class VmSnapshot(params.Snapshot, Base):
-    def __init__(self, vm, snapshot, context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-        self.superclass  =  snapshot
-
-        self.cdroms = VmSnapshotCdroms(self, context)
-        self.disks = VmSnapshotDisks(self, context)
-        self.nics = VmSnapshotNics(self, context)
-
-    def __new__(cls, vm, snapshot, context):
-        if snapshot is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vm, snapshot, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/vms/{vm:id}/snapshots/{snapshot:id}',
-            {
-                '{vm:id}': self.parentclass.get_id(),
-                '{snapshot:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
-    def restore(self, action=params.Action(), correlation_id=None):
-        '''
-        @type Action:
-
-        [@param action.restore_memory: boolean]
-        [@param action.async: boolean]
-        [@param action.grace_period.expiry: long]
-        [@param action.disks.disk: collection]
-        {
-          [@ivar disk.id: string]
-          [@ivar disk.image_id: string]
-        }
-        [@param correlation_id: any string]
-
-        @return Action:
-        '''
-
-        url = '/vms/{vm:id}/snapshots/{snapshot:id}/restore'
-
-        result = self.__getProxy().request(
-            method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                    '{snapshot:id}': self.get_id(),
-                }
-            ),
-            body=ParseHelper.toXml(action),
-            headers={"Correlation-Id":correlation_id}
-        )
-
-        return result
-
-class VmSnapshotCdrom(params.CdRom, Base):
-    def __init__(self, snapshot, cdrom, context):
-        Base.__init__(self, context)
-        self.parentclass = snapshot
-        self.superclass  =  cdrom
-
-        #SUB_COLLECTIONS
-    def __new__(cls, snapshot, cdrom, context):
-        if cdrom is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(snapshot, cdrom, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-class VmSnapshotCdroms(Base):
-
-    def __init__(self, snapshot , context):
-        Base.__init__(self, context)
-        self.parentclass = snapshot
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return CdRoms:
-        '''
-
-        url = '/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{vm:id}': self.parentclass.parentclass.get_id(),
-                                '{snapshot:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return VmSnapshotCdrom(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{vm:id}': self.parentclass.parentclass.get_id(),
-                        '{snapshot:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_cdrom()
-
-            return VmSnapshotCdrom(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-
-        @return CdRoms:
-        '''
-
-        url = '/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
-
-        result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.parentclass.get_id(),
-                    '{snapshot:id}': self.parentclass.get_id(),
-                }
-            )
-        ).get_cdrom()
-
-        return ParseHelper.toSubCollection(
-            VmSnapshotCdrom,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class VmSnapshotDisk(params.Disk, Base):
-    def __init__(self, snapshot, disk, context):
-        Base.__init__(self, context)
-        self.parentclass = snapshot
-        self.superclass  =  disk
-
-        #SUB_COLLECTIONS
-    def __new__(cls, snapshot, disk, context):
-        if disk is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(snapshot, disk, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/vms/{vm:id}/snapshots/{snapshot:id}/disks/{disk:id}',
-            {
-                '{vm:id}': self.parentclass.parentclass.get_id(),
-                '{snapshot:id}': self.parentclass.get_id(),
-                '{disk:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
-class VmSnapshotDisks(Base):
-
-    def __init__(self, snapshot , context):
-        Base.__init__(self, context)
-        self.parentclass = snapshot
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return Disks:
-        '''
-
-        url = '/vms/{vm:id}/snapshots/{snapshot:id}/disks'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{vm:id}': self.parentclass.parentclass.get_id(),
-                                '{snapshot:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return VmSnapshotDisk(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{vm:id}': self.parentclass.parentclass.get_id(),
-                        '{snapshot:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_disk()
-
-            return VmSnapshotDisk(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-
-        @return Disks:
-        '''
-
-        url = '/vms/{vm:id}/snapshots/{snapshot:id}/disks'
-
-        result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.parentclass.get_id(),
-                    '{snapshot:id}': self.parentclass.get_id(),
-                }
-            )
-        ).get_disk()
-
-        return ParseHelper.toSubCollection(
-            VmSnapshotDisk,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class VmSnapshotNic(params.NIC, Base):
-    def __init__(self, snapshot, nic, context):
-        Base.__init__(self, context)
-        self.parentclass = snapshot
-        self.superclass  =  nic
-
-        #SUB_COLLECTIONS
-    def __new__(cls, snapshot, nic, context):
-        if nic is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(snapshot, nic, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-class VmSnapshotNics(Base):
-
-    def __init__(self, snapshot , context):
-        Base.__init__(self, context)
-        self.parentclass = snapshot
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return Nics:
-        '''
-
-        url = '/vms/{vm:id}/snapshots/{snapshot:id}/nics'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{vm:id}': self.parentclass.parentclass.get_id(),
-                                '{snapshot:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return VmSnapshotNic(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{vm:id}': self.parentclass.parentclass.get_id(),
-                        '{snapshot:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_nic()
-
-            return VmSnapshotNic(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-
-        @return Nics:
-        '''
-
-        url = '/vms/{vm:id}/snapshots/{snapshot:id}/nics'
-
-        result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.parentclass.get_id(),
-                    '{snapshot:id}': self.parentclass.get_id(),
-                }
-            )
-        ).get_nic()
-
-        return ParseHelper.toSubCollection(
-            VmSnapshotNic,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class VmSnapshots(Base):
-
-    def __init__(self, vm , context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def add(self, snapshot, expect=None, correlation_id=None):
-
-        '''
-        @type Snapshot:
-
-        @param snapshot.description: string
-        [@param snapshot.persist_memorystate: boolean]
-        [@param snapshot.disks.disk: collection]
-        {
-          [@ivar disk.id: string]
-        }
-        [@param expect: 201-created]
-        [@param correlation_id: any string]
-
-        @return Snapshot:
-        '''
-
-        url = '/vms/{vm:id}/snapshots'
-
-        result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
-            ),
-            body=ParseHelper.toXml(snapshot),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
-        )
-
-        return VmSnapshot(
-            self.parentclass,
-            result,
-            self.context
-        )
-
-    def get(self, name=None, all_content=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-        [@param all_content: true|false]
-
-        @return Snapshots:
-        '''
-
-        url = '/vms/{vm:id}/snapshots'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{vm:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={"All-Content":all_content}
-                )
-
-                return VmSnapshot(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{vm:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={"All-Content":all_content}
-            ).get_snapshot()
-
-            return VmSnapshot(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, max=None, all_content=None, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
-        [@param all_content: true|false]
-
-        @return Snapshots:
-        '''
-
-        url = '/vms/{vm:id}/snapshots'
-
-        result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{vm:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={"All-Content":all_content}
-        ).get_snapshot()
-
-        return ParseHelper.toSubCollection(
-            VmSnapshot,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class VmStatistic(params.Statistic, Base):
-    def __init__(self, vm, statistic, context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-        self.superclass  =  statistic
-
-        #SUB_COLLECTIONS
-    def __new__(cls, vm, statistic, context):
-        if statistic is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vm, statistic, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-class VmStatistics(Base):
-
-    def __init__(self, vm , context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return Statistics:
-        '''
-
-        url = '/vms/{vm:id}/statistics'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{vm:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return VmStatistic(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{vm:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_statistic()
-
-            return VmStatistic(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, max=None, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
-
-        @return Statistics:
-        '''
-
-        url = '/vms/{vm:id}/statistics'
-
-        result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{vm:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
-        ).get_statistic()
-
-        return ParseHelper.toSubCollection(
-            VmStatistic,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class VmTag(params.Tag, Base):
-    def __init__(self, vm, tag, context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-        self.superclass  =  tag
-
-        #SUB_COLLECTIONS
-    def __new__(cls, vm, tag, context):
-        if tag is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vm, tag, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/vms/{vm:id}/tags/{tag:id}',
-            {
-                '{vm:id}': self.parentclass.get_id(),
-                '{tag:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
-class VmTags(Base):
-
-    def __init__(self, vm , context):
-        Base.__init__(self, context)
-        self.parentclass = vm
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def add(self, tag, expect=None, correlation_id=None):
-
-        '''
-        @type Tag:
-
-        @param tag.id|name: string
-        [@param expect: 201-created]
-        [@param correlation_id: any string]
-
-        @return Tag:
-        '''
-
-        url = '/vms/{vm:id}/tags'
-
-        result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
-            ),
-            body=ParseHelper.toXml(tag),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
-        )
-
-        return VmTag(
-            self.parentclass,
-            result,
-            self.context
-        )
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return Tags:
-        '''
-
-        url = '/vms/{vm:id}/tags'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{vm:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return VmTag(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{vm:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_tag()
-
-            return VmTag(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, max=None, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
-
-        @return Tags:
-        '''
-
-        url = '/vms/{vm:id}/tags'
-
-        result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{vm:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
-        ).get_tag()
-
-        return ParseHelper.toSubCollection(
-            VmTag,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class VmWatchdog(params.WatchDog, Base):
+class VMWatchDog(params.WatchDog, Base):
     def __init__(self, vm, watchdog, context):
         Base.__init__(self, context)
         self.parentclass = vm
@@ -29531,13 +29575,13 @@ class VmWatchdog(params.WatchDog, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return VmWatchdog(
+        return VMWatchDog(
             self.parentclass,
             result,
             self.context
         )
 
-class VmWatchdogs(Base):
+class VMWatchDogs(Base):
 
     def __init__(self, vm , context):
         Base.__init__(self, context)
@@ -29578,7 +29622,7 @@ class VmWatchdogs(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return VmWatchdog(
+        return VMWatchDog(
             self.parentclass,
             result,
             self.context
@@ -29610,7 +29654,7 @@ class VmWatchdogs(Base):
                     headers={}
                 )
 
-                return VmWatchdog(
+                return VMWatchDog(
                     self.parentclass,
                     result,
                     self.context
@@ -29630,7 +29674,7 @@ class VmWatchdogs(Base):
                 headers={}
             ).get_watchdog()
 
-            return VmWatchdog(
+            return VMWatchDog(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -29668,7 +29712,7 @@ class VmWatchdogs(Base):
         ).get_watchdog()
 
         return ParseHelper.toSubCollection(
-            VmWatchdog,
+            VMWatchDog,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -29677,403 +29721,7 @@ class VmWatchdogs(Base):
             context=self.context
         )
 
-class Vmpool(params.VmPool, Base):
-    def __init__(self, vmpool, context):
-        Base.__init__(self, context)
-        self.superclass = vmpool
-
-        self.permissions = VmpoolPermissions(self, context)
-
-    def __new__(cls, vmpool, context):
-        if vmpool is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vmpool, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/vmpools/{vmpool:id}',
-            {
-                '{vmpool:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
-    def update(self, correlation_id=None):
-        '''
-        [@param vmpool.cluster.id|name: string]
-        [@param vmpool.template.id|name: string]
-        [@param vmpool.name: string]
-        [@param vmpool.comment: string]
-        [@param vmpool.size: int]
-        [@param vmpool.max_user_vms: int]
-        [@param vmpool.display.proxy: string]
-        [@param vmpool.description: string]
-        [@param correlation_id: any string]
-
-        @return VmPool:
-        '''
-
-        url = '/vmpools/{vmpool:id}'
-
-        result = self.__getProxy().update(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vmpool:id}': self.get_id(),
-                }
-            ),
-            body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
-        )
-
-        return Vmpool(result, self.context)
-
-    def allocatevm(self, action=params.Action(), correlation_id=None):
-        '''
-        @type Action:
-
-        [@param action.async: boolean]
-        [@param action.grace_period.expiry: long]
-        [@param correlation_id: any string]
-
-        @return Action:
-        '''
-
-        url = '/vmpools/{vmpool:id}/allocatevm'
-
-        result = self.__getProxy().request(
-            method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vmpool:id}': self.get_id(),
-                }
-            ),
-            body=ParseHelper.toXml(action),
-            headers={"Correlation-Id":correlation_id}
-        )
-
-        return result
-
-class VmpoolPermission(params.Permission, Base):
-    def __init__(self, vmpool, permission, context):
-        Base.__init__(self, context)
-        self.parentclass = vmpool
-        self.superclass  =  permission
-
-        #SUB_COLLECTIONS
-    def __new__(cls, vmpool, permission, context):
-        if permission is None: return None
-        obj = object.__new__(cls)
-        obj.__init__(vmpool, permission, context)
-        return obj
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/vmpools/{vmpool:id}/permissions/{permission:id}',
-            {
-                '{vmpool:id}': self.parentclass.get_id(),
-                '{permission:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
-
-class VmpoolPermissions(Base):
-
-    def __init__(self, vmpool , context):
-        Base.__init__(self, context)
-        self.parentclass = vmpool
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def add(self, permission, expect=None, correlation_id=None):
-
-        '''
-        @type Permission:
-
-        Overload 1:
-          @param permission.user.id: string
-          @param permission.role.id: string
-        Overload 2:
-          @param permission.role.id: string
-          @param permission.group.id: string
-        [@param expect: 201-created]
-        [@param correlation_id: any string]
-
-        @return Permission:
-        '''
-
-        url = '/vmpools/{vmpool:id}/permissions'
-
-        result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vmpool:id}': self.parentclass.get_id(),
-                }
-            ),
-            body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
-        )
-
-        return VmpoolPermission(
-            self.parentclass,
-            result,
-            self.context
-        )
-
-    def get(self, name=None, id=None):
-
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return Permissions:
-        '''
-
-        url = '/vmpools/{vmpool:id}/permissions'
-
-        if id:
-            try :
-                result = self.__getProxy().get(
-                    url=UrlHelper.append(
-                        UrlHelper.replace(
-                            url,
-                            {
-                                '{vmpool:id}': self.parentclass.get_id(),
-                            }
-                        ),
-                        id
-                    ),
-                    headers={}
-                )
-
-                return VmpoolPermission(
-                    self.parentclass,
-                    result,
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=UrlHelper.replace(
-                    url,
-                    {
-                        '{vmpool:id}': self.parentclass.get_id(),
-                    }
-                ),
-                headers={}
-            ).get_permission()
-
-            return VmpoolPermission(
-                self.parentclass,
-                FilterHelper.getItem(
-                    FilterHelper.filter(
-                        result,
-                        {'name':name}
-                    ),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, max=None, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
-
-        @return Permissions:
-        '''
-
-        url = '/vmpools/{vmpool:id}/permissions'
-
-        result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{vmpool:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
-        ).get_permission()
-
-        return ParseHelper.toSubCollection(
-            VmpoolPermission,
-            self.parentclass,
-            FilterHelper.filter(
-                result,
-                kwargs
-            ),
-            context=self.context
-        )
-
-class Vmpools(Base):
-    def __init__(self, context):
-        Base.__init__(self, context)
-
-    def __getProxy(self):
-        proxy = context.manager[self.context].get('proxy')
-        if proxy:
-            return proxy
-        #This may happen only if sdk was explicitly disconnected
-        #using .disconnect() method, but resource instance ref. is
-        #still available at client's code.
-        raise DisconnectedError
-
-    def add(self, vmpool, expect=None, correlation_id=None):
-        '''
-        @type VmPool:
-
-        @param vmpool.cluster.id|name: string
-        @param vmpool.template.id|name: string
-        @param vmpool.name: string
-        [@param vmpool.comment: string]
-        [@param vmpool.size: int]
-        [@param vmpool.max_user_vms: int]
-        [@param vmpool.display.proxy: string]
-        [@param vmpool.description: string]
-        [@param vmpool.soundcard_enabled: boolean]
-        [@param expect: 201-created]
-        [@param correlation_id: any string]
-
-        @return VmPool:
-        '''
-
-        url = '/vmpools'
-
-        result = self.__getProxy().add(
-           url=url,
-           body=ParseHelper.toXml(vmpool),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
-        )
-
-        return Vmpool(result, self.context)
-
-    def get(self, name=None, id=None):
-        '''
-        [@param id  : string (the id of the entity)]
-        [@param name: string (the name of the entity)]
-
-        @return VmPools:
-        '''
-
-        url = '/vmpools'
-
-        if id:
-            try :
-                return Vmpool(
-                    self.__getProxy().get(
-                        url=UrlHelper.append(url, id),
-                        headers={}
-                    ),
-                    self.context
-                )
-            except RequestError, err:
-                if err.status and err.status == 404:
-                    return None
-                raise err
-        elif name:
-            result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
-                headers={}
-            ).get_vmpool()
-
-            return Vmpool(
-                FilterHelper.getItem(
-                    FilterHelper.filter(result, {'name':name}),
-                    query="name=" + name
-                ),
-                self.context
-            )
-        else:
-            raise MissingParametersError(['id', 'name'])
-
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
-        '''
-        [@param **kwargs: dict (property based filtering)]
-        [@param query: string (oVirt engine search dialect query)]
-        [@param case_sensitive: boolean (true|false)]
-        [@param max: int (max results)]
-
-        @return VmPools:
-        '''
-
-        url='/vmpools'
-
-        result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-            headers={}
-        ).get_vmpool()
-
-        return ParseHelper.toCollection(
-            Vmpool,
-            FilterHelper.filter(result, kwargs),
-            context=self.context
-        )
-
-class Vms(Base):
+class VMs(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -30382,7 +30030,7 @@ class Vms(Base):
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
-        return Vm(result, self.context)
+        return VM(result, self.context)
 
     def get(self, name=None, all_content=None, id=None):
         '''
@@ -30397,7 +30045,7 @@ class Vms(Base):
 
         if id:
             try :
-                return Vm(
+                return VM(
                     self.__getProxy().get(
                         url=UrlHelper.append(url, id),
                         headers={"All-Content":all_content}
@@ -30414,7 +30062,7 @@ class Vms(Base):
                 headers={"All-Content":all_content}
             ).get_vm()
 
-            return Vm(
+            return VM(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -30443,17 +30091,434 @@ class Vms(Base):
         ).get_vm()
 
         return ParseHelper.toCollection(
-            Vm,
+            VM,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
 
-class Vnicprofile(params.VnicProfile, Base):
+class VersionCaps(params.VersionCaps, Base):
+    def __init__(self, versioncaps, context):
+        Base.__init__(self, context)
+        self.superclass = versioncaps
+
+        #SUB_COLLECTIONS
+    def __new__(cls, versioncaps, context):
+        if versioncaps is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(versioncaps, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class VmPool(params.VmPool, Base):
+    def __init__(self, vmpool, context):
+        Base.__init__(self, context)
+        self.superclass = vmpool
+
+        self.permissions = VmPoolPermissions(self, context)
+
+    def __new__(cls, vmpool, context):
+        if vmpool is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmpool, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/vmpools/{vmpool:id}',
+            {
+                '{vmpool:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, correlation_id=None):
+        '''
+        [@param vmpool.cluster.id|name: string]
+        [@param vmpool.template.id|name: string]
+        [@param vmpool.name: string]
+        [@param vmpool.comment: string]
+        [@param vmpool.size: int]
+        [@param vmpool.max_user_vms: int]
+        [@param vmpool.display.proxy: string]
+        [@param vmpool.description: string]
+        [@param correlation_id: any string]
+
+        @return VmPool:
+        '''
+
+        url = '/vmpools/{vmpool:id}'
+
+        result = self.__getProxy().update(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vmpool:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return VmPool(result, self.context)
+
+    def allocatevm(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/vmpools/{vmpool:id}/allocatevm'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vmpool:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+class VmPoolPermission(params.Permission, Base):
+    def __init__(self, vmpool, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = vmpool
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vmpool, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vmpool, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/vmpools/{vmpool:id}/permissions/{permission:id}',
+            {
+                '{vmpool:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class VmPoolPermissions(Base):
+
+    def __init__(self, vmpool , context):
+        Base.__init__(self, context)
+        self.parentclass = vmpool
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission, expect=None, correlation_id=None):
+
+        '''
+        @type Permission:
+
+        Overload 1:
+          @param permission.user.id: string
+          @param permission.role.id: string
+        Overload 2:
+          @param permission.role.id: string
+          @param permission.group.id: string
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return Permission:
+        '''
+
+        url = '/vmpools/{vmpool:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vmpool:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return VmPoolPermission(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/vmpools/{vmpool:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vmpool:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VmPoolPermission(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vmpool:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_permission()
+
+            return VmPoolPermission(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Permissions:
+        '''
+
+        url = '/vmpools/{vmpool:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vmpool:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            VmPoolPermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VmPools(Base):
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, vmpool, expect=None, correlation_id=None):
+        '''
+        @type VmPool:
+
+        @param vmpool.cluster.id|name: string
+        @param vmpool.template.id|name: string
+        @param vmpool.name: string
+        [@param vmpool.comment: string]
+        [@param vmpool.size: int]
+        [@param vmpool.max_user_vms: int]
+        [@param vmpool.display.proxy: string]
+        [@param vmpool.description: string]
+        [@param vmpool.soundcard_enabled: boolean]
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return VmPool:
+        '''
+
+        url = '/vmpools'
+
+        result = self.__getProxy().add(
+           url=url,
+           body=ParseHelper.toXml(vmpool),
+           headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return VmPool(result, self.context)
+
+    def get(self, name=None, id=None):
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return VmPools:
+        '''
+
+        url = '/vmpools'
+
+        if id:
+            try :
+                return VmPool(
+                    self.__getProxy().get(
+                        url=UrlHelper.append(url, id),
+                        headers={}
+                    ),
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                headers={}
+            ).get_vmpool()
+
+            return VmPool(
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param query: string (oVirt engine search dialect query)]
+        [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
+
+        @return VmPools:
+        '''
+
+        url='/vmpools'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            headers={}
+        ).get_vmpool()
+
+        return ParseHelper.toCollection(
+            VmPool,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )
+
+class VnicProfile(params.VnicProfile, Base):
     def __init__(self, vnicprofile, context):
         Base.__init__(self, context)
         self.superclass = vnicprofile
 
-        self.permissions = VnicprofilePermissions(self, context)
+        self.permissions = VnicProfilePermissions(self, context)
 
     def __new__(cls, vnicprofile, context):
         if vnicprofile is None: return None
@@ -30521,9 +30586,9 @@ class Vnicprofile(params.VnicProfile, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-        return Vnicprofile(result, self.context)
+        return VnicProfile(result, self.context)
 
-class VnicprofilePermission(params.Permission, Base):
+class VnicProfilePermission(params.Permission, Base):
     def __init__(self, vnicprofile, permission, context):
         Base.__init__(self, context)
         self.parentclass = vnicprofile
@@ -30569,7 +30634,7 @@ class VnicprofilePermission(params.Permission, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-class VnicprofilePermissions(Base):
+class VnicProfilePermissions(Base):
 
     def __init__(self, vnicprofile , context):
         Base.__init__(self, context)
@@ -30614,7 +30679,7 @@ class VnicprofilePermissions(Base):
             headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return VnicprofilePermission(
+        return VnicProfilePermission(
             self.parentclass,
             result,
             self.context
@@ -30646,7 +30711,7 @@ class VnicprofilePermissions(Base):
                     headers={}
                 )
 
-                return VnicprofilePermission(
+                return VnicProfilePermission(
                     self.parentclass,
                     result,
                     self.context
@@ -30666,7 +30731,7 @@ class VnicprofilePermissions(Base):
                 headers={}
             ).get_permission()
 
-            return VnicprofilePermission(
+            return VnicProfilePermission(
                 self.parentclass,
                 FilterHelper.getItem(
                     FilterHelper.filter(
@@ -30704,7 +30769,7 @@ class VnicprofilePermissions(Base):
         ).get_permission()
 
         return ParseHelper.toSubCollection(
-            VnicprofilePermission,
+            VnicProfilePermission,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -30713,7 +30778,7 @@ class VnicprofilePermissions(Base):
             context=self.context
         )
 
-class Vnicprofiles(Base):
+class VnicProfiles(Base):
     def __init__(self, context):
         Base.__init__(self, context)
 
@@ -30753,7 +30818,7 @@ class Vnicprofiles(Base):
            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
-        return Vnicprofile(result, self.context)
+        return VnicProfile(result, self.context)
 
     def get(self, name=None, id=None):
         '''
@@ -30767,7 +30832,7 @@ class Vnicprofiles(Base):
 
         if id:
             try :
-                return Vnicprofile(
+                return VnicProfile(
                     self.__getProxy().get(
                                 url=UrlHelper.append(url, id),
                                 headers={}
@@ -30784,7 +30849,7 @@ class Vnicprofiles(Base):
                     headers={}
             ).get_vnic_profile()
 
-            return Vnicprofile(
+            return VnicProfile(
                 FilterHelper.getItem(
                     FilterHelper.filter(result, {'name':name}),
                     query="name=" + name
@@ -30811,7 +30876,7 @@ class Vnicprofiles(Base):
         ).get_vnic_profile()
 
         return ParseHelper.toCollection(
-            Vnicprofile,
+            VnicProfile,
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
