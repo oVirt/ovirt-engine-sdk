@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-02-27 16:20:53.000749'''
+'''Generated at: 2015-03-03 09:43:58.000461'''
 
 
 from ovirtsdk.xml import params
@@ -13043,6 +13043,33 @@ class Host(params.Host, Base):
         '''
 
         url = '/hosts/{host:id}/iscsilogin'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{host:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def refreshcapabilities(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/hosts/{host:id}/refreshcapabilities'
 
         result = self.__getProxy().request(
             method='POST',

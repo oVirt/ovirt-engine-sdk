@@ -6359,6 +6359,7 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean" context="matrix">
                             <name>force</name>
                             <value>true|false</value>
+                            <deprecated>true</deprecated>
                         </parameter>
                     </parameters_set>
                 </url>
@@ -7751,6 +7752,37 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Permission</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/refreshcapabilities" rel="refreshcapabilities">
+            <description>refresh the capabilities of the host</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Action</type>
+                    <parameters_set>
+                        <description>refresh the capabilities of the host</description>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.async</name>
+                        </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>action.grace_period.expiry</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
             </response>
         </link>
         <link href="hosts/{host:id}/statistics" rel="get">
