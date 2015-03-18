@@ -5275,6 +5275,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="true" type="xs:string">
                             <name>group.name</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>group.namespace</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>group.principal</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -11931,6 +11937,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>user.domain.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>user.namespace</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>user.principal</name>
                         </parameter>
                     </parameters_set>
                 </body>

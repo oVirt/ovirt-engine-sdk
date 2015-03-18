@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-02-19 13:20:49.000671'''
+'''Generated at: 2015-03-18 10:41:11.000183'''
 
 
 from ovirtsdk.xml import params
@@ -11075,6 +11075,8 @@ class Groups(Base):
         @type Group:
 
         @param group.name: string
+        [@param group.namespace: string]
+        [@param group.principal: string]
         [@param correlation_id: any string]
 
         @return Group:
@@ -21510,6 +21512,8 @@ class Users(Base):
 
         @param user.user_name: string
         @param user.domain.id|name: string
+        [@param user.namespace: string]
+        [@param user.principal: string]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
