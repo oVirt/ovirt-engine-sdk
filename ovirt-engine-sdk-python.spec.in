@@ -22,6 +22,15 @@ Obsoletes: ovirt-engine-sdk < 3.3.0.6
 This package contains The oVirt-Engine Software Development Kit.
 With this package, custom software can be built for oVirt-Engine.
 
+%package doc
+Summary: Documentation for oVirt Engine Python SDK
+Group: Documentation
+BuildRequires: python-sphinx
+
+%description doc
+This package contains the automatically generated documentation for the
+oVirt Engine Software Development Kit.
+
 %prep
 %setup -q -n %{name}
 
@@ -30,7 +39,25 @@ With this package, custom software can be built for oVirt-Engine.
 sed -i 1d src/ovirtsdk/xml/params.py
 
 %build
+
+# Build the package:
 %{__python} setup.py build
+
+# Generate the documentation:
+sphinx-apidoc \
+  -H 'oVirt Engine Python SDK' \
+  -A 'oVirt' \
+  -V '3.6' \
+  -F \
+  -f \
+  -o doc \
+  src
+
+# Convert the generated documentation to HTML:
+sphinx-build \
+  -b html \
+  doc \
+  html
 
 %install
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
@@ -41,6 +68,9 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS.md
 %doc LICENSE.txt
 %doc README.md
+
+%files doc
+%doc html
 
 %changelog
 * Tue Oct 28 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.6.0.0-0
