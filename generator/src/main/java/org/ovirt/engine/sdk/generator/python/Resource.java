@@ -75,10 +75,20 @@ public class Resource {
         String headersMethodParamsStr = (String) result[0];
         String headersMapParamsStr = (String) result[1];
 
-        String combinedMethodParams =
-            prmsStr +
-            (!headersMethodParamsStr.isEmpty()? ", ": "") +
-            headersMethodParamsStr;
+        StringBuilder combinedMethodParamsBuffer = new StringBuilder();
+        if (prmsStr != null && !prmsStr.isEmpty()) {
+            if (combinedMethodParamsBuffer.length() > 0) {
+                combinedMethodParamsBuffer.append(", ");
+            }
+            combinedMethodParamsBuffer.append(prmsStr);
+        }
+        if (headersMethodParamsStr != null && !headersMethodParamsStr.isEmpty()) {
+            if (combinedMethodParamsBuffer.length() > 0) {
+                combinedMethodParamsBuffer.append(", ");
+            }
+            combinedMethodParamsBuffer.append(headersMethodParamsStr);
+        }
+        String combinedMethodParams = combinedMethodParamsBuffer.toString();
 
         String bodyInstance = ParamUtils.getBodyInstance(link);
         String bodyInstanceStr = !bodyInstance.isEmpty()? "=" + bodyInstance: "";
