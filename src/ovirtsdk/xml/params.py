@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Fri Feb 27 16:20:52 2015 by generateDS.py version 2.12a.
+# Generated Mon Apr  6 13:12:41 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -9307,7 +9307,7 @@ class SchedulingPolicy(BaseResource):
 class Cluster(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, cpu=None, data_center=None, memory_policy=None, scheduling_policy=None, version=None, supported_versions=None, error_handling=None, virt_service=None, gluster_service=None, threads_as_cores=None, tunnel_migration=None, trusted_service=None, ha_reservation=None, optional_reason=None, ballooning_enabled=None, display=None, ksm=None, serial_number=None, required_rng_sources=None, fencing_policy=None, migration=None, management_network=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, cpu=None, data_center=None, memory_policy=None, scheduling_policy=None, version=None, supported_versions=None, error_handling=None, virt_service=None, gluster_service=None, threads_as_cores=None, tunnel_migration=None, trusted_service=None, ha_reservation=None, optional_reason=None, maintenance_reason_required=None, ballooning_enabled=None, display=None, ksm=None, serial_number=None, required_rng_sources=None, fencing_policy=None, migration=None, management_network=None):
         super(Cluster, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.cpu = cpu
         self.data_center = data_center
@@ -9323,6 +9323,7 @@ class Cluster(BaseResource):
         self.trusted_service = trusted_service
         self.ha_reservation = ha_reservation
         self.optional_reason = optional_reason
+        self.maintenance_reason_required = maintenance_reason_required
         self.ballooning_enabled = ballooning_enabled
         self.display = display
         self.ksm = ksm
@@ -9365,6 +9366,8 @@ class Cluster(BaseResource):
     def set_ha_reservation(self, ha_reservation): self.ha_reservation = ha_reservation
     def get_optional_reason(self): return self.optional_reason
     def set_optional_reason(self, optional_reason): self.optional_reason = optional_reason
+    def get_maintenance_reason_required(self): return self.maintenance_reason_required
+    def set_maintenance_reason_required(self, maintenance_reason_required): self.maintenance_reason_required = maintenance_reason_required
     def get_ballooning_enabled(self): return self.ballooning_enabled
     def set_ballooning_enabled(self, ballooning_enabled): self.ballooning_enabled = ballooning_enabled
     def get_display(self): return self.display
@@ -9397,6 +9400,7 @@ class Cluster(BaseResource):
             self.trusted_service is not None or
             self.ha_reservation is not None or
             self.optional_reason is not None or
+            self.maintenance_reason_required is not None or
             self.ballooning_enabled is not None or
             self.display is not None or
             self.ksm is not None or
@@ -9469,6 +9473,9 @@ class Cluster(BaseResource):
         if self.optional_reason is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%soptional_reason>%s</%soptional_reason>%s' % (namespace_, self.gds_format_boolean(self.optional_reason, input_name='optional_reason'), namespace_, eol_))
+        if self.maintenance_reason_required is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%smaintenance_reason_required>%s</%smaintenance_reason_required>%s' % (namespace_, self.gds_format_boolean(self.maintenance_reason_required, input_name='maintenance_reason_required'), namespace_, eol_))
         if self.ballooning_enabled is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sballooning_enabled>%s</%sballooning_enabled>%s' % (namespace_, self.gds_format_boolean(self.ballooning_enabled, input_name='ballooning_enabled'), namespace_, eol_))
@@ -9559,6 +9566,9 @@ class Cluster(BaseResource):
         if self.optional_reason is not None:
             showIndent(outfile, level)
             outfile.write('optional_reason=%s,\n' % self.optional_reason)
+        if self.maintenance_reason_required is not None:
+            showIndent(outfile, level)
+            outfile.write('maintenance_reason_required=%s,\n' % self.maintenance_reason_required)
         if self.ballooning_enabled is not None:
             showIndent(outfile, level)
             outfile.write('ballooning_enabled=%s,\n' % self.ballooning_enabled)
@@ -9713,6 +9723,16 @@ class Cluster(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'optional_reason')
             self.optional_reason = ival_
+        elif nodeName_ == 'maintenance_reason_required':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'maintenance_reason_required')
+            self.maintenance_reason_required = ival_
         elif nodeName_ == 'ballooning_enabled':
             sval_ = child_.text
             if sval_ in ('true', '1'):
@@ -9851,13 +9871,14 @@ class Clusters(BaseResources):
 class Agent(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, address=None, username=None, password=None, options=None, concurrent=None, order=None, port=None, host=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, address=None, username=None, password=None, options=None, encrypt_options=None, concurrent=None, order=None, port=None, host=None):
         super(Agent, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.type_ = _cast(None, type_)
         self.address = address
         self.username = username
         self.password = password
         self.options = options
+        self.encrypt_options = encrypt_options
         self.concurrent = concurrent
         self.order = order
         self.port = port
@@ -9876,6 +9897,8 @@ class Agent(BaseResource):
     def set_password(self, password): self.password = password
     def get_options(self): return self.options
     def set_options(self, options): self.options = options
+    def get_encrypt_options(self): return self.encrypt_options
+    def set_encrypt_options(self, encrypt_options): self.encrypt_options = encrypt_options
     def get_concurrent(self): return self.concurrent
     def set_concurrent(self, concurrent): self.concurrent = concurrent
     def get_order(self): return self.order
@@ -9892,6 +9915,7 @@ class Agent(BaseResource):
             self.username is not None or
             self.password is not None or
             self.options is not None or
+            self.encrypt_options is not None or
             self.concurrent is not None or
             self.order is not None or
             self.port is not None or
@@ -9939,6 +9963,9 @@ class Agent(BaseResource):
             outfile.write('<%spassword>%s</%spassword>%s' % (namespace_, self.gds_format_string(quote_xml(self.password).encode(ExternalEncoding), input_name='password'), namespace_, eol_))
         if self.options is not None:
             self.options.export_(outfile, level, namespace_, name_='options', pretty_print=pretty_print)
+        if self.encrypt_options is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sencrypt_options>%s</%sencrypt_options>%s' % (namespace_, self.gds_format_boolean(self.encrypt_options, input_name='encrypt_options'), namespace_, eol_))
         if self.concurrent is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sconcurrent>%s</%sconcurrent>%s' % (namespace_, self.gds_format_boolean(self.concurrent, input_name='concurrent'), namespace_, eol_))
@@ -9979,6 +10006,9 @@ class Agent(BaseResource):
             self.options.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.encrypt_options is not None:
+            showIndent(outfile, level)
+            outfile.write('encrypt_options=%s,\n' % self.encrypt_options)
         if self.concurrent is not None:
             showIndent(outfile, level)
             outfile.write('concurrent=%s,\n' % self.concurrent)
@@ -10024,6 +10054,16 @@ class Agent(BaseResource):
             obj_ = Options.factory()
             obj_.build(child_)
             self.options = obj_
+        elif nodeName_ == 'encrypt_options':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'encrypt_options')
+            self.encrypt_options = ival_
         elif nodeName_ == 'concurrent':
             sval_ = child_.text
             if sval_ in ('true', '1'):
@@ -23923,11 +23963,12 @@ class Sessions(BaseResources):
 class VmPool(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, size=None, cluster=None, template=None, prestarted_vms=None, max_user_vms=None, display=None, rng_device=None, soundcard_enabled=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, size=None, cluster=None, template=None, vm=None, prestarted_vms=None, max_user_vms=None, display=None, rng_device=None, soundcard_enabled=None):
         super(VmPool, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.size = size
         self.cluster = cluster
         self.template = template
+        self.vm = vm
         self.prestarted_vms = prestarted_vms
         self.max_user_vms = max_user_vms
         self.display = display
@@ -23945,6 +23986,8 @@ class VmPool(BaseResource):
     def set_cluster(self, cluster): self.cluster = cluster
     def get_template(self): return self.template
     def set_template(self, template): self.template = template
+    def get_vm(self): return self.vm
+    def set_vm(self, vm): self.vm = vm
     def get_prestarted_vms(self): return self.prestarted_vms
     def set_prestarted_vms(self, prestarted_vms): self.prestarted_vms = prestarted_vms
     def get_max_user_vms(self): return self.max_user_vms
@@ -23960,6 +24003,7 @@ class VmPool(BaseResource):
             self.size is not None or
             self.cluster is not None or
             self.template is not None or
+            self.vm is not None or
             self.prestarted_vms is not None or
             self.max_user_vms is not None or
             self.display is not None or
@@ -24001,6 +24045,8 @@ class VmPool(BaseResource):
             self.cluster.export_(outfile, level, namespace_, name_='cluster', pretty_print=pretty_print)
         if self.template is not None:
             self.template.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
+        if self.vm is not None:
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
         if self.prestarted_vms is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sprestarted_vms>%s</%sprestarted_vms>%s' % (namespace_, self.gds_format_integer(self.prestarted_vms, input_name='prestarted_vms'), namespace_, eol_))
@@ -24037,6 +24083,12 @@ class VmPool(BaseResource):
             showIndent(outfile, level)
             outfile.write('template=model_.template(\n')
             self.template.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.vm is not None:
+            showIndent(outfile, level)
+            outfile.write('vm=model_.vm(\n')
+            self.vm.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.prestarted_vms is not None:
@@ -24087,6 +24139,11 @@ class VmPool(BaseResource):
             obj_ = class_obj_.factory()
             obj_.build(child_)
             self.template = obj_
+        elif nodeName_ == 'vm':
+            class_obj_ = self.get_class_obj_(child_, VM)
+            obj_ = class_obj_.factory()
+            obj_.build(child_)
+            self.vm = obj_
         elif nodeName_ == 'prestarted_vms':
             sval_ = child_.text
             try:
@@ -35897,12 +35954,13 @@ class OperatingSystemInfos(BaseResources):
 class ExternalProvider(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, url=None, requires_authentication=None, username=None, password=None, properties=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, url=None, requires_authentication=None, username=None, password=None, authentication_url=None, properties=None, extensiontype_=None):
         super(ExternalProvider, self).__init__(actions, href, id, name, description, comment, creation_status, link, extensiontype_, )
         self.url = url
         self.requires_authentication = requires_authentication
         self.username = username
         self.password = password
+        self.authentication_url = authentication_url
         self.properties = properties
         self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
@@ -35919,6 +35977,8 @@ class ExternalProvider(BaseResource):
     def set_username(self, username): self.username = username
     def get_password(self): return self.password
     def set_password(self, password): self.password = password
+    def get_authentication_url(self): return self.authentication_url
+    def set_authentication_url(self, authentication_url): self.authentication_url = authentication_url
     def get_properties(self): return self.properties
     def set_properties(self, properties): self.properties = properties
     def get_extensiontype_(self): return self.extensiontype_
@@ -35929,6 +35989,7 @@ class ExternalProvider(BaseResource):
             self.requires_authentication is not None or
             self.username is not None or
             self.password is not None or
+            self.authentication_url is not None or
             self.properties is not None or
             super(ExternalProvider, self).hasContent_()
         ):
@@ -35975,6 +36036,9 @@ class ExternalProvider(BaseResource):
         if self.password is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%spassword>%s</%spassword>%s' % (namespace_, self.gds_format_string(quote_xml(self.password).encode(ExternalEncoding), input_name='password'), namespace_, eol_))
+        if self.authentication_url is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sauthentication_url>%s</%sauthentication_url>%s' % (namespace_, self.gds_format_string(quote_xml(self.authentication_url).encode(ExternalEncoding), input_name='authentication_url'), namespace_, eol_))
         if self.properties is not None:
             self.properties.export_(outfile, level, namespace_, name_='properties', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='ExternalProvider'):
@@ -35999,6 +36063,9 @@ class ExternalProvider(BaseResource):
         if self.password is not None:
             showIndent(outfile, level)
             outfile.write('password=%s,\n' % quote_python(self.password).encode(ExternalEncoding))
+        if self.authentication_url is not None:
+            showIndent(outfile, level)
+            outfile.write('authentication_url=%s,\n' % quote_python(self.authentication_url).encode(ExternalEncoding))
         if self.properties is not None:
             showIndent(outfile, level)
             outfile.write('properties=model_.properties(\n')
@@ -36041,6 +36108,10 @@ class ExternalProvider(BaseResource):
             password_ = child_.text
             password_ = self.gds_validate_string(password_, node, 'password')
             self.password = password_
+        elif nodeName_ == 'authentication_url':
+            authentication_url_ = child_.text
+            authentication_url_ = self.gds_validate_string(authentication_url_, node, 'authentication_url')
+            self.authentication_url = authentication_url_
         elif nodeName_ == 'properties':
             obj_ = Properties.factory()
             obj_.build(child_)
@@ -36052,8 +36123,8 @@ class ExternalProvider(BaseResource):
 class ExternalHostProvider(ExternalProvider):
     subclass = None
     superclass = ExternalProvider
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, url=None, requires_authentication=None, username=None, password=None, properties=None):
-        super(ExternalHostProvider, self).__init__(actions, href, id, name, description, comment, creation_status, link, url, requires_authentication, username, password, properties, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, url=None, requires_authentication=None, username=None, password=None, authentication_url=None, properties=None):
+        super(ExternalHostProvider, self).__init__(actions, href, id, name, description, comment, creation_status, link, url, requires_authentication, username, password, authentication_url, properties, )
         pass
     def factory(*args_, **kwargs_):
         if ExternalHostProvider.subclass:
@@ -37077,8 +37148,8 @@ class ExternalComputeResources(BaseResources):
 class OpenStackProvider(ExternalProvider):
     subclass = None
     superclass = ExternalProvider
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, url=None, requires_authentication=None, username=None, password=None, properties=None, tenant_name=None, extensiontype_=None):
-        super(OpenStackProvider, self).__init__(actions, href, id, name, description, comment, creation_status, link, url, requires_authentication, username, password, properties, extensiontype_, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, url=None, requires_authentication=None, username=None, password=None, authentication_url=None, properties=None, tenant_name=None, extensiontype_=None):
+        super(OpenStackProvider, self).__init__(actions, href, id, name, description, comment, creation_status, link, url, requires_authentication, username, password, authentication_url, properties, extensiontype_, )
         self.tenant_name = tenant_name
         self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
@@ -37168,8 +37239,8 @@ class OpenStackProvider(ExternalProvider):
 class OpenStackImageProvider(OpenStackProvider):
     subclass = None
     superclass = OpenStackProvider
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, url=None, requires_authentication=None, username=None, password=None, properties=None, tenant_name=None):
-        super(OpenStackImageProvider, self).__init__(actions, href, id, name, description, comment, creation_status, link, url, requires_authentication, username, password, properties, tenant_name, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, url=None, requires_authentication=None, username=None, password=None, authentication_url=None, properties=None, tenant_name=None):
+        super(OpenStackImageProvider, self).__init__(actions, href, id, name, description, comment, creation_status, link, url, requires_authentication, username, password, authentication_url, properties, tenant_name, )
         pass
     def factory(*args_, **kwargs_):
         if OpenStackImageProvider.subclass:
@@ -37497,11 +37568,377 @@ class OpenStackImages(BaseResources):
 # end class OpenStackImages
 
 
+class OpenStackVolumeProvider(OpenStackProvider):
+    subclass = None
+    superclass = OpenStackProvider
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, url=None, requires_authentication=None, username=None, password=None, authentication_url=None, properties=None, tenant_name=None, data_center=None):
+        super(OpenStackVolumeProvider, self).__init__(actions, href, id, name, description, comment, creation_status, link, url, requires_authentication, username, password, authentication_url, properties, tenant_name, )
+        self.data_center = data_center
+    def factory(*args_, **kwargs_):
+        if OpenStackVolumeProvider.subclass:
+            return OpenStackVolumeProvider.subclass(*args_, **kwargs_)
+        else:
+            return OpenStackVolumeProvider(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_data_center(self): return self.data_center
+    def set_data_center(self, data_center): self.data_center = data_center
+    def hasContent_(self):
+        if (
+            self.data_center is not None or
+            super(OpenStackVolumeProvider, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='OpenStackVolumeProvider', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='OpenStackVolumeProvider')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='OpenStackVolumeProvider'):
+        super(OpenStackVolumeProvider, self).exportAttributes(outfile, level, already_processed, namespace_, name_='OpenStackVolumeProvider')
+    def exportChildren(self, outfile, level, namespace_='', name_='OpenStackVolumeProvider', fromsubclass_=False, pretty_print=True):
+        super(OpenStackVolumeProvider, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.data_center is not None:
+            self.data_center.export_(outfile, level, namespace_, name_='data_center', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='OpenStackVolumeProvider'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(OpenStackVolumeProvider, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(OpenStackVolumeProvider, self).exportLiteralChildren(outfile, level, name_)
+        if self.data_center is not None:
+            showIndent(outfile, level)
+            outfile.write('data_center=model_.data_center(\n')
+            self.data_center.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(OpenStackVolumeProvider, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'data_center':
+            obj_ = DataCenter.factory()
+            obj_.build(child_)
+            self.data_center = obj_
+        super(OpenStackVolumeProvider, self).buildChildren(child_, node, nodeName_, True)
+# end class OpenStackVolumeProvider
+
+
+class OpenStackVolumeProviders(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, size=None, total=None, active=None, openstack_volume_provider=None):
+        super(OpenStackVolumeProviders, self).__init__(actions, size, total, active, )
+        if openstack_volume_provider is None:
+            self.openstack_volume_provider = []
+        else:
+            self.openstack_volume_provider = openstack_volume_provider
+    def factory(*args_, **kwargs_):
+        if OpenStackVolumeProviders.subclass:
+            return OpenStackVolumeProviders.subclass(*args_, **kwargs_)
+        else:
+            return OpenStackVolumeProviders(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_openstack_volume_provider(self): return self.openstack_volume_provider
+    def set_openstack_volume_provider(self, openstack_volume_provider): self.openstack_volume_provider = openstack_volume_provider
+    def add_openstack_volume_provider(self, value): self.openstack_volume_provider.append(value)
+    def insert_openstack_volume_provider(self, index, value): self.openstack_volume_provider[index] = value
+    def hasContent_(self):
+        if (
+            self.openstack_volume_provider or
+            super(OpenStackVolumeProviders, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='OpenStackVolumeProviders', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='OpenStackVolumeProviders')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='OpenStackVolumeProviders'):
+        super(OpenStackVolumeProviders, self).exportAttributes(outfile, level, already_processed, namespace_, name_='OpenStackVolumeProviders')
+    def exportChildren(self, outfile, level, namespace_='', name_='OpenStackVolumeProviders', fromsubclass_=False, pretty_print=True):
+        super(OpenStackVolumeProviders, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for openstack_volume_provider_ in self.openstack_volume_provider:
+            openstack_volume_provider_.export_(outfile, level, namespace_, name_='openstack_volume_provider', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='OpenStackVolumeProviders'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(OpenStackVolumeProviders, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(OpenStackVolumeProviders, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('openstack_volume_provider=[\n')
+        level += 1
+        for openstack_volume_provider_ in self.openstack_volume_provider:
+            showIndent(outfile, level)
+            outfile.write('model_.openstack_volume_provider(\n')
+            openstack_volume_provider_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(OpenStackVolumeProviders, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'openstack_volume_provider':
+            obj_ = OpenStackVolumeProvider.factory()
+            obj_.build(child_)
+            self.openstack_volume_provider.append(obj_)
+        super(OpenStackVolumeProviders, self).buildChildren(child_, node, nodeName_, True)
+# end class OpenStackVolumeProviders
+
+
+class OpenStackVolumeType(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, properties=None, openstack_volume_provider=None):
+        super(OpenStackVolumeType, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        self.properties = properties
+        self.openstack_volume_provider = openstack_volume_provider
+    def factory(*args_, **kwargs_):
+        if OpenStackVolumeType.subclass:
+            return OpenStackVolumeType.subclass(*args_, **kwargs_)
+        else:
+            return OpenStackVolumeType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_properties(self): return self.properties
+    def set_properties(self, properties): self.properties = properties
+    def get_openstack_volume_provider(self): return self.openstack_volume_provider
+    def set_openstack_volume_provider(self, openstack_volume_provider): self.openstack_volume_provider = openstack_volume_provider
+    def hasContent_(self):
+        if (
+            self.properties is not None or
+            self.openstack_volume_provider is not None or
+            super(OpenStackVolumeType, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='OpenStackVolumeType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='OpenStackVolumeType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='OpenStackVolumeType'):
+        super(OpenStackVolumeType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='OpenStackVolumeType')
+    def exportChildren(self, outfile, level, namespace_='', name_='OpenStackVolumeType', fromsubclass_=False, pretty_print=True):
+        super(OpenStackVolumeType, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.properties is not None:
+            self.properties.export_(outfile, level, namespace_, name_='properties', pretty_print=pretty_print)
+        if self.openstack_volume_provider is not None:
+            self.openstack_volume_provider.export_(outfile, level, namespace_, name_='openstack_volume_provider', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='OpenStackVolumeType'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(OpenStackVolumeType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(OpenStackVolumeType, self).exportLiteralChildren(outfile, level, name_)
+        if self.properties is not None:
+            showIndent(outfile, level)
+            outfile.write('properties=model_.properties(\n')
+            self.properties.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.openstack_volume_provider is not None:
+            showIndent(outfile, level)
+            outfile.write('openstack_volume_provider=model_.openstack_volume_provider(\n')
+            self.openstack_volume_provider.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(OpenStackVolumeType, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'properties':
+            obj_ = Properties.factory()
+            obj_.build(child_)
+            self.properties = obj_
+        elif nodeName_ == 'openstack_volume_provider':
+            obj_ = OpenStackVolumeProvider.factory()
+            obj_.build(child_)
+            self.openstack_volume_provider = obj_
+        super(OpenStackVolumeType, self).buildChildren(child_, node, nodeName_, True)
+# end class OpenStackVolumeType
+
+
+class OpenStackVolumeTypes(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, size=None, total=None, active=None, openstack_volume_type=None):
+        super(OpenStackVolumeTypes, self).__init__(actions, size, total, active, )
+        if openstack_volume_type is None:
+            self.openstack_volume_type = []
+        else:
+            self.openstack_volume_type = openstack_volume_type
+    def factory(*args_, **kwargs_):
+        if OpenStackVolumeTypes.subclass:
+            return OpenStackVolumeTypes.subclass(*args_, **kwargs_)
+        else:
+            return OpenStackVolumeTypes(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_openstack_volume_type(self): return self.openstack_volume_type
+    def set_openstack_volume_type(self, openstack_volume_type): self.openstack_volume_type = openstack_volume_type
+    def add_openstack_volume_type(self, value): self.openstack_volume_type.append(value)
+    def insert_openstack_volume_type(self, index, value): self.openstack_volume_type[index] = value
+    def hasContent_(self):
+        if (
+            self.openstack_volume_type or
+            super(OpenStackVolumeTypes, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='OpenStackVolumeTypes', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='OpenStackVolumeTypes')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='OpenStackVolumeTypes'):
+        super(OpenStackVolumeTypes, self).exportAttributes(outfile, level, already_processed, namespace_, name_='OpenStackVolumeTypes')
+    def exportChildren(self, outfile, level, namespace_='', name_='OpenStackVolumeTypes', fromsubclass_=False, pretty_print=True):
+        super(OpenStackVolumeTypes, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for openstack_volume_type_ in self.openstack_volume_type:
+            openstack_volume_type_.export_(outfile, level, namespace_, name_='openstack_volume_type', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='OpenStackVolumeTypes'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(OpenStackVolumeTypes, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(OpenStackVolumeTypes, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('openstack_volume_type=[\n')
+        level += 1
+        for openstack_volume_type_ in self.openstack_volume_type:
+            showIndent(outfile, level)
+            outfile.write('model_.openstack_volume_type(\n')
+            openstack_volume_type_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(OpenStackVolumeTypes, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'openstack_volume_type':
+            obj_ = OpenStackVolumeType.factory()
+            obj_.build(child_)
+            self.openstack_volume_type.append(obj_)
+        super(OpenStackVolumeTypes, self).buildChildren(child_, node, nodeName_, True)
+# end class OpenStackVolumeTypes
+
+
 class OpenStackNetworkProvider(OpenStackProvider):
     subclass = None
     superclass = OpenStackProvider
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, url=None, requires_authentication=None, username=None, password=None, properties=None, tenant_name=None, plugin_type=None, agent_configuration=None):
-        super(OpenStackNetworkProvider, self).__init__(actions, href, id, name, description, comment, creation_status, link, url, requires_authentication, username, password, properties, tenant_name, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, url=None, requires_authentication=None, username=None, password=None, authentication_url=None, properties=None, tenant_name=None, plugin_type=None, agent_configuration=None):
+        super(OpenStackNetworkProvider, self).__init__(actions, href, id, name, description, comment, creation_status, link, url, requires_authentication, username, password, authentication_url, properties, tenant_name, )
         self.plugin_type = plugin_type
         self.agent_configuration = agent_configuration
     def factory(*args_, **kwargs_):
@@ -40425,7 +40862,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, disk=None, status=None, fault=None, iscsi_target=None, power_management=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, disk=None, reason=None, status=None, fault=None, iscsi_target=None, power_management=None):
         super(Action, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -40464,6 +40901,7 @@ class Action(BaseResource):
         self.maintenance_enabled = maintenance_enabled
         self.storage_domains = storage_domains
         self.disk = disk
+        self.reason = reason
         self.status = status
         self.fault = fault
         if iscsi_target is None:
@@ -40551,6 +40989,8 @@ class Action(BaseResource):
     def set_storage_domains(self, storage_domains): self.storage_domains = storage_domains
     def get_disk(self): return self.disk
     def set_disk(self, disk): self.disk = disk
+    def get_reason(self): return self.reason
+    def set_reason(self, reason): self.reason = reason
     def get_status(self): return self.status
     def set_status(self, status): self.status = status
     def get_fault(self): return self.fault
@@ -40600,6 +41040,7 @@ class Action(BaseResource):
             self.maintenance_enabled is not None or
             self.storage_domains is not None or
             self.disk is not None or
+            self.reason is not None or
             self.status is not None or
             self.fault is not None or
             self.iscsi_target or
@@ -40725,6 +41166,9 @@ class Action(BaseResource):
             self.storage_domains.export_(outfile, level, namespace_, name_='storage_domains', pretty_print=pretty_print)
         if self.disk is not None:
             self.disk.export_(outfile, level, namespace_, name_='disk', pretty_print=pretty_print)
+        if self.reason is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sreason>%s</%sreason>%s' % (namespace_, self.gds_format_string(quote_xml(self.reason).encode(ExternalEncoding), input_name='reason'), namespace_, eol_))
         if self.status is not None:
             self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.fault is not None:
@@ -40912,6 +41356,9 @@ class Action(BaseResource):
             self.disk.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.reason is not None:
+            showIndent(outfile, level)
+            outfile.write('reason=%s,\n' % quote_python(self.reason).encode(ExternalEncoding))
         if self.status is not None:
             showIndent(outfile, level)
             outfile.write('status=model_.status(\n')
@@ -41182,6 +41629,10 @@ class Action(BaseResource):
             obj_ = class_obj_.factory()
             obj_.build(child_)
             self.disk = obj_
+        elif nodeName_ == 'reason':
+            reason_ = child_.text
+            reason_ = self.gds_validate_string(reason_, node, 'reason')
+            self.reason = reason_
         elif nodeName_ == 'status':
             obj_ = Status.factory()
             obj_.build(child_)
@@ -42812,11 +43263,12 @@ GDSClassesMapping = {
     'gluster_hook': GlusterHook,
     'ranges': Ranges,
     'groups': Groups,
-    'cpu_profiles': CpuProfiles,
+    'storage_formats': StorageFormats,
     'openstack_subnet': OpenStackSubnet,
     'external_host_groups': ExternalHostGroups,
     'property': Property,
     'step': Step,
+    'openstack_volume_types': OpenStackVolumeTypes,
     'permit': Permit,
     'action': Action,
     'options': Options,
@@ -42825,6 +43277,7 @@ GDSClassesMapping = {
     'api': API,
     'scheduling_policy_unit': SchedulingPolicyUnit,
     'bookmarks': Bookmarks,
+    'openstack_volume_providers': OpenStackVolumeProviders,
     'cdroms': CdRoms,
     'usb': Usb,
     'certificate': Certificate,
@@ -42956,7 +43409,7 @@ GDSClassesMapping = {
     'high_availability': HighAvailability,
     'vm_states': VmStates,
     'vnic_profile': VnicProfile,
-    'storage_formats': StorageFormats,
+    'openstack_volume_type': OpenStackVolumeType,
     'architecture_capability': ArchitectureCapability,
     'supported_rng_sources': RngSources,
     'network_states': NetworkStates,
@@ -43008,6 +43461,7 @@ GDSClassesMapping = {
     'quotas': Quotas,
     'keyValuePair': KeyValuePair,
     'brick': GlusterBrick,
+    'cpu_profiles': CpuProfiles,
     'cdrom': CdRom,
     'spm_states': SpmStates,
     'management_network': Network,
@@ -43037,6 +43491,7 @@ GDSClassesMapping = {
     'memory_policy': MemoryPolicy,
     'skip_if_connectivity_broken': SkipIfConnectivityBroken,
     'external_discovered_hosts': ExternalDiscoveredHosts,
+    'openstack_volume_provider': OpenStackVolumeProvider,
     'storage': Storage,
     'actions': Actions,
     'console': Console,
@@ -43452,6 +43907,10 @@ __all__ = [
     "OpenStackProvider",
     "OpenStackSubnet",
     "OpenStackSubnets",
+    "OpenStackVolumeProvider",
+    "OpenStackVolumeProviders",
+    "OpenStackVolumeType",
+    "OpenStackVolumeTypes",
     "OperatingSystem",
     "OperatingSystemInfo",
     "OperatingSystemInfos",
@@ -43796,6 +44255,10 @@ _rootClassMap = {
                     "openstack_provider"            : OpenStackProvider,
                     "openstack_subnet"              : OpenStackSubnet,
                     "openstack_subnets"             : OpenStackSubnets,
+                    "openstack_volume_provider"     : OpenStackVolumeProvider,
+                    "openstack_volume_providers"    : OpenStackVolumeProviders,
+                    "openstack_volume_type"         : OpenStackVolumeType,
+                    "openstack_volume_types"        : OpenStackVolumeTypes,
                     "operating_system"              : OperatingSystemInfo,
                     "operating_systems"             : OperatingSystemInfos,
                     "option"                        : Option,
@@ -44135,6 +44598,10 @@ _tag_for_type = {
     OpenStackProvider: "openstack_provider",
     OpenStackSubnet: "openstack_subnet",
     OpenStackSubnets: "openstack_subnets",
+    OpenStackVolumeProvider: "openstack_volume_provider",
+    OpenStackVolumeProviders: "openstack_volume_providers",
+    OpenStackVolumeType: "openstack_volume_type",
+    OpenStackVolumeTypes: "openstack_volume_types",
     OperatingSystemInfo: "operating_system",
     OperatingSystemInfos: "operating_systems",
     Options: "options",

@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-02-27 16:20:53.000910'''
+'''Generated at: 2015-04-06 13:12:43.000237'''
 
 import re
 import types
@@ -53,6 +53,7 @@ from ovirtsdk.infrastructure.brokers import MacPools
 from ovirtsdk.infrastructure.brokers import Networks
 from ovirtsdk.infrastructure.brokers import OpenStackImageProviders
 from ovirtsdk.infrastructure.brokers import OpenStackNetworkProviders
+from ovirtsdk.infrastructure.brokers import OpenStackVolumeProviders
 from ovirtsdk.infrastructure.brokers import OperatingSystemInfos
 from ovirtsdk.infrastructure.brokers import Permissions
 from ovirtsdk.infrastructure.brokers import Roles
@@ -231,6 +232,7 @@ class API(object):
         self.networks = Networks(self.id)
         self.openstackimageproviders = OpenStackImageProviders(self.id)
         self.openstacknetworkproviders = OpenStackNetworkProviders(self.id)
+        self.openstackvolumeproviders = OpenStackVolumeProviders(self.id)
         self.operatingsysteminfos = OperatingSystemInfos(self.id)
         self.permissions = Permissions(self.id)
         self.roles = Roles(self.id)

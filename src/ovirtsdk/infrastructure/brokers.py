@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-03-03 09:43:58.000461'''
+'''Generated at: 2015-04-06 13:12:43.000050'''
 
 
 from ovirtsdk.xml import params
@@ -105,12 +105,13 @@ class Bookmarks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, bookmark):
+    def add(self, bookmark, correlation_id=None):
         '''
         @type Bookmark:
 
         @param bookmark.name: string
         @param bookmark.value: string
+        [@param correlation_id: any string]
 
         @return Bookmark:
         '''
@@ -120,7 +121,7 @@ class Bookmarks(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(bookmark),
-           headers={}
+           headers={"Correlation-Id":correlation_id}
         )
 
         return Bookmark(result, self.context)
@@ -327,6 +328,8 @@ class Cluster(params.Cluster, Base):
         [@param cluster.fencing_policy.skip_if_sd_active.enabled: boolean]
         [@param cluster.fencing_policy.skip_if_connectivity_broken.enabled: boolean]
         [@param cluster.fencing_policy.skip_if_connectivity_broken.threshold: int]
+        [@param cluster.maintenance_reason_required: boolean]
+        [@param cluster.management_network.id|name: string]
         [@param correlation_id: any string]
 
         @return Cluster:
@@ -370,29 +373,35 @@ class ClusterAffinityGroup(params.AffinityGroup, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, correlation_id=None):
         '''
+        [@param correlation_id: any string]
+
         @return None:
         '''
 
-        url = '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{affinitygroup:id}': self.get_id(),
-                }
-            ),
-            headers={'Content-type':None}
+        url = UrlHelper.replace(
+            '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}',
+            {
+                '{cluster:id}': self.parentclass.get_id(),
+                '{affinitygroup:id}': self.get_id(),
+            }
         )
 
-    def update(self):
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, correlation_id=None):
         '''
         [@param affinitygroup.name: string]
         [@param affinitygroup.positive: boolean]
         [@param affinitygroup.enforcing: boolean]
+        [@param correlation_id: any string]
 
         @return AffinityGroup:
         '''
@@ -409,7 +418,7 @@ class ClusterAffinityGroup(params.AffinityGroup, Base):
         result = self.__getProxy().update(
             url=SearchHelper.appendQuery(url, {}),
             body=ParseHelper.toXml(self.superclass),
-            headers={}
+            headers={"Correlation-Id":correlation_id}
         )
 
         return ClusterAffinityGroup(
@@ -440,23 +449,28 @@ class ClusterAffinityGroupVM(params.VM, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, correlation_id=None):
         '''
+        [@param correlation_id: any string]
+
         @return None:
         '''
 
-        url = '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms/{vm:id}'
+        url = UrlHelper.replace(
+            '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms/{vm:id}',
+            {
+                '{cluster:id}': self.parentclass.parentclass.get_id(),
+                '{affinitygroup:id}': self.parentclass.get_id(),
+                '{vm:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{affinitygroup:id}': self.parentclass.get_id(),
-                    '{vm:id}': self.get_id(),
-                }
+                {}
             ),
-            headers={'Content-type':None}
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
 class ClusterAffinityGroupVMs(Base):
@@ -474,13 +488,14 @@ class ClusterAffinityGroupVMs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, vm, expect=None):
+    def add(self, vm, expect=None, correlation_id=None):
 
         '''
         @type VM:
 
         @param vm.id|name: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return VM:
         '''
@@ -496,7 +511,7 @@ class ClusterAffinityGroupVMs(Base):
                 }
             ),
             body=ParseHelper.toXml(vm),
-            headers={"Expect":expect}
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
         return ClusterAffinityGroupVM(
@@ -616,7 +631,7 @@ class ClusterAffinityGroups(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, affinitygroup, expect=None):
+    def add(self, affinitygroup, expect=None, correlation_id=None):
 
         '''
         @type AffinityGroup:
@@ -625,6 +640,7 @@ class ClusterAffinityGroups(Base):
         @param affinitygroup.positive: boolean
         @param affinitygroup.enforcing: boolean
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return AffinityGroup:
         '''
@@ -639,7 +655,7 @@ class ClusterAffinityGroups(Base):
                 }
             ),
             body=ParseHelper.toXml(affinitygroup),
-            headers={"Expect":expect}
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
         return ClusterAffinityGroup(
@@ -2666,6 +2682,7 @@ class Clusters(Base):
         [@param cluster.fencing_policy.skip_if_connectivity_broken.enabled: boolean]
         [@param cluster.fencing_policy.skip_if_connectivity_broken.threshold: int]
         [@param cluster.management_network.id|name: string]
+        [@param cluster.maintenance_reason_required: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -5659,27 +5676,33 @@ class DataCenterIscsiBond(params.IscsiBond, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, correlation_id=None):
         '''
+        [@param correlation_id: any string]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                    '{iscsibond:id}': self.get_id(),
-                }
-            ),
-            headers={'Content-type':None}
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}',
+            {
+                '{datacenter:id}': self.parentclass.get_id(),
+                '{iscsibond:id}': self.get_id(),
+            }
         )
 
-    def update(self, expect=None):
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, expect=None, correlation_id=None):
         '''
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return IscsiBond:
         '''
@@ -5696,7 +5719,7 @@ class DataCenterIscsiBond(params.IscsiBond, Base):
         result = self.__getProxy().update(
             url=SearchHelper.appendQuery(url, {}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Expect":expect}
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
         return DataCenterIscsiBond(
@@ -6521,11 +6544,12 @@ class DataCenterIscsiBondNetworks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, network):
+    def add(self, network, correlation_id=None):
 
         '''
         @type Network:
 
+        [@param correlation_id: any string]
 
         @return Network:
         '''
@@ -6541,7 +6565,7 @@ class DataCenterIscsiBondNetworks(Base):
                 }
             ),
             body=ParseHelper.toXml(network),
-            headers={}
+            headers={"Correlation-Id":correlation_id}
         )
 
         return DataCenterIscsiBondNetwork(
@@ -6879,13 +6903,14 @@ class DataCenterIscsiBonds(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, iscsibond, expect=None):
+    def add(self, iscsibond, expect=None, correlation_id=None):
 
         '''
         @type IscsiBond:
 
         @param iscsibond.name: string
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return IscsiBond:
         '''
@@ -6900,7 +6925,7 @@ class DataCenterIscsiBonds(Base):
                 }
             ),
             body=ParseHelper.toXml(iscsibond),
-            headers={"Expect":expect}
+            headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
         return DataCenterIscsiBond(
@@ -10776,21 +10801,26 @@ class Event(params.Event, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, correlation_id=None):
         '''
+        [@param correlation_id: any string]
+
         @return None:
         '''
 
-        url = '/events/{event:id}'
+        url = UrlHelper.replace(
+            '/events/{event:id}',
+            {
+                '{event:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{event:id}': self.get_id(),
-                }
+                {}
             ),
-            headers={'Content-type':None}
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
 class Events(Base):
@@ -10957,6 +10987,7 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
         [@param external_host_provider.requires_authentication: boolean]
         [@param external_host_provider.username: string]
         [@param external_host_provider.password: string]
+        [@param external_host_provider.authentication_url: string]
         [@param correlation_id: any string]
 
         @return ExternalHostProvider:
@@ -11700,6 +11731,7 @@ class ExternalHostProviders(Base):
         [@param external_host_provider.requires_authentication: boolean]
         [@param external_host_provider.username: string]
         [@param external_host_provider.password: string]
+        [@param external_host_provider.authentication_url: string]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -12727,6 +12759,7 @@ class Host(params.Host, Base):
               [@param option.name: string]
               [@param option.value: string]
             }
+            [@ivar encrypt_options: boolean]
           }
           [@param host.power_management.kdump_detection: boolean]
           [@param host.external_host_provider.id: string]
@@ -12767,6 +12800,7 @@ class Host(params.Host, Base):
               [@param option.name: string]
               [@param option.value: string]
             }
+            [@ivar encrypt_options: boolean]
           }
           [@param host.power_management.kdump_detection: boolean]
         [@param correlation_id: any string]
@@ -12886,6 +12920,7 @@ class Host(params.Host, Base):
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param action.reason: string]
         [@param correlation_id: any string]
 
         @return Action:
@@ -13089,8 +13124,8 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
-        @param action.iscsi.address: string
-        @param action.target: string
+        [@param action.iscsi.address: string]
+        [@param action.iscsi_target: string]
         [@param correlation_id: any string]
 
         @return Action:
@@ -13171,6 +13206,7 @@ class HostAgent(params.Agent, Base):
           [@ivar option.name: string]
           [@ivar option.value: string]
         }
+        [@param encrypt_options: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -13229,6 +13265,7 @@ class HostAgents(Base):
           [@ivar option.name: string]
           [@ivar option.value: string]
         }
+        [@param encrypt_options: boolean]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -15224,6 +15261,7 @@ class Hosts(Base):
               [@param option.name: string]
               [@param option.value: string]
             }
+            [@ivar encrypt_options: boolean]
           }
           [@param host.reboot_after_installation: boolean]
           [@param host.override_iptables: boolean]
@@ -15268,6 +15306,7 @@ class Hosts(Base):
               [@param option.name: string]
               [@param option.value: string]
             }
+            [@ivar encrypt_options: boolean]
           }
           [@param host.reboot_after_installation: boolean]
           [@param host.override_iptables: boolean]
@@ -18823,6 +18862,496 @@ class OpenStackNetworkProviders(Base):
             context=self.context
         )
 
+class OpenStackVolumeProvider(params.OpenStackVolumeProvider, Base):
+    def __init__(self, openstackvolumeprovider, context):
+        Base.__init__(self, context)
+        self.superclass = openstackvolumeprovider
+
+        self.certificates = OpenStackVolumeProviderCertificates(self, context)
+        self.volumetypes = OpenStackVolumeProviderOpenStackVolumeTypes(self, context)
+
+    def __new__(cls, openstackvolumeprovider, context):
+        if openstackvolumeprovider is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(openstackvolumeprovider, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/openstackvolumeproviders/{openstackvolumeprovider:id}',
+            {
+                '{openstackvolumeprovider:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, correlation_id=None):
+        '''
+        [@param openstack_volume_provider.name: string]
+        [@param openstack_volume_provider.description: string]
+        [@param openstack_volume_provider.data_center.id|name: string,]
+        [@param openstack_volume_provider.requires_authentication: boolean]
+        [@param openstack_volume_provider.username: string]
+        [@param openstack_volume_provider.password: string]
+        [@param openstack_volume_provider.authentication_url: string]
+        [@param openstack_volume_provider.properties.property: collection]
+        {
+          [@ivar property.name: string]
+          [@ivar property.value: string]
+        }
+        [@param correlation_id: any string]
+
+        @return OpenStackVolumeProvider:
+        '''
+
+        url = '/openstackvolumeproviders/{openstackvolumeprovider:id}'
+
+        result = self.__getProxy().update(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{openstackvolumeprovider:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return OpenStackVolumeProvider(result, self.context)
+
+    def importcertificates(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/importcertificates'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{openstackvolumeprovider:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+    def testconnectivity(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/testconnectivity'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{openstackvolumeprovider:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
+
+class OpenStackVolumeProviderCertificate(params.Certificate, Base):
+    def __init__(self, openstackvolumeprovider, certificate, context):
+        Base.__init__(self, context)
+        self.parentclass = openstackvolumeprovider
+        self.superclass  =  certificate
+
+        #SUB_COLLECTIONS
+    def __new__(cls, openstackvolumeprovider, certificate, context):
+        if certificate is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(openstackvolumeprovider, certificate, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class OpenStackVolumeProviderCertificates(Base):
+
+    def __init__(self, openstackvolumeprovider , context):
+        Base.__init__(self, context)
+        self.parentclass = openstackvolumeprovider
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Certificates:
+        '''
+
+        url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/certificates'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return OpenStackVolumeProviderCertificate(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_certificate()
+
+            return OpenStackVolumeProviderCertificate(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+
+        @return Certificates:
+        '''
+
+        url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/certificates'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                }
+            )
+        ).get_certificate()
+
+        return ParseHelper.toSubCollection(
+            OpenStackVolumeProviderCertificate,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class OpenStackVolumeProviderOpenStackVolumeType(params.OpenStackVolumeType, Base):
+    def __init__(self, openstackvolumeprovider, openstackvolumetype, context):
+        Base.__init__(self, context)
+        self.parentclass = openstackvolumeprovider
+        self.superclass  =  openstackvolumetype
+
+        #SUB_COLLECTIONS
+    def __new__(cls, openstackvolumeprovider, openstackvolumetype, context):
+        if openstackvolumetype is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(openstackvolumeprovider, openstackvolumetype, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class OpenStackVolumeProviderOpenStackVolumeTypes(Base):
+
+    def __init__(self, openstackvolumeprovider , context):
+        Base.__init__(self, context)
+        self.parentclass = openstackvolumeprovider
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return OpenStackVolumeTypes:
+        '''
+
+        url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/volumetypes'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return OpenStackVolumeProviderOpenStackVolumeType(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_openstack_volume_type()
+
+            return OpenStackVolumeProviderOpenStackVolumeType(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return OpenStackVolumeTypes:
+        '''
+
+        url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/volumetypes'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_openstack_volume_type()
+
+        return ParseHelper.toSubCollection(
+            OpenStackVolumeProviderOpenStackVolumeType,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class OpenStackVolumeProviders(Base):
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, openstackvolumeprovider, expect=None, correlation_id=None):
+        '''
+        @type OpenStackVolumeProvider:
+
+        @param openstack_volume_provider.name: string
+        @param openstack_volume_provider.data_center.id|name: string,
+        [@param openstack_volume_provider.description: string]
+        [@param openstack_volume_provider.url: string]
+        [@param openstack_volume_provider.requires_authentication: boolean]
+        [@param openstack_volume_provider.username: string]
+        [@param openstack_volume_provider.password: string]
+        [@param openstack_volume_provider.authentication_url: string]
+        [@param openstack_volume_provider.properties.property: collection]
+        {
+          [@ivar property.name: string]
+          [@ivar property.value: string]
+        }
+        [@param expect: 201-created]
+        [@param correlation_id: any string]
+
+        @return OpenStackVolumeProvider:
+        '''
+
+        url = '/openstackvolumeproviders'
+
+        result = self.__getProxy().add(
+           url=url,
+           body=ParseHelper.toXml(openstackvolumeprovider),
+           headers={"Expect":expect, "Correlation-Id":correlation_id}
+        )
+
+        return OpenStackVolumeProvider(result, self.context)
+
+    def get(self, name=None, id=None):
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return OpenStackVolumeProviders:
+        '''
+
+        url = '/openstackvolumeproviders'
+
+        if id:
+            try :
+                return OpenStackVolumeProvider(
+                    self.__getProxy().get(
+                                url=UrlHelper.append(url, id),
+                                headers={}
+                    ),
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                    url=url,
+                    headers={}
+            ).get_openstack_volume_provider()
+
+            return OpenStackVolumeProvider(
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param max: int (max results)]
+
+        @return OpenStackVolumeProviders:
+        '''
+
+        url='/openstackvolumeproviders'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            headers={}
+        ).get_openstack_volume_provider()
+
+        return ParseHelper.toCollection(
+            OpenStackVolumeProvider,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )
+
 class OperatingSystemInfo(params.OperatingSystemInfo, Base):
     def __init__(self, operatingsysteminfo, context):
         Base.__init__(self, context)
@@ -22051,9 +22580,10 @@ class StorageDomainStorageConnection(params.StorageConnection, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self, async=None):
+    def delete(self, async=None, correlation_id=None):
         '''
         [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
 
         @return None:
         '''
@@ -22071,7 +22601,7 @@ class StorageDomainStorageConnection(params.StorageConnection, Base):
                 url,
                 {'async:matrix':async}
             ),
-            headers={"Content-type":None}
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
 class StorageDomainStorageConnections(Base):
@@ -24617,6 +25147,7 @@ class Templates(Base):
         [@param template.origin: string]
         [@param template.high_availability.priority: int]
         [@param template.timezone: string]
+        [@param template.storage_domain.id: string]
         [@param template.domain.name: string]
         [@param template.type: string]
         [@param template.stateless: boolean]
@@ -24666,6 +25197,8 @@ class Templates(Base):
         [@param template.vm.disks.disk: collection]
         {
           [@ivar disk.id: string]
+          [@ivar disk.alias: string]
+          [@ivar disk.description: string]
           [@ivar storage_domains.storage_domain: collection]
           {
             [@param storage_domain.id: string]
@@ -29761,7 +30294,7 @@ class VMs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, vm, correlation_id=None, expect=None):
+    def add(self, vm, expect=None, correlation_id=None):
         '''
         @type VM:
 
@@ -29824,14 +30357,6 @@ class VMs(Base):
           [@param vm.origin: string]
           [@param vm.os.kernel: string]
           [@param vm.disks.clone: boolean]
-          [@param vm.disks.disk: collection]
-          {
-            [@ivar disk.id: string]
-            [@ivar storage_domains.storage_domain: collection]
-            {
-              [@param storage_domain.id: string]
-            }
-          }
           [@param vm.tunnel_migration: boolean]
           [@param vm.migration_downtime: int]
           [@param vm.virtio_scsi.enabled: boolean]
@@ -30043,8 +30568,8 @@ class VMs(Base):
           [@param vm.cpu_profile.id: string]
           [@param vm.migration.auto_converge: string]
           [@param vm.migration.compressed: string]
-        [@param correlation_id: any string]
         [@param expect: 201-created]
+        [@param correlation_id: any string]
 
         @return VM:
         '''
@@ -30054,7 +30579,7 @@ class VMs(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(vm),
-           headers={"Correlation-Id":correlation_id, "Expect":expect}
+           headers={"Expect":expect, "Correlation-Id":correlation_id}
         )
 
         return VM(result, self.context)

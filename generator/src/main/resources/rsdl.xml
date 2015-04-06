@@ -29,6 +29,10 @@ or less indicates that the session should never timeout</description>
                         <name>Content-Type</name>
                         <value>application/xml|json</value>
                     </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
                 </headers>
                 <body>
                     <type>Bookmark</type>
@@ -229,6 +233,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>cluster.management_network.id|name</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.maintenance_reason_required</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -419,6 +426,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>cluster.fencing_policy.skip_if_connectivity_broken.threshold</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.maintenance_reason_required</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.management_network.id|name</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -438,6 +451,10 @@ or less indicates that the session should never timeout</description>
                     <header required="false">
                         <name>Expect</name>
                         <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -482,6 +499,12 @@ or less indicates that the session should never timeout</description>
             <description>delete the specified affinity groups in the cluster</description>
             <request>
                 <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <body/>
             </request>
         </link>
@@ -503,6 +526,10 @@ or less indicates that the session should never timeout</description>
                     <header required="true">
                         <name>Content-Type</name>
                         <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -536,6 +563,10 @@ or less indicates that the session should never timeout</description>
                     <header required="false">
                         <name>Expect</name>
                         <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -574,6 +605,12 @@ or less indicates that the session should never timeout</description>
             <description>remove the specified vm from the affinity groups</description>
             <request>
                 <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <body/>
             </request>
         </link>
@@ -3071,6 +3108,10 @@ or less indicates that the session should never timeout</description>
                         <name>Expect</name>
                         <value>201-created</value>
                     </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
                 </headers>
                 <body>
                     <type>IscsiBond</type>
@@ -3100,6 +3141,12 @@ or less indicates that the session should never timeout</description>
             <description>remove the specified iSCSI Bond from the datacenter</description>
             <request>
                 <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <body/>
             </request>
         </link>
@@ -3125,6 +3172,10 @@ or less indicates that the session should never timeout</description>
                         <name>Expect</name>
                         <value>201-created</value>
                     </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
                 </headers>
                 <body>
                     <type>IscsiBond</type>
@@ -3141,6 +3192,12 @@ or less indicates that the session should never timeout</description>
             <description>specify list of networks contained in the iSCSI Bond</description>
             <request>
                 <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <body>
                     <type>Network</type>
                 </body>
@@ -4367,12 +4424,12 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json</value>
                     </header>
                     <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="false">
                         <name>Filter</name>
                         <value>true|false</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -4871,12 +4928,12 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json</value>
                     </header>
                     <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="false">
                         <name>Filter</name>
                         <value>true|false</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -4908,12 +4965,12 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json</value>
                     </header>
                     <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="false">
                         <name>Filter</name>
                         <value>true|false</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -4945,12 +5002,12 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json</value>
                     </header>
                     <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="false">
                         <name>Filter</name>
                         <value>true|false</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -5276,6 +5333,12 @@ or less indicates that the session should never timeout</description>
             <description>delete the specified event from the system</description>
             <request>
                 <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <body/>
             </request>
         </link>
@@ -5328,6 +5391,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>external_host_provider.password</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>external_host_provider.authentication_url</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -5417,6 +5483,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>external_host_provider.password</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>external_host_provider.authentication_url</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -6128,6 +6197,9 @@ or less indicates that the session should never timeout</description>
         </parameter>
     </parameters_set>
 </parameter>
+<parameter required="false" type="xs:boolean">
+    <name>encrypt_options</name>
+</parameter>
                             </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
@@ -6243,6 +6315,9 @@ or less indicates that the session should never timeout</description>
             <name>option.value</name>
         </parameter>
     </parameters_set>
+</parameter>
+<parameter required="false" type="xs:boolean">
+    <name>encrypt_options</name>
 </parameter>
                             </parameters_set>
                         </parameter>
@@ -6483,6 +6558,9 @@ or less indicates that the session should never timeout</description>
         </parameter>
     </parameters_set>
 </parameter>
+<parameter required="false" type="xs:boolean">
+    <name>encrypt_options</name>
+</parameter>
                             </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
@@ -6586,6 +6664,9 @@ or less indicates that the session should never timeout</description>
             <name>option.value</name>
         </parameter>
     </parameters_set>
+</parameter>
+<parameter required="false" type="xs:boolean">
+    <name>encrypt_options</name>
 </parameter>
                             </parameters_set>
                         </parameter>
@@ -6744,6 +6825,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:long">
                             <name>action.grace_period.expiry</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.reason</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -6834,6 +6918,9 @@ or less indicates that the session should never timeout</description>
     <name>option.value</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>encrypt_options</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -6932,6 +7019,9 @@ or less indicates that the session should never timeout</description>
     <name>option.value</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>encrypt_options</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -7938,11 +8028,11 @@ or less indicates that the session should never timeout</description>
                     <type>Action</type>
                     <parameters_set>
                         <description>Discover the Storage Domains which are candidiates to be imported to the setup</description>
-                        <parameter required="true" type="xs:string">
+                        <parameter required="false" type="xs:string">
                             <name>action.iscsi.address</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>action.target</name>
+                        <parameter required="false" type="xs:string">
+                            <name>action.iscsi_target</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -9675,6 +9765,244 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Action</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders" rel="add">
+            <description>add a new OpenStack volume provider to the system</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>OpenStackVolumeProvider</type>
+                    <parameters_set>
+                        <description>add a new OpenStack volume provider to the system</description>
+                        <parameter required="true" type="xs:string">
+                            <name>openstack_volume_provider.name</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string,">
+                            <name>openstack_volume_provider.data_center.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.url</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>openstack_volume_provider.requires_authentication</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.username</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.password</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.authentication_url</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>openstack_volume_provider.properties.property</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>property.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>property.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>OpenStackVolumeProvider</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders" rel="get">
+            <description>get the list of all OpenStack volume providers in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackVolumeProviders</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}" rel="delete">
+            <description>delete the specified OpenStack volume provider in the system</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}" rel="get">
+            <description>get the details of the specified OpenStack volume provider in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackVolumeProvider</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}" rel="update">
+            <description>update the specified OpenStack volume provider in the system</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>OpenStackVolumeProvider</type>
+                    <parameters_set>
+                        <description>update the specified OpenStack volume provider in the system</description>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string,">
+                            <name>openstack_volume_provider.data_center.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>openstack_volume_provider.requires_authentication</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.username</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.password</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.authentication_url</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>openstack_volume_provider.properties.property</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>property.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>property.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>OpenStackVolumeProvider</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/certificates" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Certificates</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/certificates/{certificate:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Certificate</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/importcertificates" rel="importcertificates">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>Action</type>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/testconnectivity" rel="testconnectivity">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>Action</type>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/volumetypes" rel="get">
+            <description>get the list of volume types of the OpenStack volume provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackVolumeTypes</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/volumetypes/{volumetype:id}" rel="get">
+            <description>get the details of the specified volume type of the OpenStack volume provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>OpenStackVolumeType</type>
             </response>
         </link>
         <link href="operatingsystems" rel="get">
@@ -11524,12 +11852,12 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json</value>
                     </header>
                     <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="false">
                         <name>Filter</name>
                         <value>true|false</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -11916,6 +12244,12 @@ or less indicates that the session should never timeout</description>
         <link href="storagedomains/{storagedomain:id}/storageconnections/{storageconnection:id}" rel="delete">
             <request>
                 <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                </headers>
                 <url>
                     <parameters_set>
                         <parameter required="false" type="xs:boolean" context="matrix">
@@ -12431,6 +12765,9 @@ or less indicates that the session should never timeout</description>
                             <name>template.timezone</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
+                            <name>template.storage_domain.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
                             <name>template.domain.name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
@@ -12561,6 +12898,12 @@ or less indicates that the session should never timeout</description>
                             <parameters_set>
 <parameter required="false" type="xs:string">
     <name>disk.id</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>disk.alias</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>disk.description</name>
 </parameter>
 <parameter required="false" type="collection">
     <name>storage_domains.storage_domain</name>
@@ -13009,12 +13352,12 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json</value>
                     </header>
                     <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="false">
                         <name>Filter</name>
                         <value>true|false</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -13046,12 +13389,12 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json</value>
                     </header>
                     <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="false">
                         <name>Filter</name>
                         <value>true|false</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -14325,12 +14668,12 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json</value>
                     </header>
                     <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="false">
                         <name>Expect</name>
                         <value>201-created</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -14498,22 +14841,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.disks.clone</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>vm.disks.disk</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>disk.id</name>
-</parameter>
-<parameter required="false" type="collection">
-    <name>storage_domains.storage_domain</name>
-    <parameters_set>
-        <parameter required="false" type="xs:string">
-            <name>storage_domain.id</name>
-        </parameter>
-    </parameters_set>
-</parameter>
-                            </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.tunnel_migration</name>
@@ -16041,12 +16368,12 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json</value>
                     </header>
                     <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="false">
                         <name>Filter</name>
                         <value>true|false</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -16078,12 +16405,12 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json</value>
                     </header>
                     <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="false">
                         <name>Filter</name>
                         <value>true|false</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>
@@ -17241,12 +17568,12 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json</value>
                     </header>
                     <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="false">
                         <name>Filter</name>
                         <value>true|false</value>
+                    </header>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
                     </header>
                 </headers>
                 <body>

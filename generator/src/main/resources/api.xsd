@@ -209,6 +209,8 @@
       <xs:element ref="storage_domains" minOccurs="0" maxOccurs="1"/>
       <!-- For import Glance disk -->
       <xs:element ref="disk" minOccurs="0" maxOccurs="1"/>
+      <!-- For host maintenance (deactivate) -->
+      <xs:element name="reason" type="xs:string" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:group>
 
@@ -1706,6 +1708,7 @@
           <xs:element name="trusted_service" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
           <xs:element name="ha_reservation" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
           <xs:element name="optional_reason" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="maintenance_reason_required" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
           <xs:element name="ballooning_enabled" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="display" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="ksm" minOccurs="0" maxOccurs="1"/>
@@ -1745,6 +1748,7 @@
           <xs:element name="username" type="xs:string" minOccurs="0" maxOccurs="1"/>
           <xs:element name="password" type="xs:string" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="options" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="encrypt_options" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
           <xs:element name="concurrent" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
           <xs:element name="order" type="xs:int" minOccurs="0" maxOccurs="1"/>
           <xs:element name="port" type="xs:int" minOccurs="0" maxOccurs="1"/>
@@ -3480,6 +3484,7 @@
           <xs:element name="size" type="xs:int" minOccurs="0"/>
           <xs:element ref="cluster" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="template" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="vm" minOccurs="0" maxOccurs="1"/>
           <xs:element name="prestarted_vms" type="xs:int" minOccurs="0"/>
           <xs:element name="max_user_vms" type="xs:int" minOccurs="0"/>
           <xs:element ref="display" minOccurs="0" maxOccurs="1"/>
@@ -5086,6 +5091,7 @@
           <xs:element name="requires_authentication" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
           <xs:element name="username" type="xs:string" minOccurs="0" maxOccurs="1"/>
           <xs:element name="password" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="authentication_url" type="xs:string" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="properties" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
       </xs:extension>
@@ -5313,6 +5319,68 @@
             <xs:annotation>
               <xs:appinfo>
                 <jaxb:property name="OpenStackImages"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <!-- OpenStack volume providers: -->
+  <xs:element name="openstack_volume_provider" type="OpenStackVolumeProvider"/>
+
+  <xs:complexType name="OpenStackVolumeProvider">
+    <xs:complexContent>
+      <xs:extension base="OpenStackProvider">
+        <xs:sequence>
+          <xs:element ref="data_center" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="openstack_volume_providers" type="OpenStackVolumeProviders"/>
+
+  <xs:complexType name="OpenStackVolumeProviders">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="openstack_volume_provider" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="OpenStackVolumeProviders"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="openstack_volume_type" type="OpenStackVolumeType"/>
+
+  <xs:element name="openstack_volume_types" type="OpenStackVolumeTypes"/>
+
+  <xs:complexType name="OpenStackVolumeType">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element ref="properties" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="openstack_volume_provider" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OpenStackVolumeTypes">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="openstack_volume_type" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="OpenStackVolumeTypes"/>
               </xs:appinfo>
             </xs:annotation>
           </xs:element>
