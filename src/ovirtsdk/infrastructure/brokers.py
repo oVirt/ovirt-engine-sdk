@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-04-06 13:12:43.000050'''
+'''Generated at: 2015-04-07 17:24:47.000840'''
 
 
 from ovirtsdk.xml import params
@@ -428,16 +428,16 @@ class ClusterAffinityGroup(params.AffinityGroup, Base):
         )
 
 class ClusterAffinityGroupVM(params.VM, Base):
-    def __init__(self, affinitygroup, vm, context):
+    def __init__(self, clusteraffinitygroup, vm, context):
         Base.__init__(self, context)
-        self.parentclass = affinitygroup
+        self.parentclass = clusteraffinitygroup
         self.superclass  =  vm
 
         #SUB_COLLECTIONS
-    def __new__(cls, affinitygroup, vm, context):
+    def __new__(cls, clusteraffinitygroup, vm, context):
         if vm is None: return None
         obj = object.__new__(cls)
-        obj.__init__(affinitygroup, vm, context)
+        obj.__init__(clusteraffinitygroup, vm, context)
         return obj
 
     def __getProxy(self):
@@ -1574,17 +1574,17 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         return result
 
 class ClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
-    def __init__(self, glustervolume, glusterbrick, context):
+    def __init__(self, clusterglustervolume, glusterbrick, context):
         Base.__init__(self, context)
-        self.parentclass = glustervolume
+        self.parentclass = clusterglustervolume
         self.superclass  =  glusterbrick
 
         self.statistics = ClusterGlusterVolumeGlusterBrickStatistics(self, context)
 
-    def __new__(cls, glustervolume, glusterbrick, context):
+    def __new__(cls, clusterglustervolume, glusterbrick, context):
         if glusterbrick is None: return None
         obj = object.__new__(cls)
-        obj.__init__(glustervolume, glusterbrick, context)
+        obj.__init__(clusterglustervolume, glusterbrick, context)
         return obj
 
     def __getProxy(self):
@@ -1648,16 +1648,16 @@ class ClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
         return result
 
 class ClusterGlusterVolumeGlusterBrickStatistic(params.Statistic, Base):
-    def __init__(self, glusterbrick, statistic, context):
+    def __init__(self, clusterglustervolumeglusterbrick, statistic, context):
         Base.__init__(self, context)
-        self.parentclass = glusterbrick
+        self.parentclass = clusterglustervolumeglusterbrick
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, glusterbrick, statistic, context):
+    def __new__(cls, clusterglustervolumeglusterbrick, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(glusterbrick, statistic, context)
+        obj.__init__(clusterglustervolumeglusterbrick, statistic, context)
         return obj
 
     def __getProxy(self):
@@ -1934,16 +1934,16 @@ class ClusterGlusterVolumeGlusterBricks(Base):
         )
 
 class ClusterGlusterVolumeStatistic(params.Statistic, Base):
-    def __init__(self, glustervolume, statistic, context):
+    def __init__(self, clusterglustervolume, statistic, context):
         Base.__init__(self, context)
-        self.parentclass = glustervolume
+        self.parentclass = clusterglustervolume
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, glustervolume, statistic, context):
+    def __new__(cls, clusterglustervolume, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(glustervolume, statistic, context)
+        obj.__init__(clusterglustervolume, statistic, context)
         return obj
 
     def __getProxy(self):
@@ -3315,17 +3315,17 @@ class DataCenterCluster(params.Cluster, Base):
         )
 
 class DataCenterClusterAffinityGroup(params.AffinityGroup, Base):
-    def __init__(self, cluster, affinitygroup, context):
+    def __init__(self, datacentercluster, affinitygroup, context):
         Base.__init__(self, context)
-        self.parentclass = cluster
+        self.parentclass = datacentercluster
         self.superclass  =  affinitygroup
 
         self.vms = DataCenterClusterAffinityGroupVMs(self, context)
 
-    def __new__(cls, cluster, affinitygroup, context):
+    def __new__(cls, datacentercluster, affinitygroup, context):
         if affinitygroup is None: return None
         obj = object.__new__(cls)
-        obj.__init__(cluster, affinitygroup, context)
+        obj.__init__(datacentercluster, affinitygroup, context)
         return obj
 
     def __getProxy(self):
@@ -3384,16 +3384,16 @@ class DataCenterClusterAffinityGroup(params.AffinityGroup, Base):
         )
 
 class DataCenterClusterAffinityGroupVM(params.VM, Base):
-    def __init__(self, affinitygroup, vm, context):
+    def __init__(self, datacenterclusteraffinitygroup, vm, context):
         Base.__init__(self, context)
-        self.parentclass = affinitygroup
+        self.parentclass = datacenterclusteraffinitygroup
         self.superclass  =  vm
 
         #SUB_COLLECTIONS
-    def __new__(cls, affinitygroup, vm, context):
+    def __new__(cls, datacenterclusteraffinitygroup, vm, context):
         if vm is None: return None
         obj = object.__new__(cls)
-        obj.__init__(affinitygroup, vm, context)
+        obj.__init__(datacenterclusteraffinitygroup, vm, context)
         return obj
 
     def __getProxy(self):
@@ -3700,16 +3700,16 @@ class DataCenterClusterAffinityGroups(Base):
         )
 
 class DataCenterClusterCpuProfile(params.CpuProfile, Base):
-    def __init__(self, cluster, cpuprofile, context):
+    def __init__(self, datacentercluster, cpuprofile, context):
         Base.__init__(self, context)
-        self.parentclass = cluster
+        self.parentclass = datacentercluster
         self.superclass  =  cpuprofile
 
         #SUB_COLLECTIONS
-    def __new__(cls, cluster, cpuprofile, context):
+    def __new__(cls, datacentercluster, cpuprofile, context):
         if cpuprofile is None: return None
         obj = object.__new__(cls)
-        obj.__init__(cluster, cpuprofile, context)
+        obj.__init__(datacentercluster, cpuprofile, context)
         return obj
 
     def __getProxy(self):
@@ -3876,16 +3876,16 @@ class DataCenterClusterCpuProfiles(Base):
         )
 
 class DataCenterClusterGlusterHook(params.GlusterHook, Base):
-    def __init__(self, cluster, glusterhook, context):
+    def __init__(self, datacentercluster, glusterhook, context):
         Base.__init__(self, context)
-        self.parentclass = cluster
+        self.parentclass = datacentercluster
         self.superclass  =  glusterhook
 
         #SUB_COLLECTIONS
-    def __new__(cls, cluster, glusterhook, context):
+    def __new__(cls, datacentercluster, glusterhook, context):
         if glusterhook is None: return None
         obj = object.__new__(cls)
-        obj.__init__(cluster, glusterhook, context)
+        obj.__init__(datacentercluster, glusterhook, context)
         return obj
 
     def __getProxy(self):
@@ -4101,18 +4101,18 @@ class DataCenterClusterGlusterHooks(Base):
         )
 
 class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
-    def __init__(self, cluster, glustervolume, context):
+    def __init__(self, datacentercluster, glustervolume, context):
         Base.__init__(self, context)
-        self.parentclass = cluster
+        self.parentclass = datacentercluster
         self.superclass  =  glustervolume
 
         self.bricks = DataCenterClusterGlusterVolumeGlusterBricks(self, context)
         self.statistics = DataCenterClusterGlusterVolumeStatistics(self, context)
 
-    def __new__(cls, cluster, glustervolume, context):
+    def __new__(cls, datacentercluster, glustervolume, context):
         if glustervolume is None: return None
         obj = object.__new__(cls)
-        obj.__init__(cluster, glustervolume, context)
+        obj.__init__(datacentercluster, glustervolume, context)
         return obj
 
     def __getProxy(self):
@@ -4456,17 +4456,17 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
         return result
 
 class DataCenterClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
-    def __init__(self, glustervolume, glusterbrick, context):
+    def __init__(self, datacenterclusterglustervolume, glusterbrick, context):
         Base.__init__(self, context)
-        self.parentclass = glustervolume
+        self.parentclass = datacenterclusterglustervolume
         self.superclass  =  glusterbrick
 
         self.statistics = DataCenterClusterGlusterVolumeGlusterBrickStatistics(self, context)
 
-    def __new__(cls, glustervolume, glusterbrick, context):
+    def __new__(cls, datacenterclusterglustervolume, glusterbrick, context):
         if glusterbrick is None: return None
         obj = object.__new__(cls)
-        obj.__init__(glustervolume, glusterbrick, context)
+        obj.__init__(datacenterclusterglustervolume, glusterbrick, context)
         return obj
 
     def __getProxy(self):
@@ -4526,16 +4526,16 @@ class DataCenterClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
         return result
 
 class DataCenterClusterGlusterVolumeGlusterBrickStatistic(params.Statistic, Base):
-    def __init__(self, glusterbrick, statistic, context):
+    def __init__(self, datacenterclusterglustervolumeglusterbrick, statistic, context):
         Base.__init__(self, context)
-        self.parentclass = glusterbrick
+        self.parentclass = datacenterclusterglustervolumeglusterbrick
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, glusterbrick, statistic, context):
+    def __new__(cls, datacenterclusterglustervolumeglusterbrick, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(glusterbrick, statistic, context)
+        obj.__init__(datacenterclusterglustervolumeglusterbrick, statistic, context)
         return obj
 
     def __getProxy(self):
@@ -4799,16 +4799,16 @@ class DataCenterClusterGlusterVolumeGlusterBricks(Base):
         )
 
 class DataCenterClusterGlusterVolumeStatistic(params.Statistic, Base):
-    def __init__(self, glustervolume, statistic, context):
+    def __init__(self, datacenterclusterglustervolume, statistic, context):
         Base.__init__(self, context)
-        self.parentclass = glustervolume
+        self.parentclass = datacenterclusterglustervolume
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, glustervolume, statistic, context):
+    def __new__(cls, datacenterclusterglustervolume, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(glustervolume, statistic, context)
+        obj.__init__(datacenterclusterglustervolume, statistic, context)
         return obj
 
     def __getProxy(self):
@@ -5065,16 +5065,16 @@ class DataCenterClusterGlusterVolumes(Base):
         )
 
 class DataCenterClusterNetwork(params.Network, Base):
-    def __init__(self, cluster, network, context):
+    def __init__(self, datacentercluster, network, context):
         Base.__init__(self, context)
-        self.parentclass = cluster
+        self.parentclass = datacentercluster
         self.superclass  =  network
 
         #SUB_COLLECTIONS
-    def __new__(cls, cluster, network, context):
+    def __new__(cls, datacentercluster, network, context):
         if network is None: return None
         obj = object.__new__(cls)
-        obj.__init__(cluster, network, context)
+        obj.__init__(datacentercluster, network, context)
         return obj
 
     def __getProxy(self):
@@ -5293,16 +5293,16 @@ class DataCenterClusterNetworks(Base):
         )
 
 class DataCenterClusterPermission(params.Permission, Base):
-    def __init__(self, cluster, permission, context):
+    def __init__(self, datacentercluster, permission, context):
         Base.__init__(self, context)
-        self.parentclass = cluster
+        self.parentclass = datacentercluster
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, cluster, permission, context):
+    def __new__(cls, datacentercluster, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(cluster, permission, context)
+        obj.__init__(datacentercluster, permission, context)
         return obj
 
     def __getProxy(self):
@@ -5729,19 +5729,19 @@ class DataCenterIscsiBond(params.IscsiBond, Base):
         )
 
 class DataCenterIscsiBondNetwork(params.Network, Base):
-    def __init__(self, iscsibond, network, context):
+    def __init__(self, datacenteriscsibond, network, context):
         Base.__init__(self, context)
-        self.parentclass = iscsibond
+        self.parentclass = datacenteriscsibond
         self.superclass  =  network
 
         self.labels = DataCenterIscsiBondNetworkLabels(self, context)
         self.permissions = DataCenterIscsiBondNetworkPermissions(self, context)
         self.vnicprofiles = DataCenterIscsiBondNetworkVnicProfiles(self, context)
 
-    def __new__(cls, iscsibond, network, context):
+    def __new__(cls, datacenteriscsibond, network, context):
         if network is None: return None
         obj = object.__new__(cls)
-        obj.__init__(iscsibond, network, context)
+        obj.__init__(datacenteriscsibond, network, context)
         return obj
 
     def __getProxy(self):
@@ -5800,16 +5800,16 @@ class DataCenterIscsiBondNetwork(params.Network, Base):
         )
 
 class DataCenterIscsiBondNetworkLabel(params.Label, Base):
-    def __init__(self, network, label, context):
+    def __init__(self, datacenteriscsibondnetwork, label, context):
         Base.__init__(self, context)
-        self.parentclass = network
+        self.parentclass = datacenteriscsibondnetwork
         self.superclass  =  label
 
         #SUB_COLLECTIONS
-    def __new__(cls, network, label, context):
+    def __new__(cls, datacenteriscsibondnetwork, label, context):
         if label is None: return None
         obj = object.__new__(cls)
-        obj.__init__(network, label, context)
+        obj.__init__(datacenteriscsibondnetwork, label, context)
         return obj
 
     def __getProxy(self):
@@ -5981,16 +5981,16 @@ class DataCenterIscsiBondNetworkLabels(Base):
         )
 
 class DataCenterIscsiBondNetworkPermission(params.Permission, Base):
-    def __init__(self, network, permission, context):
+    def __init__(self, datacenteriscsibondnetwork, permission, context):
         Base.__init__(self, context)
-        self.parentclass = network
+        self.parentclass = datacenteriscsibondnetwork
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, network, permission, context):
+    def __new__(cls, datacenteriscsibondnetwork, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(network, permission, context)
+        obj.__init__(datacenteriscsibondnetwork, permission, context)
         return obj
 
     def __getProxy(self):
@@ -6162,17 +6162,17 @@ class DataCenterIscsiBondNetworkPermissions(Base):
         )
 
 class DataCenterIscsiBondNetworkVnicProfile(params.VnicProfile, Base):
-    def __init__(self, network, vnicprofile, context):
+    def __init__(self, datacenteriscsibondnetwork, vnicprofile, context):
         Base.__init__(self, context)
-        self.parentclass = network
+        self.parentclass = datacenteriscsibondnetwork
         self.superclass  =  vnicprofile
 
         self.permissions = DataCenterIscsiBondNetworkVnicProfilePermissions(self, context)
 
-    def __new__(cls, network, vnicprofile, context):
+    def __new__(cls, datacenteriscsibondnetwork, vnicprofile, context):
         if vnicprofile is None: return None
         obj = object.__new__(cls)
-        obj.__init__(network, vnicprofile, context)
+        obj.__init__(datacenteriscsibondnetwork, vnicprofile, context)
         return obj
 
     def __getProxy(self):
@@ -6205,16 +6205,16 @@ class DataCenterIscsiBondNetworkVnicProfile(params.VnicProfile, Base):
         )
 
 class DataCenterIscsiBondNetworkVnicProfilePermission(params.Permission, Base):
-    def __init__(self, vnicprofile, permission, context):
+    def __init__(self, datacenteriscsibondnetworkvnicprofile, permission, context):
         Base.__init__(self, context)
-        self.parentclass = vnicprofile
+        self.parentclass = datacenteriscsibondnetworkvnicprofile
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, vnicprofile, permission, context):
+    def __new__(cls, datacenteriscsibondnetworkvnicprofile, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vnicprofile, permission, context)
+        obj.__init__(datacenteriscsibondnetworkvnicprofile, permission, context)
         return obj
 
     def __getProxy(self):
@@ -6666,16 +6666,16 @@ class DataCenterIscsiBondNetworks(Base):
         )
 
 class DataCenterIscsiBondStorageConnection(params.StorageConnection, Base):
-    def __init__(self, iscsibond, storageconnection, context):
+    def __init__(self, datacenteriscsibond, storageconnection, context):
         Base.__init__(self, context)
-        self.parentclass = iscsibond
+        self.parentclass = datacenteriscsibond
         self.superclass  =  storageconnection
 
         #SUB_COLLECTIONS
-    def __new__(cls, iscsibond, storageconnection, context):
+    def __new__(cls, datacenteriscsibond, storageconnection, context):
         if storageconnection is None: return None
         obj = object.__new__(cls)
-        obj.__init__(iscsibond, storageconnection, context)
+        obj.__init__(datacenteriscsibond, storageconnection, context)
         return obj
 
     def __getProxy(self):
@@ -7105,16 +7105,16 @@ class DataCenterNetwork(params.Network, Base):
         )
 
 class DataCenterNetworkLabel(params.Label, Base):
-    def __init__(self, network, label, context):
+    def __init__(self, datacenternetwork, label, context):
         Base.__init__(self, context)
-        self.parentclass = network
+        self.parentclass = datacenternetwork
         self.superclass  =  label
 
         #SUB_COLLECTIONS
-    def __new__(cls, network, label, context):
+    def __new__(cls, datacenternetwork, label, context):
         if label is None: return None
         obj = object.__new__(cls)
-        obj.__init__(network, label, context)
+        obj.__init__(datacenternetwork, label, context)
         return obj
 
     def __getProxy(self):
@@ -7290,16 +7290,16 @@ class DataCenterNetworkLabels(Base):
         )
 
 class DataCenterNetworkPermission(params.Permission, Base):
-    def __init__(self, network, permission, context):
+    def __init__(self, datacenternetwork, permission, context):
         Base.__init__(self, context)
-        self.parentclass = network
+        self.parentclass = datacenternetwork
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, network, permission, context):
+    def __new__(cls, datacenternetwork, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(network, permission, context)
+        obj.__init__(datacenternetwork, permission, context)
         return obj
 
     def __getProxy(self):
@@ -7466,17 +7466,17 @@ class DataCenterNetworkPermissions(Base):
         )
 
 class DataCenterNetworkVnicProfile(params.VnicProfile, Base):
-    def __init__(self, network, vnicprofile, context):
+    def __init__(self, datacenternetwork, vnicprofile, context):
         Base.__init__(self, context)
-        self.parentclass = network
+        self.parentclass = datacenternetwork
         self.superclass  =  vnicprofile
 
         self.permissions = DataCenterNetworkVnicProfilePermissions(self, context)
 
-    def __new__(cls, network, vnicprofile, context):
+    def __new__(cls, datacenternetwork, vnicprofile, context):
         if vnicprofile is None: return None
         obj = object.__new__(cls)
-        obj.__init__(network, vnicprofile, context)
+        obj.__init__(datacenternetwork, vnicprofile, context)
         return obj
 
     def __getProxy(self):
@@ -7508,16 +7508,16 @@ class DataCenterNetworkVnicProfile(params.VnicProfile, Base):
         )
 
 class DataCenterNetworkVnicProfilePermission(params.Permission, Base):
-    def __init__(self, vnicprofile, permission, context):
+    def __init__(self, datacenternetworkvnicprofile, permission, context):
         Base.__init__(self, context)
-        self.parentclass = vnicprofile
+        self.parentclass = datacenternetworkvnicprofile
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, vnicprofile, permission, context):
+    def __new__(cls, datacenternetworkvnicprofile, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vnicprofile, permission, context)
+        obj.__init__(datacenternetworkvnicprofile, permission, context)
         return obj
 
     def __getProxy(self):
@@ -8632,18 +8632,18 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         return result
 
 class DataCenterStorageDomainDisk(params.Disk, Base):
-    def __init__(self, storagedomain, disk, context):
+    def __init__(self, datacenterstoragedomain, disk, context):
         Base.__init__(self, context)
-        self.parentclass = storagedomain
+        self.parentclass = datacenterstoragedomain
         self.superclass  =  disk
 
         self.permissions = DataCenterStorageDomainDiskPermissions(self, context)
         self.statistics = DataCenterStorageDomainDiskStatistics(self, context)
 
-    def __new__(cls, storagedomain, disk, context):
+    def __new__(cls, datacenterstoragedomain, disk, context):
         if disk is None: return None
         obj = object.__new__(cls)
-        obj.__init__(storagedomain, disk, context)
+        obj.__init__(datacenterstoragedomain, disk, context)
         return obj
 
     def __getProxy(self):
@@ -8763,16 +8763,16 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
         return result
 
 class DataCenterStorageDomainDiskPermission(params.Permission, Base):
-    def __init__(self, disk, permission, context):
+    def __init__(self, datacenterstoragedomaindisk, permission, context):
         Base.__init__(self, context)
-        self.parentclass = disk
+        self.parentclass = datacenterstoragedomaindisk
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, disk, permission, context):
+    def __new__(cls, datacenterstoragedomaindisk, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(disk, permission, context)
+        obj.__init__(datacenterstoragedomaindisk, permission, context)
         return obj
 
     def __getProxy(self):
@@ -8944,16 +8944,16 @@ class DataCenterStorageDomainDiskPermissions(Base):
         )
 
 class DataCenterStorageDomainDiskStatistic(params.Statistic, Base):
-    def __init__(self, disk, statistic, context):
+    def __init__(self, datacenterstoragedomaindisk, statistic, context):
         Base.__init__(self, context)
-        self.parentclass = disk
+        self.parentclass = datacenterstoragedomaindisk
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, disk, statistic, context):
+    def __new__(cls, datacenterstoragedomaindisk, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(disk, statistic, context)
+        obj.__init__(datacenterstoragedomaindisk, statistic, context)
         return obj
 
     def __getProxy(self):
@@ -12085,16 +12085,16 @@ class GroupRole(params.Role, Base):
         raise DisconnectedError
 
 class GroupRolePermit(params.Permit, Base):
-    def __init__(self, role, permit, context):
+    def __init__(self, grouprole, permit, context):
         Base.__init__(self, context)
-        self.parentclass = role
+        self.parentclass = grouprole
         self.superclass  =  permit
 
         #SUB_COLLECTIONS
-    def __new__(cls, role, permit, context):
+    def __new__(cls, grouprole, permit, context):
         if permit is None: return None
         obj = object.__new__(cls)
-        obj.__init__(role, permit, context)
+        obj.__init__(grouprole, permit, context)
         return obj
 
     def __getProxy(self):
@@ -14334,16 +14334,16 @@ class HostNumaNode(params.NumaNode, Base):
         raise DisconnectedError
 
 class HostNumaNodeStatistic(params.Statistic, Base):
-    def __init__(self, numanode, statistic, context):
+    def __init__(self, hostnumanode, statistic, context):
         Base.__init__(self, context)
-        self.parentclass = numanode
+        self.parentclass = hostnumanode
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, numanode, statistic, context):
+    def __new__(cls, hostnumanode, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(numanode, statistic, context)
+        obj.__init__(hostnumanode, statistic, context)
         return obj
 
     def __getProxy(self):
@@ -16105,16 +16105,16 @@ class JobStep(params.Step, Base):
         return result
 
 class JobStepStatistic(params.Statistic, Base):
-    def __init__(self, step, statistic, context):
+    def __init__(self, jobstep, statistic, context):
         Base.__init__(self, context)
-        self.parentclass = step
+        self.parentclass = jobstep
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, step, statistic, context):
+    def __new__(cls, jobstep, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(step, statistic, context)
+        obj.__init__(jobstep, statistic, context)
         return obj
 
     def __getProxy(self):
@@ -17245,16 +17245,16 @@ class NetworkVnicProfile(params.VnicProfile, Base):
         )
 
 class NetworkVnicProfilePermission(params.Permission, Base):
-    def __init__(self, vnicprofile, permission, context):
+    def __init__(self, networkvnicprofile, permission, context):
         Base.__init__(self, context)
-        self.parentclass = vnicprofile
+        self.parentclass = networkvnicprofile
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, vnicprofile, permission, context):
+    def __new__(cls, networkvnicprofile, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vnicprofile, permission, context)
+        obj.__init__(networkvnicprofile, permission, context)
         return obj
 
     def __getProxy(self):
@@ -18469,16 +18469,16 @@ class OpenStackNetworkProviderOpenStackNetwork(params.OpenStackNetwork, Base):
         raise DisconnectedError
 
 class OpenStackNetworkProviderOpenStackNetworkOpenStackSubnet(params.OpenStackSubnet, Base):
-    def __init__(self, openstacknetwork, openstacksubnet, context):
+    def __init__(self, openstacknetworkprovideropenstacknetwork, openstacksubnet, context):
         Base.__init__(self, context)
-        self.parentclass = openstacknetwork
+        self.parentclass = openstacknetworkprovideropenstacknetwork
         self.superclass  =  openstacksubnet
 
         #SUB_COLLECTIONS
-    def __new__(cls, openstacknetwork, openstacksubnet, context):
+    def __new__(cls, openstacknetworkprovideropenstacknetwork, openstacksubnet, context):
         if openstacksubnet is None: return None
         obj = object.__new__(cls)
-        obj.__init__(openstacknetwork, openstacksubnet, context)
+        obj.__init__(openstacknetworkprovideropenstacknetwork, openstacksubnet, context)
         return obj
 
     def __getProxy(self):
@@ -21263,16 +21263,16 @@ class StorageDomainDisk(params.Disk, Base):
         return result
 
 class StorageDomainDiskPermission(params.Permission, Base):
-    def __init__(self, disk, permission, context):
+    def __init__(self, storagedomaindisk, permission, context):
         Base.__init__(self, context)
-        self.parentclass = disk
+        self.parentclass = storagedomaindisk
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, disk, permission, context):
+    def __new__(cls, storagedomaindisk, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(disk, permission, context)
+        obj.__init__(storagedomaindisk, permission, context)
         return obj
 
     def __getProxy(self):
@@ -21780,16 +21780,16 @@ class StorageDomainDiskSnapshots(Base):
         )
 
 class StorageDomainDiskStatistic(params.Statistic, Base):
-    def __init__(self, disk, statistic, context):
+    def __init__(self, storagedomaindisk, statistic, context):
         Base.__init__(self, context)
-        self.parentclass = disk
+        self.parentclass = storagedomaindisk
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, disk, statistic, context):
+    def __new__(cls, storagedomaindisk, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(disk, statistic, context)
+        obj.__init__(storagedomaindisk, statistic, context)
         return obj
 
     def __getProxy(self):
@@ -22858,16 +22858,16 @@ class StorageDomainTemplate(params.Template, Base):
         return result
 
 class StorageDomainTemplateDisk(params.Disk, Base):
-    def __init__(self, template, disk, context):
+    def __init__(self, storagedomaintemplate, disk, context):
         Base.__init__(self, context)
-        self.parentclass = template
+        self.parentclass = storagedomaintemplate
         self.superclass  =  disk
 
         #SUB_COLLECTIONS
-    def __new__(cls, template, disk, context):
+    def __new__(cls, storagedomaintemplate, disk, context):
         if disk is None: return None
         obj = object.__new__(cls)
-        obj.__init__(template, disk, context)
+        obj.__init__(storagedomaintemplate, disk, context)
         return obj
 
     def __getProxy(self):
@@ -23209,16 +23209,16 @@ class StorageDomainVM(params.VM, Base):
         return result
 
 class StorageDomainVMDisk(params.Disk, Base):
-    def __init__(self, vm, disk, context):
+    def __init__(self, storagedomainvm, disk, context):
         Base.__init__(self, context)
-        self.parentclass = vm
+        self.parentclass = storagedomainvm
         self.superclass  =  disk
 
         #SUB_COLLECTIONS
-    def __new__(cls, vm, disk, context):
+    def __new__(cls, storagedomainvm, disk, context):
         if disk is None: return None
         obj = object.__new__(cls)
-        obj.__init__(vm, disk, context)
+        obj.__init__(storagedomainvm, disk, context)
         return obj
 
     def __getProxy(self):
@@ -25577,16 +25577,16 @@ class UserRole(params.Role, Base):
         raise DisconnectedError
 
 class UserRolePermit(params.Permit, Base):
-    def __init__(self, role, permit, context):
+    def __init__(self, userrole, permit, context):
         Base.__init__(self, context)
-        self.parentclass = role
+        self.parentclass = userrole
         self.superclass  =  permit
 
         #SUB_COLLECTIONS
-    def __new__(cls, role, permit, context):
+    def __new__(cls, userrole, permit, context):
         if permit is None: return None
         obj = object.__new__(cls)
-        obj.__init__(role, permit, context)
+        obj.__init__(userrole, permit, context)
         return obj
 
     def __getProxy(self):
@@ -27393,16 +27393,16 @@ class VMDisk(params.Disk, Base):
         return result
 
 class VMDiskPermission(params.Permission, Base):
-    def __init__(self, disk, permission, context):
+    def __init__(self, vmdisk, permission, context):
         Base.__init__(self, context)
-        self.parentclass = disk
+        self.parentclass = vmdisk
         self.superclass  =  permission
 
         #SUB_COLLECTIONS
-    def __new__(cls, disk, permission, context):
+    def __new__(cls, vmdisk, permission, context):
         if permission is None: return None
         obj = object.__new__(cls)
-        obj.__init__(disk, permission, context)
+        obj.__init__(vmdisk, permission, context)
         return obj
 
     def __getProxy(self):
@@ -27569,16 +27569,16 @@ class VMDiskPermissions(Base):
         )
 
 class VMDiskStatistic(params.Statistic, Base):
-    def __init__(self, disk, statistic, context):
+    def __init__(self, vmdisk, statistic, context):
         Base.__init__(self, context)
-        self.parentclass = disk
+        self.parentclass = vmdisk
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, disk, statistic, context):
+    def __new__(cls, vmdisk, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(disk, statistic, context)
+        obj.__init__(vmdisk, statistic, context)
         return obj
 
     def __getProxy(self):
@@ -28026,16 +28026,16 @@ class VMNIC(params.NIC, Base):
         return result
 
 class VMNICReportedDevice(params.ReportedDevice, Base):
-    def __init__(self, nic, reporteddevice, context):
+    def __init__(self, vmnic, reporteddevice, context):
         Base.__init__(self, context)
-        self.parentclass = nic
+        self.parentclass = vmnic
         self.superclass  =  reporteddevice
 
         #SUB_COLLECTIONS
-    def __new__(cls, nic, reporteddevice, context):
+    def __new__(cls, vmnic, reporteddevice, context):
         if reporteddevice is None: return None
         obj = object.__new__(cls)
-        obj.__init__(nic, reporteddevice, context)
+        obj.__init__(vmnic, reporteddevice, context)
         return obj
 
     def __getProxy(self):
@@ -28154,16 +28154,16 @@ class VMNICReportedDevices(Base):
         )
 
 class VMNICStatistic(params.Statistic, Base):
-    def __init__(self, nic, statistic, context):
+    def __init__(self, vmnic, statistic, context):
         Base.__init__(self, context)
-        self.parentclass = nic
+        self.parentclass = vmnic
         self.superclass  =  statistic
 
         #SUB_COLLECTIONS
-    def __new__(cls, nic, statistic, context):
+    def __new__(cls, vmnic, statistic, context):
         if statistic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(nic, statistic, context)
+        obj.__init__(vmnic, statistic, context)
         return obj
 
     def __getProxy(self):
@@ -28963,16 +28963,16 @@ class VMSnapshot(params.Snapshot, Base):
         return result
 
 class VMSnapshotCdRom(params.CdRom, Base):
-    def __init__(self, snapshot, cdrom, context):
+    def __init__(self, vmsnapshot, cdrom, context):
         Base.__init__(self, context)
-        self.parentclass = snapshot
+        self.parentclass = vmsnapshot
         self.superclass  =  cdrom
 
         #SUB_COLLECTIONS
-    def __new__(cls, snapshot, cdrom, context):
+    def __new__(cls, vmsnapshot, cdrom, context):
         if cdrom is None: return None
         obj = object.__new__(cls)
-        obj.__init__(snapshot, cdrom, context)
+        obj.__init__(vmsnapshot, cdrom, context)
         return obj
 
     def __getProxy(self):
@@ -29091,16 +29091,16 @@ class VMSnapshotCdRoms(Base):
         )
 
 class VMSnapshotDisk(params.Disk, Base):
-    def __init__(self, snapshot, disk, context):
+    def __init__(self, vmsnapshot, disk, context):
         Base.__init__(self, context)
-        self.parentclass = snapshot
+        self.parentclass = vmsnapshot
         self.superclass  =  disk
 
         #SUB_COLLECTIONS
-    def __new__(cls, snapshot, disk, context):
+    def __new__(cls, vmsnapshot, disk, context):
         if disk is None: return None
         obj = object.__new__(cls)
-        obj.__init__(snapshot, disk, context)
+        obj.__init__(vmsnapshot, disk, context)
         return obj
 
     def __getProxy(self):
@@ -29244,16 +29244,16 @@ class VMSnapshotDisks(Base):
         )
 
 class VMSnapshotNIC(params.NIC, Base):
-    def __init__(self, snapshot, nic, context):
+    def __init__(self, vmsnapshot, nic, context):
         Base.__init__(self, context)
-        self.parentclass = snapshot
+        self.parentclass = vmsnapshot
         self.superclass  =  nic
 
         #SUB_COLLECTIONS
-    def __new__(cls, snapshot, nic, context):
+    def __new__(cls, vmsnapshot, nic, context):
         if nic is None: return None
         obj = object.__new__(cls)
-        obj.__init__(snapshot, nic, context)
+        obj.__init__(vmsnapshot, nic, context)
         return obj
 
     def __getProxy(self):

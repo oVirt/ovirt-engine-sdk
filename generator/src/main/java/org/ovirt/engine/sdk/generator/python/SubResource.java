@@ -40,10 +40,9 @@ public class SubResource {
         Tree<Location> grandparentTree = entityTree.getParent().getParent();
 
         String entityType = SchemaRules.getSchemaType(entityTree);
-        String grandparentType = SchemaRules.getSchemaType(grandparentTree);
         String brokerType = BrokerRules.getBrokerType(entityTree);
         String superClassParameterName = entityType.toLowerCase().replace("_", "");
-        String parentClassParameterName = grandparentType.toLowerCase().replace("_", "");
+        String parentClassParameterName = BrokerRules.getBrokerType(grandparentTree).toLowerCase().replace("_", "");
 
         SubResourceTemplate template = new SubResourceTemplate();
         template.set("entity_type", entityType);
