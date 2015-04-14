@@ -24,6 +24,20 @@ need first to build it, using Maven:
     $ cd generator
     $ mvn clean install
 
+This Java program will in turn use the `generateDS.py` tool to generate
+Python code from the XML schema, so you need to have this tool
+installed, and it must be version 2.12a exactly, otherwise the tool will
+refuse to run. If you don't have it installed use the `pip` command
+(will need to be `root`for this):
+
+    # pip install generateDS==2.12a
+
+If you don't have the `pip` command then you will need to install it
+with the package management tools of your distribution. For example, if
+you are using a `RPM` and `yum` based distribution:
+
+    # yum -y install python-pip
+
 Then you will need to place the files containing the XML schema of entities and
 the RSDL in the `src/main/resources` directory. This can be done manually, but
 it is better to extract them from the engine Maven artifacts, running the
