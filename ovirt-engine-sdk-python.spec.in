@@ -1,6 +1,6 @@
 Name:           ovirt-engine-sdk-python
-Version:        [?]
-Release:        1%{?dist}
+Version:        @RPM_VERSION@
+Release:        @RPM_RELEASE@
 Summary:        oVirt Engine Software Development Kit (Python)
 Group:          Development/Libraries
 License:        ASL 2.0
