@@ -120,8 +120,7 @@ class ConnectionsPool(object):
 
         # Copy headers and the request body to the curl object:
         self.__curl.setopt(pycurl.HTTPHEADER, header_lines)
-        if body is not None:
-            self.__curl.setopt(pycurl.POSTFIELDS, body)
+        self.__curl.setopt(pycurl.POSTFIELDS, body if body is not None else "")
 
         # Prepare the buffers to receive the response:
         body_buffer = cStringIO.StringIO()
