@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Mon Apr  6 13:12:41 2015 by generateDS.py version 2.12a.
+# Generated Wed May  6 12:23:53 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -4064,6 +4064,92 @@ class DiskFormats(GeneratedsSuper):
             disk_format_ = self.gds_validate_string(disk_format_, node, 'disk_format')
             self.disk_format.append(disk_format_)
 # end class DiskFormats
+
+
+class DiskStorageTypes(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, disk_storage_type=None):
+        if disk_storage_type is None:
+            self.disk_storage_type = []
+        else:
+            self.disk_storage_type = disk_storage_type
+    def factory(*args_, **kwargs_):
+        if DiskStorageTypes.subclass:
+            return DiskStorageTypes.subclass(*args_, **kwargs_)
+        else:
+            return DiskStorageTypes(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_disk_storage_type(self): return self.disk_storage_type
+    def set_disk_storage_type(self, disk_storage_type): self.disk_storage_type = disk_storage_type
+    def add_disk_storage_type(self, value): self.disk_storage_type.append(value)
+    def insert_disk_storage_type(self, index, value): self.disk_storage_type[index] = value
+    def hasContent_(self):
+        if (
+            self.disk_storage_type
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='DiskStorageTypes', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='DiskStorageTypes')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='DiskStorageTypes'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='DiskStorageTypes', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for disk_storage_type_ in self.disk_storage_type:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sdisk_storage_type>%s</%sdisk_storage_type>%s' % (namespace_, self.gds_format_string(quote_xml(disk_storage_type_).encode(ExternalEncoding), input_name='disk_storage_type'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='DiskStorageTypes'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('disk_storage_type=[\n')
+        level += 1
+        for disk_storage_type_ in self.disk_storage_type:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(disk_storage_type_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'disk_storage_type':
+            disk_storage_type_ = child_.text
+            disk_storage_type_ = self.gds_validate_string(disk_storage_type_, node, 'disk_storage_type')
+            self.disk_storage_type.append(disk_storage_type_)
+# end class DiskStorageTypes
 
 
 class DiskInterfaces(GeneratedsSuper):
@@ -25005,7 +25091,7 @@ class Floppies(BaseDevices):
 class Disk(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, vms=None, vm=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, snapshot=None, disk_profile=None, logical_name=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, vms=None, vm=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, uses_scsi_reservation=None, snapshot=None, disk_profile=None, logical_name=None, storage_type=None, extensiontype_=None):
         super(Disk, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, vms, vm, extensiontype_, )
         self.alias = alias
         self.image_id = image_id
@@ -25029,9 +25115,11 @@ class Disk(BaseDevice):
         self.quota = quota
         self.lun_storage = lun_storage
         self.sgio = sgio
+        self.uses_scsi_reservation = uses_scsi_reservation
         self.snapshot = snapshot
         self.disk_profile = disk_profile
         self.logical_name = logical_name
+        self.storage_type = storage_type
         self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if Disk.subclass:
@@ -25083,12 +25171,16 @@ class Disk(BaseDevice):
     def set_lun_storage(self, lun_storage): self.lun_storage = lun_storage
     def get_sgio(self): return self.sgio
     def set_sgio(self, sgio): self.sgio = sgio
+    def get_uses_scsi_reservation(self): return self.uses_scsi_reservation
+    def set_uses_scsi_reservation(self, uses_scsi_reservation): self.uses_scsi_reservation = uses_scsi_reservation
     def get_snapshot(self): return self.snapshot
     def set_snapshot(self, snapshot): self.snapshot = snapshot
     def get_disk_profile(self): return self.disk_profile
     def set_disk_profile(self, disk_profile): self.disk_profile = disk_profile
     def get_logical_name(self): return self.logical_name
     def set_logical_name(self, logical_name): self.logical_name = logical_name
+    def get_storage_type(self): return self.storage_type
+    def set_storage_type(self, storage_type): self.storage_type = storage_type
     def get_extensiontype_(self): return self.extensiontype_
     def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def hasContent_(self):
@@ -25115,9 +25207,11 @@ class Disk(BaseDevice):
             self.quota is not None or
             self.lun_storage is not None or
             self.sgio is not None or
+            self.uses_scsi_reservation is not None or
             self.snapshot is not None or
             self.disk_profile is not None or
             self.logical_name is not None or
+            self.storage_type is not None or
             super(Disk, self).hasContent_()
         ):
             return True
@@ -25211,6 +25305,9 @@ class Disk(BaseDevice):
         if self.sgio is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssgio>%s</%ssgio>%s' % (namespace_, self.gds_format_string(quote_xml(self.sgio).encode(ExternalEncoding), input_name='sgio'), namespace_, eol_))
+        if self.uses_scsi_reservation is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%suses_scsi_reservation>%s</%suses_scsi_reservation>%s' % (namespace_, self.gds_format_boolean(self.uses_scsi_reservation, input_name='uses_scsi_reservation'), namespace_, eol_))
         if self.snapshot is not None:
             self.snapshot.export_(outfile, level, namespace_, name_='snapshot', pretty_print=pretty_print)
         if self.disk_profile is not None:
@@ -25218,6 +25315,9 @@ class Disk(BaseDevice):
         if self.logical_name is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%slogical_name>%s</%slogical_name>%s' % (namespace_, self.gds_format_string(quote_xml(self.logical_name).encode(ExternalEncoding), input_name='logical_name'), namespace_, eol_))
+        if self.storage_type is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sstorage_type>%s</%sstorage_type>%s' % (namespace_, self.gds_format_string(quote_xml(self.storage_type).encode(ExternalEncoding), input_name='storage_type'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='Disk'):
         level += 1
         already_processed = set()
@@ -25312,6 +25412,9 @@ class Disk(BaseDevice):
         if self.sgio is not None:
             showIndent(outfile, level)
             outfile.write('sgio=%s,\n' % quote_python(self.sgio).encode(ExternalEncoding))
+        if self.uses_scsi_reservation is not None:
+            showIndent(outfile, level)
+            outfile.write('uses_scsi_reservation=%s,\n' % self.uses_scsi_reservation)
         if self.snapshot is not None:
             showIndent(outfile, level)
             outfile.write('snapshot=model_.snapshot(\n')
@@ -25327,6 +25430,9 @@ class Disk(BaseDevice):
         if self.logical_name is not None:
             showIndent(outfile, level)
             outfile.write('logical_name=%s,\n' % quote_python(self.logical_name).encode(ExternalEncoding))
+        if self.storage_type is not None:
+            showIndent(outfile, level)
+            outfile.write('storage_type=%s,\n' % quote_python(self.storage_type).encode(ExternalEncoding))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -25483,6 +25589,16 @@ class Disk(BaseDevice):
             sgio_ = child_.text
             sgio_ = self.gds_validate_string(sgio_, node, 'sgio')
             self.sgio = sgio_
+        elif nodeName_ == 'uses_scsi_reservation':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'uses_scsi_reservation')
+            self.uses_scsi_reservation = ival_
         elif nodeName_ == 'snapshot':
             obj_ = Snapshot.factory()
             obj_.build(child_)
@@ -25495,6 +25611,10 @@ class Disk(BaseDevice):
             logical_name_ = child_.text
             logical_name_ = self.gds_validate_string(logical_name_, node, 'logical_name')
             self.logical_name = logical_name_
+        elif nodeName_ == 'storage_type':
+            storage_type_ = child_.text
+            storage_type_ = self.gds_validate_string(storage_type_, node, 'storage_type')
+            self.storage_type = storage_type_
         super(Disk, self).buildChildren(child_, node, nodeName_, True)
 # end class Disk
 
@@ -25636,8 +25756,8 @@ class Disks(BaseDevices):
 class DiskSnapshot(Disk):
     subclass = None
     superclass = Disk
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, vms=None, vm=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, snapshot=None, disk_profile=None, logical_name=None, disk=None):
-        super(DiskSnapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, vms, vm, alias, image_id, storage_domain, storage_domains, size, type_, provisioned_size, actual_size, status, interface, format, sparse, bootable, shareable, wipe_after_delete, propagate_errors, statistics, active, read_only, quota, lun_storage, sgio, snapshot, disk_profile, logical_name, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, vms=None, vm=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, uses_scsi_reservation=None, snapshot=None, disk_profile=None, logical_name=None, storage_type=None, disk=None):
+        super(DiskSnapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, vms, vm, alias, image_id, storage_domain, storage_domains, size, type_, provisioned_size, actual_size, status, interface, format, sparse, bootable, shareable, wipe_after_delete, propagate_errors, statistics, active, read_only, quota, lun_storage, sgio, uses_scsi_reservation, snapshot, disk_profile, logical_name, storage_type, )
         self.disk = disk
     def factory(*args_, **kwargs_):
         if DiskSnapshot.subclass:
@@ -42071,7 +42191,7 @@ class GeneralMetadata(DetailedLink):
 class VersionCaps(Version):
     subclass = None
     superclass = Version
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, configuration_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_protocols=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, sgio_options=None, watchdog_models=None, watchdog_actions=None, authentication_methods=None, kdump_states=None, spm_states=None, step_types=None, payload_encodings=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None, snapshot_statuses=None, content_types=None, hook_states=None, stages=None, sso_methods=None, architecture_capabilities=None, serial_number_policies=None, selinux_modes=None, rng_sources=None, scheduling_policy_unit_types=None, qos_types=None, inheritable_booleans=None, network_plugin_types=None, message_broker_types=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, configuration_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_storage_types=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_protocols=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, sgio_options=None, watchdog_models=None, watchdog_actions=None, authentication_methods=None, kdump_states=None, spm_states=None, step_types=None, payload_encodings=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None, snapshot_statuses=None, content_types=None, hook_states=None, stages=None, sso_methods=None, architecture_capabilities=None, serial_number_policies=None, selinux_modes=None, rng_sources=None, scheduling_policy_unit_types=None, qos_types=None, inheritable_booleans=None, network_plugin_types=None, message_broker_types=None):
         super(VersionCaps, self).__init__(actions, href, id, name, description, comment, creation_status, link, major, full_version, build_, minor, revision, )
         self.current = current
         self.features = features
@@ -42087,6 +42207,7 @@ class VersionCaps(Version):
         self.nic_interfaces = nic_interfaces
         self.os_types = os_types
         self.disk_formats = disk_formats
+        self.disk_storage_types = disk_storage_types
         self.disk_interfaces = disk_interfaces
         self.vm_affinities = vm_affinities
         self.custom_properties = custom_properties
@@ -42175,6 +42296,8 @@ class VersionCaps(Version):
     def set_os_types(self, os_types): self.os_types = os_types
     def get_disk_formats(self): return self.disk_formats
     def set_disk_formats(self, disk_formats): self.disk_formats = disk_formats
+    def get_disk_storage_types(self): return self.disk_storage_types
+    def set_disk_storage_types(self, disk_storage_types): self.disk_storage_types = disk_storage_types
     def get_disk_interfaces(self): return self.disk_interfaces
     def set_disk_interfaces(self, disk_interfaces): self.disk_interfaces = disk_interfaces
     def get_vm_affinities(self): return self.vm_affinities
@@ -42299,6 +42422,7 @@ class VersionCaps(Version):
             self.nic_interfaces is not None or
             self.os_types is not None or
             self.disk_formats is not None or
+            self.disk_storage_types is not None or
             self.disk_interfaces is not None or
             self.vm_affinities is not None or
             self.custom_properties is not None or
@@ -42411,6 +42535,8 @@ class VersionCaps(Version):
             self.os_types.export_(outfile, level, namespace_, name_='os_types', pretty_print=pretty_print)
         if self.disk_formats is not None:
             self.disk_formats.export_(outfile, level, namespace_, name_='disk_formats', pretty_print=pretty_print)
+        if self.disk_storage_types is not None:
+            self.disk_storage_types.export_(outfile, level, namespace_, name_='disk_storage_types', pretty_print=pretty_print)
         if self.disk_interfaces is not None:
             self.disk_interfaces.export_(outfile, level, namespace_, name_='disk_interfaces', pretty_print=pretty_print)
         if self.vm_affinities is not None:
@@ -42608,6 +42734,12 @@ class VersionCaps(Version):
             showIndent(outfile, level)
             outfile.write('disk_formats=model_.disk_formats(\n')
             self.disk_formats.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.disk_storage_types is not None:
+            showIndent(outfile, level)
+            outfile.write('disk_storage_types=model_.disk_storage_types(\n')
+            self.disk_storage_types.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.disk_interfaces is not None:
@@ -43006,6 +43138,10 @@ class VersionCaps(Version):
             obj_ = DiskFormats.factory()
             obj_.build(child_)
             self.disk_formats = obj_
+        elif nodeName_ == 'disk_storage_types':
+            obj_ = DiskStorageTypes.factory()
+            obj_.build(child_)
+            self.disk_storage_types = obj_
         elif nodeName_ == 'disk_interfaces':
             obj_ = DiskInterfaces.factory()
             obj_.build(child_)
@@ -43383,6 +43519,7 @@ GDSClassesMapping = {
     'openstack_images': OpenStackImages,
     'scheduling_policy_units': SchedulingPolicyUnits,
     'roles': Roles,
+    'disk_storage_types': DiskStorageTypes,
     'headers': Headers,
     'openstack_image': OpenStackImage,
     'creation_status': Status,
@@ -43773,6 +43910,7 @@ __all__ = [
     "DiskSnapshot",
     "DiskSnapshots",
     "DiskStates",
+    "DiskStorageTypes",
     "Disks",
     "Display",
     "DisplayTypes",
@@ -44125,6 +44263,7 @@ _rootClassMap = {
                     "disk_snapshot"                 : DiskSnapshot,
                     "disk_snapshots"                : DiskSnapshots,
                     "disk_states"                   : DiskStates,
+                    "disk_storage_types"            : DiskStorageTypes,
                     "disks"                         : Disks,
                     "display"                       : Display,
                     "display_types"                 : DisplayTypes,
@@ -44473,6 +44612,7 @@ _tag_for_type = {
     DiskSnapshot: "disk_snapshot",
     DiskSnapshots: "disk_snapshots",
     DiskStates: "disk_states",
+    DiskStorageTypes: "disk_storage_types",
     Disks: "disks",
     Display: "display",
     DisplayTypes: "display_types",

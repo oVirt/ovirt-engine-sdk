@@ -393,7 +393,7 @@
   <xs:complexType name="Value">
     <xs:sequence>
       <xs:element name="datum" type="xs:decimal" minOccurs="1" maxOccurs="1"/>
-      <xs:element name="detail" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="detail" type="xs:string" minOccurs="0" maxOccurs="1"/>
       <!-- will in the future also include a timestamp element,
            when historical data is supported -->
     </xs:sequence>
@@ -610,6 +610,7 @@
           <xs:element ref="nic_interfaces" minOccurs="0"/>
           <xs:element ref="os_types" minOccurs="0"/>
           <xs:element ref="disk_formats" minOccurs="0"/>
+          <xs:element ref="disk_storage_types" minOccurs="0"/>
           <xs:element ref="disk_interfaces" minOccurs="0"/>
           <xs:element ref="vm_affinities" minOccurs="0"/>
           <xs:element ref="custom_properties" minOccurs="0"/>
@@ -868,6 +869,20 @@
         <xs:annotation>
           <xs:appinfo>
             <jaxb:property name="DiskFormats"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="disk_storage_types" type="DiskStorageTypes"/>
+
+  <xs:complexType name="DiskStorageTypes">
+    <xs:sequence>
+      <xs:element name="disk_storage_type" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:appinfo>
+            <jaxb:property name="DiskStorageTypes"/>
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
@@ -1793,6 +1808,7 @@
       <xs:element name="automatic_pm_enabled" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
       <xs:element name="kdump_detection" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
+    <!-- TODO: (deprecated) remove 'type' post 4.0 -->
     <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
 
@@ -3672,9 +3688,11 @@
           <xs:element ref="quota" minOccurs="0" maxOccurs="1"/>
           <xs:element name="lun_storage" type="Storage" minOccurs="0"/>
           <xs:element name="sgio" type="xs:string" minOccurs="0"/>
+          <xs:element name="uses_scsi_reservation" type="xs:boolean" minOccurs="0"/>
           <xs:element ref="snapshot" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="disk_profile" minOccurs="0" maxOccurs="1"/>
           <xs:element name="logical_name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="storage_type" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

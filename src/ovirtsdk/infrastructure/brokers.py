@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-04-07 17:24:47.000840'''
+'''Generated at: 2015-05-06 12:23:54.000686'''
 
 
 from ovirtsdk.xml import params
@@ -55,21 +55,26 @@ class Bookmark(params.Bookmark, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/bookmarks/{bookmark:id}'
+        url = UrlHelper.replace(
+            '/bookmarks/{bookmark:id}',
+            {
+                '{bookmark:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{bookmark:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
     def update(self):
@@ -105,13 +110,14 @@ class Bookmarks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, bookmark, correlation_id=None):
+    def add(self, bookmark, correlation_id=None, expect=None):
         '''
         @type Bookmark:
 
         @param bookmark.name: string
         @param bookmark.value: string
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Bookmark:
         '''
@@ -121,7 +127,7 @@ class Bookmarks(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(bookmark),
-           headers={"Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Bookmark(result, self.context)
@@ -294,7 +300,7 @@ class Cluster(params.Cluster, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param cluster.name: string]
         [@param cluster.description: string]
@@ -331,6 +337,7 @@ class Cluster(params.Cluster, Base):
         [@param cluster.maintenance_reason_required: boolean]
         [@param cluster.management_network.id|name: string]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Cluster:
         '''
@@ -345,10 +352,35 @@ class Cluster(params.Cluster, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Cluster(result, self.context)
+
+    def resetemulatedmachine(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/clusters/{cluster:id}/resetemulatedmachine'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{cluster:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
 
 class ClusterAffinityGroup(params.AffinityGroup, Base):
     def __init__(self, cluster, affinitygroup, context):
@@ -373,8 +405,9 @@ class ClusterAffinityGroup(params.AffinityGroup, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self, correlation_id=None):
+    def delete(self, async=None, correlation_id=None):
         '''
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return None:
@@ -391,17 +424,19 @@ class ClusterAffinityGroup(params.AffinityGroup, Base):
         return self.__getProxy().delete(
             url=SearchHelper.appendQuery(
                 url,
-                {}
+                {'async:matrix':async}
             ),
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param affinitygroup.name: string]
         [@param affinitygroup.positive: boolean]
         [@param affinitygroup.enforcing: boolean]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return AffinityGroup:
         '''
@@ -416,9 +451,9 @@ class ClusterAffinityGroup(params.AffinityGroup, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return ClusterAffinityGroup(
@@ -449,8 +484,9 @@ class ClusterAffinityGroupVM(params.VM, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self, correlation_id=None):
+    def delete(self, async=None, correlation_id=None):
         '''
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return None:
@@ -468,7 +504,7 @@ class ClusterAffinityGroupVM(params.VM, Base):
         return self.__getProxy().delete(
             url=SearchHelper.appendQuery(
                 url,
-                {}
+                {'async:matrix':async}
             ),
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
@@ -488,14 +524,14 @@ class ClusterAffinityGroupVMs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, vm, expect=None, correlation_id=None):
+    def add(self, vm, correlation_id=None, expect=None):
 
         '''
         @type VM:
 
         @param vm.id|name: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return VM:
         '''
@@ -511,7 +547,7 @@ class ClusterAffinityGroupVMs(Base):
                 }
             ),
             body=ParseHelper.toXml(vm),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return ClusterAffinityGroupVM(
@@ -631,7 +667,7 @@ class ClusterAffinityGroups(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, affinitygroup, expect=None, correlation_id=None):
+    def add(self, affinitygroup, correlation_id=None, expect=None):
 
         '''
         @type AffinityGroup:
@@ -639,8 +675,8 @@ class ClusterAffinityGroups(Base):
         @param affinitygroup.name: string
         @param affinitygroup.positive: boolean
         @param affinitygroup.enforcing: boolean
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return AffinityGroup:
         '''
@@ -655,7 +691,7 @@ class ClusterAffinityGroups(Base):
                 }
             ),
             body=ParseHelper.toXml(affinitygroup),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return ClusterAffinityGroup(
@@ -818,7 +854,7 @@ class ClusterCpuProfiles(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, cpuprofile, expect=None, correlation_id=None):
+    def add(self, cpuprofile, correlation_id=None, expect=None):
 
         '''
         @type CpuProfile:
@@ -826,8 +862,8 @@ class ClusterCpuProfiles(Base):
         @param cpuprofile.name: string
         [@param cpuprofile.description: string]
         [@param cpuprofile.qos.id: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return CpuProfile:
         '''
@@ -842,7 +878,7 @@ class ClusterCpuProfiles(Base):
                 }
             ),
             body=ParseHelper.toXml(cpuprofile),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return ClusterCpuProfile(
@@ -1203,22 +1239,27 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}'
+        url = UrlHelper.replace(
+            '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}',
+            {
+                '{cluster:id}': self.parentclass.get_id(),
+                '{glustervolume:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
     def activate(self, action=params.Action(), correlation_id=None):
@@ -1411,8 +1452,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         @param action.option.name: string
         @param action.option.value: string
-        @param action.async: boolean
-        @param action.grace_period.expiry: long
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1468,6 +1509,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1523,6 +1566,8 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1596,23 +1641,28 @@ class ClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
+        url = UrlHelper.replace(
+            '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}',
+            {
+                '{cluster:id}': self.parentclass.parentclass.get_id(),
+                '{glustervolume:id}': self.parentclass.get_id(),
+                '{brick:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{glustervolume:id}': self.parentclass.get_id(),
-                    '{brick:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
     def replace(self, action=params.Action(), correlation_id=None):
@@ -1798,7 +1848,7 @@ class ClusterGlusterVolumeGlusterBricks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, brick, expect=None, correlation_id=None):
+    def add(self, brick, correlation_id=None, expect=None):
 
         '''
         @type GlusterBricks:
@@ -1810,8 +1860,8 @@ class ClusterGlusterVolumeGlusterBricks(Base):
         }
         [@param replica_count: unsignedShort]
         [@param stripe_count: unsignedShort]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return GlusterBricks:
         '''
@@ -1827,7 +1877,7 @@ class ClusterGlusterVolumeGlusterBricks(Base):
                 }
             ),
             body=ParseHelper.toXml(brick),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return ClusterGlusterVolumeGlusterBrick(
@@ -2076,7 +2126,7 @@ class ClusterGlusterVolumes(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, glustervolume, expect=None, correlation_id=None):
+    def add(self, glustervolume, correlation_id=None, expect=None):
 
         '''
         @type GlusterVolume:
@@ -2099,8 +2149,8 @@ class ClusterGlusterVolumes(Base):
           [@ivar option.name: string]
           [@ivar option.value: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return GlusterVolume:
         '''
@@ -2115,7 +2165,7 @@ class ClusterGlusterVolumes(Base):
                 }
             ),
             body=ParseHelper.toXml(glustervolume),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return ClusterGlusterVolume(
@@ -2264,14 +2314,16 @@ class ClusterNetwork(params.Network, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param network.display: boolean]
         [@param network.usages.usage: collection]
         {
           [@ivar usage: string]
         }
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Network:
         '''
@@ -2286,9 +2338,9 @@ class ClusterNetwork(params.Network, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return ClusterNetwork(
@@ -2312,7 +2364,7 @@ class ClusterNetworks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, network, expect=None, correlation_id=None):
+    def add(self, network, correlation_id=None, expect=None):
 
         '''
         @type Network:
@@ -2322,8 +2374,8 @@ class ClusterNetworks(Base):
         {
           [@ivar usage: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Network:
         '''
@@ -2338,7 +2390,7 @@ class ClusterNetworks(Base):
                 }
             ),
             body=ParseHelper.toXml(network),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return ClusterNetwork(
@@ -2501,7 +2553,7 @@ class ClusterPermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -2512,8 +2564,8 @@ class ClusterPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -2528,7 +2580,7 @@ class ClusterPermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return ClusterPermission(
@@ -2643,7 +2695,7 @@ class Clusters(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, cluster, expect=None, correlation_id=None):
+    def add(self, cluster, correlation_id=None, expect=None):
         '''
         @type Cluster:
 
@@ -2683,8 +2735,8 @@ class Clusters(Base):
         [@param cluster.fencing_policy.skip_if_connectivity_broken.threshold: int]
         [@param cluster.management_network.id|name: string]
         [@param cluster.maintenance_reason_required: boolean]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Cluster:
         '''
@@ -2694,7 +2746,7 @@ class Clusters(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(cluster),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Cluster(result, self.context)
@@ -2806,12 +2858,13 @@ class CpuProfile(params.CpuProfile, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param cpuprofile.name: string]
         [@param cpuprofile.description: string]
         [@param cpuprofile.qos.id: string]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return CpuProfile:
         '''
@@ -2826,7 +2879,7 @@ class CpuProfile(params.CpuProfile, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return CpuProfile(result, self.context)
@@ -2892,7 +2945,7 @@ class CpuProfilePermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -2903,8 +2956,8 @@ class CpuProfilePermissions(Base):
         Overload 2:
           @param permission.group.id: string
           @param permission.role.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -2919,7 +2972,7 @@ class CpuProfilePermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return CpuProfilePermission(
@@ -3034,7 +3087,7 @@ class CpuProfiles(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, cpuprofile, expect=None, correlation_id=None):
+    def add(self, cpuprofile, correlation_id=None, expect=None):
         '''
         @type CpuProfile:
 
@@ -3042,8 +3095,8 @@ class CpuProfiles(Base):
         @param cpuprofile.name: string
         [@param cpuprofile.description: string]
         [@param cpuprofile.qos.id: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return CpuProfile:
         '''
@@ -3053,7 +3106,7 @@ class CpuProfiles(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(cpuprofile),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return CpuProfile(result, self.context)
@@ -3175,7 +3228,7 @@ class DataCenter(params.DataCenter, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param datacenter.name: string]
         [@param datacenter.description: string]
@@ -3187,6 +3240,7 @@ class DataCenter(params.DataCenter, Base):
         [@param datacenter.storage_format: string]
         [@param datacenter.mac_pool.id: string]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return DataCenter:
         '''
@@ -3201,7 +3255,7 @@ class DataCenter(params.DataCenter, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenter(result, self.context)
@@ -3258,7 +3312,7 @@ class DataCenterCluster(params.Cluster, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param cluster.name: string]
         [@param cluster.description: string]
@@ -3288,7 +3342,9 @@ class DataCenterCluster(params.Cluster, Base):
         [@param cluster.cpu.architecture: string]
         [@param cluster.display.proxy: string]
         [@param cluster.ksm.enabled: boolean]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Cluster:
         '''
@@ -3303,9 +3359,9 @@ class DataCenterCluster(params.Cluster, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterCluster(
@@ -3313,6 +3369,31 @@ class DataCenterCluster(params.Cluster, Base):
             result,
             self.context
         )
+
+    def resetemulatedmachine(self, action=params.Action()):
+        '''
+        @type Action:
+
+
+        @return Action:
+        '''
+
+        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/resetemulatedmachine'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{datacenter:id}': self.parentclass.get_id(),
+                    '{cluster:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+        return result
 
 class DataCenterClusterAffinityGroup(params.AffinityGroup, Base):
     def __init__(self, datacentercluster, affinitygroup, context):
@@ -3337,27 +3418,34 @@ class DataCenterClusterAffinityGroup(params.AffinityGroup, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{affinitygroup:id}': self.get_id(),
-                }
-            ),
-            headers={'Content-type':None}
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{cluster:id}': self.parentclass.get_id(),
+                '{affinitygroup:id}': self.get_id(),
+            }
         )
 
-    def update(self):
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
+    def update(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return AffinityGroup:
         '''
 
@@ -3372,7 +3460,7 @@ class DataCenterClusterAffinityGroup(params.AffinityGroup, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -3405,24 +3493,29 @@ class DataCenterClusterAffinityGroupVM(params.VM, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms/{vm:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms/{vm:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                '{cluster:id}': self.parentclass.parentclass.get_id(),
+                '{affinitygroup:id}': self.parentclass.get_id(),
+                '{vm:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{affinitygroup:id}': self.parentclass.get_id(),
-                    '{vm:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class DataCenterClusterAffinityGroupVMs(Base):
@@ -3721,23 +3814,28 @@ class DataCenterClusterCpuProfile(params.CpuProfile, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/cpuprofiles/{cpuprofile:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/clusters/{cluster:id}/cpuprofiles/{cpuprofile:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{cluster:id}': self.parentclass.get_id(),
+                '{cpuprofile:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{cpuprofile:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class DataCenterClusterCpuProfiles(Base):
@@ -3897,23 +3995,28 @@ class DataCenterClusterGlusterHook(params.GlusterHook, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks/{glusterhook:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{cluster:id}': self.parentclass.get_id(),
+                '{glusterhook:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glusterhook:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
     def disable(self, action=params.Action()):
@@ -4124,23 +4227,28 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{cluster:id}': self.parentclass.get_id(),
+                '{glustervolume:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
     def activate(self, action=params.Action()):
@@ -4478,24 +4586,29 @@ class DataCenterClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                '{cluster:id}': self.parentclass.parentclass.get_id(),
+                '{glustervolume:id}': self.parentclass.get_id(),
+                '{brick:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{glustervolume:id}': self.parentclass.get_id(),
-                    '{brick:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
     def replace(self, action=params.Action()):
@@ -5111,14 +5224,16 @@ class DataCenterClusterNetwork(params.Network, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param network.display: boolean]
         [@param network.usages.usage: collection]
         {
           [@ivar usage: string]
         }
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Network:
         '''
@@ -5134,9 +5249,9 @@ class DataCenterClusterNetwork(params.Network, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterClusterNetwork(
@@ -5160,7 +5275,7 @@ class DataCenterClusterNetworks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, network, expect=None, correlation_id=None):
+    def add(self, network, correlation_id=None, expect=None):
 
         '''
         @type Network:
@@ -5170,8 +5285,8 @@ class DataCenterClusterNetworks(Base):
         {
           [@ivar usage: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Network:
         '''
@@ -5187,7 +5302,7 @@ class DataCenterClusterNetworks(Base):
                 }
             ),
             body=ParseHelper.toXml(network),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterClusterNetwork(
@@ -5354,7 +5469,7 @@ class DataCenterClusterPermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -5365,8 +5480,8 @@ class DataCenterClusterPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -5382,7 +5497,7 @@ class DataCenterClusterPermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterClusterPermission(
@@ -5502,7 +5617,7 @@ class DataCenterClusters(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, cluster, expect=None, correlation_id=None):
+    def add(self, cluster, correlation_id=None, expect=None):
 
         '''
         @type Cluster:
@@ -5534,8 +5649,8 @@ class DataCenterClusters(Base):
         [@param cluster.display.proxy: string]
         [@param cluster.ksm.enabled: boolean]
         [@param cluster.management_network.id|name: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Cluster:
         '''
@@ -5550,7 +5665,7 @@ class DataCenterClusters(Base):
                 }
             ),
             body=ParseHelper.toXml(cluster),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterCluster(
@@ -5676,8 +5791,9 @@ class DataCenterIscsiBond(params.IscsiBond, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self, correlation_id=None):
+    def delete(self, async=None, correlation_id=None):
         '''
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return None:
@@ -5694,15 +5810,16 @@ class DataCenterIscsiBond(params.IscsiBond, Base):
         return self.__getProxy().delete(
             url=SearchHelper.appendQuery(
                 url,
-                {}
+                {'async:matrix':async}
             ),
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, expect=None, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
-        [@param expect: 201-created]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return IscsiBond:
         '''
@@ -5717,9 +5834,9 @@ class DataCenterIscsiBond(params.IscsiBond, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterIscsiBond(
@@ -5753,27 +5870,34 @@ class DataCenterIscsiBondNetwork(params.Network, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.get_id(),
-                    '{network:id}': self.get_id(),
-                }
-            ),
-            headers={'Content-type':None}
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{iscsibond:id}': self.parentclass.get_id(),
+                '{network:id}': self.get_id(),
+            }
         )
 
-    def update(self):
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
+    def update(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return Network:
         '''
 
@@ -5788,7 +5912,7 @@ class DataCenterIscsiBondNetwork(params.Network, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -5821,24 +5945,29 @@ class DataCenterIscsiBondNetworkLabel(params.Label, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/labels/{label:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/labels/{label:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                '{iscsibond:id}': self.parentclass.parentclass.get_id(),
+                '{network:id}': self.parentclass.get_id(),
+                '{label:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                    '{label:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class DataCenterIscsiBondNetworkLabels(Base):
@@ -6002,24 +6131,29 @@ class DataCenterIscsiBondNetworkPermission(params.Permission, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/permissions/{permission:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/permissions/{permission:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                '{iscsibond:id}': self.parentclass.parentclass.get_id(),
+                '{network:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                    '{permission:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class DataCenterIscsiBondNetworkPermissions(Base):
@@ -6184,24 +6318,29 @@ class DataCenterIscsiBondNetworkVnicProfile(params.VnicProfile, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                '{iscsibond:id}': self.parentclass.parentclass.get_id(),
+                '{network:id}': self.parentclass.get_id(),
+                '{vnicprofile:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                    '{vnicprofile:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class DataCenterIscsiBondNetworkVnicProfilePermission(params.Permission, Base):
@@ -6226,25 +6365,30 @@ class DataCenterIscsiBondNetworkVnicProfilePermission(params.Permission, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.parentclass.parentclass.get_id(),
+                '{iscsibond:id}': self.parentclass.parentclass.parentclass.get_id(),
+                '{network:id}': self.parentclass.parentclass.get_id(),
+                '{vnicprofile:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.parentclass.get_id(),
-                    '{vnicprofile:id}': self.parentclass.get_id(),
-                    '{permission:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class DataCenterIscsiBondNetworkVnicProfilePermissions(Base):
@@ -6544,12 +6688,13 @@ class DataCenterIscsiBondNetworks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, network, correlation_id=None):
+    def add(self, network, correlation_id=None, expect=None):
 
         '''
         @type Network:
 
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Network:
         '''
@@ -6565,7 +6710,7 @@ class DataCenterIscsiBondNetworks(Base):
                 }
             ),
             body=ParseHelper.toXml(network),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterIscsiBondNetwork(
@@ -6687,47 +6832,61 @@ class DataCenterIscsiBondStorageConnection(params.StorageConnection, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.get_id(),
-                    '{storageconnection:id}': self.get_id(),
-                }
-            ),
-            headers={'Content-type':None}
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{iscsibond:id}': self.parentclass.get_id(),
+                '{storageconnection:id}': self.get_id(),
+            }
         )
 
-    def delete(self, action):
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
+    def delete(self, action, async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(url,
-{
-                                                                   '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                                                                   '{iscsibond:id}': self.parentclass.get_id(),
-                                                                   '{storageconnection:id}': self.get_id(),
-                                                               }),
-            body=ParseHelper.toXml(action)
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{iscsibond:id}': self.parentclass.get_id(),
+                '{storageconnection:id}': self.get_id(),
+            }
         )
 
-    def update(self):
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            body=ParseHelper.toXml(action),
+            headers={}
+        )
+
+    def update(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return StorageConnection:
         '''
 
@@ -6742,7 +6901,7 @@ class DataCenterIscsiBondStorageConnection(params.StorageConnection, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -6903,14 +7062,14 @@ class DataCenterIscsiBonds(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, iscsibond, expect=None, correlation_id=None):
+    def add(self, iscsibond, correlation_id=None, expect=None):
 
         '''
         @type IscsiBond:
 
         @param iscsibond.name: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return IscsiBond:
         '''
@@ -6925,7 +7084,7 @@ class DataCenterIscsiBonds(Base):
                 }
             ),
             body=ParseHelper.toXml(iscsibond),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterIscsiBond(
@@ -7071,14 +7230,16 @@ class DataCenterNetwork(params.Network, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param network.display: boolean]
         [@param network.usages.usage: collection]
         {
           [@ivar usage: string]
         }
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Network:
         '''
@@ -7093,9 +7254,9 @@ class DataCenterNetwork(params.Network, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterNetwork(
@@ -7166,14 +7327,14 @@ class DataCenterNetworkLabels(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, label, expect=None, correlation_id=None):
+    def add(self, label, correlation_id=None, expect=None):
 
         '''
         @type Label:
 
         @param label.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Label:
         '''
@@ -7189,7 +7350,7 @@ class DataCenterNetworkLabels(Base):
                 }
             ),
             body=ParseHelper.toXml(label),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterNetworkLabel(
@@ -7311,23 +7472,28 @@ class DataCenterNetworkPermission(params.Permission, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/networks/{network:id}/permissions/{permission:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/networks/{network:id}/permissions/{permission:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{network:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                    '{permission:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class DataCenterNetworkPermissions(Base):
@@ -7488,23 +7654,28 @@ class DataCenterNetworkVnicProfile(params.VnicProfile, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{network:id}': self.parentclass.get_id(),
+                '{vnicprofile:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                    '{vnicprofile:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class DataCenterNetworkVnicProfilePermission(params.Permission, Base):
@@ -7529,24 +7700,29 @@ class DataCenterNetworkVnicProfilePermission(params.Permission, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                '{network:id}': self.parentclass.parentclass.get_id(),
+                '{vnicprofile:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.parentclass.get_id(),
-                    '{vnicprofile:id}': self.parentclass.get_id(),
-                    '{permission:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class DataCenterNetworkVnicProfilePermissions(Base):
@@ -7838,7 +8014,7 @@ class DataCenterNetworks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, network, expect=None, correlation_id=None):
+    def add(self, network, correlation_id=None, expect=None):
 
         '''
         @type Network:
@@ -7857,8 +8033,8 @@ class DataCenterNetworks(Base):
         {
           [@ivar usage: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Network:
         '''
@@ -7873,7 +8049,7 @@ class DataCenterNetworks(Base):
                 }
             ),
             body=ParseHelper.toXml(network),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterNetwork(
@@ -8036,7 +8212,7 @@ class DataCenterPermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -8047,8 +8223,8 @@ class DataCenterPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -8063,7 +8239,7 @@ class DataCenterPermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterPermission(
@@ -8206,7 +8382,7 @@ class DataCenterQoS(params.QoS, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param qos.name: string]
         [@param qos.description: string]
@@ -8223,7 +8399,9 @@ class DataCenterQoS(params.QoS, Base):
         [@param qos.outbound_average: int]
         [@param qos.outbound_peak: int]
         [@param qos.outbound_burst: int]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return QoS:
         '''
@@ -8238,9 +8416,9 @@ class DataCenterQoS(params.QoS, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterQoS(
@@ -8264,7 +8442,7 @@ class DataCenterQoSs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, qos, expect=None, correlation_id=None):
+    def add(self, qos, correlation_id=None, expect=None):
 
         '''
         @type QoS:
@@ -8285,8 +8463,8 @@ class DataCenterQoSs(Base):
         [@param qos.outbound_average: int]
         [@param qos.outbound_peak: int]
         [@param qos.outbound_burst: int]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return QoS:
         '''
@@ -8301,7 +8479,7 @@ class DataCenterQoSs(Base):
                 }
             ),
             body=ParseHelper.toXml(qos),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterQoS(
@@ -8784,24 +8962,29 @@ class DataCenterStorageDomainDiskPermission(params.Permission, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}'
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                '{disk:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                    '{disk:id}': self.parentclass.get_id(),
-                    '{permission:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class DataCenterStorageDomainDiskPermissions(Base):
@@ -9089,7 +9272,7 @@ class DataCenterStorageDomainDisks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, disk, expect=None, correlation_id=None):
+    def add(self, disk, correlation_id=None, expect=None):
 
         '''
         @type Disk:
@@ -9102,6 +9285,7 @@ class DataCenterStorageDomainDisks(Base):
           [@param disk.name: string]
           [@param disk.size: int]
           [@param disk.sparse: boolean]
+          [@param disk.description: string]
           [@param disk.bootable: boolean]
           [@param disk.shareable: boolean]
           [@param disk.propagate_errors: boolean]
@@ -9121,14 +9305,15 @@ class DataCenterStorageDomainDisks(Base):
           }
           [@param disk.alias: string]
           [@param disk.sparse: boolean]
+          [@param disk.description: string]
           [@param disk.bootable: boolean]
           [@param disk.shareable: boolean]
           [@param disk.propagate_errors: boolean]
           [@param disk.wipe_after_delete: boolean]
           [@param disk.quota.id: string]
           [@param disk.sgio: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Disk:
         '''
@@ -9144,7 +9329,7 @@ class DataCenterStorageDomainDisks(Base):
                 }
             ),
             body=ParseHelper.toXml(disk),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterStorageDomainDisk(
@@ -9267,14 +9452,14 @@ class DataCenterStorageDomains(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, storagedomain, expect=None, correlation_id=None):
+    def add(self, storagedomain, correlation_id=None, expect=None):
 
         '''
         @type StorageDomain:
 
         @param storagedomain.id|name: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return StorageDomain:
         '''
@@ -9289,7 +9474,7 @@ class DataCenterStorageDomains(Base):
                 }
             ),
             body=ParseHelper.toXml(storagedomain),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenterStorageDomain(
@@ -9404,7 +9589,7 @@ class DataCenters(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, datacenter, expect=None, correlation_id=None):
+    def add(self, datacenter, correlation_id=None, expect=None):
         '''
         @type DataCenter:
 
@@ -9417,8 +9602,8 @@ class DataCenters(Base):
         [@param datacenter.version.major: int]
         [@param datacenter.version.minor: int]
         [@param datacenter.mac_pool.id: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return DataCenter:
         '''
@@ -9428,7 +9613,7 @@ class DataCenters(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(datacenter),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DataCenter(result, self.context)
@@ -9647,22 +9832,27 @@ class DiskPermission(params.Permission, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/disks/{disk:id}/permissions/{permission:id}'
+        url = UrlHelper.replace(
+            '/disks/{disk:id}/permissions/{permission:id}',
+            {
+                '{disk:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{disk:id}': self.parentclass.get_id(),
-                    '{permission:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class DiskPermissions(Base):
@@ -9846,12 +10036,13 @@ class DiskProfile(params.DiskProfile, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param diskprofile.name: string]
         [@param diskprofile.description: string]
         [@param diskprofile.qos.id: string]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return DiskProfile:
         '''
@@ -9866,7 +10057,7 @@ class DiskProfile(params.DiskProfile, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DiskProfile(result, self.context)
@@ -9932,7 +10123,7 @@ class DiskProfilePermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -9943,8 +10134,8 @@ class DiskProfilePermissions(Base):
         Overload 2:
           @param permission.group.id: string
           @param permission.role.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -9959,7 +10150,7 @@ class DiskProfilePermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DiskProfilePermission(
@@ -10074,7 +10265,7 @@ class DiskProfiles(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, diskprofile, expect=None, correlation_id=None):
+    def add(self, diskprofile, correlation_id=None, expect=None):
         '''
         @type DiskProfile:
 
@@ -10082,8 +10273,8 @@ class DiskProfiles(Base):
         @param diskprofile.name: string
         [@param diskprofile.description: string]
         [@param diskprofile.qos.id: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return DiskProfile:
         '''
@@ -10093,7 +10284,7 @@ class DiskProfiles(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(diskprofile),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return DiskProfile(result, self.context)
@@ -10302,7 +10493,7 @@ class Disks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, disk, expect=None, correlation_id=None):
+    def add(self, disk, correlation_id=None, expect=None):
         '''
         @type Disk:
 
@@ -10314,6 +10505,7 @@ class Disks(Base):
           [@param disk.name: string]
           [@param disk.size: int]
           [@param disk.sparse: boolean]
+          [@param disk.description: string]
           [@param disk.bootable: boolean]
           [@param disk.shareable: boolean]
           [@param disk.propagate_errors: boolean]
@@ -10336,6 +10528,7 @@ class Disks(Base):
           }
           [@param disk.alias: string]
           [@param disk.sparse: boolean]
+          [@param disk.description: string]
           [@param disk.bootable: boolean]
           [@param disk.shareable: boolean]
           [@param disk.propagate_errors: boolean]
@@ -10343,8 +10536,8 @@ class Disks(Base):
           [@param disk.quota.id: string]
           [@param disk.sgio: string]
           [@param disk.lun_storage.host: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Disk:
         '''
@@ -10354,7 +10547,7 @@ class Disks(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(disk),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Disk(result, self.context)
@@ -10801,8 +10994,9 @@ class Event(params.Event, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self, correlation_id=None):
+    def delete(self, async=None, correlation_id=None):
         '''
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return None:
@@ -10818,7 +11012,7 @@ class Event(params.Event, Base):
         return self.__getProxy().delete(
             url=SearchHelper.appendQuery(
                 url,
-                {}
+                {'async:matrix':async}
             ),
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
@@ -10836,7 +11030,7 @@ class Events(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, event, expect=None, correlation_id=None):
+    def add(self, event, correlation_id=None, expect=None):
         '''
         @type Event:
 
@@ -10852,8 +11046,8 @@ class Events(Base):
         [@param event.template.id: string]
         [@param event.cluster.id: string]
         [@param event.data_center.id: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Event:
         '''
@@ -10863,7 +11057,7 @@ class Events(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(event),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Event(result, self.context)
@@ -10980,7 +11174,7 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param external_host_provider.name: string]
         [@param external_host_provider.description: string]
@@ -10989,6 +11183,7 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
         [@param external_host_provider.password: string]
         [@param external_host_provider.authentication_url: string]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return ExternalHostProvider:
         '''
@@ -11003,7 +11198,7 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return ExternalHostProvider(result, self.context)
@@ -11012,6 +11207,8 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -11037,6 +11234,8 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -11721,7 +11920,7 @@ class ExternalHostProviders(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, externalhostprovider, expect=None, correlation_id=None):
+    def add(self, externalhostprovider, correlation_id=None, expect=None):
         '''
         @type ExternalHostProvider:
 
@@ -11732,8 +11931,8 @@ class ExternalHostProviders(Base):
         [@param external_host_provider.username: string]
         [@param external_host_provider.password: string]
         [@param external_host_provider.authentication_url: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return ExternalHostProvider:
         '''
@@ -11743,7 +11942,7 @@ class ExternalHostProviders(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(externalhostprovider),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return ExternalHostProvider(result, self.context)
@@ -11917,7 +12116,7 @@ class GroupPermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -11943,8 +12142,8 @@ class GroupPermissions(Base):
         Overload 7:
           @param permission.role.id: string
           @param permission.template.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -11959,7 +12158,7 @@ class GroupPermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return GroupPermission(
@@ -12146,14 +12345,14 @@ class GroupRolePermits(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permit, expect=None, correlation_id=None):
+    def add(self, permit, correlation_id=None, expect=None):
 
         '''
         @type Permit:
 
         @param permit.id|name: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permit:
         '''
@@ -12169,7 +12368,7 @@ class GroupRolePermits(Base):
                 }
             ),
             body=ParseHelper.toXml(permit),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return GroupRolePermit(
@@ -12443,14 +12642,14 @@ class GroupTags(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, tag, expect=None, correlation_id=None):
+    def add(self, tag, correlation_id=None, expect=None):
 
         '''
         @type Tag:
 
         @param tag.id|name: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Tag:
         '''
@@ -12465,7 +12664,7 @@ class GroupTags(Base):
                 }
             ),
             body=ParseHelper.toXml(tag),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return GroupTag(
@@ -12580,7 +12779,7 @@ class Groups(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, group, correlation_id=None):
+    def add(self, group, correlation_id=None, expect=None):
         '''
         @type Group:
 
@@ -12588,6 +12787,7 @@ class Groups(Base):
         [@param group.namespace: string]
         [@param group.principal: string]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Group:
         '''
@@ -12597,7 +12797,7 @@ class Groups(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(group),
-           headers={"Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Group(result, self.context)
@@ -12698,7 +12898,6 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
-        [@param action.force: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
@@ -12722,7 +12921,7 @@ class Host(params.Host, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         Overload 1:
           [@param host.name: string]
@@ -12804,6 +13003,7 @@ class Host(params.Host, Base):
           }
           [@param host.power_management.kdump_detection: boolean]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Host:
         '''
@@ -12818,7 +13018,7 @@ class Host(params.Host, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Host(result, self.context)
@@ -12856,16 +13056,16 @@ class Host(params.Host, Base):
 
         Overload 1:
           [@param action.cluster.id|name: string]
+          [@param host.root_password: string]
           [@param action.async: boolean]
           [@param action.grace_period.expiry: long]
-          [@param host.root_password: string]
         Overload 2:
           [@param action.cluster.id|name: string]
-          [@param action.async: boolean]
-          [@param action.grace_period.expiry: long]
           [@param host.ssh.authentication_method: string]
           [@param host.ssh.user.user_name: string]
           [@param host.ssh.user.password: string]
+          [@param action.async: boolean]
+          [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -12918,9 +13118,9 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
+        [@param action.reason: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
-        [@param action.reason: string]
         [@param correlation_id: any string]
 
         @return Action:
@@ -13005,6 +13205,8 @@ class Host(params.Host, Base):
           [@param action.root_password: string]
           [@param action.image: string]
           [@param action.host.override_iptables: boolean]
+          [@param action.async: boolean]
+          [@param action.grace_period.expiry: long]
         Overload 2:
           [@param action.ssh.port: int]
           [@param action.ssh.fingerprint: string]
@@ -13012,9 +13214,9 @@ class Host(params.Host, Base):
           [@param action.ssh.user.user_name: string]
           [@param action.ssh.user.password: string]
           [@param action.image: string]
+          [@param action.host.override_iptables: boolean]
           [@param action.async: boolean]
           [@param action.grace_period.expiry: long]
-          [@param action.host.override_iptables: boolean]
         [@param correlation_id: any string]
 
         @return Action:
@@ -13126,6 +13328,8 @@ class Host(params.Host, Base):
 
         [@param action.iscsi.address: string]
         [@param action.iscsi_target: string]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -13193,7 +13397,7 @@ class HostAgent(params.Agent, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, expect=None, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param agent.address: string]
         [@param agent.order: int]
@@ -13207,8 +13411,9 @@ class HostAgent(params.Agent, Base):
           [@ivar option.value: string]
         }
         [@param encrypt_options: boolean]
-        [@param expect: 201-created]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Agent:
         '''
@@ -13223,9 +13428,9 @@ class HostAgent(params.Agent, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return HostAgent(
@@ -13249,7 +13454,7 @@ class HostAgents(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, agent, expect=None, correlation_id=None):
+    def add(self, agent, correlation_id=None, expect=None):
 
         '''
         @type Agent:
@@ -13266,8 +13471,8 @@ class HostAgents(Base):
           [@ivar option.value: string]
         }
         [@param encrypt_options: boolean]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Agent:
         '''
@@ -13282,7 +13487,7 @@ class HostAgents(Base):
                 }
             ),
             body=ParseHelper.toXml(agent),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return HostAgent(
@@ -13682,7 +13887,7 @@ class HostNIC(params.HostNIC, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, async=None, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param hostnic.bonding.slaves.host_nic: collection]
         {
@@ -13703,6 +13908,7 @@ class HostNIC(params.HostNIC, Base):
         [@param hostnic.ip.netmask: string]
         [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return HostNIC:
         '''
@@ -13719,7 +13925,7 @@ class HostNIC(params.HostNIC, Base):
         result = self.__getProxy().update(
             url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return HostNIC(
@@ -13847,14 +14053,14 @@ class HostNICLabels(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, label, expect=None, correlation_id=None):
+    def add(self, label, correlation_id=None, expect=None):
 
         '''
         @type Label:
 
         @param label.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Label:
         '''
@@ -13870,7 +14076,7 @@ class HostNICLabels(Base):
                 }
             ),
             body=ParseHelper.toXml(label),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return HostNICLabel(
@@ -14118,7 +14324,7 @@ class HostNICs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, hostnic, expect=None, correlation_id=None):
+    def add(self, hostnic, correlation_id=None, expect=None):
 
         '''
         @type HostNIC:
@@ -14135,8 +14341,8 @@ class HostNICs(Base):
           [@ivar option.value: string]
           [@ivar type: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return HostNIC:
         '''
@@ -14151,7 +14357,7 @@ class HostNICs(Base):
                 }
             ),
             body=ParseHelper.toXml(hostnic),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return HostNIC(
@@ -14283,12 +14489,12 @@ class HostNICs(Base):
             [@param property.name: string]
             [@param property.value: string]
           }
-          [@ivar action.async: boolean]
-          [@ivar action.grace_period.expiry: long]
         }
         [@param action.checkConnectivity: boolean]
         [@param action.connectivityTimeout: int]
         [@param action.force: boolean]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14635,7 +14841,7 @@ class HostPermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -14646,8 +14852,8 @@ class HostPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -14662,7 +14868,7 @@ class HostPermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return HostPermission(
@@ -15085,14 +15291,14 @@ class HostTags(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, tag, expect=None, correlation_id=None):
+    def add(self, tag, correlation_id=None, expect=None):
 
         '''
         @type Tag:
 
         @param tag.id|name: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Tag:
         '''
@@ -15107,7 +15313,7 @@ class HostTags(Base):
                 }
             ),
             body=ParseHelper.toXml(tag),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return HostTag(
@@ -15222,7 +15428,7 @@ class Hosts(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, host, expect=None, correlation_id=None):
+    def add(self, host, correlation_id=None, expect=None):
         '''
         @type Host:
 
@@ -15312,8 +15518,8 @@ class Hosts(Base):
           [@param host.override_iptables: boolean]
           [@param host.power_management.kdump_detection: boolean]
           [@param host.protocol: int]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Host:
         '''
@@ -15323,7 +15529,7 @@ class Hosts(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(host),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Host(result, self.context)
@@ -15480,26 +15686,33 @@ class InstanceTypeNIC(params.NIC, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/instancetypes/{instancetype:id}/nics/{nic:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{instancetype:id}': self.parentclass.get_id(),
-                    '{nic:id}': self.get_id(),
-                }
-            ),
-            headers={'Content-type':None}
+        url = UrlHelper.replace(
+            '/instancetypes/{instancetype:id}/nics/{nic:id}',
+            {
+                '{instancetype:id}': self.parentclass.get_id(),
+                '{nic:id}': self.get_id(),
+            }
         )
 
-    def update(self):
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
+    def update(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return NIC:
         '''
 
@@ -15513,7 +15726,7 @@ class InstanceTypeNIC(params.NIC, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -15677,26 +15890,33 @@ class InstanceTypeWatchDog(params.WatchDog, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/instancetypes/{instancetype:id}/watchdogs/{watchdog:id}'
-
-        return self.__getProxy().delete(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{instancetype:id}': self.parentclass.get_id(),
-                    '{watchdog:id}': self.get_id(),
-                }
-            ),
-            headers={'Content-type':None}
+        url = UrlHelper.replace(
+            '/instancetypes/{instancetype:id}/watchdogs/{watchdog:id}',
+            {
+                '{instancetype:id}': self.parentclass.get_id(),
+                '{watchdog:id}': self.get_id(),
+            }
         )
 
-    def update(self):
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
+    def update(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return WatchDog:
         '''
 
@@ -15710,7 +15930,7 @@ class InstanceTypeWatchDog(params.WatchDog, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -15865,7 +16085,7 @@ class InstanceTypes(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, instancetype, expect=None, correlation_id=None):
+    def add(self, instancetype, correlation_id=None, expect=None):
         '''
         @type InstanceType:
 
@@ -15895,8 +16115,8 @@ class InstanceTypes(Base):
         [@param instance_type.soundcard_enabled: boolean]
         [@param instance_type.custom_emulated_machine: string]
         [@param instance_type.custom_cpu_model: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return InstanceType:
         '''
@@ -15906,7 +16126,7 @@ class InstanceTypes(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(instancetype),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return InstanceType(result, self.context)
@@ -16252,7 +16472,7 @@ class JobSteps(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, step, expect=None, correlation_id=None):
+    def add(self, step, correlation_id=None, expect=None):
 
         '''
         @type Step:
@@ -16261,8 +16481,8 @@ class JobSteps(Base):
         @param step.description: string
         [@param step.job.id: string]
         [@param step.parent_step.id: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Step:
         '''
@@ -16277,7 +16497,7 @@ class JobSteps(Base):
                 }
             ),
             body=ParseHelper.toXml(step),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return JobStep(
@@ -16392,14 +16612,14 @@ class Jobs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, job, expect=None, correlation_id=None):
+    def add(self, job, correlation_id=None, expect=None):
         '''
         @type Job:
 
         @param job.description: string
         [@param job.auto_cleared: boolean]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Job:
         '''
@@ -16409,7 +16629,7 @@ class Jobs(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(job),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Job(result, self.context)
@@ -16614,7 +16834,7 @@ class MacPool(params.MacPool, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param macpool.name: string]
         [@param macpool.description: string]
@@ -16626,6 +16846,7 @@ class MacPool(params.MacPool, Base):
           [@ivar range.to: string]
         }
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return MacPool:
         '''
@@ -16640,7 +16861,7 @@ class MacPool(params.MacPool, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return MacPool(result, self.context)
@@ -16658,7 +16879,7 @@ class MacPools(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, macpool, expect=None, correlation_id=None):
+    def add(self, macpool, correlation_id=None, expect=None):
         '''
         @type MacPool:
 
@@ -16671,8 +16892,8 @@ class MacPools(Base):
         [@param macpool.description: string]
         [@param macpool.allow_duplicates: boolean]
         [@param macpool.default_pool: boolean]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return MacPool:
         '''
@@ -16682,7 +16903,7 @@ class MacPools(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(macpool),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return MacPool(result, self.context)
@@ -16795,7 +17016,7 @@ class Network(params.Network, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param network.name: string]
         [@param network.description: string]
@@ -16808,6 +17029,7 @@ class Network(params.Network, Base):
         [@param network.stp: boolean]
         [@param network.mtu: int]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Network:
         '''
@@ -16822,7 +17044,7 @@ class Network(params.Network, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Network(result, self.context)
@@ -16888,14 +17110,14 @@ class NetworkLabels(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, label, expect=None, correlation_id=None):
+    def add(self, label, correlation_id=None, expect=None):
 
         '''
         @type Label:
 
         @param label.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Label:
         '''
@@ -16910,7 +17132,7 @@ class NetworkLabels(Base):
                 }
             ),
             body=ParseHelper.toXml(label),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return NetworkLabel(
@@ -17068,7 +17290,7 @@ class NetworkPermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -17079,8 +17301,8 @@ class NetworkPermissions(Base):
         Overload 2:
           @param permission.group.id: string
           @param permission.role.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -17095,7 +17317,7 @@ class NetworkPermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return NetworkPermission(
@@ -17266,23 +17488,28 @@ class NetworkVnicProfilePermission(params.Permission, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}'
+        url = UrlHelper.replace(
+            '/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions/{permission:id}',
+            {
+                '{network:id}': self.parentclass.parentclass.get_id(),
+                '{vnicprofile:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{network:id}': self.parentclass.parentclass.get_id(),
-                    '{vnicprofile:id}': self.parentclass.get_id(),
-                    '{permission:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class NetworkVnicProfilePermissions(Base):
@@ -17435,7 +17662,7 @@ class NetworkVnicProfiles(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, vnicprofile, expect=None, correlation_id=None):
+    def add(self, vnicprofile, correlation_id=None, expect=None):
 
         '''
         @type VnicProfile:
@@ -17448,8 +17675,8 @@ class NetworkVnicProfiles(Base):
           [@ivar custom_property.name: string]
           [@ivar custom_property.value: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return VnicProfile:
         '''
@@ -17464,7 +17691,7 @@ class NetworkVnicProfiles(Base):
                 }
             ),
             body=ParseHelper.toXml(vnicprofile),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return NetworkVnicProfile(
@@ -17579,7 +17806,7 @@ class Networks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, network, expect=None, correlation_id=None):
+    def add(self, network, correlation_id=None, expect=None):
         '''
         @type Network:
 
@@ -17598,8 +17825,8 @@ class Networks(Base):
         {
           [@ivar usage: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Network:
         '''
@@ -17609,7 +17836,7 @@ class Networks(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(network),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Network(result, self.context)
@@ -17722,7 +17949,7 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param openstack_image_provider.name: string]
         [@param openstack_image_provider.description: string]
@@ -17735,6 +17962,7 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
           [@ivar property.value: string]
         }
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return OpenStackImageProvider:
         '''
@@ -17749,7 +17977,7 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return OpenStackImageProvider(result, self.context)
@@ -17758,6 +17986,8 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -17783,6 +18013,8 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -18102,7 +18334,7 @@ class OpenStackImageProviders(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, openstackimageprovider, expect=None, correlation_id=None):
+    def add(self, openstackimageprovider, correlation_id=None, expect=None):
         '''
         @type OpenStackImageProvider:
 
@@ -18117,8 +18349,8 @@ class OpenStackImageProviders(Base):
           [@ivar property.name: string]
           [@ivar property.value: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return OpenStackImageProvider:
         '''
@@ -18128,7 +18360,7 @@ class OpenStackImageProviders(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(openstackimageprovider),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return OpenStackImageProvider(result, self.context)
@@ -18240,7 +18472,7 @@ class OpenStackNetworkProvider(params.OpenStackNetworkProvider, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param openstack_network_provider.name: string]
         [@param openstack_network_provider.description: string]
@@ -18253,6 +18485,7 @@ class OpenStackNetworkProvider(params.OpenStackNetworkProvider, Base):
           [@ivar property.value: string]
         }
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return OpenStackNetworkProvider:
         '''
@@ -18267,7 +18500,7 @@ class OpenStackNetworkProvider(params.OpenStackNetworkProvider, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return OpenStackNetworkProvider(result, self.context)
@@ -18490,23 +18723,28 @@ class OpenStackNetworkProviderOpenStackNetworkOpenStackSubnet(params.OpenStackSu
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/openstacknetworkproviders/{openstacknetworkprovider:id}/networks/{network:id}/subnets/{subnet:id}'
+        url = UrlHelper.replace(
+            '/openstacknetworkproviders/{openstacknetworkprovider:id}/networks/{network:id}/subnets/{subnet:id}',
+            {
+                '{openstacknetworkprovider:id}': self.parentclass.parentclass.get_id(),
+                '{network:id}': self.parentclass.get_id(),
+                '{subnet:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{openstacknetworkprovider:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                    '{subnet:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class OpenStackNetworkProviderOpenStackNetworkOpenStackSubnets(Base):
@@ -18770,7 +19008,7 @@ class OpenStackNetworkProviders(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, openstacknetworkprovider, expect=None, correlation_id=None):
+    def add(self, openstacknetworkprovider, correlation_id=None, expect=None):
         '''
         @type OpenStackNetworkProvider:
 
@@ -18785,8 +19023,8 @@ class OpenStackNetworkProviders(Base):
           [@ivar property.name: string]
           [@ivar property.value: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return OpenStackNetworkProvider:
         '''
@@ -18796,7 +19034,7 @@ class OpenStackNetworkProviders(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(openstacknetworkprovider),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return OpenStackNetworkProvider(result, self.context)
@@ -18908,7 +19146,7 @@ class OpenStackVolumeProvider(params.OpenStackVolumeProvider, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param openstack_volume_provider.name: string]
         [@param openstack_volume_provider.description: string]
@@ -18923,6 +19161,7 @@ class OpenStackVolumeProvider(params.OpenStackVolumeProvider, Base):
           [@ivar property.value: string]
         }
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return OpenStackVolumeProvider:
         '''
@@ -18937,7 +19176,7 @@ class OpenStackVolumeProvider(params.OpenStackVolumeProvider, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return OpenStackVolumeProvider(result, self.context)
@@ -19258,7 +19497,7 @@ class OpenStackVolumeProviders(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, openstackvolumeprovider, expect=None, correlation_id=None):
+    def add(self, openstackvolumeprovider, correlation_id=None, expect=None):
         '''
         @type OpenStackVolumeProvider:
 
@@ -19275,8 +19514,8 @@ class OpenStackVolumeProviders(Base):
           [@ivar property.name: string]
           [@ivar property.value: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return OpenStackVolumeProvider:
         '''
@@ -19286,7 +19525,7 @@ class OpenStackVolumeProviders(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(openstackvolumeprovider),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return OpenStackVolumeProvider(result, self.context)
@@ -19501,7 +19740,7 @@ class Permissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
         '''
         @type Permission:
 
@@ -19511,8 +19750,8 @@ class Permissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -19522,7 +19761,7 @@ class Permissions(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(permission),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Permission(result, self.context)
@@ -19633,7 +19872,7 @@ class Role(params.Role, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param role.permits.permit: collection]
         {
@@ -19641,6 +19880,7 @@ class Role(params.Role, Base):
         }
         [@param role.description: string]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Role:
         '''
@@ -19655,7 +19895,7 @@ class Role(params.Role, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Role(result, self.context)
@@ -19721,14 +19961,14 @@ class RolePermits(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permit, expect=None, correlation_id=None):
+    def add(self, permit, correlation_id=None, expect=None):
 
         '''
         @type Permit:
 
         @param permit.id|name: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permit:
         '''
@@ -19743,7 +19983,7 @@ class RolePermits(Base):
                 }
             ),
             body=ParseHelper.toXml(permit),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return RolePermit(
@@ -19858,7 +20098,7 @@ class Roles(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, role, expect=None, correlation_id=None):
+    def add(self, role, correlation_id=None, expect=None):
         '''
         @type Role:
 
@@ -19869,8 +20109,8 @@ class Roles(Base):
         }
         [@param role.description: string]
         [@param role.administrative: boolean]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Role:
         '''
@@ -19880,7 +20120,7 @@ class Roles(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(role),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Role(result, self.context)
@@ -19959,7 +20199,7 @@ class SchedulingPolicies(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, schedulingpolicy, expect=None, correlation_id=None):
+    def add(self, schedulingpolicy, correlation_id=None, expect=None):
         '''
         @type SchedulingPolicy:
 
@@ -19970,8 +20210,8 @@ class SchedulingPolicies(Base):
           [@ivar property.name: string]
           [@ivar property.value: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return SchedulingPolicy:
         '''
@@ -19981,7 +20221,7 @@ class SchedulingPolicies(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(schedulingpolicy),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return SchedulingPolicy(result, self.context)
@@ -20095,7 +20335,7 @@ class SchedulingPolicy(params.SchedulingPolicy, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param schedulingpolicy.name: string]
         [@param schedulingpolicy.description: string]
@@ -20105,6 +20345,7 @@ class SchedulingPolicy(params.SchedulingPolicy, Base):
           [@ivar property.value: string]
         }
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return SchedulingPolicy:
         '''
@@ -20119,7 +20360,7 @@ class SchedulingPolicy(params.SchedulingPolicy, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return SchedulingPolicy(result, self.context)
@@ -20185,14 +20426,14 @@ class SchedulingPolicyBalances(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, balance, expect=None, correlation_id=None):
+    def add(self, balance, correlation_id=None, expect=None):
 
         '''
         @type Balance:
 
         @param balance.scheduling_policy_unit.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Balance:
         '''
@@ -20207,7 +20448,7 @@ class SchedulingPolicyBalances(Base):
                 }
             ),
             body=ParseHelper.toXml(balance),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return SchedulingPolicyBalance(
@@ -20371,15 +20612,15 @@ class SchedulingPolicyFilters(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, filter, expect=None, correlation_id=None):
+    def add(self, filter, correlation_id=None, expect=None):
 
         '''
         @type Filter:
 
         @param filter.scheduling_policy_unit.id: string
         [@param filter.scheduling_policy_unit.position: int]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Filter:
         '''
@@ -20394,7 +20635,7 @@ class SchedulingPolicyFilters(Base):
                 }
             ),
             body=ParseHelper.toXml(filter),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return SchedulingPolicyFilter(
@@ -20677,15 +20918,15 @@ class SchedulingPolicyWeights(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, weight, expect=None, correlation_id=None):
+    def add(self, weight, correlation_id=None, expect=None):
 
         '''
         @type Weight:
 
         @param weight.scheduling_policy_unit.id: string
         [@param weight.scheduling_policy_unit.factor: int]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Weight:
         '''
@@ -20700,7 +20941,7 @@ class SchedulingPolicyWeights(Base):
                 }
             ),
             body=ParseHelper.toXml(weight),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return SchedulingPolicyWeight(
@@ -20829,7 +21070,8 @@ class StorageConnection(params.StorageConnection, Base):
         @type Action:
 
         [@param action.host.id|name: string]
-        [@param async: boolean (true|false)]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return None:
@@ -20851,7 +21093,7 @@ class StorageConnection(params.StorageConnection, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         Overload 1:
           [@param storage_connection.port: int]
@@ -20873,6 +21115,7 @@ class StorageConnection(params.StorageConnection, Base):
         Overload 4:
           [@param storage_connection.path: string]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return StorageConnection:
         '''
@@ -20887,7 +21130,7 @@ class StorageConnection(params.StorageConnection, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return StorageConnection(result, self.context)
@@ -20905,7 +21148,7 @@ class StorageConnections(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, storageconnection, expect=None, correlation_id=None):
+    def add(self, storageconnection, correlation_id=None, expect=None):
         '''
         @type StorageConnection:
 
@@ -20932,8 +21175,8 @@ class StorageConnections(Base):
         Overload 4:
           @param storage_connection.type: string
           @param storage_connection.path: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return StorageConnection:
         '''
@@ -20943,7 +21186,7 @@ class StorageConnections(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(storageconnection),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return StorageConnection(result, self.context)
@@ -21064,7 +21307,7 @@ class StorageDomain(params.StorageDomain, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         Overload 1:
           [@param storagedomain.name: string]
@@ -21090,6 +21333,7 @@ class StorageDomain(params.StorageDomain, Base):
           [@param storagedomain.storage.override_luns: boolean]
           [@param storagedomain.wipe_after_delete: boolean]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return StorageDomain:
         '''
@@ -21104,7 +21348,7 @@ class StorageDomain(params.StorageDomain, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return StorageDomain(result, self.context)
@@ -21114,6 +21358,8 @@ class StorageDomain(params.StorageDomain, Base):
         @type Action:
 
         @param action.host.id: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -21284,23 +21530,28 @@ class StorageDomainDiskPermission(params.Permission, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}'
+        url = UrlHelper.replace(
+            '/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions/{permission:id}',
+            {
+                '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                '{disk:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                    '{disk:id}': self.parentclass.get_id(),
-                    '{permission:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class StorageDomainDiskPermissions(Base):
@@ -21499,7 +21750,7 @@ class StorageDomainDiskProfiles(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, diskprofile, expect=None, correlation_id=None):
+    def add(self, diskprofile, correlation_id=None, expect=None):
 
         '''
         @type DiskProfile:
@@ -21507,8 +21758,8 @@ class StorageDomainDiskProfiles(Base):
         @param diskprofile.name: string
         [@param diskprofile.description: string]
         [@param diskprofile.qos.id: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return DiskProfile:
         '''
@@ -21523,7 +21774,7 @@ class StorageDomainDiskProfiles(Base):
                 }
             ),
             body=ParseHelper.toXml(diskprofile),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return StorageDomainDiskProfile(
@@ -21922,7 +22173,7 @@ class StorageDomainDisks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, disk, expect=None, correlation_id=None):
+    def add(self, disk, correlation_id=None, expect=None):
 
         '''
         @type Disk:
@@ -21935,6 +22186,7 @@ class StorageDomainDisks(Base):
           [@param disk.name: string]
           [@param disk.size: int]
           [@param disk.sparse: boolean]
+          [@param disk.description: string]
           [@param disk.bootable: boolean]
           [@param disk.shareable: boolean]
           [@param disk.propagate_errors: boolean]
@@ -21954,14 +22206,15 @@ class StorageDomainDisks(Base):
           }
           [@param disk.alias: string]
           [@param disk.sparse: boolean]
+          [@param disk.description: string]
           [@param disk.bootable: boolean]
           [@param disk.shareable: boolean]
           [@param disk.propagate_errors: boolean]
           [@param disk.wipe_after_delete: boolean]
           [@param disk.quota.id: string]
           [@param disk.sgio: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Disk:
         '''
@@ -21976,7 +22229,7 @@ class StorageDomainDisks(Base):
                 }
             ),
             body=ParseHelper.toXml(disk),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return StorageDomainDisk(
@@ -22429,7 +22682,7 @@ class StorageDomainPermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -22440,8 +22693,8 @@ class StorageDomainPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -22456,7 +22709,7 @@ class StorageDomainPermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return StorageDomainPermission(
@@ -22619,14 +22872,14 @@ class StorageDomainStorageConnections(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, storageconnection, expect=None, correlation_id=None):
+    def add(self, storageconnection, correlation_id=None, expect=None):
 
         '''
         @type StorageConnection:
 
         @param storageconnection.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return StorageConnection:
         '''
@@ -22641,7 +22894,7 @@ class StorageDomainStorageConnections(Base):
                 }
             ),
             body=ParseHelper.toXml(storageconnection),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return StorageDomainStorageConnection(
@@ -22835,6 +23088,8 @@ class StorageDomainTemplate(params.Template, Base):
         [@param action.clone: boolen]
         [@param action.exclusive: boolen]
         [@param action.template.name: string]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -23146,7 +23401,6 @@ class StorageDomainVM(params.VM, Base):
         @type Action:
 
         @param action.cluster.id|name: string
-        [@param action.async: boolean]
         [@param action.storage_domain.id|name: string]
         [@param action.vm.snapshots.collapse_snapshots: boolean]
         [@param action.clone: boolen]
@@ -23156,6 +23410,7 @@ class StorageDomainVM(params.VM, Base):
         {
           [@ivar disk.id: string]
         }
+        [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
@@ -23186,6 +23441,8 @@ class StorageDomainVM(params.VM, Base):
         @param action.cluster.id|name: string
         [@param action.clone: boolen]
         [@param action.vm.name: string]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -23458,7 +23715,7 @@ class StorageDomains(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, storagedomain, expect=None, correlation_id=None):
+    def add(self, storagedomain, correlation_id=None, expect=None):
         '''
         @type StorageDomain:
 
@@ -23530,8 +23787,8 @@ class StorageDomains(Base):
           [@param storagedomain.storage.mount_options: string]
           [@param storagedomain.storage_format: string]
           [@param storagedomain.wipe_after_delete: boolean]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return StorageDomain:
         '''
@@ -23541,7 +23798,7 @@ class StorageDomains(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(storagedomain),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return StorageDomain(result, self.context)
@@ -23652,12 +23909,13 @@ class Tag(params.Tag, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param tag.name: string]
         [@param tag.description: string]
         [@param tag.parent.tag.id|name: string]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Tag:
         '''
@@ -23672,7 +23930,7 @@ class Tag(params.Tag, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Tag(result, self.context)
@@ -23690,7 +23948,7 @@ class Tags(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, tag, correlation_id=None):
+    def add(self, tag, correlation_id=None, expect=None):
         '''
         @type Tag:
 
@@ -23698,6 +23956,7 @@ class Tags(Base):
         [@param tag.description: string]
         [@param tag.parent.tag.id|name: string]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Tag:
         '''
@@ -23707,7 +23966,7 @@ class Tags(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(tag),
-           headers={"Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Tag(result, self.context)
@@ -23823,7 +24082,7 @@ class Template(params.Template, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param template.name: string]
         [@param template.memory: long]
@@ -23888,6 +24147,7 @@ class Template(params.Template, Base):
         [@param template.migration.auto_converge: string]
         [@param template.migration.compressed: string]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Template:
         '''
@@ -23902,7 +24162,7 @@ class Template(params.Template, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Template(result, self.context)
@@ -23912,8 +24172,8 @@ class Template(params.Template, Base):
         @type Action:
 
         @param action.storage_domain.id|name: string
-        [@param action.async: boolean]
         [@param action.exclusive: boolean]
+        [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
@@ -24330,7 +24590,7 @@ class TemplateNIC(params.NIC, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         Overload 1:
           [@param nic.vnic_profile.id: string]
@@ -24349,7 +24609,9 @@ class TemplateNIC(params.NIC, Base):
           {
             [@ivar network.id: string]
           }
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return NIC:
         '''
@@ -24364,9 +24626,9 @@ class TemplateNIC(params.NIC, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return TemplateNIC(
@@ -24390,7 +24652,7 @@ class TemplateNICs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, nic, expect=None, correlation_id=None):
+    def add(self, nic, correlation_id=None, expect=None):
 
         '''
         @type NIC:
@@ -24412,8 +24674,8 @@ class TemplateNICs(Base):
           {
             [@ivar network.id: string]
           }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return NIC:
         '''
@@ -24428,7 +24690,7 @@ class TemplateNICs(Base):
                 }
             ),
             body=ParseHelper.toXml(nic),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return TemplateNIC(
@@ -24591,7 +24853,7 @@ class TemplatePermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -24602,8 +24864,8 @@ class TemplatePermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -24618,7 +24880,7 @@ class TemplatePermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return TemplatePermission(
@@ -24781,14 +25043,14 @@ class TemplateTags(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, tag, expect=None, correlation_id=None):
+    def add(self, tag, correlation_id=None, expect=None):
 
         '''
         @type Tag:
 
         @param tag.id|name: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Tag:
         '''
@@ -24803,7 +25065,7 @@ class TemplateTags(Base):
                 }
             ),
             body=ParseHelper.toXml(tag),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return TemplateTag(
@@ -24951,11 +25213,13 @@ class TemplateWatchDog(params.WatchDog, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param watchdog.action: string]
         [@param watchdog.model: string]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return WatchDog:
         '''
@@ -24970,9 +25234,9 @@ class TemplateWatchDog(params.WatchDog, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return TemplateWatchDog(
@@ -24996,15 +25260,15 @@ class TemplateWatchDogs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, watchdog, expect=None, correlation_id=None):
+    def add(self, watchdog, correlation_id=None, expect=None):
 
         '''
         @type WatchDog:
 
         @param watchdog.action: string
         @param watchdog.model: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return WatchDog:
         '''
@@ -25019,7 +25283,7 @@ class TemplateWatchDogs(Base):
                 }
             ),
             body=ParseHelper.toXml(watchdog),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return TemplateWatchDog(
@@ -25134,7 +25398,7 @@ class Templates(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, template, expect=None, correlation_id=None):
+    def add(self, template, correlation_id=None, expect=None):
         '''
         @type Template:
 
@@ -25221,8 +25485,8 @@ class Templates(Base):
         [@param template.cpu_profile.id: string]
         [@param template.migration.auto_converge: string]
         [@param template.migration.compressed: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Template:
         '''
@@ -25232,7 +25496,7 @@ class Templates(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(template),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return Template(result, self.context)
@@ -25409,7 +25673,7 @@ class UserPermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -25435,8 +25699,8 @@ class UserPermissions(Base):
         Overload 7:
           @param permission.role.id: string
           @param permission.template.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -25451,7 +25715,7 @@ class UserPermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return UserPermission(
@@ -25638,14 +25902,14 @@ class UserRolePermits(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permit, expect=None, correlation_id=None):
+    def add(self, permit, correlation_id=None, expect=None):
 
         '''
         @type Permit:
 
         @param permit.id|name: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permit:
         '''
@@ -25661,7 +25925,7 @@ class UserRolePermits(Base):
                 }
             ),
             body=ParseHelper.toXml(permit),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return UserRolePermit(
@@ -25935,14 +26199,14 @@ class UserTags(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, tag, expect=None, correlation_id=None):
+    def add(self, tag, correlation_id=None, expect=None):
 
         '''
         @type Tag:
 
         @param tag.id|name: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Tag:
         '''
@@ -25957,7 +26221,7 @@ class UserTags(Base):
                 }
             ),
             body=ParseHelper.toXml(tag),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return UserTag(
@@ -26072,7 +26336,7 @@ class Users(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, user, expect=None, correlation_id=None):
+    def add(self, user, correlation_id=None, expect=None):
         '''
         @type User:
 
@@ -26080,8 +26344,8 @@ class Users(Base):
         @param user.domain.id|name: string
         [@param user.namespace: string]
         [@param user.principal: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return User:
         '''
@@ -26091,7 +26355,7 @@ class Users(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(user),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return User(result, self.context)
@@ -26220,7 +26484,7 @@ class VM(params.VM, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param vm.instance_type.id|name: string]
         [@param vm.name: string]
@@ -26307,6 +26571,7 @@ class VM(params.VM, Base):
         [@param vm.migration.auto_converge: string]
         [@param vm.migration.compressed: string]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return VM:
         '''
@@ -26321,7 +26586,7 @@ class VM(params.VM, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VM(result, self.context)
@@ -26355,6 +26620,8 @@ class VM(params.VM, Base):
         @type Action:
 
         @param action.vm.name: string
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -26432,10 +26699,10 @@ class VM(params.VM, Base):
         '''
         @type Action:
 
-        [@param action.async: boolean]
         [@param action.exclusive: boolean]
         [@param action.discard_snapshots: boolean]
         [@param action.storage_domain.id|name: string]
+        [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
@@ -26462,6 +26729,8 @@ class VM(params.VM, Base):
         '''
         @type Action:
 
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -26516,10 +26785,10 @@ class VM(params.VM, Base):
         @type Action:
 
         [@param action.host.id|name: string]
-        [@param action.async: boolean]
         [@param action.force: boolean]
-        [@param action.grace_period.expiry: long]
         [@param action.cluster.id: string]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -26581,6 +26850,8 @@ class VM(params.VM, Base):
           [@ivar disk.image_id: string]
           [@ivar disk.snapshot.id: string]
         }
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -26662,9 +26933,7 @@ class VM(params.VM, Base):
         [@param action.vm.domain.name: string]
         [@param action.vm.placement_policy.host.id|name: string]
         [@param action.vm.placement_policy.affinity: string]
-        [@param action.async: boolean]
         [@param action.vm.os.kernel: string]
-        [@param action.grace_period.expiry: long]
         [@param action.vm.display.type: string]
         [@param action.vm.stateless: boolean]
         [@param action.vm.os.cmdline: string]
@@ -26698,8 +26967,8 @@ class VM(params.VM, Base):
         [@param action.vm.initialization.cloud_init.authorized_keys.authorized_key: collection]
         {
           [@ivar authorized_key.key: string]
-          [@ivar authorized_key.user.name: string]
         }
+        [@param authorized_key.user.name: string]
         [@param action.vm.initialization.cloud_init.regenerate_ssh_keys: boolean]
         [@param action.vm.initialization.cloud_init.timezone: string]
         [@param action.vm.initialization.cloud_init.users.user: collection]
@@ -26713,6 +26982,8 @@ class VM(params.VM, Base):
           [@ivar payload_file.content: string]
           [@ivar payload_file.type: string]
         }
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -27012,12 +27283,13 @@ class VMCdRom(params.CdRom, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, async=None, current=None, correlation_id=None):
+    def update(self, current=None, async=None, correlation_id=None, expect=None):
         '''
         [@param cdrom.file.id: string]
-        [@param async: boolean (true|false)]
         [@param current: boolean (true|false)]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return CdRom:
         '''
@@ -27032,9 +27304,9 @@ class VMCdRom(params.CdRom, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async,'current:matrix':current}),
+            url=SearchHelper.appendQuery(url, {'current:matrix':current,'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMCdRom(
@@ -27058,14 +27330,14 @@ class VMCdRoms(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, cdrom, expect=None, correlation_id=None):
+    def add(self, cdrom, correlation_id=None, expect=None):
 
         '''
         @type CdRom:
 
         @param cdrom.file.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return CdRom:
         '''
@@ -27080,7 +27352,7 @@ class VMCdRoms(Base):
                 }
             ),
             body=ParseHelper.toXml(cdrom),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMCdRom(
@@ -27236,13 +27508,14 @@ class VMDisk(params.Disk, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param size: int]
         [@param provisioned_size: int]
         [@param disk.interface: string]
         [@param disk.format: string]
         [@param disk.sparse: boolean]
+        [@param disk.description: string]
         [@param disk.bootable: boolean]
         [@param disk.shareable: boolean]
         [@param disk.propagate_errors: boolean]
@@ -27250,9 +27523,12 @@ class VMDisk(params.Disk, Base):
         [@param disk.quota.id: string]
         [@param disk.disk_profile.id: string]
         [@param disk.sgio: string]
+        [@param disk.uses_scsi_reservation: boolean]
         [@param disk.read_only: boolean]
         [@param description: update the size, boot flag and other parameters of the disk attached to the virtual machine]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return Disk:
         '''
@@ -27267,9 +27543,9 @@ class VMDisk(params.Disk, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMDisk(
@@ -27414,23 +27690,28 @@ class VMDiskPermission(params.Permission, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self):
+    def delete(self, async=None):
         '''
+        [@param async: boolean (true|false)]
+
         @return None:
         '''
 
-        url = '/vms/{vm:id}/disks/{disk:id}/permissions/{permission:id}'
+        url = UrlHelper.replace(
+            '/vms/{vm:id}/disks/{disk:id}/permissions/{permission:id}',
+            {
+                '{vm:id}': self.parentclass.parentclass.get_id(),
+                '{disk:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
 
         return self.__getProxy().delete(
-            url=UrlHelper.replace(
+            url=SearchHelper.appendQuery(
                 url,
-                {
-                    '{vm:id}': self.parentclass.parentclass.get_id(),
-                    '{disk:id}': self.parentclass.get_id(),
-                    '{permission:id}': self.get_id(),
-                }
+                {'async:matrix':async}
             ),
-            headers={'Content-type':None}
+            headers={"Content-type":None}
         )
 
 class VMDiskPermissions(Base):
@@ -27711,7 +27992,7 @@ class VMDisks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, disk, expect=None, correlation_id=None):
+    def add(self, disk, correlation_id=None, expect=None):
 
         '''
         @type Disk:
@@ -27724,6 +28005,7 @@ class VMDisks(Base):
           [@param disk.name: string]
           [@param disk.size: int]
           [@param disk.sparse: boolean]
+          [@param disk.description: string]
           [@param disk.bootable: boolean]
           [@param disk.shareable: boolean]
           [@param disk.propagate_errors: boolean]
@@ -27746,12 +28028,14 @@ class VMDisks(Base):
           }
           [@param disk.alias: string]
           [@param disk.sparse: boolean]
+          [@param disk.description: string]
           [@param disk.bootable: boolean]
           [@param disk.shareable: boolean]
           [@param disk.propagate_errors: boolean]
           [@param disk.wipe_after_delete: boolean]
           [@param disk.quota.id: string]
           [@param disk.sgio: string]
+          [@param disk.uses_scsi_reservation: boolean]
           [@param disk.lun_storage.host: string]
         Overload 3:
           @param disk.id: string
@@ -27761,8 +28045,8 @@ class VMDisks(Base):
           @param disk.id: string
           @param disk.snapshot.id: string
           [@param disk.active: boolean]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Disk:
         '''
@@ -27777,7 +28061,7 @@ class VMDisks(Base):
                 }
             ),
             body=ParseHelper.toXml(disk),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMDisk(
@@ -27927,7 +28211,7 @@ class VMNIC(params.NIC, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         Overload 1:
           [@param nic.vnic_profile.id: string]
@@ -27947,7 +28231,9 @@ class VMNIC(params.NIC, Base):
             [@ivar network.id: string]
           }
           [@param nic.plugged: boolean]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return NIC:
         '''
@@ -27962,9 +28248,9 @@ class VMNIC(params.NIC, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMNIC(
@@ -28296,7 +28582,7 @@ class VMNICs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, nic, expect=None, correlation_id=None):
+    def add(self, nic, correlation_id=None, expect=None):
 
         '''
         @type NIC:
@@ -28319,8 +28605,8 @@ class VMNICs(Base):
             [@ivar network.id: string]
           }
           [@param nic.plugged: boolean]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return NIC:
         '''
@@ -28335,7 +28621,7 @@ class VMNICs(Base):
                 }
             ),
             body=ParseHelper.toXml(nic),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMNIC(
@@ -28500,7 +28786,7 @@ class VMPermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -28511,8 +28797,8 @@ class VMPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -28527,7 +28813,7 @@ class VMPermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMPermission(
@@ -28933,13 +29219,13 @@ class VMSnapshot(params.Snapshot, Base):
         @type Action:
 
         [@param action.restore_memory: boolean]
-        [@param action.async: boolean]
-        [@param action.grace_period.expiry: long]
         [@param action.disks.disk: collection]
         {
           [@ivar disk.id: string]
           [@ivar disk.image_id: string]
         }
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
 
         @return Action:
@@ -29386,7 +29672,7 @@ class VMSnapshots(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, snapshot, expect=None, correlation_id=None):
+    def add(self, snapshot, correlation_id=None, expect=None):
 
         '''
         @type Snapshot:
@@ -29397,8 +29683,8 @@ class VMSnapshots(Base):
         {
           [@ivar disk.id: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Snapshot:
         '''
@@ -29413,7 +29699,7 @@ class VMSnapshots(Base):
                 }
             ),
             body=ParseHelper.toXml(snapshot),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMSnapshot(
@@ -29708,14 +29994,14 @@ class VMTags(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, tag, expect=None, correlation_id=None):
+    def add(self, tag, correlation_id=None, expect=None):
 
         '''
         @type Tag:
 
         @param tag.id|name: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Tag:
         '''
@@ -29730,7 +30016,7 @@ class VMTags(Base):
                 }
             ),
             body=ParseHelper.toXml(tag),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMTag(
@@ -29878,7 +30164,7 @@ class VMVirtualNumaNode(params.VirtualNumaNode, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, async=None, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param vm_numa_node.index: int]
         [@param vm_numa_node.memory: string]
@@ -29892,6 +30178,7 @@ class VMVirtualNumaNode(params.VirtualNumaNode, Base):
         }
         [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return VirtualNumaNode:
         '''
@@ -29908,7 +30195,7 @@ class VMVirtualNumaNode(params.VirtualNumaNode, Base):
         result = self.__getProxy().update(
             url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMVirtualNumaNode(
@@ -29932,7 +30219,7 @@ class VMVirtualNumaNodes(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, vmnumanode, expect=None, correlation_id=None):
+    def add(self, vmnumanode, correlation_id=None, expect=None):
 
         '''
         @type VirtualNumaNode:
@@ -29947,8 +30234,8 @@ class VMVirtualNumaNodes(Base):
         {
           [@ivar numa_node_pin.index: int]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return VirtualNumaNode:
         '''
@@ -29963,7 +30250,7 @@ class VMVirtualNumaNodes(Base):
                 }
             ),
             body=ParseHelper.toXml(vmnumanode),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMVirtualNumaNode(
@@ -30111,11 +30398,13 @@ class VMWatchDog(params.WatchDog, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, async=None, correlation_id=None, expect=None):
         '''
         [@param watchdog.action: string]
         [@param watchdog.model: string]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return WatchDog:
         '''
@@ -30130,9 +30419,9 @@ class VMWatchDog(params.WatchDog, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {}),
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMWatchDog(
@@ -30156,15 +30445,15 @@ class VMWatchDogs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, watchdog, expect=None, correlation_id=None):
+    def add(self, watchdog, correlation_id=None, expect=None):
 
         '''
         @type WatchDog:
 
         @param watchdog.action: string
         @param watchdog.model: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return WatchDog:
         '''
@@ -30179,7 +30468,7 @@ class VMWatchDogs(Base):
                 }
             ),
             body=ParseHelper.toXml(watchdog),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VMWatchDog(
@@ -30294,7 +30583,7 @@ class VMs(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, vm, expect=None, correlation_id=None):
+    def add(self, vm, correlation_id=None, expect=None):
         '''
         @type VM:
 
@@ -30568,8 +30857,8 @@ class VMs(Base):
           [@param vm.cpu_profile.id: string]
           [@param vm.migration.auto_converge: string]
           [@param vm.migration.compressed: string]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return VM:
         '''
@@ -30579,7 +30868,7 @@ class VMs(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(vm),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VM(result, self.context)
@@ -30714,7 +31003,7 @@ class VmPool(params.VmPool, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param vmpool.cluster.id|name: string]
         [@param vmpool.template.id|name: string]
@@ -30725,6 +31014,7 @@ class VmPool(params.VmPool, Base):
         [@param vmpool.display.proxy: string]
         [@param vmpool.description: string]
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return VmPool:
         '''
@@ -30739,7 +31029,7 @@ class VmPool(params.VmPool, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VmPool(result, self.context)
@@ -30832,7 +31122,7 @@ class VmPoolPermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -30843,8 +31133,8 @@ class VmPoolPermissions(Base):
         Overload 2:
           @param permission.role.id: string
           @param permission.group.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -30859,7 +31149,7 @@ class VmPoolPermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VmPoolPermission(
@@ -30974,7 +31264,7 @@ class VmPools(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, vmpool, expect=None, correlation_id=None):
+    def add(self, vmpool, correlation_id=None, expect=None):
         '''
         @type VmPool:
 
@@ -30987,8 +31277,8 @@ class VmPools(Base):
         [@param vmpool.display.proxy: string]
         [@param vmpool.description: string]
         [@param vmpool.soundcard_enabled: boolean]
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return VmPool:
         '''
@@ -30998,7 +31288,7 @@ class VmPools(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(vmpool),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VmPool(result, self.context)
@@ -31110,7 +31400,7 @@ class VnicProfile(params.VnicProfile, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def update(self, correlation_id=None):
+    def update(self, correlation_id=None, expect=None):
         '''
         [@param vnicprofile.name: string]
         [@param vnicprofile.description: string]
@@ -31121,6 +31411,7 @@ class VnicProfile(params.VnicProfile, Base):
           [@ivar custom_property.value: string]
         }
         [@param correlation_id: any string]
+        [@param expect: 202-accepted]
 
         @return VnicProfile:
         '''
@@ -31135,7 +31426,7 @@ class VnicProfile(params.VnicProfile, Base):
                 }
             ),
             body=ParseHelper.toXml(self.superclass),
-            headers={"Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VnicProfile(result, self.context)
@@ -31201,7 +31492,7 @@ class VnicProfilePermissions(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, permission, expect=None, correlation_id=None):
+    def add(self, permission, correlation_id=None, expect=None):
 
         '''
         @type Permission:
@@ -31212,8 +31503,8 @@ class VnicProfilePermissions(Base):
         Overload 2:
           @param permission.group.id: string
           @param permission.role.id: string
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return Permission:
         '''
@@ -31228,7 +31519,7 @@ class VnicProfilePermissions(Base):
                 }
             ),
             body=ParseHelper.toXml(permission),
-            headers={"Expect":expect, "Correlation-Id":correlation_id}
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VnicProfilePermission(
@@ -31343,7 +31634,7 @@ class VnicProfiles(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, vnicprofile, expect=None, correlation_id=None):
+    def add(self, vnicprofile, correlation_id=None, expect=None):
         '''
         @type VnicProfile:
 
@@ -31356,8 +31647,8 @@ class VnicProfiles(Base):
           [@ivar custom_property.name: string]
           [@ivar custom_property.value: string]
         }
-        [@param expect: 201-created]
         [@param correlation_id: any string]
+        [@param expect: 201-created]
 
         @return VnicProfile:
         '''
@@ -31367,7 +31658,7 @@ class VnicProfiles(Base):
         result = self.__getProxy().add(
            url=url,
            body=ParseHelper.toXml(vnicprofile),
-           headers={"Expect":expect, "Correlation-Id":correlation_id}
+           headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
 
         return VnicProfile(result, self.context)
