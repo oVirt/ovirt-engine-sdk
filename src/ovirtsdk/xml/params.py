@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed May  6 12:23:53 2015 by generateDS.py version 2.12a.
+# Generated Tue May 12 10:03:27 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -17726,7 +17726,7 @@ class StorageConnection(BaseResource):
 class StorageDomain(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, data_centers=None, type_=None, status=None, master=None, storage=None, host=None, format=None, destroy=None, available=None, used=None, committed=None, storage_format=None, wipe_after_delete=None, import_=None, is_attached=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, data_centers=None, type_=None, status=None, master=None, storage=None, host=None, format=None, destroy=None, available=None, used=None, committed=None, storage_format=None, wipe_after_delete=None, import_=None, is_attached=None, warning_low_space_indicator=None, critical_space_action_blocker=None):
         super(StorageDomain, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.data_center = data_center
         self.data_centers = data_centers
@@ -17744,6 +17744,8 @@ class StorageDomain(BaseResource):
         self.wipe_after_delete = wipe_after_delete
         self.import_ = import_
         self.is_attached = is_attached
+        self.warning_low_space_indicator = warning_low_space_indicator
+        self.critical_space_action_blocker = critical_space_action_blocker
     def factory(*args_, **kwargs_):
         if StorageDomain.subclass:
             return StorageDomain.subclass(*args_, **kwargs_)
@@ -17782,6 +17784,10 @@ class StorageDomain(BaseResource):
     def set_import(self, import_): self.import_ = import_
     def get_is_attached(self): return self.is_attached
     def set_is_attached(self, is_attached): self.is_attached = is_attached
+    def get_warning_low_space_indicator(self): return self.warning_low_space_indicator
+    def set_warning_low_space_indicator(self, warning_low_space_indicator): self.warning_low_space_indicator = warning_low_space_indicator
+    def get_critical_space_action_blocker(self): return self.critical_space_action_blocker
+    def set_critical_space_action_blocker(self, critical_space_action_blocker): self.critical_space_action_blocker = critical_space_action_blocker
     def hasContent_(self):
         if (
             self.data_center is not None or
@@ -17800,6 +17806,8 @@ class StorageDomain(BaseResource):
             self.wipe_after_delete is not None or
             self.import_ is not None or
             self.is_attached is not None or
+            self.warning_low_space_indicator is not None or
+            self.critical_space_action_blocker is not None or
             super(StorageDomain, self).hasContent_()
         ):
             return True
@@ -17872,6 +17880,12 @@ class StorageDomain(BaseResource):
         if self.is_attached is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sis_attached>%s</%sis_attached>%s' % (namespace_, self.gds_format_boolean(self.is_attached, input_name='is_attached'), namespace_, eol_))
+        if self.warning_low_space_indicator is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%swarning_low_space_indicator>%s</%swarning_low_space_indicator>%s' % (namespace_, self.gds_format_integer(self.warning_low_space_indicator, input_name='warning_low_space_indicator'), namespace_, eol_))
+        if self.critical_space_action_blocker is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%scritical_space_action_blocker>%s</%scritical_space_action_blocker>%s' % (namespace_, self.gds_format_integer(self.critical_space_action_blocker, input_name='critical_space_action_blocker'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='StorageDomain'):
         level += 1
         already_processed = set()
@@ -17945,6 +17959,12 @@ class StorageDomain(BaseResource):
         if self.is_attached is not None:
             showIndent(outfile, level)
             outfile.write('is_attached=%s,\n' % self.is_attached)
+        if self.warning_low_space_indicator is not None:
+            showIndent(outfile, level)
+            outfile.write('warning_low_space_indicator=%d,\n' % self.warning_low_space_indicator)
+        if self.critical_space_action_blocker is not None:
+            showIndent(outfile, level)
+            outfile.write('critical_space_action_blocker=%d,\n' % self.critical_space_action_blocker)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -18067,6 +18087,22 @@ class StorageDomain(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'is_attached')
             self.is_attached = ival_
+        elif nodeName_ == 'warning_low_space_indicator':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'warning_low_space_indicator')
+            self.warning_low_space_indicator = ival_
+        elif nodeName_ == 'critical_space_action_blocker':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'critical_space_action_blocker')
+            self.critical_space_action_blocker = ival_
         super(StorageDomain, self).buildChildren(child_, node, nodeName_, True)
 # end class StorageDomain
 

@@ -58,6 +58,14 @@ or less indicates that the session should never timeout</description>
             <description>get the list of bookmarks in the system</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -780,6 +788,14 @@ or less indicates that the session should never timeout</description>
         <link href="clusters/{cluster:id}/glusterhooks" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -1029,6 +1045,10 @@ or less indicates that the session should never timeout</description>
                             <name>case_sensitive</name>
                             <value>true|false</value>
                         </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
                     </parameters_set>
                 </url>
                 <body/>
@@ -1173,6 +1193,14 @@ or less indicates that the session should never timeout</description>
                         <value>true|false</value>
                     </header>
                 </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -1403,14 +1431,6 @@ or less indicates that the session should never timeout</description>
             <description>get the statistics for the specified brick in the gluster volume attached to the cluster</description>
             <request>
                 <http_method>GET</http_method>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
                 <body/>
             </request>
             <response>
@@ -2842,6 +2862,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -2904,6 +2932,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -2938,6 +2974,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/clusters/{cluster:id}/cpuprofiles" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -2970,6 +3014,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -3070,6 +3122,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -3136,6 +3196,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -3741,6 +3809,14 @@ or less indicates that the session should never timeout</description>
             <description>get all iSCSI Bonds for the specified datacenter</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -3848,6 +3924,14 @@ or less indicates that the session should never timeout</description>
             <description>gets the specified iSCSI Bond with the networks</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -3910,6 +3994,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/labels" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -3953,6 +4045,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/permissions" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -3996,6 +4096,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -4039,6 +4147,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -4082,6 +4198,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -4349,6 +4473,14 @@ or less indicates that the session should never timeout</description>
             <description>get the labels of a network</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -4404,6 +4536,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/networks/{network:id}/permissions" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -4447,6 +4587,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -4490,6 +4638,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -4567,6 +4723,14 @@ or less indicates that the session should never timeout</description>
             <description>get the list of permissions on the data center</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -4822,6 +4986,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/quotas" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -5149,13 +5321,13 @@ or less indicates that the session should never timeout</description>
                             <name>case_sensitive</name>
                             <value>true|false</value>
                         </parameter>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
                         <parameter required="false" type="xs:boolean" context="matrix">
                             <name>unregistered</name>
                             <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
                         </parameter>
                     </parameters_set>
                 </url>
@@ -5304,6 +5476,14 @@ or less indicates that the session should never timeout</description>
         <link href="datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -5977,14 +6157,6 @@ or less indicates that the session should never timeout</description>
             <description>get the disk statistics for the specified disk in the system</description>
             <request>
                 <http_method>GET</http_method>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
                 <body/>
             </request>
             <response>
@@ -7958,6 +8130,14 @@ or less indicates that the session should never timeout</description>
             <description>get all fencing agents defined for this host</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -8109,6 +8289,14 @@ or less indicates that the session should never timeout</description>
         <link href="hosts/{host:id}/hooks" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -8737,6 +8925,14 @@ or less indicates that the session should never timeout</description>
             <description>get the labels of an interface</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -8782,14 +8978,6 @@ or less indicates that the session should never timeout</description>
             <description>get the statistics for the network interface card attached to the specified host</description>
             <request>
                 <http_method>GET</http_method>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
                 <body/>
             </request>
             <response>
@@ -8838,14 +9026,6 @@ or less indicates that the session should never timeout</description>
             <description>get the statistics for the specified NUMA node of the host</description>
             <request>
                 <http_method>GET</http_method>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
                 <body/>
             </request>
             <response>
@@ -9002,14 +9182,6 @@ or less indicates that the session should never timeout</description>
             <description>get the statistics for the host</description>
             <request>
                 <http_method>GET</http_method>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
                 <body/>
             </request>
             <response>
@@ -9371,6 +9543,14 @@ or less indicates that the session should never timeout</description>
         <link href="instancetypes/{instancetype:id}/nics" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -9433,6 +9613,14 @@ or less indicates that the session should never timeout</description>
         <link href="instancetypes/{instancetype:id}/watchdogs" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -9749,14 +9937,6 @@ or less indicates that the session should never timeout</description>
             <description>get the detailed step status for monitoring</description>
             <request>
                 <http_method>GET</http_method>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
                 <body/>
             </request>
             <response>
@@ -10203,6 +10383,14 @@ or less indicates that the session should never timeout</description>
             <description>get the labels of a network</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -10457,6 +10645,14 @@ or less indicates that the session should never timeout</description>
         <link href="networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -10717,8 +10913,19 @@ or less indicates that the session should never timeout</description>
             </response>
         </link>
         <link href="openstackimageproviders/{openstackimageprovider:id}/images/{image:id}/import" rel="import">
+            <description>imports the OpenStack image</description>
             <request>
                 <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
                 <url>
                     <parameters_set>
                         <parameter required="false" type="xs:boolean" context="matrix">
@@ -10729,6 +10936,29 @@ or less indicates that the session should never timeout</description>
                 </url>
                 <body>
                     <type>Action</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>action.storagedomain.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.import_as_template</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.cluster.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.disk.alias|name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.template.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.async</name>
+                        </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>action.grace_period.expiry</name>
+                        </parameter>
+                    </parameters_set>
                 </body>
             </request>
             <response>
@@ -10988,6 +11218,14 @@ or less indicates that the session should never timeout</description>
         <link href="openstacknetworkproviders/{openstacknetworkprovider:id}/certificates" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -11311,6 +11549,14 @@ or less indicates that the session should never timeout</description>
         <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/certificates" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -11396,6 +11642,14 @@ or less indicates that the session should never timeout</description>
             <description>get the list of all Operating Systems</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -12018,10 +12272,6 @@ or less indicates that the session should never timeout</description>
                             <name>case_sensitive</name>
                             <value>true|false</value>
                         </parameter>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
                     </parameters_set>
                 </url>
                 <body/>
@@ -12138,10 +12388,6 @@ or less indicates that the session should never timeout</description>
                             <name>case_sensitive</name>
                             <value>true|false</value>
                         </parameter>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
                     </parameters_set>
                 </url>
                 <body/>
@@ -12257,10 +12503,6 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean" context="matrix">
                             <name>case_sensitive</name>
                             <value>true|false</value>
-                        </parameter>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
                         </parameter>
                     </parameters_set>
                 </url>
@@ -12438,6 +12680,14 @@ or less indicates that the session should never timeout</description>
             <description>get the list of all storage connections in the system</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -12676,6 +12926,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>storagedomain.wipe_after_delete</name>
                         </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.warning_low_space_indicator</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.critical_space_action_blocker</name>
+                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>Import an existing block storage domain to the system using the targets already connected to the host</description>
@@ -12699,6 +12955,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.comment</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.warning_low_space_indicator</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.critical_space_action_blocker</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -12733,6 +12995,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>storagedomain.wipe_after_delete</name>
                         </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.warning_low_space_indicator</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.critical_space_action_blocker</name>
+                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new storage domain to the system using the storage on the localhost at the given path</description>
@@ -12762,6 +13030,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>storagedomain.wipe_after_delete</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.warning_low_space_indicator</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.critical_space_action_blocker</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -12801,6 +13075,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>storagedomain.wipe_after_delete</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.warning_low_space_indicator</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.critical_space_action_blocker</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -12984,6 +13264,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>storagedomain.wipe_after_delete</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.warning_low_space_indicator</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.critical_space_action_blocker</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -13232,13 +13518,13 @@ or less indicates that the session should never timeout</description>
                             <name>case_sensitive</name>
                             <value>true|false</value>
                         </parameter>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
                         <parameter required="false" type="xs:boolean" context="matrix">
                             <name>unregistered</name>
                             <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
                         </parameter>
                     </parameters_set>
                 </url>
@@ -13379,6 +13665,14 @@ or less indicates that the session should never timeout</description>
         <link href="storagedomains/{storagedomain:id}/disks/{disk:id}/permissions" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -13544,6 +13838,16 @@ or less indicates that the session should never timeout</description>
         <link href="storagedomains/{storagedomain:id}/images/{image:id}/import" rel="import">
             <request>
                 <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
                 <url>
                     <parameters_set>
                         <parameter required="false" type="xs:boolean" context="matrix">
@@ -13554,6 +13858,23 @@ or less indicates that the session should never timeout</description>
                 </url>
                 <body>
                     <type>Action</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>storagedomain.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.import_as_template</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.cluster.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.async</name>
+                        </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>action.grace_period.expiry</name>
+                        </parameter>
+                    </parameters_set>
                 </body>
             </request>
             <response>
@@ -13786,13 +14107,13 @@ or less indicates that the session should never timeout</description>
                 <http_method>GET</http_method>
                 <url>
                     <parameters_set>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
                         <parameter required="false" type="xs:boolean" context="matrix">
                             <name>unregistered</name>
                             <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
                         </parameter>
                     </parameters_set>
                 </url>
@@ -13841,6 +14162,14 @@ or less indicates that the session should never timeout</description>
             <description>get the list of disks attached to the template in the export or data domain</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -13976,13 +14305,13 @@ or less indicates that the session should never timeout</description>
                 <http_method>GET</http_method>
                 <url>
                     <parameters_set>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
                         <parameter required="false" type="xs:boolean" context="matrix">
                             <name>unregistered</name>
                             <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
                         </parameter>
                     </parameters_set>
                 </url>
@@ -14031,6 +14360,14 @@ or less indicates that the session should never timeout</description>
             <description>get the list of disks attached to the virtual machine in the storage domain</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -17488,6 +17825,14 @@ or less indicates that the session should never timeout</description>
                         <value>true|false</value>
                     </header>
                 </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -17567,13 +17912,13 @@ or less indicates that the session should never timeout</description>
                 <http_method>GET</http_method>
                 <url>
                     <parameters_set>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
                         <parameter required="false" type="xs:boolean" context="matrix">
                             <name>current</name>
                             <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
                         </parameter>
                     </parameters_set>
                 </url>
@@ -18273,6 +18618,14 @@ or less indicates that the session should never timeout</description>
         <link href="vms/{vm:id}/disks/{disk:id}/permissions" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -18829,6 +19182,14 @@ or less indicates that the session should never timeout</description>
         <link href="vms/{vm:id}/nics/{nic:id}/reporteddevices" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -19212,6 +19573,14 @@ or less indicates that the session should never timeout</description>
         <link href="vms/{vm:id}/reporteddevices" rel="get">
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -19231,6 +19600,14 @@ or less indicates that the session should never timeout</description>
             <description>get the open user-sessions of this VM</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -19398,6 +19775,14 @@ or less indicates that the session should never timeout</description>
             <description>get the list of cdroms attached to the virtual machine at the time the snapshot was created</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -19418,6 +19803,14 @@ or less indicates that the session should never timeout</description>
             <description>get the list of disks attached to the virtual machine at the time the snapshot was created</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -19463,6 +19856,14 @@ or less indicates that the session should never timeout</description>
             <description>get the list of network interfaces attached to the virtual machine at the time the snapshot was created</description>
             <request>
                 <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -19710,14 +20111,6 @@ or less indicates that the session should never timeout</description>
             <description>get the memory and cpu statistics for a given virtual machine</description>
             <request>
                 <http_method>GET</http_method>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:int" context="matrix">
-                            <name>max</name>
-                            <value>max results</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
                 <body/>
             </request>
             <response>

@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-05-06 12:23:54.000686'''
+'''Generated at: 2015-05-12 10:03:28.000330'''
 
 
 from ovirtsdk.xml import params
@@ -172,9 +172,10 @@ class Bookmarks(Base):
             raise MissingParametersError(['id', 'name'])
 
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
+        [@param max: int (max results)]
 
         @return Bookmarks:
         '''
@@ -182,7 +183,8 @@ class Bookmarks(Base):
         url='/bookmarks'
 
         result = self.__getProxy().get(
-            url=url
+            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            headers={}
         ).get_bookmark()
 
         return ParseHelper.toCollection(
@@ -190,6 +192,7 @@ class Bookmarks(Base):
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
+
 class Capabilities(Base):
     def __init__(self, context):
         Base.__init__(self, context)
@@ -1187,9 +1190,10 @@ class ClusterGlusterHooks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return GlusterHooks:
         '''
@@ -1197,12 +1201,16 @@ class ClusterGlusterHooks(Base):
         url = '/clusters/{cluster:id}/glusterhooks'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_gluster_hook()
 
         return ParseHelper.toSubCollection(
@@ -1798,10 +1806,9 @@ class ClusterGlusterVolumeGlusterBrickStatistics(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
 
         @return Statistics:
         '''
@@ -1809,18 +1816,14 @@ class ClusterGlusterVolumeGlusterBrickStatistics(Base):
         url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks/{brick:id}/statistics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{cluster:id}': self.parentclass.parentclass.parentclass.get_id(),
-                        '{glustervolume:id}': self.parentclass.parentclass.get_id(),
-                        '{brick:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{cluster:id}': self.parentclass.parentclass.parentclass.get_id(),
+                    '{glustervolume:id}': self.parentclass.parentclass.get_id(),
+                    '{brick:id}': self.parentclass.get_id(),
+                }
+            )
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
@@ -1949,9 +1952,10 @@ class ClusterGlusterVolumeGlusterBricks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, all_content=None, **kwargs):
+    def list(self, max=None, all_content=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
         [@param all_content: true|false]
 
         @return GlusterBricks:
@@ -1968,7 +1972,7 @@ class ClusterGlusterVolumeGlusterBricks(Base):
                         '{glustervolume:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={}
+                qargs={'max:matrix':max}
             ),
             headers={"All-Content":all_content}
         ).get_brick()
@@ -2234,11 +2238,12 @@ class ClusterGlusterVolumes(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, query=None, case_sensitive=True, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return GlusterVolumes:
         '''
@@ -2253,7 +2258,7 @@ class ClusterGlusterVolumes(Base):
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive}
+                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}
             ),
             headers={}
         ).get_gluster_volume()
@@ -3627,9 +3632,10 @@ class DataCenterClusterAffinityGroupVMs(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return VMs:
         '''
@@ -3637,14 +3643,18 @@ class DataCenterClusterAffinityGroupVMs(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{affinitygroup:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.parentclass.get_id(),
+                        '{affinitygroup:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_vm()
 
         return ParseHelper.toSubCollection(
@@ -3763,9 +3773,10 @@ class DataCenterClusterAffinityGroups(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return AffinityGroups:
         '''
@@ -3773,13 +3784,17 @@ class DataCenterClusterAffinityGroups(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_affinity_group()
 
         return ParseHelper.toSubCollection(
@@ -3944,9 +3959,10 @@ class DataCenterClusterCpuProfiles(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return CpuProfiles:
         '''
@@ -3954,13 +3970,17 @@ class DataCenterClusterCpuProfiles(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/cpuprofiles'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_cpu_profile()
 
         return ParseHelper.toSubCollection(
@@ -4174,9 +4194,10 @@ class DataCenterClusterGlusterHooks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return GlusterHooks:
         '''
@@ -4184,13 +4205,17 @@ class DataCenterClusterGlusterHooks(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_gluster_hook()
 
         return ParseHelper.toSubCollection(
@@ -4881,9 +4906,10 @@ class DataCenterClusterGlusterVolumeGlusterBricks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return GlusterBricks:
         '''
@@ -4891,14 +4917,18 @@ class DataCenterClusterGlusterVolumeGlusterBricks(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{glustervolume:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.parentclass.get_id(),
+                        '{glustervolume:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_brick()
 
         return ParseHelper.toSubCollection(
@@ -5148,9 +5178,10 @@ class DataCenterClusterGlusterVolumes(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return GlusterVolumes:
         '''
@@ -5158,13 +5189,17 @@ class DataCenterClusterGlusterVolumes(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_gluster_volume()
 
         return ParseHelper.toSubCollection(
@@ -6079,9 +6114,10 @@ class DataCenterIscsiBondNetworkLabels(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Labels:
         '''
@@ -6089,14 +6125,18 @@ class DataCenterIscsiBondNetworkLabels(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/labels'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_label()
 
         return ParseHelper.toSubCollection(
@@ -6265,9 +6305,10 @@ class DataCenterIscsiBondNetworkPermissions(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -6275,14 +6316,18 @@ class DataCenterIscsiBondNetworkPermissions(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/permissions'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_permission()
 
         return ParseHelper.toSubCollection(
@@ -6503,9 +6548,10 @@ class DataCenterIscsiBondNetworkVnicProfilePermissions(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -6513,15 +6559,19 @@ class DataCenterIscsiBondNetworkVnicProfilePermissions(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.parentclass.get_id(),
-                    '{vnicprofile:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.parentclass.get_id(),
+                        '{vnicprofile:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_permission()
 
         return ParseHelper.toSubCollection(
@@ -6643,9 +6693,10 @@ class DataCenterIscsiBondNetworkVnicProfiles(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return VnicProfiles:
         '''
@@ -6653,14 +6704,18 @@ class DataCenterIscsiBondNetworkVnicProfiles(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_vnic_profile()
 
         return ParseHelper.toSubCollection(
@@ -6781,9 +6836,10 @@ class DataCenterIscsiBondNetworks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Networks:
         '''
@@ -6791,13 +6847,17 @@ class DataCenterIscsiBondNetworks(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_network()
 
         return ParseHelper.toSubCollection(
@@ -7018,9 +7078,10 @@ class DataCenterIscsiBondStorageConnections(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return StorageConnections:
         '''
@@ -7028,13 +7089,17 @@ class DataCenterIscsiBondStorageConnections(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_storage_connection()
 
         return ParseHelper.toSubCollection(
@@ -7153,9 +7218,10 @@ class DataCenterIscsiBonds(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return IscsiBonds:
         '''
@@ -7163,12 +7229,16 @@ class DataCenterIscsiBonds(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_iscsi_bond()
 
         return ParseHelper.toSubCollection(
@@ -7421,9 +7491,10 @@ class DataCenterNetworkLabels(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Labels:
         '''
@@ -7431,13 +7502,17 @@ class DataCenterNetworkLabels(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/labels'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_label()
 
         return ParseHelper.toSubCollection(
@@ -7602,9 +7677,10 @@ class DataCenterNetworkPermissions(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -7612,13 +7688,17 @@ class DataCenterNetworkPermissions(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/permissions'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_permission()
 
         return ParseHelper.toSubCollection(
@@ -7834,9 +7914,10 @@ class DataCenterNetworkVnicProfilePermissions(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -7844,14 +7925,18 @@ class DataCenterNetworkVnicProfilePermissions(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.parentclass.get_id(),
-                    '{vnicprofile:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.parentclass.get_id(),
+                        '{vnicprofile:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_permission()
 
         return ParseHelper.toSubCollection(
@@ -7970,9 +8055,10 @@ class DataCenterNetworkVnicProfiles(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return VnicProfiles:
         '''
@@ -7980,13 +8066,17 @@ class DataCenterNetworkVnicProfiles(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_vnic_profile()
 
         return ParseHelper.toSubCollection(
@@ -8308,9 +8398,10 @@ class DataCenterPermissions(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -8318,12 +8409,16 @@ class DataCenterPermissions(Base):
         url = '/datacenters/{datacenter:id}/permissions'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_permission()
 
         return ParseHelper.toSubCollection(
@@ -8678,9 +8773,10 @@ class DataCenterQuotas(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Quotas:
         '''
@@ -8688,12 +8784,16 @@ class DataCenterQuotas(Base):
         url = '/datacenters/{datacenter:id}/quotas'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_quota()
 
         return ParseHelper.toSubCollection(
@@ -9096,9 +9196,10 @@ class DataCenterStorageDomainDiskPermissions(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -9106,14 +9207,18 @@ class DataCenterStorageDomainDiskPermissions(Base):
         url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                    '{disk:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                        '{disk:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_permission()
 
         return ParseHelper.toSubCollection(
@@ -9400,13 +9505,13 @@ class DataCenterStorageDomainDisks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, query=None, case_sensitive=True, max=None, unregistered=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, unregistered=None, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
-        [@param max: int (max results)]
         [@param unregistered: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Disks:
         '''
@@ -9422,7 +9527,7 @@ class DataCenterStorageDomainDisks(Base):
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max,'unregistered:matrix':unregistered}
+                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'unregistered:matrix':unregistered,'max:matrix':max}
             ),
             headers={}
         ).get_disk()
@@ -10447,10 +10552,9 @@ class DiskStatistics(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
 
         @return Statistics:
         '''
@@ -10458,16 +10562,12 @@ class DiskStatistics(Base):
         url = '/disks/{disk:id}/statistics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{disk:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{disk:id}': self.parentclass.get_id(),
+                }
+            )
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
@@ -13556,9 +13656,10 @@ class HostAgents(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Agents:
         '''
@@ -13566,12 +13667,16 @@ class HostAgents(Base):
         url = '/hosts/{host:id}/fenceagents'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_agent()
 
         return ParseHelper.toSubCollection(
@@ -13681,9 +13786,10 @@ class HostHooks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Hooks:
         '''
@@ -13691,12 +13797,16 @@ class HostHooks(Base):
         url = '/hosts/{host:id}/hooks'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_hook()
 
         return ParseHelper.toSubCollection(
@@ -14147,9 +14257,10 @@ class HostNICLabels(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Labels:
         '''
@@ -14157,13 +14268,17 @@ class HostNICLabels(Base):
         url = '/hosts/{host:id}/nics/{nic:id}/labels'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.parentclass.get_id(),
-                    '{nic:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_label()
 
         return ParseHelper.toSubCollection(
@@ -14275,10 +14390,9 @@ class HostNICStatistics(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
 
         @return Statistics:
         '''
@@ -14286,17 +14400,13 @@ class HostNICStatistics(Base):
         url = '/hosts/{host:id}/nics/{nic:id}/statistics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{host:id}': self.parentclass.parentclass.get_id(),
-                        '{nic:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{host:id}': self.parentclass.parentclass.get_id(),
+                    '{nic:id}': self.parentclass.get_id(),
+                }
+            )
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
@@ -14638,10 +14748,9 @@ class HostNumaNodeStatistics(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
 
         @return Statistics:
         '''
@@ -14649,17 +14758,13 @@ class HostNumaNodeStatistics(Base):
         url = '/hosts/{host:id}/numanodes/{numanode:id}/statistics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{host:id}': self.parentclass.parentclass.get_id(),
-                        '{numanode:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{host:id}': self.parentclass.parentclass.get_id(),
+                    '{numanode:id}': self.parentclass.get_id(),
+                }
+            )
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
@@ -15067,10 +15172,9 @@ class HostStatistics(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
 
         @return Statistics:
         '''
@@ -15078,16 +15182,12 @@ class HostStatistics(Base):
         url = '/hosts/{host:id}/statistics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{host:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{host:id}': self.parentclass.get_id(),
+                }
+            )
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
@@ -15840,9 +15940,10 @@ class InstanceTypeNICs(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Nics:
         '''
@@ -15850,12 +15951,16 @@ class InstanceTypeNICs(Base):
         url = '/instancetypes/{instancetype:id}/nics'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{instancetype:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{instancetype:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_nic()
 
         return ParseHelper.toSubCollection(
@@ -16044,9 +16149,10 @@ class InstanceTypeWatchDogs(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return WatchDogs:
         '''
@@ -16054,12 +16160,16 @@ class InstanceTypeWatchDogs(Base):
         url = '/instancetypes/{instancetype:id}/watchdogs'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{instancetype:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{instancetype:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_watchdog()
 
         return ParseHelper.toSubCollection(
@@ -16423,10 +16533,9 @@ class JobStepStatistics(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
 
         @return Statistics:
         '''
@@ -16434,17 +16543,13 @@ class JobStepStatistics(Base):
         url = '/jobs/{job:id}/steps/{step:id}/statistics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{job:id}': self.parentclass.parentclass.get_id(),
-                        '{step:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{job:id}': self.parentclass.parentclass.get_id(),
+                    '{step:id}': self.parentclass.get_id(),
+                }
+            )
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
@@ -17201,9 +17306,10 @@ class NetworkLabels(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Labels:
         '''
@@ -17211,12 +17317,16 @@ class NetworkLabels(Base):
         url = '/networks/{network:id}/labels'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{network:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_label()
 
         return ParseHelper.toSubCollection(
@@ -17618,9 +17728,10 @@ class NetworkVnicProfilePermissions(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -17628,13 +17739,17 @@ class NetworkVnicProfilePermissions(Base):
         url = '/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{network:id}': self.parentclass.parentclass.get_id(),
-                    '{vnicprofile:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{network:id}': self.parentclass.parentclass.get_id(),
+                        '{vnicprofile:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_permission()
 
         return ParseHelper.toSubCollection(
@@ -18188,10 +18303,18 @@ class OpenStackImageProviderOpenStackImage(params.OpenStackImage, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def import_image(self, action=params.Action()):
+    def import_image(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        @param action.storagedomain.id|name: string
+        [@param action.import_as_template: boolean]
+        [@param action.cluster.id|name: string]
+        [@param action.disk.alias|name: string]
+        [@param action.template.name: string]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
 
         @return Action:
         '''
@@ -18208,7 +18331,7 @@ class OpenStackImageProviderOpenStackImage(params.OpenStackImage, Base):
                 }
             ),
             body=ParseHelper.toXml(action),
-            headers={}
+            headers={"Correlation-Id":correlation_id}
         )
 
         return result
@@ -18650,9 +18773,10 @@ class OpenStackNetworkProviderCertificates(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Certificates:
         '''
@@ -18660,12 +18784,16 @@ class OpenStackNetworkProviderCertificates(Base):
         url = '/openstacknetworkproviders/{openstacknetworkprovider:id}/certificates'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{openstacknetworkprovider:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{openstacknetworkprovider:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_certificate()
 
         return ParseHelper.toSubCollection(
@@ -19326,9 +19454,10 @@ class OpenStackVolumeProviderCertificates(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Certificates:
         '''
@@ -19336,12 +19465,16 @@ class OpenStackVolumeProviderCertificates(Base):
         url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/certificates'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{openstackvolumeprovider:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_certificate()
 
         return ParseHelper.toSubCollection(
@@ -19665,9 +19798,10 @@ class OperatingSystemInfos(Base):
             raise MissingParametersError(['id', 'name'])
 
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
+        [@param max: int (max results)]
 
         @return OperatingSystemInfos:
         '''
@@ -19675,7 +19809,8 @@ class OperatingSystemInfos(Base):
         url='/operatingsystems'
 
         result = self.__getProxy().get(
-            url=url
+            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            headers={}
         ).get_operating_system()
 
         return ParseHelper.toCollection(
@@ -19683,6 +19818,7 @@ class OperatingSystemInfos(Base):
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
+
 class Permission(params.Permission, Base):
     def __init__(self, permission, context):
         Base.__init__(self, context)
@@ -21231,9 +21367,10 @@ class StorageConnections(Base):
             raise MissingParametersError(['id', 'name'])
 
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
+        [@param max: int (max results)]
 
         @return StorageConnections:
         '''
@@ -21241,7 +21378,8 @@ class StorageConnections(Base):
         url='/storageconnections'
 
         result = self.__getProxy().get(
-            url=url
+            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            headers={}
         ).get_storage_connection()
 
         return ParseHelper.toCollection(
@@ -21249,6 +21387,7 @@ class StorageConnections(Base):
             FilterHelper.filter(result, kwargs),
             context=self.context
         )
+
 class StorageDomain(params.StorageDomain, Base):
     def __init__(self, storagedomain, context):
         Base.__init__(self, context)
@@ -21332,6 +21471,8 @@ class StorageDomain(params.StorageDomain, Base):
           [@param storagedomain.comment: string]
           [@param storagedomain.storage.override_luns: boolean]
           [@param storagedomain.wipe_after_delete: boolean]
+          [@param storagedomain.warning_low_space_indicator: int]
+          [@param storagedomain.critical_space_action_blocker: int]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -21660,9 +21801,10 @@ class StorageDomainDiskPermissions(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -21670,13 +21812,17 @@ class StorageDomainDiskPermissions(Base):
         url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                    '{disk:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                        '{disk:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_permission()
 
         return ParseHelper.toSubCollection(
@@ -22298,13 +22444,13 @@ class StorageDomainDisks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, query=None, case_sensitive=True, max=None, unregistered=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, unregistered=None, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
-        [@param max: int (max results)]
         [@param unregistered: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Disks:
         '''
@@ -22319,7 +22465,7 @@ class StorageDomainDisks(Base):
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max,'unregistered:matrix':unregistered}
+                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'unregistered:matrix':unregistered,'max:matrix':max}
             ),
             headers={}
         ).get_disk()
@@ -22488,10 +22634,16 @@ class StorageDomainImage(params.Image, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def import_image(self, action=params.Action()):
+    def import_image(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
+        @param storagedomain.id|name: string
+        [@param action.import_as_template: boolean]
+        [@param action.cluster.id|name: string]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
 
         @return Action:
         '''
@@ -22508,7 +22660,7 @@ class StorageDomainImage(params.Image, Base):
                 }
             ),
             body=ParseHelper.toXml(action),
-            headers={}
+            headers={"Correlation-Id":correlation_id}
         )
 
         return result
@@ -23211,9 +23363,10 @@ class StorageDomainTemplateDisks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Disks:
         '''
@@ -23221,13 +23374,17 @@ class StorageDomainTemplateDisks(Base):
         url = '/storagedomains/{storagedomain:id}/templates/{template:id}/disks'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                    '{template:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                        '{template:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_disk()
 
         return ParseHelper.toSubCollection(
@@ -23315,11 +23472,11 @@ class StorageDomainTemplates(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, unregistered=None, **kwargs):
+    def list(self, unregistered=None, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
         [@param unregistered: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return Templates:
         '''
@@ -23334,7 +23491,7 @@ class StorageDomainTemplates(Base):
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max,'unregistered:matrix':unregistered}
+                qargs={'unregistered:matrix':unregistered,'max:matrix':max}
             ),
             headers={}
         ).get_template()
@@ -23564,9 +23721,10 @@ class StorageDomainVMDisks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Disks:
         '''
@@ -23574,13 +23732,17 @@ class StorageDomainVMDisks(Base):
         url = '/storagedomains/{storagedomain:id}/vms/{vm:id}/disks'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                    '{vm:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_disk()
 
         return ParseHelper.toSubCollection(
@@ -23668,11 +23830,11 @@ class StorageDomainVMs(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, unregistered=None, **kwargs):
+    def list(self, unregistered=None, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
         [@param unregistered: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return VMs:
         '''
@@ -23687,7 +23849,7 @@ class StorageDomainVMs(Base):
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max,'unregistered:matrix':unregistered}
+                qargs={'unregistered:matrix':unregistered,'max:matrix':max}
             ),
             headers={}
         ).get_vm()
@@ -23745,6 +23907,8 @@ class StorageDomains(Base):
           [@param storagedomain.storage.override_luns: boolean]
           [@param storagedomain.storage_format: string]
           [@param storagedomain.wipe_after_delete: boolean]
+          [@param storagedomain.warning_low_space_indicator: int]
+          [@param storagedomain.critical_space_action_blocker: int]
         Overload 2:
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
@@ -23753,6 +23917,8 @@ class StorageDomains(Base):
           [@param storagedomain.storage.address: string]
           [@param storagedomain.format: boolean]
           [@param storagedomain.comment: string]
+          [@param storagedomain.warning_low_space_indicator: int]
+          [@param storagedomain.critical_space_action_blocker: int]
         Overload 3:
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
@@ -23764,6 +23930,8 @@ class StorageDomains(Base):
           [@param storagedomain.comment: string]
           [@param storagedomain.storage_format: string]
           [@param storagedomain.wipe_after_delete: boolean]
+          [@param storagedomain.warning_low_space_indicator: int]
+          [@param storagedomain.critical_space_action_blocker: int]
         Overload 4:
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
@@ -23774,6 +23942,8 @@ class StorageDomains(Base):
           [@param storagedomain.comment: string]
           [@param storagedomain.storage_format: string]
           [@param storagedomain.wipe_after_delete: boolean]
+          [@param storagedomain.warning_low_space_indicator: int]
+          [@param storagedomain.critical_space_action_blocker: int]
         Overload 5:
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
@@ -23787,6 +23957,8 @@ class StorageDomains(Base):
           [@param storagedomain.storage.mount_options: string]
           [@param storagedomain.storage_format: string]
           [@param storagedomain.wipe_after_delete: boolean]
+          [@param storagedomain.warning_low_space_indicator: int]
+          [@param storagedomain.critical_space_action_blocker: int]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -27209,9 +27381,10 @@ class VMApplications(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Applications:
         '''
@@ -27219,12 +27392,16 @@ class VMApplications(Base):
         url = '/vms/{vm:id}/applications'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_application()
 
         return ParseHelper.toSubCollection(
@@ -27421,11 +27598,11 @@ class VMCdRoms(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, current=None, **kwargs):
+    def list(self, current=None, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
         [@param current: boolean (true|false)]
+        [@param max: int (max results)]
 
         @return CdRoms:
         '''
@@ -27440,7 +27617,7 @@ class VMCdRoms(Base):
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max,'current:matrix':current}
+                qargs={'current:matrix':current,'max:matrix':max}
             ),
             headers={}
         ).get_cdrom()
@@ -27820,9 +27997,10 @@ class VMDiskPermissions(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Permissions:
         '''
@@ -27830,13 +28008,17 @@ class VMDiskPermissions(Base):
         url = '/vms/{vm:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.parentclass.get_id(),
-                    '{disk:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.parentclass.get_id(),
+                        '{disk:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_permission()
 
         return ParseHelper.toSubCollection(
@@ -28410,9 +28592,10 @@ class VMNICReportedDevices(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return ReportedDevices:
         '''
@@ -28420,13 +28603,17 @@ class VMNICReportedDevices(Base):
         url = '/vms/{vm:id}/nics/{nic:id}/reporteddevices'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.parentclass.get_id(),
-                    '{nic:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_reported_device()
 
         return ParseHelper.toSubCollection(
@@ -29012,9 +29199,10 @@ class VMReportedDevices(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return ReportedDevices:
         '''
@@ -29022,12 +29210,16 @@ class VMReportedDevices(Base):
         url = '/vms/{vm:id}/reporteddevices'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_reported_device()
 
         return ParseHelper.toSubCollection(
@@ -29137,9 +29329,10 @@ class VMSessions(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Sessions:
         '''
@@ -29147,12 +29340,16 @@ class VMSessions(Base):
         url = '/vms/{vm:id}/sessions'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_session()
 
         return ParseHelper.toSubCollection(
@@ -29347,9 +29544,10 @@ class VMSnapshotCdRoms(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return CdRoms:
         '''
@@ -29357,13 +29555,17 @@ class VMSnapshotCdRoms(Base):
         url = '/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.parentclass.get_id(),
-                    '{snapshot:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.parentclass.get_id(),
+                        '{snapshot:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_cdrom()
 
         return ParseHelper.toSubCollection(
@@ -29500,9 +29702,10 @@ class VMSnapshotDisks(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Disks:
         '''
@@ -29510,13 +29713,17 @@ class VMSnapshotDisks(Base):
         url = '/vms/{vm:id}/snapshots/{snapshot:id}/disks'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.parentclass.get_id(),
-                    '{snapshot:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.parentclass.get_id(),
+                        '{snapshot:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_disk()
 
         return ParseHelper.toSubCollection(
@@ -29628,9 +29835,10 @@ class VMSnapshotNics(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, **kwargs):
+    def list(self, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
 
         @return Nics:
         '''
@@ -29638,13 +29846,17 @@ class VMSnapshotNics(Base):
         url = '/vms/{vm:id}/snapshots/{snapshot:id}/nics'
 
         result = self.__getProxy().get(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.parentclass.get_id(),
-                    '{snapshot:id}': self.parentclass.get_id(),
-                }
-            )
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.parentclass.get_id(),
+                        '{snapshot:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
         ).get_nic()
 
         return ParseHelper.toSubCollection(
@@ -29900,10 +30112,9 @@ class VMStatistics(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
-        [@param max: int (max results)]
 
         @return Statistics:
         '''
@@ -29911,16 +30122,12 @@ class VMStatistics(Base):
         url = '/vms/{vm:id}/statistics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
-                url=UrlHelper.replace(
-                    url=url,
-                    args={
-                        '{vm:id}': self.parentclass.get_id(),
-                    }
-                ),
-                qargs={'max:matrix':max}
-            ),
-            headers={}
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.get_id(),
+                }
+            )
         ).get_statistic()
 
         return ParseHelper.toSubCollection(
