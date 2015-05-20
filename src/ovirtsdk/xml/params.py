@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Tue May 12 10:03:27 2015 by generateDS.py version 2.12a.
+# Generated Wed May 20 15:09:42 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -11291,7 +11291,7 @@ class SELinux(GeneratedsSuper):
 class Host(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, spm=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, ssh=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, protocol=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None, display=None, hosted_engine=None, kdump_status=None, selinux=None, auto_numa_status=None, numa_supported=None, live_snapshot_support=None, katello_errata=None, external_host_provider=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, address=None, certificate=None, status=None, cluster=None, port=None, type_=None, storage_manager=None, spm=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, ssh=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, protocol=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None, display=None, hosted_engine=None, kdump_status=None, selinux=None, auto_numa_status=None, numa_supported=None, live_snapshot_support=None, katello_errata=None, external_host_provider=None, update_available=None):
         super(Host, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.address = address
         self.certificate = certificate
@@ -11329,6 +11329,7 @@ class Host(BaseResource):
         self.live_snapshot_support = live_snapshot_support
         self.katello_errata = katello_errata
         self.external_host_provider = external_host_provider
+        self.update_available = update_available
     def factory(*args_, **kwargs_):
         if Host.subclass:
             return Host.subclass(*args_, **kwargs_)
@@ -11407,6 +11408,8 @@ class Host(BaseResource):
     def set_katello_errata(self, katello_errata): self.katello_errata = katello_errata
     def get_external_host_provider(self): return self.external_host_provider
     def set_external_host_provider(self, external_host_provider): self.external_host_provider = external_host_provider
+    def get_update_available(self): return self.update_available
+    def set_update_available(self, update_available): self.update_available = update_available
     def hasContent_(self):
         if (
             self.address is not None or
@@ -11445,6 +11448,7 @@ class Host(BaseResource):
             self.live_snapshot_support is not None or
             self.katello_errata is not None or
             self.external_host_provider is not None or
+            self.update_available is not None or
             super(Host, self).hasContent_()
         ):
             return True
@@ -11559,6 +11563,9 @@ class Host(BaseResource):
             self.katello_errata.export_(outfile, level, namespace_, name_='katello_errata', pretty_print=pretty_print)
         if self.external_host_provider is not None:
             self.external_host_provider.export_(outfile, level, namespace_, name_='external_host_provider', pretty_print=pretty_print)
+        if self.update_available is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%supdate_available>%s</%supdate_available>%s' % (namespace_, self.gds_format_boolean(self.update_available, input_name='update_available'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='Host'):
         level += 1
         already_processed = set()
@@ -11746,6 +11753,9 @@ class Host(BaseResource):
             self.external_host_provider.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.update_available is not None:
+            showIndent(outfile, level)
+            outfile.write('update_available=%s,\n' % self.update_available)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -11938,6 +11948,16 @@ class Host(BaseResource):
             obj_ = ExternalHostProvider.factory()
             obj_.build(child_)
             self.external_host_provider = obj_
+        elif nodeName_ == 'update_available':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'update_available')
+            self.update_available = ival_
         super(Host, self).buildChildren(child_, node, nodeName_, True)
 # end class Host
 
@@ -22653,7 +22673,7 @@ class VmBase(BaseResource):
 class VM(VmBase):
     subclass = None
     superclass = VmBase
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, stop_reason=None, host=None, template=None, instance_type=None, start_time=None, stop_time=None, run_once=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, next_run_configuration_exists=None, numa_tune_mode=None, permissions=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, stop_reason=None, host=None, template=None, instance_type=None, start_time=None, stop_time=None, run_once=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, next_run_configuration_exists=None, numa_tune_mode=None, permissions=None, external_host_provider=None, katello_errata=None, extensiontype_=None):
         super(VM, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, stateless, delete_protected, high_availability, display, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, serial_number, start_paused, cpu_profile, migration, custom_properties, custom_emulated_machine, custom_cpu_model, extensiontype_, )
         self.stop_reason = stop_reason
         self.host = host
@@ -22690,6 +22710,8 @@ class VM(VmBase):
         self.next_run_configuration_exists = next_run_configuration_exists
         self.numa_tune_mode = numa_tune_mode
         self.permissions = permissions
+        self.external_host_provider = external_host_provider
+        self.katello_errata = katello_errata
         self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if VM.subclass:
@@ -22751,6 +22773,10 @@ class VM(VmBase):
     def set_numa_tune_mode(self, numa_tune_mode): self.numa_tune_mode = numa_tune_mode
     def get_permissions(self): return self.permissions
     def set_permissions(self, permissions): self.permissions = permissions
+    def get_external_host_provider(self): return self.external_host_provider
+    def set_external_host_provider(self, external_host_provider): self.external_host_provider = external_host_provider
+    def get_katello_errata(self): return self.katello_errata
+    def set_katello_errata(self, katello_errata): self.katello_errata = katello_errata
     def get_extensiontype_(self): return self.extensiontype_
     def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def hasContent_(self):
@@ -22782,6 +22808,8 @@ class VM(VmBase):
             self.next_run_configuration_exists is not None or
             self.numa_tune_mode is not None or
             self.permissions is not None or
+            self.external_host_provider is not None or
+            self.katello_errata is not None or
             super(VM, self).hasContent_()
         ):
             return True
@@ -22876,6 +22904,10 @@ class VM(VmBase):
             outfile.write('<%snuma_tune_mode>%s</%snuma_tune_mode>%s' % (namespace_, self.gds_format_string(quote_xml(self.numa_tune_mode).encode(ExternalEncoding), input_name='numa_tune_mode'), namespace_, eol_))
         if self.permissions is not None:
             self.permissions.export_(outfile, level, namespace_, name_='permissions', pretty_print=pretty_print)
+        if self.external_host_provider is not None:
+            self.external_host_provider.export_(outfile, level, namespace_, name_='external_host_provider', pretty_print=pretty_print)
+        if self.katello_errata is not None:
+            self.katello_errata.export_(outfile, level, namespace_, name_='katello_errata', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VM'):
         level += 1
         already_processed = set()
@@ -23027,6 +23059,18 @@ class VM(VmBase):
             self.permissions.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.external_host_provider is not None:
+            showIndent(outfile, level)
+            outfile.write('external_host_provider=model_.external_host_provider(\n')
+            self.external_host_provider.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.katello_errata is not None:
+            showIndent(outfile, level)
+            outfile.write('katello_errata=model_.katello_errata(\n')
+            self.katello_errata.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -23168,6 +23212,14 @@ class VM(VmBase):
             obj_ = Permissions.factory()
             obj_.build(child_)
             self.permissions = obj_
+        elif nodeName_ == 'external_host_provider':
+            obj_ = ExternalHostProvider.factory()
+            obj_.build(child_)
+            self.external_host_provider = obj_
+        elif nodeName_ == 'katello_errata':
+            obj_ = KatelloErrata.factory()
+            obj_.build(child_)
+            self.katello_errata = obj_
         super(VM, self).buildChildren(child_, node, nodeName_, True)
 # end class VM
 
@@ -26494,8 +26546,8 @@ class Nics(BaseDevices):
 class Snapshot(VM):
     subclass = None
     superclass = VM
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, stop_reason=None, host=None, template=None, instance_type=None, start_time=None, stop_time=None, run_once=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, next_run_configuration_exists=None, numa_tune_mode=None, permissions=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
-        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, stateless, delete_protected, high_availability, display, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, serial_number, start_paused, cpu_profile, migration, custom_properties, custom_emulated_machine, custom_cpu_model, stop_reason, host, template, instance_type, start_time, stop_time, run_once, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, vmpool, cdroms, floppies, reported_devices, watchdogs, use_latest_template_version, next_run_configuration_exists, numa_tune_mode, permissions, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, stop_reason=None, host=None, template=None, instance_type=None, start_time=None, stop_time=None, run_once=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, next_run_configuration_exists=None, numa_tune_mode=None, permissions=None, external_host_provider=None, katello_errata=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
+        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, stateless, delete_protected, high_availability, display, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, serial_number, start_paused, cpu_profile, migration, custom_properties, custom_emulated_machine, custom_cpu_model, stop_reason, host, template, instance_type, start_time, stop_time, run_once, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, vmpool, cdroms, floppies, reported_devices, watchdogs, use_latest_template_version, next_run_configuration_exists, numa_tune_mode, permissions, external_host_provider, katello_errata, )
         self.vm = vm
         if isinstance(date, basestring):
             initvalue_ = datetime_.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S')
@@ -29762,13 +29814,15 @@ class RSDL(GeneratedsSuper):
 class GlusterVolume(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, cluster=None, volume_type=None, transport_types=None, replica_count=None, stripe_count=None, bricks=None, options=None, status=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, cluster=None, volume_type=None, transport_types=None, replica_count=None, stripe_count=None, disperse_count=None, redundancy_count=None, bricks=None, options=None, status=None):
         super(GlusterVolume, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.cluster = cluster
         self.volume_type = volume_type
         self.transport_types = transport_types
         self.replica_count = replica_count
         self.stripe_count = stripe_count
+        self.disperse_count = disperse_count
+        self.redundancy_count = redundancy_count
         self.bricks = bricks
         self.options = options
         self.status = status
@@ -29788,6 +29842,10 @@ class GlusterVolume(BaseResource):
     def set_replica_count(self, replica_count): self.replica_count = replica_count
     def get_stripe_count(self): return self.stripe_count
     def set_stripe_count(self, stripe_count): self.stripe_count = stripe_count
+    def get_disperse_count(self): return self.disperse_count
+    def set_disperse_count(self, disperse_count): self.disperse_count = disperse_count
+    def get_redundancy_count(self): return self.redundancy_count
+    def set_redundancy_count(self, redundancy_count): self.redundancy_count = redundancy_count
     def get_bricks(self): return self.bricks
     def set_bricks(self, bricks): self.bricks = bricks
     def get_options(self): return self.options
@@ -29801,6 +29859,8 @@ class GlusterVolume(BaseResource):
             self.transport_types is not None or
             self.replica_count is not None or
             self.stripe_count is not None or
+            self.disperse_count is not None or
+            self.redundancy_count is not None or
             self.bricks is not None or
             self.options is not None or
             self.status is not None or
@@ -29846,6 +29906,12 @@ class GlusterVolume(BaseResource):
         if self.stripe_count is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sstripe_count>%s</%sstripe_count>%s' % (namespace_, self.gds_format_integer(self.stripe_count, input_name='stripe_count'), namespace_, eol_))
+        if self.disperse_count is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sdisperse_count>%s</%sdisperse_count>%s' % (namespace_, self.gds_format_integer(self.disperse_count, input_name='disperse_count'), namespace_, eol_))
+        if self.redundancy_count is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sredundancy_count>%s</%sredundancy_count>%s' % (namespace_, self.gds_format_integer(self.redundancy_count, input_name='redundancy_count'), namespace_, eol_))
         if self.bricks is not None:
             self.bricks.export_(outfile, level, namespace_, name_='bricks', pretty_print=pretty_print)
         if self.options is not None:
@@ -29883,6 +29949,12 @@ class GlusterVolume(BaseResource):
         if self.stripe_count is not None:
             showIndent(outfile, level)
             outfile.write('stripe_count=%d,\n' % self.stripe_count)
+        if self.disperse_count is not None:
+            showIndent(outfile, level)
+            outfile.write('disperse_count=%d,\n' % self.disperse_count)
+        if self.redundancy_count is not None:
+            showIndent(outfile, level)
+            outfile.write('redundancy_count=%d,\n' % self.redundancy_count)
         if self.bricks is not None:
             showIndent(outfile, level)
             outfile.write('bricks=model_.bricks(\n')
@@ -29939,6 +30011,22 @@ class GlusterVolume(BaseResource):
                 raise_parse_error(child_, 'requires integer: %s' % exp)
             ival_ = self.gds_validate_integer(ival_, node, 'stripe_count')
             self.stripe_count = ival_
+        elif nodeName_ == 'disperse_count':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'disperse_count')
+            self.disperse_count = ival_
+        elif nodeName_ == 'redundancy_count':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'redundancy_count')
+            self.redundancy_count = ival_
         elif nodeName_ == 'bricks':
             obj_ = GlusterBricks.factory()
             obj_.build(child_)
@@ -38925,7 +39013,7 @@ class OpenStackSubnets(BaseResources):
 class KatelloErratum(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, title=None, type_=None, issued=None, severity=None, solution=None, summary=None, packages=None, host=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, title=None, type_=None, issued=None, severity=None, solution=None, summary=None, packages=None, host=None, vm=None):
         super(KatelloErratum, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.title = title
         self.type_ = type_
@@ -38939,6 +39027,7 @@ class KatelloErratum(BaseResource):
         self.summary = summary
         self.packages = packages
         self.host = host
+        self.vm = vm
     def factory(*args_, **kwargs_):
         if KatelloErratum.subclass:
             return KatelloErratum.subclass(*args_, **kwargs_)
@@ -38961,6 +39050,8 @@ class KatelloErratum(BaseResource):
     def set_packages(self, packages): self.packages = packages
     def get_host(self): return self.host
     def set_host(self, host): self.host = host
+    def get_vm(self): return self.vm
+    def set_vm(self, vm): self.vm = vm
     def hasContent_(self):
         if (
             self.title is not None or
@@ -38971,6 +39062,7 @@ class KatelloErratum(BaseResource):
             self.summary is not None or
             self.packages is not None or
             self.host is not None or
+            self.vm is not None or
             super(KatelloErratum, self).hasContent_()
         ):
             return True
@@ -39022,6 +39114,8 @@ class KatelloErratum(BaseResource):
             self.packages.export_(outfile, level, namespace_, name_='packages', pretty_print=pretty_print)
         if self.host is not None:
             self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+        if self.vm is not None:
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='KatelloErratum'):
         level += 1
         already_processed = set()
@@ -39060,6 +39154,12 @@ class KatelloErratum(BaseResource):
             showIndent(outfile, level)
             outfile.write('host=model_.host(\n')
             self.host.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.vm is not None:
+            showIndent(outfile, level)
+            outfile.write('vm=model_.vm(\n')
+            self.vm.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -39104,6 +39204,11 @@ class KatelloErratum(BaseResource):
             obj_ = Host.factory()
             obj_.build(child_)
             self.host = obj_
+        elif nodeName_ == 'vm':
+            class_obj_ = self.get_class_obj_(child_, VM)
+            obj_ = class_obj_.factory()
+            obj_.build(child_)
+            self.vm = obj_
         super(KatelloErratum, self).buildChildren(child_, node, nodeName_, True)
 # end class KatelloErratum
 

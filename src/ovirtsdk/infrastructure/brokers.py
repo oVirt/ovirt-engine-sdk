@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-05-12 10:03:28.000330'''
+'''Generated at: 2015-05-20 15:09:43.000296'''
 
 
 from ovirtsdk.xml import params
@@ -9836,6 +9836,7 @@ class Disk(params.Disk, Base):
         @type Action:
 
         @param action.storage_domain.id|name: string
+        [@param action.disk.name|alias: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
@@ -11281,7 +11282,6 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
         [@param external_host_provider.requires_authentication: boolean]
         [@param external_host_provider.username: string]
         [@param external_host_provider.password: string]
-        [@param external_host_provider.authentication_url: string]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -12030,7 +12030,6 @@ class ExternalHostProviders(Base):
         [@param external_host_provider.requires_authentication: boolean]
         [@param external_host_provider.username: string]
         [@param external_host_provider.password: string]
-        [@param external_host_provider.authentication_url: string]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -13436,6 +13435,34 @@ class Host(params.Host, Base):
         '''
 
         url = '/hosts/{host:id}/unregisteredstoragedomainsdiscover'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{host:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def upgrade(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param action.image: string]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/hosts/{host:id}/upgrade'
 
         result = self.__getProxy().request(
             method='POST',
@@ -18071,6 +18098,7 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
         [@param openstack_image_provider.requires_authentication: boolean]
         [@param openstack_image_provider.username: string]
         [@param openstack_image_provider.password: string]
+        [@param openstack_image_provider.authentication_url: string]
         [@param openstack_image_provider.properties.property: collection]
         {
           [@ivar property.name: string]
@@ -18467,6 +18495,7 @@ class OpenStackImageProviders(Base):
         [@param openstack_image_provider.requires_authentication: boolean]
         [@param openstack_image_provider.username: string]
         [@param openstack_image_provider.password: string]
+        [@param openstack_image_provider.authentication_url: string]
         [@param openstack_image_provider.properties.property: collection]
         {
           [@ivar property.name: string]
@@ -18602,6 +18631,7 @@ class OpenStackNetworkProvider(params.OpenStackNetworkProvider, Base):
         [@param openstack_network_provider.requires_authentication: boolean]
         [@param openstack_network_provider.username: string]
         [@param openstack_network_provider.password: string]
+        [@param openstack_network_provider.authentication_url: string]
         [@param openstack_network_provider.properties.property: collection]
         {
           [@ivar property.name: string]
@@ -19146,6 +19176,7 @@ class OpenStackNetworkProviders(Base):
         [@param openstack_network_provider.requires_authentication: boolean]
         [@param openstack_network_provider.username: string]
         [@param openstack_network_provider.password: string]
+        [@param openstack_network_provider.authentication_url: string]
         [@param openstack_network_provider.properties.property: collection]
         {
           [@ivar property.name: string]
@@ -19635,9 +19666,9 @@ class OpenStackVolumeProviders(Base):
         @type OpenStackVolumeProvider:
 
         @param openstack_volume_provider.name: string
-        @param openstack_volume_provider.data_center.id|name: string,
         [@param openstack_volume_provider.description: string]
         [@param openstack_volume_provider.url: string]
+        [@param openstack_volume_provider.data_center.id|name: string]
         [@param openstack_volume_provider.requires_authentication: boolean]
         [@param openstack_volume_provider.username: string]
         [@param openstack_volume_provider.password: string]
@@ -26602,6 +26633,7 @@ class VM(params.VM, Base):
         self.applications = VMApplications(self, context)
         self.cdroms = VMCdRoms(self, context)
         self.disks = VMDisks(self, context)
+        self.katelloerrata = VMKatelloErrata(self, context)
         self.nics = VMNICs(self, context)
         self.numanodes = VMVirtualNumaNodes(self, context)
         self.permissions = VMPermissions(self, context)
@@ -26742,6 +26774,7 @@ class VM(params.VM, Base):
         [@param vm.cpu_profile.id: string]
         [@param vm.migration.auto_converge: string]
         [@param vm.migration.compressed: string]
+        [@param vm.external_host_provider.id: string]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -28344,6 +28377,136 @@ class VMDisks(Base):
             ),
             context=self.context
         )
+
+class VMKatelloErrata(Base):
+
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return KatelloErrata:
+        '''
+
+        url = '/vms/{vm:id}/katelloerrata'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMKatelloErratum(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError, err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_katello_erratum()
+
+            return VMKatelloErratum(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return KatelloErrata:
+        '''
+
+        url = '/vms/{vm:id}/katelloerrata'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_katello_erratum()
+
+        return ParseHelper.toSubCollection(
+            VMKatelloErratum,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMKatelloErratum(params.KatelloErratum, Base):
+    def __init__(self, vm, katelloerratum, context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+        self.superclass  =  katelloerratum
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vm, katelloerratum, context):
+        if katelloerratum is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vm, katelloerratum, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
 
 class VMNIC(params.NIC, Base):
     def __init__(self, vm, nic, context):

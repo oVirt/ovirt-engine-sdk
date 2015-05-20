@@ -1962,6 +1962,7 @@
           <xs:element name="live_snapshot_support" type="xs:boolean" minOccurs="0" maxOccurs="1" />
           <xs:element ref="katello_errata"  minOccurs="0" maxOccurs="1"/>
           <xs:element ref="external_host_provider" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="update_available" type="xs:boolean" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -3345,6 +3346,8 @@
           <xs:element name="next_run_configuration_exists" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
           <xs:element name="numa_tune_mode" type="xs:string" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="permissions" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="external_host_provider" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="katello_errata"  minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -4276,6 +4279,8 @@
           <xs:element ref="transport_types" minOccurs="0" maxOccurs="1"/>
           <xs:element name="replica_count" type="xs:unsignedShort" minOccurs="0" maxOccurs="1"/>
           <xs:element name="stripe_count" type="xs:unsignedShort" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="disperse_count" type="xs:unsignedShort" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="redundancy_count" type="xs:unsignedShort" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="bricks" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="options" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="status" minOccurs="0" maxOccurs="1"/>
@@ -5548,6 +5553,7 @@
           <xs:element name="summary" type="xs:string" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="packages" minOccurs="0" maxOccurs="1"/>
           <xs:element ref="host" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="vm" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

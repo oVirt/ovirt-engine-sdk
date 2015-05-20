@@ -5997,6 +5997,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="true" type="xs:string">
                             <name>action.storage_domain.id|name</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.disk.name|alias</name>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
                         </parameter>
@@ -6482,9 +6485,6 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>external_host_provider.password</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>external_host_provider.authentication_url</name>
-                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -6589,9 +6589,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>external_host_provider.password</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>external_host_provider.authentication_url</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -9310,7 +9307,7 @@ or less indicates that the session should never timeout</description>
             </response>
         </link>
         <link href="hosts/{host:id}/unregisteredstoragedomainsdiscover" rel="unregisteredstoragedomainsdiscover">
-            <description>Discover the Storage Domains which are candidiates to be imported to the setup</description>
+            <description>Discover the block Storage Domains which are candidates to be imported to the setup. For FCP no arguments are needed.</description>
             <request>
                 <http_method>POST</http_method>
                 <headers>
@@ -9334,12 +9331,53 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Action</type>
                     <parameters_set>
-                        <description>Discover the Storage Domains which are candidiates to be imported to the setup</description>
+                        <description>Discover the block Storage Domains which are candidates to be imported to the setup. For FCP no arguments are needed.</description>
                         <parameter required="false" type="xs:string">
                             <name>action.iscsi.address</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>action.iscsi_target</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.async</name>
+                        </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>action.grace_period.expiry</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/upgrade" rel="upgrade">
+            <description>upgrade vdsm and other packages of the specified host in the system</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>Action</type>
+                    <parameters_set>
+                        <parameter required="false" type="xs:string">
+                            <name>action.image</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
@@ -10722,6 +10760,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>openstack_image_provider.password</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.authentication_url</name>
+                        </parameter>
                         <parameter required="false" type="collection">
                             <name>openstack_image_provider.properties.property</name>
                             <parameters_set>
@@ -10837,6 +10878,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>openstack_image_provider.password</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.authentication_url</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>openstack_image_provider.properties.property</name>
@@ -11081,6 +11125,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>openstack_network_provider.password</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.authentication_url</name>
+                        </parameter>
                         <parameter required="false" type="collection">
                             <name>openstack_network_provider.properties.property</name>
                             <parameters_set>
@@ -11196,6 +11243,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>openstack_network_provider.password</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.authentication_url</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>openstack_network_provider.properties.property</name>
@@ -11385,14 +11435,14 @@ or less indicates that the session should never timeout</description>
                         <parameter required="true" type="xs:string">
                             <name>openstack_volume_provider.name</name>
                         </parameter>
-                        <parameter required="true" type="xs:string,">
-                            <name>openstack_volume_provider.data_center.id|name</name>
-                        </parameter>
                         <parameter required="false" type="xs:string">
                             <name>openstack_volume_provider.description</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>openstack_volume_provider.url</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.data_center.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>openstack_volume_provider.requires_authentication</name>
@@ -17808,6 +17858,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>vm.migration.compressed</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.external_host_provider.id</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -18719,6 +18772,33 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Action</type>
+            </response>
+        </link>
+        <link href="vms/{vm:id}/katelloerrata" rel="get">
+            <description>get the list of errata available for the vm</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>KatelloErrata</type>
+            </response>
+        </link>
+        <link href="vms/{vm:id}/katelloerrata/{katelloerrata:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>KatelloErratum</type>
             </response>
         </link>
         <link href="vms/{vm:id}/logon" rel="logon">
