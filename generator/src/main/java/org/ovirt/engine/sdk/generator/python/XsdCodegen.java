@@ -44,7 +44,7 @@ public class XsdCodegen {
     private static final String END_NOT_GENERATED = "# End NOT_GENERATED";
 
     // The required version of generateDS.py:
-    private static final String GENERATE_DS_VERSION = "2.12a";
+    private static final String GENERATE_DS_VERSION = "2.15b";
 
     /**
      * The lines of the generated source code.
