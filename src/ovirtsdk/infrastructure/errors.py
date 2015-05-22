@@ -53,7 +53,8 @@ class RequestError(Exception):
         APP_SERVER_RESPONSE_FORMAT = '<html><head><title>JBoss Web'
 
         # REST error
-        if response_body and response_body.startswith(RESPONSE_FORMAT) and response_body.find(RESPONSE_FAULT_BODY) != -1:
+        response_text = response_body.decode("utf-8")
+        if response_text.startswith(RESPONSE_FORMAT) and response_text.find(RESPONSE_FAULT_BODY) != -1:
             try:
                 f_detail = params.parseString(response_body, silence=True)
             except:
@@ -71,8 +72,8 @@ class RequestError(Exception):
                     detail = detail[1:len(detail) - 1]
 
         # application server error
-        elif response_body.startswith(APP_SERVER_RESPONSE_FORMAT):
-            detail = response_body
+        elif response_text.startswith(APP_SERVER_RESPONSE_FORMAT):
+            detail = response_text
             start = detail.find('<h1>')
             end = detail.find('</h1>')
             if start != -1 and end != -1:
@@ -80,7 +81,7 @@ class RequestError(Exception):
                 if detail and detail.endswith(' - '):
                     detail = detail[:len(detail) - 3]
         else:
-            detail = '\n' + response_body if response_body else ''
+            detail = '\n' + response_text if response_text else ''
 
         self.detail = detail
         self.reason = response_reason

@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-import cStringIO
+import io
 import pycurl
 import threading
 
@@ -124,8 +124,8 @@ class ConnectionsPool(object):
         self.__curl.setopt(pycurl.POSTFIELDS, body if body is not None else "")
 
         # Prepare the buffers to receive the response:
-        body_buffer = cStringIO.StringIO()
-        headers_buffer = cStringIO.StringIO()
+        body_buffer = io.BytesIO()
+        headers_buffer = io.BytesIO()
         self.__curl.setopt(pycurl.WRITEFUNCTION, body_buffer.write)
         self.__curl.setopt(pycurl.HEADERFUNCTION, headers_buffer.write)
 
