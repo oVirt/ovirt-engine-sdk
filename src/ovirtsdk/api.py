@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-05-12 10:03:28.000499'''
+'''Generated at: 2015-05-22 10:25:40.000260'''
 
 import re
 import types
@@ -111,7 +111,7 @@ class API(object):
         # Implicitly disconnect and perform cleanup
         # when detected instance of the SDK proxy with
         # ref-count == 0
-        if context.manager.has_key(self.__id) and context.manager[self.__id].get('proxy') is not None:
+        if self.__id in context.manager and context.manager[self.__id].get('proxy') is not None:
             try:
                 self.disconnect()
             except DisconnectedError:

@@ -28,7 +28,7 @@ class Base(object):
         return self.__context
 
     def __getattr__(self, item):
-        if not self.__dict__.has_key('superclass'):
+        if not 'superclass' in self.__dict__:
             return self.__getattribute__(item)
         return self.superclass.__getattribute__(item)
 

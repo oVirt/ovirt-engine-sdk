@@ -71,7 +71,7 @@ class Cache(object):
         @raise TypeError: when value cannot be cast to the typ
         '''
         with self.__lock:
-            if mode is Mode.R and self.__cache.has_key(key):
+            if mode is Mode.R and key in self.__cache:
                 raise ImmutableError(key)
             elif typ:
                 try:
@@ -104,7 +104,7 @@ class Cache(object):
         [@param remove: removes the value from cache [true|false]]
         '''
         with self.__lock:
-            if self.__cache.has_key(key):
+            if key in self.__cache:
                 if  remove:
                     item = self.__cache[key]
                     if item.mode is Mode.RW:
@@ -132,7 +132,7 @@ class Cache(object):
         [@param force: force remove regardless cache mode]
         '''
         with self.__lock:
-            if self.__cache.has_key(key):
+            if key in self.__cache:
                 item = self.__cache[key]
                 if (item.mode is Mode.RW) or force:
                     self.__cache.pop(key)

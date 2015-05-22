@@ -57,7 +57,7 @@ class ReflectionHelper():
             if invalidate or (module not in ReflectionHelper.cache.keys() or \
                (len(inspect.getmembers(module, inspect.isclass)) > len(ReflectionHelper.cache[module]))):
                 ReflectionHelper.cache[module] = ReflectionHelper.getClasses(module)
-            if ReflectionHelper.cache[module].has_key(typ.__name__.lower()) and \
+            if typ.__name__.lower() in ReflectionHelper.cache[module] and \
                ReflectionHelper.cache[module][typ.__name__.lower()] == typ:
                 return True
             return False

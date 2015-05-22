@@ -40,7 +40,7 @@ class API(object):
         # Implicitly disconnect and perform cleanup
         # when detected instance of the SDK proxy with
         # ref-count == 0
-        if context.manager.has_key(self.__id) and context.manager[self.__id].get('proxy') is not None:
+        if self.__id in context.manager and context.manager[self.__id].get('proxy') is not None:
             try:
                 self.disconnect()
             except DisconnectedError:

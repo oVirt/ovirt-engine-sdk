@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed May 20 15:09:42 2015 by generateDS.py version 2.12a.
+# Generated Fri May 22 10:25:38 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -366,13 +366,13 @@ except ImportError, exp:
                     type(value)) and
                 not ReflectionHelper.isModuleMember(sys.modules[__name__],
                     type(value)) and
-                value.__dict__.has_key('superclass') and
+                'superclass' in value.__dict__ and
                 value.superclass is not None and
                 value.superclass != BaseResource):
                 if (ReflectionHelper.isModuleMember(
                         sys.modules['ovirtsdk.infrastructure.brokers'],
                         type(self)) and
-                   self.__dict__.has_key('superclass') and
+                   'superclass' in self.__dict__ and
                    self.superclass is not None):
                     object.__setattr__(self.superclass, item, value.superclass)
                 else:
@@ -381,7 +381,7 @@ except ImportError, exp:
                  ReflectionHelper.isModuleMember(
                          sys.modules['ovirtsdk.infrastructure.brokers'],
                          type(self)) and
-                 self.__dict__.has_key('superclass') and
+                 'superclass' in self.__dict__ and
                  self.superclass is not None and
                  not ReflectionHelper.isModuleMember(
                          sys.modules['ovirtsdk.infrastructure.brokers'],
@@ -395,7 +395,7 @@ except ImportError, exp:
                     if (ReflectionHelper.isModuleMember(
                             sys.modules['ovirtsdk.infrastructure.brokers'],
                             type(obj)) and
-                       obj.__dict__.has_key('superclass') and
+                       'superclass' in obj.__dict__ and
                        obj.superclass is not None and
                        item is not 'superclass' and
                        item is not 'parentclass'):
