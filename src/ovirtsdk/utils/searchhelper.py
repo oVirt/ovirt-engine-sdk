@@ -14,9 +14,13 @@
 # limitations under the License.
 #
 
-from urllib import urlencode
-import re
 import fnmatch
+import re
+
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
 
 class SearchHelper():
 

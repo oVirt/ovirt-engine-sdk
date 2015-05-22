@@ -1,6 +1,13 @@
 
-from UserDict import UserDict
-import thread
+try:
+    from UserDict import UserDict
+except ImportError:
+    from collections import UserDict
+
+try:
+    import thread
+except ImportError:
+    import _thread as thread
 
 class OrderedDict(UserDict):
     """A dictionary preserving insert order"""

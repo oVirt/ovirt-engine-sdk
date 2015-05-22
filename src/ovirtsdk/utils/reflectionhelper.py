@@ -15,7 +15,11 @@
 #
 
 import inspect
-import thread
+
+try:
+    import thread
+except ImportError:
+    import _thread as thread
 
 class ReflectionHelper():
     cache = {}

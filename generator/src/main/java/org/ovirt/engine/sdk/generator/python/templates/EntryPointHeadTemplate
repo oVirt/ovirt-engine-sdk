@@ -23,7 +23,11 @@
 $timestamp$
 
 import re
-import urlparse
+
+try:
+    import urlparse
+except ImportError:
+    import urllib.parse as urlparse
 
 from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError
 from ovirtsdk.infrastructure.connectionspool import ConnectionsPool

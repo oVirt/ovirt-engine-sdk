@@ -20,10 +20,14 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-05-22 11:32:13.000771'''
+'''Generated at: 2015-05-22 12:10:41.000344'''
 
 import re
-import urlparse
+
+try:
+    import urlparse
+except ImportError:
+    import urllib.parse as urlparse
 
 from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError
 from ovirtsdk.infrastructure.connectionspool import ConnectionsPool
