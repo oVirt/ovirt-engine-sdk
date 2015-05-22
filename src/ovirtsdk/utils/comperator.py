@@ -62,4 +62,4 @@ class Comparator(object):
                     else:
                         return False
         except RuntimeError:
-            print '%s object comparison caused infinite loop.' % type(obj1).__name__
+            print('%s object comparison caused infinite loop.' % type(obj1).__name__)
