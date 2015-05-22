@@ -7,8 +7,10 @@ License:        ASL 2.0
 URL:            http://ovirt.org
 Source0:        http://ovirt.org/releases/stable/src/ovirt-engine-sdk-python-%{version}.tar.gz
 
-BuildRequires: python2-devel
+BuildRequires: python-devel
 BuildRequires: python-setuptools
+BuildRequires: python3-devel
+BuildRequires: python3-setuptools
 BuildArch: noarch
 
 Requires: python
@@ -22,6 +24,16 @@ Obsoletes: ovirt-engine-sdk < 3.3.0.6
 This package contains The oVirt-Engine Software Development Kit.
 With this package, custom software can be built for oVirt-Engine.
 
+%package -n ovirt-engine-sdk-python3
+Summary: oVirt Engine Software Development Kit (Python)
+Requires: python3
+Requires: python3-lxml
+Requires: python3-pycurl >= 7.19.0
+
+%description -n ovirt-engine-sdk-python3
+This package contains The oVirt-Engine Software Development Kit.
+With this package, custom software can be built for oVirt-Engine.
+
 %prep
 %setup -q -n %{name}
 
@@ -29,15 +41,39 @@ With this package, custom software can be built for oVirt-Engine.
 # executable script:
 sed -i 1d src/ovirtsdk/xml/params.py
 
+# Copy the sources to the Python 3 build directory:
+cp -a . %{py3dir}
+
 %build
+
+# Build for Python 2:
 %{__python} setup.py build
 
+# Build for Python 3:
+pushd %{py3dir}
+%{__python3} setup.py build
+popd
+
 %install
+
+# Install for Python 2:
 %{__python} setup.py install -O1 --skip-build --root %{buildroot}
+
+# Install for Python 3:
+pushd %{py3dir}
+%{__python3} setup.py install -O1 --skip-build --root %{buildroot}
+popd
 
 %files
 %{python_sitelib}/ovirtsdk
 %{python_sitelib}/ovirt_engine_sdk_python-*-info
+%doc AUTHORS.md
+%doc LICENSE.txt
+%doc README.md
+
+%files -n ovirt-engine-sdk-python3
+%{python3_sitelib}/ovirtsdk
+%{python3_sitelib}/ovirt_engine_sdk_python-*-info
 %doc AUTHORS.md
 %doc LICENSE.txt
 %doc README.md
