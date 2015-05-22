@@ -140,7 +140,8 @@ class ConnectionsPool(object):
         # have a method to extract the response message, so we have to
         # parse the first header line to find it:
         response_reason = ""
-        header_lines = headers_buffer.getvalue().split("\n")
+        headers_text = headers_buffer.getvalue().decode("ascii")
+        header_lines = headers_text.split("\n")
         if len(header_lines) >= 1:
             response_line = header_lines[0]
             response_fields = response_line.split()
