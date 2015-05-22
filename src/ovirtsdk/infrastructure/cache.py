@@ -121,7 +121,11 @@ class Cache(object):
         [@param force: force remove regardless cache mode]
         '''
         with self.__lock:
-            for item in self.__cache.keys():
+            # We need to make a copy of the list of keys, as it will be
+            # modified as we iterate and that causes exceptions in
+            # Python 3:
+            keys = list(self.__cache.keys())
+            for item in keys:
                 self.remove(key=item, force=force)
 
     def remove(self, key, force=False):
