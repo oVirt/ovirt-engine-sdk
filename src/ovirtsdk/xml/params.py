@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Fri May 22 10:25:38 2015 by generateDS.py version 2.12a.
+# Generated Fri Jun 12 16:04:24 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -10,6 +10,12 @@ import getopt
 import re as re_
 import base64
 import datetime as datetime_
+# Begin NOT_GENERATED
+try:
+    basestring = basestring
+except NameError:
+    basestring = str
+# End NOT_GENERATED
 
 # Begin NOT_GENERATED
 from ovirtsdk.utils.reflectionhelper import ReflectionHelper
