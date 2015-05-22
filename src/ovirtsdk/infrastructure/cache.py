@@ -75,7 +75,7 @@ class Cache(object):
                 raise ImmutableError(key)
             elif typ:
                 try:
-                    if typ == types.BooleanType and type(val) == types.StringType \
+                    if typ == bool and type(val) == str \
                         and val not in ['True', 'False']:
                         raise ValueError(val)
                     self.__cache[key] = Item(typ(val), mode)

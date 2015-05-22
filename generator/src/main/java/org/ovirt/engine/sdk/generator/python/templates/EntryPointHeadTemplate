@@ -23,7 +23,6 @@
 $timestamp$
 
 import re
-import types
 import urlparse
 
 from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError

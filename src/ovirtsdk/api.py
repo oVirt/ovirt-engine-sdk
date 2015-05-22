@@ -20,10 +20,9 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-05-22 10:36:39.000813'''
+'''Generated at: 2015-05-22 11:32:13.000771'''
 
 import re
-import types
 import urlparse
 
 from ovirtsdk.infrastructure.errors import UnsecuredConnectionAttemptError
@@ -189,7 +188,7 @@ class API(object):
 
         # If server returns no response for the root resource, this is sign
         # that used http protocol against SSL secured site
-        if type(entry_point) == types.StringType and entry_point == '':
+        if type(entry_point) == str and entry_point == '':
             raise UnsecuredConnectionAttemptError
 
         # Store entry point to the context
@@ -211,7 +210,7 @@ class API(object):
             'persistent_auth',
              persistent_auth,
              Mode.R,
-             typ=types.BooleanType
+             typ=bool
         )
         self.bookmarks = Bookmarks(self.id)
         self.capabilities = Capabilities(self.id)
@@ -308,7 +307,7 @@ class API(object):
             context.manager[self.id].add(
                              'filter',
                              filter,
-                             typ=types.BooleanType
+                             typ=bool
             )
 
     def set_renew_session(self, renew_session):
@@ -318,7 +317,7 @@ class API(object):
                 'renew_session',
                  renew_session,
                  Mode.RW,
-                 typ=types.BooleanType
+                 typ=bool
             )
 
     def __set_session_timeout(self, session_timeout):
@@ -327,7 +326,7 @@ class API(object):
             context.manager[self.id].add(
                              'session_timeout',
                              session_timeout,
-                             typ=types.IntType
+                             typ=int
             )
 
     def __enter__(self):

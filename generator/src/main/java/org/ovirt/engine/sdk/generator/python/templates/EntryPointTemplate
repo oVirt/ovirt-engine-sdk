@@ -118,7 +118,7 @@ class API(object):
 
         # If server returns no response for the root resource, this is sign
         # that used http protocol against SSL secured site
-        if type(entry_point) == types.StringType and entry_point == '':
+        if type(entry_point) == str and entry_point == '':
             raise UnsecuredConnectionAttemptError
 
         # Store entry point to the context
@@ -140,5 +140,5 @@ class API(object):
             'persistent_auth',
              persistent_auth,
              Mode.R,
-             typ=types.BooleanType
+             typ=bool
         )

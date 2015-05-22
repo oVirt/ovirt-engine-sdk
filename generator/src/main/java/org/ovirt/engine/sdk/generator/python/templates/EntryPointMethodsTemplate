@@ -60,7 +60,7 @@
             context.manager[self.id].add(
                              'filter',
                              filter,
-                             typ=types.BooleanType
+                             typ=bool
             )
 
     def set_renew_session(self, renew_session):
@@ -70,7 +70,7 @@
                 'renew_session',
                  renew_session,
                  Mode.RW,
-                 typ=types.BooleanType
+                 typ=bool
             )
 
     def __set_session_timeout(self, session_timeout):
@@ -79,7 +79,7 @@
             context.manager[self.id].add(
                              'session_timeout',
                              session_timeout,
-                             typ=types.IntType
+                             typ=int
             )
 
     def __enter__(self):

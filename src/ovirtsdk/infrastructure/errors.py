@@ -59,7 +59,7 @@ class RequestError(Exception):
             except:
                 f_detail = ''
 
-            if types.StringType != type(f_detail):
+            if str != type(f_detail):
                 if isinstance(f_detail, params.Action) and f_detail.fault is not None:
                     detail = f_detail.fault.detail.lstrip()
                 else:
