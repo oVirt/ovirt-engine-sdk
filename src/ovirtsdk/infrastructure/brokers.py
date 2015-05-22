@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-05-20 15:09:43.000296'''
+'''Generated at: 2015-05-22 10:36:39.000626'''
 
 
 from ovirtsdk.xml import params
@@ -151,7 +151,7 @@ class Bookmarks(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -223,7 +223,7 @@ class Capabilities(Base):
                     self.__getProxy().get(url=UrlHelper.append(url, id)),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -591,7 +591,7 @@ class ClusterAffinityGroupVMs(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -734,7 +734,7 @@ class ClusterAffinityGroups(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -921,7 +921,7 @@ class ClusterCpuProfiles(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -1161,7 +1161,7 @@ class ClusterGlusterHooks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -1775,7 +1775,7 @@ class ClusterGlusterVolumeGlusterBrickStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -1922,7 +1922,7 @@ class ClusterGlusterVolumeGlusterBricks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -2056,7 +2056,7 @@ class ClusterGlusterVolumeStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -2209,7 +2209,7 @@ class ClusterGlusterVolumes(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -2435,7 +2435,7 @@ class ClusterNetworks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -2625,7 +2625,7 @@ class ClusterPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -2775,7 +2775,7 @@ class Clusters(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -3017,7 +3017,7 @@ class CpuProfilePermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -3135,7 +3135,7 @@ class CpuProfiles(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -3601,7 +3601,7 @@ class DataCenterClusterAffinityGroupVMs(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -3743,7 +3743,7 @@ class DataCenterClusterAffinityGroups(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -3929,7 +3929,7 @@ class DataCenterClusterCpuProfiles(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -4164,7 +4164,7 @@ class DataCenterClusterGlusterHooks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -4734,7 +4734,7 @@ class DataCenterClusterGlusterVolumeGlusterBrickStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -4875,7 +4875,7 @@ class DataCenterClusterGlusterVolumeGlusterBricks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -5011,7 +5011,7 @@ class DataCenterClusterGlusterVolumeStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -5148,7 +5148,7 @@ class DataCenterClusterGlusterVolumes(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -5378,7 +5378,7 @@ class DataCenterClusterNetworks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -5573,7 +5573,7 @@ class DataCenterClusterPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -5740,7 +5740,7 @@ class DataCenterClusters(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -6083,7 +6083,7 @@ class DataCenterIscsiBondNetworkLabels(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -6274,7 +6274,7 @@ class DataCenterIscsiBondNetworkPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -6516,7 +6516,7 @@ class DataCenterIscsiBondNetworkVnicProfilePermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -6662,7 +6662,7 @@ class DataCenterIscsiBondNetworkVnicProfiles(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -6806,7 +6806,7 @@ class DataCenterIscsiBondNetworks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -7048,7 +7048,7 @@ class DataCenterIscsiBondStorageConnections(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -7189,7 +7189,7 @@ class DataCenterIscsiBonds(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -7461,7 +7461,7 @@ class DataCenterNetworkLabels(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -7647,7 +7647,7 @@ class DataCenterNetworkPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -7883,7 +7883,7 @@ class DataCenterNetworkVnicProfilePermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -8025,7 +8025,7 @@ class DataCenterNetworkVnicProfiles(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -8179,7 +8179,7 @@ class DataCenterNetworks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -8369,7 +8369,7 @@ class DataCenterPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -8614,7 +8614,7 @@ class DataCenterQoSs(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -8744,7 +8744,7 @@ class DataCenterQuotas(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -9165,7 +9165,7 @@ class DataCenterStorageDomainDiskPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -9301,7 +9301,7 @@ class DataCenterStorageDomainDiskStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -9475,7 +9475,7 @@ class DataCenterStorageDomainDisks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -9619,7 +9619,7 @@ class DataCenterStorageDomains(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -9742,7 +9742,7 @@ class DataCenters(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -10035,7 +10035,7 @@ class DiskPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -10296,7 +10296,7 @@ class DiskProfilePermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -10414,7 +10414,7 @@ class DiskProfiles(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -10524,7 +10524,7 @@ class DiskStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -10670,7 +10670,7 @@ class Disks(Base):
                     headers={}),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -10804,7 +10804,7 @@ class DomainGroups(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -10936,7 +10936,7 @@ class DomainUsers(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -11032,7 +11032,7 @@ class Domains(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -11182,7 +11182,7 @@ class Events(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -11425,7 +11425,7 @@ class ExternalHostProviderCertificates(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -11555,7 +11555,7 @@ class ExternalHostProviderExternalComputeResources(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -11685,7 +11685,7 @@ class ExternalHostProviderExternalDiscoveredHosts(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -11837,7 +11837,7 @@ class ExternalHostProviderExternalHostGroups(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -11945,7 +11945,7 @@ class ExternalHostProviderExternalHosts(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -12065,7 +12065,7 @@ class ExternalHostProviders(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -12297,7 +12297,7 @@ class GroupPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -12508,7 +12508,7 @@ class GroupRolePermits(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -12618,7 +12618,7 @@ class GroupRoles(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -12803,7 +12803,7 @@ class GroupTags(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -12920,7 +12920,7 @@ class Groups(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -13654,7 +13654,7 @@ class HostAgents(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -13784,7 +13784,7 @@ class HostHooks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -13892,7 +13892,7 @@ class HostKatelloErrata(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -14254,7 +14254,7 @@ class HostNICLabels(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -14387,7 +14387,7 @@ class HostNICStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -14534,7 +14534,7 @@ class HostNICs(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -14745,7 +14745,7 @@ class HostNumaNodeStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -14850,7 +14850,7 @@ class HostNumaNodes(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -15040,7 +15040,7 @@ class HostPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -15170,7 +15170,7 @@ class HostStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -15295,7 +15295,7 @@ class HostStorages(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -15480,7 +15480,7 @@ class HostTags(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -15681,7 +15681,7 @@ class Hosts(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -15938,7 +15938,7 @@ class InstanceTypeNICs(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -16147,7 +16147,7 @@ class InstanceTypeWatchDogs(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -16287,7 +16287,7 @@ class InstanceTypes(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -16530,7 +16530,7 @@ class JobStepStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -16669,7 +16669,7 @@ class JobSteps(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -16785,7 +16785,7 @@ class Jobs(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -16859,7 +16859,7 @@ class KatelloErrata(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -17059,7 +17059,7 @@ class MacPools(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -17304,7 +17304,7 @@ class NetworkLabels(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -17494,7 +17494,7 @@ class NetworkPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -17725,7 +17725,7 @@ class NetworkVnicProfilePermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -17873,7 +17873,7 @@ class NetworkVnicProfiles(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -18002,7 +18002,7 @@ class Networks(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -18247,7 +18247,7 @@ class OpenStackImageProviderCertificates(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -18410,7 +18410,7 @@ class OpenStackImageProviderOpenStackImages(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -18536,7 +18536,7 @@ class OpenStackImageProviders(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -18774,7 +18774,7 @@ class OpenStackNetworkProviderCertificates(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -18981,7 +18981,7 @@ class OpenStackNetworkProviderOpenStackNetworkOpenStackSubnets(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -19091,7 +19091,7 @@ class OpenStackNetworkProviderOpenStackNetworks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -19217,7 +19217,7 @@ class OpenStackNetworkProviders(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -19456,7 +19456,7 @@ class OpenStackVolumeProviderCertificates(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -19586,7 +19586,7 @@ class OpenStackVolumeProviderOpenStackVolumeTypes(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -19713,7 +19713,7 @@ class OpenStackVolumeProviders(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -19808,7 +19808,7 @@ class OperatingSystemInfos(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -19952,7 +19952,7 @@ class Permissions(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -20190,7 +20190,7 @@ class RolePermits(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -20311,7 +20311,7 @@ class Roles(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -20412,7 +20412,7 @@ class SchedulingPolicies(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -20655,7 +20655,7 @@ class SchedulingPolicyBalances(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -20842,7 +20842,7 @@ class SchedulingPolicyFilters(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -20981,7 +20981,7 @@ class SchedulingPolicyUnits(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -21148,7 +21148,7 @@ class SchedulingPolicyWeights(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -21377,7 +21377,7 @@ class StorageConnections(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -21802,7 +21802,7 @@ class StorageDomainDiskPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -21991,7 +21991,7 @@ class StorageDomainDiskProfiles(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -22145,7 +22145,7 @@ class StorageDomainDiskSnapshots(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -22276,7 +22276,7 @@ class StorageDomainDiskStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -22446,7 +22446,7 @@ class StorageDomainDisks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -22579,7 +22579,7 @@ class StorageDomainFiles(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -22742,7 +22742,7 @@ class StorageDomainImages(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -22932,7 +22932,7 @@ class StorageDomainPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -23117,7 +23117,7 @@ class StorageDomainStorageConnections(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -23364,7 +23364,7 @@ class StorageDomainTemplateDisks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -23474,7 +23474,7 @@ class StorageDomainTemplates(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -23722,7 +23722,7 @@ class StorageDomainVMDisks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -23832,7 +23832,7 @@ class StorageDomainVMs(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -24025,7 +24025,7 @@ class StorageDomains(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -24193,7 +24193,7 @@ class Tags(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -24467,7 +24467,7 @@ class TemplateCdRoms(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -24685,7 +24685,7 @@ class TemplateDisks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -24933,7 +24933,7 @@ class TemplateNICs(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -25123,7 +25123,7 @@ class TemplatePermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -25308,7 +25308,7 @@ class TemplateTags(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -25526,7 +25526,7 @@ class TemplateWatchDogs(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -25724,7 +25724,7 @@ class Templates(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -25958,7 +25958,7 @@ class UserPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -26169,7 +26169,7 @@ class UserRolePermits(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -26279,7 +26279,7 @@ class UserRoles(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -26464,7 +26464,7 @@ class UserTags(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -26582,7 +26582,7 @@ class Users(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -27385,7 +27385,7 @@ class VMApplications(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -27602,7 +27602,7 @@ class VMCdRoms(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -28000,7 +28000,7 @@ class VMDiskPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -28133,7 +28133,7 @@ class VMDiskStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -28316,7 +28316,7 @@ class VMDisks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -28424,7 +28424,7 @@ class VMKatelloErrata(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -28725,7 +28725,7 @@ class VMNICReportedDevices(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -28858,7 +28858,7 @@ class VMNICStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -29012,7 +29012,7 @@ class VMNICs(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -29203,7 +29203,7 @@ class VMPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -29333,7 +29333,7 @@ class VMReportedDevices(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -29463,7 +29463,7 @@ class VMSessions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -29677,7 +29677,7 @@ class VMSnapshotCdRoms(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -29835,7 +29835,7 @@ class VMSnapshotDisks(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -29968,7 +29968,7 @@ class VMSnapshotNics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -30115,7 +30115,7 @@ class VMSnapshots(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -30246,7 +30246,7 @@ class VMStatistics(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -30426,7 +30426,7 @@ class VMTags(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -30660,7 +30660,7 @@ class VMVirtualNumaNodes(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -30878,7 +30878,7 @@ class VMWatchDogs(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -31263,7 +31263,7 @@ class VMs(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -31559,7 +31559,7 @@ class VmPoolPermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -31682,7 +31682,7 @@ class VmPools(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -31929,7 +31929,7 @@ class VnicProfilePermissions(Base):
                     result,
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err
@@ -32052,7 +32052,7 @@ class VnicProfiles(Base):
                     ),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err

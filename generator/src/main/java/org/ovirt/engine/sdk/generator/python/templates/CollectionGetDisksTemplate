@@ -9,7 +9,7 @@ $docs$
                     headers=$headers_map_params_str$),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err

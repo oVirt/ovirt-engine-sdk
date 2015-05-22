@@ -48,7 +48,7 @@
                     method='GET',
                     url=''
                 )
-            except Exception, e:
+            except Exception as e:
                 if throw_exception: raise e
                 return False
             return True

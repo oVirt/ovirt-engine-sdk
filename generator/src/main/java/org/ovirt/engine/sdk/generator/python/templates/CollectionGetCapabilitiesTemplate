@@ -15,7 +15,7 @@
                     self.__getProxy().get(url=UrlHelper.append(url, id)),
                     self.context
                 )
-            except RequestError, err:
+            except RequestError as err:
                 if err.status and err.status == 404:
                     return None
                 raise err

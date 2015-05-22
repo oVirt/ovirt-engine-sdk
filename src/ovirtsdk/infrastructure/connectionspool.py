@@ -77,7 +77,7 @@ class ConnectionsPool(object):
             try:
                 return self.__do_request(method, url, body, headers, last,
                                          persistent_auth)
-            except pycurl.error, error:
+            except pycurl.error as error:
                 raise errors.ConnectionError(error)
 
     def __do_request(self, method, url, body, headers, last,

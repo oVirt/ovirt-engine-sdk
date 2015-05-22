@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-05-22 10:25:40.000260'''
+'''Generated at: 2015-05-22 10:36:39.000813'''
 
 import re
 import types
@@ -296,7 +296,7 @@ class API(object):
                     method='GET',
                     url=''
                 )
-            except Exception, e:
+            except Exception as e:
                 if throw_exception: raise e
                 return False
             return True
