@@ -145,7 +145,7 @@ class ConnectionsPool(object):
             response_line = header_lines[0]
             response_fields = response_line.split()
             if len(response_fields) >= 3:
-                response_reason = response_fields[2]
+                response_reason = " ".join(response_fields[2:])
 
         # Parse the received body only if there are no errors reported by
         # the server (this needs review, as less than 400 doesn't guarantee
