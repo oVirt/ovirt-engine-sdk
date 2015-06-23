@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-05-22 10:36:39.000626'''
+'''Generated at: 2015-06-23 16:48:49.000335'''
 
 
 from ovirtsdk.xml import params
@@ -311,7 +311,7 @@ class Cluster(params.Cluster, Base):
         [@param cluster.data_center.id: string]
         [@param cluster.cpu.id: string]
         [@param cluster.version.major: int]
-        [@param cluster.version.minor: int]
+        [@param cluster.version.minor: int,]
         [@param cluster.memory_policy.overcommit.percent: double]
         [@param cluster.memory_policy.transparent_hugepages.enabled: boolean]
         [@param cluster.scheduling_policy.policy: string]
@@ -339,6 +339,8 @@ class Cluster(params.Cluster, Base):
         [@param cluster.fencing_policy.skip_if_connectivity_broken.threshold: int]
         [@param cluster.maintenance_reason_required: boolean]
         [@param cluster.management_network.id|name: string]
+        [@param cluster.ha_reservation: boolean]
+        [@param cluster.ksm.merge_across_nodes: boolean]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -2565,10 +2567,10 @@ class ClusterPermissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
-          @param permission.role.id: string
           @param permission.group.id: string
+          @param permission.role.id|name: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -2734,6 +2736,7 @@ class Clusters(Base):
         [@param cluster.cpu.architecture: string]
         [@param cluster.display.proxy: string]
         [@param cluster.ksm.enabled: boolean]
+        [@param cluster.ksm.merge_across_nodes: boolean]
         [@param cluster.fencing_policy.enabled: boolean]
         [@param cluster.fencing_policy.skip_if_sd_active.enabled: boolean]
         [@param cluster.fencing_policy.skip_if_connectivity_broken.enabled: boolean]
@@ -2957,10 +2960,10 @@ class CpuProfilePermissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
           @param permission.group.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -5511,10 +5514,10 @@ class DataCenterClusterPermissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
-          @param permission.role.id: string
           @param permission.group.id: string
+          @param permission.role.id|name: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -6892,30 +6895,6 @@ class DataCenterIscsiBondStorageConnection(params.StorageConnection, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def delete(self, async=None):
-        '''
-        [@param async: boolean (true|false)]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}',
-            {
-                '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                '{iscsibond:id}': self.parentclass.get_id(),
-                '{storageconnection:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Content-type":None}
-        )
-
     def delete(self, action, async=None):
         '''
         @type Action:
@@ -6941,6 +6920,30 @@ class DataCenterIscsiBondStorageConnection(params.StorageConnection, Base):
             ),
             body=ParseHelper.toXml(action),
             headers={}
+        )
+
+    def delete(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{iscsibond:id}': self.parentclass.get_id(),
+                '{storageconnection:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
         )
 
     def update(self, async=None):
@@ -8309,10 +8312,10 @@ class DataCenterPermissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
-          @param permission.role.id: string
           @param permission.group.id: string
+          @param permission.role.id|name: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -8682,7 +8685,10 @@ class DataCenterQuota(params.Quota, Base):
         self.parentclass = datacenter
         self.superclass  =  quota
 
-        #SUB_COLLECTIONS
+        self.permissions = DataCenterQuotaPermissions(self, context)
+        self.quotaclusterlimits = DataCenterQuotaQuotaClusterLimits(self, context)
+        self.quotastoragelimits = DataCenterQuotaQuotaStorageLimits(self, context)
+
     def __new__(cls, datacenter, quota, context):
         if quota is None: return None
         obj = object.__new__(cls)
@@ -8698,6 +8704,624 @@ class DataCenterQuota(params.Quota, Base):
         #still available at client's code.
         raise DisconnectedError
 
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/quotas/{quota:id}',
+            {
+                '{datacenter:id}': self.parentclass.get_id(),
+                '{quota:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, async=None, correlation_id=None, expect=None):
+        '''
+        [@param quota.name: string]
+        [@param quota.description: string]
+        [@param quota.cluster_soft_limit_pct: int]
+        [@param quota.cluster_hard_limit_pct: int]
+        [@param quota.storage_soft_limit_pct: int]
+        [@param quota.storage_hard_limit_pct: int]
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+        [@param expect: 202-accepted]
+
+        @return Quota:
+        '''
+
+        url = '/datacenters/{datacenter:id}/quotas/{quota:id}'
+        url = UrlHelper.replace(
+            url,
+            {
+                '{datacenter:id}': self.parentclass.get_id(),
+                '{quota:id}': self.get_id(),
+            }
+        )
+
+        result = self.__getProxy().update(
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return DataCenterQuota(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+class DataCenterQuotaPermission(params.Permission, Base):
+    def __init__(self, datacenterquota, permission, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterquota
+        self.superclass  =  permission
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacenterquota, permission, context):
+        if permission is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenterquota, permission, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/quotas/{quota:id}/permissions/{permission:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{quota:id}': self.parentclass.get_id(),
+                '{permission:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
+class DataCenterQuotaPermissions(Base):
+
+    def __init__(self, quota , context):
+        Base.__init__(self, context)
+        self.parentclass = quota
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, permission):
+
+        '''
+        @type Permission:
+
+
+        @return Permission:
+        '''
+
+        url = '/datacenters/{datacenter:id}/quotas/{quota:id}/permissions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                    '{quota:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(permission),
+            headers={}
+        )
+
+        return DataCenterQuotaPermission(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Permissions:
+        '''
+
+        url = '/datacenters/{datacenter:id}/quotas/{quota:id}/permissions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                                '{quota:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterQuotaPermission(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{quota:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_permission()
+
+            return DataCenterQuotaPermission(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Permissions:
+        '''
+
+        url = '/datacenters/{datacenter:id}/quotas/{quota:id}/permissions'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{quota:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_permission()
+
+        return ParseHelper.toSubCollection(
+            DataCenterQuotaPermission,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterQuotaQuotaClusterLimit(params.QuotaClusterLimit, Base):
+    def __init__(self, datacenterquota, quotaclusterlimit, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterquota
+        self.superclass  =  quotaclusterlimit
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacenterquota, quotaclusterlimit, context):
+        if quotaclusterlimit is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenterquota, quotaclusterlimit, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/quotas/{quota:id}/quotaclusterlimits/{quotaclusterlimit:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{quota:id}': self.parentclass.get_id(),
+                '{quotaclusterlimit:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
+class DataCenterQuotaQuotaClusterLimits(Base):
+
+    def __init__(self, quota , context):
+        Base.__init__(self, context)
+        self.parentclass = quota
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, clusterquotalimit):
+
+        '''
+        @type QuotaClusterLimit:
+
+
+        @return QuotaClusterLimit:
+        '''
+
+        url = '/datacenters/{datacenter:id}/quotas/{quota:id}/quotaclusterlimits'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                    '{quota:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(clusterquotalimit),
+            headers={}
+        )
+
+        return DataCenterQuotaQuotaClusterLimit(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return QuotaClusterLimits:
+        '''
+
+        url = '/datacenters/{datacenter:id}/quotas/{quota:id}/quotaclusterlimits'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                                '{quota:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterQuotaQuotaClusterLimit(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{quota:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_cluster_quota_limit()
+
+            return DataCenterQuotaQuotaClusterLimit(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return QuotaClusterLimits:
+        '''
+
+        url = '/datacenters/{datacenter:id}/quotas/{quota:id}/quotaclusterlimits'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{quota:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_cluster_quota_limit()
+
+        return ParseHelper.toSubCollection(
+            DataCenterQuotaQuotaClusterLimit,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class DataCenterQuotaQuotaStorageLimit(params.QuotaStorageLimit, Base):
+    def __init__(self, datacenterquota, quotastoragelimit, context):
+        Base.__init__(self, context)
+        self.parentclass = datacenterquota
+        self.superclass  =  quotastoragelimit
+
+        #SUB_COLLECTIONS
+    def __new__(cls, datacenterquota, quotastoragelimit, context):
+        if quotastoragelimit is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(datacenterquota, quotastoragelimit, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/datacenters/{datacenter:id}/quotas/{quota:id}/quotastoragelimits/{quotastoragelimit:id}',
+            {
+                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                '{quota:id}': self.parentclass.get_id(),
+                '{quotastoragelimit:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
+class DataCenterQuotaQuotaStorageLimits(Base):
+
+    def __init__(self, quota , context):
+        Base.__init__(self, context)
+        self.parentclass = quota
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, storagequotalimit):
+
+        '''
+        @type QuotaStorageLimit:
+
+
+        @return QuotaStorageLimit:
+        '''
+
+        url = '/datacenters/{datacenter:id}/quotas/{quota:id}/quotastoragelimits'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                    '{quota:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(storagequotalimit),
+            headers={}
+        )
+
+        return DataCenterQuotaQuotaStorageLimit(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return QuotaStorageLimits:
+        '''
+
+        url = '/datacenters/{datacenter:id}/quotas/{quota:id}/quotastoragelimits'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                                '{quota:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return DataCenterQuotaQuotaStorageLimit(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{quota:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_storage_quota_limit()
+
+            return DataCenterQuotaQuotaStorageLimit(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return QuotaStorageLimits:
+        '''
+
+        url = '/datacenters/{datacenter:id}/quotas/{quota:id}/quotastoragelimits'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{quota:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_storage_quota_limit()
+
+        return ParseHelper.toSubCollection(
+            DataCenterQuotaQuotaStorageLimit,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
 class DataCenterQuotas(Base):
 
     def __init__(self, datacenter , context):
@@ -8712,6 +9336,42 @@ class DataCenterQuotas(Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
+
+    def add(self, quota, correlation_id=None, expect=None):
+
+        '''
+        @type Quota:
+
+        @param quota.name: string
+        [@param quota.description: string]
+        [@param quota.cluster_soft_limit_pct: int]
+        [@param quota.cluster_hard_limit_pct: int]
+        [@param quota.storage_soft_limit_pct: int]
+        [@param quota.storage_hard_limit_pct: int]
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return Quota:
+        '''
+
+        url = '/datacenters/{datacenter:id}/quotas'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{datacenter:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(quota),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return DataCenterQuota(
+            self.parentclass,
+            result,
+            self.context
+        )
 
     def get(self, name=None, id=None):
 
@@ -9397,6 +10057,7 @@ class DataCenterStorageDomainDisks(Base):
           [@param disk.wipe_after_delete: boolean]
           [@param disk.quota.id: string]
           [@param disk.disk_profile.id: string]
+          [@param disk.openstack_volume_type.name: string]
         Overload 2:
           @param disk.interface: string
           @param disk.format: string
@@ -10236,10 +10897,10 @@ class DiskProfilePermissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
           @param permission.group.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -10617,6 +11278,7 @@ class Disks(Base):
           {
             [@ivar storage_domain.id|name: string]
           }
+          [@param disk.openstack_volume_type.name: string]
         Overload 2:
           @param disk.interface: string
           @param disk.lun_storage.type: string
@@ -11141,9 +11803,11 @@ class Events(Base):
         @param event.custom_id: int
         [@param event.flood_rate: int]
         [@param event.host.id: string]
+        [@param event.host.external_status.state: string]
         [@param event.user.id: string]
         [@param event.vm.id: string]
         [@param event.storage_domain.id: string]
+        [@param event.storage_domain.external_status.state: string]
         [@param event.template.id: string]
         [@param event.cluster.id: string]
         [@param event.data_center.id: string]
@@ -12221,25 +12885,25 @@ class GroupPermissions(Base):
         @type Permission:
 
         Overload 1:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.data_center.id: string
         Overload 2:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.cluster.id: string
         Overload 3:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.host.id: string
         Overload 4:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.storage_domain.id: string
         Overload 5:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.vm.id: string
         Overload 6:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.vmpool.id: string
         Overload 7:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.template.id: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
@@ -12381,6 +13045,29 @@ class GroupRole(params.Role, Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
+
+    def delete(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/groups/{group:id}/roles/{role:id}',
+            {
+                '{group:id}': self.parentclass.get_id(),
+                '{role:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
 
 class GroupRolePermit(params.Permit, Base):
     def __init__(self, grouprole, permit, context):
@@ -14980,9 +15667,9 @@ class HostPermissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.group.id: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
@@ -15725,6 +16412,101 @@ class Hosts(Base):
             context=self.context
         )
 
+class Icon(params.Icon, Base):
+    def __init__(self, icon, context):
+        Base.__init__(self, context)
+        self.superclass = icon
+
+        #SUB_COLLECTIONS
+    def __new__(cls, icon, context):
+        if icon is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(icon, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class Icons(Base):
+    def __init__(self, context):
+        Base.__init__(self, context)
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Icons:
+        '''
+
+        url = '/icons'
+
+        if id:
+            try :
+                return Icon(
+                    self.__getProxy().get(
+                                url=UrlHelper.append(url, id),
+                                headers={}
+                    ),
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                    url=url,
+                    headers={}
+            ).get_icon()
+
+            return Icon(
+                FilterHelper.getItem(
+                    FilterHelper.filter(result, {'name':name}),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)]
+        [@param max: int (max results)]
+
+        @return Icons:
+        '''
+
+        url='/icons'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            headers={}
+        ).get_icon()
+
+        return ParseHelper.toCollection(
+            Icon,
+            FilterHelper.filter(result, kwargs),
+            context=self.context
+        )
+
 class InstanceType(params.InstanceType, Base):
     def __init__(self, instancetype, context):
         Base.__init__(self, context)
@@ -16228,6 +17010,7 @@ class InstanceTypes(Base):
 
         @param instance_type.name: string
         [@param instance_type.memory: long]
+        [@param instance_type.io.threads: int]
         [@param instance_type.cpu.topology.cores: int]
         [@param instance_type.high_availability.enabled: boolean]
         [@param instance_type.origin: string]
@@ -17434,10 +18217,10 @@ class NetworkPermissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
           @param permission.group.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -18104,6 +18887,7 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
           [@ivar property.name: string]
           [@ivar property.value: string]
         }
+        [@param openstack_image_provider.tenant_name: string]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -18501,6 +19285,7 @@ class OpenStackImageProviders(Base):
           [@ivar property.name: string]
           [@ivar property.value: string]
         }
+        [@param openstack_image_provider.tenant_name: string]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -18637,6 +19422,7 @@ class OpenStackNetworkProvider(params.OpenStackNetworkProvider, Base):
           [@ivar property.name: string]
           [@ivar property.value: string]
         }
+        [@param openstack_network_provider.tenant_name: string]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -19182,6 +19968,7 @@ class OpenStackNetworkProviders(Base):
           [@ivar property.name: string]
           [@ivar property.value: string]
         }
+        [@param openstack_network_provider.tenant_name: string]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -19264,6 +20051,7 @@ class OpenStackVolumeProvider(params.OpenStackVolumeProvider, Base):
         Base.__init__(self, context)
         self.superclass = openstackvolumeprovider
 
+        self.authenticationkeys = OpenStackVolumeProviderOpenstackVolumeAuthenticationKeys(self, context)
         self.certificates = OpenStackVolumeProviderCertificates(self, context)
         self.volumetypes = OpenStackVolumeProviderOpenStackVolumeTypes(self, context)
 
@@ -19319,6 +20107,7 @@ class OpenStackVolumeProvider(params.OpenStackVolumeProvider, Base):
           [@ivar property.name: string]
           [@ivar property.value: string]
         }
+        [@param openstack_volume_provider.tenant_name: string]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -19648,6 +20437,226 @@ class OpenStackVolumeProviderOpenStackVolumeTypes(Base):
             context=self.context
         )
 
+class OpenStackVolumeProviderOpenstackVolumeAuthenticationKey(params.OpenstackVolumeAuthenticationKey, Base):
+    def __init__(self, openstackvolumeprovider, openstackvolumeauthenticationkey, context):
+        Base.__init__(self, context)
+        self.parentclass = openstackvolumeprovider
+        self.superclass  =  openstackvolumeauthenticationkey
+
+        #SUB_COLLECTIONS
+    def __new__(cls, openstackvolumeprovider, openstackvolumeauthenticationkey, context):
+        if openstackvolumeauthenticationkey is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(openstackvolumeprovider, openstackvolumeauthenticationkey, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys/{authenticationkey:id}',
+            {
+                '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                '{authenticationkey:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
+    def update(self, async=None, correlation_id=None, expect=None):
+        '''
+        [@param openstack_volume_authentication_key.value: string]
+        [@param openstack_volume_authentication_key.usage_type: string]
+        [@param openstack_volume_authentication_key.description: string]
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+        [@param expect: 202-accepted]
+
+        @return OpenstackVolumeAuthenticationKey:
+        '''
+
+        url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys/{authenticationkey:id}'
+        url = UrlHelper.replace(
+            url,
+            {
+                '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                '{authenticationkey:id}': self.get_id(),
+            }
+        )
+
+        result = self.__getProxy().update(
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return OpenStackVolumeProviderOpenstackVolumeAuthenticationKey(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+class OpenStackVolumeProviderOpenstackVolumeAuthenticationKeys(Base):
+
+    def __init__(self, openstackvolumeprovider , context):
+        Base.__init__(self, context)
+        self.parentclass = openstackvolumeprovider
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, openstackvolumeauthenticationkey, correlation_id=None, expect=None):
+
+        '''
+        @type OpenstackVolumeAuthenticationKey:
+
+        @param openstack_volume_authentication_key.uuid: string
+        @param openstack_volume_authentication_key.value: string
+        @param openstack_volume_authentication_key.usage_type: string
+        [@param openstack_volume_authentication_key.description: string]
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return OpenstackVolumeAuthenticationKey:
+        '''
+
+        url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(openstackvolumeauthenticationkey),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return OpenStackVolumeProviderOpenstackVolumeAuthenticationKey(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return OpenstackVolumeAuthenticationKeys:
+        '''
+
+        url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return OpenStackVolumeProviderOpenstackVolumeAuthenticationKey(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_openstack_volume_authentication_key()
+
+            return OpenStackVolumeProviderOpenstackVolumeAuthenticationKey(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return OpenstackVolumeAuthenticationKeys:
+        '''
+
+        url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_openstack_volume_authentication_key()
+
+        return ParseHelper.toSubCollection(
+            OpenStackVolumeProviderOpenstackVolumeAuthenticationKey,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
 class OpenStackVolumeProviders(Base):
     def __init__(self, context):
         Base.__init__(self, context)
@@ -19678,6 +20687,7 @@ class OpenStackVolumeProviders(Base):
           [@ivar property.name: string]
           [@ivar property.value: string]
         }
+        [@param openstack_volume_provider.tenant_name: string]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -19913,10 +20923,10 @@ class Permissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
-          @param permission.role.id: string
           @param permission.group.id: string
+          @param permission.role.id|name: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -21553,6 +22563,37 @@ class StorageDomain(params.StorageDomain, Base):
 
         return result
 
+    def refreshluns(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        @param action.logical_units.logical_unit: collection
+        {
+          @ivar logical_unit.id: string
+        }
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/storagedomains/{storagedomain:id}/refreshluns'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{storagedomain:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
 class StorageDomainDisk(params.Disk, Base):
     def __init__(self, storagedomain, disk, context):
         Base.__init__(self, context)
@@ -22370,6 +23411,7 @@ class StorageDomainDisks(Base):
           [@param disk.wipe_after_delete: boolean]
           [@param disk.quota.id: string]
           [@param disk.disk_profile.id: string]
+          [@param disk.openstack_volume_type.name: string]
         Overload 2:
           @param disk.interface: string
           @param disk.format: string
@@ -22672,6 +23714,7 @@ class StorageDomainImage(params.Image, Base):
         @param storagedomain.id|name: string
         [@param action.import_as_template: boolean]
         [@param action.cluster.id|name: string]
+        [@param action.disk.alias|name: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
@@ -22872,10 +23915,10 @@ class StorageDomainPermissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
-          @param permission.role.id: string
           @param permission.group.id: string
+          @param permission.role.id|name: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -24289,12 +25332,14 @@ class Template(params.Template, Base):
         '''
         [@param template.name: string]
         [@param template.memory: long]
+        [@param template.io.threads: int]
         [@param template.cpu.topology.cores: int]
         [@param template.high_availability.enabled: boolean]
         [@param template.os.cmdline: string]
         [@param template.origin: string]
         [@param template.high_availability.priority: int]
         [@param template.timezone: string]
+        [@param template.time_zone.name: string]
         [@param template.domain.name: string]
         [@param template.type: string]
         [@param template.stateless: boolean]
@@ -24332,6 +25377,7 @@ class Template(params.Template, Base):
         [@param vm.display.file_transfer_enabled: boolean]
         [@param vm.display.copy_paste_enabled: boolean]
         [@param template.display.keyboard_layout: string]
+        [@param template.display.disconnect_action: string]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
@@ -24349,6 +25395,10 @@ class Template(params.Template, Base):
         [@param template.cpu_profile.id: string]
         [@param template.migration.auto_converge: string]
         [@param template.migration.compressed: string]
+        [@param template.small_icon.id: string]
+        [@param template.large_icon.id: string]
+        [@param template.large_icon.media_type: string]
+        [@param template.large_icon.data: string]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -25063,10 +26113,10 @@ class TemplatePermissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
-          @param permission.role.id: string
           @param permission.group.id: string
+          @param permission.role.id|name: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -25608,12 +26658,14 @@ class Templates(Base):
         @param template.vm.id|name: string
         @param template.name: string
         [@param template.memory: long]
+        [@param template.io.threads: int]
         [@param template.cpu.topology.cores: int]
         [@param template.high_availability.enabled: boolean]
         [@param template.os.cmdline: string]
         [@param template.origin: string]
         [@param template.high_availability.priority: int]
         [@param template.timezone: string]
+        [@param template.time_zone.name: string]
         [@param template.storage_domain.id: string]
         [@param template.domain.name: string]
         [@param template.type: string]
@@ -25652,6 +26704,7 @@ class Templates(Base):
         [@param template.display.file_transfer_enabled: boolean]
         [@param template.display.copy_paste_enabled: boolean]
         [@param template.display.keyboard_layout: string]
+        [@param template.display.disconnect_action: string]
         [@param template.os.initRd: string]
         [@param template.usb.enabled: boolean]
         [@param template.usb.type: string]
@@ -25688,6 +26741,10 @@ class Templates(Base):
         [@param template.cpu_profile.id: string]
         [@param template.migration.auto_converge: string]
         [@param template.migration.compressed: string]
+        [@param template.small_icon.id: string]
+        [@param template.large_icon.id: string]
+        [@param template.large_icon.media_type: string]
+        [@param template.large_icon.data: string]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -25882,25 +26939,25 @@ class UserPermissions(Base):
         @type Permission:
 
         Overload 1:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.data_center.id: string
         Overload 2:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.cluster.id: string
         Overload 3:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.host.id: string
         Overload 4:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.storage_domain.id: string
         Overload 5:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.vm.id: string
         Overload 6:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.vmpool.id: string
         Overload 7:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.template.id: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
@@ -26042,6 +27099,29 @@ class UserRole(params.Role, Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
+
+    def delete(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/users/{user:id}/roles/{role:id}',
+            {
+                '{user:id}': self.parentclass.get_id(),
+                '{role:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
 
 class UserRolePermit(params.Permit, Base):
     def __init__(self, userrole, permit, context):
@@ -26633,6 +27713,7 @@ class VM(params.VM, Base):
         self.applications = VMApplications(self, context)
         self.cdroms = VMCdRoms(self, context)
         self.disks = VMDisks(self, context)
+        self.graphicsconsoles = VMGraphicsConsoles(self, context)
         self.katelloerrata = VMKatelloErrata(self, context)
         self.nics = VMNICs(self, context)
         self.numanodes = VMVirtualNumaNodes(self, context)
@@ -26694,6 +27775,7 @@ class VM(params.VM, Base):
         [@param vm.name: string]
         [@param vm.cluster.id|name: string]
         [@param vm.timezone: string]
+        [@param vm.time_zone.name: string]
         [@param vm.os.boot: collection]
         {
           [@ivar boot.dev: string]
@@ -26722,6 +27804,7 @@ class VM(params.VM, Base):
         [@param vm.cpu.topology.cores: int]
         [@param vm.cpu_shares: int]
         [@param vm.memory: long]
+        [@param vm.io.threads: int]
         [@param vm.memory_policy.guaranteed: long]
         [@param vm.memory_policy.ballooning: boolean]
         [@param vm.high_availability.priority: int]
@@ -26775,6 +27858,10 @@ class VM(params.VM, Base):
         [@param vm.migration.auto_converge: string]
         [@param vm.migration.compressed: string]
         [@param vm.external_host_provider.id: string]
+        [@param vm.small_icon.id: string]
+        [@param vm.large_icon.id: string]
+        [@param vm.large_icon.media_type: string]
+        [@param vm.large_icon.data: string]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -27722,6 +28809,8 @@ class VMDisk(params.Disk, Base):
         '''
         [@param size: int]
         [@param provisioned_size: int]
+        [@param disk.name: string]
+        [@param disk.alias: string]
         [@param disk.interface: string]
         [@param disk.format: string]
         [@param disk.sparse: boolean]
@@ -28231,6 +29320,7 @@ class VMDisks(Base):
           {
             [@ivar storage_domain.id|name: string]
           }
+          [@param disk.openstack_volume_type.name: string]
         Overload 2:
           @param disk.interface: string
           @param disk.lun_storage.type: string
@@ -28370,6 +29460,136 @@ class VMDisks(Base):
 
         return ParseHelper.toSubCollection(
             VMDisk,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMGraphicsConsole(params.GraphicsConsole, Base):
+    def __init__(self, vm, graphicsconsole, context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+        self.superclass  =  graphicsconsole
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vm, graphicsconsole, context):
+        if graphicsconsole is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vm, graphicsconsole, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class VMGraphicsConsoles(Base):
+
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return GraphicsConsoles:
+        '''
+
+        url = '/vms/{vm:id}/graphicsconsoles'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMGraphicsConsole(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_graphics_console()
+
+            return VMGraphicsConsole(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return GraphicsConsoles:
+        '''
+
+        url = '/vms/{vm:id}/graphicsconsoles'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_graphics_console()
+
+        return ParseHelper.toSubCollection(
+            VMGraphicsConsole,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -29143,10 +30363,10 @@ class VMPermissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
-          @param permission.role.id: string
           @param permission.group.id: string
+          @param permission.role.id|name: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -30964,6 +32184,7 @@ class VMs(Base):
           [@param vm.instance_type.id|name: string]
           [@param vm.quota.id: string]
           [@param vm.timezone: string]
+          [@param vm.time_zone.name: string]
           [@param vm.os.boot: collection]
           {
             [@ivar boot.dev: string]
@@ -30986,10 +32207,12 @@ class VMs(Base):
           [@param vm.display.file_transfer_enabled: boolean]
           [@param vm.display.copy_paste_enabled: boolean]
           [@param vm.display.keyboard_layout: string]
+          [@param vm.display.disconnect_action: string]
           [@param vm.os.cmdline: string]
           [@param vm.cpu.topology.cores: int]
           [@param vm.cpu.architecture: string]
           [@param vm.memory: long]
+          [@param vm.io.threads: int]
           [@param vm.memory_policy.guaranteed: long]
           [@param vm.memory_policy.ballooning: boolean]
           [@param vm.high_availability.priority: int]
@@ -31048,6 +32271,10 @@ class VMs(Base):
           [@param vm.cpu_profile.id: string]
           [@param vm.migration.auto_converge: string]
           [@param vm.migration.compressed: string]
+          [@param vm.small_icon.id: string]
+          [@param vm.large_icon.id: string]
+          [@param vm.large_icon.media_type: string]
+          [@param vm.large_icon.data: string]
         Overload 2:
           @param vm.name: string
           @param vm.template.id|name: string
@@ -31058,6 +32285,7 @@ class VMs(Base):
           }
           [@param vm.quota.id: string]
           [@param vm.timezone: string]
+          [@param vm.time_zone.name: string]
           [@param vm.os.boot: collection]
           {
             [@ivar boot.dev: string]
@@ -31080,6 +32308,7 @@ class VMs(Base):
           [@param vm.display.file_transfer_enabled: boolean]
           [@param vm.display.copy_paste_enabled: boolean]
           [@param vm.display.keyboard_layout: string]
+          [@param vm.display.disconnect_action: string]
           [@param vm.os.cmdline: string]
           [@param vm.cpu.topology.cores: int]
           [@param vm.cpu_shares: int]
@@ -31136,12 +32365,17 @@ class VMs(Base):
           [@param vm.cpu_profile.id: string]
           [@param vm.migration.auto_converge: string]
           [@param vm.migration.compressed: string]
+          [@param vm.small_icon.id: string]
+          [@param vm.large_icon.id: string]
+          [@param vm.large_icon.media_type: string]
+          [@param vm.large_icon.data: string]
         Overload 3:
           @param vm.initialization.configuration.type: string
           @param vm.initialization.configuration.data: string
           [@param vm.name: string]
           [@param vm.quota.id: string]
           [@param vm.timezone: string]
+          [@param vm.time_zone.name: string]
           [@param vm.os.boot: collection]
           {
             [@ivar boot.dev: string]
@@ -31163,6 +32397,7 @@ class VMs(Base):
           [@param vm.display.file_transfer_enabled: boolean]
           [@param vm.display.copy_paste_enabled: boolean]
           [@param vm.display.keyboard_layout: string]
+          [@param vm.display.disconnect_action: string]
           [@param vm.os.cmdline: string]
           [@param vm.cpu.topology.cores: int]
           [@param vm.memory: long]
@@ -31227,6 +32462,10 @@ class VMs(Base):
           [@param vm.cpu_profile.id: string]
           [@param vm.migration.auto_converge: string]
           [@param vm.migration.compressed: string]
+          [@param vm.small_icon.id: string]
+          [@param vm.large_icon.id: string]
+          [@param vm.large_icon.media_type: string]
+          [@param vm.large_icon.data: string]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -31498,10 +32737,10 @@ class VmPoolPermissions(Base):
         @type Permission:
 
         Overload 1:
-          @param permission.user.id: string
+          @param permission.user.id|name: string
           @param permission.role.id: string
         Overload 2:
-          @param permission.role.id: string
+          @param permission.role.id|name: string
           @param permission.group.id: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
@@ -31869,10 +33108,10 @@ class VnicProfilePermissions(Base):
 
         Overload 1:
           @param permission.user.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         Overload 2:
           @param permission.group.id: string
-          @param permission.role.id: string
+          @param permission.role.id|name: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 

@@ -247,6 +247,9 @@ or less indicates that the session should never timeout</description>
                             <name>cluster.ksm.enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
+                            <name>cluster.ksm.merge_across_nodes</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
                             <name>cluster.fencing_policy.enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
@@ -392,7 +395,7 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>cluster.version.major</name>
                         </parameter>
-                        <parameter required="false" type="xs:int">
+                        <parameter required="false" type="xs:int,">
                             <name>cluster.version.minor</name>
                         </parameter>
                         <parameter required="false" type="xs:double">
@@ -475,6 +478,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>cluster.management_network.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.ha_reservation</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.ksm.merge_across_nodes</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -1166,6 +1175,7 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                 </url>
                 <body>
+                    <type>GlusterBricks</type>
                     <parameters_set>
                         <description>delete bricks in the gluster volume attached to the cluster</description>
                         <parameter required="true" type="collection">
@@ -2006,16 +2016,16 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new group level permission on the cluster</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.group.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.group.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -2272,7 +2282,7 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -2281,7 +2291,7 @@ or less indicates that the session should never timeout</description>
                             <name>permission.group.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -3190,7 +3200,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                     </parameters_set>
                 </url>
-                <body/>
+                <body>
+                    <type>GlusterBricks</type>
+                </body>
             </request>
         </link>
         <link href="datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks" rel="get">
@@ -3683,16 +3695,16 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new group level permission on the cluster in the specified data center.</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.group.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.group.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -4223,7 +4235,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                     </parameters_set>
                 </url>
-                <body/>
+                <body>
+                    <type>Action</type>
+                </body>
             </request>
         </link>
         <link href="datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}" rel="delete">
@@ -4237,9 +4251,7 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                     </parameters_set>
                 </url>
-                <body>
-                    <type>Action</type>
-                </body>
+                <body/>
             </request>
         </link>
         <link href="datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections/{storageconnection:id}" rel="get">
@@ -4701,16 +4713,16 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new role permission on the data center</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.group.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.group.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -4983,7 +4995,54 @@ or less indicates that the session should never timeout</description>
                 <type>QoS</type>
             </response>
         </link>
+        <link href="datacenters/{datacenter:id}/quotas" rel="add">
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Quota</type>
+                    <parameters_set>
+                        <description>add a new Quota to a Data Center</description>
+                        <parameter required="true" type="xs:string">
+                            <name>quota.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>quota.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>quota.cluster_soft_limit_pct</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>quota.cluster_hard_limit_pct</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>quota.storage_soft_limit_pct</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>quota.storage_hard_limit_pct</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Quota</type>
+            </response>
+        </link>
         <link href="datacenters/{datacenter:id}/quotas" rel="get">
+            <description>get a list of Quotas for specified Data Center</description>
             <request>
                 <http_method>GET</http_method>
                 <url>
@@ -5000,13 +5059,246 @@ or less indicates that the session should never timeout</description>
                 <type>Quotas</type>
             </response>
         </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}" rel="delete">
+            <description>delete the specified quota in the system</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
         <link href="datacenters/{datacenter:id}/quotas/{quota:id}" rel="get">
+            <description>get the details of the specified Quota</description>
             <request>
                 <http_method>GET</http_method>
                 <body/>
             </request>
             <response>
                 <type>Quota</type>
+            </response>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}" rel="update">
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>202-accepted</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>Quota</type>
+                    <parameters_set>
+                        <description>update the specified Quota</description>
+                        <parameter required="false" type="xs:string">
+                            <name>quota.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>quota.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>quota.cluster_soft_limit_pct</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>quota.cluster_hard_limit_pct</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>quota.storage_soft_limit_pct</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>quota.storage_hard_limit_pct</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Quota</type>
+            </response>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/permissions" rel="add">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>Permission</type>
+                </body>
+            </request>
+            <response>
+                <type>Permission</type>
+            </response>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/permissions" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>Permissions</type>
+            </response>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/permissions/{permission:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/permissions/{permission:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Permission</type>
+            </response>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/quotaclusterlimits" rel="add">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>QuotaClusterLimit</type>
+                </body>
+            </request>
+            <response>
+                <type>QuotaClusterLimit</type>
+            </response>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/quotaclusterlimits" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>QuotaClusterLimits</type>
+            </response>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/quotaclusterlimits/{quotaclusterlimit:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/quotaclusterlimits/{quotaclusterlimit:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>QuotaClusterLimit</type>
+            </response>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/quotastoragelimits" rel="add">
+            <request>
+                <http_method>POST</http_method>
+                <body>
+                    <type>QuotaStorageLimit</type>
+                </body>
+            </request>
+            <response>
+                <type>QuotaStorageLimit</type>
+            </response>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/quotastoragelimits" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>QuotaStorageLimits</type>
+            </response>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/quotastoragelimits/{quotastoragelimit:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="datacenters/{datacenter:id}/quotas/{quota:id}/quotastoragelimits/{quotastoragelimit:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>QuotaStorageLimit</type>
             </response>
         </link>
         <link href="datacenters/{datacenter:id}/storagedomains" rel="add">
@@ -5060,7 +5352,7 @@ or less indicates that the session should never timeout</description>
             </response>
         </link>
         <link href="datacenters/{datacenter:id}/storagedomains/{storagedomain:id}" rel="delete">
-            <description>delete the specified storage domain in a data center</description>
+            <description>Detach the specified Storage Domain from the Data Center. If the Storage Domain is local it will also be completely removed.</description>
             <request>
                 <http_method>DELETE</http_method>
                 <headers>
@@ -5243,6 +5535,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.disk_profile.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.openstack_volume_type.name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -5697,7 +5992,7 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -5706,7 +6001,7 @@ or less indicates that the session should never timeout</description>
                             <name>permission.group.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -5839,6 +6134,9 @@ or less indicates that the session should never timeout</description>
     <name>storage_domain.id|name</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.openstack_volume_type.name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -6317,6 +6615,9 @@ or less indicates that the session should never timeout</description>
                             <name>event.host.id</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
+                            <name>event.host.external_status.state</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
                             <name>event.user.id</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
@@ -6324,6 +6625,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>event.storage_domain.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>event.storage_domain.external_status.state</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>event.template.id</name>
@@ -6935,7 +7239,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new permission on the data center to the group in the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.data_center.id</name>
@@ -6944,7 +7248,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new permission on the cluster to the group in the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.cluster.id</name>
@@ -6953,7 +7257,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new permission on the host to the group in the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.host.id</name>
@@ -6962,7 +7266,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new permission on the storage domain to the group in the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.storage_domain.id</name>
@@ -6971,7 +7275,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new permission on the vm to the group in the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.vm.id</name>
@@ -6980,7 +7284,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new permission on the vm pool to the group in the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.vmpool.id</name>
@@ -6989,7 +7293,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new permission on the template to the group in the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.template.id</name>
@@ -7071,6 +7375,20 @@ or less indicates that the session should never timeout</description>
             <response>
                 <type>Roles</type>
             </response>
+        </link>
+        <link href="groups/{group:id}/roles/{role:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
         </link>
         <link href="groups/{group:id}/roles/{role:id}/permits" rel="add">
             <description>add a new permit for a role in a group</description>
@@ -9065,13 +9383,13 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new group level permission for the host</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.group.id</name>
@@ -9392,6 +9710,34 @@ or less indicates that the session should never timeout</description>
                 <type>Action</type>
             </response>
         </link>
+        <link href="icons" rel="get">
+            <description>get the list of all icons in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>Icons</type>
+            </response>
+        </link>
+        <link href="icons/{icon:id}" rel="get">
+            <description>get the detailed of the specified icon in the system</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Icon</type>
+            </response>
+        </link>
         <link href="instancetypes" rel="add">
             <description>add a new instance type to the system</description>
             <request>
@@ -9419,6 +9765,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>instance_type.memory</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>instance_type.io.threads</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>instance_type.cpu.topology.cores</name>
@@ -10496,7 +10845,7 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -10505,7 +10854,7 @@ or less indicates that the session should never timeout</description>
                             <name>permission.group.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -10774,6 +11123,9 @@ or less indicates that the session should never timeout</description>
 </parameter>
                             </parameters_set>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.tenant_name</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -10892,6 +11244,9 @@ or less indicates that the session should never timeout</description>
     <name>property.value</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_image_provider.tenant_name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -11139,6 +11494,9 @@ or less indicates that the session should never timeout</description>
 </parameter>
                             </parameters_set>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.tenant_name</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -11257,6 +11615,9 @@ or less indicates that the session should never timeout</description>
     <name>property.value</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_network_provider.tenant_name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -11467,6 +11828,9 @@ or less indicates that the session should never timeout</description>
 </parameter>
                             </parameters_set>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.tenant_name</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -11589,11 +11953,141 @@ or less indicates that the session should never timeout</description>
 </parameter>
                             </parameters_set>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_provider.tenant_name</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
             <response>
                 <type>OpenStackVolumeProvider</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys" rel="add">
+            <description>add a new authentication key to the OpenStack volume provider</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>OpenstackVolumeAuthenticationKey</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>openstack_volume_authentication_key.uuid</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>openstack_volume_authentication_key.value</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>openstack_volume_authentication_key.usage_type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_authentication_key.description</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>OpenstackVolumeAuthenticationKey</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys" rel="get">
+            <description>get the list of authentication keys of the OpenStack volume provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>OpenstackVolumeAuthenticationKeys</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys/{authenticationkey:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys/{authenticationkey:id}" rel="get">
+            <description>get the details of the specified authentication key of the OpenStack volume provider</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>OpenstackVolumeAuthenticationKey</type>
+            </response>
+        </link>
+        <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys/{authenticationkey:id}" rel="update">
+            <description>update the specified authentication key</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>202-accepted</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>OpenstackVolumeAuthenticationKey</type>
+                    <parameters_set>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_authentication_key.value</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_authentication_key.usage_type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>openstack_volume_authentication_key.description</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>OpenstackVolumeAuthenticationKey</type>
             </response>
         </link>
         <link href="openstackvolumeproviders/{openstackvolumeprovider:id}/certificates" rel="get">
@@ -11742,16 +12236,16 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new group level permission on the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.group.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.group.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -13491,6 +13985,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>disk.disk_profile.id</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.openstack_volume_type.name</name>
+                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new lun disk to the storage domain</description>
@@ -13918,6 +14415,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>action.cluster.id|name</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.disk.alias|name</name>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
                         </parameter>
@@ -13998,16 +14498,16 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new group level permission on the storage domain</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.group.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.group.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -14067,6 +14567,52 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Permission</type>
+            </response>
+        </link>
+        <link href="storagedomains/{storagedomain:id}/refreshluns" rel="refreshluns">
+            <description>Refresh the size of the provided LUNs</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>Action</type>
+                    <parameters_set>
+                        <parameter required="true" type="collection">
+                            <name>action.logical_units.logical_unit</name>
+                            <parameters_set>
+<parameter required="true" type="xs:string">
+    <name>logical_unit.id</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.async</name>
+                        </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>action.grace_period.expiry</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
             </response>
         </link>
         <link href="storagedomains/{storagedomain:id}/storageconnections" rel="add">
@@ -14715,6 +15261,9 @@ or less indicates that the session should never timeout</description>
                             <name>template.memory</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
+                            <name>template.io.threads</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
                             <name>template.cpu.topology.cores</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
@@ -14731,6 +15280,10 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.timezone</name>
+                            <deprecated>true</deprecated>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.time_zone.name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.storage_domain.id</name>
@@ -14835,6 +15388,9 @@ or less indicates that the session should never timeout</description>
                             <name>template.display.keyboard_layout</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
+                            <name>template.display.disconnect_action</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
                             <name>template.os.initRd</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
@@ -14929,6 +15485,18 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.migration.compressed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.small_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.large_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.large_icon.media_type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.large_icon.data</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -15055,6 +15623,9 @@ or less indicates that the session should never timeout</description>
                             <name>template.memory</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
+                            <name>template.io.threads</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
                             <name>template.cpu.topology.cores</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
@@ -15071,6 +15642,10 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.timezone</name>
+                            <deprecated>true</deprecated>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.time_zone.name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.domain.name</name>
@@ -15172,6 +15747,9 @@ or less indicates that the session should never timeout</description>
                             <name>template.display.keyboard_layout</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
+                            <name>template.display.disconnect_action</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
                             <name>template.os.initRd</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
@@ -15221,6 +15799,18 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.migration.compressed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.small_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.large_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.large_icon.media_type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.large_icon.data</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -15694,16 +16284,16 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new role permission on the template</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.group.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.group.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -16116,63 +16706,63 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Permission</type>
                     <parameters_set>
-                        <description>add a new tole permission for the user on the data center</description>
+                        <description>add a new role permission for the user on the data center</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.data_center.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
-                        <description>add a new tole permission for the user on the cluster</description>
+                        <description>add a new role permission for the user on the cluster</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.cluster.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
-                        <description>add a new tole permission for the user on the host</description>
+                        <description>add a new role permission for the user on the host</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.host.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
-                        <description>add a new tole permission for the user on the storage domain</description>
+                        <description>add a new role permission for the user on the storage domain</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.storage_domain.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
-                        <description>add a new tole permission for the user on the vm</description>
+                        <description>add a new role permission for the user on the vm</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.vm.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
-                        <description>add a new tole permission for the user on the vm pool</description>
+                        <description>add a new role permission for the user on the vm pool</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.vmpool.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
-                        <description>add a new tole permission for the user on the template</description>
+                        <description>add a new role permission for the user on the template</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.template.id</name>
@@ -16254,6 +16844,20 @@ or less indicates that the session should never timeout</description>
             <response>
                 <type>Roles</type>
             </response>
+        </link>
+        <link href="users/{user:id}/roles/{role:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
         </link>
         <link href="users/{user:id}/roles/{role:id}/permits" rel="add">
             <description>add a new permit for the role assigned to the user</description>
@@ -16676,7 +17280,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new user level permission on the vm pool</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.user.id</name>
+                            <name>permission.user.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.role.id</name>
@@ -16685,7 +17289,7 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new group level permission on the vm pool</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>permission.group.id</name>
@@ -16789,6 +17393,10 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.timezone</name>
+                            <deprecated>true</deprecated>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.time_zone.name</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>vm.os.boot</name>
@@ -16849,6 +17457,9 @@ or less indicates that the session should never timeout</description>
                             <name>vm.display.keyboard_layout</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
+                            <name>vm.display.disconnect_action</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
                             <name>vm.os.cmdline</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
@@ -16859,6 +17470,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>vm.io.threads</name>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory_policy.guaranteed</name>
@@ -17018,6 +17632,18 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>vm.migration.compressed</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.small_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.media_type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.data</name>
+                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a virtual machine to the system by cloning from a snapshot</description>
@@ -17043,6 +17669,10 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.timezone</name>
+                            <deprecated>true</deprecated>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.time_zone.name</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>vm.os.boot</name>
@@ -17101,6 +17731,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.display.keyboard_layout</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.display.disconnect_action</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.os.cmdline</name>
@@ -17254,6 +17887,18 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>vm.migration.compressed</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.small_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.media_type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.data</name>
+                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a virtual machine to the system from a configuration - requires the configuration type and the configuration data</description>
@@ -17271,6 +17916,10 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.timezone</name>
+                            <deprecated>true</deprecated>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.time_zone.name</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>vm.os.boot</name>
@@ -17326,6 +17975,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.display.keyboard_layout</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.display.disconnect_action</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.os.cmdline</name>
@@ -17495,6 +18147,18 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>vm.migration.compressed</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.small_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.media_type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.data</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -17641,6 +18305,10 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.timezone</name>
+                            <deprecated>true</deprecated>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.time_zone.name</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>vm.os.boot</name>
@@ -17717,6 +18385,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>vm.io.threads</name>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory_policy.guaranteed</name>
@@ -17860,6 +18531,18 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.external_host_provider.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.small_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.media_type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm.large_icon.data</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -18248,6 +18931,9 @@ or less indicates that the session should never timeout</description>
 </parameter>
                             </parameters_set>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.openstack_volume_type.name</name>
+                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new direct lun disk to the virtual machine, this operation does not require size but needs lun connection details</description>
@@ -18439,6 +19125,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>provisioned_size</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.alias</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.interface</name>
@@ -18772,6 +19464,56 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Action</type>
+            </response>
+        </link>
+        <link href="vms/{vm:id}/graphicsconsoles" rel="get">
+            <description>Get active graphics consoles of a VM.</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>GraphicsConsoles</type>
+            </response>
+        </link>
+        <link href="vms/{vm:id}/graphicsconsoles/{graphicsconsole:id}" rel="get">
+            <description>Get active graphics console of a VM.</description>
+            <request>
+                <http_method>GET</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Content-Type</name>
+                        <value>application/xml|json|x-virt-viewer</value>
+                    </header>
+                </headers>
+                <body/>
+            </request>
+            <response>
+                <type>Response</type>
+            </response>
+        </link>
+        <link href="vms/{vm:id}/graphicsconsoles/{graphicsconsole:id}" rel="get">
+            <description>Get active graphics console of a VM.</description>
+            <request>
+                <http_method>GET</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Content-Type</name>
+                        <value>application/xml|json|x-virt-viewer</value>
+                    </header>
+                </headers>
+                <body/>
+            </request>
+            <response>
+                <type>GraphicsConsole</type>
             </response>
         </link>
         <link href="vms/{vm:id}/katelloerrata" rel="get">
@@ -19492,16 +20234,16 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new group level permission for a given virtual machine</description>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.group.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.group.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -20760,7 +21502,7 @@ or less indicates that the session should never timeout</description>
                             <name>permission.user.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -20769,7 +21511,7 @@ or less indicates that the session should never timeout</description>
                             <name>permission.group.id</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.role.id</name>
+                            <name>permission.role.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>

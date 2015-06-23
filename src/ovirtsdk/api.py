@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-05-22 12:10:41.000344'''
+'''Generated at: 2015-06-23 16:48:49.000517'''
 
 import re
 
@@ -49,6 +49,7 @@ from ovirtsdk.infrastructure.brokers import Events
 from ovirtsdk.infrastructure.brokers import ExternalHostProviders
 from ovirtsdk.infrastructure.brokers import Groups
 from ovirtsdk.infrastructure.brokers import Hosts
+from ovirtsdk.infrastructure.brokers import Icons
 from ovirtsdk.infrastructure.brokers import InstanceTypes
 from ovirtsdk.infrastructure.brokers import Jobs
 from ovirtsdk.infrastructure.brokers import KatelloErrata
@@ -228,6 +229,7 @@ class API(object):
         self.externalhostproviders = ExternalHostProviders(self.id)
         self.groups = Groups(self.id)
         self.hosts = Hosts(self.id)
+        self.icons = Icons(self.id)
         self.instancetypes = InstanceTypes(self.id)
         self.jobs = Jobs(self.id)
         self.katelloerrata = KatelloErrata(self.id)
