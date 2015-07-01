@@ -7347,7 +7347,7 @@ or less indicates that the session should never timeout</description>
             </response>
         </link>
         <link href="/ovirt-engine/api/hosts/{host:id}/unregisteredstoragedomainsdiscover" rel="unregisteredstoragedomainsdiscover">
-            <description>Discover the Storage Domains which are candidiates to be imported to the setup</description>
+            <description>Discover the block Storage Domains which are candidates to be imported to the setup. For FCP no arguments are needed.</description>
             <request>
                 <http_method>POST</http_method>
                 <headers>
@@ -7363,11 +7363,11 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Action</type>
                     <parameters_set>
-                        <description>Discover the Storage Domains which are candidiates to be imported to the setup</description>
-                        <parameter required="true" type="xs:string">
+                        <description>Discover the block Storage Domains which are candidates to be imported to the setup. For FCP no arguments are needed.</description>
+                        <parameter required="false" type="xs:string">
                             <name>action.iscsi.address</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
+                        <parameter required="false" type="xs:string">
                             <name>action.target</name>
                         </parameter>
                     </parameters_set>
@@ -10781,6 +10781,9 @@ or less indicates that the session should never timeout</description>
                             <name>template.timezone</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
+                            <name>template.storage_domain.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
                             <name>template.domain.name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
@@ -10905,6 +10908,9 @@ or less indicates that the session should never timeout</description>
                             <parameters_set>
 <parameter required="false" type="xs:string">
     <name>disk.id</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>disk.alias</name>
 </parameter>
 <parameter required="false" type="collection">
     <name>storage_domains.storage_domain</name>

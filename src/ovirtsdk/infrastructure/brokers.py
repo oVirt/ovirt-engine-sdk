@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-03-18 10:41:11.000183'''
+'''Generated at: 2015-07-01 16:07:04.000100'''
 
 
 from ovirtsdk.xml import params
@@ -11532,8 +11532,8 @@ class Host(params.Host, Base):
         '''
         @type Action:
 
-        @param action.iscsi.address: string
-        @param action.target: string
+        [@param action.iscsi.address: string]
+        [@param action.target: string]
         [@param correlation_id: any string]
 
         @return Action:
@@ -20627,6 +20627,7 @@ class Templates(Base):
         [@param template.origin: string]
         [@param template.high_availability.priority: int]
         [@param template.timezone: string]
+        [@param template.storage_domain.id: string]
         [@param template.domain.name: string]
         [@param template.type: string]
         [@param template.stateless: boolean]
@@ -20674,6 +20675,7 @@ class Templates(Base):
         [@param template.vm.disks.disk: collection]
         {
           [@ivar disk.id: string]
+          [@ivar disk.alias: string]
           [@ivar storage_domains.storage_domain: collection]
           {
             [@param storage_domain.id: string]
