@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-06-23 16:48:49.000335'''
+'''Generated at: 2015-07-13 10:48:56.000544'''
 
 
 from ovirtsdk.xml import params
@@ -13655,6 +13655,7 @@ class Host(params.Host, Base):
         Base.__init__(self, context)
         self.superclass = host
 
+        self.devices = HostHostDevices(self, context)
         self.fenceagents = HostAgents(self, context)
         self.hooks = HostHooks(self, context)
         self.katelloerrata = HostKatelloErrata(self, context)
@@ -14081,7 +14082,7 @@ class Host(params.Host, Base):
 
         return result
 
-    def refreshcapabilities(self, action=params.Action(), correlation_id=None):
+    def refresh(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
 
@@ -14092,7 +14093,7 @@ class Host(params.Host, Base):
         @return Action:
         '''
 
-        url = '/hosts/{host:id}/refreshcapabilities'
+        url = '/hosts/{host:id}/refresh'
 
         result = self.__getProxy().request(
             method='POST',
@@ -14525,6 +14526,136 @@ class HostHooks(Base):
 
         return ParseHelper.toSubCollection(
             HostHook,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class HostHostDevice(params.HostDevice, Base):
+    def __init__(self, host, hostdevice, context):
+        Base.__init__(self, context)
+        self.parentclass = host
+        self.superclass  =  hostdevice
+
+        #SUB_COLLECTIONS
+    def __new__(cls, host, hostdevice, context):
+        if hostdevice is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(host, hostdevice, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+class HostHostDevices(Base):
+
+    def __init__(self, host , context):
+        Base.__init__(self, context)
+        self.parentclass = host
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return HostDevices:
+        '''
+
+        url = '/hosts/{host:id}/devices'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{host:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return HostHostDevice(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_host_device()
+
+            return HostHostDevice(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return HostDevices:
+        '''
+
+        url = '/hosts/{host:id}/devices'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_host_device()
+
+        return ParseHelper.toSubCollection(
+            HostHostDevice,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -16594,29 +16725,6 @@ class InstanceTypeNIC(params.NIC, Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
-
-    def delete(self, async=None):
-        '''
-        [@param async: boolean (true|false)]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/instancetypes/{instancetype:id}/nics/{nic:id}',
-            {
-                '{instancetype:id}': self.parentclass.get_id(),
-                '{nic:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Content-type":None}
-        )
 
     def update(self, async=None):
         '''
@@ -22273,22 +22381,21 @@ class StorageConnection(params.StorageConnection, Base):
     def update(self, correlation_id=None, expect=None):
         '''
         Overload 1:
-          [@param storage_connection.port: int]
-          [@param storage_connection.username: string]
           [@param storage_connection.password: string]
-          [@param storage_connection.iqn: string]
-          [@param storage_connection.address: string]
+          [@param storage_connection.port: int]
+          [@param storage_connection.target: string]
+          [@param storage_connection.username: string]
         Overload 2:
+          [@param storage_connection.address: string]
+          [@param storage_connection.nfs_retrans: string]
           [@param storage_connection.nfs_timeo: string]
           [@param storage_connection.nfs_version: string]
-          [@param storage_connection.nfs_retrans: string]
-          [@param storage_connection.address: string]
           [@param storage_connection.path: string]
         Overload 3:
-          [@param storage_connection.mount_options: string]
-          [@param storage_connection.vfs_type: string]
           [@param storage_connection.address: string]
+          [@param storage_connection.mount_options: string]
           [@param storage_connection.path: string]
+          [@param storage_connection.vfs_type: string]
         Overload 4:
           [@param storage_connection.path: string]
         [@param correlation_id: any string]
@@ -22331,27 +22438,27 @@ class StorageConnections(Base):
 
         Overload 1:
           @param storage_connection.address: string
-          @param storage_connection.type: string
-          @param storage_connection.iqn: string
           @param storage_connection.port: int
-          [@param storage_connection.username: string]
+          @param storage_connection.target: string
+          @param storage_connection.type: string
           [@param storage_connection.password: string]
+          [@param storage_connection.username: string]
         Overload 2:
           @param storage_connection.address: string
-          @param storage_connection.type: string
           @param storage_connection.path: string
+          @param storage_connection.type: string
+          [@param storage_connection.nfs_retrans: string]
           [@param storage_connection.nfs_timeo: string]
           [@param storage_connection.nfs_version: string]
-          [@param storage_connection.nfs_retrans: string]
         Overload 3:
-          @param storage_connection.type: string
           @param storage_connection.path: string
+          @param storage_connection.type: string
           @param storage_connection.vfs_type: string
           [@param storage_connection.address: string]
           [@param storage_connection.mount_options: string]
         Overload 4:
-          @param storage_connection.type: string
           @param storage_connection.path: string
+          @param storage_connection.type: string
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -22567,9 +22674,9 @@ class StorageDomain(params.StorageDomain, Base):
         '''
         @type Action:
 
-        @param action.logical_units.logical_unit: collection
+        [@param action.logical_units.logical_unit: collection]
         {
-          @ivar logical_unit.id: string
+          [@ivar logical_unit.id: string]
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
@@ -24959,7 +25066,6 @@ class StorageDomains(Base):
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
           @param storagedomain.storage.type: string
-          @param storagedomain.format: boolean
           @param storagedomain.storage.address: string
           @param storagedomain.storage.logical_unit: collection
           {
@@ -24989,7 +25095,6 @@ class StorageDomains(Base):
           @param storagedomain.storage.type: string
           @param storagedomain.import: boolean
           [@param storagedomain.storage.address: string]
-          [@param storagedomain.format: boolean]
           [@param storagedomain.comment: string]
           [@param storagedomain.warning_low_space_indicator: int]
           [@param storagedomain.critical_space_action_blocker: int]
@@ -24997,7 +25102,6 @@ class StorageDomains(Base):
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
           @param storagedomain.storage.type: string
-          @param storagedomain.format: boolean
           @param storagedomain.storage.address: string
           @param storagedomain.storage.path: string
           [@param storagedomain.name: string]
@@ -25010,7 +25114,6 @@ class StorageDomains(Base):
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
           @param storagedomain.storage.type: string
-          @param storagedomain.format: boolean
           @param storagedomain.storage.path: string
           [@param storagedomain.name: string]
           [@param storagedomain.comment: string]
@@ -25022,7 +25125,6 @@ class StorageDomains(Base):
           @param storagedomain.host.id|name: string
           @param storagedomain.type: string
           @param storagedomain.storage.type: string
-          @param storagedomain.format: boolean
           @param storagedomain.storage.path: string
           @param storagedomain.storage.vfs_type: string
           [@param storagedomain.name: string]
@@ -25818,30 +25920,6 @@ class TemplateNIC(params.NIC, Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/templates/{template:id}/nics/{nic:id}',
-            {
-                '{template:id}': self.parentclass.get_id(),
-                '{nic:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
 
     def update(self, async=None, correlation_id=None, expect=None):
         '''
@@ -27714,6 +27792,7 @@ class VM(params.VM, Base):
         self.cdroms = VMCdRoms(self, context)
         self.disks = VMDisks(self, context)
         self.graphicsconsoles = VMGraphicsConsoles(self, context)
+        self.hostdevices = VMHostDevices(self, context)
         self.katelloerrata = VMKatelloErrata(self, context)
         self.nics = VMNICs(self, context)
         self.numanodes = VMVirtualNumaNodes(self, context)
@@ -28190,6 +28269,31 @@ class VM(params.VM, Base):
 
         return result
 
+    def reordermacaddresses(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/vms/{vm:id}/reordermacaddresses'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
     def shutdown(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
@@ -28274,6 +28378,8 @@ class VM(params.VM, Base):
           [@ivar payload_file.content: string]
           [@ivar payload_file.type: string]
         }
+        [@param action.use_sysprep: boolean]
+        [@param action.use_cloud_init: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
@@ -28555,30 +28661,6 @@ class VMCdRom(params.CdRom, Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
-
-    def delete(self, async=None, correlation_id=None):
-        '''
-        [@param async: boolean (true|false)]
-        [@param correlation_id: any string]
-
-        @return None:
-        '''
-
-        url = UrlHelper.replace(
-            '/vms/{vm:id}/cdroms/{cdrom:id}',
-            {
-                '{vm:id}': self.parentclass.get_id(),
-                '{cdrom:id}': self.get_id(),
-            }
-        )
-
-        return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
-                url,
-                {'async:matrix':async}
-            ),
-            headers={"Correlation-Id":correlation_id,"Content-type":None}
-        )
 
     def update(self, current=None, async=None, correlation_id=None, expect=None):
         '''
@@ -29590,6 +29672,191 @@ class VMGraphicsConsoles(Base):
 
         return ParseHelper.toSubCollection(
             VMGraphicsConsole,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class VMHostDevice(params.HostDevice, Base):
+    def __init__(self, vm, hostdevice, context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+        self.superclass  =  hostdevice
+
+        #SUB_COLLECTIONS
+    def __new__(cls, vm, hostdevice, context):
+        if hostdevice is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(vm, hostdevice, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/vms/{vm:id}/hostdevices/{hostdevice:id}',
+            {
+                '{vm:id}': self.parentclass.get_id(),
+                '{hostdevice:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class VMHostDevices(Base):
+
+    def __init__(self, vm , context):
+        Base.__init__(self, context)
+        self.parentclass = vm
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, hostdevice, correlation_id=None, expect=None):
+
+        '''
+        @type HostDevice:
+
+        @param host_device.id|name: xs.string
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return HostDevice:
+        '''
+
+        url = '/vms/{vm:id}/hostdevices'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(hostdevice),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return VMHostDevice(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return HostDevices:
+        '''
+
+        url = '/vms/{vm:id}/hostdevices'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{vm:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return VMHostDevice(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_host_device()
+
+            return VMHostDevice(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return HostDevices:
+        '''
+
+        url = '/vms/{vm:id}/hostdevices'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_host_device()
+
+        return ParseHelper.toSubCollection(
+            VMHostDevice,
             self.parentclass,
             FilterHelper.filter(
                 result,

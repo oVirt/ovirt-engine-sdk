@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Tue Jun 23 16:48:48 2015 by generateDS.py version 2.12a.
+# Generated Mon Jul 13 10:48:55 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -11761,7 +11761,7 @@ class SELinux(GeneratedsSuper):
 class Host(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, address=None, certificate=None, status=None, external_status=None, cluster=None, port=None, type_=None, storage_manager=None, spm=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, ssh=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, protocol=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None, display=None, hosted_engine=None, kdump_status=None, selinux=None, auto_numa_status=None, numa_supported=None, live_snapshot_support=None, katello_errata=None, external_host_provider=None, update_available=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, address=None, certificate=None, status=None, external_status=None, cluster=None, port=None, type_=None, storage_manager=None, spm=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, ssh=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, protocol=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None, display=None, hosted_engine=None, kdump_status=None, selinux=None, auto_numa_status=None, numa_supported=None, live_snapshot_support=None, katello_errata=None, external_host_provider=None, update_available=None, device_passthrough=None):
         super(Host, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.address = address
         self.certificate = certificate
@@ -11801,6 +11801,7 @@ class Host(BaseResource):
         self.katello_errata = katello_errata
         self.external_host_provider = external_host_provider
         self.update_available = update_available
+        self.device_passthrough = device_passthrough
     def factory(*args_, **kwargs_):
         if Host.subclass:
             return Host.subclass(*args_, **kwargs_)
@@ -11883,6 +11884,8 @@ class Host(BaseResource):
     def set_external_host_provider(self, external_host_provider): self.external_host_provider = external_host_provider
     def get_update_available(self): return self.update_available
     def set_update_available(self, update_available): self.update_available = update_available
+    def get_device_passthrough(self): return self.device_passthrough
+    def set_device_passthrough(self, device_passthrough): self.device_passthrough = device_passthrough
     def hasContent_(self):
         if (
             self.address is not None or
@@ -11923,6 +11926,7 @@ class Host(BaseResource):
             self.katello_errata is not None or
             self.external_host_provider is not None or
             self.update_available is not None or
+            self.device_passthrough is not None or
             super(Host, self).hasContent_()
         ):
             return True
@@ -12042,6 +12046,8 @@ class Host(BaseResource):
         if self.update_available is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%supdate_available>%s</%supdate_available>%s' % (namespace_, self.gds_format_boolean(self.update_available, input_name='update_available'), namespace_, eol_))
+        if self.device_passthrough is not None:
+            self.device_passthrough.export_(outfile, level, namespace_, name_='device_passthrough', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Host'):
         level += 1
         already_processed = set()
@@ -12238,6 +12244,12 @@ class Host(BaseResource):
         if self.update_available is not None:
             showIndent(outfile, level)
             outfile.write('update_available=%s,\n' % self.update_available)
+        if self.device_passthrough is not None:
+            showIndent(outfile, level)
+            outfile.write('device_passthrough=model_.device_passthrough(\n')
+            self.device_passthrough.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -12444,8 +12456,93 @@ class Host(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'update_available')
             self.update_available = ival_
+        elif nodeName_ == 'device_passthrough':
+            obj_ = HostDevicePassthrough.factory()
+            obj_.build(child_)
+            self.device_passthrough = obj_
         super(Host, self).buildChildren(child_, node, nodeName_, True)
 # end class Host
+
+
+class HostDevicePassthrough(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, enabled=None):
+        self.enabled = enabled
+    def factory(*args_, **kwargs_):
+        if HostDevicePassthrough.subclass:
+            return HostDevicePassthrough.subclass(*args_, **kwargs_)
+        else:
+            return HostDevicePassthrough(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_enabled(self): return self.enabled
+    def set_enabled(self, enabled): self.enabled = enabled
+    def hasContent_(self):
+        if (
+            self.enabled is not None
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='HostDevicePassthrough', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='HostDevicePassthrough')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='HostDevicePassthrough'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='HostDevicePassthrough', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.enabled is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%senabled>%s</%senabled>%s' % (namespace_, self.gds_format_boolean(self.enabled, input_name='enabled'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='HostDevicePassthrough'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.enabled is not None:
+            showIndent(outfile, level)
+            outfile.write('enabled=%s,\n' % self.enabled)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'enabled':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'enabled')
+            self.enabled = ival_
+# end class HostDevicePassthrough
 
 
 class StorageManager(GeneratedsSuper):
@@ -18239,7 +18336,7 @@ class StorageConnection(BaseResource):
 class StorageDomain(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, data_centers=None, type_=None, status=None, external_status=None, master=None, storage=None, host=None, format=None, destroy=None, available=None, used=None, committed=None, storage_format=None, wipe_after_delete=None, import_=None, is_attached=None, warning_low_space_indicator=None, critical_space_action_blocker=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, data_centers=None, type_=None, status=None, external_status=None, master=None, storage=None, host=None, format=None, destroy=None, available=None, used=None, committed=None, storage_format=None, wipe_after_delete=None, import_=None, warning_low_space_indicator=None, critical_space_action_blocker=None):
         super(StorageDomain, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.data_center = data_center
         self.data_centers = data_centers
@@ -18257,7 +18354,6 @@ class StorageDomain(BaseResource):
         self.storage_format = storage_format
         self.wipe_after_delete = wipe_after_delete
         self.import_ = import_
-        self.is_attached = is_attached
         self.warning_low_space_indicator = warning_low_space_indicator
         self.critical_space_action_blocker = critical_space_action_blocker
     def factory(*args_, **kwargs_):
@@ -18298,8 +18394,6 @@ class StorageDomain(BaseResource):
     def set_wipe_after_delete(self, wipe_after_delete): self.wipe_after_delete = wipe_after_delete
     def get_import(self): return self.import_
     def set_import(self, import_): self.import_ = import_
-    def get_is_attached(self): return self.is_attached
-    def set_is_attached(self, is_attached): self.is_attached = is_attached
     def get_warning_low_space_indicator(self): return self.warning_low_space_indicator
     def set_warning_low_space_indicator(self, warning_low_space_indicator): self.warning_low_space_indicator = warning_low_space_indicator
     def get_critical_space_action_blocker(self): return self.critical_space_action_blocker
@@ -18322,7 +18416,6 @@ class StorageDomain(BaseResource):
             self.storage_format is not None or
             self.wipe_after_delete is not None or
             self.import_ is not None or
-            self.is_attached is not None or
             self.warning_low_space_indicator is not None or
             self.critical_space_action_blocker is not None or
             super(StorageDomain, self).hasContent_()
@@ -18396,9 +18489,6 @@ class StorageDomain(BaseResource):
         if self.import_ is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%simport>%s</%simport>%s' % (namespace_, self.gds_format_boolean(self.import_, input_name='import'), namespace_, eol_))
-        if self.is_attached is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%sis_attached>%s</%sis_attached>%s' % (namespace_, self.gds_format_boolean(self.is_attached, input_name='is_attached'), namespace_, eol_))
         if self.warning_low_space_indicator is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%swarning_low_space_indicator>%s</%swarning_low_space_indicator>%s' % (namespace_, self.gds_format_integer(self.warning_low_space_indicator, input_name='warning_low_space_indicator'), namespace_, eol_))
@@ -18481,9 +18571,6 @@ class StorageDomain(BaseResource):
         if self.import_ is not None:
             showIndent(outfile, level)
             outfile.write('import_=%s,\n' % self.import_)
-        if self.is_attached is not None:
-            showIndent(outfile, level)
-            outfile.write('is_attached=%s,\n' % self.is_attached)
         if self.warning_low_space_indicator is not None:
             showIndent(outfile, level)
             outfile.write('warning_low_space_indicator=%d,\n' % self.warning_low_space_indicator)
@@ -18606,16 +18693,6 @@ class StorageDomain(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'import')
             self.import_ = ival_
-        elif nodeName_ == 'is_attached':
-            sval_ = child_.text
-            if sval_ in ('true', '1'):
-                ival_ = True
-            elif sval_ in ('false', '0'):
-                ival_ = False
-            else:
-                raise_parse_error(child_, 'requires boolean')
-            ival_ = self.gds_validate_boolean(ival_, node, 'is_attached')
-            self.is_attached = ival_
         elif nodeName_ == 'warning_low_space_indicator':
             sval_ = child_.text
             try:
@@ -22469,7 +22546,8 @@ class NetworkConfiguration(GeneratedsSuper):
 class VmPlacementPolicy(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, host=None, affinity=None):
+    def __init__(self, hosts=None, host=None, affinity=None):
+        self.hosts = hosts
         self.host = host
         self.affinity = affinity
     def factory(*args_, **kwargs_):
@@ -22478,12 +22556,15 @@ class VmPlacementPolicy(GeneratedsSuper):
         else:
             return VmPlacementPolicy(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def get_hosts(self): return self.hosts
+    def set_hosts(self, hosts): self.hosts = hosts
     def get_host(self): return self.host
     def set_host(self, host): self.host = host
     def get_affinity(self): return self.affinity
     def set_affinity(self, affinity): self.affinity = affinity
     def hasContent_(self):
         if (
+            self.hosts is not None or
             self.host is not None or
             self.affinity is not None
         ):
@@ -22513,6 +22594,8 @@ class VmPlacementPolicy(GeneratedsSuper):
             eol_ = '\n'
         else:
             eol_ = ''
+        if self.hosts is not None:
+            self.hosts.export_(outfile, level, namespace_, name_='hosts', pretty_print=pretty_print)
         if self.host is not None:
             self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
         if self.affinity is not None:
@@ -22527,6 +22610,12 @@ class VmPlacementPolicy(GeneratedsSuper):
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
         pass
     def exportLiteralChildren(self, outfile, level, name_):
+        if self.hosts is not None:
+            showIndent(outfile, level)
+            outfile.write('hosts=model_.hosts(\n')
+            self.hosts.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.host is not None:
             showIndent(outfile, level)
             outfile.write('host=model_.Host(\n')
@@ -22546,7 +22635,11 @@ class VmPlacementPolicy(GeneratedsSuper):
     def buildAttributes(self, node, attrs, already_processed):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'host':
+        if nodeName_ == 'hosts':
+            obj_ = Hosts.factory()
+            obj_.build(child_)
+            self.hosts = obj_
+        elif nodeName_ == 'host':
             obj_ = Host.factory()
             obj_.build(child_)
             self.host = obj_
@@ -25894,9 +25987,10 @@ class VmPools(BaseResources):
 class BaseDevice(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, vms=None, vm=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, instance_type=None, vms=None, vm=None, extensiontype_=None):
         super(BaseDevice, self).__init__(actions, href, id, name, description, comment, creation_status, link, extensiontype_, )
         self.template = template
+        self.instance_type = instance_type
         self.vms = vms
         self.vm = vm
         self.extensiontype_ = extensiontype_
@@ -25908,6 +26002,8 @@ class BaseDevice(BaseResource):
     factory = staticmethod(factory)
     def get_template(self): return self.template
     def set_template(self, template): self.template = template
+    def get_instance_type(self): return self.instance_type
+    def set_instance_type(self, instance_type): self.instance_type = instance_type
     def get_vms(self): return self.vms
     def set_vms(self, vms): self.vms = vms
     def get_vm(self): return self.vm
@@ -25917,6 +26013,7 @@ class BaseDevice(BaseResource):
     def hasContent_(self):
         if (
             self.template is not None or
+            self.instance_type is not None or
             self.vms is not None or
             self.vm is not None or
             super(BaseDevice, self).hasContent_()
@@ -25954,6 +26051,8 @@ class BaseDevice(BaseResource):
             eol_ = ''
         if self.template is not None:
             self.template.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
+        if self.instance_type is not None:
+            self.instance_type.export_(outfile, level, namespace_, name_='instance_type', pretty_print=pretty_print)
         if self.vms is not None:
             self.vms.export_(outfile, level, namespace_, name_='vms', pretty_print=pretty_print)
         if self.vm is not None:
@@ -25972,6 +26071,12 @@ class BaseDevice(BaseResource):
             showIndent(outfile, level)
             outfile.write('template=model_.template(\n')
             self.template.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.instance_type is not None:
+            showIndent(outfile, level)
+            outfile.write('instance_type=model_.instance_type(\n')
+            self.instance_type.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.vms is not None:
@@ -26005,6 +26110,10 @@ class BaseDevice(BaseResource):
             obj_ = class_obj_.factory()
             obj_.build(child_)
             self.template = obj_
+        elif nodeName_ == 'instance_type':
+            obj_ = InstanceType.factory()
+            obj_.build(child_)
+            self.instance_type = obj_
         elif nodeName_ == 'vms':
             obj_ = VMs.factory()
             obj_.build(child_)
@@ -26271,8 +26380,8 @@ class Applications(BaseResources):
 class CdRom(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, vms=None, vm=None, file=None):
-        super(CdRom, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, vms, vm, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, instance_type=None, vms=None, vm=None, file=None):
+        super(CdRom, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, instance_type, vms, vm, )
         self.file = file
     def factory(*args_, **kwargs_):
         if CdRom.subclass:
@@ -26446,8 +26555,8 @@ class CdRoms(BaseDevices):
 class Floppy(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, vms=None, vm=None, file=None):
-        super(Floppy, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, vms, vm, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, instance_type=None, vms=None, vm=None, file=None):
+        super(Floppy, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, instance_type, vms, vm, )
         self.file = file
     def factory(*args_, **kwargs_):
         if Floppy.subclass:
@@ -26621,8 +26730,8 @@ class Floppies(BaseDevices):
 class Disk(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, vms=None, vm=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, uses_scsi_reservation=None, snapshot=None, disk_profile=None, logical_name=None, storage_type=None, openstack_volume_type=None, extensiontype_=None):
-        super(Disk, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, vms, vm, extensiontype_, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, instance_type=None, vms=None, vm=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, uses_scsi_reservation=None, snapshot=None, disk_profile=None, logical_name=None, storage_type=None, openstack_volume_type=None, extensiontype_=None):
+        super(Disk, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, instance_type, vms, vm, extensiontype_, )
         self.alias = alias
         self.image_id = image_id
         self.storage_domain = storage_domain
@@ -27302,8 +27411,8 @@ class Disks(BaseDevices):
 class DiskSnapshot(Disk):
     subclass = None
     superclass = Disk
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, vms=None, vm=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, uses_scsi_reservation=None, snapshot=None, disk_profile=None, logical_name=None, storage_type=None, openstack_volume_type=None, disk=None):
-        super(DiskSnapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, vms, vm, alias, image_id, storage_domain, storage_domains, size, type_, provisioned_size, actual_size, status, interface, format, sparse, bootable, shareable, wipe_after_delete, propagate_errors, statistics, active, read_only, quota, lun_storage, sgio, uses_scsi_reservation, snapshot, disk_profile, logical_name, storage_type, openstack_volume_type, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, instance_type=None, vms=None, vm=None, alias=None, image_id=None, storage_domain=None, storage_domains=None, size=None, type_=None, provisioned_size=None, actual_size=None, status=None, interface=None, format=None, sparse=None, bootable=None, shareable=None, wipe_after_delete=None, propagate_errors=None, statistics=None, active=None, read_only=None, quota=None, lun_storage=None, sgio=None, uses_scsi_reservation=None, snapshot=None, disk_profile=None, logical_name=None, storage_type=None, openstack_volume_type=None, disk=None):
+        super(DiskSnapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, instance_type, vms, vm, alias, image_id, storage_domain, storage_domains, size, type_, provisioned_size, actual_size, status, interface, format, sparse, bootable, shareable, wipe_after_delete, propagate_errors, statistics, active, read_only, quota, lun_storage, sgio, uses_scsi_reservation, snapshot, disk_profile, logical_name, storage_type, openstack_volume_type, )
         self.disk = disk
     def factory(*args_, **kwargs_):
         if DiskSnapshot.subclass:
@@ -27641,8 +27750,8 @@ class PortMirroring(GeneratedsSuper):
 class NIC(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, vms=None, vm=None, network=None, linked=None, interface=None, mac=None, statistics=None, active=None, plugged=None, port_mirroring=None, reported_devices=None, vnic_profile=None, boot_protocol=None, on_boot=None):
-        super(NIC, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, vms, vm, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, instance_type=None, vms=None, vm=None, network=None, linked=None, interface=None, mac=None, statistics=None, active=None, plugged=None, port_mirroring=None, reported_devices=None, vnic_profile=None, boot_protocol=None, on_boot=None):
+        super(NIC, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, instance_type, vms, vm, )
         self.network = network
         self.linked = linked
         self.interface = interface
@@ -28710,6 +28819,460 @@ class HostNics(BaseResources):
             self.host_nic.append(obj_)
         super(HostNics, self).buildChildren(child_, node, nodeName_, True)
 # end class HostNics
+
+
+class Product(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None):
+        super(Product, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        pass
+    def factory(*args_, **kwargs_):
+        if Product.subclass:
+            return Product.subclass(*args_, **kwargs_)
+        else:
+            return Product(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def hasContent_(self):
+        if (
+            super(Product, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='Product', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Product')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Product'):
+        super(Product, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Product')
+    def exportChildren(self, outfile, level, namespace_='', name_='Product', fromsubclass_=False, pretty_print=True):
+        super(Product, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='Product'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(Product, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(Product, self).exportLiteralChildren(outfile, level, name_)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(Product, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        super(Product, self).buildChildren(child_, node, nodeName_, True)
+        pass
+# end class Product
+
+
+class Vendor(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None):
+        super(Vendor, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        pass
+    def factory(*args_, **kwargs_):
+        if Vendor.subclass:
+            return Vendor.subclass(*args_, **kwargs_)
+        else:
+            return Vendor(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def hasContent_(self):
+        if (
+            super(Vendor, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='Vendor', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Vendor')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='Vendor'):
+        super(Vendor, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Vendor')
+    def exportChildren(self, outfile, level, namespace_='', name_='Vendor', fromsubclass_=False, pretty_print=True):
+        super(Vendor, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='Vendor'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(Vendor, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(Vendor, self).exportLiteralChildren(outfile, level, name_)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(Vendor, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        super(Vendor, self).buildChildren(child_, node, nodeName_, True)
+        pass
+# end class Vendor
+
+
+class HostDevice(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, host=None, parent_device=None, capability=None, product=None, vendor=None, iommu_group=None, physical_function=None, virtual_functions=None, placeholder=None, vm=None):
+        super(HostDevice, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        self.host = host
+        self.parent_device = parent_device
+        self.capability = capability
+        self.product = product
+        self.vendor = vendor
+        self.iommu_group = iommu_group
+        self.physical_function = physical_function
+        self.virtual_functions = virtual_functions
+        self.placeholder = placeholder
+        self.vm = vm
+    def factory(*args_, **kwargs_):
+        if HostDevice.subclass:
+            return HostDevice.subclass(*args_, **kwargs_)
+        else:
+            return HostDevice(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_host(self): return self.host
+    def set_host(self, host): self.host = host
+    def get_parent_device(self): return self.parent_device
+    def set_parent_device(self, parent_device): self.parent_device = parent_device
+    def get_capability(self): return self.capability
+    def set_capability(self, capability): self.capability = capability
+    def get_product(self): return self.product
+    def set_product(self, product): self.product = product
+    def get_vendor(self): return self.vendor
+    def set_vendor(self, vendor): self.vendor = vendor
+    def get_iommu_group(self): return self.iommu_group
+    def set_iommu_group(self, iommu_group): self.iommu_group = iommu_group
+    def get_physical_function(self): return self.physical_function
+    def set_physical_function(self, physical_function): self.physical_function = physical_function
+    def get_virtual_functions(self): return self.virtual_functions
+    def set_virtual_functions(self, virtual_functions): self.virtual_functions = virtual_functions
+    def get_placeholder(self): return self.placeholder
+    def set_placeholder(self, placeholder): self.placeholder = placeholder
+    def get_vm(self): return self.vm
+    def set_vm(self, vm): self.vm = vm
+    def hasContent_(self):
+        if (
+            self.host is not None or
+            self.parent_device is not None or
+            self.capability is not None or
+            self.product is not None or
+            self.vendor is not None or
+            self.iommu_group is not None or
+            self.physical_function is not None or
+            self.virtual_functions is not None or
+            self.placeholder is not None or
+            self.vm is not None or
+            super(HostDevice, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='HostDevice', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='HostDevice')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='HostDevice'):
+        super(HostDevice, self).exportAttributes(outfile, level, already_processed, namespace_, name_='HostDevice')
+    def exportChildren(self, outfile, level, namespace_='', name_='HostDevice', fromsubclass_=False, pretty_print=True):
+        super(HostDevice, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.host is not None:
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+        if self.parent_device is not None:
+            self.parent_device.export_(outfile, level, namespace_, name_='parent_device', pretty_print=pretty_print)
+        if self.capability is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%scapability>%s</%scapability>%s' % (namespace_, self.gds_format_string(quote_xml(self.capability).encode(ExternalEncoding), input_name='capability'), namespace_, eol_))
+        if self.product is not None:
+            self.product.export_(outfile, level, namespace_, name_='product', pretty_print=pretty_print)
+        if self.vendor is not None:
+            self.vendor.export_(outfile, level, namespace_, name_='vendor', pretty_print=pretty_print)
+        if self.iommu_group is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%siommu_group>%s</%siommu_group>%s' % (namespace_, self.gds_format_integer(self.iommu_group, input_name='iommu_group'), namespace_, eol_))
+        if self.physical_function is not None:
+            self.physical_function.export_(outfile, level, namespace_, name_='physical_function', pretty_print=pretty_print)
+        if self.virtual_functions is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%svirtual_functions>%s</%svirtual_functions>%s' % (namespace_, self.gds_format_integer(self.virtual_functions, input_name='virtual_functions'), namespace_, eol_))
+        if self.placeholder is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%splaceholder>%s</%splaceholder>%s' % (namespace_, self.gds_format_boolean(self.placeholder, input_name='placeholder'), namespace_, eol_))
+        if self.vm is not None:
+            self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='HostDevice'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(HostDevice, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(HostDevice, self).exportLiteralChildren(outfile, level, name_)
+        if self.host is not None:
+            showIndent(outfile, level)
+            outfile.write('host=model_.host(\n')
+            self.host.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.parent_device is not None:
+            showIndent(outfile, level)
+            outfile.write('parent_device=model_.HostDevice(\n')
+            self.parent_device.exportLiteral(outfile, level, name_='parent_device')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.capability is not None:
+            showIndent(outfile, level)
+            outfile.write('capability=%s,\n' % quote_python(self.capability).encode(ExternalEncoding))
+        if self.product is not None:
+            showIndent(outfile, level)
+            outfile.write('product=model_.product(\n')
+            self.product.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.vendor is not None:
+            showIndent(outfile, level)
+            outfile.write('vendor=model_.vendor(\n')
+            self.vendor.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.iommu_group is not None:
+            showIndent(outfile, level)
+            outfile.write('iommu_group=%d,\n' % self.iommu_group)
+        if self.physical_function is not None:
+            showIndent(outfile, level)
+            outfile.write('physical_function=model_.HostDevice(\n')
+            self.physical_function.exportLiteral(outfile, level, name_='physical_function')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.virtual_functions is not None:
+            showIndent(outfile, level)
+            outfile.write('virtual_functions=%d,\n' % self.virtual_functions)
+        if self.placeholder is not None:
+            showIndent(outfile, level)
+            outfile.write('placeholder=%s,\n' % self.placeholder)
+        if self.vm is not None:
+            showIndent(outfile, level)
+            outfile.write('vm=model_.vm(\n')
+            self.vm.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(HostDevice, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'host':
+            obj_ = Host.factory()
+            obj_.build(child_)
+            self.host = obj_
+        elif nodeName_ == 'parent_device':
+            obj_ = HostDevice.factory()
+            obj_.build(child_)
+            self.parent_device = obj_
+        elif nodeName_ == 'capability':
+            capability_ = child_.text
+            capability_ = self.gds_validate_string(capability_, node, 'capability')
+            self.capability = capability_
+        elif nodeName_ == 'product':
+            obj_ = Product.factory()
+            obj_.build(child_)
+            self.product = obj_
+        elif nodeName_ == 'vendor':
+            obj_ = Vendor.factory()
+            obj_.build(child_)
+            self.vendor = obj_
+        elif nodeName_ == 'iommu_group':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'iommu_group')
+            self.iommu_group = ival_
+        elif nodeName_ == 'physical_function':
+            obj_ = HostDevice.factory()
+            obj_.build(child_)
+            self.physical_function = obj_
+        elif nodeName_ == 'virtual_functions':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'virtual_functions')
+            self.virtual_functions = ival_
+        elif nodeName_ == 'placeholder':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'placeholder')
+            self.placeholder = ival_
+        elif nodeName_ == 'vm':
+            class_obj_ = self.get_class_obj_(child_, VM)
+            obj_ = class_obj_.factory()
+            obj_.build(child_)
+            self.vm = obj_
+        super(HostDevice, self).buildChildren(child_, node, nodeName_, True)
+# end class HostDevice
+
+
+class HostDevices(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, size=None, total=None, active=None, host_device=None):
+        super(HostDevices, self).__init__(actions, size, total, active, )
+        if host_device is None:
+            self.host_device = []
+        else:
+            self.host_device = host_device
+    def factory(*args_, **kwargs_):
+        if HostDevices.subclass:
+            return HostDevices.subclass(*args_, **kwargs_)
+        else:
+            return HostDevices(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_host_device(self): return self.host_device
+    def set_host_device(self, host_device): self.host_device = host_device
+    def add_host_device(self, value): self.host_device.append(value)
+    def insert_host_device(self, index, value): self.host_device[index] = value
+    def hasContent_(self):
+        if (
+            self.host_device or
+            super(HostDevices, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='HostDevices', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='HostDevices')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='HostDevices'):
+        super(HostDevices, self).exportAttributes(outfile, level, already_processed, namespace_, name_='HostDevices')
+    def exportChildren(self, outfile, level, namespace_='', name_='HostDevices', fromsubclass_=False, pretty_print=True):
+        super(HostDevices, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for host_device_ in self.host_device:
+            host_device_.export_(outfile, level, namespace_, name_='host_device', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='HostDevices'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(HostDevices, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(HostDevices, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('host_device=[\n')
+        level += 1
+        for host_device_ in self.host_device:
+            showIndent(outfile, level)
+            outfile.write('model_.host_device(\n')
+            host_device_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(HostDevices, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'host_device':
+            obj_ = HostDevice.factory()
+            obj_.build(child_)
+            self.host_device.append(obj_)
+        super(HostDevices, self).buildChildren(child_, node, nodeName_, True)
+# end class HostDevices
 
 
 class GuestNicConfiguration(GeneratedsSuper):
@@ -42033,8 +42596,8 @@ class InstanceType(Template):
 class WatchDog(BaseDevice):
     subclass = None
     superclass = BaseDevice
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, vms=None, vm=None, model=None, action=None):
-        super(WatchDog, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, vms, vm, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, template=None, instance_type=None, vms=None, vm=None, model=None, action=None):
+        super(WatchDog, self).__init__(actions, href, id, name, description, comment, creation_status, link, template, instance_type, vms, vm, )
         self.model = model
         self.action = action
     def factory(*args_, **kwargs_):
@@ -43412,7 +43975,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, disk=None, reason=None, logical_units=None, status=None, fault=None, iscsi_target=None, power_management=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, disk=None, reason=None, logical_units=None, use_sysprep=None, use_cloud_init=None, status=None, fault=None, iscsi_target=None, power_management=None, is_attached=None):
         super(Action, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -43453,6 +44016,8 @@ class Action(BaseResource):
         self.disk = disk
         self.reason = reason
         self.logical_units = logical_units
+        self.use_sysprep = use_sysprep
+        self.use_cloud_init = use_cloud_init
         self.status = status
         self.fault = fault
         if iscsi_target is None:
@@ -43460,6 +44025,7 @@ class Action(BaseResource):
         else:
             self.iscsi_target = iscsi_target
         self.power_management = power_management
+        self.is_attached = is_attached
     def factory(*args_, **kwargs_):
         if Action.subclass:
             return Action.subclass(*args_, **kwargs_)
@@ -43544,6 +44110,10 @@ class Action(BaseResource):
     def set_reason(self, reason): self.reason = reason
     def get_logical_units(self): return self.logical_units
     def set_logical_units(self, logical_units): self.logical_units = logical_units
+    def get_use_sysprep(self): return self.use_sysprep
+    def set_use_sysprep(self, use_sysprep): self.use_sysprep = use_sysprep
+    def get_use_cloud_init(self): return self.use_cloud_init
+    def set_use_cloud_init(self, use_cloud_init): self.use_cloud_init = use_cloud_init
     def get_status(self): return self.status
     def set_status(self, status): self.status = status
     def get_fault(self): return self.fault
@@ -43554,6 +44124,8 @@ class Action(BaseResource):
     def insert_iscsi_target(self, index, value): self.iscsi_target[index] = value
     def get_power_management(self): return self.power_management
     def set_power_management(self, power_management): self.power_management = power_management
+    def get_is_attached(self): return self.is_attached
+    def set_is_attached(self, is_attached): self.is_attached = is_attached
     def hasContent_(self):
         if (
             self.async is not None or
@@ -43595,10 +44167,13 @@ class Action(BaseResource):
             self.disk is not None or
             self.reason is not None or
             self.logical_units is not None or
+            self.use_sysprep is not None or
+            self.use_cloud_init is not None or
             self.status is not None or
             self.fault is not None or
             self.iscsi_target or
             self.power_management is not None or
+            self.is_attached is not None or
             super(Action, self).hasContent_()
         ):
             return True
@@ -43725,6 +44300,12 @@ class Action(BaseResource):
             outfile.write('<%sreason>%s</%sreason>%s' % (namespace_, self.gds_format_string(quote_xml(self.reason).encode(ExternalEncoding), input_name='reason'), namespace_, eol_))
         if self.logical_units is not None:
             self.logical_units.export_(outfile, level, namespace_, name_='logical_units', pretty_print=pretty_print)
+        if self.use_sysprep is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%suse_sysprep>%s</%suse_sysprep>%s' % (namespace_, self.gds_format_boolean(self.use_sysprep, input_name='use_sysprep'), namespace_, eol_))
+        if self.use_cloud_init is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%suse_cloud_init>%s</%suse_cloud_init>%s' % (namespace_, self.gds_format_boolean(self.use_cloud_init, input_name='use_cloud_init'), namespace_, eol_))
         if self.status is not None:
             self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.fault is not None:
@@ -43734,6 +44315,9 @@ class Action(BaseResource):
             outfile.write('<%siscsi_target>%s</%siscsi_target>%s' % (namespace_, self.gds_format_string(quote_xml(iscsi_target_).encode(ExternalEncoding), input_name='iscsi_target'), namespace_, eol_))
         if self.power_management is not None:
             self.power_management.export_(outfile, level, namespace_, name_='power_management', pretty_print=pretty_print)
+        if self.is_attached is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sis_attached>%s</%sis_attached>%s' % (namespace_, self.gds_format_boolean(self.is_attached, input_name='is_attached'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='Action'):
         level += 1
         already_processed = set()
@@ -43921,6 +44505,12 @@ class Action(BaseResource):
             self.logical_units.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.use_sysprep is not None:
+            showIndent(outfile, level)
+            outfile.write('use_sysprep=%s,\n' % self.use_sysprep)
+        if self.use_cloud_init is not None:
+            showIndent(outfile, level)
+            outfile.write('use_cloud_init=%s,\n' % self.use_cloud_init)
         if self.status is not None:
             showIndent(outfile, level)
             outfile.write('status=model_.status(\n')
@@ -43948,6 +44538,9 @@ class Action(BaseResource):
             self.power_management.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.is_attached is not None:
+            showIndent(outfile, level)
+            outfile.write('is_attached=%s,\n' % self.is_attached)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -44199,6 +44792,26 @@ class Action(BaseResource):
             obj_ = LogicalUnits.factory()
             obj_.build(child_)
             self.logical_units = obj_
+        elif nodeName_ == 'use_sysprep':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'use_sysprep')
+            self.use_sysprep = ival_
+        elif nodeName_ == 'use_cloud_init':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'use_cloud_init')
+            self.use_cloud_init = ival_
         elif nodeName_ == 'status':
             obj_ = Status.factory()
             obj_.build(child_)
@@ -44215,6 +44828,16 @@ class Action(BaseResource):
             obj_ = PowerManagement.factory()
             obj_.build(child_)
             self.power_management = obj_
+        elif nodeName_ == 'is_attached':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'is_attached')
+            self.is_attached = ival_
         super(Action, self).buildChildren(child_, node, nodeName_, True)
 # end class Action
 
@@ -45913,11 +46536,13 @@ GDSClassesMapping = {
     'cluster_quota_limits': QuotaClusterLimits,
     'ranges': Ranges,
     'groups': Groups,
+    'device_passthrough': HostDevicePassthrough,
     'cpu_profiles': CpuProfiles,
     'openstack_subnet': OpenStackSubnet,
     'external_host_groups': ExternalHostGroups,
     'property': Property,
     'step': Step,
+    'host_devices': HostDevices,
     'openstack_volume_types': OpenStackVolumeTypes,
     'permit': Permit,
     'action': Action,
@@ -45959,8 +46584,9 @@ GDSClassesMapping = {
     'host_states': HostStates,
     'network_plugin_types': NetworkPluginTypes,
     'feature': Feature,
+    'physical_function': HostDevice,
     'parameter': Parameter,
-    'preview_vm': VM,
+    'product': Product,
     'overcommit': MemoryOverCommit,
     'vlan': VLAN,
     'applications': Applications,
@@ -45985,6 +46611,7 @@ GDSClassesMapping = {
     'host_numa_nodes': NumaNodes,
     'logical_unit': LogicalUnit,
     'cpus': CPUs,
+    'parent_device': HostDevice,
     'transparent_hugepages': TransparentHugePages,
     'balances': Balances,
     'permissions': Permissions,
@@ -45994,6 +46621,7 @@ GDSClassesMapping = {
     'status': Status,
     'domain': Domain,
     'weight': Weight,
+    'preview_vm': VM,
     'snapshots': Snapshots,
     'gluster_clients': GlusterClients,
     'event': Event,
@@ -46112,6 +46740,7 @@ GDSClassesMapping = {
     'topology': CpuTopology,
     'grace_period': GracePeriod,
     'profile_detail': ProfileDetail,
+    'host_device': HostDevice,
     'fault': Fault,
     'time_zone': TimeZone,
     'openstack_network': OpenStackNetwork,
@@ -46166,6 +46795,7 @@ GDSClassesMapping = {
     'capabilities': Capabilities,
     'disk_snapshot': DiskSnapshot,
     'authorized_keys': AuthorizedKeys,
+    'vendor': Vendor,
     'disk_snapshots': DiskSnapshots,
     'usage_message': UsageMessage,
     'mac_pools': MacPools,
@@ -46516,6 +47146,9 @@ __all__ = [
     "HookStates",
     "Hooks",
     "Host",
+    "HostDevice",
+    "HostDevicePassthrough",
+    "HostDevices",
     "HostNIC",
     "HostNICStates",
     "HostNics",
@@ -46620,6 +47253,7 @@ __all__ = [
     "PowerManagementStates",
     "PowerManagers",
     "PreviewVMs",
+    "Product",
     "ProductInfo",
     "ProfileDetail",
     "Properties",
@@ -46714,6 +47348,7 @@ __all__ = [
     "VMs",
     "Value",
     "Values",
+    "Vendor",
     "Version",
     "VersionCaps",
     "VirtIO_SCSI",
@@ -46809,6 +47444,7 @@ _rootClassMap = {
                     "data_center_states"            : DataCenterStates,
                     "data_centers"                  : DataCenters,
                     "detailedLinks"                 : DetailedLinks,
+                    "device_passthrough"            : HostDevicePassthrough,
                     "disk"                          : Disk,
                     "disk_formats"                  : DiskFormats,
                     "disk_interfaces"               : DiskInterfaces,
@@ -46881,6 +47517,8 @@ _rootClassMap = {
                     "hook_states"                   : HookStates,
                     "hooks"                         : Hooks,
                     "host"                          : Host,
+                    "host_device"                   : HostDevice,
+                    "host_devices"                  : HostDevices,
                     "host_nic"                      : HostNIC,
                     "host_nic_states"               : HostNICStates,
                     "host_nics"                     : HostNics,
@@ -46981,6 +47619,7 @@ _rootClassMap = {
                     "parameter"                     : Parameter,
                     "parameters_set"                : ParametersSet,
                     "parent"                        : TagParent,
+                    "parent_device"                 : HostDevice,
                     "parent_step"                   : Step,
                     "payload"                       : Payload,
                     "payload_encodings"             : PayloadEncodings,
@@ -46989,6 +47628,7 @@ _rootClassMap = {
                     "permissions"                   : Permissions,
                     "permit"                        : Permit,
                     "permits"                       : Permits,
+                    "physical_function"             : HostDevice,
                     "placement_policy"              : VmPlacementPolicy,
                     "pm_proxies"                    : PmProxies,
                     "pm_proxy"                      : PmProxy,
@@ -46999,6 +47639,7 @@ _rootClassMap = {
                     "power_managers"                : PowerManagers,
                     "preview_vm"                    : VM,
                     "preview_vms"                   : PreviewVMs,
+                    "product"                       : Product,
                     "product_info"                  : ProductInfo,
                     "profile_detail"                : ProfileDetail,
                     "properties"                    : Properties,
@@ -47096,6 +47737,7 @@ _rootClassMap = {
                     "value"                         : Value,
                     "values"                        : Values,
                     "vcpu_pin"                      : VCpuPin,
+                    "vendor"                        : Vendor,
                     "version"                       : VersionCaps,
                     "virtio_scsi"                   : VirtIO_SCSI,
                     "vlan"                          : VLAN,
@@ -47253,6 +47895,9 @@ _tag_for_type = {
     HookStates: "hook_states",
     Hooks: "hooks",
     Host: "host",
+    HostDevice: "host_device",
+    HostDevicePassthrough: "device_passthrough",
+    HostDevices: "host_devices",
     HostNIC: "host_nic",
     HostNICStates: "host_nic_states",
     HostNics: "host_nics",
@@ -47351,6 +47996,7 @@ _tag_for_type = {
     PowerManagementStates: "power_management_states",
     PowerManagers: "power_managers",
     PreviewVMs: "preview_vms",
+    Product: "product",
     ProductInfo: "product_info",
     ProfileDetail: "profile_detail",
     Properties: "properties",
@@ -47438,6 +48084,7 @@ _tag_for_type = {
     VMs: "vms",
     Value: "value",
     Values: "values",
+    Vendor: "vendor",
     Version: "system_version",
     VersionCaps: "version",
     VirtIO_SCSI: "virtio_scsi",

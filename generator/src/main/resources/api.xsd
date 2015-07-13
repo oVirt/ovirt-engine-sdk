@@ -213,6 +213,10 @@
       <xs:element name="reason" type="xs:string" minOccurs="0" maxOccurs="1"/>
       <!-- For storage domain refresh LUNs -->
       <xs:element ref="logical_units" minOccurs="0"/>
+      <!-- For VM that runs with Sysprep -->
+      <xs:element name="use_sysprep" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
+      <!-- For VM that runs with Cloud-Init -->
+      <xs:element name="use_cloud_init" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:group>
 
@@ -229,6 +233,10 @@
       </xs:element>
       <xs:element ref="power_management" minOccurs="0" maxOccurs="1"/>
       <!-- for Host fence status action  -->
+
+      <!-- This flag is populated by the "isattached" action to indicate if the
+           returned storage dommain is attached to any data center: -->
+      <xs:element name="is_attached" type="xs:boolean" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:group>
 
@@ -2042,10 +2050,19 @@
           <xs:element ref="katello_errata"  minOccurs="0" maxOccurs="1"/>
           <xs:element ref="external_host_provider" minOccurs="0" maxOccurs="1"/>
           <xs:element name="update_available" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="device_passthrough" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+
+  <xs:complexType name="HostDevicePassthrough">
+    <xs:sequence>
+      <xs:element name="enabled" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="device_passthrough" type="HostDevicePassthrough" />
 
   <!-- This element is deprecated because it uses a mix of attributes and text content, which makes it
        impossible to send the values independently. Use the the "spm" element instead. -->
@@ -2871,7 +2888,6 @@
           <xs:element name="storage_format" type="xs:string" minOccurs="0"/>
           <xs:element name="wipe_after_delete" type="xs:boolean" minOccurs="0"/>
           <xs:element name="import" type="xs:boolean" minOccurs="0"/>
-          <xs:element name="is_attached" type="xs:boolean" minOccurs="0"/>
           <xs:element name="warning_low_space_indicator" type="xs:int" minOccurs="0"/>
           <xs:element name="critical_space_action_blocker" type="xs:int" minOccurs="0"/>
         </xs:sequence>
@@ -3335,6 +3351,7 @@
 
   <xs:complexType name="VmPlacementPolicy">
     <xs:sequence>
+      <xs:element ref="hosts" minOccurs="0" maxOccurs="1"/>
       <xs:element name="host" type="Host" minOccurs="0" maxOccurs="1"/>
       <xs:element name="affinity" type="xs:string" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
@@ -3723,7 +3740,10 @@
     <xs:complexContent>
       <xs:extension base="BaseResource">
         <xs:sequence>
+          <!-- Links to potential parents: -->
           <xs:element ref="template" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="instance_type" minOccurs="0" maxOccurs="1"/>
+
           <!-- Rerefences to the virtual machines that are using this
                device (a device may be used by several virtual machines,
                for example a shared disk my be used by two or more
@@ -4073,6 +4093,61 @@
             <xs:annotation>
               <xs:appinfo>
                 <jaxb:property name="HostNics"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="product" type="Product" />
+
+  <xs:element name="vendor" type="Vendor" />
+
+  <xs:element name="host_device" type="HostDevice" />
+
+  <xs:element name="host_devices" type="HostDevices" />
+
+  <xs:complexType name="Product">
+    <xs:complexContent>
+      <xs:extension base="BaseResource" />
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Vendor">
+    <xs:complexContent>
+      <xs:extension base="BaseResource" />
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="HostDevice">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element ref="host" minOccurs="0" maxOccurs="1" />
+          <xs:element name="parent_device" type="HostDevice" minOccurs="0" maxOccurs="1" />
+          <xs:element name="capability" type="xs:string" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="product" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="vendor" minOccurs="0" maxOccurs="1" />
+          <xs:element name="iommu_group" type="xs:int" minOccurs="0" maxOccurs="1" />
+          <xs:element name="physical_function" type="HostDevice" minOccurs="0" maxOccurs="1" />
+          <xs:element name="virtual_functions" type="xs:int" minOccurs="0" maxOccurs="1" />
+          <xs:element name="placeholder" type="xs:boolean" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="vm" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="HostDevices">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="host_device" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="HostDevices"/>
               </xs:appinfo>
             </xs:annotation>
           </xs:element>

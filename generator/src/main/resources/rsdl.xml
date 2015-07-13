@@ -8339,6 +8339,34 @@ or less indicates that the session should never timeout</description>
                 <type>Action</type>
             </response>
         </link>
+        <link href="hosts/{host:id}/devices" rel="get">
+            <description>get all host devices</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>HostDevices</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/devices/{device:id}" rel="get">
+            <description>get the specified host device</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>HostDevice</type>
+            </response>
+        </link>
         <link href="hosts/{host:id}/fence" rel="fence">
             <description>perform fencing operation (start/stop/status) on the host.</description>
             <request>
@@ -9454,7 +9482,7 @@ or less indicates that the session should never timeout</description>
                 <type>Permission</type>
             </response>
         </link>
-        <link href="hosts/{host:id}/refreshcapabilities" rel="refreshcapabilities">
+        <link href="hosts/{host:id}/refresh" rel="refresh">
             <description>refresh the capabilities of the host</description>
             <request>
                 <http_method>POST</http_method>
@@ -9943,20 +9971,6 @@ or less indicates that the session should never timeout</description>
             <response>
                 <type>Nics</type>
             </response>
-        </link>
-        <link href="instancetypes/{instancetype:id}/nics/{nic:id}" rel="delete">
-            <request>
-                <http_method>DELETE</http_method>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:boolean" context="matrix">
-                            <name>async</name>
-                            <value>true|false</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
-                <body/>
-            </request>
         </link>
         <link href="instancetypes/{instancetype:id}/nics/{nic:id}" rel="get">
             <request>
@@ -13150,20 +13164,20 @@ or less indicates that the session should never timeout</description>
                         <parameter required="true" type="xs:string">
                             <name>storage_connection.address</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>storage_connection.type</name>
-                        </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>storage_connection.iqn</name>
-                        </parameter>
                         <parameter required="true" type="xs:int">
                             <name>storage_connection.port</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>storage_connection.username</name>
+                        <parameter required="true" type="xs:string">
+                            <name>storage_connection.target</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>storage_connection.type</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storage_connection.password</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storage_connection.username</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -13172,10 +13186,13 @@ or less indicates that the session should never timeout</description>
                             <name>storage_connection.address</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>storage_connection.type</name>
+                            <name>storage_connection.path</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>storage_connection.path</name>
+                            <name>storage_connection.type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storage_connection.nfs_retrans</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storage_connection.nfs_timeo</name>
@@ -13183,17 +13200,14 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>storage_connection.nfs_version</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>storage_connection.nfs_retrans</name>
-                        </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a vfs storage connection to the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>storage_connection.type</name>
+                            <name>storage_connection.path</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>storage_connection.path</name>
+                            <name>storage_connection.type</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storage_connection.vfs_type</name>
@@ -13208,10 +13222,10 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a local storage connection to the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>storage_connection.type</name>
+                            <name>storage_connection.path</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>storage_connection.path</name>
+                            <name>storage_connection.type</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -13316,35 +13330,32 @@ or less indicates that the session should never timeout</description>
                     <type>StorageConnection</type>
                     <parameters_set>
                         <description>update the specified iSCSI storage connection in the system</description>
+                        <parameter required="false" type="xs:string">
+                            <name>storage_connection.password</name>
+                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>storage_connection.port</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
+                            <name>storage_connection.target</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
                             <name>storage_connection.username</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>storage_connection.password</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>storage_connection.iqn</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>storage_connection.address</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>update the specified nfs storage connection in the system</description>
                         <parameter required="false" type="xs:string">
-                            <name>storage_connection.nfs_timeo</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>storage_connection.nfs_version</name>
+                            <name>storage_connection.address</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storage_connection.nfs_retrans</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>storage_connection.address</name>
+                            <name>storage_connection.nfs_timeo</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storage_connection.nfs_version</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storage_connection.path</name>
@@ -13353,16 +13364,16 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>update the specified vfs storage connection in the system</description>
                         <parameter required="false" type="xs:string">
-                            <name>storage_connection.mount_options</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>storage_connection.vfs_type</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
                             <name>storage_connection.address</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
+                            <name>storage_connection.mount_options</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
                             <name>storage_connection.path</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storage_connection.vfs_type</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -13407,9 +13418,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.type</name>
-                        </parameter>
-                        <parameter required="true" type="xs:boolean">
-                            <name>storagedomain.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.address</name>
@@ -13494,9 +13502,6 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.storage.address</name>
                         </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>storagedomain.format</name>
-                        </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.comment</name>
                         </parameter>
@@ -13517,9 +13522,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.type</name>
-                        </parameter>
-                        <parameter required="true" type="xs:boolean">
-                            <name>storagedomain.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.address</name>
@@ -13557,9 +13559,6 @@ or less indicates that the session should never timeout</description>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.type</name>
                         </parameter>
-                        <parameter required="true" type="xs:boolean">
-                            <name>storagedomain.format</name>
-                        </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.path</name>
                         </parameter>
@@ -13592,9 +13591,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.type</name>
-                        </parameter>
-                        <parameter required="true" type="xs:boolean">
-                            <name>storagedomain.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.path</name>
@@ -14594,10 +14590,10 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Action</type>
                     <parameters_set>
-                        <parameter required="true" type="collection">
+                        <parameter required="false" type="collection">
                             <name>action.logical_units.logical_unit</name>
                             <parameters_set>
-<parameter required="true" type="xs:string">
+<parameter required="false" type="xs:string">
     <name>logical_unit.id</name>
 </parameter>
                             </parameters_set>
@@ -16142,31 +16138,6 @@ or less indicates that the session should never timeout</description>
             <response>
                 <type>Nics</type>
             </response>
-        </link>
-        <link href="templates/{template:id}/nics/{nic:id}" rel="delete">
-            <description>delete the specified network interface card attached to the template</description>
-            <request>
-                <http_method>DELETE</http_method>
-                <headers>
-                    <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="true">
-                        <name>Content-Type</name>
-                        <value>application/xml|json</value>
-                    </header>
-                </headers>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:boolean" context="matrix">
-                            <name>async</name>
-                            <value>true|false</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
-                <body/>
-            </request>
         </link>
         <link href="templates/{template:id}/nics/{nic:id}" rel="get">
             <description>get the details of the specified network interface card attached to the template</description>
@@ -18664,31 +18635,6 @@ or less indicates that the session should never timeout</description>
                 <type>CdRoms</type>
             </response>
         </link>
-        <link href="vms/{vm:id}/cdroms/{cdrom:id}" rel="delete">
-            <description>delete the cdrom for a virtual machine identified by the given id</description>
-            <request>
-                <http_method>DELETE</http_method>
-                <headers>
-                    <header required="false">
-                        <name>Correlation-Id</name>
-                        <value>any string</value>
-                    </header>
-                    <header required="true">
-                        <name>Content-Type</name>
-                        <value>application/xml|json</value>
-                    </header>
-                </headers>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:boolean" context="matrix">
-                            <name>async</name>
-                            <value>true|false</value>
-                        </parameter>
-                    </parameters_set>
-                </url>
-                <body/>
-            </request>
-        </link>
         <link href="vms/{vm:id}/cdroms/{cdrom:id}" rel="get">
             <description>get the cdrom for a virtual machine identified by the given id</description>
             <request>
@@ -19514,6 +19460,90 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>GraphicsConsole</type>
+            </response>
+        </link>
+        <link href="vms/{vm:id}/hostdevices" rel="add">
+            <description>add a host device to this virtual machine</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>HostDevice</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs.string">
+                            <name>host_device.id|name</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>HostDevice</type>
+            </response>
+        </link>
+        <link href="vms/{vm:id}/hostdevices" rel="get">
+            <description>get all configured host devices for this virtual machine</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>HostDevices</type>
+            </response>
+        </link>
+        <link href="vms/{vm:id}/hostdevices/{hostdevice:id}" rel="delete">
+            <description>detach a host device from this virtual machine</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="vms/{vm:id}/hostdevices/{hostdevice:id}" rel="get">
+            <description>get details of a host device for this virtual machine</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>HostDevice</type>
             </response>
         </link>
         <link href="vms/{vm:id}/katelloerrata" rel="get">
@@ -20392,6 +20422,36 @@ or less indicates that the session should never timeout</description>
                 <type>Action</type>
             </response>
         </link>
+        <link href="vms/{vm:id}/reordermacaddresses" rel="reordermacaddresses">
+            <description>re-assigns vNic MAC addressses in the ascending order (for NICs that have no PCI address assigned to them)</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>Action</type>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
         <link href="vms/{vm:id}/reporteddevices" rel="get">
             <request>
                 <http_method>GET</http_method>
@@ -20915,6 +20975,12 @@ or less indicates that the session should never timeout</description>
     <name>payload_file.type</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.use_sysprep</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.use_cloud_init</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
