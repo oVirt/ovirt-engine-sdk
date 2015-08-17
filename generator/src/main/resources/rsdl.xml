@@ -8367,6 +8367,36 @@ or less indicates that the session should never timeout</description>
                 <type>HostDevice</type>
             </response>
         </link>
+        <link href="hosts/{host:id}/enrollcertificate" rel="enrollcertificate">
+            <description>enroll certificate for the specified host in the system</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>Action</type>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
         <link href="hosts/{host:id}/fence" rel="fence">
             <description>perform fencing operation (start/stop/status) on the host.</description>
             <request>
@@ -8848,6 +8878,192 @@ or less indicates that the session should never timeout</description>
                 <type>KatelloErratum</type>
             </response>
         </link>
+        <link href="hosts/{host:id}/networkattachments" rel="add">
+            <description>add a new network attachment to the host</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>NetworkAttachment</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>network_attachment.network.name|id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>network_attachment.host_nic.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>network_attachment.ip_address_assignments.ip_address_assignment</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.assignment_method</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.address</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.netmask</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.gateawy</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>network_attachment.properties.property</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>property.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>property.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>NetworkAttachment</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/networkattachments" rel="get">
+            <description>get the list of network attachments of the host</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>NetworkAttachments</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/networkattachments/{networkattachment:id}" rel="delete">
+            <description>delete the specified network attachment from the host</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="hosts/{host:id}/networkattachments/{networkattachment:id}" rel="get">
+            <description>get the details of the specified network attachment of the host</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>NetworkAttachment</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/networkattachments/{networkattachment:id}" rel="update">
+            <description>update the specified network attachment on the host</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>202-accepted</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>override_configuration</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>NetworkAttachment</type>
+                    <parameters_set>
+                        <parameter required="false" type="xs:string">
+                            <name>network_attachment.host_nic.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>network_attachment.ip_address_assignments.ip_address_assignment</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.assignment_method</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.address</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.netmask</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.gateawy</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>network_attachment.properties.property</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>property.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>property.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>NetworkAttachment</type>
+            </response>
+        </link>
         <link href="hosts/{host:id}/nics" rel="add">
             <description>add a new network interface for the host</description>
             <request>
@@ -8948,6 +9164,7 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Action</type>
                     <parameters_set>
+                        <deprecated>true</deprecated>
                         <description>initiate the command to setup networks for the network interface card of the specified host</description>
                         <parameter required="false" type="collection">
                             <name>action.host_nics.host_nic</name>
@@ -9317,6 +9534,186 @@ or less indicates that the session should never timeout</description>
                 <type>Label</type>
             </response>
         </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/networkattachments" rel="add">
+            <description>add a new network attachment to the network interface</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>NetworkAttachment</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>network_attachment.network.name|id</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>network_attachment.ip_address_assignments.ip_address_assignment</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.assignment_method</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.address</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.netmask</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.gateawy</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>network_attachment.properties.property</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>property.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>property.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>NetworkAttachment</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/networkattachments" rel="get">
+            <description>get the list of network attachments of the network interface</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>NetworkAttachments</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/networkattachments/{networkattachment:id}" rel="delete">
+            <description>delete the specified network attachment from the network interface</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/networkattachments/{networkattachment:id}" rel="get">
+            <description>get the details of the specified network attachment of the network interface</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>NetworkAttachment</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/networkattachments/{networkattachment:id}" rel="update">
+            <description>update the specified network attachment on the network interface</description>
+            <request>
+                <http_method>PUT</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>202-accepted</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>override_configuration</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>NetworkAttachment</type>
+                    <parameters_set>
+                        <parameter required="false" type="collection">
+                            <name>network_attachment.ip_address_assignments.ip_address_assignment</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.assignment_method</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.address</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.netmask</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>ip_address_assignment.ip.gateawy</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>network_attachment.properties.property</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>property.name</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>property.value</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>NetworkAttachment</type>
+            </response>
+        </link>
         <link href="hosts/{host:id}/nics/{nic:id}/statistics" rel="get">
             <description>get the statistics for the network interface card attached to the specified host</description>
             <request>
@@ -9521,6 +9918,165 @@ or less indicates that the session should never timeout</description>
                 <type>Action</type>
             </response>
         </link>
+        <link href="hosts/{host:id}/setupnetworks" rel="setupnetworks">
+            <description>initiate the command to setup networks for the specified host</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>Action</type>
+                    <parameters_set>
+                        <parameter required="false" type="collection">
+                            <name>action.modified_network_attachments.network_attachment</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>network_attachment.id</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>network_attachment.network.name|id</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>network_attachment.host_nic.name|id</name>
+</parameter>
+<parameter required="false" type="collection">
+    <name>network_attachment.ip_address_assignments.ip_address_assignment</name>
+    <parameters_set>
+        <parameter required="false" type="xs:string">
+            <name>ip_address_assignment.assignment_method</name>
+        </parameter>
+        <parameter required="false" type="xs:string">
+            <name>ip_address_assignment.ip.address</name>
+        </parameter>
+        <parameter required="false" type="xs:string">
+            <name>ip_address_assignment.ip.netmask</name>
+        </parameter>
+        <parameter required="false" type="xs:string">
+            <name>ip_address_assignment.ip.gateawy</name>
+        </parameter>
+    </parameters_set>
+</parameter>
+<parameter required="false" type="collection">
+    <name>network_attachment.properties.property</name>
+    <parameters_set>
+        <parameter required="false" type="xs:string">
+            <name>property.name</name>
+        </parameter>
+        <parameter required="false" type="xs:string">
+            <name>property.value</name>
+        </parameter>
+    </parameters_set>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>action.removed_network_attachments.network_attachment</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>network_attachment.id</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>action.modified_bonds.host_nic</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>host_nic.name|id</name>
+</parameter>
+<parameter required="false" type="collection">
+    <name>host_nic.bonding.options.option</name>
+    <parameters_set>
+        <parameter required="false" type="xs:string">
+            <name>option.name</name>
+        </parameter>
+        <parameter required="false" type="xs:string">
+            <name>option.value</name>
+        </parameter>
+        <parameter required="false" type="xs:string">
+            <name>option.type</name>
+        </parameter>
+    </parameters_set>
+</parameter>
+<parameter required="false" type="collection">
+    <name>bonding.slaves.host_nic</name>
+    <parameters_set>
+        <parameter required="false" type="xs:string">
+            <name>host_nic.name|id</name>
+        </parameter>
+    </parameters_set>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>action.removed_bonds.host_nic</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>host_nic.name|id</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>action.synchronized_network_attachments.network_attachment</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>network_attachment.id</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>action.modified_labels.label</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>label.host_nic.name|id</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>label.id</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>action.removed_labels.label</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>label.id</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.check_connectivity</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>action.connectivity_timeout</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.async</name>
+                        </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>action.grace_period.expiry</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
         <link href="hosts/{host:id}/statistics" rel="get">
             <description>get the statistics for the host</description>
             <request>
@@ -9566,6 +10122,103 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Storage</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/storageconnectionextensions" rel="add">
+            <description>add a storage connection extensions to the host.</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>StorageConnectionExtension</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>storageconnectionextension.target</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>storageconnectionextension.username</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>storageconnectionextension.password</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>StorageConnectionExtension</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/storageconnectionextensions" rel="get">
+            <description>get all host's storage connection extensions.</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>StorageConnectionExtensions</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/storageconnectionextensions/{storageconnectionextension:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="hosts/{host:id}/storageconnectionextensions/{storageconnectionextension:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>StorageConnectionExtension</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/storageconnectionextensions/{storageconnectionextension:id}" rel="update">
+            <request>
+                <http_method>PUT</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>StorageConnectionExtension</type>
+                </body>
+            </request>
+            <response>
+                <type>StorageConnectionExtension</type>
             </response>
         </link>
         <link href="hosts/{host:id}/tags" rel="add">
@@ -9650,6 +10303,59 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Tag</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/unmanagednetworks" rel="get">
+            <description>get a list of unmanaged networks</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>UnmanagedNetworks</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/unmanagednetworks/{unmanagednetwork:id}" rel="delete">
+            <description>delete the specified unmanaged network</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="hosts/{host:id}/unmanagednetworks/{unmanagednetwork:id}" rel="get">
+            <description>get the details of the specified unmanaged network</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>UnmanagedNetwork</type>
             </response>
         </link>
         <link href="hosts/{host:id}/unregisteredstoragedomainsdiscover" rel="unregisteredstoragedomainsdiscover">
@@ -9942,6 +10648,89 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>InstanceType</type>
+            </response>
+        </link>
+        <link href="instancetypes/{instancetype:id}/graphicsconsoles" rel="add">
+            <description>add a graphics console to an instance type</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>GraphicsConsole</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>graphics_console.protocol</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>GraphicsConsole</type>
+            </response>
+        </link>
+        <link href="instancetypes/{instancetype:id}/graphicsconsoles" rel="get">
+            <description>Get graphics consoles of an instance type.</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>GraphicsConsoles</type>
+            </response>
+        </link>
+        <link href="instancetypes/{instancetype:id}/graphicsconsoles/{graphicsconsole:id}" rel="delete">
+            <description>delete the graphics console for an instance type identified by the given id</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="instancetypes/{instancetype:id}/graphicsconsoles/{graphicsconsole:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>GraphicsConsole</type>
             </response>
         </link>
         <link href="instancetypes/{instancetype:id}/nics" rel="add">
@@ -13749,9 +14538,6 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                     <parameters_set>
                         <description>update the storage domain</description>
-                        <parameter required="true" type="xs:string">
-                            <name>storagedomain.host.id|name</name>
-                        </parameter>
                         <parameter required="true" type="collection">
                             <name>storagedomain.storage.logical_unit</name>
                             <parameters_set>
@@ -13792,6 +14578,10 @@ or less indicates that the session should never timeout</description>
     <name>logical_unit.id</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storagedomain.host.id</name>
+                            <deprecated>true</deprecated>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.name</name>
@@ -16045,6 +16835,89 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Action</type>
+            </response>
+        </link>
+        <link href="templates/{template:id}/graphicsconsoles" rel="add">
+            <description>add a graphics console to a template</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>GraphicsConsole</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>graphics_console.protocol</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>GraphicsConsole</type>
+            </response>
+        </link>
+        <link href="templates/{template:id}/graphicsconsoles" rel="get">
+            <description>Get graphics consoles of a template.</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>GraphicsConsoles</type>
+            </response>
+        </link>
+        <link href="templates/{template:id}/graphicsconsoles/{graphicsconsole:id}" rel="delete">
+            <description>delete the graphics console for a template identified by the given id</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="templates/{template:id}/graphicsconsoles/{graphicsconsole:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>GraphicsConsole</type>
             </response>
         </link>
         <link href="templates/{template:id}/nics" rel="add">
@@ -19412,12 +20285,86 @@ or less indicates that the session should never timeout</description>
                 <type>Action</type>
             </response>
         </link>
+        <link href="vms/{vm:id}/freezefilesystems" rel="freezefilesystems">
+            <description>Freeze the filesystems of the VM using qemu guest agent.</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>Action</type>
+                    <parameters_set>
+                        <description>Freeze the filesystems of the VM using qemu guest agent.</description>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.async</name>
+                        </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>action.grace_period.expiry</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
+        <link href="vms/{vm:id}/graphicsconsoles" rel="add">
+            <description>add a graphics console to a virtual machine</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>GraphicsConsole</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>graphics_console.protocol</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>GraphicsConsole</type>
+            </response>
+        </link>
         <link href="vms/{vm:id}/graphicsconsoles" rel="get">
-            <description>Get active graphics consoles of a VM.</description>
+            <description>Get graphics consoles of a VM.</description>
             <request>
                 <http_method>GET</http_method>
                 <url>
                     <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>current</name>
+                            <value>true|false</value>
+                        </parameter>
                         <parameter required="false" type="xs:int" context="matrix">
                             <name>max</name>
                             <value>max results</value>
@@ -19430,21 +20377,30 @@ or less indicates that the session should never timeout</description>
                 <type>GraphicsConsoles</type>
             </response>
         </link>
-        <link href="vms/{vm:id}/graphicsconsoles/{graphicsconsole:id}" rel="get">
-            <description>Get active graphics console of a VM.</description>
+        <link href="vms/{vm:id}/graphicsconsoles/{graphicsconsole:id}" rel="delete">
+            <description>delete the graphics console for a virtual machine identified by the given id</description>
             <request>
-                <http_method>GET</http_method>
+                <http_method>DELETE</http_method>
                 <headers>
                     <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
                         <name>Content-Type</name>
-                        <value>application/xml|json|x-virt-viewer</value>
+                        <value>application/xml|json</value>
                     </header>
                 </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
-            <response>
-                <type>Response</type>
-            </response>
         </link>
         <link href="vms/{vm:id}/graphicsconsoles/{graphicsconsole:id}" rel="get">
             <description>Get active graphics console of a VM.</description>
@@ -19456,6 +20412,14 @@ or less indicates that the session should never timeout</description>
                         <value>application/xml|json|x-virt-viewer</value>
                     </header>
                 </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>current</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
@@ -21176,6 +22140,45 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Tag</type>
+            </response>
+        </link>
+        <link href="vms/{vm:id}/thawfilesystems" rel="thawfilesystems">
+            <description>Thaw the filesystems of the VM using qemu guest agent.</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>Action</type>
+                    <parameters_set>
+                        <description>Thaw the filesystems of the VM using qemu guest agent.</description>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.async</name>
+                        </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>action.grace_period.expiry</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
             </response>
         </link>
         <link href="vms/{vm:id}/ticket" rel="ticket">

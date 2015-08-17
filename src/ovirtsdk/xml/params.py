@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Mon Jul 13 10:48:55 2015 by generateDS.py version 2.12a.
+# Generated Wed Aug 19 11:35:05 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -1730,6 +1730,81 @@ class IscsiDetails(GeneratedsSuper):
             disk_id_ = self.gds_validate_string(disk_id_, node, 'disk_id')
             self.disk_id = disk_id_
 # end class IscsiDetails
+
+
+class ProxyTicket(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, value=None):
+        self.value = value
+    def factory(*args_, **kwargs_):
+        if ProxyTicket.subclass:
+            return ProxyTicket.subclass(*args_, **kwargs_)
+        else:
+            return ProxyTicket(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_value(self): return self.value
+    def set_value(self, value): self.value = value
+    def hasContent_(self):
+        if (
+            self.value is not None
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='ProxyTicket', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ProxyTicket')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='ProxyTicket'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='ProxyTicket', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.value is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%svalue>%s</%svalue>%s' % (namespace_, self.gds_format_string(quote_xml(self.value).encode(ExternalEncoding), input_name='value'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='ProxyTicket'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.value is not None:
+            showIndent(outfile, level)
+            outfile.write('value=%s,\n' % quote_python(self.value).encode(ExternalEncoding))
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'value':
+            value_ = child_.text
+            value_ = self.gds_validate_string(value_, node, 'value')
+            self.value = value_
+# end class ProxyTicket
 
 
 class Actions(GeneratedsSuper):
@@ -11761,7 +11836,7 @@ class SELinux(GeneratedsSuper):
 class Host(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, address=None, certificate=None, status=None, external_status=None, cluster=None, port=None, type_=None, storage_manager=None, spm=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, ssh=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, protocol=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None, display=None, hosted_engine=None, kdump_status=None, selinux=None, auto_numa_status=None, numa_supported=None, live_snapshot_support=None, katello_errata=None, external_host_provider=None, update_available=None, device_passthrough=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, address=None, certificate=None, status=None, external_status=None, cluster=None, port=None, type_=None, storage_manager=None, spm=None, version=None, hardware_information=None, power_management=None, ksm=None, transparent_hugepages=None, iscsi=None, root_password=None, ssh=None, statistics=None, cpu=None, memory=None, max_scheduling_memory=None, summary=None, override_iptables=None, protocol=None, reboot_after_installation=None, os=None, hooks=None, libvirt_version=None, display=None, hosted_engine=None, kdump_status=None, selinux=None, auto_numa_status=None, numa_supported=None, live_snapshot_support=None, katello_errata=None, external_host_provider=None, update_available=None, device_passthrough=None, storage_connection_extensions=None):
         super(Host, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.address = address
         self.certificate = certificate
@@ -11802,6 +11877,7 @@ class Host(BaseResource):
         self.external_host_provider = external_host_provider
         self.update_available = update_available
         self.device_passthrough = device_passthrough
+        self.storage_connection_extensions = storage_connection_extensions
     def factory(*args_, **kwargs_):
         if Host.subclass:
             return Host.subclass(*args_, **kwargs_)
@@ -11886,6 +11962,8 @@ class Host(BaseResource):
     def set_update_available(self, update_available): self.update_available = update_available
     def get_device_passthrough(self): return self.device_passthrough
     def set_device_passthrough(self, device_passthrough): self.device_passthrough = device_passthrough
+    def get_storage_connection_extensions(self): return self.storage_connection_extensions
+    def set_storage_connection_extensions(self, storage_connection_extensions): self.storage_connection_extensions = storage_connection_extensions
     def hasContent_(self):
         if (
             self.address is not None or
@@ -11927,6 +12005,7 @@ class Host(BaseResource):
             self.external_host_provider is not None or
             self.update_available is not None or
             self.device_passthrough is not None or
+            self.storage_connection_extensions is not None or
             super(Host, self).hasContent_()
         ):
             return True
@@ -12048,6 +12127,8 @@ class Host(BaseResource):
             outfile.write('<%supdate_available>%s</%supdate_available>%s' % (namespace_, self.gds_format_boolean(self.update_available, input_name='update_available'), namespace_, eol_))
         if self.device_passthrough is not None:
             self.device_passthrough.export_(outfile, level, namespace_, name_='device_passthrough', pretty_print=pretty_print)
+        if self.storage_connection_extensions is not None:
+            self.storage_connection_extensions.export_(outfile, level, namespace_, name_='storage_connection_extensions', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Host'):
         level += 1
         already_processed = set()
@@ -12248,6 +12329,12 @@ class Host(BaseResource):
             showIndent(outfile, level)
             outfile.write('device_passthrough=model_.device_passthrough(\n')
             self.device_passthrough.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.storage_connection_extensions is not None:
+            showIndent(outfile, level)
+            outfile.write('storage_connection_extensions=model_.storage_connection_extensions(\n')
+            self.storage_connection_extensions.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -12460,6 +12547,10 @@ class Host(BaseResource):
             obj_ = HostDevicePassthrough.factory()
             obj_.build(child_)
             self.device_passthrough = obj_
+        elif nodeName_ == 'storage_connection_extensions':
+            obj_ = StorageConnectionExtensions.factory()
+            obj_.build(child_)
+            self.storage_connection_extensions = obj_
         super(Host, self).buildChildren(child_, node, nodeName_, True)
 # end class Host
 
@@ -17200,6 +17291,223 @@ class VnicProfiles(BaseResources):
 # end class VnicProfiles
 
 
+class StorageConnectionExtensions(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, size=None, total=None, active=None, storage_connection_extension=None):
+        super(StorageConnectionExtensions, self).__init__(actions, size, total, active, )
+        if storage_connection_extension is None:
+            self.storage_connection_extension = []
+        else:
+            self.storage_connection_extension = storage_connection_extension
+    def factory(*args_, **kwargs_):
+        if StorageConnectionExtensions.subclass:
+            return StorageConnectionExtensions.subclass(*args_, **kwargs_)
+        else:
+            return StorageConnectionExtensions(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_storage_connection_extension(self): return self.storage_connection_extension
+    def set_storage_connection_extension(self, storage_connection_extension): self.storage_connection_extension = storage_connection_extension
+    def add_storage_connection_extension(self, value): self.storage_connection_extension.append(value)
+    def insert_storage_connection_extension(self, index, value): self.storage_connection_extension[index] = value
+    def hasContent_(self):
+        if (
+            self.storage_connection_extension or
+            super(StorageConnectionExtensions, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='StorageConnectionExtensions', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='StorageConnectionExtensions')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='StorageConnectionExtensions'):
+        super(StorageConnectionExtensions, self).exportAttributes(outfile, level, already_processed, namespace_, name_='StorageConnectionExtensions')
+    def exportChildren(self, outfile, level, namespace_='', name_='StorageConnectionExtensions', fromsubclass_=False, pretty_print=True):
+        super(StorageConnectionExtensions, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for storage_connection_extension_ in self.storage_connection_extension:
+            storage_connection_extension_.export_(outfile, level, namespace_, name_='storage_connection_extension', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='StorageConnectionExtensions'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(StorageConnectionExtensions, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(StorageConnectionExtensions, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('storage_connection_extension=[\n')
+        level += 1
+        for storage_connection_extension_ in self.storage_connection_extension:
+            showIndent(outfile, level)
+            outfile.write('model_.storage_connection_extension(\n')
+            storage_connection_extension_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(StorageConnectionExtensions, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'storage_connection_extension':
+            obj_ = StorageConnectionExtension.factory()
+            obj_.build(child_)
+            self.storage_connection_extension.append(obj_)
+        super(StorageConnectionExtensions, self).buildChildren(child_, node, nodeName_, True)
+# end class StorageConnectionExtensions
+
+
+class StorageConnectionExtension(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, target=None, username=None, password=None, host=None):
+        super(StorageConnectionExtension, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        self.target = target
+        self.username = username
+        self.password = password
+        self.host = host
+    def factory(*args_, **kwargs_):
+        if StorageConnectionExtension.subclass:
+            return StorageConnectionExtension.subclass(*args_, **kwargs_)
+        else:
+            return StorageConnectionExtension(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_target(self): return self.target
+    def set_target(self, target): self.target = target
+    def get_username(self): return self.username
+    def set_username(self, username): self.username = username
+    def get_password(self): return self.password
+    def set_password(self, password): self.password = password
+    def get_host(self): return self.host
+    def set_host(self, host): self.host = host
+    def hasContent_(self):
+        if (
+            self.target is not None or
+            self.username is not None or
+            self.password is not None or
+            self.host is not None or
+            super(StorageConnectionExtension, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='StorageConnectionExtension', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='StorageConnectionExtension')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='StorageConnectionExtension'):
+        super(StorageConnectionExtension, self).exportAttributes(outfile, level, already_processed, namespace_, name_='StorageConnectionExtension')
+    def exportChildren(self, outfile, level, namespace_='', name_='StorageConnectionExtension', fromsubclass_=False, pretty_print=True):
+        super(StorageConnectionExtension, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.target is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%starget>%s</%starget>%s' % (namespace_, self.gds_format_string(quote_xml(self.target).encode(ExternalEncoding), input_name='target'), namespace_, eol_))
+        if self.username is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%susername>%s</%susername>%s' % (namespace_, self.gds_format_string(quote_xml(self.username).encode(ExternalEncoding), input_name='username'), namespace_, eol_))
+        if self.password is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%spassword>%s</%spassword>%s' % (namespace_, self.gds_format_string(quote_xml(self.password).encode(ExternalEncoding), input_name='password'), namespace_, eol_))
+        if self.host is not None:
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='StorageConnectionExtension'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(StorageConnectionExtension, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(StorageConnectionExtension, self).exportLiteralChildren(outfile, level, name_)
+        if self.target is not None:
+            showIndent(outfile, level)
+            outfile.write('target=%s,\n' % quote_python(self.target).encode(ExternalEncoding))
+        if self.username is not None:
+            showIndent(outfile, level)
+            outfile.write('username=%s,\n' % quote_python(self.username).encode(ExternalEncoding))
+        if self.password is not None:
+            showIndent(outfile, level)
+            outfile.write('password=%s,\n' % quote_python(self.password).encode(ExternalEncoding))
+        if self.host is not None:
+            showIndent(outfile, level)
+            outfile.write('host=model_.host(\n')
+            self.host.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(StorageConnectionExtension, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'target':
+            target_ = child_.text
+            target_ = self.gds_validate_string(target_, node, 'target')
+            self.target = target_
+        elif nodeName_ == 'username':
+            username_ = child_.text
+            username_ = self.gds_validate_string(username_, node, 'username')
+            self.username = username_
+        elif nodeName_ == 'password':
+            password_ = child_.text
+            password_ = self.gds_validate_string(password_, node, 'password')
+            self.password = password_
+        elif nodeName_ == 'host':
+            obj_ = Host.factory()
+            obj_.build(child_)
+            self.host = obj_
+        super(StorageConnectionExtension, self).buildChildren(child_, node, nodeName_, True)
+# end class StorageConnectionExtension
+
+
 class LogicalUnit(GeneratedsSuper):
     subclass = None
     superclass = None
@@ -20653,9 +20961,11 @@ class GraphicsConsoles(BaseResources):
 class GraphicsConsole(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, protocol=None, port=None, tls_port=None, address=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, vm=None, template=None, instance_type=None, protocol=None, port=None, tls_port=None, address=None):
         super(GraphicsConsole, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.vm = vm
+        self.template = template
+        self.instance_type = instance_type
         self.protocol = protocol
         self.port = port
         self.tls_port = tls_port
@@ -20668,6 +20978,10 @@ class GraphicsConsole(BaseResource):
     factory = staticmethod(factory)
     def get_vm(self): return self.vm
     def set_vm(self, vm): self.vm = vm
+    def get_template(self): return self.template
+    def set_template(self, template): self.template = template
+    def get_instance_type(self): return self.instance_type
+    def set_instance_type(self, instance_type): self.instance_type = instance_type
     def get_protocol(self): return self.protocol
     def set_protocol(self, protocol): self.protocol = protocol
     def get_port(self): return self.port
@@ -20679,6 +20993,8 @@ class GraphicsConsole(BaseResource):
     def hasContent_(self):
         if (
             self.vm is not None or
+            self.template is not None or
+            self.instance_type is not None or
             self.protocol is not None or
             self.port is not None or
             self.tls_port is not None or
@@ -20714,6 +21030,10 @@ class GraphicsConsole(BaseResource):
             eol_ = ''
         if self.vm is not None:
             self.vm.export_(outfile, level, namespace_, name_='vm', pretty_print=pretty_print)
+        if self.template is not None:
+            self.template.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
+        if self.instance_type is not None:
+            self.instance_type.export_(outfile, level, namespace_, name_='instance_type', pretty_print=pretty_print)
         if self.protocol is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sprotocol>%s</%sprotocol>%s' % (namespace_, self.gds_format_string(quote_xml(self.protocol).encode(ExternalEncoding), input_name='protocol'), namespace_, eol_))
@@ -20740,6 +21060,18 @@ class GraphicsConsole(BaseResource):
             showIndent(outfile, level)
             outfile.write('vm=model_.vm(\n')
             self.vm.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.template is not None:
+            showIndent(outfile, level)
+            outfile.write('template=model_.template(\n')
+            self.template.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.instance_type is not None:
+            showIndent(outfile, level)
+            outfile.write('instance_type=model_.instance_type(\n')
+            self.instance_type.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.protocol is not None:
@@ -20769,6 +21101,15 @@ class GraphicsConsole(BaseResource):
             obj_ = class_obj_.factory()
             obj_.build(child_)
             self.vm = obj_
+        elif nodeName_ == 'template':
+            class_obj_ = self.get_class_obj_(child_, Template)
+            obj_ = class_obj_.factory()
+            obj_.build(child_)
+            self.template = obj_
+        elif nodeName_ == 'instance_type':
+            obj_ = InstanceType.factory()
+            obj_.build(child_)
+            self.instance_type = obj_
         elif nodeName_ == 'protocol':
             protocol_ = child_.text
             protocol_ = self.gds_validate_string(protocol_, node, 'protocol')
@@ -28728,6 +29069,197 @@ class HostNIC(BaseResource):
 # end class HostNIC
 
 
+class UnmanagedNetworks(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, size=None, total=None, active=None, unmanaged_network=None):
+        super(UnmanagedNetworks, self).__init__(actions, size, total, active, )
+        if unmanaged_network is None:
+            self.unmanaged_network = []
+        else:
+            self.unmanaged_network = unmanaged_network
+    def factory(*args_, **kwargs_):
+        if UnmanagedNetworks.subclass:
+            return UnmanagedNetworks.subclass(*args_, **kwargs_)
+        else:
+            return UnmanagedNetworks(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_unmanaged_network(self): return self.unmanaged_network
+    def set_unmanaged_network(self, unmanaged_network): self.unmanaged_network = unmanaged_network
+    def add_unmanaged_network(self, value): self.unmanaged_network.append(value)
+    def insert_unmanaged_network(self, index, value): self.unmanaged_network[index] = value
+    def hasContent_(self):
+        if (
+            self.unmanaged_network or
+            super(UnmanagedNetworks, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='UnmanagedNetworks', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='UnmanagedNetworks')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='UnmanagedNetworks'):
+        super(UnmanagedNetworks, self).exportAttributes(outfile, level, already_processed, namespace_, name_='UnmanagedNetworks')
+    def exportChildren(self, outfile, level, namespace_='', name_='UnmanagedNetworks', fromsubclass_=False, pretty_print=True):
+        super(UnmanagedNetworks, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for unmanaged_network_ in self.unmanaged_network:
+            unmanaged_network_.export_(outfile, level, namespace_, name_='unmanaged_network', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='UnmanagedNetworks'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(UnmanagedNetworks, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(UnmanagedNetworks, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('unmanaged_network=[\n')
+        level += 1
+        for unmanaged_network_ in self.unmanaged_network:
+            showIndent(outfile, level)
+            outfile.write('model_.unmanaged_network(\n')
+            unmanaged_network_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(UnmanagedNetworks, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'unmanaged_network':
+            obj_ = UnmanagedNetwork.factory()
+            obj_.build(child_)
+            self.unmanaged_network.append(obj_)
+        super(UnmanagedNetworks, self).buildChildren(child_, node, nodeName_, True)
+# end class UnmanagedNetworks
+
+
+class UnmanagedNetwork(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, host_nic=None, host=None):
+        super(UnmanagedNetwork, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        self.host_nic = host_nic
+        self.host = host
+    def factory(*args_, **kwargs_):
+        if UnmanagedNetwork.subclass:
+            return UnmanagedNetwork.subclass(*args_, **kwargs_)
+        else:
+            return UnmanagedNetwork(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_host_nic(self): return self.host_nic
+    def set_host_nic(self, host_nic): self.host_nic = host_nic
+    def get_host(self): return self.host
+    def set_host(self, host): self.host = host
+    def hasContent_(self):
+        if (
+            self.host_nic is not None or
+            self.host is not None or
+            super(UnmanagedNetwork, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='UnmanagedNetwork', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='UnmanagedNetwork')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='UnmanagedNetwork'):
+        super(UnmanagedNetwork, self).exportAttributes(outfile, level, already_processed, namespace_, name_='UnmanagedNetwork')
+    def exportChildren(self, outfile, level, namespace_='', name_='UnmanagedNetwork', fromsubclass_=False, pretty_print=True):
+        super(UnmanagedNetwork, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.host_nic is not None:
+            self.host_nic.export_(outfile, level, namespace_, name_='host_nic', pretty_print=pretty_print)
+        if self.host is not None:
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='UnmanagedNetwork'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(UnmanagedNetwork, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(UnmanagedNetwork, self).exportLiteralChildren(outfile, level, name_)
+        if self.host_nic is not None:
+            showIndent(outfile, level)
+            outfile.write('host_nic=model_.host_nic(\n')
+            self.host_nic.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.host is not None:
+            showIndent(outfile, level)
+            outfile.write('host=model_.host(\n')
+            self.host.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(UnmanagedNetwork, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'host_nic':
+            obj_ = HostNIC.factory()
+            obj_.build(child_)
+            self.host_nic = obj_
+        elif nodeName_ == 'host':
+            obj_ = Host.factory()
+            obj_.build(child_)
+            self.host = obj_
+        super(UnmanagedNetwork, self).buildChildren(child_, node, nodeName_, True)
+# end class UnmanagedNetwork
+
+
 class HostNics(BaseResources):
     subclass = None
     superclass = BaseResources
@@ -29753,6 +30285,657 @@ class Bonding(GeneratedsSuper):
             obj_.build(child_)
             self.slaves = obj_
 # end class Bonding
+
+
+class NetworkAttachment(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, network=None, host_nic=None, ip_address_assignments=None, properties=None, reported_configurations=None, host=None):
+        super(NetworkAttachment, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        self.network = network
+        self.host_nic = host_nic
+        self.ip_address_assignments = ip_address_assignments
+        self.properties = properties
+        self.reported_configurations = reported_configurations
+        self.host = host
+    def factory(*args_, **kwargs_):
+        if NetworkAttachment.subclass:
+            return NetworkAttachment.subclass(*args_, **kwargs_)
+        else:
+            return NetworkAttachment(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_network(self): return self.network
+    def set_network(self, network): self.network = network
+    def get_host_nic(self): return self.host_nic
+    def set_host_nic(self, host_nic): self.host_nic = host_nic
+    def get_ip_address_assignments(self): return self.ip_address_assignments
+    def set_ip_address_assignments(self, ip_address_assignments): self.ip_address_assignments = ip_address_assignments
+    def get_properties(self): return self.properties
+    def set_properties(self, properties): self.properties = properties
+    def get_reported_configurations(self): return self.reported_configurations
+    def set_reported_configurations(self, reported_configurations): self.reported_configurations = reported_configurations
+    def get_host(self): return self.host
+    def set_host(self, host): self.host = host
+    def hasContent_(self):
+        if (
+            self.network is not None or
+            self.host_nic is not None or
+            self.ip_address_assignments is not None or
+            self.properties is not None or
+            self.reported_configurations is not None or
+            self.host is not None or
+            super(NetworkAttachment, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='NetworkAttachment', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='NetworkAttachment')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='NetworkAttachment'):
+        super(NetworkAttachment, self).exportAttributes(outfile, level, already_processed, namespace_, name_='NetworkAttachment')
+    def exportChildren(self, outfile, level, namespace_='', name_='NetworkAttachment', fromsubclass_=False, pretty_print=True):
+        super(NetworkAttachment, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.network is not None:
+            self.network.export_(outfile, level, namespace_, name_='network', pretty_print=pretty_print)
+        if self.host_nic is not None:
+            self.host_nic.export_(outfile, level, namespace_, name_='host_nic', pretty_print=pretty_print)
+        if self.ip_address_assignments is not None:
+            self.ip_address_assignments.export_(outfile, level, namespace_, name_='ip_address_assignments', pretty_print=pretty_print)
+        if self.properties is not None:
+            self.properties.export_(outfile, level, namespace_, name_='properties', pretty_print=pretty_print)
+        if self.reported_configurations is not None:
+            self.reported_configurations.export_(outfile, level, namespace_, name_='reported_configurations', pretty_print=pretty_print)
+        if self.host is not None:
+            self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='NetworkAttachment'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(NetworkAttachment, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(NetworkAttachment, self).exportLiteralChildren(outfile, level, name_)
+        if self.network is not None:
+            showIndent(outfile, level)
+            outfile.write('network=model_.network(\n')
+            self.network.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.host_nic is not None:
+            showIndent(outfile, level)
+            outfile.write('host_nic=model_.host_nic(\n')
+            self.host_nic.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.ip_address_assignments is not None:
+            showIndent(outfile, level)
+            outfile.write('ip_address_assignments=model_.IpAddressAssignments(\n')
+            self.ip_address_assignments.exportLiteral(outfile, level, name_='ip_address_assignments')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.properties is not None:
+            showIndent(outfile, level)
+            outfile.write('properties=model_.properties(\n')
+            self.properties.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.reported_configurations is not None:
+            showIndent(outfile, level)
+            outfile.write('reported_configurations=model_.ReportedConfigurations(\n')
+            self.reported_configurations.exportLiteral(outfile, level, name_='reported_configurations')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.host is not None:
+            showIndent(outfile, level)
+            outfile.write('host=model_.host(\n')
+            self.host.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(NetworkAttachment, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'network':
+            obj_ = Network.factory()
+            obj_.build(child_)
+            self.network = obj_
+        elif nodeName_ == 'host_nic':
+            obj_ = HostNIC.factory()
+            obj_.build(child_)
+            self.host_nic = obj_
+        elif nodeName_ == 'ip_address_assignments':
+            obj_ = IpAddressAssignments.factory()
+            obj_.build(child_)
+            self.ip_address_assignments = obj_
+        elif nodeName_ == 'properties':
+            obj_ = Properties.factory()
+            obj_.build(child_)
+            self.properties = obj_
+        elif nodeName_ == 'reported_configurations':
+            obj_ = ReportedConfigurations.factory()
+            obj_.build(child_)
+            self.reported_configurations = obj_
+        elif nodeName_ == 'host':
+            obj_ = Host.factory()
+            obj_.build(child_)
+            self.host = obj_
+        super(NetworkAttachment, self).buildChildren(child_, node, nodeName_, True)
+# end class NetworkAttachment
+
+
+class NetworkAttachments(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, size=None, total=None, active=None, network_attachment=None):
+        super(NetworkAttachments, self).__init__(actions, size, total, active, )
+        if network_attachment is None:
+            self.network_attachment = []
+        else:
+            self.network_attachment = network_attachment
+    def factory(*args_, **kwargs_):
+        if NetworkAttachments.subclass:
+            return NetworkAttachments.subclass(*args_, **kwargs_)
+        else:
+            return NetworkAttachments(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_network_attachment(self): return self.network_attachment
+    def set_network_attachment(self, network_attachment): self.network_attachment = network_attachment
+    def add_network_attachment(self, value): self.network_attachment.append(value)
+    def insert_network_attachment(self, index, value): self.network_attachment[index] = value
+    def hasContent_(self):
+        if (
+            self.network_attachment or
+            super(NetworkAttachments, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='NetworkAttachments', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='NetworkAttachments')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='NetworkAttachments'):
+        super(NetworkAttachments, self).exportAttributes(outfile, level, already_processed, namespace_, name_='NetworkAttachments')
+    def exportChildren(self, outfile, level, namespace_='', name_='NetworkAttachments', fromsubclass_=False, pretty_print=True):
+        super(NetworkAttachments, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for network_attachment_ in self.network_attachment:
+            network_attachment_.export_(outfile, level, namespace_, name_='network_attachment', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='NetworkAttachments'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(NetworkAttachments, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(NetworkAttachments, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('network_attachment=[\n')
+        level += 1
+        for network_attachment_ in self.network_attachment:
+            showIndent(outfile, level)
+            outfile.write('model_.network_attachment(\n')
+            network_attachment_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(NetworkAttachments, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'network_attachment':
+            obj_ = NetworkAttachment.factory()
+            obj_.build(child_)
+            self.network_attachment.append(obj_)
+        super(NetworkAttachments, self).buildChildren(child_, node, nodeName_, True)
+# end class NetworkAttachments
+
+
+class ReportedConfigurations(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, in_sync=None, reported_configuration=None):
+        self.in_sync = in_sync
+        if reported_configuration is None:
+            self.reported_configuration = []
+        else:
+            self.reported_configuration = reported_configuration
+    def factory(*args_, **kwargs_):
+        if ReportedConfigurations.subclass:
+            return ReportedConfigurations.subclass(*args_, **kwargs_)
+        else:
+            return ReportedConfigurations(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_in_sync(self): return self.in_sync
+    def set_in_sync(self, in_sync): self.in_sync = in_sync
+    def get_reported_configuration(self): return self.reported_configuration
+    def set_reported_configuration(self, reported_configuration): self.reported_configuration = reported_configuration
+    def add_reported_configuration(self, value): self.reported_configuration.append(value)
+    def insert_reported_configuration(self, index, value): self.reported_configuration[index] = value
+    def hasContent_(self):
+        if (
+            self.in_sync is not None or
+            self.reported_configuration
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='ReportedConfigurations', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ReportedConfigurations')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='ReportedConfigurations'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='ReportedConfigurations', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.in_sync is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sin_sync>%s</%sin_sync>%s' % (namespace_, self.gds_format_boolean(self.in_sync, input_name='in_sync'), namespace_, eol_))
+        for reported_configuration_ in self.reported_configuration:
+            reported_configuration_.export_(outfile, level, namespace_, name_='reported_configuration', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='ReportedConfigurations'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.in_sync is not None:
+            showIndent(outfile, level)
+            outfile.write('in_sync=%s,\n' % self.in_sync)
+        showIndent(outfile, level)
+        outfile.write('reported_configuration=[\n')
+        level += 1
+        for reported_configuration_ in self.reported_configuration:
+            showIndent(outfile, level)
+            outfile.write('model_.ReportedConfiguration(\n')
+            reported_configuration_.exportLiteral(outfile, level, name_='ReportedConfiguration')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'in_sync':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'in_sync')
+            self.in_sync = ival_
+        elif nodeName_ == 'reported_configuration':
+            obj_ = ReportedConfiguration.factory()
+            obj_.build(child_)
+            self.reported_configuration.append(obj_)
+# end class ReportedConfigurations
+
+
+class ReportedConfiguration(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, name=None, value=None, in_sync=None):
+        self.name = name
+        self.value = value
+        self.in_sync = in_sync
+    def factory(*args_, **kwargs_):
+        if ReportedConfiguration.subclass:
+            return ReportedConfiguration.subclass(*args_, **kwargs_)
+        else:
+            return ReportedConfiguration(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_name(self): return self.name
+    def set_name(self, name): self.name = name
+    def get_value(self): return self.value
+    def set_value(self, value): self.value = value
+    def get_in_sync(self): return self.in_sync
+    def set_in_sync(self, in_sync): self.in_sync = in_sync
+    def hasContent_(self):
+        if (
+            self.name is not None or
+            self.value is not None or
+            self.in_sync is not None
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='ReportedConfiguration', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ReportedConfiguration')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='ReportedConfiguration'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='ReportedConfiguration', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.name is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sname>%s</%sname>%s' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_, eol_))
+        if self.value is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%svalue>%s</%svalue>%s' % (namespace_, self.gds_format_string(quote_xml(self.value).encode(ExternalEncoding), input_name='value'), namespace_, eol_))
+        if self.in_sync is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sin_sync>%s</%sin_sync>%s' % (namespace_, self.gds_format_boolean(self.in_sync, input_name='in_sync'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='ReportedConfiguration'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.name is not None:
+            showIndent(outfile, level)
+            outfile.write('name=%s,\n' % quote_python(self.name).encode(ExternalEncoding))
+        if self.value is not None:
+            showIndent(outfile, level)
+            outfile.write('value=%s,\n' % quote_python(self.value).encode(ExternalEncoding))
+        if self.in_sync is not None:
+            showIndent(outfile, level)
+            outfile.write('in_sync=%s,\n' % self.in_sync)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'name':
+            name_ = child_.text
+            name_ = self.gds_validate_string(name_, node, 'name')
+            self.name = name_
+        elif nodeName_ == 'value':
+            value_ = child_.text
+            value_ = self.gds_validate_string(value_, node, 'value')
+            self.value = value_
+        elif nodeName_ == 'in_sync':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'in_sync')
+            self.in_sync = ival_
+# end class ReportedConfiguration
+
+
+class IpAddressAssignments(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, ip_address_assignment=None):
+        if ip_address_assignment is None:
+            self.ip_address_assignment = []
+        else:
+            self.ip_address_assignment = ip_address_assignment
+    def factory(*args_, **kwargs_):
+        if IpAddressAssignments.subclass:
+            return IpAddressAssignments.subclass(*args_, **kwargs_)
+        else:
+            return IpAddressAssignments(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_ip_address_assignment(self): return self.ip_address_assignment
+    def set_ip_address_assignment(self, ip_address_assignment): self.ip_address_assignment = ip_address_assignment
+    def add_ip_address_assignment(self, value): self.ip_address_assignment.append(value)
+    def insert_ip_address_assignment(self, index, value): self.ip_address_assignment[index] = value
+    def hasContent_(self):
+        if (
+            self.ip_address_assignment
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='IpAddressAssignments', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='IpAddressAssignments')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='IpAddressAssignments'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='IpAddressAssignments', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for ip_address_assignment_ in self.ip_address_assignment:
+            ip_address_assignment_.export_(outfile, level, namespace_, name_='ip_address_assignment', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='IpAddressAssignments'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('ip_address_assignment=[\n')
+        level += 1
+        for ip_address_assignment_ in self.ip_address_assignment:
+            showIndent(outfile, level)
+            outfile.write('model_.IpAddressAssignment(\n')
+            ip_address_assignment_.exportLiteral(outfile, level, name_='IpAddressAssignment')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'ip_address_assignment':
+            obj_ = IpAddressAssignment.factory()
+            obj_.build(child_)
+            self.ip_address_assignment.append(obj_)
+# end class IpAddressAssignments
+
+
+class IpAddressAssignment(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, ip=None, assignment_method=None):
+        self.ip = ip
+        self.assignment_method = assignment_method
+    def factory(*args_, **kwargs_):
+        if IpAddressAssignment.subclass:
+            return IpAddressAssignment.subclass(*args_, **kwargs_)
+        else:
+            return IpAddressAssignment(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_ip(self): return self.ip
+    def set_ip(self, ip): self.ip = ip
+    def get_assignment_method(self): return self.assignment_method
+    def set_assignment_method(self, assignment_method): self.assignment_method = assignment_method
+    def hasContent_(self):
+        if (
+            self.ip is not None or
+            self.assignment_method is not None
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='IpAddressAssignment', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='IpAddressAssignment')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='IpAddressAssignment'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='IpAddressAssignment', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.ip is not None:
+            self.ip.export_(outfile, level, namespace_, name_='ip', pretty_print=pretty_print)
+        if self.assignment_method is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sassignment_method>%s</%sassignment_method>%s' % (namespace_, self.gds_format_string(quote_xml(self.assignment_method).encode(ExternalEncoding), input_name='assignment_method'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='IpAddressAssignment'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.ip is not None:
+            showIndent(outfile, level)
+            outfile.write('ip=model_.ip(\n')
+            self.ip.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.assignment_method is not None:
+            showIndent(outfile, level)
+            outfile.write('assignment_method=%s,\n' % quote_python(self.assignment_method).encode(ExternalEncoding))
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'ip':
+            obj_ = IP.factory()
+            obj_.build(child_)
+            self.ip = obj_
+        elif nodeName_ == 'assignment_method':
+            assignment_method_ = child_.text
+            assignment_method_ = self.gds_validate_string(assignment_method_, node, 'assignment_method')
+            self.assignment_method = assignment_method_
+# end class IpAddressAssignment
 
 
 class HostStorage(BaseResources):
@@ -43975,7 +45158,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, disk=None, reason=None, logical_units=None, use_sysprep=None, use_cloud_init=None, status=None, fault=None, iscsi_target=None, power_management=None, is_attached=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, proxy_ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, modified_network_attachments=None, removed_network_attachments=None, synchronized_network_attachments=None, modified_bonds=None, removed_bonds=None, modified_labels=None, removed_labels=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, disk=None, reason=None, logical_units=None, use_sysprep=None, use_cloud_init=None, status=None, fault=None, iscsi_target=None, power_management=None, is_attached=None):
         super(Action, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -43986,6 +45169,7 @@ class Action(BaseResource):
         self.image = image
         self.fence_type = fence_type
         self.ticket = ticket
+        self.proxy_ticket = proxy_ticket
         self.iscsi = iscsi
         self.storage_domain = storage_domain
         self.cluster = cluster
@@ -43995,6 +45179,13 @@ class Action(BaseResource):
         self.snapshot = snapshot
         self.template = template
         self.host_nics = host_nics
+        self.modified_network_attachments = modified_network_attachments
+        self.removed_network_attachments = removed_network_attachments
+        self.synchronized_network_attachments = synchronized_network_attachments
+        self.modified_bonds = modified_bonds
+        self.removed_bonds = removed_bonds
+        self.modified_labels = modified_labels
+        self.removed_labels = removed_labels
         self.check_connectivity = check_connectivity
         self.connectivity_timeout = connectivity_timeout
         self.pause = pause
@@ -44050,6 +45241,8 @@ class Action(BaseResource):
     def set_fence_type(self, fence_type): self.fence_type = fence_type
     def get_ticket(self): return self.ticket
     def set_ticket(self, ticket): self.ticket = ticket
+    def get_proxy_ticket(self): return self.proxy_ticket
+    def set_proxy_ticket(self, proxy_ticket): self.proxy_ticket = proxy_ticket
     def get_iscsi(self): return self.iscsi
     def set_iscsi(self, iscsi): self.iscsi = iscsi
     def get_storage_domain(self): return self.storage_domain
@@ -44068,6 +45261,20 @@ class Action(BaseResource):
     def set_template(self, template): self.template = template
     def get_host_nics(self): return self.host_nics
     def set_host_nics(self, host_nics): self.host_nics = host_nics
+    def get_modified_network_attachments(self): return self.modified_network_attachments
+    def set_modified_network_attachments(self, modified_network_attachments): self.modified_network_attachments = modified_network_attachments
+    def get_removed_network_attachments(self): return self.removed_network_attachments
+    def set_removed_network_attachments(self, removed_network_attachments): self.removed_network_attachments = removed_network_attachments
+    def get_synchronized_network_attachments(self): return self.synchronized_network_attachments
+    def set_synchronized_network_attachments(self, synchronized_network_attachments): self.synchronized_network_attachments = synchronized_network_attachments
+    def get_modified_bonds(self): return self.modified_bonds
+    def set_modified_bonds(self, modified_bonds): self.modified_bonds = modified_bonds
+    def get_removed_bonds(self): return self.removed_bonds
+    def set_removed_bonds(self, removed_bonds): self.removed_bonds = removed_bonds
+    def get_modified_labels(self): return self.modified_labels
+    def set_modified_labels(self, modified_labels): self.modified_labels = modified_labels
+    def get_removed_labels(self): return self.removed_labels
+    def set_removed_labels(self, removed_labels): self.removed_labels = removed_labels
     def get_check_connectivity(self): return self.check_connectivity
     def set_check_connectivity(self, check_connectivity): self.check_connectivity = check_connectivity
     def get_connectivity_timeout(self): return self.connectivity_timeout
@@ -44137,6 +45344,7 @@ class Action(BaseResource):
             self.image is not None or
             self.fence_type is not None or
             self.ticket is not None or
+            self.proxy_ticket is not None or
             self.iscsi is not None or
             self.storage_domain is not None or
             self.cluster is not None or
@@ -44146,6 +45354,13 @@ class Action(BaseResource):
             self.snapshot is not None or
             self.template is not None or
             self.host_nics is not None or
+            self.modified_network_attachments is not None or
+            self.removed_network_attachments is not None or
+            self.synchronized_network_attachments is not None or
+            self.modified_bonds is not None or
+            self.removed_bonds is not None or
+            self.modified_labels is not None or
+            self.removed_labels is not None or
             self.check_connectivity is not None or
             self.connectivity_timeout is not None or
             self.pause is not None or
@@ -44225,6 +45440,8 @@ class Action(BaseResource):
             outfile.write('<%sfence_type>%s</%sfence_type>%s' % (namespace_, self.gds_format_string(quote_xml(self.fence_type).encode(ExternalEncoding), input_name='fence_type'), namespace_, eol_))
         if self.ticket is not None:
             self.ticket.export_(outfile, level, namespace_, name_='ticket', pretty_print=pretty_print)
+        if self.proxy_ticket is not None:
+            self.proxy_ticket.export_(outfile, level, namespace_, name_='proxy_ticket', pretty_print=pretty_print)
         if self.iscsi is not None:
             self.iscsi.export_(outfile, level, namespace_, name_='iscsi', pretty_print=pretty_print)
         if self.storage_domain is not None:
@@ -44245,6 +45462,20 @@ class Action(BaseResource):
             self.template.export_(outfile, level, namespace_, name_='template', pretty_print=pretty_print)
         if self.host_nics is not None:
             self.host_nics.export_(outfile, level, namespace_, name_='host_nics', pretty_print=pretty_print)
+        if self.modified_network_attachments is not None:
+            self.modified_network_attachments.export_(outfile, level, namespace_, name_='modified_network_attachments', pretty_print=pretty_print)
+        if self.removed_network_attachments is not None:
+            self.removed_network_attachments.export_(outfile, level, namespace_, name_='removed_network_attachments', pretty_print=pretty_print)
+        if self.synchronized_network_attachments is not None:
+            self.synchronized_network_attachments.export_(outfile, level, namespace_, name_='synchronized_network_attachments', pretty_print=pretty_print)
+        if self.modified_bonds is not None:
+            self.modified_bonds.export_(outfile, level, namespace_, name_='modified_bonds', pretty_print=pretty_print)
+        if self.removed_bonds is not None:
+            self.removed_bonds.export_(outfile, level, namespace_, name_='removed_bonds', pretty_print=pretty_print)
+        if self.modified_labels is not None:
+            self.modified_labels.export_(outfile, level, namespace_, name_='modified_labels', pretty_print=pretty_print)
+        if self.removed_labels is not None:
+            self.removed_labels.export_(outfile, level, namespace_, name_='removed_labels', pretty_print=pretty_print)
         if self.check_connectivity is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%scheck_connectivity>%s</%scheck_connectivity>%s' % (namespace_, self.gds_format_boolean(self.check_connectivity, input_name='check_connectivity'), namespace_, eol_))
@@ -44370,6 +45601,12 @@ class Action(BaseResource):
             self.ticket.exportLiteral(outfile, level, name_='ticket')
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.proxy_ticket is not None:
+            showIndent(outfile, level)
+            outfile.write('proxy_ticket=model_.ProxyTicket(\n')
+            self.proxy_ticket.exportLiteral(outfile, level, name_='proxy_ticket')
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.iscsi is not None:
             showIndent(outfile, level)
             outfile.write('iscsi=model_.IscsiDetails(\n')
@@ -44416,6 +45653,48 @@ class Action(BaseResource):
             showIndent(outfile, level)
             outfile.write('host_nics=model_.host_nics(\n')
             self.host_nics.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.modified_network_attachments is not None:
+            showIndent(outfile, level)
+            outfile.write('modified_network_attachments=model_.NetworkAttachments(\n')
+            self.modified_network_attachments.exportLiteral(outfile, level, name_='modified_network_attachments')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.removed_network_attachments is not None:
+            showIndent(outfile, level)
+            outfile.write('removed_network_attachments=model_.NetworkAttachments(\n')
+            self.removed_network_attachments.exportLiteral(outfile, level, name_='removed_network_attachments')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.synchronized_network_attachments is not None:
+            showIndent(outfile, level)
+            outfile.write('synchronized_network_attachments=model_.NetworkAttachments(\n')
+            self.synchronized_network_attachments.exportLiteral(outfile, level, name_='synchronized_network_attachments')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.modified_bonds is not None:
+            showIndent(outfile, level)
+            outfile.write('modified_bonds=model_.HostNics(\n')
+            self.modified_bonds.exportLiteral(outfile, level, name_='modified_bonds')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.removed_bonds is not None:
+            showIndent(outfile, level)
+            outfile.write('removed_bonds=model_.HostNics(\n')
+            self.removed_bonds.exportLiteral(outfile, level, name_='removed_bonds')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.modified_labels is not None:
+            showIndent(outfile, level)
+            outfile.write('modified_labels=model_.Labels(\n')
+            self.modified_labels.exportLiteral(outfile, level, name_='modified_labels')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.removed_labels is not None:
+            showIndent(outfile, level)
+            outfile.write('removed_labels=model_.Labels(\n')
+            self.removed_labels.exportLiteral(outfile, level, name_='removed_labels')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.check_connectivity is not None:
@@ -44593,6 +45872,10 @@ class Action(BaseResource):
             obj_ = Ticket.factory()
             obj_.build(child_)
             self.ticket = obj_
+        elif nodeName_ == 'proxy_ticket':
+            obj_ = ProxyTicket.factory()
+            obj_.build(child_)
+            self.proxy_ticket = obj_
         elif nodeName_ == 'iscsi':
             obj_ = IscsiDetails.factory()
             obj_.build(child_)
@@ -44643,6 +45926,34 @@ class Action(BaseResource):
             obj_ = HostNics.factory()
             obj_.build(child_)
             self.host_nics = obj_
+        elif nodeName_ == 'modified_network_attachments':
+            obj_ = NetworkAttachments.factory()
+            obj_.build(child_)
+            self.modified_network_attachments = obj_
+        elif nodeName_ == 'removed_network_attachments':
+            obj_ = NetworkAttachments.factory()
+            obj_.build(child_)
+            self.removed_network_attachments = obj_
+        elif nodeName_ == 'synchronized_network_attachments':
+            obj_ = NetworkAttachments.factory()
+            obj_.build(child_)
+            self.synchronized_network_attachments = obj_
+        elif nodeName_ == 'modified_bonds':
+            obj_ = HostNics.factory()
+            obj_.build(child_)
+            self.modified_bonds = obj_
+        elif nodeName_ == 'removed_bonds':
+            obj_ = HostNics.factory()
+            obj_.build(child_)
+            self.removed_bonds = obj_
+        elif nodeName_ == 'modified_labels':
+            obj_ = Labels.factory()
+            obj_.build(child_)
+            self.modified_labels = obj_
+        elif nodeName_ == 'removed_labels':
+            obj_ = Labels.factory()
+            obj_.build(child_)
+            self.removed_labels = obj_
         elif nodeName_ == 'check_connectivity':
             sval_ = child_.text
             if sval_ in ('true', '1'):
@@ -46496,10 +47807,12 @@ class VersionCaps(Version):
 
 
 GDSClassesMapping = {
+    'proxy_ticket': ProxyTicket,
     'boot_menu': BootMenu,
     'selinux': SELinux,
     'disk': Disk,
     'gluster_volume_states': GlusterStates,
+    'reported_configurations': ReportedConfigurations,
     'icons': Icons,
     'openstack_network_providers': OpenStackNetworkProviders,
     'gluster_volumes': GlusterVolumes,
@@ -46528,6 +47841,8 @@ GDSClassesMapping = {
     'template': Template,
     'host_nic_states': HostNICStates,
     'certificates': Certificates,
+    'ip_address_assignments': IpAddressAssignments,
+    'modified_bonds': HostNics,
     'method': Method,
     'body': Body,
     'disk_profile': DiskProfile,
@@ -46537,11 +47852,11 @@ GDSClassesMapping = {
     'ranges': Ranges,
     'groups': Groups,
     'device_passthrough': HostDevicePassthrough,
-    'cpu_profiles': CpuProfiles,
+    'ip_address_assignment': IpAddressAssignment,
     'openstack_subnet': OpenStackSubnet,
     'external_host_groups': ExternalHostGroups,
     'property': Property,
-    'step': Step,
+    'modified_labels': Labels,
     'host_devices': HostDevices,
     'openstack_volume_types': OpenStackVolumeTypes,
     'permit': Permit,
@@ -46562,6 +47877,7 @@ GDSClassesMapping = {
     'fencing_policy': FencingPolicy,
     'sessions': Sessions,
     'katello_errata': KatelloErrata,
+    'reported_configuration': ReportedConfiguration,
     'serial_number_policies': SerialNumberPolicies,
     'system_version': Version,
     'disk_profiles': DiskProfiles,
@@ -46583,6 +47899,7 @@ GDSClassesMapping = {
     'lun_storage': Storage,
     'host_states': HostStates,
     'network_plugin_types': NetworkPluginTypes,
+    'storage_connection_extensions': StorageConnectionExtensions,
     'feature': Feature,
     'physical_function': HostDevice,
     'parameter': Parameter,
@@ -46623,9 +47940,10 @@ GDSClassesMapping = {
     'weight': Weight,
     'preview_vm': VM,
     'snapshots': Snapshots,
-    'gluster_clients': GlusterClients,
+    'owner': User,
     'event': Event,
     'network': Network,
+    'removed_bonds': HostNics,
     'vm_types': VmTypes,
     'skip_if_sd_active': SkipIfSDActive,
     'affinity_groups': AffinityGroups,
@@ -46640,6 +47958,7 @@ GDSClassesMapping = {
     'selinux_modes': SELinuxModes,
     'cloud_init': CloudInit,
     'cpu_tune': CpuTune,
+    'unmanaged_network': UnmanagedNetwork,
     'filter': Filter,
     'template_states': TemplateStates,
     'openstack_provider': OpenStackProvider,
@@ -46648,7 +47967,7 @@ GDSClassesMapping = {
     'watchdogs': WatchDogs,
     'fop_statistic': FopStatistic,
     'hook': Hook,
-    'owner': User,
+    'gluster_clients': GlusterClients,
     'payload': Payload,
     'power_management_states': PowerManagementStates,
     'storage_domain': StorageDomain,
@@ -46674,13 +47993,14 @@ GDSClassesMapping = {
     'creation_status': Status,
     'usages': Usages,
     'configuration_types': ConfigurationTypes,
-    'qoss': QoSs,
+    'linkCapabilities': LinkCapabilities,
     'payloads': Payloads,
     'base_template': Template,
     'snapshot_statuses': SnapshotStatuses,
     'nfs_profile_detail': NfsProfileDetail,
     'quota': Quota,
     'pm_proxy': PmProxy,
+    'modified_network_attachments': NetworkAttachments,
     'icon': Icon,
     'url': Url,
     'request': Request,
@@ -46698,6 +48018,7 @@ GDSClassesMapping = {
     'external_status': Status,
     'vnic_profile': VnicProfile,
     'storage_formats': StorageFormats,
+    'network_attachments': NetworkAttachments,
     'architecture_capability': ArchitectureCapability,
     'logical_units': LogicalUnits,
     'supported_rng_sources': RngSources,
@@ -46718,7 +48039,7 @@ GDSClassesMapping = {
     'external_compute_resource': ExternalComputeResource,
     'kernel': Kernel,
     'migration': MigrationOptions,
-    'entity_profile_detail': EntityProfileDetail,
+    'jobs': Jobs,
     'custom_property': CustomProperty,
     'openstack_network_provider': OpenStackNetworkProvider,
     'openstack_image_provider': OpenStackImageProvider,
@@ -46726,7 +48047,8 @@ GDSClassesMapping = {
     'sgio_options': ScsiGenericIoOptions,
     'label': Label,
     'vm_numa_node': VirtualNumaNode,
-    'jobs': Jobs,
+    'removed_network_attachments': NetworkAttachments,
+    'entity_profile_detail': EntityProfileDetail,
     'parent': TagParent,
     'storage_connection': StorageConnection,
     'graphics_types': GraphicsTypes,
@@ -46755,6 +48077,8 @@ GDSClassesMapping = {
     'quotas': Quotas,
     'keyValuePair': KeyValuePair,
     'brick': GlusterBrick,
+    'cpu_profiles': CpuProfiles,
+    'network_attachment': NetworkAttachment,
     'cdrom': CdRom,
     'spm_states': SpmStates,
     'management_network': Network,
@@ -46771,6 +48095,7 @@ GDSClassesMapping = {
     'openstack_volume_type': OpenStackVolumeType,
     'io': IO,
     'data_center': DataCenter,
+    'storage_connection_extension': StorageConnectionExtension,
     'iscsi': IscsiDetails,
     'guest_time_zone': TimeZone,
     'external_host_provider': ExternalHostProvider,
@@ -46779,7 +48104,7 @@ GDSClassesMapping = {
     'rng_device': RngDevice,
     'nic': NIC,
     'initialization': Initialization,
-    'linkCapabilities': LinkCapabilities,
+    'qoss': QoSs,
     'domains': Domains,
     'external_host': ExternalHost,
     'user': User,
@@ -46800,6 +48125,7 @@ GDSClassesMapping = {
     'usage_message': UsageMessage,
     'mac_pools': MacPools,
     'cpu_modes': CpuModes,
+    'step': Step,
     'nic_configurations': GuestNicsConfiguration,
     'host_protocols': HostProtocols,
     'disks': Disks,
@@ -46825,10 +48151,12 @@ GDSClassesMapping = {
     'host': Host,
     'server_hooks': GlusterServerHooks,
     'packages': Packages,
+    'unmanaged_networks': UnmanagedNetworks,
     'properties': Properties,
     'storage_quota_limit': QuotaStorageLimit,
     'package': Package,
     'range': Range,
+    'synchronized_network_attachments': NetworkAttachments,
     'os': OperatingSystem,
     'inheritable_booleans': InheritableBooleans,
     'sso_methods': SsoMethods,
@@ -46877,6 +48205,7 @@ GDSClassesMapping = {
     'bonding': Bonding,
     'vm_numa_nodes': VirtualNumaNodes,
     'host_non_operational_details': HostNonOperationalDetails,
+    'removed_labels': Labels,
     'instance_type': InstanceType,
     'weights': Weights,
     'cores': Cores,
@@ -47169,6 +48498,8 @@ __all__ = [
     "Initialization",
     "InstanceType",
     "InstanceTypes",
+    "IpAddressAssignment",
+    "IpAddressAssignments",
     "IpVersions",
     "IscsiBond",
     "IscsiBonds",
@@ -47198,6 +48529,8 @@ __all__ = [
     "MigrationOptions",
     "NIC",
     "Network",
+    "NetworkAttachment",
+    "NetworkAttachments",
     "NetworkConfiguration",
     "NetworkPluginTypes",
     "NetworkStates",
@@ -47258,6 +48591,7 @@ __all__ = [
     "ProfileDetail",
     "Properties",
     "Property",
+    "ProxyTicket",
     "QoS",
     "QoSs",
     "QosTypes",
@@ -47272,6 +48606,8 @@ __all__ = [
     "Range",
     "Ranges",
     "Rate",
+    "ReportedConfiguration",
+    "ReportedConfigurations",
     "ReportedDevice",
     "ReportedDeviceTypes",
     "ReportedDevices",
@@ -47316,6 +48652,8 @@ __all__ = [
     "Steps",
     "Storage",
     "StorageConnection",
+    "StorageConnectionExtension",
+    "StorageConnectionExtensions",
     "StorageConnections",
     "StorageDomain",
     "StorageDomainStates",
@@ -47336,6 +48674,8 @@ __all__ = [
     "TimeZone",
     "TransparentHugePages",
     "TransportTypes",
+    "UnmanagedNetwork",
+    "UnmanagedNetworks",
     "Url",
     "UsageMessage",
     "Usages",
@@ -47540,6 +48880,8 @@ _rootClassMap = {
                     "instance_types"                : InstanceTypes,
                     "io"                            : IO,
                     "ip"                            : IP,
+                    "ip_address_assignment"         : IpAddressAssignment,
+                    "ip_address_assignments"        : IpAddressAssignments,
                     "ip_versions"                   : IpVersions,
                     "ips"                           : IPs,
                     "iscsi"                         : IscsiDetails,
@@ -47574,7 +48916,12 @@ _rootClassMap = {
                     "method"                        : Method,
                     "methods"                       : Methods,
                     "migration"                     : MigrationOptions,
+                    "modified_bonds"                : HostNics,
+                    "modified_labels"               : Labels,
+                    "modified_network_attachments"  : NetworkAttachments,
                     "network"                       : Network,
+                    "network_attachment"            : NetworkAttachment,
+                    "network_attachments"           : NetworkAttachments,
                     "network_configuration"         : NetworkConfiguration,
                     "network_plugin_types"          : NetworkPluginTypes,
                     "network_states"                : NetworkStates,
@@ -47644,6 +48991,7 @@ _rootClassMap = {
                     "profile_detail"                : ProfileDetail,
                     "properties"                    : Properties,
                     "property"                      : Property,
+                    "proxy_ticket"                  : ProxyTicket,
                     "qos"                           : QoS,
                     "qos_types"                     : QosTypes,
                     "qoss"                          : QoSs,
@@ -47653,6 +49001,11 @@ _rootClassMap = {
                     "range"                         : Range,
                     "ranges"                        : Ranges,
                     "rate"                          : Rate,
+                    "removed_bonds"                 : HostNics,
+                    "removed_labels"                : Labels,
+                    "removed_network_attachments"   : NetworkAttachments,
+                    "reported_configuration"        : ReportedConfiguration,
+                    "reported_configurations"       : ReportedConfigurations,
                     "reported_device"               : ReportedDevice,
                     "reported_device_types"         : ReportedDeviceTypes,
                     "reported_devices"              : ReportedDevices,
@@ -47703,6 +49056,8 @@ _rootClassMap = {
                     "steps"                         : Steps,
                     "storage"                       : Storage,
                     "storage_connection"            : StorageConnection,
+                    "storage_connection_extension"  : StorageConnectionExtension,
+                    "storage_connection_extensions" : StorageConnectionExtensions,
                     "storage_connections"           : StorageConnections,
                     "storage_domain"                : StorageDomain,
                     "storage_domain_states"         : StorageDomainStates,
@@ -47716,6 +49071,7 @@ _rootClassMap = {
                     "summary"                       : ApiSummary,
                     "supported_rng_sources"         : RngSources,
                     "supported_versions"            : SupportedVersions,
+                    "synchronized_network_attachments": NetworkAttachments,
                     "system_version"                : Version,
                     "tag"                           : Tag,
                     "tags"                          : Tags,
@@ -47728,6 +49084,8 @@ _rootClassMap = {
                     "topology"                      : CpuTopology,
                     "transparent_hugepages"         : TransparentHugePages,
                     "transport_types"               : TransportTypes,
+                    "unmanaged_network"             : UnmanagedNetwork,
+                    "unmanaged_networks"            : UnmanagedNetworks,
                     "url"                           : Url,
                     "usage_message"                 : UsageMessage,
                     "usages"                        : Usages,
@@ -47943,6 +49301,8 @@ _tag_for_type = {
     MigrationOptions: "migration",
     NIC: "nic",
     Network: "network",
+    NetworkAttachment: "network_attachment",
+    NetworkAttachments: "network_attachments",
     NetworkConfiguration: "network_configuration",
     NetworkPluginTypes: "network_plugin_types",
     NetworkStates: "network_states",
@@ -48057,6 +49417,8 @@ _tag_for_type = {
     Steps: "steps",
     Storage: "storage",
     StorageConnection: "storage_connection",
+    StorageConnectionExtension: "storage_connection_extension",
+    StorageConnectionExtensions: "storage_connection_extensions",
     StorageConnections: "storage_connections",
     StorageDomain: "storage_domain",
     StorageDomainStates: "storage_domain_states",
@@ -48072,6 +49434,8 @@ _tag_for_type = {
     Templates: "templates",
     TransparentHugePages: "transparent_hugepages",
     TransportTypes: "transport_types",
+    UnmanagedNetwork: "unmanaged_network",
+    UnmanagedNetworks: "unmanaged_networks",
     Url: "url",
     UsageMessage: "usage_message",
     Usages: "usages",
