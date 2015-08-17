@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-07-13 10:48:56.000544'''
+'''Generated at: 2015-08-19 11:35:06.000829'''
 
 
 from ovirtsdk.xml import params
@@ -13659,12 +13659,15 @@ class Host(params.Host, Base):
         self.fenceagents = HostAgents(self, context)
         self.hooks = HostHooks(self, context)
         self.katelloerrata = HostKatelloErrata(self, context)
+        self.networkattachments = HostNetworkAttachments(self, context)
         self.nics = HostNICs(self, context)
         self.numanodes = HostNumaNodes(self, context)
         self.permissions = HostPermissions(self, context)
         self.statistics = HostStatistics(self, context)
         self.storage = HostStorages(self, context)
+        self.storageconnectionextensions = HostStorageConnectionExtensions(self, context)
         self.tags = HostTags(self, context)
+        self.unmanagednetworks = HostUnmanagedNetworks(self, context)
 
     def __new__(cls, host, context):
         if host is None: return None
@@ -13929,6 +13932,31 @@ class Host(params.Host, Base):
 
         return result
 
+    def enrollcertificate(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/hosts/{host:id}/enrollcertificate'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{host:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
     def fence(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
@@ -14094,6 +14122,88 @@ class Host(params.Host, Base):
         '''
 
         url = '/hosts/{host:id}/refresh'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{host:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def setupnetworks(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param action.modified_network_attachments.network_attachment: collection]
+        {
+          [@ivar network_attachment.id: string]
+          [@ivar network_attachment.network.name|id: string]
+          [@ivar network_attachment.host_nic.name|id: string]
+          [@ivar network_attachment.ip_address_assignments.ip_address_assignment: collection]
+          {
+            [@param ip_address_assignment.assignment_method: string]
+            [@param ip_address_assignment.ip.address: string]
+            [@param ip_address_assignment.ip.netmask: string]
+            [@param ip_address_assignment.ip.gateawy: string]
+          }
+          [@ivar network_attachment.properties.property: collection]
+          {
+            [@param property.name: string]
+            [@param property.value: string]
+          }
+        }
+        [@param action.removed_network_attachments.network_attachment: collection]
+        {
+          [@ivar network_attachment.id: string]
+        }
+        [@param action.modified_bonds.host_nic: collection]
+        {
+          [@ivar host_nic.name|id: string]
+          [@ivar host_nic.bonding.options.option: collection]
+          {
+            [@param option.name: string]
+            [@param option.value: string]
+            [@param option.type: string]
+          }
+          [@ivar bonding.slaves.host_nic: collection]
+          {
+            [@param host_nic.name|id: string]
+          }
+        }
+        [@param action.removed_bonds.host_nic: collection]
+        {
+          [@ivar host_nic.name|id: string]
+        }
+        [@param action.synchronized_network_attachments.network_attachment: collection]
+        {
+          [@ivar network_attachment.id: string]
+        }
+        [@param action.modified_labels.label: collection]
+        {
+          [@ivar label.host_nic.name|id: string]
+          [@ivar label.id: string]
+        }
+        [@param action.removed_labels.label: collection]
+        {
+          [@ivar label.id: string]
+        }
+        [@param action.check_connectivity: boolean]
+        [@param action.connectivity_timeout: int]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/hosts/{host:id}/setupnetworks'
 
         result = self.__getProxy().request(
             method='POST',
@@ -14664,6 +14774,252 @@ class HostHostDevices(Base):
             context=self.context
         )
 
+class HostHostNICNetworkAttachment(params.NetworkAttachment, Base):
+    def __init__(self, hostnic, networkattachment, context):
+        Base.__init__(self, context)
+        self.parentclass = hostnic
+        self.superclass  =  networkattachment
+
+        #SUB_COLLECTIONS
+    def __new__(cls, hostnic, networkattachment, context):
+        if networkattachment is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(hostnic, networkattachment, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/hosts/{host:id}/nics/{nic:id}/networkattachments/{networkattachment:id}',
+            {
+                '{host:id}': self.parentclass.parentclass.get_id(),
+                '{nic:id}': self.parentclass.get_id(),
+                '{networkattachment:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, override_configuration=None, async=None, correlation_id=None, expect=None):
+        '''
+        [@param network_attachment.ip_address_assignments.ip_address_assignment: collection]
+        {
+          [@ivar ip_address_assignment.assignment_method: string]
+          [@ivar ip_address_assignment.ip.address: string]
+          [@ivar ip_address_assignment.ip.netmask: string]
+          [@ivar ip_address_assignment.ip.gateawy: string]
+        }
+        [@param network_attachment.properties.property: collection]
+        {
+          [@ivar property.name: string]
+          [@ivar property.value: string]
+        }
+        [@param override_configuration: boolean (true|false)]
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+        [@param expect: 202-accepted]
+
+        @return NetworkAttachment:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/networkattachments/{networkattachment:id}'
+        url = UrlHelper.replace(
+            url,
+            {
+                '{host:id}': self.parentclass.parentclass.get_id(),
+                '{nic:id}': self.parentclass.get_id(),
+                '{networkattachment:id}': self.get_id(),
+            }
+        )
+
+        result = self.__getProxy().update(
+            url=SearchHelper.appendQuery(url, {'override_configuration:matrix':override_configuration,'async:matrix':async}),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return HostHostNICNetworkAttachment(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+class HostHostNICNetworkAttachments(Base):
+
+    def __init__(self, hostnic , context):
+        Base.__init__(self, context)
+        self.parentclass = hostnic
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, networkattachment, correlation_id=None, expect=None):
+
+        '''
+        @type NetworkAttachment:
+
+        @param network_attachment.network.name|id: string
+        [@param network_attachment.ip_address_assignments.ip_address_assignment: collection]
+        {
+          [@ivar ip_address_assignment.assignment_method: string]
+          [@ivar ip_address_assignment.ip.address: string]
+          [@ivar ip_address_assignment.ip.netmask: string]
+          [@ivar ip_address_assignment.ip.gateawy: string]
+        }
+        [@param network_attachment.properties.property: collection]
+        {
+          [@ivar property.name: string]
+          [@ivar property.value: string]
+        }
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return NetworkAttachment:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/networkattachments'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{host:id}': self.parentclass.parentclass.get_id(),
+                    '{nic:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(networkattachment),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return HostHostNICNetworkAttachment(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return NetworkAttachments:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/networkattachments'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{host:id}': self.parentclass.parentclass.get_id(),
+                                '{nic:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return HostHostNICNetworkAttachment(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_network_attachment()
+
+            return HostHostNICNetworkAttachment(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return NetworkAttachments:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/networkattachments'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_network_attachment()
+
+        return ParseHelper.toSubCollection(
+            HostHostNICNetworkAttachment,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
 class HostKatelloErrata(Base):
 
     def __init__(self, host , context):
@@ -14801,6 +15157,7 @@ class HostNIC(params.HostNIC, Base):
         self.superclass  =  hostnic
 
         self.labels = HostNICLabels(self, context)
+        self.networkattachments = HostHostNICNetworkAttachments(self, context)
         self.statistics = HostNICStatistics(self, context)
 
     def __new__(cls, host, hostnic, context):
@@ -15471,6 +15828,248 @@ class HostNICs(Base):
 
         return result
 
+class HostNetworkAttachment(params.NetworkAttachment, Base):
+    def __init__(self, host, networkattachment, context):
+        Base.__init__(self, context)
+        self.parentclass = host
+        self.superclass  =  networkattachment
+
+        #SUB_COLLECTIONS
+    def __new__(cls, host, networkattachment, context):
+        if networkattachment is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(host, networkattachment, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/hosts/{host:id}/networkattachments/{networkattachment:id}',
+            {
+                '{host:id}': self.parentclass.get_id(),
+                '{networkattachment:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, override_configuration=None, async=None, correlation_id=None, expect=None):
+        '''
+        [@param network_attachment.host_nic.id|name: string]
+        [@param network_attachment.ip_address_assignments.ip_address_assignment: collection]
+        {
+          [@ivar ip_address_assignment.assignment_method: string]
+          [@ivar ip_address_assignment.ip.address: string]
+          [@ivar ip_address_assignment.ip.netmask: string]
+          [@ivar ip_address_assignment.ip.gateawy: string]
+        }
+        [@param network_attachment.properties.property: collection]
+        {
+          [@ivar property.name: string]
+          [@ivar property.value: string]
+        }
+        [@param override_configuration: boolean (true|false)]
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+        [@param expect: 202-accepted]
+
+        @return NetworkAttachment:
+        '''
+
+        url = '/hosts/{host:id}/networkattachments/{networkattachment:id}'
+        url = UrlHelper.replace(
+            url,
+            {
+                '{host:id}': self.parentclass.get_id(),
+                '{networkattachment:id}': self.get_id(),
+            }
+        )
+
+        result = self.__getProxy().update(
+            url=SearchHelper.appendQuery(url, {'override_configuration:matrix':override_configuration,'async:matrix':async}),
+            body=ParseHelper.toXml(self.superclass),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return HostNetworkAttachment(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+class HostNetworkAttachments(Base):
+
+    def __init__(self, host , context):
+        Base.__init__(self, context)
+        self.parentclass = host
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, networkattachment, correlation_id=None, expect=None):
+
+        '''
+        @type NetworkAttachment:
+
+        @param network_attachment.network.name|id: string
+        [@param network_attachment.host_nic.id|name: string]
+        [@param network_attachment.ip_address_assignments.ip_address_assignment: collection]
+        {
+          [@ivar ip_address_assignment.assignment_method: string]
+          [@ivar ip_address_assignment.ip.address: string]
+          [@ivar ip_address_assignment.ip.netmask: string]
+          [@ivar ip_address_assignment.ip.gateawy: string]
+        }
+        [@param network_attachment.properties.property: collection]
+        {
+          [@ivar property.name: string]
+          [@ivar property.value: string]
+        }
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return NetworkAttachment:
+        '''
+
+        url = '/hosts/{host:id}/networkattachments'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{host:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(networkattachment),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return HostNetworkAttachment(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return NetworkAttachments:
+        '''
+
+        url = '/hosts/{host:id}/networkattachments'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{host:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return HostNetworkAttachment(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_network_attachment()
+
+            return HostNetworkAttachment(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return NetworkAttachments:
+        '''
+
+        url = '/hosts/{host:id}/networkattachments'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_network_attachment()
+
+        return ParseHelper.toSubCollection(
+            HostNetworkAttachment,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
 class HostNumaNode(params.NumaNode, Base):
     def __init__(self, host, numanode, context):
         Base.__init__(self, context)
@@ -16067,6 +16666,220 @@ class HostStorage(params.Storage, Base):
         #still available at client's code.
         raise DisconnectedError
 
+class HostStorageConnectionExtension(params.StorageConnectionExtension, Base):
+    def __init__(self, host, storageconnectionextension, context):
+        Base.__init__(self, context)
+        self.parentclass = host
+        self.superclass  =  storageconnectionextension
+
+        #SUB_COLLECTIONS
+    def __new__(cls, host, storageconnectionextension, context):
+        if storageconnectionextension is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(host, storageconnectionextension, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/hosts/{host:id}/storageconnectionextensions/{storageconnectionextension:id}',
+            {
+                '{host:id}': self.parentclass.get_id(),
+                '{storageconnectionextension:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
+    def update(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return StorageConnectionExtension:
+        '''
+
+        url = '/hosts/{host:id}/storageconnectionextensions/{storageconnectionextension:id}'
+        url = UrlHelper.replace(
+            url,
+            {
+                '{host:id}': self.parentclass.get_id(),
+                '{storageconnectionextension:id}': self.get_id(),
+            }
+        )
+
+        result = self.__getProxy().update(
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            body=ParseHelper.toXml(self.superclass),
+            headers={}
+        )
+
+        return HostStorageConnectionExtension(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+class HostStorageConnectionExtensions(Base):
+
+    def __init__(self, host , context):
+        Base.__init__(self, context)
+        self.parentclass = host
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, storageconnectionextension, correlation_id=None, expect=None):
+
+        '''
+        @type StorageConnectionExtension:
+
+        @param storageconnectionextension.target: string
+        @param storageconnectionextension.username: string
+        @param storageconnectionextension.password: string
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return StorageConnectionExtension:
+        '''
+
+        url = '/hosts/{host:id}/storageconnectionextensions'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{host:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(storageconnectionextension),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return HostStorageConnectionExtension(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return StorageConnectionExtensions:
+        '''
+
+        url = '/hosts/{host:id}/storageconnectionextensions'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{host:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return HostStorageConnectionExtension(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_storage_connection_extension()
+
+            return HostStorageConnectionExtension(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return StorageConnectionExtensions:
+        '''
+
+        url = '/hosts/{host:id}/storageconnectionextensions'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_storage_connection_extension()
+
+        return ParseHelper.toSubCollection(
+            HostStorageConnectionExtension,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
 class HostStorages(Base):
 
     def __init__(self, host , context):
@@ -16360,6 +17173,160 @@ class HostTags(Base):
             context=self.context
         )
 
+class HostUnmanagedNetwork(params.UnmanagedNetwork, Base):
+    def __init__(self, host, unmanagednetwork, context):
+        Base.__init__(self, context)
+        self.parentclass = host
+        self.superclass  =  unmanagednetwork
+
+        #SUB_COLLECTIONS
+    def __new__(cls, host, unmanagednetwork, context):
+        if unmanagednetwork is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(host, unmanagednetwork, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/hosts/{host:id}/unmanagednetworks/{unmanagednetwork:id}',
+            {
+                '{host:id}': self.parentclass.get_id(),
+                '{unmanagednetwork:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class HostUnmanagedNetworks(Base):
+
+    def __init__(self, host , context):
+        Base.__init__(self, context)
+        self.parentclass = host
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return UnmanagedNetworks:
+        '''
+
+        url = '/hosts/{host:id}/unmanagednetworks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{host:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return HostUnmanagedNetwork(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_unmanaged_network()
+
+            return HostUnmanagedNetwork(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return UnmanagedNetworks:
+        '''
+
+        url = '/hosts/{host:id}/unmanagednetworks'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_unmanaged_network()
+
+        return ParseHelper.toSubCollection(
+            HostUnmanagedNetwork,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
 class Hosts(Base):
     def __init__(self, context):
         Base.__init__(self, context)
@@ -16643,6 +17610,7 @@ class InstanceType(params.InstanceType, Base):
         Base.__init__(self, context)
         self.superclass = instancetype
 
+        self.graphicsconsoles = InstanceTypeGraphicsConsoles(self, context)
         self.nics = InstanceTypeNICs(self, context)
         self.watchdogs = InstanceTypeWatchDogs(self, context)
 
@@ -16703,6 +17671,191 @@ class InstanceType(params.InstanceType, Base):
         )
 
         return InstanceType(result, self.context)
+
+class InstanceTypeGraphicsConsole(params.GraphicsConsole, Base):
+    def __init__(self, instancetype, graphicsconsole, context):
+        Base.__init__(self, context)
+        self.parentclass = instancetype
+        self.superclass  =  graphicsconsole
+
+        #SUB_COLLECTIONS
+    def __new__(cls, instancetype, graphicsconsole, context):
+        if graphicsconsole is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(instancetype, graphicsconsole, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/instancetypes/{instancetype:id}/graphicsconsoles/{graphicsconsole:id}',
+            {
+                '{instancetype:id}': self.parentclass.get_id(),
+                '{graphicsconsole:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class InstanceTypeGraphicsConsoles(Base):
+
+    def __init__(self, instancetype , context):
+        Base.__init__(self, context)
+        self.parentclass = instancetype
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, graphicsconsole, correlation_id=None, expect=None):
+
+        '''
+        @type GraphicsConsole:
+
+        @param graphics_console.protocol: string
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return GraphicsConsole:
+        '''
+
+        url = '/instancetypes/{instancetype:id}/graphicsconsoles'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{instancetype:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(graphicsconsole),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return InstanceTypeGraphicsConsole(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return GraphicsConsoles:
+        '''
+
+        url = '/instancetypes/{instancetype:id}/graphicsconsoles'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{instancetype:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return InstanceTypeGraphicsConsole(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{instancetype:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_graphics_console()
+
+            return InstanceTypeGraphicsConsole(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return GraphicsConsoles:
+        '''
+
+        url = '/instancetypes/{instancetype:id}/graphicsconsoles'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{instancetype:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_graphics_console()
+
+        return ParseHelper.toSubCollection(
+            InstanceTypeGraphicsConsole,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
 
 class InstanceTypeNIC(params.NIC, Base):
     def __init__(self, instancetype, nic, context):
@@ -22599,7 +23752,6 @@ class StorageDomain(params.StorageDomain, Base):
         Overload 1:
           [@param storagedomain.name: string]
         Overload 2:
-          @param storagedomain.host.id|name: string
           @param storagedomain.storage.logical_unit: collection
           {
             @ivar logical_unit.address: string
@@ -22615,6 +23767,7 @@ class StorageDomain(params.StorageDomain, Base):
             @ivar logical_unit.paths: int
             @ivar logical_unit.id: string
           }
+          [@param storagedomain.host.id: string]
           [@param storagedomain.name: string]
           [@param storagedomain.comment: string]
           [@param storagedomain.storage.override_luns: boolean]
@@ -25387,6 +26540,7 @@ class Template(params.Template, Base):
 
         self.cdroms = TemplateCdRoms(self, context)
         self.disks = TemplateDisks(self, context)
+        self.graphicsconsoles = TemplateGraphicsConsoles(self, context)
         self.nics = TemplateNICs(self, context)
         self.permissions = TemplatePermissions(self, context)
         self.tags = TemplateTags(self, context)
@@ -25891,6 +27045,191 @@ class TemplateDisks(Base):
 
         return ParseHelper.toSubCollection(
             TemplateDisk,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class TemplateGraphicsConsole(params.GraphicsConsole, Base):
+    def __init__(self, template, graphicsconsole, context):
+        Base.__init__(self, context)
+        self.parentclass = template
+        self.superclass  =  graphicsconsole
+
+        #SUB_COLLECTIONS
+    def __new__(cls, template, graphicsconsole, context):
+        if graphicsconsole is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(template, graphicsconsole, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/templates/{template:id}/graphicsconsoles/{graphicsconsole:id}',
+            {
+                '{template:id}': self.parentclass.get_id(),
+                '{graphicsconsole:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+class TemplateGraphicsConsoles(Base):
+
+    def __init__(self, template , context):
+        Base.__init__(self, context)
+        self.parentclass = template
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, graphicsconsole, correlation_id=None, expect=None):
+
+        '''
+        @type GraphicsConsole:
+
+        @param graphics_console.protocol: string
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return GraphicsConsole:
+        '''
+
+        url = '/templates/{template:id}/graphicsconsoles'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{template:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(graphicsconsole),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return TemplateGraphicsConsole(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return GraphicsConsoles:
+        '''
+
+        url = '/templates/{template:id}/graphicsconsoles'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{template:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return TemplateGraphicsConsole(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{template:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_graphics_console()
+
+            return TemplateGraphicsConsole(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return GraphicsConsoles:
+        '''
+
+        url = '/templates/{template:id}/graphicsconsoles'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{template:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_graphics_console()
+
+        return ParseHelper.toSubCollection(
+            TemplateGraphicsConsole,
             self.parentclass,
             FilterHelper.filter(
                 result,
@@ -28096,6 +29435,33 @@ class VM(params.VM, Base):
 
         return result
 
+    def freezefilesystems(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/vms/{vm:id}/freezefilesystems'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
     def logon(self, action=params.Action(), correlation_id=None):
         '''
         @type Action:
@@ -28442,6 +29808,33 @@ class VM(params.VM, Base):
         '''
 
         url = '/vms/{vm:id}/suspend'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def thawfilesystems(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/vms/{vm:id}/thawfilesystems'
 
         result = self.__getProxy().request(
             method='POST',
@@ -29572,6 +30965,30 @@ class VMGraphicsConsole(params.GraphicsConsole, Base):
         #still available at client's code.
         raise DisconnectedError
 
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/vms/{vm:id}/graphicsconsoles/{graphicsconsole:id}',
+            {
+                '{vm:id}': self.parentclass.get_id(),
+                '{graphicsconsole:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
 class VMGraphicsConsoles(Base):
 
     def __init__(self, vm , context):
@@ -29586,6 +31003,37 @@ class VMGraphicsConsoles(Base):
         #using .disconnect() method, but resource instance ref. is
         #still available at client's code.
         raise DisconnectedError
+
+    def add(self, graphicsconsole, correlation_id=None, expect=None):
+
+        '''
+        @type GraphicsConsole:
+
+        @param graphics_console.protocol: string
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return GraphicsConsole:
+        '''
+
+        url = '/vms/{vm:id}/graphicsconsoles'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{vm:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(graphicsconsole),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return VMGraphicsConsole(
+            self.parentclass,
+            result,
+            self.context
+        )
 
     def get(self, name=None, id=None):
 
@@ -29647,9 +31095,10 @@ class VMGraphicsConsoles(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, max=None, **kwargs):
+    def list(self, current=None, max=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)"]
+        [@param current: boolean (true|false)]
         [@param max: int (max results)]
 
         @return GraphicsConsoles:
@@ -29665,7 +31114,7 @@ class VMGraphicsConsoles(Base):
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                qargs={'current:matrix':current,'max:matrix':max}
             ),
             headers={}
         ).get_graphics_console()

@@ -138,6 +138,12 @@
     </xs:sequence>
   </xs:complexType>
 
+  <xs:complexType name="ProxyTicket">
+    <xs:sequence>
+      <xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:group name="ActionParameterGroup">
     <xs:sequence>
       <xs:element name="grace_period" type="GracePeriod" minOccurs="0"/>
@@ -156,6 +162,8 @@
       <xs:element name="fence_type" type="xs:string" minOccurs="0"/>
       <!-- for VM ticket actions -->
       <xs:element name="ticket" type="Ticket" minOccurs="0"/>
+      <!-- websocket proxy ticket of graphics consoles -->
+      <xs:element name="proxy_ticket" type="ProxyTicket" minOccurs="0" maxOccurs="1"/>
       <!-- for Host ISCSI actions -->
       <xs:element name="iscsi" type="IscsiDetails" minOccurs="0"/>
       <!-- for VM import and export actions -->
@@ -173,6 +181,13 @@
       <xs:element ref="template" minOccurs="0" maxOccurs="1"/>
       <!-- For Setup Networks -->
       <xs:element ref="host_nics" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="modified_network_attachments" type="NetworkAttachments" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="removed_network_attachments" type="NetworkAttachments" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="synchronized_network_attachments" type="NetworkAttachments" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="modified_bonds" type="HostNics" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="removed_bonds" type="HostNics" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="modified_labels" type="Labels" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="removed_labels" type="Labels" minOccurs="0" maxOccurs="1"/>
       <xs:element name="check_connectivity" type="xs:boolean" minOccurs="0"/>
       <xs:element name="connectivity_timeout" type="xs:int" minOccurs="0"/>
       <!-- A VM can be started paused -->
@@ -2051,6 +2066,7 @@
           <xs:element ref="external_host_provider" minOccurs="0" maxOccurs="1"/>
           <xs:element name="update_available" type="xs:boolean" minOccurs="0" maxOccurs="1" />
           <xs:element ref="device_passthrough" minOccurs="0" maxOccurs="1" />
+          <xs:element ref="storage_connection_extensions" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -2715,6 +2731,33 @@
 
   <xs:element name="storage_connections" type="StorageConnections"/>
 
+  <xs:element name="storage_connection_extensions" type="StorageConnectionExtensions"/>
+
+  <xs:element name="storage_connection_extension" type="StorageConnectionExtension"/>
+
+  <xs:complexType name="StorageConnectionExtensions">
+      <xs:complexContent>
+          <xs:extension base="BaseResources">
+              <xs:sequence>
+                  <xs:element ref="storage_connection_extension" minOccurs="0" maxOccurs="unbounded"/>
+              </xs:sequence>
+          </xs:extension>
+      </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="StorageConnectionExtension">
+      <xs:complexContent>
+          <xs:extension base="BaseResource">
+              <xs:sequence>
+                  <xs:element name="target" type="xs:string" minOccurs="0"/>
+                  <xs:element name="username" type="xs:string" minOccurs="0"/>
+                  <xs:element name="password" type="xs:string" minOccurs="0"/>
+                  <xs:element ref="host" minOccurs="0"/>
+              </xs:sequence>
+          </xs:extension>
+      </xs:complexContent>
+  </xs:complexType>
+
   <xs:group name="NfsStorage">
        <xs:sequence>
           <xs:group ref="FileStorageConnection" minOccurs="0"/>
@@ -3155,6 +3198,8 @@
         <xs:extension base="BaseResource">
           <xs:sequence>
             <xs:element ref="vm" minOccurs="0" maxOccurs="1"/>
+            <xs:element ref="template" minOccurs="0" maxOccurs="1"/>
+            <xs:element ref="instance_type" minOccurs="0" maxOccurs="1"/>
             <xs:element name="protocol" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="port" type="xs:int" minOccurs="0" maxOccurs="1"/>
             <xs:element name="tls_port" type="xs:int" minOccurs="0" maxOccurs="1"/>
@@ -4085,6 +4130,37 @@
     </xs:complexContent>
   </xs:complexType>
 
+  <xs:element name="unmanaged_networks" type="UnmanagedNetworks"/>
+
+  <xs:complexType name="UnmanagedNetworks">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="unmanaged_network" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="UnmanagedNetworks"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="unmanaged_network" type="UnmanagedNetwork"/>
+
+  <xs:complexType name="UnmanagedNetwork">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element ref="host_nic" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="host" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
   <xs:complexType name="HostNics">
     <xs:complexContent>
       <xs:extension base="BaseResources">
@@ -4215,6 +4291,83 @@
     <xs:sequence>
       <xs:element ref="options" minOccurs="0" maxOccurs="1"/>
       <xs:element ref="slaves" minOccurs="0" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- Host Network Attachments -->
+
+  <xs:element name="network_attachment" type="NetworkAttachment"/>
+
+  <xs:complexType name="NetworkAttachment">
+    <xs:complexContent>
+      <xs:extension base="BaseResource">
+        <xs:sequence>
+          <xs:element ref="network" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="host_nic" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="ip_address_assignments" type="IpAddressAssignments" minOccurs="0" maxOccurs="1"/>
+          <xs:element ref="properties" minOccurs="0" maxOccurs="1"/>
+          <xs:element name="reported_configurations" type="ReportedConfigurations" minOccurs="0"/>
+          <xs:element ref="host" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="network_attachments" type="NetworkAttachments"/>
+
+  <xs:complexType name="NetworkAttachments">
+    <xs:complexContent>
+      <xs:extension base="BaseResources">
+        <xs:sequence>
+          <xs:element ref="network_attachment" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+              <xs:appinfo>
+                <jaxb:property name="NetworkAttachments"/>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ReportedConfigurations">
+    <xs:sequence>
+      <xs:element name="in_sync" type="xs:boolean"/>
+      <xs:element name="reported_configuration" type="ReportedConfiguration" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:appinfo>
+            <jaxb:property name="ReportedConfigurations"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ReportedConfiguration">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="in_sync" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="IpAddressAssignments">
+    <xs:sequence>
+      <xs:element name="ip_address_assignment" type="IpAddressAssignment" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:appinfo>
+            <jaxb:property name="IpAddressAssignments"/>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="IpAddressAssignment">
+    <xs:sequence>
+      <xs:element ref="ip" minOccurs="0" maxOccurs="1"/>
+      <xs:element name="assignment_method" type="xs:string" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:complexType>
 
