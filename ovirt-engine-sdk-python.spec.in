@@ -43,18 +43,37 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc README.md
 
 %changelog
-* Tue Oct 28 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.6.0.0-0
-- Add empty export method to decorator base #1024696.
-- Add snapshot id parameter to preview action #1150071.
+* Fri Aug 21 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.6.0.0-1
+- Added support for engine version 3.6.
 - Add support for Kerberos authentication #1145234.
-- Add support for cluster fencing policy #1127592.
-- Add support for memory ballooning #1149188.
-- Add support for operating systems details #1050243.
-- Add support for unregisterd VMs #1148715.
-- Allow listing unregistered VMs #1148715.
-- Allow setting VM memory ballooning #1149188.
-- Replace httplib with pycurl #1145234.
-- Replace storage_manager with spm #1146457.
+- Avoid clashes with the "export" method used by generateDS.py #1167851.
+
+* Wed Jul 1 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.4.0-1
+- The "isattached" action should return an action object #1234937.
+
+* Wed Mar 18 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.2.1-1
+- Add principal and namespace parameters to users and groups #1188176.
+
+* Thu Feb 19 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.2.0-1
+- Added All-Content support to hosts #1194185.
+- Added isattached action to storage domain #1179246.
+
+* Fri Jan 16 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.1.0-1
+- Added support for the operations to move, copy and export disks using
+  the top level disks collection #1169376.
+- Replaced storage_manager with spm #1146457.
+- Added support for reconfigure firewall (override_iptables) to the host
+  installation action #1179613.
+- Added support for importing block storage domains #1181681.
+- Fixed support for listing unregistered VMs #1148715.
+- Added support for setting memory ballooning #1149188.
+- Added support for specifying cluster during migration #1150191.
+- Added snapshot id to documentation of preview action #1150071.
+- Added custom_properties to templates #1166632.
+- Added logical_name to disks #1063597.
+
+* Tue Nov 11 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.8-1
+- Apply filter by name/alias after get #1155678.
 
 * Wed Sep 10 2014 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.0.7-1
 - Added support for watchdog action and model #1129840.
