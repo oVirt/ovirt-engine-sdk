@@ -40,6 +40,9 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc AUTHORS.md README.md LICENSE.md
 
 %changelog
+* Tue Sep 15 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.5.0-1
+- Add support for version 3.5.5 of the engine.
+
 * Wed Jul 1 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.5.4.0-1
 - The "isattached" action should return an action object #1234937.
 
