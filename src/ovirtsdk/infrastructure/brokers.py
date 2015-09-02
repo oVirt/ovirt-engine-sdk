@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-07-01 16:07:04.000100'''
+'''Generated at: 2015-09-02 11:12:23.000960'''
 
 
 from ovirtsdk.xml import params
@@ -338,6 +338,10 @@ class Cluster(params.Cluster, Base):
         [@param cluster.cpu.architecture: string]
         [@param cluster.display.proxy: string]
         [@param cluster.ksm.enabled: boolean]
+        [@param cluster.fencing_policy.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_sd_active.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_connectivity_broken.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_connectivity_broken.threshold: int]
         [@param correlation_id: any string]
 
         @return Cluster:
@@ -2544,6 +2548,10 @@ class Clusters(Base):
         [@param cluster.cpu.architecture: string]
         [@param cluster.display.proxy: string]
         [@param cluster.ksm.enabled: boolean]
+        [@param cluster.fencing_policy.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_sd_active.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_connectivity_broken.enabled: boolean]
+        [@param cluster.fencing_policy.skip_if_connectivity_broken.threshold: int]
         [@param expect: 201-created]
         [@param correlation_id: any string]
 
@@ -22075,6 +22083,8 @@ class VM(params.VM, Base):
         [@param action.vm.initialization.cloud_init.payload_files.payload_file: collection]
         {
           [@ivar payload_file.name: string]
+          [@ivar action.use_sysprep: boolean]
+          [@ivar action.use_cloud_init: boolean]
           [@ivar payload_file.content: string]
           [@ivar payload_file.type: string]
         }

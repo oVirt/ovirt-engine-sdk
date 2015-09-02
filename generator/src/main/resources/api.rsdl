@@ -215,6 +215,18 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.ksm.enabled</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.skip_if_sd_active.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.skip_if_connectivity_broken.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>cluster.fencing_policy.skip_if_connectivity_broken.threshold</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -392,6 +404,18 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.ksm.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.skip_if_sd_active.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.skip_if_connectivity_broken.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>cluster.fencing_policy.skip_if_connectivity_broken.threshold</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -15647,6 +15671,12 @@ or less indicates that the session should never timeout</description>
                             <parameters_set>
 <parameter required="false" type="xs:string">
     <name>payload_file.name</name>
+</parameter>
+<parameter required="false" type="xs:boolean">
+    <name>action.use_sysprep</name>
+</parameter>
+<parameter required="false" type="xs:boolean">
+    <name>action.use_cloud_init</name>
 </parameter>
 <parameter required="false" type="xs:string">
     <name>payload_file.content</name>

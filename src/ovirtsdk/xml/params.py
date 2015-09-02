@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Jul  1 16:07:03 2015 by generateDS.py version 2.12a.
+# Generated Wed Sep  2 11:12:22 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -6895,6 +6895,299 @@ class DataCenterStates(GeneratedsSuper):
 # end class DataCenterStates
 
 
+class SkipIfConnectivityBroken(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, enabled=None, threshold=None):
+        self.enabled = enabled
+        self.threshold = threshold
+    def factory(*args_, **kwargs_):
+        if SkipIfConnectivityBroken.subclass:
+            return SkipIfConnectivityBroken.subclass(*args_, **kwargs_)
+        else:
+            return SkipIfConnectivityBroken(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_enabled(self): return self.enabled
+    def set_enabled(self, enabled): self.enabled = enabled
+    def get_threshold(self): return self.threshold
+    def set_threshold(self, threshold): self.threshold = threshold
+    def hasContent_(self):
+        if (
+            self.enabled is not None or
+            self.threshold is not None
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='SkipIfConnectivityBroken', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='SkipIfConnectivityBroken')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='SkipIfConnectivityBroken'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='SkipIfConnectivityBroken', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.enabled is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%senabled>%s</%senabled>%s' % (namespace_, self.gds_format_boolean(self.enabled, input_name='enabled'), namespace_, eol_))
+        if self.threshold is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sthreshold>%s</%sthreshold>%s' % (namespace_, self.gds_format_integer(self.threshold, input_name='threshold'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='SkipIfConnectivityBroken'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.enabled is not None:
+            showIndent(outfile, level)
+            outfile.write('enabled=%s,\n' % self.enabled)
+        if self.threshold is not None:
+            showIndent(outfile, level)
+            outfile.write('threshold=%d,\n' % self.threshold)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'enabled':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'enabled')
+            self.enabled = ival_
+        elif nodeName_ == 'threshold':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'threshold')
+            self.threshold = ival_
+# end class SkipIfConnectivityBroken
+
+
+class SkipIfSDActive(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, enabled=None):
+        self.enabled = enabled
+    def factory(*args_, **kwargs_):
+        if SkipIfSDActive.subclass:
+            return SkipIfSDActive.subclass(*args_, **kwargs_)
+        else:
+            return SkipIfSDActive(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_enabled(self): return self.enabled
+    def set_enabled(self, enabled): self.enabled = enabled
+    def hasContent_(self):
+        if (
+            self.enabled is not None
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='SkipIfSDActive', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='SkipIfSDActive')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='SkipIfSDActive'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='SkipIfSDActive', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.enabled is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%senabled>%s</%senabled>%s' % (namespace_, self.gds_format_boolean(self.enabled, input_name='enabled'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='SkipIfSDActive'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.enabled is not None:
+            showIndent(outfile, level)
+            outfile.write('enabled=%s,\n' % self.enabled)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'enabled':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'enabled')
+            self.enabled = ival_
+# end class SkipIfSDActive
+
+
+class FencingPolicy(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, enabled=None, skip_if_sd_active=None, skip_if_connectivity_broken=None):
+        self.enabled = enabled
+        self.skip_if_sd_active = skip_if_sd_active
+        self.skip_if_connectivity_broken = skip_if_connectivity_broken
+    def factory(*args_, **kwargs_):
+        if FencingPolicy.subclass:
+            return FencingPolicy.subclass(*args_, **kwargs_)
+        else:
+            return FencingPolicy(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_enabled(self): return self.enabled
+    def set_enabled(self, enabled): self.enabled = enabled
+    def get_skip_if_sd_active(self): return self.skip_if_sd_active
+    def set_skip_if_sd_active(self, skip_if_sd_active): self.skip_if_sd_active = skip_if_sd_active
+    def get_skip_if_connectivity_broken(self): return self.skip_if_connectivity_broken
+    def set_skip_if_connectivity_broken(self, skip_if_connectivity_broken): self.skip_if_connectivity_broken = skip_if_connectivity_broken
+    def hasContent_(self):
+        if (
+            self.enabled is not None or
+            self.skip_if_sd_active is not None or
+            self.skip_if_connectivity_broken is not None
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='FencingPolicy', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='FencingPolicy')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='FencingPolicy'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='FencingPolicy', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.enabled is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%senabled>%s</%senabled>%s' % (namespace_, self.gds_format_boolean(self.enabled, input_name='enabled'), namespace_, eol_))
+        if self.skip_if_sd_active is not None:
+            self.skip_if_sd_active.export(outfile, level, namespace_, name_='skip_if_sd_active', pretty_print=pretty_print)
+        if self.skip_if_connectivity_broken is not None:
+            self.skip_if_connectivity_broken.export(outfile, level, namespace_, name_='skip_if_connectivity_broken', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='FencingPolicy'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.enabled is not None:
+            showIndent(outfile, level)
+            outfile.write('enabled=%s,\n' % self.enabled)
+        if self.skip_if_sd_active is not None:
+            showIndent(outfile, level)
+            outfile.write('skip_if_sd_active=model_.skip_if_sd_active(\n')
+            self.skip_if_sd_active.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.skip_if_connectivity_broken is not None:
+            showIndent(outfile, level)
+            outfile.write('skip_if_connectivity_broken=model_.skip_if_connectivity_broken(\n')
+            self.skip_if_connectivity_broken.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'enabled':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'enabled')
+            self.enabled = ival_
+        elif nodeName_ == 'skip_if_sd_active':
+            obj_ = SkipIfSDActive.factory()
+            obj_.build(child_)
+            self.skip_if_sd_active = obj_
+        elif nodeName_ == 'skip_if_connectivity_broken':
+            obj_ = SkipIfConnectivityBroken.factory()
+            obj_.build(child_)
+            self.skip_if_connectivity_broken = obj_
+# end class FencingPolicy
+
+
 class MemoryOverCommit(GeneratedsSuper):
     subclass = None
     superclass = None
@@ -8330,7 +8623,7 @@ class SchedulingPolicy(BaseResource):
 class Cluster(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, cpu=None, data_center=None, memory_policy=None, scheduling_policy=None, version=None, supported_versions=None, error_handling=None, virt_service=None, gluster_service=None, threads_as_cores=None, tunnel_migration=None, trusted_service=None, ha_reservation=None, optional_reason=None, ballooning_enabled=None, display=None, ksm=None, serial_number=None, required_rng_sources=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, cpu=None, data_center=None, memory_policy=None, scheduling_policy=None, version=None, supported_versions=None, error_handling=None, virt_service=None, gluster_service=None, threads_as_cores=None, tunnel_migration=None, trusted_service=None, ha_reservation=None, optional_reason=None, ballooning_enabled=None, display=None, ksm=None, serial_number=None, required_rng_sources=None, fencing_policy=None):
         super(Cluster, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.cpu = cpu
         self.data_center = data_center
@@ -8351,6 +8644,7 @@ class Cluster(BaseResource):
         self.ksm = ksm
         self.serial_number = serial_number
         self.required_rng_sources = required_rng_sources
+        self.fencing_policy = fencing_policy
     def factory(*args_, **kwargs_):
         if Cluster.subclass:
             return Cluster.subclass(*args_, **kwargs_)
@@ -8395,6 +8689,8 @@ class Cluster(BaseResource):
     def set_serial_number(self, serial_number): self.serial_number = serial_number
     def get_required_rng_sources(self): return self.required_rng_sources
     def set_required_rng_sources(self, required_rng_sources): self.required_rng_sources = required_rng_sources
+    def get_fencing_policy(self): return self.fencing_policy
+    def set_fencing_policy(self, fencing_policy): self.fencing_policy = fencing_policy
     def hasContent_(self):
         if (
             self.cpu is not None or
@@ -8416,6 +8712,7 @@ class Cluster(BaseResource):
             self.ksm is not None or
             self.serial_number is not None or
             self.required_rng_sources is not None or
+            self.fencing_policy is not None or
             super(Cluster, self).hasContent_()
         ):
             return True
@@ -8491,6 +8788,8 @@ class Cluster(BaseResource):
             self.serial_number.export(outfile, level, namespace_, name_='serial_number', pretty_print=pretty_print)
         if self.required_rng_sources is not None:
             self.required_rng_sources.export(outfile, level, namespace_, name_='required_rng_sources', pretty_print=pretty_print)
+        if self.fencing_policy is not None:
+            self.fencing_policy.export(outfile, level, namespace_, name_='fencing_policy', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Cluster'):
         level += 1
         already_processed = set()
@@ -8589,6 +8888,12 @@ class Cluster(BaseResource):
             showIndent(outfile, level)
             outfile.write('required_rng_sources=model_.RngSources(\n')
             self.required_rng_sources.exportLiteral(outfile, level, name_='required_rng_sources')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.fencing_policy is not None:
+            showIndent(outfile, level)
+            outfile.write('fencing_policy=model_.fencing_policy(\n')
+            self.fencing_policy.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -8726,6 +9031,10 @@ class Cluster(BaseResource):
             obj_ = RngSources.factory()
             obj_.build(child_)
             self.required_rng_sources = obj_
+        elif nodeName_ == 'fencing_policy':
+            obj_ = FencingPolicy.factory()
+            obj_.build(child_)
+            self.fencing_policy = obj_
         super(Cluster, self).buildChildren(child_, node, nodeName_, True)
 # end class Cluster
 
@@ -36319,7 +36628,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, status=None, fault=None, iscsi_target=None, power_management=None, is_attached=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, use_sysprep=None, use_cloud_init=None, status=None, fault=None, iscsi_target=None, power_management=None, is_attached=None):
         super(Action, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -36357,6 +36666,8 @@ class Action(BaseResource):
         self.import_as_template = import_as_template
         self.maintenance_enabled = maintenance_enabled
         self.storage_domains = storage_domains
+        self.use_sysprep = use_sysprep
+        self.use_cloud_init = use_cloud_init
         self.status = status
         self.fault = fault
         if iscsi_target is None:
@@ -36443,6 +36754,10 @@ class Action(BaseResource):
     def set_maintenance_enabled(self, maintenance_enabled): self.maintenance_enabled = maintenance_enabled
     def get_storage_domains(self): return self.storage_domains
     def set_storage_domains(self, storage_domains): self.storage_domains = storage_domains
+    def get_use_sysprep(self): return self.use_sysprep
+    def set_use_sysprep(self, use_sysprep): self.use_sysprep = use_sysprep
+    def get_use_cloud_init(self): return self.use_cloud_init
+    def set_use_cloud_init(self, use_cloud_init): self.use_cloud_init = use_cloud_init
     def get_status(self): return self.status
     def set_status(self, status): self.status = status
     def get_fault(self): return self.fault
@@ -36493,6 +36808,8 @@ class Action(BaseResource):
             self.import_as_template is not None or
             self.maintenance_enabled is not None or
             self.storage_domains is not None or
+            self.use_sysprep is not None or
+            self.use_cloud_init is not None or
             self.status is not None or
             self.fault is not None or
             self.iscsi_target or
@@ -36617,6 +36934,12 @@ class Action(BaseResource):
             outfile.write('<%smaintenance_enabled>%s</%smaintenance_enabled>%s' % (namespace_, self.gds_format_boolean(self.maintenance_enabled, input_name='maintenance_enabled'), namespace_, eol_))
         if self.storage_domains is not None:
             self.storage_domains.export(outfile, level, namespace_, name_='storage_domains', pretty_print=pretty_print)
+        if self.use_sysprep is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%suse_sysprep>%s</%suse_sysprep>%s' % (namespace_, self.gds_format_boolean(self.use_sysprep, input_name='use_sysprep'), namespace_, eol_))
+        if self.use_cloud_init is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%suse_cloud_init>%s</%suse_cloud_init>%s' % (namespace_, self.gds_format_boolean(self.use_cloud_init, input_name='use_cloud_init'), namespace_, eol_))
         if self.status is not None:
             self.status.export(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.fault is not None:
@@ -36801,6 +37124,12 @@ class Action(BaseResource):
             self.storage_domains.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.use_sysprep is not None:
+            showIndent(outfile, level)
+            outfile.write('use_sysprep=%s,\n' % self.use_sysprep)
+        if self.use_cloud_init is not None:
+            showIndent(outfile, level)
+            outfile.write('use_cloud_init=%s,\n' % self.use_cloud_init)
         if self.status is not None:
             showIndent(outfile, level)
             outfile.write('status=model_.status(\n')
@@ -37069,6 +37398,26 @@ class Action(BaseResource):
             obj_ = StorageDomains.factory()
             obj_.build(child_)
             self.storage_domains = obj_
+        elif nodeName_ == 'use_sysprep':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'use_sysprep')
+            self.use_sysprep = ival_
+        elif nodeName_ == 'use_cloud_init':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'use_cloud_init')
+            self.use_cloud_init = ival_
         elif nodeName_ == 'status':
             obj_ = Status.factory()
             obj_.build(child_)
@@ -38686,6 +39035,7 @@ GDSClassesMapping = {
     'links': DetailedLinks,
     'ips': IPs,
     'pm_proxies': PmProxies,
+    'rsdl': RSDL,
     'permits': Permits,
     'host_nic': HostNIC,
     'summary': VmSummary,
@@ -38731,7 +39081,7 @@ GDSClassesMapping = {
     'version': Version,
     'templates': Templates,
     'template': Template,
-    'rsdl': RSDL,
+    'skip_if_sd_active': SkipIfSDActive,
     'product_info': ProductInfo,
     'vnic_profiles': VnicProfiles,
     'nfs_profile_detail': NfsProfileDetail,
@@ -38878,6 +39228,7 @@ GDSClassesMapping = {
     'lun_storage': Storage,
     'events': Events,
     'property': Property,
+    'fencing_policy': FencingPolicy,
     'host_states': HostStates,
     'content_types': ContentTypes,
     'linkCapabilities': LinkCapabilities,
@@ -38920,6 +39271,7 @@ GDSClassesMapping = {
     'watchdog_actions': WatchdogActions,
     'host_non_operational_details': HostNonOperationalDetails,
     'power_management': PowerManagement,
+    'skip_if_connectivity_broken': SkipIfConnectivityBroken,
     'reported_devices': ReportedDevices,
     'url': Url,
     'template_states': TemplateStates,
@@ -39137,6 +39489,7 @@ __all__ = [
     "Feature",
     "Features",
     "FenceTypes",
+    "FencingPolicy",
     "File",
     "Files",
     "Filter",
@@ -39282,6 +39635,8 @@ __all__ = [
     "SerialNumberPolicies",
     "Session",
     "Sessions",
+    "SkipIfConnectivityBroken",
+    "SkipIfSDActive",
     "Slaves",
     "Snapshot",
     "SnapshotStatuses",
@@ -39442,6 +39797,7 @@ _rootClassMap = {
                     "feature"                       : Feature,
                     "features"                      : Features,
                     "fence_types"                   : FenceTypes,
+                    "fencing_policy"                : FencingPolicy,
                     "file"                          : File,
                     "files"                         : Files,
                     "filter"                        : Filter,
@@ -39591,6 +39947,8 @@ _rootClassMap = {
                     "session"                       : Session,
                     "sessions"                      : Sessions,
                     "sgio_options"                  : ScsiGenericIoOptions,
+                    "skip_if_connectivity_broken"   : SkipIfConnectivityBroken,
+                    "skip_if_sd_active"             : SkipIfSDActive,
                     "slaves"                        : Slaves,
                     "snapshot"                      : Snapshot,
                     "snapshot_statuses"             : SnapshotStatuses,
@@ -39742,6 +40100,7 @@ _tag_for_type = {
     Feature: "feature",
     Features: "features",
     FenceTypes: "fence_types",
+    FencingPolicy: "fencing_policy",
     File: "file",
     Files: "files",
     Filter: "filter",
@@ -39877,6 +40236,8 @@ _tag_for_type = {
     SerialNumberPolicies: "serial_number_policies",
     Session: "session",
     Sessions: "sessions",
+    SkipIfConnectivityBroken: "skip_if_connectivity_broken",
+    SkipIfSDActive: "skip_if_sd_active",
     Slaves: "slaves",
     Snapshot: "snapshot",
     SnapshotStatuses: "snapshot_statuses",
