@@ -232,7 +232,7 @@ popd
 - to VersionCaps added a list of supported payload-encodings
 - to Step added externalType
 - to NIC added vnicProfile and bootProtocol
-- to CPU added architecture 
+- to CPU added architecture
 - to VnicProfilePermission added delete() method
 - to Disk added readOnly
 - to VMs.add() added [vm.cpu.architecture], [action.vm.initialization.cloud_init.*] arguments
@@ -508,14 +508,14 @@ popd
 - to Disk type added provisioned_size property and removed /type/ (not supported in 3.1)
 - to StorageDomainTemplate/VM import candidates params added clone, name
   properties for clonging imported object.
-- to StorageDomainTemplate/VM import candidates params added 
+- to StorageDomainTemplate/VM import candidates params added
   collapse_snapshots property
 - to VM added vcpu_pin collection for vm cpu pinning
 
 * Thu Jun 7 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.2-1alpha
 - prevent stack overflow caused by comparisons creating infinite loops
 - fix error handling regression
-- implement support for 3+ period based URLs, new capabilities:    
+- implement support for 3+ period based URLs, new capabilities:
     - vm.snapshot.disks/nics collections support
     - host/vm.nics.statistics collections support
     - collection/resource.permits support
@@ -528,7 +528,7 @@ popd
 - add __eqals__ to business entities #782891
 
 * Wed May 16 2012 Michael Pasternak <mpastern@redhat.com> - 3.1.0.1-1alpha
-- Version format refactoring to align with oVirt version schema 
+- Version format refactoring to align with oVirt version schema
 - Alpha release
 
 * Thu May 10 2012 Michael Pasternak <mpastern@redhat.com> - 1.6.5

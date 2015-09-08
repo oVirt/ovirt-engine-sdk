@@ -4,7 +4,7 @@ PWD=$(shell bash -c "pwd -P")
 version=4.0.0.0
 rpmversion=$(version)
 rpmdist=$(shell rpm --eval '%dist')
-rpmrelease:=0.1$(rpmsuffix)$(rpmdist)
+rpmrelease=0.1$(rpmsuffix)$(rpmdist)
 
 RPMTOP=$(PWD)/rpmtop
 NAME=ovirt-engine-sdk-python
@@ -14,12 +14,12 @@ TARBALL=$(NAME)-$(version).tar.gz
 SRPM=$(RPMTOP)/SRPMS/$(NAME)-$(rpmversion)-$(rpmrelease).src.rpm
 
 .PHONY: spec
-spec: $(SPEC).in
+spec: spec$(rpmdist).in
 	sed \
 		-e 's/@RPM_VERSION@/$(rpmversion)/g' \
 		-e 's/@RPM_RELEASE@/$(rpmrelease)/g' \
 		-e 's/@TARBALL@/$(TARBALL)/g' \
-		< $(SPEC).in \
+		< $< \
 		> $(SPEC)
 
 .PHONY: tarball

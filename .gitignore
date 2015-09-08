@@ -3,6 +3,7 @@
 *.ipr
 *.iws
 *.pyc
+*.spec
 *.swp
 .classpath
 .idea
