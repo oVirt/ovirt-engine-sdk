@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-08-19 11:35:06.000829'''
+'''Generated at: 2015-09-09 10:12:41.000146'''
 
 
 from ovirtsdk.xml import params
@@ -8497,6 +8497,9 @@ class DataCenterQoS(params.QoS, Base):
         [@param qos.outbound_average: int]
         [@param qos.outbound_peak: int]
         [@param qos.outbound_burst: int]
+        [@param qos.outbound_average_linkshare: int]
+        [@param qos.outbound_average_upperlimit: int]
+        [@param qos.outbound_average_realtime: int]
         [@param async: boolean (true|false)]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
@@ -8561,6 +8564,9 @@ class DataCenterQoSs(Base):
         [@param qos.outbound_average: int]
         [@param qos.outbound_peak: int]
         [@param qos.outbound_burst: int]
+        [@param qos.outbound_average_linkshare: int]
+        [@param qos.outbound_average_upperlimit: int]
+        [@param qos.outbound_average_realtime: int]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -11971,6 +11977,10 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
         '''
         @type Action:
 
+        @param certificates.certificate: collection
+        {
+          @ivar content: string
+        }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]
@@ -20174,6 +20184,10 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
         '''
         @type Action:
 
+        @param certificates.certificate: collection
+        {
+          @ivar content: string
+        }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param correlation_id: any string]

@@ -4854,6 +4854,15 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>qos.outbound_burst</name>
                         </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_linkshare</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_upperlimit</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_realtime</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -4987,6 +4996,15 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>qos.outbound_burst</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_linkshare</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_upperlimit</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_realtime</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -7066,6 +7084,14 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Action</type>
                     <parameters_set>
+                        <parameter required="true" type="collection">
+                            <name>certificates.certificate</name>
+                            <parameters_set>
+<parameter required="true" type="xs:string">
+    <name>content</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
                         </parameter>
@@ -12192,6 +12218,14 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Action</type>
                     <parameters_set>
+                        <parameter required="true" type="collection">
+                            <name>certificates.certificate</name>
+                            <parameters_set>
+<parameter required="true" type="xs:string">
+    <name>content</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
                         </parameter>

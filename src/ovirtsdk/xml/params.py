@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Aug 19 11:35:05 2015 by generateDS.py version 2.12a.
+# Generated Wed Sep  9 10:12:39 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -16421,7 +16421,7 @@ class VLAN(GeneratedsSuper):
 class Network(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, cluster=None, ip=None, vlan=None, stp=None, status=None, display=None, mtu=None, usages=None, required=None, profile_required=None, labels=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, data_center=None, cluster=None, ip=None, vlan=None, stp=None, status=None, display=None, mtu=None, usages=None, required=None, profile_required=None, labels=None, qos=None):
         super(Network, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.data_center = data_center
         self.cluster = cluster
@@ -16435,6 +16435,7 @@ class Network(BaseResource):
         self.required = required
         self.profile_required = profile_required
         self.labels = labels
+        self.qos = qos
     def factory(*args_, **kwargs_):
         if Network.subclass:
             return Network.subclass(*args_, **kwargs_)
@@ -16465,6 +16466,8 @@ class Network(BaseResource):
     def set_profile_required(self, profile_required): self.profile_required = profile_required
     def get_labels(self): return self.labels
     def set_labels(self, labels): self.labels = labels
+    def get_qos(self): return self.qos
+    def set_qos(self, qos): self.qos = qos
     def hasContent_(self):
         if (
             self.data_center is not None or
@@ -16479,6 +16482,7 @@ class Network(BaseResource):
             self.required is not None or
             self.profile_required is not None or
             self.labels is not None or
+            self.qos is not None or
             super(Network, self).hasContent_()
         ):
             return True
@@ -16537,6 +16541,8 @@ class Network(BaseResource):
             outfile.write('<%sprofile_required>%s</%sprofile_required>%s' % (namespace_, self.gds_format_boolean(self.profile_required, input_name='profile_required'), namespace_, eol_))
         if self.labels is not None:
             self.labels.export_(outfile, level, namespace_, name_='labels', pretty_print=pretty_print)
+        if self.qos is not None:
+            self.qos.export_(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='Network'):
         level += 1
         already_processed = set()
@@ -16602,6 +16608,12 @@ class Network(BaseResource):
             showIndent(outfile, level)
             outfile.write('labels=model_.labels(\n')
             self.labels.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.qos is not None:
+            showIndent(outfile, level)
+            outfile.write('qos=model_.qos(\n')
+            self.qos.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -16690,6 +16702,10 @@ class Network(BaseResource):
             obj_ = Labels.factory()
             obj_.build(child_)
             self.labels = obj_
+        elif nodeName_ == 'qos':
+            obj_ = QoS.factory()
+            obj_.build(child_)
+            self.qos = obj_
         super(Network, self).buildChildren(child_, node, nodeName_, True)
 # end class Network
 
@@ -28702,7 +28718,7 @@ class Snapshots(BaseResources):
 class HostNIC(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, host=None, network=None, mac=None, ip=None, base_interface=None, vlan=None, bonding=None, boot_protocol=None, statistics=None, check_connectivity=None, speed=None, status=None, mtu=None, bridged=None, custom_configuration=None, override_configuration=None, labels=None, properties=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, host=None, network=None, mac=None, ip=None, base_interface=None, vlan=None, bonding=None, boot_protocol=None, statistics=None, check_connectivity=None, speed=None, status=None, mtu=None, bridged=None, custom_configuration=None, override_configuration=None, labels=None, properties=None, qos=None):
         super(HostNIC, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.host = host
         self.network = network
@@ -28722,6 +28738,7 @@ class HostNIC(BaseResource):
         self.override_configuration = override_configuration
         self.labels = labels
         self.properties = properties
+        self.qos = qos
     def factory(*args_, **kwargs_):
         if HostNIC.subclass:
             return HostNIC.subclass(*args_, **kwargs_)
@@ -28764,6 +28781,8 @@ class HostNIC(BaseResource):
     def set_labels(self, labels): self.labels = labels
     def get_properties(self): return self.properties
     def set_properties(self, properties): self.properties = properties
+    def get_qos(self): return self.qos
+    def set_qos(self, qos): self.qos = qos
     def hasContent_(self):
         if (
             self.host is not None or
@@ -28784,6 +28803,7 @@ class HostNIC(BaseResource):
             self.override_configuration is not None or
             self.labels is not None or
             self.properties is not None or
+            self.qos is not None or
             super(HostNIC, self).hasContent_()
         ):
             return True
@@ -28857,6 +28877,8 @@ class HostNIC(BaseResource):
             self.labels.export_(outfile, level, namespace_, name_='labels', pretty_print=pretty_print)
         if self.properties is not None:
             self.properties.export_(outfile, level, namespace_, name_='properties', pretty_print=pretty_print)
+        if self.qos is not None:
+            self.qos.export_(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='HostNIC'):
         level += 1
         already_processed = set()
@@ -28949,6 +28971,12 @@ class HostNIC(BaseResource):
             showIndent(outfile, level)
             outfile.write('properties=model_.properties(\n')
             self.properties.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.qos is not None:
+            showIndent(outfile, level)
+            outfile.write('qos=model_.qos(\n')
+            self.qos.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -29065,6 +29093,10 @@ class HostNIC(BaseResource):
             obj_ = Properties.factory()
             obj_.build(child_)
             self.properties = obj_
+        elif nodeName_ == 'qos':
+            obj_ = QoS.factory()
+            obj_.build(child_)
+            self.qos = obj_
         super(HostNIC, self).buildChildren(child_, node, nodeName_, True)
 # end class HostNIC
 
@@ -30290,7 +30322,7 @@ class Bonding(GeneratedsSuper):
 class NetworkAttachment(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, network=None, host_nic=None, ip_address_assignments=None, properties=None, reported_configurations=None, host=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, network=None, host_nic=None, ip_address_assignments=None, properties=None, reported_configurations=None, host=None, qos=None):
         super(NetworkAttachment, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.network = network
         self.host_nic = host_nic
@@ -30298,6 +30330,7 @@ class NetworkAttachment(BaseResource):
         self.properties = properties
         self.reported_configurations = reported_configurations
         self.host = host
+        self.qos = qos
     def factory(*args_, **kwargs_):
         if NetworkAttachment.subclass:
             return NetworkAttachment.subclass(*args_, **kwargs_)
@@ -30316,6 +30349,8 @@ class NetworkAttachment(BaseResource):
     def set_reported_configurations(self, reported_configurations): self.reported_configurations = reported_configurations
     def get_host(self): return self.host
     def set_host(self, host): self.host = host
+    def get_qos(self): return self.qos
+    def set_qos(self, qos): self.qos = qos
     def hasContent_(self):
         if (
             self.network is not None or
@@ -30324,6 +30359,7 @@ class NetworkAttachment(BaseResource):
             self.properties is not None or
             self.reported_configurations is not None or
             self.host is not None or
+            self.qos is not None or
             super(NetworkAttachment, self).hasContent_()
         ):
             return True
@@ -30365,6 +30401,8 @@ class NetworkAttachment(BaseResource):
             self.reported_configurations.export_(outfile, level, namespace_, name_='reported_configurations', pretty_print=pretty_print)
         if self.host is not None:
             self.host.export_(outfile, level, namespace_, name_='host', pretty_print=pretty_print)
+        if self.qos is not None:
+            self.qos.export_(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='NetworkAttachment'):
         level += 1
         already_processed = set()
@@ -30411,6 +30449,12 @@ class NetworkAttachment(BaseResource):
             self.host.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.qos is not None:
+            showIndent(outfile, level)
+            outfile.write('qos=model_.qos(\n')
+            self.qos.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -30445,6 +30489,10 @@ class NetworkAttachment(BaseResource):
             obj_ = Host.factory()
             obj_.build(child_)
             self.host = obj_
+        elif nodeName_ == 'qos':
+            obj_ = QoS.factory()
+            obj_.build(child_)
+            self.qos = obj_
         super(NetworkAttachment, self).buildChildren(child_, node, nodeName_, True)
 # end class NetworkAttachment
 
@@ -30653,9 +30701,10 @@ class ReportedConfigurations(GeneratedsSuper):
 class ReportedConfiguration(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, name=None, value=None, in_sync=None):
+    def __init__(self, name=None, expected_value=None, actual_value=None, in_sync=None):
         self.name = name
-        self.value = value
+        self.expected_value = expected_value
+        self.actual_value = actual_value
         self.in_sync = in_sync
     def factory(*args_, **kwargs_):
         if ReportedConfiguration.subclass:
@@ -30665,14 +30714,17 @@ class ReportedConfiguration(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_name(self): return self.name
     def set_name(self, name): self.name = name
-    def get_value(self): return self.value
-    def set_value(self, value): self.value = value
+    def get_expected_value(self): return self.expected_value
+    def set_expected_value(self, expected_value): self.expected_value = expected_value
+    def get_actual_value(self): return self.actual_value
+    def set_actual_value(self, actual_value): self.actual_value = actual_value
     def get_in_sync(self): return self.in_sync
     def set_in_sync(self, in_sync): self.in_sync = in_sync
     def hasContent_(self):
         if (
             self.name is not None or
-            self.value is not None or
+            self.expected_value is not None or
+            self.actual_value is not None or
             self.in_sync is not None
         ):
             return True
@@ -30704,9 +30756,12 @@ class ReportedConfiguration(GeneratedsSuper):
         if self.name is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sname>%s</%sname>%s' % (namespace_, self.gds_format_string(quote_xml(self.name).encode(ExternalEncoding), input_name='name'), namespace_, eol_))
-        if self.value is not None:
+        if self.expected_value is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%svalue>%s</%svalue>%s' % (namespace_, self.gds_format_string(quote_xml(self.value).encode(ExternalEncoding), input_name='value'), namespace_, eol_))
+            outfile.write('<%sexpected_value>%s</%sexpected_value>%s' % (namespace_, self.gds_format_string(quote_xml(self.expected_value).encode(ExternalEncoding), input_name='expected_value'), namespace_, eol_))
+        if self.actual_value is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sactual_value>%s</%sactual_value>%s' % (namespace_, self.gds_format_string(quote_xml(self.actual_value).encode(ExternalEncoding), input_name='actual_value'), namespace_, eol_))
         if self.in_sync is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sin_sync>%s</%sin_sync>%s' % (namespace_, self.gds_format_boolean(self.in_sync, input_name='in_sync'), namespace_, eol_))
@@ -30722,9 +30777,12 @@ class ReportedConfiguration(GeneratedsSuper):
         if self.name is not None:
             showIndent(outfile, level)
             outfile.write('name=%s,\n' % quote_python(self.name).encode(ExternalEncoding))
-        if self.value is not None:
+        if self.expected_value is not None:
             showIndent(outfile, level)
-            outfile.write('value=%s,\n' % quote_python(self.value).encode(ExternalEncoding))
+            outfile.write('expected_value=%s,\n' % quote_python(self.expected_value).encode(ExternalEncoding))
+        if self.actual_value is not None:
+            showIndent(outfile, level)
+            outfile.write('actual_value=%s,\n' % quote_python(self.actual_value).encode(ExternalEncoding))
         if self.in_sync is not None:
             showIndent(outfile, level)
             outfile.write('in_sync=%s,\n' % self.in_sync)
@@ -30742,10 +30800,14 @@ class ReportedConfiguration(GeneratedsSuper):
             name_ = child_.text
             name_ = self.gds_validate_string(name_, node, 'name')
             self.name = name_
-        elif nodeName_ == 'value':
-            value_ = child_.text
-            value_ = self.gds_validate_string(value_, node, 'value')
-            self.value = value_
+        elif nodeName_ == 'expected_value':
+            expected_value_ = child_.text
+            expected_value_ = self.gds_validate_string(expected_value_, node, 'expected_value')
+            self.expected_value = expected_value_
+        elif nodeName_ == 'actual_value':
+            actual_value_ = child_.text
+            actual_value_ = self.gds_validate_string(actual_value_, node, 'actual_value')
+            self.actual_value = actual_value_
         elif nodeName_ == 'in_sync':
             sval_ = child_.text
             if sval_ in ('true', '1'):
@@ -38033,7 +38095,7 @@ class NumaNode(BaseResource):
 class QoS(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, data_center=None, max_throughput=None, max_read_throughput=None, max_write_throughput=None, max_iops=None, max_read_iops=None, max_write_iops=None, cpu_limit=None, inbound_average=None, inbound_peak=None, inbound_burst=None, outbound_average=None, outbound_peak=None, outbound_burst=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, data_center=None, max_throughput=None, max_read_throughput=None, max_write_throughput=None, max_iops=None, max_read_iops=None, max_write_iops=None, cpu_limit=None, inbound_average=None, inbound_peak=None, inbound_burst=None, outbound_average=None, outbound_peak=None, outbound_burst=None, outbound_average_linkshare=None, outbound_average_upperlimit=None, outbound_average_realtime=None):
         super(QoS, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.type_ = _cast(None, type_)
         self.data_center = data_center
@@ -38050,6 +38112,9 @@ class QoS(BaseResource):
         self.outbound_average = outbound_average
         self.outbound_peak = outbound_peak
         self.outbound_burst = outbound_burst
+        self.outbound_average_linkshare = outbound_average_linkshare
+        self.outbound_average_upperlimit = outbound_average_upperlimit
+        self.outbound_average_realtime = outbound_average_realtime
     def factory(*args_, **kwargs_):
         if QoS.subclass:
             return QoS.subclass(*args_, **kwargs_)
@@ -38084,6 +38149,12 @@ class QoS(BaseResource):
     def set_outbound_peak(self, outbound_peak): self.outbound_peak = outbound_peak
     def get_outbound_burst(self): return self.outbound_burst
     def set_outbound_burst(self, outbound_burst): self.outbound_burst = outbound_burst
+    def get_outbound_average_linkshare(self): return self.outbound_average_linkshare
+    def set_outbound_average_linkshare(self, outbound_average_linkshare): self.outbound_average_linkshare = outbound_average_linkshare
+    def get_outbound_average_upperlimit(self): return self.outbound_average_upperlimit
+    def set_outbound_average_upperlimit(self, outbound_average_upperlimit): self.outbound_average_upperlimit = outbound_average_upperlimit
+    def get_outbound_average_realtime(self): return self.outbound_average_realtime
+    def set_outbound_average_realtime(self, outbound_average_realtime): self.outbound_average_realtime = outbound_average_realtime
     def get_type(self): return self.type_
     def set_type(self, type_): self.type_ = type_
     def hasContent_(self):
@@ -38102,6 +38173,9 @@ class QoS(BaseResource):
             self.outbound_average is not None or
             self.outbound_peak is not None or
             self.outbound_burst is not None or
+            self.outbound_average_linkshare is not None or
+            self.outbound_average_upperlimit is not None or
+            self.outbound_average_realtime is not None or
             super(QoS, self).hasContent_()
         ):
             return True
@@ -38175,6 +38249,15 @@ class QoS(BaseResource):
         if self.outbound_burst is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%soutbound_burst>%s</%soutbound_burst>%s' % (namespace_, self.gds_format_integer(self.outbound_burst, input_name='outbound_burst'), namespace_, eol_))
+        if self.outbound_average_linkshare is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%soutbound_average_linkshare>%s</%soutbound_average_linkshare>%s' % (namespace_, self.gds_format_integer(self.outbound_average_linkshare, input_name='outbound_average_linkshare'), namespace_, eol_))
+        if self.outbound_average_upperlimit is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%soutbound_average_upperlimit>%s</%soutbound_average_upperlimit>%s' % (namespace_, self.gds_format_integer(self.outbound_average_upperlimit, input_name='outbound_average_upperlimit'), namespace_, eol_))
+        if self.outbound_average_realtime is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%soutbound_average_realtime>%s</%soutbound_average_realtime>%s' % (namespace_, self.gds_format_integer(self.outbound_average_realtime, input_name='outbound_average_realtime'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='QoS'):
         level += 1
         already_processed = set()
@@ -38234,6 +38317,15 @@ class QoS(BaseResource):
         if self.outbound_burst is not None:
             showIndent(outfile, level)
             outfile.write('outbound_burst=%d,\n' % self.outbound_burst)
+        if self.outbound_average_linkshare is not None:
+            showIndent(outfile, level)
+            outfile.write('outbound_average_linkshare=%d,\n' % self.outbound_average_linkshare)
+        if self.outbound_average_upperlimit is not None:
+            showIndent(outfile, level)
+            outfile.write('outbound_average_upperlimit=%d,\n' % self.outbound_average_upperlimit)
+        if self.outbound_average_realtime is not None:
+            showIndent(outfile, level)
+            outfile.write('outbound_average_realtime=%d,\n' % self.outbound_average_realtime)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -38356,6 +38448,30 @@ class QoS(BaseResource):
                 raise_parse_error(child_, 'requires integer: %s' % exp)
             ival_ = self.gds_validate_integer(ival_, node, 'outbound_burst')
             self.outbound_burst = ival_
+        elif nodeName_ == 'outbound_average_linkshare':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'outbound_average_linkshare')
+            self.outbound_average_linkshare = ival_
+        elif nodeName_ == 'outbound_average_upperlimit':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'outbound_average_upperlimit')
+            self.outbound_average_upperlimit = ival_
+        elif nodeName_ == 'outbound_average_realtime':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'outbound_average_realtime')
+            self.outbound_average_realtime = ival_
         super(QoS, self).buildChildren(child_, node, nodeName_, True)
 # end class QoS
 
@@ -45158,7 +45274,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, proxy_ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, modified_network_attachments=None, removed_network_attachments=None, synchronized_network_attachments=None, modified_bonds=None, removed_bonds=None, modified_labels=None, removed_labels=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, disk=None, reason=None, logical_units=None, use_sysprep=None, use_cloud_init=None, status=None, fault=None, iscsi_target=None, power_management=None, is_attached=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, proxy_ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, modified_network_attachments=None, removed_network_attachments=None, synchronized_network_attachments=None, modified_bonds=None, removed_bonds=None, modified_labels=None, removed_labels=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, disk=None, reason=None, logical_units=None, use_sysprep=None, use_cloud_init=None, certificates=None, status=None, fault=None, iscsi_target=None, power_management=None, is_attached=None):
         super(Action, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -45209,6 +45325,7 @@ class Action(BaseResource):
         self.logical_units = logical_units
         self.use_sysprep = use_sysprep
         self.use_cloud_init = use_cloud_init
+        self.certificates = certificates
         self.status = status
         self.fault = fault
         if iscsi_target is None:
@@ -45321,6 +45438,8 @@ class Action(BaseResource):
     def set_use_sysprep(self, use_sysprep): self.use_sysprep = use_sysprep
     def get_use_cloud_init(self): return self.use_cloud_init
     def set_use_cloud_init(self, use_cloud_init): self.use_cloud_init = use_cloud_init
+    def get_certificates(self): return self.certificates
+    def set_certificates(self, certificates): self.certificates = certificates
     def get_status(self): return self.status
     def set_status(self, status): self.status = status
     def get_fault(self): return self.fault
@@ -45384,6 +45503,7 @@ class Action(BaseResource):
             self.logical_units is not None or
             self.use_sysprep is not None or
             self.use_cloud_init is not None or
+            self.certificates is not None or
             self.status is not None or
             self.fault is not None or
             self.iscsi_target or
@@ -45537,6 +45657,8 @@ class Action(BaseResource):
         if self.use_cloud_init is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%suse_cloud_init>%s</%suse_cloud_init>%s' % (namespace_, self.gds_format_boolean(self.use_cloud_init, input_name='use_cloud_init'), namespace_, eol_))
+        if self.certificates is not None:
+            self.certificates.export_(outfile, level, namespace_, name_='certificates', pretty_print=pretty_print)
         if self.status is not None:
             self.status.export_(outfile, level, namespace_, name_='status', pretty_print=pretty_print)
         if self.fault is not None:
@@ -45790,6 +45912,12 @@ class Action(BaseResource):
         if self.use_cloud_init is not None:
             showIndent(outfile, level)
             outfile.write('use_cloud_init=%s,\n' % self.use_cloud_init)
+        if self.certificates is not None:
+            showIndent(outfile, level)
+            outfile.write('certificates=model_.certificates(\n')
+            self.certificates.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.status is not None:
             showIndent(outfile, level)
             outfile.write('status=model_.status(\n')
@@ -46123,6 +46251,10 @@ class Action(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'use_cloud_init')
             self.use_cloud_init = ival_
+        elif nodeName_ == 'certificates':
+            obj_ = Certificates.factory()
+            obj_.build(child_)
+            self.certificates = obj_
         elif nodeName_ == 'status':
             obj_ = Status.factory()
             obj_.build(child_)
