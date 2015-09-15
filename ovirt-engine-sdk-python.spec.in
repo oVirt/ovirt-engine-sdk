@@ -43,6 +43,9 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc README.md
 
 %changelog
+* Wed Sep 16 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.6.0.2-1
+- Add support for user SSH public keys.
+
 * Wed Sep 9 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.6.0.1-1
 - Don't use deprecated DefaultHttpClient #1255078.
 - Get provider certificates from user instead of from backend #1255862.
