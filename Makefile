@@ -1,10 +1,10 @@
 all: rpm
 
 PWD=$(shell bash -c "pwd -P")
-version=3.6.0.2
+version=3.6.0.3
 rpmversion=$(version)
 rpmdist=$(shell rpm --eval '%dist')
-rpmrelease=1$(rpmdist)
+rpmrelease=0.1$(rpmsuffix)$(rpmdist)
 
 RPMTOP=$(PWD)/rpmtop
 NAME=ovirt-engine-sdk-python
