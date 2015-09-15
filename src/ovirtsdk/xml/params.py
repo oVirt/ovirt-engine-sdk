@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Sep  9 10:12:39 2015 by generateDS.py version 2.12a.
+# Generated Tue Sep 15 14:23:52 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -13775,6 +13775,195 @@ class Roles(BaseResources):
             self.role.append(obj_)
         super(Roles, self).buildChildren(child_, node, nodeName_, True)
 # end class Roles
+
+
+class SSHPublicKey(BaseResource):
+    subclass = None
+    superclass = BaseResource
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, content=None, user=None):
+        super(SSHPublicKey, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
+        self.content = content
+        self.user = user
+    def factory(*args_, **kwargs_):
+        if SSHPublicKey.subclass:
+            return SSHPublicKey.subclass(*args_, **kwargs_)
+        else:
+            return SSHPublicKey(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_content(self): return self.content
+    def set_content(self, content): self.content = content
+    def get_user(self): return self.user
+    def set_user(self, user): self.user = user
+    def hasContent_(self):
+        if (
+            self.content is not None or
+            self.user is not None or
+            super(SSHPublicKey, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='SSHPublicKey', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='SSHPublicKey')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='SSHPublicKey'):
+        super(SSHPublicKey, self).exportAttributes(outfile, level, already_processed, namespace_, name_='SSHPublicKey')
+    def exportChildren(self, outfile, level, namespace_='', name_='SSHPublicKey', fromsubclass_=False, pretty_print=True):
+        super(SSHPublicKey, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.content is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%scontent>%s</%scontent>%s' % (namespace_, self.gds_format_string(quote_xml(self.content).encode(ExternalEncoding), input_name='content'), namespace_, eol_))
+        if self.user is not None:
+            self.user.export_(outfile, level, namespace_, name_='user', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='SSHPublicKey'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(SSHPublicKey, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(SSHPublicKey, self).exportLiteralChildren(outfile, level, name_)
+        if self.content is not None:
+            showIndent(outfile, level)
+            outfile.write('content=%s,\n' % quote_python(self.content).encode(ExternalEncoding))
+        if self.user is not None:
+            showIndent(outfile, level)
+            outfile.write('user=model_.user(\n')
+            self.user.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(SSHPublicKey, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'content':
+            content_ = child_.text
+            content_ = self.gds_validate_string(content_, node, 'content')
+            self.content = content_
+        elif nodeName_ == 'user':
+            obj_ = User.factory()
+            obj_.build(child_)
+            self.user = obj_
+        super(SSHPublicKey, self).buildChildren(child_, node, nodeName_, True)
+# end class SSHPublicKey
+
+
+class SSHPublicKeys(BaseResources):
+    subclass = None
+    superclass = BaseResources
+    def __init__(self, actions=None, size=None, total=None, active=None, ssh_public_key=None):
+        super(SSHPublicKeys, self).__init__(actions, size, total, active, )
+        if ssh_public_key is None:
+            self.ssh_public_key = []
+        else:
+            self.ssh_public_key = ssh_public_key
+    def factory(*args_, **kwargs_):
+        if SSHPublicKeys.subclass:
+            return SSHPublicKeys.subclass(*args_, **kwargs_)
+        else:
+            return SSHPublicKeys(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_ssh_public_key(self): return self.ssh_public_key
+    def set_ssh_public_key(self, ssh_public_key): self.ssh_public_key = ssh_public_key
+    def add_ssh_public_key(self, value): self.ssh_public_key.append(value)
+    def insert_ssh_public_key(self, index, value): self.ssh_public_key[index] = value
+    def hasContent_(self):
+        if (
+            self.ssh_public_key or
+            super(SSHPublicKeys, self).hasContent_()
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='SSHPublicKeys', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='SSHPublicKeys')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='SSHPublicKeys'):
+        super(SSHPublicKeys, self).exportAttributes(outfile, level, already_processed, namespace_, name_='SSHPublicKeys')
+    def exportChildren(self, outfile, level, namespace_='', name_='SSHPublicKeys', fromsubclass_=False, pretty_print=True):
+        super(SSHPublicKeys, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for ssh_public_key_ in self.ssh_public_key:
+            ssh_public_key_.export_(outfile, level, namespace_, name_='ssh_public_key', pretty_print=pretty_print)
+    def exportLiteral(self, outfile, level, name_='SSHPublicKeys'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        super(SSHPublicKeys, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+    def exportLiteralChildren(self, outfile, level, name_):
+        super(SSHPublicKeys, self).exportLiteralChildren(outfile, level, name_)
+        showIndent(outfile, level)
+        outfile.write('ssh_public_key=[\n')
+        level += 1
+        for ssh_public_key_ in self.ssh_public_key:
+            showIndent(outfile, level)
+            outfile.write('model_.ssh_public_key(\n')
+            ssh_public_key_.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        super(SSHPublicKeys, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'ssh_public_key':
+            obj_ = SSHPublicKey.factory()
+            obj_.build(child_)
+            self.ssh_public_key.append(obj_)
+        super(SSHPublicKeys, self).buildChildren(child_, node, nodeName_, True)
+# end class SSHPublicKeys
 
 
 class User(BaseResource):
@@ -47955,6 +48144,7 @@ GDSClassesMapping = {
     'boot_devices': BootDevices,
     'ticket': Ticket,
     'external_host_group': ExternalHostGroup,
+    'ssh_public_keys': SSHPublicKeys,
     'display_disconnect_actions': DisplayDisconnectActions,
     'operating_systems': OperatingSystemInfos,
     'virtio_scsi': VirtIO_SCSI,
@@ -48059,12 +48249,13 @@ GDSClassesMapping = {
     'agent_configuration': AgentConfiguration,
     'host_numa_nodes': NumaNodes,
     'logical_unit': LogicalUnit,
-    'cpus': CPUs,
+    'fop_statistic': FopStatistic,
     'parent_device': HostDevice,
     'transparent_hugepages': TransparentHugePages,
     'balances': Balances,
     'permissions': Permissions,
     'host_nic': HostNIC,
+    'ssh_public_key': SSHPublicKey,
     'openstack_volume_authentication_keys': OpenstackVolumeAuthenticationKeys,
     'brick_profile_details': BrickProfileDetails,
     'status': Status,
@@ -48097,7 +48288,7 @@ GDSClassesMapping = {
     'network_configuration': NetworkConfiguration,
     'features': Features,
     'watchdogs': WatchDogs,
-    'fop_statistic': FopStatistic,
+    'cpus': CPUs,
     'hook': Hook,
     'gluster_clients': GlusterClients,
     'payload': Payload,
@@ -48753,6 +48944,8 @@ __all__ = [
     "SELinuxModes",
     "SPM",
     "SSH",
+    "SSHPublicKey",
+    "SSHPublicKeys",
     "SchedulingPolicies",
     "SchedulingPolicy",
     "SchedulingPolicyThresholds",
@@ -49177,6 +49370,8 @@ _rootClassMap = {
                     "spm"                           : SPM,
                     "spm_states"                    : SpmStates,
                     "ssh"                           : SSH,
+                    "ssh_public_key"                : SSHPublicKey,
+                    "ssh_public_keys"               : SSHPublicKeys,
                     "sso"                           : Sso,
                     "sso_methods"                   : SsoMethods,
                     "stages"                        : Stages,
@@ -49519,6 +49714,8 @@ _tag_for_type = {
     SELinuxModes: "selinux_modes",
     SPM: "spm",
     SSH: "ssh",
+    SSHPublicKey: "ssh_public_key",
+    SSHPublicKeys: "ssh_public_keys",
     SchedulingPolicies: "scheduling_policies",
     SchedulingPolicy: "scheduling_policy",
     SchedulingPolicyUnit: "scheduling_policy_unit",

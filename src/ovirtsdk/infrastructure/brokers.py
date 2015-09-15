@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-09-09 10:12:41.000146'''
+'''Generated at: 2015-09-15 14:23:53.000383'''
 
 
 from ovirtsdk.xml import params
@@ -28263,6 +28263,7 @@ class User(params.User, Base):
 
         self.permissions = UserPermissions(self, context)
         self.roles = UserRoles(self, context)
+        self.sshpublickeys = UserSSHPublicKeys(self, context)
         self.tags = UserTags(self, context)
 
     def __new__(cls, user, context):
@@ -28844,6 +28845,219 @@ class UserRoles(Base):
 
         return ParseHelper.toSubCollection(
             UserRole,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class UserSSHPublicKey(params.SSHPublicKey, Base):
+    def __init__(self, user, sshpublickey, context):
+        Base.__init__(self, context)
+        self.parentclass = user
+        self.superclass  =  sshpublickey
+
+        #SUB_COLLECTIONS
+    def __new__(cls, user, sshpublickey, context):
+        if sshpublickey is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(user, sshpublickey, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/users/{user:id}/sshpublickeys/{sshpublickey:id}',
+            {
+                '{user:id}': self.parentclass.get_id(),
+                '{sshpublickey:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=SearchHelper.appendQuery(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
+        )
+
+    def update(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return SSHPublicKey:
+        '''
+
+        url = '/users/{user:id}/sshpublickeys/{sshpublickey:id}'
+        url = UrlHelper.replace(
+            url,
+            {
+                '{user:id}': self.parentclass.get_id(),
+                '{sshpublickey:id}': self.get_id(),
+            }
+        )
+
+        result = self.__getProxy().update(
+            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            body=ParseHelper.toXml(self.superclass),
+            headers={}
+        )
+
+        return UserSSHPublicKey(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+class UserSSHPublicKeys(Base):
+
+    def __init__(self, user , context):
+        Base.__init__(self, context)
+        self.parentclass = user
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, sshpublickey, correlation_id=None, expect=None):
+
+        '''
+        @type SSHPublicKey:
+
+        @param ssh_public_key.id|name: string
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return SSHPublicKey:
+        '''
+
+        url = '/users/{user:id}/sshpublickeys'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{user:id}': self.parentclass.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(sshpublickey),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return UserSSHPublicKey(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return SSHPublicKeys:
+        '''
+
+        url = '/users/{user:id}/sshpublickeys'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{user:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return UserSSHPublicKey(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{user:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_ssh_public_key()
+
+            return UserSSHPublicKey(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return SSHPublicKeys:
+        '''
+
+        url = '/users/{user:id}/sshpublickeys'
+
+        result = self.__getProxy().get(
+            url=SearchHelper.appendQuery(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{user:id}': self.parentclass.get_id(),
+                    }
+                ),
+                qargs={'max:matrix':max}
+            ),
+            headers={}
+        ).get_ssh_public_key()
+
+        return ParseHelper.toSubCollection(
+            UserSSHPublicKey,
             self.parentclass,
             FilterHelper.filter(
                 result,

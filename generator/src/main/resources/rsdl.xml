@@ -17822,6 +17822,109 @@ or less indicates that the session should never timeout</description>
                 <type>Permit</type>
             </response>
         </link>
+        <link href="users/{user:id}/sshpublickeys" rel="add">
+            <description>register a new SSH public key for the user</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>SSHPublicKey</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>ssh_public_key.id|name</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>SSHPublicKey</type>
+            </response>
+        </link>
+        <link href="users/{user:id}/sshpublickeys" rel="get">
+            <description>get the list of SSH public keys registered by the user</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>SSHPublicKeys</type>
+            </response>
+        </link>
+        <link href="users/{user:id}/sshpublickeys/{sshpublickey:id}" rel="delete">
+            <description>delete the specified SSH public key registered by the use</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="users/{user:id}/sshpublickeys/{sshpublickey:id}" rel="get">
+            <description>get the details of the specified SSH public key registered by the user</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>SSHPublicKey</type>
+            </response>
+        </link>
+        <link href="users/{user:id}/sshpublickeys/{sshpublickey:id}" rel="update">
+            <request>
+                <http_method>PUT</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>SSHPublicKey</type>
+                </body>
+            </request>
+            <response>
+                <type>SSHPublicKey</type>
+            </response>
+        </link>
         <link href="users/{user:id}/tags" rel="add">
             <description>add a new tag to the user</description>
             <request>
