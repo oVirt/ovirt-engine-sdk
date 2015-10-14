@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-09-15 14:23:53.000383'''
+'''Generated at: 2015-10-14 10:12:09.000843'''
 
 
 from ovirtsdk.xml import params
@@ -34830,6 +34830,7 @@ class VmPools(Base):
         [@param vmpool.display.proxy: string]
         [@param vmpool.description: string]
         [@param vmpool.soundcard_enabled: boolean]
+        [@param vmpool.type: string]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
