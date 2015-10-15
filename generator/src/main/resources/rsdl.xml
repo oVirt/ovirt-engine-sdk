@@ -157,6 +157,9 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new cluster to the system</description>
                         <parameter required="true" type="xs:string">
+                            <name>cluster.cpu.type</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
                             <name>cluster.data_center.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
@@ -168,80 +171,41 @@ or less indicates that the session should never timeout</description>
                         <parameter required="true" type="xs:int">
                             <name>cluster.version.minor</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>cluster.cpu.id</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.description</name>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.ballooning_enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>cluster.comment</name>
-                        </parameter>
-                        <parameter required="false" type="xs:double">
-                            <name>cluster.memory_policy.overcommit.percent</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.memory_policy.transparent_hugepages.enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.scheduling_policy.policy</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.low</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.high</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.duration</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.scheduling_policy.id</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>cluster.scheduling_policy.properties.property</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>property.name</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>property.value</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.error_handling.on_error</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.virt_service</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.gluster_service</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.threads_as_cores</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.tunnel_migration</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.trusted_service</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.ha_reservation</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.ballooning_enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>cluster.cpu.architecture</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
+                            <name>cluster.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
                             <name>cluster.display.proxy</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.error_handling.on_error</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.skip_if_connectivity_broken.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>cluster.fencing_policy.skip_if_connectivity_broken.threshold</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.fencing_policy.skip_if_sd_active.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.gluster_service</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.ha_reservation</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.ksm.enabled</name>
@@ -250,22 +214,31 @@ or less indicates that the session should never timeout</description>
                             <name>cluster.ksm.merge_across_nodes</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>cluster.fencing_policy.enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.fencing_policy.skip_if_sd_active.enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.fencing_policy.skip_if_connectivity_broken.enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.fencing_policy.skip_if_connectivity_broken.threshold</name>
+                            <name>cluster.maintenance_reason_required</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>cluster.management_network.id|name</name>
                         </parameter>
+                        <parameter required="false" type="xs:double">
+                            <name>cluster.memory_policy.overcommit.percent</name>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>cluster.maintenance_reason_required</name>
+                            <name>cluster.memory_policy.transparent_hugepages.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.scheduling_policy.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.threads_as_cores</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.trusted_service</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.tunnel_migration</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.virt_service</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -377,95 +350,32 @@ or less indicates that the session should never timeout</description>
                     <type>Cluster</type>
                     <parameters_set>
                         <description>update the specified cluster in the system. The capabilities like virt service, cluster service, tarnsparent huge pages etc can be changed.</description>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.name</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.description</name>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.ballooning_enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>cluster.comment</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
+                            <name>cluster.cpu.architecture</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.cpu.type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
                             <name>cluster.data_center.id</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>cluster.cpu.id</name>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.version.major</name>
-                        </parameter>
-                        <parameter required="false" type="xs:int,">
-                            <name>cluster.version.minor</name>
-                        </parameter>
-                        <parameter required="false" type="xs:double">
-                            <name>cluster.memory_policy.overcommit.percent</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.memory_policy.transparent_hugepages.enabled</name>
+                            <name>cluster.description</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>cluster.scheduling_policy.policy</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.low</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.high</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.duration</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.scheduling_policy.id</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>cluster.scheduling_policy.properties.property</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>property.name</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>property.value</name>
-</parameter>
-                            </parameters_set>
+                            <name>cluster.display.proxy</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>cluster.error_handling.on_error</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>cluster.virt_service</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.gluster_service</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.threads_as_cores</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.tunnel_migration</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.ballooning_enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.cpu.architecture</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.display.proxy</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.ksm.enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
                             <name>cluster.fencing_policy.enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.fencing_policy.skip_if_sd_active.enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.fencing_policy.skip_if_connectivity_broken.enabled</name>
@@ -474,16 +384,52 @@ or less indicates that the session should never timeout</description>
                             <name>cluster.fencing_policy.skip_if_connectivity_broken.threshold</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>cluster.maintenance_reason_required</name>
+                            <name>cluster.fencing_policy.skip_if_sd_active.enabled</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.management_network.id|name</name>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.gluster_service</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.ha_reservation</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
+                            <name>cluster.ksm.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
                             <name>cluster.ksm.merge_across_nodes</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.maintenance_reason_required</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.management_network.id|name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:double">
+                            <name>cluster.memory_policy.overcommit.percent</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.memory_policy.transparent_hugepages.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.scheduling_policy.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.threads_as_cores</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.tunnel_migration</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>cluster.version.major</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int,">
+                            <name>cluster.version.minor</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.virt_service</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -647,7 +593,7 @@ or less indicates that the session should never timeout</description>
                     </header>
                 </headers>
                 <body>
-                    <type>VM</type>
+                    <type>Vm</type>
                     <parameters_set>
                         <description>add a vm to affinity group</description>
                         <parameter required="true" type="xs:string">
@@ -657,7 +603,7 @@ or less indicates that the session should never timeout</description>
                 </body>
             </request>
             <response>
-                <type>VM</type>
+                <type>Vm</type>
             </response>
         </link>
         <link href="clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms" rel="get">
@@ -675,7 +621,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>VMs</type>
+                <type>Vms</type>
             </response>
         </link>
         <link href="clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms/{vm:id}" rel="delete">
@@ -1122,6 +1068,12 @@ or less indicates that the session should never timeout</description>
                             <name>force</name>
                             <value>true|false</value>
                         </parameter>
+                        <parameter required="false" type="xs:unsignedShort" context="matrix">
+                            <name>replica_count</name>
+                        </parameter>
+                        <parameter required="false" type="xs:unsignedShort" context="matrix">
+                            <name>stripe_count</name>
+                        </parameter>
                     </parameters_set>
                 </url>
                 <body>
@@ -1138,12 +1090,6 @@ or less indicates that the session should never timeout</description>
     <name>brick.brick_dir</name>
 </parameter>
                             </parameters_set>
-                        </parameter>
-                        <parameter required="false" type="xs:unsignedShort">
-                            <name>replica_count</name>
-                        </parameter>
-                        <parameter required="false" type="xs:unsignedShort">
-                            <name>stripe_count</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -1168,6 +1114,9 @@ or less indicates that the session should never timeout</description>
                 </headers>
                 <url>
                     <parameters_set>
+                        <parameter required="false" type="xs:unsignedShort" context="matrix">
+                            <name>replica_count</name>
+                        </parameter>
                         <parameter required="false" type="xs:boolean" context="matrix">
                             <name>async</name>
                             <value>true|false</value>
@@ -1185,9 +1134,6 @@ or less indicates that the session should never timeout</description>
     <name>brick.id</name>
 </parameter>
                             </parameters_set>
-                        </parameter>
-                        <parameter required="false" type="xs:unsignedShort">
-                            <name>replica_count</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -2390,10 +2336,6 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>datacenter.storage_format</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>datacenter.storage_type</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>datacenter.version.major</name>
                         </parameter>
@@ -2536,10 +2478,6 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>datacenter.comment</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>datacenter.storage_type</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>datacenter.local</name>
                         </parameter>
@@ -2585,6 +2523,9 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new cluster to the data center</description>
                         <parameter required="true" type="xs:string">
+                            <name>cluster.cpu.type</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
                             <name>cluster.name</name>
                         </parameter>
                         <parameter required="true" type="xs:int">
@@ -2593,11 +2534,29 @@ or less indicates that the session should never timeout</description>
                         <parameter required="true" type="xs:int">
                             <name>cluster.version.minor</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>cluster.cpu.id</name>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.ballooning_enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.cpu.architecture</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>cluster.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.display.proxy</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.error_handling.on_error</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.gluster_service</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.ksm.enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.management_network.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:double">
                             <name>cluster.memory_policy.overcommit.percent</name>
@@ -2606,43 +2565,7 @@ or less indicates that the session should never timeout</description>
                             <name>cluster.memory_policy.transparent_hugepages.enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>cluster.scheduling_policy.policy</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.low</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.high</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.duration</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
                             <name>cluster.scheduling_policy.id</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>cluster.scheduling_policy.properties.property</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>property.name</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>property.value</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.error_handling.on_error</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.virt_service</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.gluster_service</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.threads_as_cores</name>
@@ -2651,19 +2574,7 @@ or less indicates that the session should never timeout</description>
                             <name>cluster.tunnel_migration</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>cluster.ballooning_enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.cpu.architecture</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.display.proxy</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.ksm.enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.management_network.id|name</name>
+                            <name>cluster.virt_service</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -2767,20 +2678,32 @@ or less indicates that the session should never timeout</description>
                     <type>Cluster</type>
                     <parameters_set>
                         <description>update specified cluster in the data center</description>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.ballooning_enabled</name>
+                        </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>cluster.name</name>
+                            <name>cluster.cpu.architecture</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.cpu.type</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>cluster.description</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>cluster.cpu.id</name>
+                            <name>cluster.display.proxy</name>
                         </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.version.major</name>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.error_handling.on_error</name>
                         </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.version.minor</name>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.gluster_service</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.ha_reservation</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>cluster.ksm.enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:double">
                             <name>cluster.memory_policy.overcommit.percent</name>
@@ -2789,67 +2712,28 @@ or less indicates that the session should never timeout</description>
                             <name>cluster.memory_policy.transparent_hugepages.enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>cluster.scheduling_policy.policy</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.low</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.high</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>cluster.scheduling_policy.thresholds.duration</name>
-                            <deprecated>true</deprecated>
+                            <name>cluster.name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>cluster.scheduling_policy.id</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>cluster.scheduling_policy.properties.property</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>property.name</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>property.value</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.error_handling.on_error</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.virt_service</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.gluster_service</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.threads_as_cores</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>cluster.tunnel_migration</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
                             <name>cluster.trusted_service</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>cluster.ha_reservation</name>
+                            <name>cluster.tunnel_migration</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>cluster.version.major</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>cluster.version.minor</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>cluster.ballooning_enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.cpu.architecture</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>cluster.display.proxy</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>cluster.ksm.enabled</name>
+                            <name>cluster.virt_service</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -2932,11 +2816,11 @@ or less indicates that the session should never timeout</description>
             <request>
                 <http_method>POST</http_method>
                 <body>
-                    <type>VM</type>
+                    <type>Vm</type>
                 </body>
             </request>
             <response>
-                <type>VM</type>
+                <type>Vm</type>
             </response>
         </link>
         <link href="datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms" rel="get">
@@ -2953,7 +2837,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>VMs</type>
+                <type>Vms</type>
             </response>
         </link>
         <link href="datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms/{vm:id}" rel="delete">
@@ -4803,7 +4687,7 @@ or less indicates that the session should never timeout</description>
                     </header>
                 </headers>
                 <body>
-                    <type>QoS</type>
+                    <type>Qos</type>
                     <parameters_set>
                         <description>add a new QoS to the datacenter</description>
                         <parameter required="true" type="xs:string">
@@ -4854,11 +4738,20 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>qos.outbound_burst</name>
                         </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_linkshare</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_upperlimit</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_realtime</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
             <response>
-                <type>QoS</type>
+                <type>Qos</type>
             </response>
         </link>
         <link href="datacenters/{datacenter:id}/qoss" rel="get">
@@ -4876,7 +4769,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>QoSs</type>
+                <type>Qoss</type>
             </response>
         </link>
         <link href="datacenters/{datacenter:id}/qoss/{qos:id}" rel="delete">
@@ -4911,7 +4804,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>QoS</type>
+                <type>Qos</type>
             </response>
         </link>
         <link href="datacenters/{datacenter:id}/qoss/{qos:id}" rel="update">
@@ -4941,7 +4834,7 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                 </url>
                 <body>
-                    <type>QoS</type>
+                    <type>Qos</type>
                     <parameters_set>
                         <parameter required="false" type="xs:string">
                             <name>qos.name</name>
@@ -4988,11 +4881,20 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>qos.outbound_burst</name>
                         </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_linkshare</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_upperlimit</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>qos.outbound_average_realtime</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
             <response>
-                <type>QoS</type>
+                <type>Qos</type>
             </response>
         </link>
         <link href="datacenters/{datacenter:id}/quotas" rel="add">
@@ -5494,20 +5396,41 @@ or less indicates that the session should never timeout</description>
                     <type>Disk</type>
                     <parameters_set>
                         <description>add a new disk with the specified size to the storage domain in the data center, allocating space from the storage domain</description>
-                        <parameter required="true" type="xs:int">
-                            <name>provisioned_size</name>
+                        <parameter required="true" type="xs:string">
+                            <name>disk.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>disk.interface</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>disk.format</name>
+                        <parameter required="true" type="xs:int">
+                            <name>provisioned_size</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.alias</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.bootable</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.disk_profile.id</name>
+                        </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.openstack_volume_type.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.propagate_errors</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.quota.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.shareable</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>disk.size</name>
@@ -5515,50 +5438,26 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>disk.sparse</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.description</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.bootable</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.shareable</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.propagate_errors</name>
-                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>disk.wipe_after_delete</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.quota.id</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.disk_profile.id</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.openstack_volume_type.name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new lun disk to the storage domain in the data center</description>
                         <parameter required="true" type="xs:string">
-                            <name>disk.interface</name>
-                        </parameter>
-                        <parameter required="true" type="xs:string">
                             <name>disk.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>disk.lun_storage.type</name>
+                            <name>disk.interface</name>
                         </parameter>
                         <parameter required="true" type="collection">
-                            <name>disk.lun_storage.logical_unit</name>
+                            <name>disk.lun_storage.logical_units.logical_unit</name>
                             <parameters_set>
 <parameter required="true" type="xs:string">
-    <name>logical_unit.id</name>
+    <name>logical_unit.address</name>
 </parameter>
 <parameter required="true" type="xs:string">
-    <name>logical_unit.address</name>
+    <name>logical_unit.id</name>
 </parameter>
 <parameter required="true" type="xs:int">
     <name>logical_unit.port</name>
@@ -5567,6 +5466,9 @@ or less indicates that the session should never timeout</description>
     <name>logical_unit.target</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>disk.lun_storage.type</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.alias</name>
@@ -6144,17 +6046,14 @@ or less indicates that the session should never timeout</description>
                         <parameter required="true" type="xs:string">
                             <name>disk.interface</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>disk.lun_storage.type</name>
-                        </parameter>
                         <parameter required="true" type="collection">
-                            <name>disk.lun_storage.logical_unit</name>
+                            <name>disk.lun_storage.logical_units.logical-unit</name>
                             <parameters_set>
 <parameter required="true" type="xs:string">
-    <name>logical_unit.id</name>
+    <name>logical_unit.address</name>
 </parameter>
 <parameter required="true" type="xs:string">
-    <name>logical_unit.address</name>
+    <name>logical_unit.id</name>
 </parameter>
 <parameter required="true" type="xs:int">
     <name>logical_unit.port</name>
@@ -6163,6 +6062,9 @@ or less indicates that the session should never timeout</description>
     <name>logical_unit.target</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>disk.lun_storage.type</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.alias</name>
@@ -7066,6 +6968,14 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Action</type>
                     <parameters_set>
+                        <parameter required="true" type="collection">
+                            <name>certificates.certificate</name>
+                            <parameters_set>
+<parameter required="true" type="xs:string">
+    <name>content</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
                         </parameter>
@@ -7287,7 +7197,7 @@ or less indicates that the session should never timeout</description>
                             <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.vmpool.id</name>
+                            <name>permission.vm_pool.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -7605,34 +7515,11 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>host.spm.priority</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.type</name>
-                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>host.power_management.enabled</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.address</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.username</name>
-                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>host.power_management.automatic_pm_enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.password</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>host.power_management.options.option</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>option.name</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>option.value</name>
-</parameter>
-                            </parameters_set>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>host.power_management.pm_proxy</name>
@@ -7642,45 +7529,11 @@ or less indicates that the session should never timeout</description>
 </parameter>
                             </parameters_set>
                         </parameter>
-                        <parameter required="false" type="collection">
-                            <name>host.power_management.agents.agent</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>type</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>address</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>username</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>password</name>
-</parameter>
-<parameter required="false" type="collection">
-    <name>options.option</name>
-    <parameters_set>
-        <parameter required="false" type="xs:string">
-            <name>option.name</name>
-        </parameter>
-        <parameter required="false" type="xs:string">
-            <name>option.value</name>
-        </parameter>
-    </parameters_set>
-</parameter>
-<parameter required="false" type="xs:boolean">
-    <name>encrypt_options</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>host.reboot_after_installation</name>
+                            <name>host.power_management.kdump_detection</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>host.override_iptables</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>host.power_management.kdump_detection</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>host.protocol</name>
@@ -7721,37 +7574,14 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>host.display.address</name>
                         </parameter>
-                        <parameter required="false" type="xs:int">
+                        <parameter required="false" type="xs:int,">
                             <name>host.spm.priority</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.type</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>host.power_management.automatic_pm_enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>host.power_management.enabled</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.address</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.username</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.password</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>host.power_management.options.option</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>option.name</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>option.value</name>
-</parameter>
-                            </parameters_set>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>host.power_management.pm_proxy</name>
@@ -7760,40 +7590,6 @@ or less indicates that the session should never timeout</description>
     <name>propietary</name>
 </parameter>
                             </parameters_set>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>host.power_management.agents.agent</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>type</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>address</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>username</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>password</name>
-</parameter>
-<parameter required="false" type="collection">
-    <name>options.option</name>
-    <parameters_set>
-        <parameter required="false" type="xs:string">
-            <name>option.name</name>
-        </parameter>
-        <parameter required="false" type="xs:string">
-            <name>option.value</name>
-        </parameter>
-    </parameters_set>
-</parameter>
-<parameter required="false" type="xs:boolean">
-    <name>encrypt_options</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>host.reboot_after_installation</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>host.override_iptables</name>
@@ -7897,15 +7693,6 @@ or less indicates that the session should never timeout</description>
                         <value>true|false</value>
                     </header>
                 </headers>
-                <url>
-                    <parameters_set>
-                        <parameter required="false" type="xs:boolean" context="matrix">
-                            <name>force</name>
-                            <value>true|false</value>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                    </parameters_set>
-                </url>
                 <body/>
             </request>
             <response>
@@ -7967,71 +7754,17 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>host.spm.priority</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.type</name>
-                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>host.power_management.enabled</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.address</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.username</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.password</name>
-                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>host.power_management.automatic_pm_enabled</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>host.power_management.options.option</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>option.name</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>option.value</name>
-</parameter>
-                            </parameters_set>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>host.power_management.pm_proxy</name>
                             <parameters_set>
 <parameter required="false" type="xs:string">
     <name>propietary</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>host.power_management.agents.agent</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>type</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>address</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>username</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>password</name>
-</parameter>
-<parameter required="false" type="collection">
-    <name>options.option</name>
-    <parameters_set>
-        <parameter required="false" type="xs:string">
-            <name>option.name</name>
-        </parameter>
-        <parameter required="false" type="xs:string">
-            <name>option.value</name>
-        </parameter>
-    </parameters_set>
-</parameter>
-<parameter required="false" type="xs:boolean">
-    <name>encrypt_options</name>
 </parameter>
                             </parameters_set>
                         </parameter>
@@ -8074,71 +7807,17 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>host.spm.priority</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.type</name>
-                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>host.power_management.automatic_pm_enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>host.power_management.enabled</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.address</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.username</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>host.power_management.password</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>host.power_management.options.option</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>option.name</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>option.value</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
                         <parameter required="false" type="collection">
                             <name>host.power_management.pm_proxy</name>
                             <parameters_set>
 <parameter required="false" type="xs:string">
     <name>propietary</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>host.power_management.agents.agent</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>type</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>address</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>username</name>
-</parameter>
-<parameter required="false" type="xs:string">
-    <name>password</name>
-</parameter>
-<parameter required="false" type="collection">
-    <name>options.option</name>
-    <parameters_set>
-        <parameter required="false" type="xs:string">
-            <name>option.name</name>
-        </parameter>
-        <parameter required="false" type="xs:string">
-            <name>option.value</name>
-        </parameter>
-    </parameters_set>
-</parameter>
-<parameter required="false" type="xs:boolean">
-    <name>encrypt_options</name>
 </parameter>
                             </parameters_set>
                         </parameter>
@@ -9083,7 +8762,7 @@ or less indicates that the session should never timeout</description>
                     </header>
                 </headers>
                 <body>
-                    <type>HostNIC</type>
+                    <type>HostNic</type>
                     <parameters_set>
                         <description>add a new network interface for the host</description>
                         <parameter required="true" type="xs:string">
@@ -9118,7 +8797,7 @@ or less indicates that the session should never timeout</description>
                 </body>
             </request>
             <response>
-                <type>HostNIC</type>
+                <type>HostNic</type>
             </response>
         </link>
         <link href="hosts/{host:id}/nics" rel="get">
@@ -9285,7 +8964,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>HostNIC</type>
+                <type>HostNic</type>
             </response>
         </link>
         <link href="hosts/{host:id}/nics/{nic:id}" rel="update">
@@ -9315,7 +8994,7 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                 </url>
                 <body>
-                    <type>HostNIC</type>
+                    <type>HostNic</type>
                     <parameters_set>
                         <description>update the specified network interface for the host</description>
                         <parameter required="false" type="collection">
@@ -9365,7 +9044,7 @@ or less indicates that the session should never timeout</description>
                 </body>
             </request>
             <response>
-                <type>HostNIC</type>
+                <type>HostNic</type>
             </response>
         </link>
         <link href="hosts/{host:id}/nics/{nic:id}/attach" rel="attach">
@@ -10112,7 +9791,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>HostStorage</type>
+                <type>HostStorages</type>
             </response>
         </link>
         <link href="hosts/{host:id}/storage/{storage:id}" rel="get">
@@ -10121,7 +9800,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>Storage</type>
+                <type>HostStorage</type>
             </response>
         </link>
         <link href="hosts/{host:id}/storageconnectionextensions" rel="add">
@@ -10503,6 +10182,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>instance_type.io.threads</name>
                         </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>instance_type.memory_policy.guaranteed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>instance_type.memory_policy.ballooning</name>
+                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>instance_type.cpu.topology.cores</name>
                         </parameter>
@@ -10737,11 +10422,11 @@ or less indicates that the session should never timeout</description>
             <request>
                 <http_method>POST</http_method>
                 <body>
-                    <type>NIC</type>
+                    <type>Nic</type>
                 </body>
             </request>
             <response>
-                <type>NIC</type>
+                <type>Nic</type>
             </response>
         </link>
         <link href="instancetypes/{instancetype:id}/nics" rel="get">
@@ -10767,7 +10452,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>NIC</type>
+                <type>Nic</type>
             </response>
         </link>
         <link href="instancetypes/{instancetype:id}/nics/{nic:id}" rel="update">
@@ -10782,22 +10467,22 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                 </url>
                 <body>
-                    <type>NIC</type>
+                    <type>Nic</type>
                 </body>
             </request>
             <response>
-                <type>NIC</type>
+                <type>Nic</type>
             </response>
         </link>
         <link href="instancetypes/{instancetype:id}/watchdogs" rel="add">
             <request>
                 <http_method>POST</http_method>
                 <body>
-                    <type>WatchDog</type>
+                    <type>Watchdog</type>
                 </body>
             </request>
             <response>
-                <type>WatchDog</type>
+                <type>Watchdog</type>
             </response>
         </link>
         <link href="instancetypes/{instancetype:id}/watchdogs" rel="get">
@@ -10814,7 +10499,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>WatchDogs</type>
+                <type>Watchdogs</type>
             </response>
         </link>
         <link href="instancetypes/{instancetype:id}/watchdogs/{watchdog:id}" rel="delete">
@@ -10837,7 +10522,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>WatchDog</type>
+                <type>Watchdog</type>
             </response>
         </link>
         <link href="instancetypes/{instancetype:id}/watchdogs/{watchdog:id}" rel="update">
@@ -10852,11 +10537,11 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                 </url>
                 <body>
-                    <type>WatchDog</type>
+                    <type>Watchdog</type>
                 </body>
             </request>
             <response>
-                <type>WatchDog</type>
+                <type>Watchdog</type>
             </response>
         </link>
         <link href="jobs" rel="add">
@@ -12192,6 +11877,14 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Action</type>
                     <parameters_set>
+                        <parameter required="true" type="collection">
+                            <name>certificates.certificate</name>
+                            <parameters_set>
+<parameter required="true" type="xs:string">
+    <name>content</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
                         </parameter>
@@ -14212,7 +13905,7 @@ or less indicates that the session should never timeout</description>
                             <name>storagedomain.storage.address</name>
                         </parameter>
                         <parameter required="true" type="collection">
-                            <name>storagedomain.storage.logical_unit</name>
+                            <name>storagedomain.storage.logical_units.logical_unit</name>
                             <parameters_set>
 <parameter required="true" type="xs:string">
     <name>logical_unit.address</name>
@@ -14253,10 +13946,13 @@ or less indicates that the session should never timeout</description>
                             </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>storagedomain.name</name>
+                            <name>storagedomain.comment</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.critical_space_action_blocker</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>storagedomain.comment</name>
+                            <name>storagedomain.name</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>storagedomain.storage.override_luns</name>
@@ -14264,14 +13960,11 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.storage_format</name>
                         </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>storagedomain.wipe_after_delete</name>
-                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>storagedomain.warning_low_space_indicator</name>
                         </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>storagedomain.critical_space_action_blocker</name>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.wipe_after_delete</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -14279,26 +13972,26 @@ or less indicates that the session should never timeout</description>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.host.id|name</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>storagedomain.type</name>
+                        <parameter required="true" type="xs:boolean">
+                            <name>storagedomain.import</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.type</name>
                         </parameter>
-                        <parameter required="true" type="xs:boolean">
-                            <name>storagedomain.import</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>storagedomain.storage.address</name>
+                        <parameter required="true" type="xs:string">
+                            <name>storagedomain.type</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.comment</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>storagedomain.warning_low_space_indicator</name>
+                            <name>storagedomain.critical_space_action_blocker</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storagedomain.storage.address</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>storagedomain.critical_space_action_blocker</name>
+                            <name>storagedomain.warning_low_space_indicator</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -14307,34 +14000,34 @@ or less indicates that the session should never timeout</description>
                             <name>storagedomain.host.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>storagedomain.type</name>
-                        </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>storagedomain.storage.type</name>
-                        </parameter>
-                        <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.address</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.path</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>storagedomain.name</name>
+                        <parameter required="true" type="xs:string">
+                            <name>storagedomain.storage.type</name>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>storagedomain.type</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.comment</name>
                         </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.critical_space_action_blocker</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storagedomain.name</name>
+                        </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.storage_format</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>storagedomain.wipe_after_delete</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>storagedomain.warning_low_space_indicator</name>
                         </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>storagedomain.critical_space_action_blocker</name>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.wipe_after_delete</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -14343,13 +14036,13 @@ or less indicates that the session should never timeout</description>
                             <name>storagedomain.host.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>storagedomain.type</name>
+                            <name>storagedomain.storage.path</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.type</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>storagedomain.storage.path</name>
+                            <name>storagedomain.type</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.name</name>
@@ -14357,17 +14050,17 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.comment</name>
                         </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.critical_space_action_blocker</name>
+                        </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.storage_format</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>storagedomain.wipe_after_delete</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>storagedomain.warning_low_space_indicator</name>
                         </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>storagedomain.critical_space_action_blocker</name>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.wipe_after_delete</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -14376,22 +14069,25 @@ or less indicates that the session should never timeout</description>
                             <name>storagedomain.host.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>storagedomain.type</name>
+                            <name>storagedomain.storage.path</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.type</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>storagedomain.storage.path</name>
-                        </parameter>
-                        <parameter required="true" type="xs:string">
                             <name>storagedomain.storage.vfs_type</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>storagedomain.name</name>
+                        <parameter required="true" type="xs:string">
+                            <name>storagedomain.type</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.comment</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.critical_space_action_blocker</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storagedomain.name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.storage.address</name>
@@ -14402,14 +14098,11 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.storage_format</name>
                         </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>storagedomain.wipe_after_delete</name>
-                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>storagedomain.warning_low_space_indicator</name>
                         </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>storagedomain.critical_space_action_blocker</name>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.wipe_after_delete</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -14539,13 +14232,34 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>update the storage domain</description>
                         <parameter required="true" type="collection">
-                            <name>storagedomain.storage.logical_unit</name>
+                            <name>storagedomain.storage.logical_units.logical_unit</name>
                             <parameters_set>
 <parameter required="true" type="xs:string">
     <name>logical_unit.address</name>
 </parameter>
+<parameter required="true" type="xs:string">
+    <name>logical_unit.id</name>
+</parameter>
+<parameter required="true" type="xs:int">
+    <name>logical_unit.lun_mapping</name>
+</parameter>
+<parameter required="true" type="xs:string">
+    <name>logical_unit.password</name>
+</parameter>
+<parameter required="true" type="xs:int">
+    <name>logical_unit.paths</name>
+</parameter>
 <parameter required="true" type="xs:int">
     <name>logical_unit.port</name>
+</parameter>
+<parameter required="true" type="xs:string">
+    <name>logical_unit.portal</name>
+</parameter>
+<parameter required="true" type="xs:string">
+    <name>logical_unit.product_id</name>
+</parameter>
+<parameter required="true" type="xs:string">
+    <name>logical_unit.serial</name>
 </parameter>
 <parameter required="true" type="xs:string">
     <name>logical_unit.target</name>
@@ -14554,30 +14268,15 @@ or less indicates that the session should never timeout</description>
     <name>logical_unit.username</name>
 </parameter>
 <parameter required="true" type="xs:string">
-    <name>logical_unit.password</name>
-</parameter>
-<parameter required="true" type="xs:string">
-    <name>logical_unit.serial</name>
-</parameter>
-<parameter required="true" type="xs:string">
     <name>logical_unit.vendor_id</name>
 </parameter>
-<parameter required="true" type="xs:string">
-    <name>logical_unit.product_id</name>
-</parameter>
-<parameter required="true" type="xs:int">
-    <name>logical_unit.lun_mapping</name>
-</parameter>
-<parameter required="true" type="xs:string">
-    <name>logical_unit.portal</name>
-</parameter>
-<parameter required="true" type="xs:int">
-    <name>logical_unit.paths</name>
-</parameter>
-<parameter required="true" type="xs:string">
-    <name>logical_unit.id</name>
-</parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>storagedomain.comment</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>storagedomain.critical_space_action_blocker</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.host.id</name>
@@ -14586,20 +14285,14 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>storagedomain.name</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>storagedomain.comment</name>
-                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>storagedomain.storage.override_luns</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>storagedomain.wipe_after_delete</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>storagedomain.warning_low_space_indicator</name>
                         </parameter>
-                        <parameter required="false" type="xs:int">
-                            <name>storagedomain.critical_space_action_blocker</name>
+                        <parameter required="false" type="xs:boolean">
+                            <name>storagedomain.wipe_after_delete</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -14729,20 +14422,41 @@ or less indicates that the session should never timeout</description>
                     <type>Disk</type>
                     <parameters_set>
                         <description>add a new disk to the storage domain with the specified size allocating space from the storage domain</description>
-                        <parameter required="true" type="xs:int">
-                            <name>provisioned_size</name>
+                        <parameter required="true" type="xs:string">
+                            <name>disk.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>disk.interface</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>disk.format</name>
+                        <parameter required="true" type="xs:int">
+                            <name>provisioned_size</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.alias</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.bootable</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.disk_profile.id</name>
+                        </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.openstack_volume_type.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.propagate_errors</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.quota.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.shareable</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>disk.size</name>
@@ -14750,50 +14464,26 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>disk.sparse</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.description</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.bootable</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.shareable</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.propagate_errors</name>
-                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>disk.wipe_after_delete</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.quota.id</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.disk_profile.id</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.openstack_volume_type.name</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
                         <description>add a new lun disk to the storage domain</description>
                         <parameter required="true" type="xs:string">
-                            <name>disk.interface</name>
-                        </parameter>
-                        <parameter required="true" type="xs:string">
                             <name>disk.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>disk.lun_storage.type</name>
+                            <name>disk.interface</name>
                         </parameter>
                         <parameter required="true" type="collection">
-                            <name>disk.lun_storage.logical_unit</name>
+                            <name>disk.lun_storage.logical_units.logical_unit</name>
                             <parameters_set>
 <parameter required="true" type="xs:string">
-    <name>logical_unit.id</name>
+    <name>logical_unit.address</name>
 </parameter>
 <parameter required="true" type="xs:string">
-    <name>logical_unit.address</name>
+    <name>logical_unit.id</name>
 </parameter>
 <parameter required="true" type="xs:int">
     <name>logical_unit.port</name>
@@ -14803,32 +14493,35 @@ or less indicates that the session should never timeout</description>
 </parameter>
                             </parameters_set>
                         </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>disk.lun_storage.type</name>
+                        </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.alias</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>disk.sparse</name>
+                            <name>disk.bootable</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.description</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>disk.bootable</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.shareable</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
                             <name>disk.propagate_errors</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.wipe_after_delete</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.quota.id</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.sgio</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.shareable</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.sparse</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.wipe_after_delete</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -15700,7 +15393,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>VMs</type>
+                <type>Vms</type>
             </response>
         </link>
         <link href="storagedomains/{storagedomain:id}/vms/{vm:id}" rel="delete">
@@ -15735,7 +15428,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>VM</type>
+                <type>Vm</type>
             </response>
         </link>
         <link href="storagedomains/{storagedomain:id}/vms/{vm:id}/disks" rel="get">
@@ -15783,6 +15476,10 @@ or less indicates that the session should never timeout</description>
                 <url>
                     <parameters_set>
                         <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>collapse_snapshots</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean" context="matrix">
                             <name>async</name>
                             <value>true|false</value>
                         </parameter>
@@ -15797,9 +15494,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>action.storage_domain.id|name</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>action.vm.snapshots.collapse_snapshots</name>
                         </parameter>
                         <parameter required="false" type="xs:boolen">
                             <name>action.clone</name>
@@ -15907,7 +15601,7 @@ or less indicates that the session should never timeout</description>
                             <name>tag.description</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>tag.parent.tag.id|name</name>
+                            <name>tag.parent.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -16006,7 +15700,7 @@ or less indicates that the session should never timeout</description>
                             <name>tag.description</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>tag.parent.tag.id|name</name>
+                            <name>tag.parent.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -16033,6 +15727,14 @@ or less indicates that the session should never timeout</description>
                         <value>201-created</value>
                     </header>
                 </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>clone_permissions</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body>
                     <type>Template</type>
                     <parameters_set>
@@ -16049,6 +15751,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>template.io.threads</name>
                         </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>template.memory_policy.guaranteed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>template.memory_policy.ballooning</name>
+                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>template.cpu.topology.cores</name>
                         </parameter>
@@ -16063,10 +15771,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>template.high_availability.priority</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>template.timezone</name>
-                            <deprecated>true</deprecated>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.time_zone.name</name>
@@ -16130,10 +15834,10 @@ or less indicates that the session should never timeout</description>
                             <name>template.os.type</name>
                         </parameter>
                         <parameter required="false" type="collection">
-                            <name>template.os.boot</name>
+                            <name>template.os.boot.devices.device</name>
                             <parameters_set>
 <parameter required="false" type="xs:string">
-    <name>boot.dev</name>
+    <name>device</name>
 </parameter>
                             </parameters_set>
                         </parameter>
@@ -16225,9 +15929,6 @@ or less indicates that the session should never timeout</description>
 </parameter>
                             </parameters_set>
                         </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>template.permissions.clone</name>
-                        </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.version.version_name</name>
                         </parameter>
@@ -16235,7 +15936,7 @@ or less indicates that the session should never timeout</description>
                             <name>template.version.base_template.id</name>
                         </parameter>
                         <parameter required="false" type="collection">
-                            <name>template.cpu.cpu_tune.vcpu_pin</name>
+                            <name>template.cpu.cpu_tune.vcpu_pins.vcpu_pin</name>
                             <parameters_set>
 <parameter required="false" type="xs:int">
     <name>vcpu_pin.vcpu</name>
@@ -16283,6 +15984,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.large_icon.data</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.initialization.configuration.type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.initialization.configuration.data</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -16411,6 +16118,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>template.io.threads</name>
                         </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>template.memory_policy.guaranteed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>template.memory_policy.ballooning</name>
+                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>template.cpu.topology.cores</name>
                         </parameter>
@@ -16425,10 +16138,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>template.high_availability.priority</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>template.timezone</name>
-                            <deprecated>true</deprecated>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>template.time_zone.name</name>
@@ -16489,10 +16198,10 @@ or less indicates that the session should never timeout</description>
                             <name>template.os.type</name>
                         </parameter>
                         <parameter required="false" type="collection">
-                            <name>template.os.boot</name>
+                            <name>template.os.boot.devices.device</name>
                             <parameters_set>
 <parameter required="false" type="xs:string">
-    <name>boot.dev</name>
+    <name>device</name>
 </parameter>
                             </parameters_set>
                         </parameter>
@@ -16598,6 +16307,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>template.large_icon.data</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.initialization.configuration.type</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>template.initialization.configuration.data</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -16620,7 +16335,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>CdRoms</type>
+                <type>Cdroms</type>
             </response>
         </link>
         <link href="templates/{template:id}/cdroms/{cdrom:id}" rel="get">
@@ -16630,7 +16345,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>CdRom</type>
+                <type>Cdrom</type>
             </response>
         </link>
         <link href="templates/{template:id}/disks" rel="get">
@@ -16939,7 +16654,7 @@ or less indicates that the session should never timeout</description>
                     </header>
                 </headers>
                 <body>
-                    <type>NIC</type>
+                    <type>Nic</type>
                     <parameters_set>
                         <description>add a new network interface card to the template using a virtual network interface card profile</description>
                         <parameter required="true" type="xs:string">
@@ -16961,37 +16676,10 @@ or less indicates that the session should never timeout</description>
                             <name>nic.plugged</name>
                         </parameter>
                     </parameters_set>
-                    <parameters_set>
-                        <deprecated>true</deprecated>
-                        <description>add a new network interface card to the template using a network with optional port mirroring options. This has been deprecated</description>
-                        <parameter required="true" type="xs:string">
-                            <name>nic.name</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.network.id|name</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>nic.linked</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.mac.address</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.interface</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>nic.port_mirroring.networks.network</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>network.id</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
-                    </parameters_set>
                 </body>
             </request>
             <response>
-                <type>NIC</type>
+                <type>Nic</type>
             </response>
         </link>
         <link href="templates/{template:id}/nics" rel="get">
@@ -17019,7 +16707,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>NIC</type>
+                <type>Nic</type>
             </response>
         </link>
         <link href="templates/{template:id}/nics/{nic:id}" rel="update">
@@ -17049,7 +16737,7 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                 </url>
                 <body>
-                    <type>NIC</type>
+                    <type>Nic</type>
                     <parameters_set>
                         <parameter required="false" type="xs:string">
                             <name>nic.vnic_profile.id</name>
@@ -17070,36 +16758,10 @@ or less indicates that the session should never timeout</description>
                             <name>nic.plugged</name>
                         </parameter>
                     </parameters_set>
-                    <parameters_set>
-                        <deprecated>true</deprecated>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.network.id|name</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>nic.linked</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.name</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.mac.address</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.interface</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>nic.port_mirroring.networks.network</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>network.id</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
-                    </parameters_set>
                 </body>
             </request>
             <response>
-                <type>NIC</type>
+                <type>Nic</type>
             </response>
         </link>
         <link href="templates/{template:id}/permissions" rel="add">
@@ -17303,7 +16965,7 @@ or less indicates that the session should never timeout</description>
                     </header>
                 </headers>
                 <body>
-                    <type>WatchDog</type>
+                    <type>Watchdog</type>
                     <parameters_set>
                         <description>add a watchdog to the template identified by the given id</description>
                         <parameter required="true" type="xs:string">
@@ -17316,7 +16978,7 @@ or less indicates that the session should never timeout</description>
                 </body>
             </request>
             <response>
-                <type>WatchDog</type>
+                <type>Watchdog</type>
             </response>
         </link>
         <link href="templates/{template:id}/watchdogs" rel="get">
@@ -17334,7 +16996,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>WatchDogs</type>
+                <type>Watchdogs</type>
             </response>
         </link>
         <link href="templates/{template:id}/watchdogs/{watchdog:id}" rel="delete">
@@ -17369,7 +17031,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>WatchDog</type>
+                <type>Watchdog</type>
             </response>
         </link>
         <link href="templates/{template:id}/watchdogs/{watchdog:id}" rel="update">
@@ -17399,7 +17061,7 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                 </url>
                 <body>
-                    <type>WatchDog</type>
+                    <type>Watchdog</type>
                     <parameters_set>
                         <description>update the watchdog for the template identified by the given id with a new action and model as specified in the request data</description>
                         <parameter required="false" type="xs:string">
@@ -17412,7 +17074,7 @@ or less indicates that the session should never timeout</description>
                 </body>
             </request>
             <response>
-                <type>WatchDog</type>
+                <type>Watchdog</type>
             </response>
         </link>
         <link href="users" rel="add">
@@ -17600,7 +17262,7 @@ or less indicates that the session should never timeout</description>
                             <name>permission.role.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>permission.vmpool.id</name>
+                            <name>permission.vm_pool.id</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -17788,6 +17450,109 @@ or less indicates that the session should never timeout</description>
                 <type>Permit</type>
             </response>
         </link>
+        <link href="users/{user:id}/sshpublickeys" rel="add">
+            <description>register a new SSH public key for the user</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>SshPublicKey</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>ssh_public_key.id|name</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>SshPublicKey</type>
+            </response>
+        </link>
+        <link href="users/{user:id}/sshpublickeys" rel="get">
+            <description>get the list of SSH public keys registered by the user</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>SshPublicKeys</type>
+            </response>
+        </link>
+        <link href="users/{user:id}/sshpublickeys/{sshpublickey:id}" rel="delete">
+            <description>delete the specified SSH public key registered by the use</description>
+            <request>
+                <http_method>DELETE</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="users/{user:id}/sshpublickeys/{sshpublickey:id}" rel="get">
+            <description>get the details of the specified SSH public key registered by the user</description>
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>SshPublicKey</type>
+            </response>
+        </link>
+        <link href="users/{user:id}/sshpublickeys/{sshpublickey:id}" rel="update">
+            <request>
+                <http_method>PUT</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>SshPublicKey</type>
+                </body>
+            </request>
+            <response>
+                <type>SshPublicKey</type>
+            </response>
+        </link>
         <link href="users/{user:id}/tags" rel="add">
             <description>add a new tag to the user</description>
             <request>
@@ -17896,31 +17661,34 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new vm pool to the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>vmpool.cluster.id|name</name>
+                            <name>vm_pool.cluster.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>vmpool.template.id|name</name>
+                            <name>vm_pool.name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>vmpool.name</name>
+                            <name>vm_pool.template.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.comment</name>
+                            <name>vm_pool.comment</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm_pool.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm_pool.display.proxy</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>vmpool.size</name>
+                            <name>vm_pool.max_user_vms</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>vmpool.max_user_vms</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vmpool.display.proxy</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vmpool.description</name>
+                            <name>vm_pool.size</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>vmpool.soundcard_enabled</name>
+                            <name>vm_pool.soundcard_enabled</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm_pool.type</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -18033,28 +17801,28 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>update the specified virtual machine pool in the system</description>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.cluster.id|name</name>
+                            <name>vm_pool.cluster.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.template.id|name</name>
+                            <name>vm_pool.comment</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.name</name>
+                            <name>vm_pool.description</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.comment</name>
+                            <name>vm_pool.display.proxy</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>vmpool.size</name>
+                            <name>vm_pool.max_user_vms</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm_pool.name</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>vmpool.max_user_vms</name>
+                            <name>vm_pool.size</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.display.proxy</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vmpool.description</name>
+                            <name>vm_pool.template.id|name</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -18216,8 +17984,20 @@ or less indicates that the session should never timeout</description>
                         <value>201-created</value>
                     </header>
                 </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>clone</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>clone_permissions</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body>
-                    <type>VM</type>
+                    <type>Vm</type>
                     <parameters_set>
                         <description>add a virtual machine to the system from scratch</description>
                         <parameter required="true" type="xs:string">
@@ -18234,10 +18014,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.quota.id</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vm.timezone</name>
-                            <deprecated>true</deprecated>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.time_zone.name</name>
@@ -18343,9 +18119,6 @@ or less indicates that the session should never timeout</description>
                             <name>vm.stateless</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>vm.permissions.clone</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
                             <name>vm.delete_protected</name>
                         </parameter>
                         <parameter required="false" type="collection">
@@ -18380,17 +18153,19 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>vm.placement_policy.affinity</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vm.placement_policy.host.id|name</name>
+                        <parameter required="false" type="collection">
+                            <name>vm.placement_policy.hosts.host</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>host.id|name</name>
+</parameter>
+                            </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.origin</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.os.kernel</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>vm.disks.clone</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.tunnel_migration</name>
@@ -18439,7 +18214,7 @@ or less indicates that the session should never timeout</description>
                             <name>vm.initialization.configuration.data</name>
                         </parameter>
                         <parameter required="false" type="collection">
-                            <name>vm.cpu.cpu_tune.vcpu_pin</name>
+                            <name>vm.cpu.cpu_tune.vcpu_pins.vcpu_pin</name>
                             <parameters_set>
 <parameter required="false" type="xs:int">
     <name>vcpu_pin.vcpu</name>
@@ -18512,10 +18287,6 @@ or less indicates that the session should never timeout</description>
                             <name>vm.quota.id</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vm.timezone</name>
-                            <deprecated>true</deprecated>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
                             <name>vm.time_zone.name</name>
                         </parameter>
                         <parameter required="false" type="collection">
@@ -18647,8 +18418,13 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>vm.placement_policy.affinity</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vm.placement_policy.host.id|name</name>
+                        <parameter required="false" type="collection">
+                            <name>vm.placement_policy.hosts.host</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>host.id|name</name>
+</parameter>
+                            </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.origin</name>
@@ -18697,7 +18473,7 @@ or less indicates that the session should never timeout</description>
                             </parameters_set>
                         </parameter>
                         <parameter required="false" type="collection">
-                            <name>vm.cpu.cpu_tune.vcpu_pin</name>
+                            <name>vm.cpu.cpu_tune.vcpu_pins.vcpu_pin</name>
                             <parameters_set>
 <parameter required="false" type="xs:int">
     <name>vcpu_pin.vcpu</name>
@@ -18757,10 +18533,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.quota.id</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vm.timezone</name>
-                            <deprecated>true</deprecated>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.time_zone.name</name>
@@ -18857,9 +18629,6 @@ or less indicates that the session should never timeout</description>
                             <name>vm.stateless</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>vm.permissions.clone</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
                             <name>vm.delete_protected</name>
                         </parameter>
                         <parameter required="false" type="collection">
@@ -18888,8 +18657,13 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>vm.placement_policy.affinity</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vm.placement_policy.host.id|name</name>
+                        <parameter required="false" type="collection">
+                            <name>vm.placement_policy.hosts.host</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>host.id|name</name>
+</parameter>
+                            </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.origin</name>
@@ -18899,22 +18673,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.disks.clone</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>vm.disks.disk</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>disk.id</name>
-</parameter>
-<parameter required="false" type="collection">
-    <name>storage_domains.storage_domain</name>
-    <parameters_set>
-        <parameter required="false" type="xs:string">
-            <name>storage_domain.id</name>
-        </parameter>
-    </parameters_set>
-</parameter>
-                            </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.tunnel_migration</name>
@@ -18957,7 +18715,7 @@ or less indicates that the session should never timeout</description>
                             <name>vm.initialization.regenerate_ids</name>
                         </parameter>
                         <parameter required="false" type="collection">
-                            <name>vm.cpu.cpu_tune.vcpu_pin</name>
+                            <name>vm.cpu.cpu_tune.vcpu_pins.vcpu_pin</name>
                             <parameters_set>
 <parameter required="false" type="xs:int">
     <name>vcpu_pin.vcpu</name>
@@ -19007,7 +18765,7 @@ or less indicates that the session should never timeout</description>
                 </body>
             </request>
             <response>
-                <type>VM</type>
+                <type>Vm</type>
             </response>
         </link>
         <link href="vms" rel="get">
@@ -19043,7 +18801,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>VMs</type>
+                <type>Vms</type>
             </response>
         </link>
         <link href="vms/{vm:id}" rel="delete">
@@ -19063,6 +18821,10 @@ or less indicates that the session should never timeout</description>
                 <url>
                     <parameters_set>
                         <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>detach_only</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean" context="matrix">
                             <name>async</name>
                             <value>true|false</value>
                         </parameter>
@@ -19074,9 +18836,6 @@ or less indicates that the session should never timeout</description>
                         <description>deletes the virtual machine in the system for the given virtual machine id with optional arguments where the vm can be forced to be removed and option to just detach the disks associated with the vm.</description>
                         <parameter required="false" type="xs:boolean">
                             <name>action.force</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>action.vm.disks.detach_only</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>
@@ -19102,10 +18861,18 @@ or less indicates that the session should never timeout</description>
                         <value>true|false</value>
                     </header>
                 </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>next_run</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
                 <body/>
             </request>
             <response>
-                <type>VM</type>
+                <type>Vm</type>
             </response>
         </link>
         <link href="vms/{vm:id}" rel="update">
@@ -19129,13 +18896,17 @@ or less indicates that the session should never timeout</description>
                 <url>
                     <parameters_set>
                         <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>next_run</name>
+                            <value>true|false</value>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean" context="matrix">
                             <name>async</name>
                             <value>true|false</value>
                         </parameter>
                     </parameters_set>
                 </url>
                 <body>
-                    <type>VM</type>
+                    <type>Vm</type>
                     <parameters_set>
                         <description>update the virtual machine in the system for the given virtual machine id with the values specified in the request</description>
                         <parameter required="false" type="xs:string">
@@ -19146,10 +18917,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.cluster.id|name</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vm.timezone</name>
-                            <deprecated>true</deprecated>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.time_zone.name</name>
@@ -19286,8 +19053,13 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>vm.placement_policy.affinity</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vm.placement_policy.host.id|name</name>
+                        <parameter required="false" type="collection">
+                            <name>vm.placement_policy.hosts.host</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>host.id|name</name>
+</parameter>
+                            </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.origin</name>
@@ -19339,7 +19111,7 @@ or less indicates that the session should never timeout</description>
                             </parameters_set>
                         </parameter>
                         <parameter required="false" type="collection">
-                            <name>vm.cpu.cpu_tune.vcpu_pin</name>
+                            <name>vm.cpu.cpu_tune.vcpu_pins.vcpu_pin</name>
                             <parameters_set>
 <parameter required="false" type="xs:int">
     <name>vcpu_pin.vcpu</name>
@@ -19392,7 +19164,7 @@ or less indicates that the session should never timeout</description>
                 </body>
             </request>
             <response>
-                <type>VM</type>
+                <type>Vm</type>
             </response>
         </link>
         <link href="vms/{vm:id}/applications" rel="get">
@@ -19473,7 +19245,7 @@ or less indicates that the session should never timeout</description>
                     </header>
                 </headers>
                 <body>
-                    <type>CdRom</type>
+                    <type>Cdrom</type>
                     <parameters_set>
                         <description>add a cdrom to a virtual machine identified by the given id and attach a file to the cdrom</description>
                         <parameter required="true" type="xs:string">
@@ -19483,7 +19255,7 @@ or less indicates that the session should never timeout</description>
                 </body>
             </request>
             <response>
-                <type>CdRom</type>
+                <type>Cdrom</type>
             </response>
         </link>
         <link href="vms/{vm:id}/cdroms" rel="get">
@@ -19505,7 +19277,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>CdRoms</type>
+                <type>Cdroms</type>
             </response>
         </link>
         <link href="vms/{vm:id}/cdroms/{cdrom:id}" rel="get">
@@ -19523,7 +19295,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>CdRom</type>
+                <type>Cdrom</type>
             </response>
         </link>
         <link href="vms/{vm:id}/cdroms/{cdrom:id}" rel="update">
@@ -19557,7 +19329,7 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                 </url>
                 <body>
-                    <type>CdRom</type>
+                    <type>Cdrom</type>
                     <parameters_set>
                         <description>update the cdrom for a virtual machine identified by the given id with a new file</description>
                         <parameter required="false" type="xs:string">
@@ -19567,7 +19339,7 @@ or less indicates that the session should never timeout</description>
                 </body>
             </request>
             <response>
-                <type>CdRom</type>
+                <type>Cdrom</type>
             </response>
         </link>
         <link href="vms/{vm:id}/clone" rel="clone">
@@ -19700,47 +19472,47 @@ or less indicates that the session should never timeout</description>
                     <type>Disk</type>
                     <parameters_set>
                         <description>add a new disk to the virtual machine allocating space from the storage domain</description>
-                        <parameter required="true" type="xs:int">
-                            <name>provisioned_size</name>
+                        <parameter required="true" type="xs:string">
+                            <name>disk.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>disk.interface</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>disk.format</name>
+                        <parameter required="true" type="xs:int">
+                            <name>provisioned_size</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.alias</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.bootable</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.disk_profile.id</name>
+                        </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.openstack_volume_type.name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.propagate_errors</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>disk.quota.id</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.shareable</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>disk.size</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>disk.sparse</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.description</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.bootable</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.shareable</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.propagate_errors</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>disk.wipe_after_delete</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.quota.id</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.disk_profile.id</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>disk.storage_domains.storage_domain</name>
@@ -19750,8 +19522,8 @@ or less indicates that the session should never timeout</description>
 </parameter>
                             </parameters_set>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>disk.openstack_volume_type.name</name>
+                        <parameter required="false" type="xs:boolean">
+                            <name>disk.wipe_after_delete</name>
                         </parameter>
                     </parameters_set>
                     <parameters_set>
@@ -19759,17 +19531,14 @@ or less indicates that the session should never timeout</description>
                         <parameter required="true" type="xs:string">
                             <name>disk.interface</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>disk.lun_storage.type</name>
-                        </parameter>
                         <parameter required="true" type="collection">
-                            <name>disk.lun_storage.logical_unit</name>
+                            <name>disk.lun_storage.logical_units.logical_unit</name>
                             <parameters_set>
 <parameter required="true" type="xs:string">
-    <name>logical_unit.id</name>
+    <name>logical_unit.address</name>
 </parameter>
 <parameter required="true" type="xs:string">
-    <name>logical_unit.address</name>
+    <name>logical_unit.id</name>
 </parameter>
 <parameter required="true" type="xs:int">
     <name>logical_unit.port</name>
@@ -19778,6 +19547,9 @@ or less indicates that the session should never timeout</description>
     <name>logical_unit.target</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="true" type="xs:string">
+                            <name>disk.lun_storage.type</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.alias</name>
@@ -20727,7 +20499,7 @@ or less indicates that the session should never timeout</description>
                     </header>
                 </headers>
                 <body>
-                    <type>NIC</type>
+                    <type>Nic</type>
                     <parameters_set>
                         <description>add a new network interface to the given virtual machine with vnic profile id</description>
                         <parameter required="true" type="xs:string">
@@ -20749,40 +20521,10 @@ or less indicates that the session should never timeout</description>
                             <name>nic.plugged</name>
                         </parameter>
                     </parameters_set>
-                    <parameters_set>
-                        <deprecated>true</deprecated>
-                        <description>add a new network interface to the given virtual machine with port mirroring options</description>
-                        <parameter required="true" type="xs:string">
-                            <name>nic.name</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.network.id|name</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>nic.linked</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.mac.address</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.interface</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>nic.port_mirroring.networks.network</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>network.id</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>nic.plugged</name>
-                        </parameter>
-                    </parameters_set>
                 </body>
             </request>
             <response>
-                <type>NIC</type>
+                <type>Nic</type>
             </response>
         </link>
         <link href="vms/{vm:id}/nics" rel="get">
@@ -20847,7 +20589,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>NIC</type>
+                <type>Nic</type>
             </response>
         </link>
         <link href="vms/{vm:id}/nics/{nic:id}" rel="update">
@@ -20877,7 +20619,7 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                 </url>
                 <body>
-                    <type>NIC</type>
+                    <type>Nic</type>
                     <parameters_set>
                         <description>update the network interface for the given virtual machine</description>
                         <parameter required="false" type="xs:string">
@@ -20899,40 +20641,10 @@ or less indicates that the session should never timeout</description>
                             <name>nic.plugged</name>
                         </parameter>
                     </parameters_set>
-                    <parameters_set>
-                        <deprecated>true</deprecated>
-                        <description>update the network interface for the given virtual machine with port mirroring options</description>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.network.id|name</name>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>nic.linked</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.name</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.mac.address</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>nic.interface</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>nic.port_mirroring.networks.network</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>network.id</name>
-</parameter>
-                            </parameters_set>
-                        </parameter>
-                        <parameter required="false" type="xs:boolean">
-                            <name>nic.plugged</name>
-                        </parameter>
-                    </parameters_set>
                 </body>
             </request>
             <response>
-                <type>NIC</type>
+                <type>Nic</type>
             </response>
         </link>
         <link href="vms/{vm:id}/nics/{nic:id}/activate" rel="activate">
@@ -21632,7 +21344,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>CdRoms</type>
+                <type>Cdroms</type>
             </response>
         </link>
         <link href="vms/{vm:id}/snapshots/{snapshot:id}/cdroms/{cdrom:id}" rel="get">
@@ -21642,7 +21354,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>CdRom</type>
+                <type>Cdrom</type>
             </response>
         </link>
         <link href="vms/{vm:id}/snapshots/{snapshot:id}/disks" rel="get">
@@ -21723,7 +21435,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>NIC</type>
+                <type>Nic</type>
             </response>
         </link>
         <link href="vms/{vm:id}/snapshots/{snapshot:id}/restore" rel="restore">
@@ -21815,13 +21527,18 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>action.vm.domain.name</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>action.vm.placement_policy.host.id|name</name>
+                        <parameter required="false" type="collection">
+                            <name>action.vm.placement_policy.hosts.host</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>host.id|name</name>
+</parameter>
+                            </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>action.vm.placement_policy.affinity</name>
                         </parameter>
-                        <parameter required="false" type="xs:string">
+                        <parameter required="false" type="xs:stringevic">
                             <name>action.vm.os.kernel</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
@@ -21840,10 +21557,10 @@ or less indicates that the session should never timeout</description>
                             <name>action.pause</name>
                         </parameter>
                         <parameter required="false" type="collection">
-                            <name>action.vm.os.boot</name>
+                            <name>action.vm.os.boot.devices.device</name>
                             <parameters_set>
 <parameter required="false" type="xs:string">
-    <name>boot.dev</name>
+    <name>device</name>
 </parameter>
                             </parameters_set>
                         </parameter>
@@ -22271,7 +21988,7 @@ or less indicates that the session should never timeout</description>
                     </header>
                 </headers>
                 <body>
-                    <type>WatchDog</type>
+                    <type>Watchdog</type>
                     <parameters_set>
                         <description>add a watchdog to the virtual machine identified by the given id</description>
                         <parameter required="true" type="xs:string">
@@ -22284,7 +22001,7 @@ or less indicates that the session should never timeout</description>
                 </body>
             </request>
             <response>
-                <type>WatchDog</type>
+                <type>Watchdog</type>
             </response>
         </link>
         <link href="vms/{vm:id}/watchdogs" rel="get">
@@ -22302,7 +22019,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>WatchDogs</type>
+                <type>Watchdogs</type>
             </response>
         </link>
         <link href="vms/{vm:id}/watchdogs/{watchdog:id}" rel="delete">
@@ -22337,7 +22054,7 @@ or less indicates that the session should never timeout</description>
                 <body/>
             </request>
             <response>
-                <type>WatchDog</type>
+                <type>Watchdog</type>
             </response>
         </link>
         <link href="vms/{vm:id}/watchdogs/{watchdog:id}" rel="update">
@@ -22367,7 +22084,7 @@ or less indicates that the session should never timeout</description>
                     </parameters_set>
                 </url>
                 <body>
-                    <type>WatchDog</type>
+                    <type>Watchdog</type>
                     <parameters_set>
                         <description>update the watchdog for the virtual machine identified by the given id with a new action and model as specified in the request data</description>
                         <parameter required="false" type="xs:string">
@@ -22380,7 +22097,7 @@ or less indicates that the session should never timeout</description>
                 </body>
             </request>
             <response>
-                <type>WatchDog</type>
+                <type>Watchdog</type>
             </response>
         </link>
         <link href="vnicprofiles" rel="add">

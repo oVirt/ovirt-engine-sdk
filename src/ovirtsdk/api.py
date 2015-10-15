@@ -20,7 +20,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-08-19 11:35:07.000014'''
+'''Generated at: 2015-10-15 11:18:48.000254'''
 
 import re
 
@@ -68,8 +68,8 @@ from ovirtsdk.infrastructure.brokers import StorageDomains
 from ovirtsdk.infrastructure.brokers import Tags
 from ovirtsdk.infrastructure.brokers import Templates
 from ovirtsdk.infrastructure.brokers import Users
-from ovirtsdk.infrastructure.brokers import VMs
 from ovirtsdk.infrastructure.brokers import VmPools
+from ovirtsdk.infrastructure.brokers import Vms
 from ovirtsdk.infrastructure.brokers import VnicProfiles
 
 
@@ -248,8 +248,8 @@ class API(object):
         self.tags = Tags(self.id)
         self.templates = Templates(self.id)
         self.users = Users(self.id)
-        self.vms = VMs(self.id)
         self.vmpools = VmPools(self.id)
+        self.vms = Vms(self.id)
         self.vnicprofiles = VnicProfiles(self.id)
 
 
