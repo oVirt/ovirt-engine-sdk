@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Sep  2 11:12:22 2015 by generateDS.py version 2.12a.
+# Generated Mon Oct 26 09:55:52 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -5972,6 +5972,92 @@ class SchedulingPolicyUnitTypes(GeneratedsSuper):
             scheduling_policy_unit_type_ = self.gds_validate_string(scheduling_policy_unit_type_, node, 'scheduling_policy_unit_type')
             self.scheduling_policy_unit_type.append(scheduling_policy_unit_type_)
 # end class SchedulingPolicyUnitTypes
+
+
+class VmPoolTypes(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, vm_pool_type=None):
+        if vm_pool_type is None:
+            self.vm_pool_type = []
+        else:
+            self.vm_pool_type = vm_pool_type
+    def factory(*args_, **kwargs_):
+        if VmPoolTypes.subclass:
+            return VmPoolTypes.subclass(*args_, **kwargs_)
+        else:
+            return VmPoolTypes(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_vm_pool_type(self): return self.vm_pool_type
+    def set_vm_pool_type(self, vm_pool_type): self.vm_pool_type = vm_pool_type
+    def add_vm_pool_type(self, value): self.vm_pool_type.append(value)
+    def insert_vm_pool_type(self, index, value): self.vm_pool_type[index] = value
+    def hasContent_(self):
+        if (
+            self.vm_pool_type
+        ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, namespace_='', name_='VmPoolTypes', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='VmPoolTypes')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VmPoolTypes'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='VmPoolTypes', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for vm_pool_type_ in self.vm_pool_type:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%svm_pool_type>%s</%svm_pool_type>%s' % (namespace_, self.gds_format_string(quote_xml(vm_pool_type_).encode(ExternalEncoding), input_name='vm_pool_type'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='VmPoolTypes'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        showIndent(outfile, level)
+        outfile.write('vm_pool_type=[\n')
+        level += 1
+        for vm_pool_type_ in self.vm_pool_type:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(vm_pool_type_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'vm_pool_type':
+            vm_pool_type_ = child_.text
+            vm_pool_type_ = self.gds_validate_string(vm_pool_type_, node, 'vm_pool_type')
+            self.vm_pool_type.append(vm_pool_type_)
+# end class VmPoolTypes
 
 
 class ActionableResource(GeneratedsSuper):
@@ -23302,7 +23388,7 @@ class Sessions(BaseResources):
 class VmPool(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, size=None, cluster=None, template=None, prestarted_vms=None, max_user_vms=None, display=None, rng_device=None, soundcard_enabled=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, size=None, cluster=None, template=None, prestarted_vms=None, max_user_vms=None, display=None, rng_device=None, soundcard_enabled=None, type_=None):
         super(VmPool, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.size = size
         self.cluster = cluster
@@ -23312,6 +23398,7 @@ class VmPool(BaseResource):
         self.display = display
         self.rng_device = rng_device
         self.soundcard_enabled = soundcard_enabled
+        self.type_ = type_
     def factory(*args_, **kwargs_):
         if VmPool.subclass:
             return VmPool.subclass(*args_, **kwargs_)
@@ -23334,6 +23421,8 @@ class VmPool(BaseResource):
     def set_rng_device(self, rng_device): self.rng_device = rng_device
     def get_soundcard_enabled(self): return self.soundcard_enabled
     def set_soundcard_enabled(self, soundcard_enabled): self.soundcard_enabled = soundcard_enabled
+    def get_type(self): return self.type_
+    def set_type(self, type_): self.type_ = type_
     def hasContent_(self):
         if (
             self.size is not None or
@@ -23344,6 +23433,7 @@ class VmPool(BaseResource):
             self.display is not None or
             self.rng_device is not None or
             self.soundcard_enabled is not None or
+            self.type_ is not None or
             super(VmPool, self).hasContent_()
         ):
             return True
@@ -23393,6 +23483,9 @@ class VmPool(BaseResource):
         if self.soundcard_enabled is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%ssoundcard_enabled>%s</%ssoundcard_enabled>%s' % (namespace_, self.gds_format_boolean(self.soundcard_enabled, input_name='soundcard_enabled'), namespace_, eol_))
+        if self.type_ is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%stype>%s</%stype>%s' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='VmPool'):
         level += 1
         already_processed = set()
@@ -23439,6 +23532,9 @@ class VmPool(BaseResource):
         if self.soundcard_enabled is not None:
             showIndent(outfile, level)
             outfile.write('soundcard_enabled=%s,\n' % self.soundcard_enabled)
+        if self.type_ is not None:
+            showIndent(outfile, level)
+            outfile.write('type_=%s,\n' % quote_python(self.type_).encode(ExternalEncoding))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -23500,6 +23596,10 @@ class VmPool(BaseResource):
                 raise_parse_error(child_, 'requires boolean')
             ival_ = self.gds_validate_boolean(ival_, node, 'soundcard_enabled')
             self.soundcard_enabled = ival_
+        elif nodeName_ == 'type':
+            type_ = child_.text
+            type_ = self.gds_validate_string(type_, node, 'type')
+            self.type_ = type_
         super(VmPool, self).buildChildren(child_, node, nodeName_, True)
 # end class VmPool
 
@@ -37866,7 +37966,7 @@ class GeneralMetadata(DetailedLink):
 class VersionCaps(Version):
     subclass = None
     superclass = Version
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, configuration_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_protocols=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, sgio_options=None, watchdog_models=None, watchdog_actions=None, authentication_methods=None, kdump_states=None, spm_states=None, step_types=None, payload_encodings=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None, snapshot_statuses=None, content_types=None, hook_states=None, stages=None, sso_methods=None, architecture_capabilities=None, serial_number_policies=None, selinux_modes=None, rng_sources=None, scheduling_policy_unit_types=None, qos_types=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, major=None, full_version=None, build_=None, minor=None, revision=None, current=None, features=None, cpus=None, power_managers=None, fence_types=None, storage_types=None, configuration_types=None, storage_domain_types=None, vm_types=None, boot_devices=None, display_types=None, nic_interfaces=None, os_types=None, disk_formats=None, disk_interfaces=None, vm_affinities=None, custom_properties=None, boot_protocols=None, error_handling=None, storage_formats=None, creation_states=None, power_management_states=None, host_states=None, host_protocols=None, host_non_operational_details=None, network_states=None, storage_domain_states=None, template_states=None, vm_states=None, vm_pause_details=None, disk_states=None, host_nic_states=None, data_center_states=None, vm_device_types=None, permits=None, scheduling_policies=None, usages=None, nfs_versions=None, pm_proxy_types=None, cpu_modes=None, sgio_options=None, watchdog_models=None, watchdog_actions=None, authentication_methods=None, kdump_states=None, spm_states=None, vm_pool_types=None, step_types=None, payload_encodings=None, gluster_volume_types=None, transport_types=None, gluster_volume_states=None, brick_states=None, reported_device_types=None, ip_versions=None, snapshot_statuses=None, content_types=None, hook_states=None, stages=None, sso_methods=None, architecture_capabilities=None, serial_number_policies=None, selinux_modes=None, rng_sources=None, scheduling_policy_unit_types=None, qos_types=None):
         super(VersionCaps, self).__init__(actions, href, id, name, description, comment, creation_status, link, major, full_version, build_, minor, revision, )
         self.current = current
         self.features = features
@@ -37914,6 +38014,7 @@ class VersionCaps(Version):
         self.authentication_methods = authentication_methods
         self.kdump_states = kdump_states
         self.spm_states = spm_states
+        self.vm_pool_types = vm_pool_types
         self.step_types = step_types
         self.payload_encodings = payload_encodings
         self.gluster_volume_types = gluster_volume_types
@@ -38031,6 +38132,8 @@ class VersionCaps(Version):
     def set_kdump_states(self, kdump_states): self.kdump_states = kdump_states
     def get_spm_states(self): return self.spm_states
     def set_spm_states(self, spm_states): self.spm_states = spm_states
+    def get_vm_pool_types(self): return self.vm_pool_types
+    def set_vm_pool_types(self, vm_pool_types): self.vm_pool_types = vm_pool_types
     def get_step_types(self): return self.step_types
     def set_step_types(self, step_types): self.step_types = step_types
     def get_payload_encodings(self): return self.payload_encodings
@@ -38117,6 +38220,7 @@ class VersionCaps(Version):
             self.authentication_methods is not None or
             self.kdump_states is not None or
             self.spm_states is not None or
+            self.vm_pool_types is not None or
             self.step_types is not None or
             self.payload_encodings is not None or
             self.gluster_volume_types is not None or
@@ -38258,6 +38362,8 @@ class VersionCaps(Version):
             self.kdump_states.export(outfile, level, namespace_, name_='kdump_states', pretty_print=pretty_print)
         if self.spm_states is not None:
             self.spm_states.export(outfile, level, namespace_, name_='spm_states', pretty_print=pretty_print)
+        if self.vm_pool_types is not None:
+            self.vm_pool_types.export(outfile, level, namespace_, name_='vm_pool_types', pretty_print=pretty_print)
         if self.step_types is not None:
             self.step_types.export(outfile, level, namespace_, name_='step_types', pretty_print=pretty_print)
         if self.payload_encodings is not None:
@@ -38579,6 +38685,12 @@ class VersionCaps(Version):
             self.spm_states.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.vm_pool_types is not None:
+            showIndent(outfile, level)
+            outfile.write('vm_pool_types=model_.vm_pool_types(\n')
+            self.vm_pool_types.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.step_types is not None:
             showIndent(outfile, level)
             outfile.write('step_types=model_.step_types(\n')
@@ -38893,6 +39005,10 @@ class VersionCaps(Version):
             obj_ = SpmStates.factory()
             obj_.build(child_)
             self.spm_states = obj_
+        elif nodeName_ == 'vm_pool_types':
+            obj_ = VmPoolTypes.factory()
+            obj_.build(child_)
+            self.vm_pool_types = obj_
         elif nodeName_ == 'step_types':
             obj_ = StepTypes.factory()
             obj_.build(child_)
@@ -39006,6 +39122,7 @@ GDSClassesMapping = {
     'hooks': Hooks,
     'ksm': KSM,
     'clusters': Clusters,
+    'vm_pause_details': VmPauseDetails,
     'vms': VMs,
     'host_numa_nodes': NumaNodes,
     'payloads': Payloads,
@@ -39038,7 +39155,7 @@ GDSClassesMapping = {
     'rsdl': RSDL,
     'permits': Permits,
     'host_nic': HostNIC,
-    'summary': VmSummary,
+    'vm_pool_types': VmPoolTypes,
     'hosts': Hosts,
     'brick_profile_details': BrickProfileDetails,
     'watchdog_models': WatchdogModels,
@@ -39062,7 +39179,7 @@ GDSClassesMapping = {
     'statistic': Statistic,
     'images': Images,
     'jobs': Jobs,
-    'vm_pause_details': VmPauseDetails,
+    'summary': VmSummary,
     'event': Event,
     'vmpools': VmPools,
     'custom_property': CustomProperty,
@@ -39695,6 +39812,7 @@ __all__ = [
     "VmPauseDetails",
     "VmPlacementPolicy",
     "VmPool",
+    "VmPoolTypes",
     "VmPools",
     "VmStates",
     "VmSummary",
@@ -40008,6 +40126,7 @@ _rootClassMap = {
                     "vm_numa_node"                  : VirtualNumaNode,
                     "vm_numa_nodes"                 : VirtualNumaNodes,
                     "vm_pause_details"              : VmPauseDetails,
+                    "vm_pool_types"                 : VmPoolTypes,
                     "vm_states"                     : VmStates,
                     "vm_types"                      : VmTypes,
                     "vmpool"                        : VmPool,
@@ -40291,6 +40410,7 @@ _tag_for_type = {
     VmDeviceTypes: "vm_device_types",
     VmPauseDetails: "vm_pause_details",
     VmPool: "vmpool",
+    VmPoolTypes: "vm_pool_types",
     VmPools: "vmpools",
     VmStates: "vm_states",
     VmTypes: "vm_types",

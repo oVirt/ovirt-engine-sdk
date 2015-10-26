@@ -12417,6 +12417,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>vmpool.soundcard_enabled</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vmpool.type</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
