@@ -3,7 +3,6 @@ from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
 from ovirtsdk.utils.filterhelper import FilterHelper
 from ovirtsdk.utils.parsehelper import ParseHelper
-from ovirtsdk.utils.searchhelper import SearchHelper
 from ovirtsdk.infrastructure.common import Base
 from ovirtsdk.infrastructure.context import context
 from ovirtsdk.infrastructure.errors import MissingParametersError

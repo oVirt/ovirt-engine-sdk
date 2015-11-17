@@ -16,9 +16,11 @@
 
 package org.ovirt.engine.sdk.generator.python;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.ovirt.engine.sdk.entities.DetailedLink;
 import org.ovirt.engine.sdk.generator.BrokerRules;
 import org.ovirt.engine.sdk.generator.Location;
 import org.ovirt.engine.sdk.generator.LocationRules;
@@ -29,11 +31,10 @@ import org.ovirt.engine.sdk.generator.python.templates.CollectionGetSearchableTe
 import org.ovirt.engine.sdk.generator.python.templates.CollectionListNotSearchableTemplate;
 import org.ovirt.engine.sdk.generator.python.templates.CollectionListSearchableTemplate;
 import org.ovirt.engine.sdk.generator.python.templates.CollectionTemplate;
-import org.ovirt.engine.sdk.generator.templates.AbstractTemplate;
 import org.ovirt.engine.sdk.generator.python.utils.HeaderUtils;
 import org.ovirt.engine.sdk.generator.python.utils.ParamUtils;
 import org.ovirt.engine.sdk.generator.python.utils.ParamsContainer;
-import org.ovirt.engine.sdk.entities.DetailedLink;
+import org.ovirt.engine.sdk.generator.templates.AbstractTemplate;
 import org.ovirt.engine.sdk.generator.utils.Tree;
 
 public class Collection {
@@ -174,21 +175,33 @@ public class Collection {
         Tree<Location> entityTree = collectionTree.getChild(LocationRules::isEntity);
         String elementName = SchemaRules.getElementName(collectionTree);
 
-        String[] result = HeaderUtils.generateMethodParams(link);
-        String headersMethodParamsStr = result[0];
-        String headersMapParamsStr = result[1];
+        Object[] result = ParamUtils.getMethodParamsByUrlParamsMeta(link);
+        String prmsStr = (String) result[0];
+        Map<String, String> methodParams = (Map<String, String>) result[1];
+        Map<String, String> urlParams = (Map<String, String>) result[2];
 
-        headersMethodParamsStr = !headersMethodParamsStr.isEmpty()?
-            ", " + headersMethodParamsStr:
-            headersMethodParamsStr;
+        result = HeaderUtils.generateMethodParams(link);
+        String headersMethodParamsStr = (String) result[0];
+        String headersMapParamsStr = (String) result[1];
+
+        StringBuilder combinedMethodParams = new StringBuilder();
+        if (!headersMethodParamsStr.isEmpty()) {
+            combinedMethodParams.append(", ");
+            combinedMethodParams.append(headersMethodParamsStr);
+        }
+        if (!prmsStr.isEmpty()) {
+            combinedMethodParams.append(", ");
+            combinedMethodParams.append(prmsStr);
+        }
 
         CollectionAddTemplate template = new CollectionAddTemplate();
-        template.set("url", link.getHref());
         template.set("parameter_name", elementName.replaceAll("_", ""));
+        template.set("url", link.getHref());
         template.set("entity_broker_type", BrokerRules.getBrokerType(entityTree));
-        template.set("headers_method_params_str", headersMethodParamsStr);
-        template.set("docs", Documentation.document(link));
         template.set("headers_map_params_str", headersMapParamsStr);
+        template.set("url_query_params", ParamUtils.toDictStr(urlParams.keySet(), methodParams.keySet()));
+        template.set("combined_method_params", combinedMethodParams);
+        template.set("docs", Documentation.document(link, Collections.emptyMap(), methodParams));
 
         return template.evaluate();
     }
