@@ -19,14 +19,13 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-10-14 10:12:09.000843'''
+'''Generated at: 2015-11-18 11:08:22.000688'''
 
 
 from ovirtsdk.xml import params
 from ovirtsdk.utils.urlhelper import UrlHelper
 from ovirtsdk.utils.filterhelper import FilterHelper
 from ovirtsdk.utils.parsehelper import ParseHelper
-from ovirtsdk.utils.searchhelper import SearchHelper
 from ovirtsdk.infrastructure.common import Base
 from ovirtsdk.infrastructure.context import context
 from ovirtsdk.infrastructure.errors import MissingParametersError
@@ -70,7 +69,7 @@ class Bookmark(params.Bookmark, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -125,7 +124,10 @@ class Bookmarks(Base):
         url = '/bookmarks'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(bookmark),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -183,7 +185,7 @@ class Bookmarks(Base):
         url='/bookmarks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_bookmark()
 
@@ -296,7 +298,7 @@ class Cluster(params.Cluster, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -427,7 +429,7 @@ class ClusterAffinityGroup(params.AffinityGroup, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -456,7 +458,7 @@ class ClusterAffinityGroup(params.AffinityGroup, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -507,7 +509,7 @@ class ClusterAffinityGroupVM(params.VM, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -544,12 +546,15 @@ class ClusterAffinityGroupVMs(Base):
         url = '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{affinitygroup:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{cluster:id}': self.parentclass.parentclass.get_id(),
+                        '{affinitygroup:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(vm),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -634,7 +639,7 @@ class ClusterAffinityGroupVMs(Base):
         url = '/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -642,7 +647,7 @@ class ClusterAffinityGroupVMs(Base):
                         '{affinitygroup:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_vm()
@@ -689,11 +694,14 @@ class ClusterAffinityGroups(Base):
         url = '/clusters/{cluster:id}/affinitygroups'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(affinitygroup),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -776,14 +784,14 @@ class ClusterAffinityGroups(Base):
         url = '/clusters/{cluster:id}/affinitygroups'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_affinity_group()
@@ -837,7 +845,7 @@ class ClusterCpuProfile(params.CpuProfile, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -876,11 +884,14 @@ class ClusterCpuProfiles(Base):
         url = '/clusters/{cluster:id}/cpuprofiles'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(cpuprofile),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -963,14 +974,14 @@ class ClusterCpuProfiles(Base):
         url = '/clusters/{cluster:id}/cpuprofiles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_cpu_profile()
@@ -1024,7 +1035,7 @@ class ClusterGlusterHook(params.GlusterHook, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -1203,14 +1214,14 @@ class ClusterGlusterHooks(Base):
         url = '/clusters/{cluster:id}/glusterhooks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_gluster_hook()
@@ -1265,7 +1276,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -1668,7 +1679,7 @@ class ClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -1853,7 +1864,7 @@ class ClusterGlusterVolumeGlusterBricks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, brick, correlation_id=None, expect=None):
+    def add(self, brick, correlation_id=None, expect=None, force=None):
 
         '''
         @type GlusterBricks:
@@ -1865,6 +1876,7 @@ class ClusterGlusterVolumeGlusterBricks(Base):
         }
         [@param replica_count: unsignedShort]
         [@param stripe_count: unsignedShort]
+        [@param force: boolean (true|false)]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -1874,12 +1886,15 @@ class ClusterGlusterVolumeGlusterBricks(Base):
         url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{glustervolume:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{cluster:id}': self.parentclass.parentclass.get_id(),
+                        '{glustervolume:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={'force:matrix':force}
             ),
             body=ParseHelper.toXml(brick),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -1966,7 +1981,7 @@ class ClusterGlusterVolumeGlusterBricks(Base):
         url = '/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -1974,7 +1989,7 @@ class ClusterGlusterVolumeGlusterBricks(Base):
                         '{glustervolume:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={"All-Content":all_content}
         ).get_brick()
@@ -2132,7 +2147,7 @@ class ClusterGlusterVolumes(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, glustervolume, correlation_id=None, expect=None):
+    def add(self, glustervolume, correlation_id=None, expect=None, force=None):
 
         '''
         @type GlusterVolume:
@@ -2155,6 +2170,7 @@ class ClusterGlusterVolumes(Base):
           [@ivar option.name: string]
           [@ivar option.value: string]
         }
+        [@param force: boolean (true|false)]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -2164,11 +2180,14 @@ class ClusterGlusterVolumes(Base):
         url = '/clusters/{cluster:id}/glustervolumes'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={'force:matrix':force}
             ),
             body=ParseHelper.toXml(glustervolume),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -2253,14 +2272,14 @@ class ClusterGlusterVolumes(Base):
         url = '/clusters/{cluster:id}/glustervolumes'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}
+                args={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}
             ),
             headers={}
         ).get_gluster_volume()
@@ -2314,7 +2333,7 @@ class ClusterNetwork(params.Network, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -2345,7 +2364,7 @@ class ClusterNetwork(params.Network, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -2390,11 +2409,14 @@ class ClusterNetworks(Base):
         url = '/clusters/{cluster:id}/networks'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(network),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -2477,14 +2499,14 @@ class ClusterNetworks(Base):
         url = '/clusters/{cluster:id}/networks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_network()
@@ -2538,7 +2560,7 @@ class ClusterPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -2580,11 +2602,14 @@ class ClusterPermissions(Base):
         url = '/clusters/{cluster:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -2667,14 +2692,14 @@ class ClusterPermissions(Base):
         url = '/clusters/{cluster:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -2752,7 +2777,10 @@ class Clusters(Base):
         url = '/clusters'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(cluster),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -2784,7 +2812,7 @@ class Clusters(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
                 headers={}
             ).get_cluster()
 
@@ -2811,7 +2839,7 @@ class Clusters(Base):
         url='/clusters'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={}
         ).get_cluster()
 
@@ -2859,7 +2887,7 @@ class CpuProfile(params.CpuProfile, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -2931,7 +2959,7 @@ class CpuProfilePermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -2973,11 +3001,14 @@ class CpuProfilePermissions(Base):
         url = '/cpuprofiles/{cpuprofile:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cpuprofile:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{cpuprofile:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -3060,14 +3091,14 @@ class CpuProfilePermissions(Base):
         url = '/cpuprofiles/{cpuprofile:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{cpuprofile:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -3112,7 +3143,10 @@ class CpuProfiles(Base):
         url = '/cpuprofiles'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(cpuprofile),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -3170,7 +3204,7 @@ class CpuProfiles(Base):
         url='/cpuprofiles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_cpu_profile()
 
@@ -3228,7 +3262,7 @@ class DataCenter(params.DataCenter, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -3313,7 +3347,7 @@ class DataCenterCluster(params.Cluster, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -3367,7 +3401,7 @@ class DataCenterCluster(params.Cluster, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -3443,7 +3477,7 @@ class DataCenterClusterAffinityGroup(params.AffinityGroup, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -3468,7 +3502,7 @@ class DataCenterClusterAffinityGroup(params.AffinityGroup, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -3519,7 +3553,7 @@ class DataCenterClusterAffinityGroupVM(params.VM, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -3553,13 +3587,16 @@ class DataCenterClusterAffinityGroupVMs(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{affinitygroup:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.parentclass.get_id(),
+                        '{affinitygroup:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(vm),
             headers={}
@@ -3646,7 +3683,7 @@ class DataCenterClusterAffinityGroupVMs(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups/{affinitygroup:id}/vms'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -3655,7 +3692,7 @@ class DataCenterClusterAffinityGroupVMs(Base):
                         '{affinitygroup:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_vm()
@@ -3697,12 +3734,15 @@ class DataCenterClusterAffinityGroups(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(affinitygroup),
             headers={}
@@ -3787,7 +3827,7 @@ class DataCenterClusterAffinityGroups(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/affinitygroups'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -3795,7 +3835,7 @@ class DataCenterClusterAffinityGroups(Base):
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_affinity_group()
@@ -3849,7 +3889,7 @@ class DataCenterClusterCpuProfile(params.CpuProfile, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -3883,12 +3923,15 @@ class DataCenterClusterCpuProfiles(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/cpuprofiles'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(cpuprofile),
             headers={}
@@ -3973,7 +4016,7 @@ class DataCenterClusterCpuProfiles(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/cpuprofiles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -3981,7 +4024,7 @@ class DataCenterClusterCpuProfiles(Base):
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_cpu_profile()
@@ -4035,7 +4078,7 @@ class DataCenterClusterGlusterHook(params.GlusterHook, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -4208,7 +4251,7 @@ class DataCenterClusterGlusterHooks(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glusterhooks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -4216,7 +4259,7 @@ class DataCenterClusterGlusterHooks(Base):
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_gluster_hook()
@@ -4272,7 +4315,7 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -4632,7 +4675,7 @@ class DataCenterClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -4827,13 +4870,16 @@ class DataCenterClusterGlusterVolumeGlusterBricks(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{glustervolume:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.parentclass.get_id(),
+                        '{glustervolume:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(brick),
             headers={}
@@ -4920,7 +4966,7 @@ class DataCenterClusterGlusterVolumeGlusterBricks(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes/{glustervolume:id}/bricks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -4929,7 +4975,7 @@ class DataCenterClusterGlusterVolumeGlusterBricks(Base):
                         '{glustervolume:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_brick()
@@ -5102,12 +5148,15 @@ class DataCenterClusterGlusterVolumes(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(glustervolume),
             headers={}
@@ -5192,7 +5241,7 @@ class DataCenterClusterGlusterVolumes(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/glustervolumes'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -5200,7 +5249,7 @@ class DataCenterClusterGlusterVolumes(Base):
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_gluster_volume()
@@ -5255,7 +5304,7 @@ class DataCenterClusterNetwork(params.Network, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -5287,7 +5336,7 @@ class DataCenterClusterNetwork(params.Network, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -5332,12 +5381,15 @@ class DataCenterClusterNetworks(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/networks'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(network),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -5422,7 +5474,7 @@ class DataCenterClusterNetworks(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/networks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -5430,7 +5482,7 @@ class DataCenterClusterNetworks(Base):
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_network()
@@ -5485,7 +5537,7 @@ class DataCenterClusterPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -5527,12 +5579,15 @@ class DataCenterClusterPermissions(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -5617,7 +5672,7 @@ class DataCenterClusterPermissions(Base):
         url = '/datacenters/{datacenter:id}/clusters/{cluster:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -5625,7 +5680,7 @@ class DataCenterClusterPermissions(Base):
                         '{cluster:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -5696,11 +5751,14 @@ class DataCenterClusters(Base):
         url = '/datacenters/{datacenter:id}/clusters'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(cluster),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -5783,14 +5841,14 @@ class DataCenterClusters(Base):
         url = '/datacenters/{datacenter:id}/clusters'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{datacenter:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_cluster()
@@ -5846,7 +5904,7 @@ class DataCenterIscsiBond(params.IscsiBond, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -5872,7 +5930,7 @@ class DataCenterIscsiBond(params.IscsiBond, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -5925,7 +5983,7 @@ class DataCenterIscsiBondNetwork(params.Network, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -5950,7 +6008,7 @@ class DataCenterIscsiBondNetwork(params.Network, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -6001,7 +6059,7 @@ class DataCenterIscsiBondNetworkLabel(params.Label, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -6035,13 +6093,16 @@ class DataCenterIscsiBondNetworkLabels(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/labels'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(label),
             headers={}
@@ -6128,7 +6189,7 @@ class DataCenterIscsiBondNetworkLabels(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/labels'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -6137,7 +6198,7 @@ class DataCenterIscsiBondNetworkLabels(Base):
                         '{network:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_label()
@@ -6192,7 +6253,7 @@ class DataCenterIscsiBondNetworkPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -6226,13 +6287,16 @@ class DataCenterIscsiBondNetworkPermissions(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={}
@@ -6319,7 +6383,7 @@ class DataCenterIscsiBondNetworkPermissions(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -6328,7 +6392,7 @@ class DataCenterIscsiBondNetworkPermissions(Base):
                         '{network:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -6384,7 +6448,7 @@ class DataCenterIscsiBondNetworkVnicProfile(params.VnicProfile, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -6432,7 +6496,7 @@ class DataCenterIscsiBondNetworkVnicProfilePermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -6466,14 +6530,17 @@ class DataCenterIscsiBondNetworkVnicProfilePermissions(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.parentclass.get_id(),
-                    '{vnicprofile:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.parentclass.get_id(),
+                        '{vnicprofile:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={}
@@ -6562,7 +6629,7 @@ class DataCenterIscsiBondNetworkVnicProfilePermissions(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -6572,7 +6639,7 @@ class DataCenterIscsiBondNetworkVnicProfilePermissions(Base):
                         '{vnicprofile:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -6614,13 +6681,16 @@ class DataCenterIscsiBondNetworkVnicProfiles(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(vnicprofile),
             headers={}
@@ -6707,7 +6777,7 @@ class DataCenterIscsiBondNetworkVnicProfiles(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks/{network:id}/vnicprofiles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -6716,7 +6786,7 @@ class DataCenterIscsiBondNetworkVnicProfiles(Base):
                         '{network:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_vnic_profile()
@@ -6760,12 +6830,15 @@ class DataCenterIscsiBondNetworks(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(network),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -6850,7 +6923,7 @@ class DataCenterIscsiBondNetworks(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/networks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -6858,7 +6931,7 @@ class DataCenterIscsiBondNetworks(Base):
                         '{iscsibond:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_network()
@@ -6914,7 +6987,7 @@ class DataCenterIscsiBondStorageConnection(params.StorageConnection, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -6939,7 +7012,7 @@ class DataCenterIscsiBondStorageConnection(params.StorageConnection, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -6964,7 +7037,7 @@ class DataCenterIscsiBondStorageConnection(params.StorageConnection, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -7002,12 +7075,15 @@ class DataCenterIscsiBondStorageConnections(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{iscsibond:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{iscsibond:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(storageconnection),
             headers={}
@@ -7092,7 +7168,7 @@ class DataCenterIscsiBondStorageConnections(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds/{iscsibond:id}/storageconnections'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -7100,7 +7176,7 @@ class DataCenterIscsiBondStorageConnections(Base):
                         '{iscsibond:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_storage_connection()
@@ -7145,11 +7221,14 @@ class DataCenterIscsiBonds(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(iscsibond),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -7232,14 +7311,14 @@ class DataCenterIscsiBonds(Base):
         url = '/datacenters/{datacenter:id}/iscsibonds'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{datacenter:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_iscsi_bond()
@@ -7296,7 +7375,7 @@ class DataCenterNetwork(params.Network, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -7327,7 +7406,7 @@ class DataCenterNetwork(params.Network, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -7378,7 +7457,7 @@ class DataCenterNetworkLabel(params.Label, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -7415,12 +7494,15 @@ class DataCenterNetworkLabels(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/labels'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(label),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -7505,7 +7587,7 @@ class DataCenterNetworkLabels(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/labels'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -7513,7 +7595,7 @@ class DataCenterNetworkLabels(Base):
                         '{network:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_label()
@@ -7567,7 +7649,7 @@ class DataCenterNetworkPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -7601,12 +7683,15 @@ class DataCenterNetworkPermissions(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={}
@@ -7691,7 +7776,7 @@ class DataCenterNetworkPermissions(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -7699,7 +7784,7 @@ class DataCenterNetworkPermissions(Base):
                         '{network:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -7754,7 +7839,7 @@ class DataCenterNetworkVnicProfile(params.VnicProfile, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -7801,7 +7886,7 @@ class DataCenterNetworkVnicProfilePermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -7835,13 +7920,16 @@ class DataCenterNetworkVnicProfilePermissions(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.parentclass.get_id(),
-                    '{vnicprofile:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.parentclass.get_id(),
+                        '{vnicprofile:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={}
@@ -7928,7 +8016,7 @@ class DataCenterNetworkVnicProfilePermissions(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -7937,7 +8025,7 @@ class DataCenterNetworkVnicProfilePermissions(Base):
                         '{vnicprofile:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -7979,12 +8067,15 @@ class DataCenterNetworkVnicProfiles(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(vnicprofile),
             headers={}
@@ -8069,7 +8160,7 @@ class DataCenterNetworkVnicProfiles(Base):
         url = '/datacenters/{datacenter:id}/networks/{network:id}/vnicprofiles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -8077,7 +8168,7 @@ class DataCenterNetworkVnicProfiles(Base):
                         '{network:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_vnic_profile()
@@ -8135,11 +8226,14 @@ class DataCenterNetworks(Base):
         url = '/datacenters/{datacenter:id}/networks'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(network),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -8222,14 +8316,14 @@ class DataCenterNetworks(Base):
         url = '/datacenters/{datacenter:id}/networks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{datacenter:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_network()
@@ -8283,7 +8377,7 @@ class DataCenterPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -8325,11 +8419,14 @@ class DataCenterPermissions(Base):
         url = '/datacenters/{datacenter:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -8412,14 +8509,14 @@ class DataCenterPermissions(Base):
         url = '/datacenters/{datacenter:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{datacenter:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -8473,7 +8570,7 @@ class DataCenterQoS(params.QoS, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -8517,7 +8614,7 @@ class DataCenterQoS(params.QoS, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -8576,11 +8673,14 @@ class DataCenterQoSs(Base):
         url = '/datacenters/{datacenter:id}/qoss'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(qos),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -8663,14 +8763,14 @@ class DataCenterQoSs(Base):
         url = '/datacenters/{datacenter:id}/qoss'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{datacenter:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_qos()
@@ -8727,7 +8827,7 @@ class DataCenterQuota(params.Quota, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -8759,7 +8859,7 @@ class DataCenterQuota(params.Quota, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -8809,7 +8909,7 @@ class DataCenterQuotaPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -8843,12 +8943,15 @@ class DataCenterQuotaPermissions(Base):
         url = '/datacenters/{datacenter:id}/quotas/{quota:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{quota:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{quota:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={}
@@ -8933,7 +9036,7 @@ class DataCenterQuotaPermissions(Base):
         url = '/datacenters/{datacenter:id}/quotas/{quota:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -8941,7 +9044,7 @@ class DataCenterQuotaPermissions(Base):
                         '{quota:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -8995,7 +9098,7 @@ class DataCenterQuotaQuotaClusterLimit(params.QuotaClusterLimit, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -9029,12 +9132,15 @@ class DataCenterQuotaQuotaClusterLimits(Base):
         url = '/datacenters/{datacenter:id}/quotas/{quota:id}/quotaclusterlimits'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{quota:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{quota:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(clusterquotalimit),
             headers={}
@@ -9119,7 +9225,7 @@ class DataCenterQuotaQuotaClusterLimits(Base):
         url = '/datacenters/{datacenter:id}/quotas/{quota:id}/quotaclusterlimits'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -9127,7 +9233,7 @@ class DataCenterQuotaQuotaClusterLimits(Base):
                         '{quota:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_cluster_quota_limit()
@@ -9181,7 +9287,7 @@ class DataCenterQuotaQuotaStorageLimit(params.QuotaStorageLimit, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -9215,12 +9321,15 @@ class DataCenterQuotaQuotaStorageLimits(Base):
         url = '/datacenters/{datacenter:id}/quotas/{quota:id}/quotastoragelimits'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{quota:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{quota:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(storagequotalimit),
             headers={}
@@ -9305,7 +9414,7 @@ class DataCenterQuotaQuotaStorageLimits(Base):
         url = '/datacenters/{datacenter:id}/quotas/{quota:id}/quotastoragelimits'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -9313,7 +9422,7 @@ class DataCenterQuotaQuotaStorageLimits(Base):
                         '{quota:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_storage_quota_limit()
@@ -9363,11 +9472,14 @@ class DataCenterQuotas(Base):
         url = '/datacenters/{datacenter:id}/quotas'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(quota),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -9450,14 +9562,14 @@ class DataCenterQuotas(Base):
         url = '/datacenters/{datacenter:id}/quotas'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{datacenter:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_quota()
@@ -9512,7 +9624,7 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -9617,7 +9729,7 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -9746,7 +9858,7 @@ class DataCenterStorageDomainDiskPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -9780,13 +9892,16 @@ class DataCenterStorageDomainDiskPermissions(Base):
         url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                    '{disk:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                        '{disk:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={}
@@ -9873,7 +9988,7 @@ class DataCenterStorageDomainDiskPermissions(Base):
         url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -9882,7 +9997,7 @@ class DataCenterStorageDomainDiskPermissions(Base):
                         '{disk:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -10043,7 +10158,7 @@ class DataCenterStorageDomainDisks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, disk, correlation_id=None, expect=None):
+    def add(self, disk, correlation_id=None, expect=None, unregistered=None):
 
         '''
         @type Disk:
@@ -10084,6 +10199,7 @@ class DataCenterStorageDomainDisks(Base):
           [@param disk.wipe_after_delete: boolean]
           [@param disk.quota.id: string]
           [@param disk.sgio: string]
+        [@param unregistered: boolean (true|false)]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -10093,12 +10209,15 @@ class DataCenterStorageDomainDisks(Base):
         url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={'unregistered:matrix':unregistered}
             ),
             body=ParseHelper.toXml(disk),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -10186,7 +10305,7 @@ class DataCenterStorageDomainDisks(Base):
         url = '/datacenters/{datacenter:id}/storagedomains/{storagedomain:id}/disks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -10194,7 +10313,7 @@ class DataCenterStorageDomainDisks(Base):
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'unregistered:matrix':unregistered,'max:matrix':max}
+                args={'search:query':query,'case_sensitive:matrix':case_sensitive,'unregistered:matrix':unregistered,'max:matrix':max}
             ),
             headers={}
         ).get_disk()
@@ -10239,11 +10358,14 @@ class DataCenterStorageDomains(Base):
         url = '/datacenters/{datacenter:id}/storagedomains'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{datacenter:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(storagedomain),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -10326,14 +10448,14 @@ class DataCenterStorageDomains(Base):
         url = '/datacenters/{datacenter:id}/storagedomains'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{datacenter:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_storage_domain()
@@ -10383,7 +10505,10 @@ class DataCenters(Base):
         url = '/datacenters'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(datacenter),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -10415,7 +10540,7 @@ class DataCenters(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
                 headers={}
             ).get_data_center()
 
@@ -10442,7 +10567,7 @@ class DataCenters(Base):
         url='/datacenters'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={}
         ).get_data_center()
 
@@ -10491,7 +10616,7 @@ class Disk(params.Disk, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -10621,7 +10746,7 @@ class DiskPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -10655,11 +10780,14 @@ class DiskPermissions(Base):
         url = '/disks/{disk:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{disk:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{disk:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={}
@@ -10742,14 +10870,14 @@ class DiskPermissions(Base):
         url = '/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{disk:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -10802,7 +10930,7 @@ class DiskProfile(params.DiskProfile, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -10874,7 +11002,7 @@ class DiskProfilePermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -10916,11 +11044,14 @@ class DiskProfilePermissions(Base):
         url = '/diskprofiles/{diskprofile:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{diskprofile:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{diskprofile:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -11003,14 +11134,14 @@ class DiskProfilePermissions(Base):
         url = '/diskprofiles/{diskprofile:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{diskprofile:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -11055,7 +11186,10 @@ class DiskProfiles(Base):
         url = '/diskprofiles'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(diskprofile),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -11113,7 +11247,7 @@ class DiskProfiles(Base):
         url='/diskprofiles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_disk_profile()
 
@@ -11314,7 +11448,10 @@ class Disks(Base):
         url = '/disks'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(disk),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -11344,7 +11481,7 @@ class Disks(Base):
                 raise err
         elif alias:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'alias='+alias}),
+                url=UrlHelper.appendParameters(url, {'search:query':'alias='+alias}),
                 headers={}
             ).get_disk()
 
@@ -11371,7 +11508,7 @@ class Disks(Base):
         url='/disks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={}
         ).get_disk()
 
@@ -11514,14 +11651,14 @@ class DomainGroups(Base):
         url = '/domains/{domain:id}/groups'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{domain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}
+                args={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}
             ),
             headers={}
         ).get_group()
@@ -11646,14 +11783,14 @@ class DomainUsers(Base):
         url = '/domains/{domain:id}/users'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{domain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}
+                args={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}
             ),
             headers={}
         ).get_user()
@@ -11732,7 +11869,7 @@ class Domains(Base):
         url='/domains'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_domain()
 
@@ -11779,7 +11916,7 @@ class Event(params.Event, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -11826,7 +11963,10 @@ class Events(Base):
         url = '/events'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(event),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -11858,7 +11998,7 @@ class Events(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
                 headers={}
             ).get_event()
 
@@ -11886,7 +12026,7 @@ class Events(Base):
         url='/events'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'from:matrix':from_event_id,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'from:matrix':from_event_id,'max:matrix':max}),
             headers={}
         ).get_event()
 
@@ -11938,7 +12078,7 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -12139,14 +12279,14 @@ class ExternalHostProviderCertificates(Base):
         url = '/externalhostproviders/{externalhostprovider:id}/certificates'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{externalhostprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_certificate()
@@ -12269,14 +12409,14 @@ class ExternalHostProviderExternalComputeResources(Base):
         url = '/externalhostproviders/{externalhostprovider:id}/computeresources'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{externalhostprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_external_compute_resource()
@@ -12399,14 +12539,14 @@ class ExternalHostProviderExternalDiscoveredHosts(Base):
         url = '/externalhostproviders/{externalhostprovider:id}/discoveredhosts'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{externalhostprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_external_discovered_host()
@@ -12551,14 +12691,14 @@ class ExternalHostProviderExternalHostGroups(Base):
         url = '/externalhostproviders/{externalhostprovider:id}/hostgroups'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{externalhostprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_external_host_group()
@@ -12659,14 +12799,14 @@ class ExternalHostProviderExternalHosts(Base):
         url = '/externalhostproviders/{externalhostprovider:id}/hosts'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{externalhostprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_external_host()
@@ -12713,7 +12853,10 @@ class ExternalHostProviders(Base):
         url = '/externalhostproviders'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(externalhostprovider),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -12771,7 +12914,7 @@ class ExternalHostProviders(Base):
         url='/externalhostproviders'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_external_host_provider()
 
@@ -12821,7 +12964,7 @@ class Group(params.Group, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -12867,7 +13010,7 @@ class GroupPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -12924,11 +13067,14 @@ class GroupPermissions(Base):
         url = '/groups/{group:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{group:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{group:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -13011,14 +13157,14 @@ class GroupPermissions(Base):
         url = '/groups/{group:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{group:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -13072,7 +13218,7 @@ class GroupRole(params.Role, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -13119,7 +13265,7 @@ class GroupRolePermit(params.Permit, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -13156,12 +13302,15 @@ class GroupRolePermits(Base):
         url = '/groups/{group:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{group:id}': self.parentclass.parentclass.get_id(),
-                    '{role:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{group:id}': self.parentclass.parentclass.get_id(),
+                        '{role:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permit),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -13246,7 +13395,7 @@ class GroupRolePermits(Base):
         url = '/groups/{group:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -13254,7 +13403,7 @@ class GroupRolePermits(Base):
                         '{role:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permit()
@@ -13355,14 +13504,14 @@ class GroupRoles(Base):
         url = '/groups/{group:id}/roles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{group:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_role()
@@ -13416,7 +13565,7 @@ class GroupTag(params.Tag, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -13453,11 +13602,14 @@ class GroupTags(Base):
         url = '/groups/{group:id}/tags'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{group:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{group:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(tag),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -13540,14 +13692,14 @@ class GroupTags(Base):
         url = '/groups/{group:id}/tags'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{group:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_tag()
@@ -13591,7 +13743,10 @@ class Groups(Base):
         url = '/groups'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(group),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -13623,7 +13778,7 @@ class Groups(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
                 headers={}
             ).get_group()
 
@@ -13650,7 +13805,7 @@ class Groups(Base):
         url='/groups'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={}
         ).get_group()
 
@@ -13713,7 +13868,7 @@ class Host(params.Host, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -14325,7 +14480,7 @@ class HostAgent(params.Agent, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -14363,7 +14518,7 @@ class HostAgent(params.Agent, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -14415,11 +14570,14 @@ class HostAgents(Base):
         url = '/hosts/{host:id}/fenceagents'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(agent),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -14502,14 +14660,14 @@ class HostAgents(Base):
         url = '/hosts/{host:id}/fenceagents'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_agent()
@@ -14632,14 +14790,14 @@ class HostHooks(Base):
         url = '/hosts/{host:id}/hooks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_hook()
@@ -14762,14 +14920,14 @@ class HostHostDevices(Base):
         url = '/hosts/{host:id}/devices'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_host_device()
@@ -14824,7 +14982,7 @@ class HostHostNICNetworkAttachment(params.NetworkAttachment, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -14864,7 +15022,7 @@ class HostHostNICNetworkAttachment(params.NetworkAttachment, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'override_configuration:matrix':override_configuration,'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'override_configuration:matrix':override_configuration,'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -14917,12 +15075,15 @@ class HostHostNICNetworkAttachments(Base):
         url = '/hosts/{host:id}/nics/{nic:id}/networkattachments'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.parentclass.get_id(),
-                    '{nic:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(networkattachment),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -15007,7 +15168,7 @@ class HostHostNICNetworkAttachments(Base):
         url = '/hosts/{host:id}/nics/{nic:id}/networkattachments'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -15015,7 +15176,7 @@ class HostHostNICNetworkAttachments(Base):
                         '{nic:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_network_attachment()
@@ -15116,14 +15277,14 @@ class HostKatelloErrata(Base):
         url = '/hosts/{host:id}/katelloerrata'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_katello_erratum()
@@ -15202,7 +15363,7 @@ class HostNIC(params.HostNIC, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -15245,7 +15406,7 @@ class HostNIC(params.HostNIC, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -15353,7 +15514,7 @@ class HostNICLabel(params.Label, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -15390,12 +15551,15 @@ class HostNICLabels(Base):
         url = '/hosts/{host:id}/nics/{nic:id}/labels'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.parentclass.get_id(),
-                    '{nic:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(label),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -15480,7 +15644,7 @@ class HostNICLabels(Base):
         url = '/hosts/{host:id}/nics/{nic:id}/labels'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -15488,7 +15652,7 @@ class HostNICLabels(Base):
                         '{nic:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_label()
@@ -15672,11 +15836,14 @@ class HostNICs(Base):
         url = '/hosts/{host:id}/nics'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(hostnic),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -15759,14 +15926,14 @@ class HostNICs(Base):
         url = '/hosts/{host:id}/nics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_host_nic()
@@ -15877,7 +16044,7 @@ class HostNetworkAttachment(params.NetworkAttachment, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -15917,7 +16084,7 @@ class HostNetworkAttachment(params.NetworkAttachment, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'override_configuration:matrix':override_configuration,'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'override_configuration:matrix':override_configuration,'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -15971,11 +16138,14 @@ class HostNetworkAttachments(Base):
         url = '/hosts/{host:id}/networkattachments'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(networkattachment),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -16058,14 +16228,14 @@ class HostNetworkAttachments(Base):
         url = '/hosts/{host:id}/networkattachments'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_network_attachment()
@@ -16317,14 +16487,14 @@ class HostNumaNodes(Base):
         url = '/hosts/{host:id}/numanodes'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_host_numa_node()
@@ -16378,7 +16548,7 @@ class HostPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -16420,11 +16590,14 @@ class HostPermissions(Base):
         url = '/hosts/{host:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -16507,14 +16680,14 @@ class HostPermissions(Base):
         url = '/hosts/{host:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -16714,7 +16887,7 @@ class HostStorageConnectionExtension(params.StorageConnectionExtension, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -16738,7 +16911,7 @@ class HostStorageConnectionExtension(params.StorageConnectionExtension, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -16781,11 +16954,14 @@ class HostStorageConnectionExtensions(Base):
         url = '/hosts/{host:id}/storageconnectionextensions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(storageconnectionextension),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -16868,14 +17044,14 @@ class HostStorageConnectionExtensions(Base):
         url = '/hosts/{host:id}/storageconnectionextensions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_storage_connection_extension()
@@ -16976,14 +17152,14 @@ class HostStorages(Base):
         url = '/hosts/{host:id}/storage'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_storage()
@@ -17037,7 +17213,7 @@ class HostTag(params.Tag, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -17074,11 +17250,14 @@ class HostTags(Base):
         url = '/hosts/{host:id}/tags'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(tag),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -17161,14 +17340,14 @@ class HostTags(Base):
         url = '/hosts/{host:id}/tags'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_tag()
@@ -17222,7 +17401,7 @@ class HostUnmanagedNetwork(params.UnmanagedNetwork, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -17315,14 +17494,14 @@ class HostUnmanagedNetworks(Base):
         url = '/hosts/{host:id}/unmanagednetworks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{host:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_unmanaged_network()
@@ -17449,7 +17628,10 @@ class Hosts(Base):
         url = '/hosts'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(host),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -17482,7 +17664,7 @@ class Hosts(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
                 headers={"All-Content":all_content}
             ).get_host()
 
@@ -17510,7 +17692,7 @@ class Hosts(Base):
         url='/hosts'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={"All-Content":all_content}
         ).get_host()
 
@@ -17605,7 +17787,7 @@ class Icons(Base):
         url='/icons'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_icon()
 
@@ -17655,7 +17837,7 @@ class InstanceType(params.InstanceType, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -17721,7 +17903,7 @@ class InstanceTypeGraphicsConsole(params.GraphicsConsole, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -17758,11 +17940,14 @@ class InstanceTypeGraphicsConsoles(Base):
         url = '/instancetypes/{instancetype:id}/graphicsconsoles'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{instancetype:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{instancetype:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(graphicsconsole),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -17845,14 +18030,14 @@ class InstanceTypeGraphicsConsoles(Base):
         url = '/instancetypes/{instancetype:id}/graphicsconsoles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{instancetype:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_graphics_console()
@@ -17906,7 +18091,7 @@ class InstanceTypeNIC(params.NIC, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -17944,11 +18129,14 @@ class InstanceTypeNICs(Base):
         url = '/instancetypes/{instancetype:id}/nics'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{instancetype:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{instancetype:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(nic),
             headers={}
@@ -18031,14 +18219,14 @@ class InstanceTypeNICs(Base):
         url = '/instancetypes/{instancetype:id}/nics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{instancetype:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_nic()
@@ -18091,7 +18279,7 @@ class InstanceTypeWatchDog(params.WatchDog, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -18115,7 +18303,7 @@ class InstanceTypeWatchDog(params.WatchDog, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -18153,11 +18341,14 @@ class InstanceTypeWatchDogs(Base):
         url = '/instancetypes/{instancetype:id}/watchdogs'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{instancetype:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{instancetype:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(watchdog),
             headers={}
@@ -18240,14 +18431,14 @@ class InstanceTypeWatchDogs(Base):
         url = '/instancetypes/{instancetype:id}/watchdogs'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{instancetype:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_watchdog()
@@ -18315,7 +18506,10 @@ class InstanceTypes(Base):
         url = '/instancetypes'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(instancetype),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -18373,7 +18567,7 @@ class InstanceTypes(Base):
         url='/instancetypes'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_instance_type()
 
@@ -18676,11 +18870,14 @@ class JobSteps(Base):
         url = '/jobs/{job:id}/steps'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{job:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{job:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(step),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -18763,14 +18960,14 @@ class JobSteps(Base):
         url = '/jobs/{job:id}/steps'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{job:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_step()
@@ -18813,7 +19010,10 @@ class Jobs(Base):
         url = '/jobs'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(job),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -18871,7 +19071,7 @@ class Jobs(Base):
         url='/jobs'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_job()
 
@@ -18945,7 +19145,7 @@ class KatelloErrata(Base):
         url='/katelloerrata'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_katello_erratum()
 
@@ -19013,7 +19213,7 @@ class MacPool(params.MacPool, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -19087,7 +19287,10 @@ class MacPools(Base):
         url = '/macpools'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(macpool),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -19145,7 +19348,7 @@ class MacPools(Base):
         url='/macpools'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_mac_pool()
 
@@ -19195,7 +19398,7 @@ class Network(params.Network, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -19274,7 +19477,7 @@ class NetworkLabel(params.Label, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -19311,11 +19514,14 @@ class NetworkLabels(Base):
         url = '/networks/{network:id}/labels'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{network:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(label),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -19398,14 +19604,14 @@ class NetworkLabels(Base):
         url = '/networks/{network:id}/labels'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{network:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_label()
@@ -19459,7 +19665,7 @@ class NetworkPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -19501,11 +19707,14 @@ class NetworkPermissions(Base):
         url = '/networks/{network:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{network:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -19588,14 +19797,14 @@ class NetworkPermissions(Base):
         url = '/networks/{network:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{network:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -19650,7 +19859,7 @@ class NetworkVnicProfile(params.VnicProfile, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -19696,7 +19905,7 @@ class NetworkVnicProfilePermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -19730,12 +19939,15 @@ class NetworkVnicProfilePermissions(Base):
         url = '/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{network:id}': self.parentclass.parentclass.get_id(),
-                    '{vnicprofile:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{network:id}': self.parentclass.parentclass.get_id(),
+                        '{vnicprofile:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={}
@@ -19820,7 +20032,7 @@ class NetworkVnicProfilePermissions(Base):
         url = '/networks/{network:id}/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -19828,7 +20040,7 @@ class NetworkVnicProfilePermissions(Base):
                         '{vnicprofile:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -19880,11 +20092,14 @@ class NetworkVnicProfiles(Base):
         url = '/networks/{network:id}/vnicprofiles'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{network:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(vnicprofile),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -19967,14 +20182,14 @@ class NetworkVnicProfiles(Base):
         url = '/networks/{network:id}/vnicprofiles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{network:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_vnic_profile()
@@ -20030,7 +20245,10 @@ class Networks(Base):
         url = '/networks'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(network),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -20062,7 +20280,7 @@ class Networks(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
                 headers={}
             ).get_network()
 
@@ -20089,7 +20307,7 @@ class Networks(Base):
         url='/networks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={}
         ).get_network()
 
@@ -20138,7 +20356,7 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -20346,14 +20564,14 @@ class OpenStackImageProviderCertificates(Base):
         url = '/openstackimageproviders/{openstackimageprovider:id}/certificates'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{openstackimageprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_certificate()
@@ -20509,14 +20727,14 @@ class OpenStackImageProviderOpenStackImages(Base):
         url = '/openstackimageproviders/{openstackimageprovider:id}/images'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{openstackimageprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_openstack_image()
@@ -20570,7 +20788,10 @@ class OpenStackImageProviders(Base):
         url = '/openstackimageproviders'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(openstackimageprovider),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -20628,7 +20849,7 @@ class OpenStackImageProviders(Base):
         url='/openstackimageproviders'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_openstack_image_provider()
 
@@ -20677,7 +20898,7 @@ class OpenStackNetworkProvider(params.OpenStackNetworkProvider, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -20875,14 +21096,14 @@ class OpenStackNetworkProviderCertificates(Base):
         url = '/openstacknetworkproviders/{openstacknetworkprovider:id}/certificates'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{openstacknetworkprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_certificate()
@@ -20959,7 +21180,7 @@ class OpenStackNetworkProviderOpenStackNetworkOpenStackSubnet(params.OpenStackSu
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -20993,12 +21214,15 @@ class OpenStackNetworkProviderOpenStackNetworkOpenStackSubnets(Base):
         url = '/openstacknetworkproviders/{openstacknetworkprovider:id}/networks/{network:id}/subnets'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{openstacknetworkprovider:id}': self.parentclass.parentclass.get_id(),
-                    '{network:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{openstacknetworkprovider:id}': self.parentclass.parentclass.get_id(),
+                        '{network:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(openstacksubnet),
             headers={}
@@ -21083,7 +21307,7 @@ class OpenStackNetworkProviderOpenStackNetworkOpenStackSubnets(Base):
         url = '/openstacknetworkproviders/{openstacknetworkprovider:id}/networks/{network:id}/subnets'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -21091,7 +21315,7 @@ class OpenStackNetworkProviderOpenStackNetworkOpenStackSubnets(Base):
                         '{network:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_openstack_subnet()
@@ -21192,14 +21416,14 @@ class OpenStackNetworkProviderOpenStackNetworks(Base):
         url = '/openstacknetworkproviders/{openstacknetworkprovider:id}/networks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{openstacknetworkprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_openstack_network()
@@ -21253,7 +21477,10 @@ class OpenStackNetworkProviders(Base):
         url = '/openstacknetworkproviders'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(openstacknetworkprovider),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -21311,7 +21538,7 @@ class OpenStackNetworkProviders(Base):
         url='/openstacknetworkproviders'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_openstack_network_provider()
 
@@ -21361,7 +21588,7 @@ class OpenStackVolumeProvider(params.OpenStackVolumeProvider, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -21560,14 +21787,14 @@ class OpenStackVolumeProviderCertificates(Base):
         url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/certificates'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{openstackvolumeprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_certificate()
@@ -21690,14 +21917,14 @@ class OpenStackVolumeProviderOpenStackVolumeTypes(Base):
         url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/volumetypes'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{openstackvolumeprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_openstack_volume_type()
@@ -21750,7 +21977,7 @@ class OpenStackVolumeProviderOpenstackVolumeAuthenticationKey(params.OpenstackVo
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -21779,7 +22006,7 @@ class OpenStackVolumeProviderOpenstackVolumeAuthenticationKey(params.OpenstackVo
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -21823,11 +22050,14 @@ class OpenStackVolumeProviderOpenstackVolumeAuthenticationKeys(Base):
         url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{openstackvolumeprovider:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{openstackvolumeprovider:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(openstackvolumeauthenticationkey),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -21910,14 +22140,14 @@ class OpenStackVolumeProviderOpenstackVolumeAuthenticationKeys(Base):
         url = '/openstackvolumeproviders/{openstackvolumeprovider:id}/authenticationkeys'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{openstackvolumeprovider:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_openstack_volume_authentication_key()
@@ -21972,7 +22202,10 @@ class OpenStackVolumeProviders(Base):
         url = '/openstackvolumeproviders'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(openstackvolumeprovider),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -22030,7 +22263,7 @@ class OpenStackVolumeProviders(Base):
         url='/openstackvolumeproviders'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_openstack_volume_provider()
 
@@ -22125,7 +22358,7 @@ class OperatingSystemInfos(Base):
         url='/operatingsystems'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_operating_system()
 
@@ -22172,7 +22405,7 @@ class Permission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -22211,7 +22444,10 @@ class Permissions(Base):
         url = '/permissions'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(permission),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -22269,7 +22505,7 @@ class Permissions(Base):
         url='/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_permission()
 
@@ -22317,7 +22553,7 @@ class Role(params.Role, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -22391,7 +22627,7 @@ class RolePermit(params.Permit, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -22428,11 +22664,14 @@ class RolePermits(Base):
         url = '/roles/{role:id}/permits'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{role:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{role:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permit),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -22515,14 +22754,14 @@ class RolePermits(Base):
         url = '/roles/{role:id}/permits'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{role:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permit()
@@ -22570,7 +22809,10 @@ class Roles(Base):
         url = '/roles'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(role),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -22628,7 +22870,7 @@ class Roles(Base):
         url='/roles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_role()
 
@@ -22671,7 +22913,10 @@ class SchedulingPolicies(Base):
         url = '/schedulingpolicies'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(schedulingpolicy),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -22730,7 +22975,7 @@ class SchedulingPolicies(Base):
         url='/schedulingpolicies'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={}
         ).get_scheduling_policy()
 
@@ -22780,7 +23025,7 @@ class SchedulingPolicy(params.SchedulingPolicy, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -22856,7 +23101,7 @@ class SchedulingPolicyBalance(params.Balance, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -22893,11 +23138,14 @@ class SchedulingPolicyBalances(Base):
         url = '/schedulingpolicies/{schedulingpolicy:id}/balances'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{schedulingpolicy:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{schedulingpolicy:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(balance),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -22981,14 +23229,14 @@ class SchedulingPolicyBalances(Base):
         url = '/schedulingpolicies/{schedulingpolicy:id}/balances'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{schedulingpolicy:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'case_sensitive:matrix':case_sensitive,'max:matrix':max}
+                args={'case_sensitive:matrix':case_sensitive,'max:matrix':max}
             ),
             headers={}
         ).get_balance()
@@ -23042,7 +23290,7 @@ class SchedulingPolicyFilter(params.Filter, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -23080,11 +23328,14 @@ class SchedulingPolicyFilters(Base):
         url = '/schedulingpolicies/{schedulingpolicy:id}/filters'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{schedulingpolicy:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{schedulingpolicy:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(filter),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -23168,14 +23419,14 @@ class SchedulingPolicyFilters(Base):
         url = '/schedulingpolicies/{schedulingpolicy:id}/filters'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{schedulingpolicy:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'case_sensitive:matrix':case_sensitive,'max:matrix':max}
+                args={'case_sensitive:matrix':case_sensitive,'max:matrix':max}
             ),
             headers={}
         ).get_filter()
@@ -23227,7 +23478,7 @@ class SchedulingPolicyUnit(params.SchedulingPolicyUnit, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -23299,7 +23550,7 @@ class SchedulingPolicyUnits(Base):
         url='/schedulingpolicyunits'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={}
         ).get_scheduling_policy_unit()
 
@@ -23348,7 +23599,7 @@ class SchedulingPolicyWeight(params.Weight, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -23386,11 +23637,14 @@ class SchedulingPolicyWeights(Base):
         url = '/schedulingpolicies/{schedulingpolicy:id}/weights'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{schedulingpolicy:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{schedulingpolicy:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(weight),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -23474,14 +23728,14 @@ class SchedulingPolicyWeights(Base):
         url = '/schedulingpolicies/{schedulingpolicy:id}/weights'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{schedulingpolicy:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'case_sensitive:matrix':case_sensitive,'max:matrix':max}
+                args={'case_sensitive:matrix':case_sensitive,'max:matrix':max}
             ),
             headers={}
         ).get_weight()
@@ -23537,7 +23791,7 @@ class StorageConnection(params.StorageConnection, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -23635,7 +23889,10 @@ class StorageConnections(Base):
         url = '/storageconnections'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(storageconnection),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -23693,7 +23950,7 @@ class StorageConnections(Base):
         url='/storageconnections'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_storage_connection()
 
@@ -23753,7 +24010,7 @@ class StorageDomain(params.StorageDomain, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -23909,7 +24166,7 @@ class StorageDomainDisk(params.Disk, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -24034,7 +24291,7 @@ class StorageDomainDiskPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -24068,12 +24325,15 @@ class StorageDomainDiskPermissions(Base):
         url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.parentclass.get_id(),
-                    '{disk:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{storagedomain:id}': self.parentclass.parentclass.get_id(),
+                        '{disk:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={}
@@ -24158,7 +24418,7 @@ class StorageDomainDiskPermissions(Base):
         url = '/storagedomains/{storagedomain:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -24166,7 +24426,7 @@ class StorageDomainDiskPermissions(Base):
                         '{disk:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -24220,7 +24480,7 @@ class StorageDomainDiskProfile(params.DiskProfile, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -24259,11 +24519,14 @@ class StorageDomainDiskProfiles(Base):
         url = '/storagedomains/{storagedomain:id}/diskprofiles'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(diskprofile),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -24346,14 +24609,14 @@ class StorageDomainDiskProfiles(Base):
         url = '/storagedomains/{storagedomain:id}/diskprofiles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_disk_profile()
@@ -24407,7 +24670,7 @@ class StorageDomainDiskSnapshot(params.DiskSnapshot, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -24500,14 +24763,14 @@ class StorageDomainDiskSnapshots(Base):
         url = '/storagedomains/{storagedomain:id}/disksnapshots'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_disk_snapshot()
@@ -24665,7 +24928,7 @@ class StorageDomainDisks(Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def add(self, disk, correlation_id=None, expect=None):
+    def add(self, disk, correlation_id=None, expect=None, unregistered=None):
 
         '''
         @type Disk:
@@ -24706,6 +24969,7 @@ class StorageDomainDisks(Base):
           [@param disk.wipe_after_delete: boolean]
           [@param disk.quota.id: string]
           [@param disk.sgio: string]
+        [@param unregistered: boolean (true|false)]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -24715,11 +24979,14 @@ class StorageDomainDisks(Base):
         url = '/storagedomains/{storagedomain:id}/disks'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={'unregistered:matrix':unregistered}
             ),
             body=ParseHelper.toXml(disk),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -24805,14 +25072,14 @@ class StorageDomainDisks(Base):
         url = '/storagedomains/{storagedomain:id}/disks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'unregistered:matrix':unregistered,'max:matrix':max}
+                args={'search:query':query,'case_sensitive:matrix':case_sensitive,'unregistered:matrix':unregistered,'max:matrix':max}
             ),
             headers={}
         ).get_disk()
@@ -24937,14 +25204,14 @@ class StorageDomainFiles(Base):
         url = '/storagedomains/{storagedomain:id}/files'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}
+                args={'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}
             ),
             headers={}
         ).get_file()
@@ -25099,14 +25366,14 @@ class StorageDomainImages(Base):
         url = '/storagedomains/{storagedomain:id}/images'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_image()
@@ -25160,7 +25427,7 @@ class StorageDomainPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -25202,11 +25469,14 @@ class StorageDomainPermissions(Base):
         url = '/storagedomains/{storagedomain:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -25289,14 +25559,14 @@ class StorageDomainPermissions(Base):
         url = '/storagedomains/{storagedomain:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -25350,7 +25620,7 @@ class StorageDomainStorageConnection(params.StorageConnection, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -25387,11 +25657,14 @@ class StorageDomainStorageConnections(Base):
         url = '/storagedomains/{storagedomain:id}/storageconnections'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(storageconnection),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -25474,14 +25747,14 @@ class StorageDomainStorageConnections(Base):
         url = '/storagedomains/{storagedomain:id}/storageconnections'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_storage_connection()
@@ -25536,7 +25809,7 @@ class StorageDomainTemplate(params.Template, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -25722,7 +25995,7 @@ class StorageDomainTemplateDisks(Base):
         url = '/storagedomains/{storagedomain:id}/templates/{template:id}/disks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -25730,7 +26003,7 @@ class StorageDomainTemplateDisks(Base):
                         '{template:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_disk()
@@ -25832,14 +26105,14 @@ class StorageDomainTemplates(Base):
         url = '/storagedomains/{storagedomain:id}/templates'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'unregistered:matrix':unregistered,'max:matrix':max}
+                args={'unregistered:matrix':unregistered,'max:matrix':max}
             ),
             headers={}
         ).get_template()
@@ -25894,7 +26167,7 @@ class StorageDomainVM(params.VM, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -26080,7 +26353,7 @@ class StorageDomainVMDisks(Base):
         url = '/storagedomains/{storagedomain:id}/vms/{vm:id}/disks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -26088,7 +26361,7 @@ class StorageDomainVMDisks(Base):
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_disk()
@@ -26190,14 +26463,14 @@ class StorageDomainVMs(Base):
         url = '/storagedomains/{storagedomain:id}/vms'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{storagedomain:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'unregistered:matrix':unregistered,'max:matrix':max}
+                args={'unregistered:matrix':unregistered,'max:matrix':max}
             ),
             headers={}
         ).get_vm()
@@ -26311,7 +26584,10 @@ class StorageDomains(Base):
         url = '/storagedomains'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(storagedomain),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -26343,7 +26619,7 @@ class StorageDomains(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
                 headers={}
             ).get_storage_domain()
 
@@ -26370,7 +26646,7 @@ class StorageDomains(Base):
         url='/storagedomains'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={}
         ).get_storage_domain()
 
@@ -26417,7 +26693,7 @@ class Tag(params.Tag, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -26479,7 +26755,10 @@ class Tags(Base):
         url = '/tags'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(tag),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -26537,7 +26816,7 @@ class Tags(Base):
         url='/tags'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_tag()
 
@@ -26591,7 +26870,7 @@ class Template(params.Template, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -26827,14 +27106,14 @@ class TemplateCdRoms(Base):
         url = '/templates/{template:id}/cdroms'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{template:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_cdrom()
@@ -26893,7 +27172,7 @@ class TemplateDisk(params.Disk, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -27045,14 +27324,14 @@ class TemplateDisks(Base):
         url = '/templates/{template:id}/disks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{template:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_disk()
@@ -27106,7 +27385,7 @@ class TemplateGraphicsConsole(params.GraphicsConsole, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -27143,11 +27422,14 @@ class TemplateGraphicsConsoles(Base):
         url = '/templates/{template:id}/graphicsconsoles'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{template:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{template:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(graphicsconsole),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -27230,14 +27512,14 @@ class TemplateGraphicsConsoles(Base):
         url = '/templates/{template:id}/graphicsconsoles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{template:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_graphics_console()
@@ -27310,7 +27592,7 @@ class TemplateNIC(params.NIC, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -27367,11 +27649,14 @@ class TemplateNICs(Base):
         url = '/templates/{template:id}/nics'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{template:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{template:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(nic),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -27454,14 +27739,14 @@ class TemplateNICs(Base):
         url = '/templates/{template:id}/nics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{template:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_nic()
@@ -27515,7 +27800,7 @@ class TemplatePermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -27557,11 +27842,14 @@ class TemplatePermissions(Base):
         url = '/templates/{template:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{template:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{template:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -27644,14 +27932,14 @@ class TemplatePermissions(Base):
         url = '/templates/{template:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{template:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -27705,7 +27993,7 @@ class TemplateTag(params.Tag, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -27742,11 +28030,14 @@ class TemplateTags(Base):
         url = '/templates/{template:id}/tags'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{template:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{template:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(tag),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -27829,14 +28120,14 @@ class TemplateTags(Base):
         url = '/templates/{template:id}/tags'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{template:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_tag()
@@ -27890,7 +28181,7 @@ class TemplateWatchDog(params.WatchDog, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -27918,7 +28209,7 @@ class TemplateWatchDog(params.WatchDog, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -27960,11 +28251,14 @@ class TemplateWatchDogs(Base):
         url = '/templates/{template:id}/watchdogs'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{template:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{template:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(watchdog),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -28047,14 +28341,14 @@ class TemplateWatchDogs(Base):
         url = '/templates/{template:id}/watchdogs'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{template:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_watchdog()
@@ -28185,7 +28479,10 @@ class Templates(Base):
         url = '/templates'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(template),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -28218,7 +28515,7 @@ class Templates(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
                 headers={"All-Content":all_content}
             ).get_template()
 
@@ -28246,7 +28543,7 @@ class Templates(Base):
         url='/templates'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={"All-Content":all_content}
         ).get_template()
 
@@ -28297,7 +28594,7 @@ class User(params.User, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -28343,7 +28640,7 @@ class UserPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -28400,11 +28697,14 @@ class UserPermissions(Base):
         url = '/users/{user:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{user:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{user:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -28487,14 +28787,14 @@ class UserPermissions(Base):
         url = '/users/{user:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{user:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -28548,7 +28848,7 @@ class UserRole(params.Role, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -28595,7 +28895,7 @@ class UserRolePermit(params.Permit, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -28632,12 +28932,15 @@ class UserRolePermits(Base):
         url = '/users/{user:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{user:id}': self.parentclass.parentclass.get_id(),
-                    '{role:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{user:id}': self.parentclass.parentclass.get_id(),
+                        '{role:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permit),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -28722,7 +29025,7 @@ class UserRolePermits(Base):
         url = '/users/{user:id}/roles/{role:id}/permits'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -28730,7 +29033,7 @@ class UserRolePermits(Base):
                         '{role:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permit()
@@ -28831,14 +29134,14 @@ class UserRoles(Base):
         url = '/users/{user:id}/roles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{user:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_role()
@@ -28892,7 +29195,7 @@ class UserSSHPublicKey(params.SSHPublicKey, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -28916,7 +29219,7 @@ class UserSSHPublicKey(params.SSHPublicKey, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={}
         )
@@ -28957,11 +29260,14 @@ class UserSSHPublicKeys(Base):
         url = '/users/{user:id}/sshpublickeys'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{user:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{user:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(sshpublickey),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -29044,14 +29350,14 @@ class UserSSHPublicKeys(Base):
         url = '/users/{user:id}/sshpublickeys'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{user:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_ssh_public_key()
@@ -29105,7 +29411,7 @@ class UserTag(params.Tag, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -29142,11 +29448,14 @@ class UserTags(Base):
         url = '/users/{user:id}/tags'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{user:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{user:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(tag),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -29229,14 +29538,14 @@ class UserTags(Base):
         url = '/users/{user:id}/tags'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{user:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_tag()
@@ -29281,7 +29590,10 @@ class Users(Base):
         url = '/users'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(user),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -29313,7 +29625,7 @@ class Users(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
                 headers={}
             ).get_user()
 
@@ -29340,7 +29652,7 @@ class Users(Base):
         url='/users'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={}
         ).get_user()
 
@@ -29407,7 +29719,7 @@ class VM(params.VM, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -30239,14 +30551,14 @@ class VMApplications(Base):
         url = '/vms/{vm:id}/applications'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_application()
@@ -30304,7 +30616,7 @@ class VMCdRom(params.CdRom, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'current:matrix':current,'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'current:matrix':current,'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -30345,11 +30657,14 @@ class VMCdRoms(Base):
         url = '/vms/{vm:id}/cdroms'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(cdrom),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -30433,14 +30748,14 @@ class VMCdRoms(Base):
         url = '/vms/{vm:id}/cdroms'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'current:matrix':current,'max:matrix':max}
+                args={'current:matrix':current,'max:matrix':max}
             ),
             headers={}
         ).get_cdrom()
@@ -30500,7 +30815,7 @@ class VMDisk(params.Disk, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -30545,7 +30860,7 @@ class VMDisk(params.Disk, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -30709,7 +31024,7 @@ class VMDiskPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -30743,12 +31058,15 @@ class VMDiskPermissions(Base):
         url = '/vms/{vm:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.parentclass.get_id(),
-                    '{disk:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.parentclass.get_id(),
+                        '{disk:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={}
@@ -30833,7 +31151,7 @@ class VMDiskPermissions(Base):
         url = '/vms/{vm:id}/disks/{disk:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -30841,7 +31159,7 @@ class VMDiskPermissions(Base):
                         '{disk:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -31062,11 +31380,14 @@ class VMDisks(Base):
         url = '/vms/{vm:id}/disks'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(disk),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -31149,14 +31470,14 @@ class VMDisks(Base):
         url = '/vms/{vm:id}/disks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_disk()
@@ -31210,7 +31531,7 @@ class VMGraphicsConsole(params.GraphicsConsole, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -31247,11 +31568,14 @@ class VMGraphicsConsoles(Base):
         url = '/vms/{vm:id}/graphicsconsoles'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(graphicsconsole),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -31335,14 +31659,14 @@ class VMGraphicsConsoles(Base):
         url = '/vms/{vm:id}/graphicsconsoles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'current:matrix':current,'max:matrix':max}
+                args={'current:matrix':current,'max:matrix':max}
             ),
             headers={}
         ).get_graphics_console()
@@ -31396,7 +31720,7 @@ class VMHostDevice(params.HostDevice, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -31433,11 +31757,14 @@ class VMHostDevices(Base):
         url = '/vms/{vm:id}/hostdevices'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(hostdevice),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -31520,14 +31847,14 @@ class VMHostDevices(Base):
         url = '/vms/{vm:id}/hostdevices'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_host_device()
@@ -31628,14 +31955,14 @@ class VMKatelloErrata(Base):
         url = '/vms/{vm:id}/katelloerrata'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_katello_erratum()
@@ -31713,7 +32040,7 @@ class VMNIC(params.NIC, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -31757,7 +32084,7 @@ class VMNIC(params.NIC, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -31930,7 +32257,7 @@ class VMNICReportedDevices(Base):
         url = '/vms/{vm:id}/nics/{nic:id}/reporteddevices'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -31938,7 +32265,7 @@ class VMNICReportedDevices(Base):
                         '{nic:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_reported_device()
@@ -32128,11 +32455,14 @@ class VMNICs(Base):
         url = '/vms/{vm:id}/nics'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(nic),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -32217,14 +32547,14 @@ class VMNICs(Base):
         url = '/vms/{vm:id}/nics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={"All-Content":all_content}
         ).get_nic()
@@ -32278,7 +32608,7 @@ class VMPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -32320,11 +32650,14 @@ class VMPermissions(Base):
         url = '/vms/{vm:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -32407,14 +32740,14 @@ class VMPermissions(Base):
         url = '/vms/{vm:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -32537,14 +32870,14 @@ class VMReportedDevices(Base):
         url = '/vms/{vm:id}/reporteddevices'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_reported_device()
@@ -32667,14 +33000,14 @@ class VMSessions(Base):
         url = '/vms/{vm:id}/sessions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_session()
@@ -32731,7 +33064,7 @@ class VMSnapshot(params.Snapshot, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -32882,7 +33215,7 @@ class VMSnapshotCdRoms(Base):
         url = '/vms/{vm:id}/snapshots/{snapshot:id}/cdroms'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -32890,7 +33223,7 @@ class VMSnapshotCdRoms(Base):
                         '{snapshot:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_cdrom()
@@ -32945,7 +33278,7 @@ class VMSnapshotDisk(params.Disk, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -33040,7 +33373,7 @@ class VMSnapshotDisks(Base):
         url = '/vms/{vm:id}/snapshots/{snapshot:id}/disks'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -33048,7 +33381,7 @@ class VMSnapshotDisks(Base):
                         '{snapshot:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_disk()
@@ -33173,7 +33506,7 @@ class VMSnapshotNics(Base):
         url = '/vms/{vm:id}/snapshots/{snapshot:id}/nics'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
@@ -33181,7 +33514,7 @@ class VMSnapshotNics(Base):
                         '{snapshot:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_nic()
@@ -33231,11 +33564,14 @@ class VMSnapshots(Base):
         url = '/vms/{vm:id}/snapshots'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(snapshot),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -33320,14 +33656,14 @@ class VMSnapshots(Base):
         url = '/vms/{vm:id}/snapshots'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={"All-Content":all_content}
         ).get_snapshot()
@@ -33506,7 +33842,7 @@ class VMTag(params.Tag, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -33543,11 +33879,14 @@ class VMTags(Base):
         url = '/vms/{vm:id}/tags'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(tag),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -33630,14 +33969,14 @@ class VMTags(Base):
         url = '/vms/{vm:id}/tags'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_tag()
@@ -33691,7 +34030,7 @@ class VMVirtualNumaNode(params.VirtualNumaNode, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -33727,7 +34066,7 @@ class VMVirtualNumaNode(params.VirtualNumaNode, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -33777,11 +34116,14 @@ class VMVirtualNumaNodes(Base):
         url = '/vms/{vm:id}/numanodes'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(vmnumanode),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -33864,14 +34206,14 @@ class VMVirtualNumaNodes(Base):
         url = '/vms/{vm:id}/numanodes'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_vm_numa_node()
@@ -33925,7 +34267,7 @@ class VMWatchDog(params.WatchDog, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -33953,7 +34295,7 @@ class VMWatchDog(params.WatchDog, Base):
         )
 
         result = self.__getProxy().update(
-            url=SearchHelper.appendQuery(url, {'async:matrix':async}),
+            url=UrlHelper.appendParameters(url, {'async:matrix':async}),
             body=ParseHelper.toXml(self.superclass),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -33995,11 +34337,14 @@ class VMWatchDogs(Base):
         url = '/vms/{vm:id}/watchdogs'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vm:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(watchdog),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -34082,14 +34427,14 @@ class VMWatchDogs(Base):
         url = '/vms/{vm:id}/watchdogs'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vm:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_watchdog()
@@ -34419,7 +34764,10 @@ class VMs(Base):
         url = '/vms'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(vm),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -34452,7 +34800,7 @@ class VMs(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
                 headers={"All-Content":all_content}
             ).get_vm()
 
@@ -34480,7 +34828,7 @@ class VMs(Base):
         url='/vms'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={"All-Content":all_content}
         ).get_vm()
 
@@ -34549,7 +34897,7 @@ class VmPool(params.VmPool, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -34653,7 +35001,7 @@ class VmPoolPermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -34695,11 +35043,14 @@ class VmPoolPermissions(Base):
         url = '/vmpools/{vmpool:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vmpool:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vmpool:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -34782,14 +35133,14 @@ class VmPoolPermissions(Base):
         url = '/vmpools/{vmpool:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vmpool:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -34840,7 +35191,10 @@ class VmPools(Base):
         url = '/vmpools'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(vmpool),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -34872,7 +35226,7 @@ class VmPools(Base):
                 raise err
         elif name:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'name='+name}),
+                url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
                 headers={}
             ).get_vmpool()
 
@@ -34899,7 +35253,7 @@ class VmPools(Base):
         url='/vmpools'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
             headers={}
         ).get_vmpool()
 
@@ -34947,7 +35301,7 @@ class VnicProfile(params.VnicProfile, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -35024,7 +35378,7 @@ class VnicProfilePermission(params.Permission, Base):
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 {'async:matrix':async}
             ),
@@ -35066,11 +35420,14 @@ class VnicProfilePermissions(Base):
         url = '/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vnicprofile:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{vnicprofile:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
             ),
             body=ParseHelper.toXml(permission),
             headers={"Correlation-Id":correlation_id, "Expect":expect}
@@ -35153,14 +35510,14 @@ class VnicProfilePermissions(Base):
         url = '/vnicprofiles/{vnicprofile:id}/permissions'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url=UrlHelper.replace(
                     url=url,
                     args={
                         '{vnicprofile:id}': self.parentclass.get_id(),
                     }
                 ),
-                qargs={'max:matrix':max}
+                args={'max:matrix':max}
             ),
             headers={}
         ).get_permission()
@@ -35210,7 +35567,10 @@ class VnicProfiles(Base):
         url = '/vnicprofiles'
 
         result = self.__getProxy().add(
-           url=url,
+           url=UrlHelper.appendParameters(
+                url=url,
+                args={}
+           ),
            body=ParseHelper.toXml(vnicprofile),
            headers={"Correlation-Id":correlation_id, "Expect":expect}
         )
@@ -35268,7 +35628,7 @@ class VnicProfiles(Base):
         url='/vnicprofiles'
 
         result = self.__getProxy().get(
-            url=SearchHelper.appendQuery(url, {'max:matrix':max}),
+            url=UrlHelper.appendParameters(url, {'max:matrix':max}),
             headers={}
         ).get_vnic_profile()
 

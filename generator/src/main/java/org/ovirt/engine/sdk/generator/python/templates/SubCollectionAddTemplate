@@ -1,12 +1,15 @@
-    def add(self, $parameter_name$$headers_method_params_str$):
+    def add(self, $parameter_name$$combined_method_params$):
 
 $docs$
         url = '/$url$'
 
         result = self.__getProxy().add(
-            url=UrlHelper.replace(
-                url,
-                $url_params$
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args=$url_params$
+                ),
+                args=$url_query_params$
             ),
             body=ParseHelper.toXml($parameter_name$),
             headers=$headers_map_params_str$

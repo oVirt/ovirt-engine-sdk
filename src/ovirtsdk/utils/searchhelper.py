@@ -17,31 +17,7 @@
 import fnmatch
 import re
 
-try:
-    from urllib import urlencode
-except ImportError:
-    from urllib.parse import urlencode
-
 class SearchHelper():
-
-    @staticmethod
-    def appendQuery(url, qargs={}):
-        '''Appends url params to url'''
-
-        matrix_params=''
-        query_params=''
-        
-        if (qargs and len(qargs) > 0):
-            for k, v in qargs.items():
-                if v != None:
-                    prms = k.split(':')
-                    if len(prms) == 2 and prms[1] == 'matrix':
-                        matrix_params += ';' + urlencode({prms[0] : v})
-                    else:
-                        k = prms[0] if len(prms) == 2 else k
-                        query_params += '?' + urlencode({k : v}) if query_params.find('?') is -1 \
-                                                                 else '&' + urlencode({k : v})
-        return (url + matrix_params + query_params)
 
     @staticmethod
     def filterResults(result, constraints={}):

@@ -14,6 +14,12 @@
 # limitations under the License.
 #
 
+try:
+    from urllib import urlencode
+except ImportError:
+    from urllib.parse import urlencode
+
+
 class UrlHelper(object):
     @staticmethod
     def replace(url, args={}):
@@ -26,3 +32,22 @@ class UrlHelper(object):
         if urlparam:
             return url + '/' + urlparam
         return url
+
+    @staticmethod
+    def appendParameters(url, args={}):
+        '''Appends url params to url'''
+
+        matrix_params=''
+        query_params=''
+
+        if (args and len(args) > 0):
+            for k, v in args.items():
+                if v != None:
+                    prms = k.split(':')
+                    if len(prms) == 2 and prms[1] == 'matrix':
+                        matrix_params += ';' + urlencode({prms[0] : v})
+                    else:
+                        k = prms[0] if len(prms) == 2 else k
+                        query_params += '?' + urlencode({k : v}) if query_params.find('?') is -1 \
+                                                                 else '&' + urlencode({k : v})
+        return (url + matrix_params + query_params)

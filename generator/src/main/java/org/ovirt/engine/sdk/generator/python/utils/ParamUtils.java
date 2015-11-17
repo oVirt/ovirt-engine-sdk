@@ -42,6 +42,9 @@ public class ParamUtils {
             && link.getRequest().getUrl().getParametersSets().size() > 0) {
             for (ParametersSet parametersSet : link.getRequest().getUrl().getParametersSets()) {
                 for (Parameter param : parametersSet.getParameters()) {
+                    if (param.getValue() == null) {
+                        param.setValue("");
+                    }
                     if (param.getValue().equals("search query")) {
                         param.setValue("query");
                     }

@@ -15,7 +15,7 @@ $docs$
                 raise err
         elif alias:
             result = self.__getProxy().get(
-                url=SearchHelper.appendQuery(url, {'search:query':'alias='+alias}),
+                url=UrlHelper.appendParameters(url, {'search:query':'alias='+alias}),
                 headers=$headers_map_params_str$
             ).get_$getter_name$()
 

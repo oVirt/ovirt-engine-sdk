@@ -8,7 +8,7 @@ $docs$
         )
 
         return self.__getProxy().delete(
-            url=SearchHelper.appendQuery(
+            url=UrlHelper.appendParameters(
                 url,
                 $url_params$
             ),
