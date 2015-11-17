@@ -17,7 +17,7 @@
 package org.ovirt.engine.sdk.generator;
 
 import org.ovirt.engine.sdk.entities.DetailedLink;
-import org.ovirt.engine.sdk.entities.RSDL;
+import org.ovirt.engine.sdk.entities.Rsdl;
 import org.ovirt.engine.sdk.entities.Response;
 import org.ovirt.engine.sdk.generator.utils.Tree;
 
@@ -84,7 +84,7 @@ public class RsdlData {
         this.file = file;
 
         // Load the RSDL document:
-        RSDL rsdl = load();
+        Rsdl rsdl = load();
 
         // The RSDL provided by the server doesn't include some links that are needed by the code generator, so we need
         // to add them explicitly:
@@ -121,14 +121,14 @@ public class RsdlData {
         }
     }
 
-    private void addMissingLinks(RSDL rsdl) {
+    private void addMissingLinks(Rsdl rsdl) {
         addMissingLink(rsdl, "users/{user:id}/roles/{role:id}", "Role");
         addMissingLink(rsdl, "users/{user:id}/roles/{role:id}/permits/{permit:id}", "Permit");
         addMissingLink(rsdl, "groups/{group:id}/roles/{role:id}", "Role");
         addMissingLink(rsdl, "groups/{group:id}/roles/{role:id}/permits/{permit:id}", "Permit");
     }
 
-    private void addMissingLink(RSDL rsdl, String href, String type) {
+    private void addMissingLink(Rsdl rsdl, String href, String type) {
         DetailedLink link = new DetailedLink();
         link.setHref(href);
         link.setRel("get");
@@ -144,12 +144,12 @@ public class RsdlData {
      * @return the RSDL object populated with the data loaded from the file
      * @throws IOException if something while loading the metadata
      */
-    private RSDL load() throws IOException {
+    private Rsdl load() throws IOException {
         try {
-            JAXBContext context = JAXBContext.newInstance(RSDL.class);
+            JAXBContext context = JAXBContext.newInstance(Rsdl.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             Source source = new StreamSource(file);
-            JAXBElement<RSDL> element = unmarshaller.unmarshal(source, RSDL.class);
+            JAXBElement<Rsdl> element = unmarshaller.unmarshal(source, Rsdl.class);
             return element.getValue();
         }
         catch (JAXBException exception) {
