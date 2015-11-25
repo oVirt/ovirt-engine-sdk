@@ -9496,7 +9496,6 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Label</type>
                     <parameters_set>
-                        <description>add a new label to the interface</description>
                         <parameter required="true" type="xs:string">
                             <name>label.id</name>
                         </parameter>
@@ -9758,6 +9757,194 @@ or less indicates that the session should never timeout</description>
             </request>
             <response>
                 <type>Statistic</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/updatevirtualfunctionsconfiguration" rel="updatevirtualfunctionsconfiguration">
+            <description>update virtual functions configuration on the specified host NIC</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                </headers>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body>
+                    <type>Action</type>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int">
+                            <name>action.virtual_functions_configuration.number_of_virtual_functions</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.virtual_functions_configuration.all_networks_allowed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>action.async</name>
+                        </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>action.grace_period.expiry</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Action</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/virtualfunctionallowedlabels" rel="add">
+            <description>add a new virtual function allowed label on the interface</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Label</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>label.id</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Label</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/virtualfunctionallowedlabels" rel="get">
+            <description>get the virtual function allowed labels on the interface</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>Labels</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/virtualfunctionallowedlabels/{virtualfunctionallowedlabel:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/virtualfunctionallowedlabels/{virtualfunctionallowedlabel:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Label</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/virtualfunctionallowednetworks" rel="add">
+            <description>add a new label to the interface</description>
+            <request>
+                <http_method>POST</http_method>
+                <headers>
+                    <header required="false">
+                        <name>Correlation-Id</name>
+                        <value>any string</value>
+                    </header>
+                    <header required="true">
+                        <name>Content-Type</name>
+                        <value>application/xml|json</value>
+                    </header>
+                    <header required="false">
+                        <name>Expect</name>
+                        <value>201-created</value>
+                    </header>
+                </headers>
+                <body>
+                    <type>Network</type>
+                    <parameters_set>
+                        <parameter required="true" type="xs:string">
+                            <name>network.id|name</name>
+                        </parameter>
+                    </parameters_set>
+                </body>
+            </request>
+            <response>
+                <type>Network</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/virtualfunctionallowednetworks" rel="get">
+            <description>get the virtual function allowed networks on the interface</description>
+            <request>
+                <http_method>GET</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:int" context="matrix">
+                            <name>max</name>
+                            <value>max results</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+            <response>
+                <type>Networks</type>
+            </response>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/virtualfunctionallowednetworks/{virtualfunctionallowednetwork:id}" rel="delete">
+            <request>
+                <http_method>DELETE</http_method>
+                <url>
+                    <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>async</name>
+                            <value>true|false</value>
+                        </parameter>
+                    </parameters_set>
+                </url>
+                <body/>
+            </request>
+        </link>
+        <link href="hosts/{host:id}/nics/{nic:id}/virtualfunctionallowednetworks/{virtualfunctionallowednetwork:id}" rel="get">
+            <request>
+                <http_method>GET</http_method>
+                <body/>
+            </request>
+            <response>
+                <type>Network</type>
             </response>
         </link>
         <link href="hosts/{host:id}/numanodes" rel="get">
@@ -10528,6 +10715,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>instance_type.io.threads</name>
+                        </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>instance_type.memory_policy.guaranteed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>instance_type.memory_policy.ballooning</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>instance_type.cpu.topology.cores</name>
@@ -11786,6 +11979,9 @@ or less indicates that the session should never timeout</description>
     <name>custom_property.value</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vnicprofile.pass_through.mode</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -16083,6 +16279,12 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>template.io.threads</name>
                         </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>template.memory_policy.guaranteed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>template.memory_policy.ballooning</name>
+                        </parameter>
                         <parameter required="false" type="xs:int">
                             <name>template.cpu.topology.cores</name>
                         </parameter>
@@ -16444,6 +16646,12 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>template.io.threads</name>
+                        </parameter>
+                        <parameter required="false" type="xs:long">
+                            <name>template.memory_policy.guaranteed</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>template.memory_policy.ballooning</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>template.cpu.topology.cores</name>
@@ -19039,22 +19247,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.disks.clone</name>
-                        </parameter>
-                        <parameter required="false" type="collection">
-                            <name>vm.disks.disk</name>
-                            <parameters_set>
-<parameter required="false" type="xs:string">
-    <name>disk.id</name>
-</parameter>
-<parameter required="false" type="collection">
-    <name>storage_domains.storage_domain</name>
-    <parameters_set>
-        <parameter required="false" type="xs:string">
-            <name>storage_domain.id</name>
-        </parameter>
-    </parameters_set>
-</parameter>
-                            </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm.tunnel_migration</name>
@@ -22568,6 +22760,9 @@ or less indicates that the session should never timeout</description>
 </parameter>
                             </parameters_set>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vnicprofile.pass_through.mode</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -22677,6 +22872,9 @@ or less indicates that the session should never timeout</description>
     <name>custom_property.value</name>
 </parameter>
                             </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vnicprofile.pass_through.mode</name>
                         </parameter>
                     </parameters_set>
                 </body>

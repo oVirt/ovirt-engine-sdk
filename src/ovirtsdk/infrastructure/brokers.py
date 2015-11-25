@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-11-18 11:08:22.000688'''
+'''Generated at: 2015-11-25 09:39:10.000982'''
 
 
 from ovirtsdk.xml import params
@@ -14942,6 +14942,244 @@ class HostHostDevices(Base):
             context=self.context
         )
 
+class HostHostNICLabel(params.Label, Base):
+    def __init__(self, hostnic, label, context):
+        Base.__init__(self, context)
+        self.parentclass = hostnic
+        self.superclass  =  label
+
+        #SUB_COLLECTIONS
+    def __new__(cls, hostnic, label, context):
+        if label is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(hostnic, label, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/hosts/{host:id}/nics/{nic:id}/virtualfunctionallowedlabels/{virtualfunctionallowedlabel:id}',
+            {
+                '{host:id}': self.parentclass.parentclass.get_id(),
+                '{nic:id}': self.parentclass.get_id(),
+                '{virtualfunctionallowedlabel:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=UrlHelper.appendParameters(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
+class HostHostNICLabels(Base):
+
+    def __init__(self, hostnic , context):
+        Base.__init__(self, context)
+        self.parentclass = hostnic
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, label, correlation_id=None, expect=None):
+
+        '''
+        @type Label:
+
+        @param label.id: string
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return Label:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/virtualfunctionallowedlabels'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
+            ),
+            body=ParseHelper.toXml(label),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return HostHostNICLabel(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Labels:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/virtualfunctionallowedlabels'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{host:id}': self.parentclass.parentclass.get_id(),
+                                '{nic:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return HostHostNICLabel(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_label()
+
+            return HostHostNICLabel(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Labels:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/virtualfunctionallowedlabels'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={'max:matrix':max}
+            ),
+            headers={}
+        ).get_label()
+
+        return ParseHelper.toSubCollection(
+            HostHostNICLabel,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
+class HostHostNICNetwork(params.Network, Base):
+    def __init__(self, hostnic, network, context):
+        Base.__init__(self, context)
+        self.parentclass = hostnic
+        self.superclass  =  network
+
+        #SUB_COLLECTIONS
+    def __new__(cls, hostnic, network, context):
+        if network is None: return None
+        obj = object.__new__(cls)
+        obj.__init__(hostnic, network, context)
+        return obj
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def delete(self, async=None):
+        '''
+        [@param async: boolean (true|false)]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/hosts/{host:id}/nics/{nic:id}/virtualfunctionallowednetworks/{virtualfunctionallowednetwork:id}',
+            {
+                '{host:id}': self.parentclass.parentclass.get_id(),
+                '{nic:id}': self.parentclass.get_id(),
+                '{virtualfunctionallowednetwork:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=UrlHelper.appendParameters(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Content-type":None}
+        )
+
 class HostHostNICNetworkAttachment(params.NetworkAttachment, Base):
     def __init__(self, hostnic, networkattachment, context):
         Base.__init__(self, context)
@@ -15191,6 +15429,152 @@ class HostHostNICNetworkAttachments(Base):
             context=self.context
         )
 
+class HostHostNICNetworks(Base):
+
+    def __init__(self, hostnic , context):
+        Base.__init__(self, context)
+        self.parentclass = hostnic
+
+    def __getProxy(self):
+        proxy = context.manager[self.context].get('proxy')
+        if proxy:
+            return proxy
+        #This may happen only if sdk was explicitly disconnected
+        #using .disconnect() method, but resource instance ref. is
+        #still available at client's code.
+        raise DisconnectedError
+
+    def add(self, network, correlation_id=None, expect=None):
+
+        '''
+        @type Network:
+
+        @param network.id|name: string
+        [@param correlation_id: any string]
+        [@param expect: 201-created]
+
+        @return Network:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/virtualfunctionallowednetworks'
+
+        result = self.__getProxy().add(
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={}
+            ),
+            body=ParseHelper.toXml(network),
+            headers={"Correlation-Id":correlation_id, "Expect":expect}
+        )
+
+        return HostHostNICNetwork(
+            self.parentclass,
+            result,
+            self.context
+        )
+
+    def get(self, name=None, id=None):
+
+        '''
+        [@param id  : string (the id of the entity)]
+        [@param name: string (the name of the entity)]
+
+        @return Networks:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/virtualfunctionallowednetworks'
+
+        if id:
+            try :
+                result = self.__getProxy().get(
+                    url=UrlHelper.append(
+                        UrlHelper.replace(
+                            url,
+                            {
+                                '{host:id}': self.parentclass.parentclass.get_id(),
+                                '{nic:id}': self.parentclass.get_id(),
+                            }
+                        ),
+                        id
+                    ),
+                    headers={}
+                )
+
+                return HostHostNICNetwork(
+                    self.parentclass,
+                    result,
+                    self.context
+                )
+            except RequestError as err:
+                if err.status and err.status == 404:
+                    return None
+                raise err
+        elif name:
+            result = self.__getProxy().get(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                headers={}
+            ).get_network()
+
+            return HostHostNICNetwork(
+                self.parentclass,
+                FilterHelper.getItem(
+                    FilterHelper.filter(
+                        result,
+                        {'name':name}
+                    ),
+                    query="name=" + name
+                ),
+                self.context
+            )
+        else:
+            raise MissingParametersError(['id', 'name'])
+
+    def list(self, max=None, **kwargs):
+        '''
+        [@param **kwargs: dict (property based filtering)"]
+        [@param max: int (max results)]
+
+        @return Networks:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/virtualfunctionallowednetworks'
+
+        result = self.__getProxy().get(
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url=url,
+                    args={
+                        '{host:id}': self.parentclass.parentclass.get_id(),
+                        '{nic:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={'max:matrix':max}
+            ),
+            headers={}
+        ).get_network()
+
+        return ParseHelper.toSubCollection(
+            HostHostNICNetwork,
+            self.parentclass,
+            FilterHelper.filter(
+                result,
+                kwargs
+            ),
+            context=self.context
+        )
+
 class HostKatelloErrata(Base):
 
     def __init__(self, host , context):
@@ -15330,6 +15714,8 @@ class HostNIC(params.HostNIC, Base):
         self.labels = HostNICLabels(self, context)
         self.networkattachments = HostHostNICNetworkAttachments(self, context)
         self.statistics = HostNICStatistics(self, context)
+        self.virtualfunctionallowedlabels = HostHostNICLabels(self, context)
+        self.virtualfunctionallowednetworks = HostHostNICNetworks(self, context)
 
     def __new__(cls, host, hostnic, context):
         if hostnic is None: return None
@@ -15458,6 +15844,36 @@ class HostNIC(params.HostNIC, Base):
         '''
 
         url = '/hosts/{host:id}/nics/{nic:id}/detach'
+
+        result = self.__getProxy().request(
+            method='POST',
+            url=UrlHelper.replace(
+                url,
+                {
+                    '{host:id}': self.parentclass.get_id(),
+                    '{nic:id}': self.get_id(),
+                }
+            ),
+            body=ParseHelper.toXml(action),
+            headers={"Correlation-Id":correlation_id}
+        )
+
+        return result
+
+    def updatevirtualfunctionsconfiguration(self, action=params.Action(), correlation_id=None):
+        '''
+        @type Action:
+
+        [@param action.virtual_functions_configuration.number_of_virtual_functions: int]
+        [@param action.virtual_functions_configuration.all_networks_allowed: boolean]
+        [@param action.async: boolean]
+        [@param action.grace_period.expiry: long]
+        [@param correlation_id: any string]
+
+        @return Action:
+        '''
+
+        url = '/hosts/{host:id}/nics/{nic:id}/updatevirtualfunctionsconfiguration'
 
         result = self.__getProxy().request(
             method='POST',
@@ -18473,6 +18889,8 @@ class InstanceTypes(Base):
         @param instance_type.name: string
         [@param instance_type.memory: long]
         [@param instance_type.io.threads: int]
+        [@param instance_type.memory_policy.guaranteed: long]
+        [@param instance_type.memory_policy.ballooning: boolean]
         [@param instance_type.cpu.topology.cores: int]
         [@param instance_type.high_availability.enabled: boolean]
         [@param instance_type.origin: string]
@@ -20083,6 +20501,7 @@ class NetworkVnicProfiles(Base):
           [@ivar custom_property.name: string]
           [@ivar custom_property.value: string]
         }
+        [@param vnicprofile.pass_through.mode: string]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
@@ -26882,6 +27301,8 @@ class Template(params.Template, Base):
         [@param template.name: string]
         [@param template.memory: long]
         [@param template.io.threads: int]
+        [@param template.memory_policy.guaranteed: long]
+        [@param template.memory_policy.ballooning: boolean]
         [@param template.cpu.topology.cores: int]
         [@param template.high_availability.enabled: boolean]
         [@param template.os.cmdline: string]
@@ -28384,6 +28805,8 @@ class Templates(Base):
         @param template.name: string
         [@param template.memory: long]
         [@param template.io.threads: int]
+        [@param template.memory_policy.guaranteed: long]
+        [@param template.memory_policy.ballooning: boolean]
         [@param template.cpu.topology.cores: int]
         [@param template.high_availability.enabled: boolean]
         [@param template.os.cmdline: string]
@@ -34714,14 +35137,6 @@ class VMs(Base):
           [@param vm.origin: string]
           [@param vm.os.kernel: string]
           [@param vm.disks.clone: boolean]
-          [@param vm.disks.disk: collection]
-          {
-            [@ivar disk.id: string]
-            [@ivar storage_domains.storage_domain: collection]
-            {
-              [@param storage_domain.id: string]
-            }
-          }
           [@param vm.tunnel_migration: boolean]
           [@param vm.migration_downtime: int]
           [@param vm.virtio_scsi.enabled: boolean]
@@ -35318,6 +35733,7 @@ class VnicProfile(params.VnicProfile, Base):
           [@ivar custom_property.name: string]
           [@ivar custom_property.value: string]
         }
+        [@param vnicprofile.pass_through.mode: string]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -35558,6 +35974,7 @@ class VnicProfiles(Base):
           [@ivar custom_property.name: string]
           [@ivar custom_property.value: string]
         }
+        [@param vnicprofile.pass_through.mode: string]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 

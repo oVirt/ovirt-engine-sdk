@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Nov 18 11:08:21 2015 by generateDS.py version 2.12a.
+# Generated Wed Nov 25 09:39:09 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -17358,11 +17358,12 @@ class Labels(BaseResources):
 class VnicProfile(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, network=None, port_mirroring=None, custom_properties=None, qos=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, network=None, port_mirroring=None, custom_properties=None, pass_through=None, qos=None):
         super(VnicProfile, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.network = network
         self.port_mirroring = port_mirroring
         self.custom_properties = custom_properties
+        self.pass_through = pass_through
         self.qos = qos
     def factory(*args_, **kwargs_):
         if VnicProfile.subclass:
@@ -17376,6 +17377,8 @@ class VnicProfile(BaseResource):
     def set_port_mirroring(self, port_mirroring): self.port_mirroring = port_mirroring
     def get_custom_properties(self): return self.custom_properties
     def set_custom_properties(self, custom_properties): self.custom_properties = custom_properties
+    def get_pass_through(self): return self.pass_through
+    def set_pass_through(self, pass_through): self.pass_through = pass_through
     def get_qos(self): return self.qos
     def set_qos(self, qos): self.qos = qos
     def hasContent_(self):
@@ -17383,6 +17386,7 @@ class VnicProfile(BaseResource):
             self.network is not None or
             self.port_mirroring is not None or
             self.custom_properties is not None or
+            self.pass_through is not None or
             self.qos is not None or
             super(VnicProfile, self).hasContent_()
         ):
@@ -17420,6 +17424,8 @@ class VnicProfile(BaseResource):
             outfile.write('<%sport_mirroring>%s</%sport_mirroring>%s' % (namespace_, self.gds_format_boolean(self.port_mirroring, input_name='port_mirroring'), namespace_, eol_))
         if self.custom_properties is not None:
             self.custom_properties.export_(outfile, level, namespace_, name_='custom_properties', pretty_print=pretty_print)
+        if self.pass_through is not None:
+            self.pass_through.export_(outfile, level, namespace_, name_='pass_through', pretty_print=pretty_print)
         if self.qos is not None:
             self.qos.export_(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VnicProfile'):
@@ -17445,6 +17451,12 @@ class VnicProfile(BaseResource):
             showIndent(outfile, level)
             outfile.write('custom_properties=model_.custom_properties(\n')
             self.custom_properties.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.pass_through is not None:
+            showIndent(outfile, level)
+            outfile.write('pass_through=model_.VnicPassThrough(\n')
+            self.pass_through.exportLiteral(outfile, level, name_='pass_through')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.qos is not None:
@@ -17481,6 +17493,10 @@ class VnicProfile(BaseResource):
             obj_ = CustomProperties.factory()
             obj_.build(child_)
             self.custom_properties = obj_
+        elif nodeName_ == 'pass_through':
+            obj_ = VnicPassThrough.factory()
+            obj_.build(child_)
+            self.pass_through = obj_
         elif nodeName_ == 'qos':
             obj_ = QoS.factory()
             obj_.build(child_)
@@ -17580,6 +17596,81 @@ class VnicProfiles(BaseResources):
             self.vnic_profile.append(obj_)
         super(VnicProfiles, self).buildChildren(child_, node, nodeName_, True)
 # end class VnicProfiles
+
+
+class VnicPassThrough(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, mode=None):
+        self.mode = mode
+    def factory(*args_, **kwargs_):
+        if VnicPassThrough.subclass:
+            return VnicPassThrough.subclass(*args_, **kwargs_)
+        else:
+            return VnicPassThrough(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_mode(self): return self.mode
+    def set_mode(self, mode): self.mode = mode
+    def hasContent_(self):
+        if (
+            self.mode is not None
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='VnicPassThrough', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='VnicPassThrough')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='VnicPassThrough'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='VnicPassThrough', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.mode is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%smode>%s</%smode>%s' % (namespace_, self.gds_format_string(quote_xml(self.mode).encode(ExternalEncoding), input_name='mode'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='VnicPassThrough'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.mode is not None:
+            showIndent(outfile, level)
+            outfile.write('mode=%s,\n' % quote_python(self.mode).encode(ExternalEncoding))
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'mode':
+            mode_ = child_.text
+            mode_ = self.gds_validate_string(mode_, node, 'mode')
+            self.mode = mode_
+# end class VnicPassThrough
 
 
 class StorageConnectionExtensions(BaseResources):
@@ -23950,7 +24041,7 @@ class IO(GeneratedsSuper):
 class VmBase(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, io=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, time_zone=None, small_icon=None, large_icon=None, extensiontype_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, io=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, time_zone=None, small_icon=None, large_icon=None, memory_policy=None, extensiontype_=None):
         super(VmBase, self).__init__(actions, href, id, name, description, comment, creation_status, link, extensiontype_, )
         self.type_ = type_
         self.status = status
@@ -23992,6 +24083,7 @@ class VmBase(BaseResource):
         self.time_zone = time_zone
         self.small_icon = small_icon
         self.large_icon = large_icon
+        self.memory_policy = memory_policy
         self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if VmBase.subclass:
@@ -24071,6 +24163,8 @@ class VmBase(BaseResource):
     def set_small_icon(self, small_icon): self.small_icon = small_icon
     def get_large_icon(self): return self.large_icon
     def set_large_icon(self, large_icon): self.large_icon = large_icon
+    def get_memory_policy(self): return self.memory_policy
+    def set_memory_policy(self, memory_policy): self.memory_policy = memory_policy
     def get_extensiontype_(self): return self.extensiontype_
     def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
     def hasContent_(self):
@@ -24111,6 +24205,7 @@ class VmBase(BaseResource):
             self.time_zone is not None or
             self.small_icon is not None or
             self.large_icon is not None or
+            self.memory_policy is not None or
             super(VmBase, self).hasContent_()
         ):
             return True
@@ -24230,6 +24325,8 @@ class VmBase(BaseResource):
             self.small_icon.export_(outfile, level, namespace_, name_='small_icon', pretty_print=pretty_print)
         if self.large_icon is not None:
             self.large_icon.export_(outfile, level, namespace_, name_='large_icon', pretty_print=pretty_print)
+        if self.memory_policy is not None:
+            self.memory_policy.export_(outfile, level, namespace_, name_='memory_policy', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='VmBase'):
         level += 1
         already_processed = set()
@@ -24412,6 +24509,12 @@ class VmBase(BaseResource):
             showIndent(outfile, level)
             outfile.write('large_icon=model_.Icon(\n')
             self.large_icon.exportLiteral(outfile, level, name_='large_icon')
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.memory_policy is not None:
+            showIndent(outfile, level)
+            outfile.write('memory_policy=model_.MemoryPolicy(\n')
+            self.memory_policy.exportLiteral(outfile, level, name_='memory_policy')
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -24614,6 +24717,10 @@ class VmBase(BaseResource):
             obj_ = Icon.factory()
             obj_.build(child_)
             self.large_icon = obj_
+        elif nodeName_ == 'memory_policy':
+            obj_ = MemoryPolicy.factory()
+            obj_.build(child_)
+            self.memory_policy = obj_
         super(VmBase, self).buildChildren(child_, node, nodeName_, True)
 # end class VmBase
 
@@ -24621,8 +24728,8 @@ class VmBase(BaseResource):
 class VM(VmBase):
     subclass = None
     superclass = VmBase
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, io=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, time_zone=None, small_icon=None, large_icon=None, stop_reason=None, host=None, template=None, instance_type=None, start_time=None, stop_time=None, run_once=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, next_run_configuration_exists=None, numa_tune_mode=None, permissions=None, external_host_provider=None, katello_errata=None, guest_time_zone=None, guest_operating_system=None, extensiontype_=None):
-        super(VM, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, stateless, delete_protected, high_availability, display, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, serial_number, start_paused, cpu_profile, migration, io, custom_properties, custom_emulated_machine, custom_cpu_model, time_zone, small_icon, large_icon, extensiontype_, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, io=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, time_zone=None, small_icon=None, large_icon=None, memory_policy=None, stop_reason=None, host=None, template=None, instance_type=None, start_time=None, stop_time=None, run_once=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, guest_info=None, quota=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, next_run_configuration_exists=None, numa_tune_mode=None, permissions=None, external_host_provider=None, katello_errata=None, guest_time_zone=None, guest_operating_system=None, extensiontype_=None):
+        super(VM, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, stateless, delete_protected, high_availability, display, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, serial_number, start_paused, cpu_profile, migration, io, custom_properties, custom_emulated_machine, custom_cpu_model, time_zone, small_icon, large_icon, memory_policy, extensiontype_, )
         self.stop_reason = stop_reason
         self.host = host
         self.template = template
@@ -24646,7 +24753,6 @@ class VM(VmBase):
         self.tags = tags
         self.snapshots = snapshots
         self.placement_policy = placement_policy
-        self.memory_policy = memory_policy
         self.guest_info = guest_info
         self.quota = quota
         self.vmpool = vmpool
@@ -24699,8 +24805,6 @@ class VM(VmBase):
     def set_snapshots(self, snapshots): self.snapshots = snapshots
     def get_placement_policy(self): return self.placement_policy
     def set_placement_policy(self, placement_policy): self.placement_policy = placement_policy
-    def get_memory_policy(self): return self.memory_policy
-    def set_memory_policy(self, memory_policy): self.memory_policy = memory_policy
     def get_guest_info(self): return self.guest_info
     def set_guest_info(self, guest_info): self.guest_info = guest_info
     def get_quota(self): return self.quota
@@ -24750,7 +24854,6 @@ class VM(VmBase):
             self.tags is not None or
             self.snapshots is not None or
             self.placement_policy is not None or
-            self.memory_policy is not None or
             self.guest_info is not None or
             self.quota is not None or
             self.vmpool is not None or
@@ -24833,8 +24936,6 @@ class VM(VmBase):
             self.snapshots.export_(outfile, level, namespace_, name_='snapshots', pretty_print=pretty_print)
         if self.placement_policy is not None:
             self.placement_policy.export_(outfile, level, namespace_, name_='placement_policy', pretty_print=pretty_print)
-        if self.memory_policy is not None:
-            self.memory_policy.export_(outfile, level, namespace_, name_='memory_policy', pretty_print=pretty_print)
         if self.guest_info is not None:
             self.guest_info.export_(outfile, level, namespace_, name_='guest_info', pretty_print=pretty_print)
         if self.quota is not None:
@@ -24954,12 +25055,6 @@ class VM(VmBase):
             showIndent(outfile, level)
             outfile.write('placement_policy=model_.VmPlacementPolicy(\n')
             self.placement_policy.exportLiteral(outfile, level, name_='placement_policy')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        if self.memory_policy is not None:
-            showIndent(outfile, level)
-            outfile.write('memory_policy=model_.MemoryPolicy(\n')
-            self.memory_policy.exportLiteral(outfile, level, name_='memory_policy')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.guest_info is not None:
@@ -25124,10 +25219,6 @@ class VM(VmBase):
             obj_ = VmPlacementPolicy.factory()
             obj_.build(child_)
             self.placement_policy = obj_
-        elif nodeName_ == 'memory_policy':
-            obj_ = MemoryPolicy.factory()
-            obj_.build(child_)
-            self.memory_policy = obj_
         elif nodeName_ == 'guest_info':
             obj_ = GuestInfo.factory()
             obj_.build(child_)
@@ -28759,8 +28850,8 @@ class Nics(BaseDevices):
 class Snapshot(VM):
     subclass = None
     superclass = VM
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, io=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, time_zone=None, small_icon=None, large_icon=None, stop_reason=None, host=None, template=None, instance_type=None, start_time=None, stop_time=None, run_once=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, memory_policy=None, guest_info=None, quota=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, next_run_configuration_exists=None, numa_tune_mode=None, permissions=None, external_host_provider=None, katello_errata=None, guest_time_zone=None, guest_operating_system=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
-        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, stateless, delete_protected, high_availability, display, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, serial_number, start_paused, cpu_profile, migration, io, custom_properties, custom_emulated_machine, custom_cpu_model, time_zone, small_icon, large_icon, stop_reason, host, template, instance_type, start_time, stop_time, run_once, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, memory_policy, guest_info, quota, vmpool, cdroms, floppies, reported_devices, watchdogs, use_latest_template_version, next_run_configuration_exists, numa_tune_mode, permissions, external_host_provider, katello_errata, guest_time_zone, guest_operating_system, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, io=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, time_zone=None, small_icon=None, large_icon=None, memory_policy=None, stop_reason=None, host=None, template=None, instance_type=None, start_time=None, stop_time=None, run_once=None, payloads=None, statistics=None, disks=None, initialization=None, nics=None, tags=None, snapshots=None, placement_policy=None, guest_info=None, quota=None, vmpool=None, cdroms=None, floppies=None, reported_devices=None, watchdogs=None, use_latest_template_version=None, next_run_configuration_exists=None, numa_tune_mode=None, permissions=None, external_host_provider=None, katello_errata=None, guest_time_zone=None, guest_operating_system=None, vm=None, date=None, snapshot_status=None, persist_memorystate=None):
+        super(Snapshot, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, stateless, delete_protected, high_availability, display, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, serial_number, start_paused, cpu_profile, migration, io, custom_properties, custom_emulated_machine, custom_cpu_model, time_zone, small_icon, large_icon, memory_policy, stop_reason, host, template, instance_type, start_time, stop_time, run_once, payloads, statistics, disks, initialization, nics, tags, snapshots, placement_policy, guest_info, quota, vmpool, cdroms, floppies, reported_devices, watchdogs, use_latest_template_version, next_run_configuration_exists, numa_tune_mode, permissions, external_host_provider, katello_errata, guest_time_zone, guest_operating_system, )
         self.vm = vm
         if isinstance(date, basestring):
             initvalue_ = datetime_.datetime.strptime(date, '%Y-%m-%dT%H:%M:%S')
@@ -29007,7 +29098,7 @@ class Snapshots(BaseResources):
 class HostNIC(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, host=None, network=None, mac=None, ip=None, base_interface=None, vlan=None, bonding=None, boot_protocol=None, statistics=None, check_connectivity=None, speed=None, status=None, mtu=None, bridged=None, custom_configuration=None, override_configuration=None, labels=None, properties=None, qos=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, host=None, network=None, mac=None, ip=None, base_interface=None, vlan=None, bonding=None, boot_protocol=None, statistics=None, check_connectivity=None, speed=None, status=None, mtu=None, bridged=None, custom_configuration=None, override_configuration=None, labels=None, properties=None, virtual_functions_configuration=None, qos=None, physical_function=None):
         super(HostNIC, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.host = host
         self.network = network
@@ -29027,7 +29118,9 @@ class HostNIC(BaseResource):
         self.override_configuration = override_configuration
         self.labels = labels
         self.properties = properties
+        self.virtual_functions_configuration = virtual_functions_configuration
         self.qos = qos
+        self.physical_function = physical_function
     def factory(*args_, **kwargs_):
         if HostNIC.subclass:
             return HostNIC.subclass(*args_, **kwargs_)
@@ -29070,8 +29163,12 @@ class HostNIC(BaseResource):
     def set_labels(self, labels): self.labels = labels
     def get_properties(self): return self.properties
     def set_properties(self, properties): self.properties = properties
+    def get_virtual_functions_configuration(self): return self.virtual_functions_configuration
+    def set_virtual_functions_configuration(self, virtual_functions_configuration): self.virtual_functions_configuration = virtual_functions_configuration
     def get_qos(self): return self.qos
     def set_qos(self, qos): self.qos = qos
+    def get_physical_function(self): return self.physical_function
+    def set_physical_function(self, physical_function): self.physical_function = physical_function
     def hasContent_(self):
         if (
             self.host is not None or
@@ -29092,7 +29189,9 @@ class HostNIC(BaseResource):
             self.override_configuration is not None or
             self.labels is not None or
             self.properties is not None or
+            self.virtual_functions_configuration is not None or
             self.qos is not None or
+            self.physical_function is not None or
             super(HostNIC, self).hasContent_()
         ):
             return True
@@ -29166,8 +29265,12 @@ class HostNIC(BaseResource):
             self.labels.export_(outfile, level, namespace_, name_='labels', pretty_print=pretty_print)
         if self.properties is not None:
             self.properties.export_(outfile, level, namespace_, name_='properties', pretty_print=pretty_print)
+        if self.virtual_functions_configuration is not None:
+            self.virtual_functions_configuration.export_(outfile, level, namespace_, name_='virtual_functions_configuration', pretty_print=pretty_print)
         if self.qos is not None:
             self.qos.export_(outfile, level, namespace_, name_='qos', pretty_print=pretty_print)
+        if self.physical_function is not None:
+            self.physical_function.export_(outfile, level, namespace_, name_='physical_function', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='HostNIC'):
         level += 1
         already_processed = set()
@@ -29262,10 +29365,22 @@ class HostNIC(BaseResource):
             self.properties.exportLiteral(outfile, level)
             showIndent(outfile, level)
             outfile.write('),\n')
+        if self.virtual_functions_configuration is not None:
+            showIndent(outfile, level)
+            outfile.write('virtual_functions_configuration=model_.HostNicVirtualFunctionsConfiguration(\n')
+            self.virtual_functions_configuration.exportLiteral(outfile, level, name_='virtual_functions_configuration')
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.qos is not None:
             showIndent(outfile, level)
             outfile.write('qos=model_.qos(\n')
             self.qos.exportLiteral(outfile, level)
+            showIndent(outfile, level)
+            outfile.write('),\n')
+        if self.physical_function is not None:
+            showIndent(outfile, level)
+            outfile.write('physical_function=model_.HostNIC(\n')
+            self.physical_function.exportLiteral(outfile, level, name_='physical_function')
             showIndent(outfile, level)
             outfile.write('),\n')
     def build(self, node):
@@ -29382,12 +29497,137 @@ class HostNIC(BaseResource):
             obj_ = Properties.factory()
             obj_.build(child_)
             self.properties = obj_
+        elif nodeName_ == 'virtual_functions_configuration':
+            obj_ = HostNicVirtualFunctionsConfiguration.factory()
+            obj_.build(child_)
+            self.virtual_functions_configuration = obj_
         elif nodeName_ == 'qos':
             obj_ = QoS.factory()
             obj_.build(child_)
             self.qos = obj_
+        elif nodeName_ == 'physical_function':
+            obj_ = HostNIC.factory()
+            obj_.build(child_)
+            self.physical_function = obj_
         super(HostNIC, self).buildChildren(child_, node, nodeName_, True)
 # end class HostNIC
+
+
+class HostNicVirtualFunctionsConfiguration(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, max_number_of_virtual_functions=None, number_of_virtual_functions=None, all_networks_allowed=None):
+        self.max_number_of_virtual_functions = max_number_of_virtual_functions
+        self.number_of_virtual_functions = number_of_virtual_functions
+        self.all_networks_allowed = all_networks_allowed
+    def factory(*args_, **kwargs_):
+        if HostNicVirtualFunctionsConfiguration.subclass:
+            return HostNicVirtualFunctionsConfiguration.subclass(*args_, **kwargs_)
+        else:
+            return HostNicVirtualFunctionsConfiguration(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_max_number_of_virtual_functions(self): return self.max_number_of_virtual_functions
+    def set_max_number_of_virtual_functions(self, max_number_of_virtual_functions): self.max_number_of_virtual_functions = max_number_of_virtual_functions
+    def get_number_of_virtual_functions(self): return self.number_of_virtual_functions
+    def set_number_of_virtual_functions(self, number_of_virtual_functions): self.number_of_virtual_functions = number_of_virtual_functions
+    def get_all_networks_allowed(self): return self.all_networks_allowed
+    def set_all_networks_allowed(self, all_networks_allowed): self.all_networks_allowed = all_networks_allowed
+    def hasContent_(self):
+        if (
+            self.max_number_of_virtual_functions is not None or
+            self.number_of_virtual_functions is not None or
+            self.all_networks_allowed is not None
+        ):
+            return True
+        else:
+            return False
+    def export_(self, outfile, level, namespace_='', name_='HostNicVirtualFunctionsConfiguration', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='HostNicVirtualFunctionsConfiguration')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='HostNicVirtualFunctionsConfiguration'):
+        pass
+    def exportChildren(self, outfile, level, namespace_='', name_='HostNicVirtualFunctionsConfiguration', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.max_number_of_virtual_functions is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%smax_number_of_virtual_functions>%s</%smax_number_of_virtual_functions>%s' % (namespace_, self.gds_format_integer(self.max_number_of_virtual_functions, input_name='max_number_of_virtual_functions'), namespace_, eol_))
+        if self.number_of_virtual_functions is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%snumber_of_virtual_functions>%s</%snumber_of_virtual_functions>%s' % (namespace_, self.gds_format_integer(self.number_of_virtual_functions, input_name='number_of_virtual_functions'), namespace_, eol_))
+        if self.all_networks_allowed is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sall_networks_allowed>%s</%sall_networks_allowed>%s' % (namespace_, self.gds_format_boolean(self.all_networks_allowed, input_name='all_networks_allowed'), namespace_, eol_))
+    def exportLiteral(self, outfile, level, name_='HostNicVirtualFunctionsConfiguration'):
+        level += 1
+        already_processed = set()
+        self.exportLiteralAttributes(outfile, level, already_processed, name_)
+        if self.hasContent_():
+            self.exportLiteralChildren(outfile, level, name_)
+    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
+        pass
+    def exportLiteralChildren(self, outfile, level, name_):
+        if self.max_number_of_virtual_functions is not None:
+            showIndent(outfile, level)
+            outfile.write('max_number_of_virtual_functions=%d,\n' % self.max_number_of_virtual_functions)
+        if self.number_of_virtual_functions is not None:
+            showIndent(outfile, level)
+            outfile.write('number_of_virtual_functions=%d,\n' % self.number_of_virtual_functions)
+        if self.all_networks_allowed is not None:
+            showIndent(outfile, level)
+            outfile.write('all_networks_allowed=%s,\n' % self.all_networks_allowed)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+        return self
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'max_number_of_virtual_functions':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'max_number_of_virtual_functions')
+            self.max_number_of_virtual_functions = ival_
+        elif nodeName_ == 'number_of_virtual_functions':
+            sval_ = child_.text
+            try:
+                ival_ = int(sval_)
+            except (TypeError, ValueError), exp:
+                raise_parse_error(child_, 'requires integer: %s' % exp)
+            ival_ = self.gds_validate_integer(ival_, node, 'number_of_virtual_functions')
+            self.number_of_virtual_functions = ival_
+        elif nodeName_ == 'all_networks_allowed':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'all_networks_allowed')
+            self.all_networks_allowed = ival_
+# end class HostNicVirtualFunctionsConfiguration
 
 
 class UnmanagedNetworks(BaseResources):
@@ -43994,8 +44234,8 @@ class BrickProfileDetail(EntityProfileDetail):
 class Template(VmBase):
     subclass = None
     superclass = VmBase
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, io=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, time_zone=None, small_icon=None, large_icon=None, vm=None, version=None, permissions=None, extensiontype_=None):
-        super(Template, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, stateless, delete_protected, high_availability, display, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, serial_number, start_paused, cpu_profile, migration, io, custom_properties, custom_emulated_machine, custom_cpu_model, time_zone, small_icon, large_icon, extensiontype_, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, io=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, time_zone=None, small_icon=None, large_icon=None, memory_policy=None, vm=None, version=None, permissions=None, extensiontype_=None):
+        super(Template, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, stateless, delete_protected, high_availability, display, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, serial_number, start_paused, cpu_profile, migration, io, custom_properties, custom_emulated_machine, custom_cpu_model, time_zone, small_icon, large_icon, memory_policy, extensiontype_, )
         self.vm = vm
         self.version = version
         self.permissions = permissions
@@ -44120,8 +44360,8 @@ class Template(VmBase):
 class InstanceType(Template):
     subclass = None
     superclass = Template
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, io=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, time_zone=None, small_icon=None, large_icon=None, vm=None, version=None, permissions=None):
-        super(InstanceType, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, stateless, delete_protected, high_availability, display, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, serial_number, start_paused, cpu_profile, migration, io, custom_properties, custom_emulated_machine, custom_cpu_model, time_zone, small_icon, large_icon, vm, version, permissions, )
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, type_=None, status=None, memory=None, cpu=None, cpu_shares=None, bios=None, os=None, cluster=None, storage_domain=None, creation_time=None, origin=None, stateless=None, delete_protected=None, high_availability=None, display=None, sso=None, rng_device=None, console=None, timezone=None, domain=None, usb=None, soundcard_enabled=None, tunnel_migration=None, migration_downtime=None, virtio_scsi=None, serial_number=None, start_paused=None, cpu_profile=None, migration=None, io=None, custom_properties=None, custom_emulated_machine=None, custom_cpu_model=None, time_zone=None, small_icon=None, large_icon=None, memory_policy=None, vm=None, version=None, permissions=None):
+        super(InstanceType, self).__init__(actions, href, id, name, description, comment, creation_status, link, type_, status, memory, cpu, cpu_shares, bios, os, cluster, storage_domain, creation_time, origin, stateless, delete_protected, high_availability, display, sso, rng_device, console, timezone, domain, usb, soundcard_enabled, tunnel_migration, migration_downtime, virtio_scsi, serial_number, start_paused, cpu_profile, migration, io, custom_properties, custom_emulated_machine, custom_cpu_model, time_zone, small_icon, large_icon, memory_policy, vm, version, permissions, )
         pass
     def factory(*args_, **kwargs_):
         if InstanceType.subclass:
@@ -45563,7 +45803,7 @@ class Creation(BaseResource):
 class Action(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, proxy_ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, modified_network_attachments=None, removed_network_attachments=None, synchronized_network_attachments=None, modified_bonds=None, removed_bonds=None, modified_labels=None, removed_labels=None, check_connectivity=None, connectivity_timeout=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, disk=None, reason=None, logical_units=None, use_sysprep=None, use_cloud_init=None, certificates=None, status=None, fault=None, iscsi_target=None, power_management=None, is_attached=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, async=None, grace_period=None, host=None, network=None, root_password=None, ssh=None, image=None, fence_type=None, ticket=None, proxy_ticket=None, iscsi=None, storage_domain=None, cluster=None, discard_snapshots=None, exclusive=None, vm=None, snapshot=None, template=None, host_nics=None, modified_network_attachments=None, removed_network_attachments=None, synchronized_network_attachments=None, modified_bonds=None, removed_bonds=None, modified_labels=None, removed_labels=None, check_connectivity=None, connectivity_timeout=None, virtual_functions_configuration=None, pause=None, force=None, option=None, fix_layout=None, brick=None, detach=None, clone=None, restore_memory=None, disks=None, succeeded=None, resolution_type=None, bricks=None, job=None, import_as_template=None, maintenance_enabled=None, storage_domains=None, disk=None, reason=None, logical_units=None, use_sysprep=None, use_cloud_init=None, certificates=None, status=None, fault=None, iscsi_target=None, power_management=None, is_attached=None):
         super(Action, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.async = async
         self.grace_period = grace_period
@@ -45593,6 +45833,7 @@ class Action(BaseResource):
         self.removed_labels = removed_labels
         self.check_connectivity = check_connectivity
         self.connectivity_timeout = connectivity_timeout
+        self.virtual_functions_configuration = virtual_functions_configuration
         self.pause = pause
         self.force = force
         self.option = option
@@ -45685,6 +45926,8 @@ class Action(BaseResource):
     def set_check_connectivity(self, check_connectivity): self.check_connectivity = check_connectivity
     def get_connectivity_timeout(self): return self.connectivity_timeout
     def set_connectivity_timeout(self, connectivity_timeout): self.connectivity_timeout = connectivity_timeout
+    def get_virtual_functions_configuration(self): return self.virtual_functions_configuration
+    def set_virtual_functions_configuration(self, virtual_functions_configuration): self.virtual_functions_configuration = virtual_functions_configuration
     def get_pause(self): return self.pause
     def set_pause(self, pause): self.pause = pause
     def get_force(self): return self.force
@@ -45771,6 +46014,7 @@ class Action(BaseResource):
             self.removed_labels is not None or
             self.check_connectivity is not None or
             self.connectivity_timeout is not None or
+            self.virtual_functions_configuration is not None or
             self.pause is not None or
             self.force is not None or
             self.option is not None or
@@ -45891,6 +46135,8 @@ class Action(BaseResource):
         if self.connectivity_timeout is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%sconnectivity_timeout>%s</%sconnectivity_timeout>%s' % (namespace_, self.gds_format_integer(self.connectivity_timeout, input_name='connectivity_timeout'), namespace_, eol_))
+        if self.virtual_functions_configuration is not None:
+            self.virtual_functions_configuration.export_(outfile, level, namespace_, name_='virtual_functions_configuration', pretty_print=pretty_print)
         if self.pause is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%spause>%s</%spause>%s' % (namespace_, self.gds_format_boolean(self.pause, input_name='pause'), namespace_, eol_))
@@ -46114,6 +46360,12 @@ class Action(BaseResource):
         if self.connectivity_timeout is not None:
             showIndent(outfile, level)
             outfile.write('connectivity_timeout=%d,\n' % self.connectivity_timeout)
+        if self.virtual_functions_configuration is not None:
+            showIndent(outfile, level)
+            outfile.write('virtual_functions_configuration=model_.HostNicVirtualFunctionsConfiguration(\n')
+            self.virtual_functions_configuration.exportLiteral(outfile, level, name_='virtual_functions_configuration')
+            showIndent(outfile, level)
+            outfile.write('),\n')
         if self.pause is not None:
             showIndent(outfile, level)
             outfile.write('pause=%s,\n' % self.pause)
@@ -46389,6 +46641,10 @@ class Action(BaseResource):
                 raise_parse_error(child_, 'requires integer: %s' % exp)
             ival_ = self.gds_validate_integer(ival_, node, 'connectivity_timeout')
             self.connectivity_timeout = ival_
+        elif nodeName_ == 'virtual_functions_configuration':
+            obj_ = HostNicVirtualFunctionsConfiguration.factory()
+            obj_.build(child_)
+            self.virtual_functions_configuration = obj_
         elif nodeName_ == 'pause':
             sval_ = child_.text
             if sval_ in ('true', '1'):
@@ -48294,6 +48550,7 @@ GDSClassesMapping = {
     'openstack_subnet': OpenStackSubnet,
     'external_host_groups': ExternalHostGroups,
     'property': Property,
+    'pass_through': VnicPassThrough,
     'modified_labels': Labels,
     'host_devices': HostDevices,
     'openstack_volume_types': OpenStackVolumeTypes,
@@ -48420,6 +48677,7 @@ GDSClassesMapping = {
     'hook_states': HookStates,
     'schema': Schema,
     'openstack_volume_authentication_key': OpenstackVolumeAuthenticationKey,
+    'host_nic_virtual_functions_configuration': HostNicVirtualFunctionsConfiguration,
     'option': Option,
     'floppy': Floppy,
     'disk_formats': DiskFormats,
@@ -48434,6 +48692,7 @@ GDSClassesMapping = {
     'usages': Usages,
     'configuration_types': ConfigurationTypes,
     'linkCapabilities': LinkCapabilities,
+    'vnic_pass_through': VnicPassThrough,
     'payloads': Payloads,
     'base_template': Template,
     'snapshot_statuses': SnapshotStatuses,
@@ -48613,6 +48872,7 @@ GDSClassesMapping = {
     'ip_versions': IpVersions,
     'bios': Bios,
     'files': Files,
+    'virtual_functions_configuration': HostNicVirtualFunctionsConfiguration,
     'creation_states': CreationStates,
     'link': Link,
     'guest_info': GuestInfo,
@@ -48920,6 +49180,7 @@ __all__ = [
     "HostDevices",
     "HostNIC",
     "HostNICStates",
+    "HostNicVirtualFunctionsConfiguration",
     "HostNics",
     "HostNonOperationalDetails",
     "HostProtocols",
@@ -49147,6 +49408,7 @@ __all__ = [
     "VmStates",
     "VmSummary",
     "VmTypes",
+    "VnicPassThrough",
     "VnicProfile",
     "VnicProfiles",
     "VolumeGroup",
@@ -49304,6 +49566,7 @@ _rootClassMap = {
                     "host_devices"                  : HostDevices,
                     "host_nic"                      : HostNIC,
                     "host_nic_states"               : HostNICStates,
+                    "host_nic_virtual_functions_configuration": HostNicVirtualFunctionsConfiguration,
                     "host_nics"                     : HostNics,
                     "host_non_operational_details"  : HostNonOperationalDetails,
                     "host_numa_node"                : NumaNode,
@@ -49411,6 +49674,7 @@ _rootClassMap = {
                     "parent"                        : TagParent,
                     "parent_device"                 : HostDevice,
                     "parent_step"                   : Step,
+                    "pass_through"                  : VnicPassThrough,
                     "payload"                       : Payload,
                     "payload_encodings"             : PayloadEncodings,
                     "payloads"                      : Payloads,
@@ -49543,6 +49807,7 @@ _rootClassMap = {
                     "vendor"                        : Vendor,
                     "version"                       : VersionCaps,
                     "virtio_scsi"                   : VirtIO_SCSI,
+                    "virtual_functions_configuration": HostNicVirtualFunctionsConfiguration,
                     "vlan"                          : VLAN,
                     "vm"                            : VM,
                     "vm_affinities"                 : VmAffinities,
@@ -49556,6 +49821,7 @@ _rootClassMap = {
                     "vmpool"                        : VmPool,
                     "vmpools"                       : VmPools,
                     "vms"                           : VMs,
+                    "vnic_pass_through"             : VnicPassThrough,
                     "vnic_profile"                  : VnicProfile,
                     "vnic_profiles"                 : VnicProfiles,
                     "volume_group"                  : VolumeGroup,
@@ -49704,6 +49970,7 @@ _tag_for_type = {
     HostDevices: "host_devices",
     HostNIC: "host_nic",
     HostNICStates: "host_nic_states",
+    HostNicVirtualFunctionsConfiguration: "host_nic_virtual_functions_configuration",
     HostNics: "host_nics",
     HostNonOperationalDetails: "host_non_operational_details",
     HostProtocols: "host_protocols",
@@ -49910,6 +50177,7 @@ _tag_for_type = {
     VmPools: "vmpools",
     VmStates: "vm_states",
     VmTypes: "vm_types",
+    VnicPassThrough: "vnic_pass_through",
     VnicProfile: "vnic_profile",
     VnicProfiles: "vnic_profiles",
     VolumeGroup: "volume_group",
