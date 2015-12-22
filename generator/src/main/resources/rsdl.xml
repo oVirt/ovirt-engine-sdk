@@ -283,6 +283,10 @@ or less indicates that the session should never timeout</description>
                         <name>Filter</name>
                         <value>true|false</value>
                     </header>
+                    <header required="false">
+                        <name>All-Content</name>
+                        <value>true|false</value>
+                    </header>
                 </headers>
                 <url>
                     <parameters_set>
@@ -5512,14 +5516,14 @@ or less indicates that the session should never timeout</description>
                     <type>Disk</type>
                     <parameters_set>
                         <description>add a new disk with the specified size to the storage domain in the data center, allocating space from the storage domain</description>
-                        <parameter required="true" type="xs:int">
-                            <name>provisioned_size</name>
+                        <parameter required="true" type="xs:string">
+                            <name>disk.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>disk.interface</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>disk.format</name>
+                        <parameter required="true" type="xs:int">
+                            <name>disk.provisioned_size</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.alias</name>
@@ -6103,14 +6107,14 @@ or less indicates that the session should never timeout</description>
                     <type>Disk</type>
                     <parameters_set>
                         <description>add a new disk to the system with specified size, space will be allocated from the storage domain for the disk</description>
-                        <parameter required="true" type="xs:int">
-                            <name>provisioned_size</name>
+                        <parameter required="true" type="xs:string">
+                            <name>disk.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>disk.interface</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>disk.format</name>
+                        <parameter required="true" type="xs:int">
+                            <name>disk.provisioned_size</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.alias</name>
@@ -10725,6 +10729,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:int">
                             <name>instance_type.cpu.topology.cores</name>
                         </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>instance_type.cpu.topology.threads</name>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>instance_type.high_availability.enabled</name>
                         </parameter>
@@ -14959,14 +14966,14 @@ or less indicates that the session should never timeout</description>
                     <type>Disk</type>
                     <parameters_set>
                         <description>add a new disk to the storage domain with the specified size allocating space from the storage domain</description>
-                        <parameter required="true" type="xs:int">
-                            <name>provisioned_size</name>
+                        <parameter required="true" type="xs:string">
+                            <name>disk.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>disk.interface</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>disk.format</name>
+                        <parameter required="true" type="xs:int">
+                            <name>disk.provisioned_size</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.alias</name>
@@ -16287,6 +16294,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>template.cpu.topology.cores</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>template.cpu.topology.threds</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>template.high_availability.enabled</name>
@@ -18270,6 +18280,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:string">
                             <name>vmpool.type</name>
                         </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm_pool.use_latest_template_version</name>
+                        </parameter>
                     </parameters_set>
                 </body>
             </request>
@@ -18403,6 +18416,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vmpool.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:boolean">
+                            <name>vm_pool.use_latest_template_version</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -18656,6 +18672,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.cpu.topology.cores</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>vm.cpu.topology.threads</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>vm.cpu.architecture</name>
@@ -18934,6 +18953,9 @@ or less indicates that the session should never timeout</description>
                             <name>vm.cpu.topology.cores</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
+                            <name>vm.cpu.topology.threads</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
                             <name>vm.cpu_shares</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
@@ -19176,6 +19198,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.cpu.topology.cores</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>vm.cpu.topology.threads</name>
                         </parameter>
                         <parameter required="false" type="xs:long">
                             <name>vm.memory</name>
@@ -19555,6 +19580,9 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.cpu.topology.cores</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>vm.cpu.topology.threads</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
                             <name>vm.cpu_shares</name>
@@ -20032,14 +20060,14 @@ or less indicates that the session should never timeout</description>
                     <type>Disk</type>
                     <parameters_set>
                         <description>add a new disk to the virtual machine allocating space from the storage domain</description>
-                        <parameter required="true" type="xs:int">
-                            <name>provisioned_size</name>
+                        <parameter required="true" type="xs:string">
+                            <name>disk.format</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
                             <name>disk.interface</name>
                         </parameter>
-                        <parameter required="true" type="xs:string">
-                            <name>disk.format</name>
+                        <parameter required="true" type="xs:int">
+                            <name>disk.provisioned_size</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.alias</name>
@@ -20271,11 +20299,12 @@ or less indicates that the session should never timeout</description>
                 <body>
                     <type>Disk</type>
                     <parameters_set>
+                        <description>update the size, boot flag and other parameters of the disk attached to the virtual machine</description>
                         <parameter required="false" type="xs:int">
-                            <name>size</name>
+                            <name>disk.size</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>provisioned_size</name>
+                            <name>disk.provisioned_size</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
                             <name>disk.name</name>
@@ -20321,9 +20350,6 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>disk.read_only</name>
-                        </parameter>
-                        <parameter required="false" type="update the size, boot flag and other parameters of the disk attached to the virtual machine">
-                            <name>description</name>
                         </parameter>
                     </parameters_set>
                 </body>

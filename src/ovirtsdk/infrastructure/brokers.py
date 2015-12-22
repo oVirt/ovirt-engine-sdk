@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-11-25 09:39:10.000982'''
+'''Generated at: 2015-12-22 11:31:23.000594'''
 
 
 from ovirtsdk.xml import params
@@ -2787,10 +2787,11 @@ class Clusters(Base):
 
         return Cluster(result, self.context)
 
-    def get(self, name=None, id=None):
+    def get(self, name=None, all_content=None, id=None):
         '''
         [@param id  : string (the id of the entity)]
         [@param name: string (the name of the entity)]
+        [@param all_content: true|false]
 
         @return Clusters:
         '''
@@ -2802,7 +2803,7 @@ class Clusters(Base):
                 return Cluster(
                     self.__getProxy().get(
                         url=UrlHelper.append(url, id),
-                        headers={}
+                        headers={"All-Content":all_content}
                     ),
                     self.context
                 )
@@ -2813,7 +2814,7 @@ class Clusters(Base):
         elif name:
             result = self.__getProxy().get(
                 url=UrlHelper.appendParameters(url, {'search:query':'name='+name}),
-                headers={}
+                headers={"All-Content":all_content}
             ).get_cluster()
 
             return Cluster(
@@ -2826,12 +2827,13 @@ class Clusters(Base):
         else:
             raise MissingParametersError(['id', 'name'])
 
-    def list(self, query=None, case_sensitive=True, max=None, **kwargs):
+    def list(self, query=None, case_sensitive=True, max=None, all_content=None, **kwargs):
         '''
         [@param **kwargs: dict (property based filtering)]
         [@param query: string (oVirt engine search dialect query)]
         [@param case_sensitive: boolean (true|false)]
         [@param max: int (max results)]
+        [@param all_content: true|false]
 
         @return Clusters:
         '''
@@ -2840,7 +2842,7 @@ class Clusters(Base):
 
         result = self.__getProxy().get(
             url=UrlHelper.appendParameters(url, {'search:query':query,'case_sensitive:matrix':case_sensitive,'max:matrix':max}),
-            headers={}
+            headers={"All-Content":all_content}
         ).get_cluster()
 
         return ParseHelper.toCollection(
@@ -10164,9 +10166,9 @@ class DataCenterStorageDomainDisks(Base):
         @type Disk:
 
         Overload 1:
-          @param provisioned_size: int
-          @param disk.interface: string
           @param disk.format: string
+          @param disk.interface: string
+          @param disk.provisioned_size: int
           [@param disk.alias: string]
           [@param disk.name: string]
           [@param disk.size: int]
@@ -11400,9 +11402,9 @@ class Disks(Base):
         @type Disk:
 
         Overload 1:
-          @param provisioned_size: int
-          @param disk.interface: string
           @param disk.format: string
+          @param disk.interface: string
+          @param disk.provisioned_size: int
           [@param disk.alias: string]
           [@param disk.name: string]
           [@param disk.size: int]
@@ -18892,6 +18894,7 @@ class InstanceTypes(Base):
         [@param instance_type.memory_policy.guaranteed: long]
         [@param instance_type.memory_policy.ballooning: boolean]
         [@param instance_type.cpu.topology.cores: int]
+        [@param instance_type.cpu.topology.threads: int]
         [@param instance_type.high_availability.enabled: boolean]
         [@param instance_type.origin: string]
         [@param instance_type.high_availability.priority: int]
@@ -25353,9 +25356,9 @@ class StorageDomainDisks(Base):
         @type Disk:
 
         Overload 1:
-          @param provisioned_size: int
-          @param disk.interface: string
           @param disk.format: string
+          @param disk.interface: string
+          @param disk.provisioned_size: int
           [@param disk.alias: string]
           [@param disk.name: string]
           [@param disk.size: int]
@@ -28808,6 +28811,7 @@ class Templates(Base):
         [@param template.memory_policy.guaranteed: long]
         [@param template.memory_policy.ballooning: boolean]
         [@param template.cpu.topology.cores: int]
+        [@param template.cpu.topology.threds: int]
         [@param template.high_availability.enabled: boolean]
         [@param template.os.cmdline: string]
         [@param template.origin: string]
@@ -30183,6 +30187,7 @@ class VM(params.VM, Base):
         [@param vm.cpu.mode: string]
         [@param vm.cpu.architecture: string]
         [@param vm.cpu.topology.cores: int]
+        [@param vm.cpu.topology.threads: int]
         [@param vm.cpu_shares: int]
         [@param vm.memory: long]
         [@param vm.io.threads: int]
@@ -31248,8 +31253,8 @@ class VMDisk(params.Disk, Base):
 
     def update(self, async=None, correlation_id=None, expect=None):
         '''
-        [@param size: int]
-        [@param provisioned_size: int]
+        [@param disk.size: int]
+        [@param disk.provisioned_size: int]
         [@param disk.name: string]
         [@param disk.alias: string]
         [@param disk.interface: string]
@@ -31265,7 +31270,6 @@ class VMDisk(params.Disk, Base):
         [@param disk.sgio: string]
         [@param disk.uses_scsi_reservation: boolean]
         [@param disk.read_only: boolean]
-        [@param description: update the size, boot flag and other parameters of the disk attached to the virtual machine]
         [@param async: boolean (true|false)]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
@@ -31746,9 +31750,9 @@ class VMDisks(Base):
         @type Disk:
 
         Overload 1:
-          @param provisioned_size: int
-          @param disk.interface: string
           @param disk.format: string
+          @param disk.interface: string
+          @param disk.provisioned_size: int
           [@param disk.alias: string]
           [@param disk.name: string]
           [@param disk.size: int]
@@ -34922,6 +34926,7 @@ class VMs(Base):
           [@param vm.display.disconnect_action: string]
           [@param vm.os.cmdline: string]
           [@param vm.cpu.topology.cores: int]
+          [@param vm.cpu.topology.threads: int]
           [@param vm.cpu.architecture: string]
           [@param vm.memory: long]
           [@param vm.io.threads: int]
@@ -35023,6 +35028,7 @@ class VMs(Base):
           [@param vm.display.disconnect_action: string]
           [@param vm.os.cmdline: string]
           [@param vm.cpu.topology.cores: int]
+          [@param vm.cpu.topology.threads: int]
           [@param vm.cpu_shares: int]
           [@param vm.cpu.architecture: string]
           [@param vm.memory: long]
@@ -35112,6 +35118,7 @@ class VMs(Base):
           [@param vm.display.disconnect_action: string]
           [@param vm.os.cmdline: string]
           [@param vm.cpu.topology.cores: int]
+          [@param vm.cpu.topology.threads: int]
           [@param vm.memory: long]
           [@param vm.memory_policy.guaranteed: long]
           [@param vm.memory_policy.ballooning: boolean]
@@ -35329,6 +35336,7 @@ class VmPool(params.VmPool, Base):
         [@param vmpool.max_user_vms: int]
         [@param vmpool.display.proxy: string]
         [@param vmpool.description: string]
+        [@param vm_pool.use_latest_template_version: boolean]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -35597,6 +35605,7 @@ class VmPools(Base):
         [@param vmpool.description: string]
         [@param vmpool.soundcard_enabled: boolean]
         [@param vmpool.type: string]
+        [@param vm_pool.use_latest_template_version: boolean]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 

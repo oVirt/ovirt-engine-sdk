@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Nov 25 09:39:09 2015 by generateDS.py version 2.12a.
+# Generated Tue Dec 22 11:31:21 2015 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -26395,7 +26395,7 @@ class Sessions(BaseResources):
 class VmPool(BaseResource):
     subclass = None
     superclass = BaseResource
-    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, size=None, cluster=None, template=None, vm=None, prestarted_vms=None, max_user_vms=None, display=None, rng_device=None, soundcard_enabled=None, type_=None):
+    def __init__(self, actions=None, href=None, id=None, name=None, description=None, comment=None, creation_status=None, link=None, size=None, cluster=None, template=None, vm=None, prestarted_vms=None, max_user_vms=None, display=None, rng_device=None, soundcard_enabled=None, type_=None, use_latest_template_version=None):
         super(VmPool, self).__init__(actions, href, id, name, description, comment, creation_status, link, )
         self.size = size
         self.cluster = cluster
@@ -26407,6 +26407,7 @@ class VmPool(BaseResource):
         self.rng_device = rng_device
         self.soundcard_enabled = soundcard_enabled
         self.type_ = type_
+        self.use_latest_template_version = use_latest_template_version
     def factory(*args_, **kwargs_):
         if VmPool.subclass:
             return VmPool.subclass(*args_, **kwargs_)
@@ -26433,6 +26434,8 @@ class VmPool(BaseResource):
     def set_soundcard_enabled(self, soundcard_enabled): self.soundcard_enabled = soundcard_enabled
     def get_type(self): return self.type_
     def set_type(self, type_): self.type_ = type_
+    def get_use_latest_template_version(self): return self.use_latest_template_version
+    def set_use_latest_template_version(self, use_latest_template_version): self.use_latest_template_version = use_latest_template_version
     def hasContent_(self):
         if (
             self.size is not None or
@@ -26445,6 +26448,7 @@ class VmPool(BaseResource):
             self.rng_device is not None or
             self.soundcard_enabled is not None or
             self.type_ is not None or
+            self.use_latest_template_version is not None or
             super(VmPool, self).hasContent_()
         ):
             return True
@@ -26499,6 +26503,9 @@ class VmPool(BaseResource):
         if self.type_ is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%stype>%s</%stype>%s' % (namespace_, self.gds_format_string(quote_xml(self.type_).encode(ExternalEncoding), input_name='type'), namespace_, eol_))
+        if self.use_latest_template_version is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%suse_latest_template_version>%s</%suse_latest_template_version>%s' % (namespace_, self.gds_format_boolean(self.use_latest_template_version, input_name='use_latest_template_version'), namespace_, eol_))
     def exportLiteral(self, outfile, level, name_='VmPool'):
         level += 1
         already_processed = set()
@@ -26554,6 +26561,9 @@ class VmPool(BaseResource):
         if self.type_ is not None:
             showIndent(outfile, level)
             outfile.write('type_=%s,\n' % quote_python(self.type_).encode(ExternalEncoding))
+        if self.use_latest_template_version is not None:
+            showIndent(outfile, level)
+            outfile.write('use_latest_template_version=%s,\n' % self.use_latest_template_version)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -26624,6 +26634,16 @@ class VmPool(BaseResource):
             type_ = child_.text
             type_ = self.gds_validate_string(type_, node, 'type')
             self.type_ = type_
+        elif nodeName_ == 'use_latest_template_version':
+            sval_ = child_.text
+            if sval_ in ('true', '1'):
+                ival_ = True
+            elif sval_ in ('false', '0'):
+                ival_ = False
+            else:
+                raise_parse_error(child_, 'requires boolean')
+            ival_ = self.gds_validate_boolean(ival_, node, 'use_latest_template_version')
+            self.use_latest_template_version = ival_
         super(VmPool, self).buildChildren(child_, node, nodeName_, True)
 # end class VmPool
 
