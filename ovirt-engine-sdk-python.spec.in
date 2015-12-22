@@ -43,6 +43,11 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc README.md
 
 %changelog
+* Tue Dec 22 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.6.2.0-1
+- Fix RSDL metadata for provisioned_size #1290012.
+- Document the use of All-Content in clusters #1287688.
+- VM pools can use use_latest_template_version #1284596.
+
 * Wed Nov 25 2015 Juan Hernandez <juan.hernandez@redhat.com> - 3.6.1.0-1
 - Add support for matrix parameters to "add" methods #1282770.
 - Add support for SR-IOV #1231507.
