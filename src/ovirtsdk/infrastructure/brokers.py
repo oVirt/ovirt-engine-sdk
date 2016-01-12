@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2015-12-22 11:31:23.000594'''
+'''Generated at: 2016-01-12 10:40:25.000848'''
 
 
 from ovirtsdk.xml import params
@@ -26609,6 +26609,8 @@ class StorageDomainVM(params.VM, Base):
         [@param action.vm.disks.disk: collection]
         {
           [@ivar disk.id: string]
+          [@ivar disk.format: string]
+          [@ivar disk.sparse: string]
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]

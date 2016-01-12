@@ -16053,6 +16053,12 @@ or less indicates that the session should never timeout</description>
 <parameter required="false" type="xs:string">
     <name>disk.id</name>
 </parameter>
+<parameter required="false" type="xs:string">
+    <name>disk.format</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>disk.sparse</name>
+</parameter>
                             </parameters_set>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
