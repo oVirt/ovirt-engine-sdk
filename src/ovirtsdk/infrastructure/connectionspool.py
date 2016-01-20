@@ -101,6 +101,7 @@ class ConnectionsPool(object):
         for header_name, header_value in headers.items():
             if header_value is not None:
                 header_lines.append("%s: %s" % (header_name, header_value))
+        header_lines.append("Version: 4")
         header_lines.append("Content-Type: application/xml")
         header_lines.append("Accept: application/xml")
 
