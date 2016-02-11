@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2016-01-12 10:40:25.000848'''
+'''Generated at: 2016-02-11 14:44:33.000311'''
 
 
 from ovirtsdk.xml import params
@@ -2744,7 +2744,7 @@ class Clusters(Base):
         [@param cluster.scheduling_policy.thresholds.low: int]
         [@param cluster.scheduling_policy.thresholds.high: int]
         [@param cluster.scheduling_policy.thresholds.duration: int]
-        [@param cluster.scheduling_policy.id: string]
+        [@param cluster.scheduling_policy.id|name: string]
         [@param cluster.scheduling_policy.properties.property: collection]
         {
           [@ivar property.name: string]

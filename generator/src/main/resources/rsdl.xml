@@ -200,7 +200,7 @@ or less indicates that the session should never timeout</description>
                             <deprecated>true</deprecated>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>cluster.scheduling_policy.id</name>
+                            <name>cluster.scheduling_policy.id|name</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>cluster.scheduling_policy.properties.property</name>

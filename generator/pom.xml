@@ -39,7 +39,7 @@
 
     <!-- Default values used when retrieving the XML schema and the RSDL from
          a the engine artifacts: -->
-    <engine.version>3.6.2.5</engine.version>
+    <engine.version>3.6.3.2-SNAPSHOT</engine.version>
 
   </properties>
 
