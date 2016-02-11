@@ -43,6 +43,10 @@ sed -i 1d src/ovirtsdk/xml/params.py
 %doc README.md
 
 %changelog
+* Thu Feb 11 2016 Juan Hernandez <juan.hernandez@redhat.com> - 3.6.3.0-1
+- Fix RSDL for adding cluster #1279159.
+- Explicitly select version 3 of the API.
+
 * Tue Jan 12 2016 Juan Hernandez <juan.hernandez@redhat.com> - 3.6.2.1-1
 - Add disk format and allocation policy to import VM #1296047.
 
