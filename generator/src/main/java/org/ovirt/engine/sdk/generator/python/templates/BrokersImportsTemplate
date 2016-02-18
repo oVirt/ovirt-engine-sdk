@@ -1,5 +1,0 @@
-
-# Begin NOT_GENERATED
-from ovirtsdk.utils.reflectionhelper import ReflectionHelper
-from ovirtsdk.utils.comperator import Comparator
-# End NOT_GENERATED

@@ -1,6 +1,0 @@
-# Begin NOT_GENERATED
-try:
-    basestring = basestring
-except NameError:
-    basestring = str
-# End NOT_GENERATED

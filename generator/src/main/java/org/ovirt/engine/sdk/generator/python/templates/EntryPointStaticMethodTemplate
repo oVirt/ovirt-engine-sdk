@@ -1,7 +1,0 @@
-
-
-    def get_$attr$(self):
-        entry_point = context.manager[self.id].get('entry_point')
-        if entry_point:
-            return entry_point.$attr$
-        raise DisconnectedError

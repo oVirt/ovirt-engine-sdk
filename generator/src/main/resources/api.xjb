@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<jaxb:bindings
-  xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
-  version="2.0">
-
-  <jaxb:globalBindings generateIsSetMethod="true"/>
-
-</jaxb:bindings>
