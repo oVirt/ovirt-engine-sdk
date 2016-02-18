@@ -1,0 +1,11 @@
+gcc
+git
+java-1.8.0-openjdk-devel
+libxml2
+libxml2-devel
+maven
+python
+python-devel
+python-nose
+python-pycurl
+python-wheel

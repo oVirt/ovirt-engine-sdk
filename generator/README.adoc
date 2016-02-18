@@ -1,0 +1,5 @@
+= oVirt Engine Pyton SDK Generator
+
+== Introduction
+
+This project contains the code generator for the oVirt Python SDK.
