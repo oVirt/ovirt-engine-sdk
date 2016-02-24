@@ -126,7 +126,7 @@ public class Documentation {
         for (Map.Entry<String, String> entry : mapper.entrySet()) {
             String k = entry.getKey();
             String v = entry.getValue();
-            if (docStr.indexOf(k + ":") == -1) {
+            if (docStr.indexOf("@param " + k + ":") == -1) {
                 docStr += offset + String.format(optParamDocTemplate, k, v);
             }
         }

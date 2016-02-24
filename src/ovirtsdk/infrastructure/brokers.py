@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2016-02-11 14:44:33.000311'''
+'''Generated at: 2016-02-24 12:40:25.000365'''
 
 
 from ovirtsdk.xml import params
@@ -364,10 +364,11 @@ class Cluster(params.Cluster, Base):
 
         return Cluster(result, self.context)
 
-    def resetemulatedmachine(self, action=params.Action(), correlation_id=None):
+    def resetemulatedmachine(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -377,11 +378,14 @@ class Cluster(params.Cluster, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1042,12 +1046,13 @@ class ClusterGlusterHook(params.GlusterHook, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def disable(self, action=params.Action(), correlation_id=None):
+    def disable(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1057,12 +1062,15 @@ class ClusterGlusterHook(params.GlusterHook, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glusterhook:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glusterhook:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1070,12 +1078,13 @@ class ClusterGlusterHook(params.GlusterHook, Base):
 
         return result
 
-    def enable(self, action=params.Action(), correlation_id=None):
+    def enable(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1085,12 +1094,15 @@ class ClusterGlusterHook(params.GlusterHook, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glusterhook:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glusterhook:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1098,7 +1110,7 @@ class ClusterGlusterHook(params.GlusterHook, Base):
 
         return result
 
-    def resolve(self, action=params.Action(), correlation_id=None):
+    def resolve(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -1106,6 +1118,7 @@ class ClusterGlusterHook(params.GlusterHook, Base):
         [@param action.host.id|name: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1115,12 +1128,15 @@ class ClusterGlusterHook(params.GlusterHook, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glusterhook:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glusterhook:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1283,7 +1299,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
             headers={"Content-type":None}
         )
 
-    def activate(self, action=params.Action(), correlation_id=None):
+    def activate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -1293,6 +1309,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1302,12 +1319,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1315,7 +1335,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def migrate(self, action=params.Action(), correlation_id=None):
+    def migrate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -1325,6 +1345,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1334,12 +1355,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1347,7 +1371,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def stopmigrate(self, action=params.Action(), correlation_id=None):
+    def stopmigrate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -1357,6 +1381,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1366,12 +1391,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1379,7 +1407,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def rebalance(self, action=params.Action(), correlation_id=None):
+    def rebalance(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -1387,6 +1415,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         [@param action.force: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1396,12 +1425,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1409,12 +1441,13 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def resetalloptions(self, action=params.Action(), correlation_id=None):
+    def resetalloptions(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1424,12 +1457,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1437,7 +1473,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def resetoption(self, action=params.Action(), correlation_id=None):
+    def resetoption(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -1445,6 +1481,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @param action.force: boolean
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1454,12 +1491,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1467,7 +1507,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def setoption(self, action=params.Action(), correlation_id=None):
+    def setoption(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -1475,6 +1515,7 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
         @param action.option.value: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1484,12 +1525,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1497,13 +1541,14 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def start(self, action=params.Action(), correlation_id=None):
+    def start(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.force: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1513,12 +1558,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1526,12 +1574,13 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def startprofile(self, action=params.Action(), correlation_id=None):
+    def startprofile(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1541,12 +1590,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1554,13 +1606,14 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def stop(self, action=params.Action(), correlation_id=None):
+    def stop(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.force: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1570,12 +1623,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1583,12 +1639,13 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def stopprofile(self, action=params.Action(), correlation_id=None):
+    def stopprofile(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1598,12 +1655,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1611,12 +1671,13 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def stoprebalance(self, action=params.Action(), correlation_id=None):
+    def stoprebalance(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1626,12 +1687,15 @@ class ClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -1686,7 +1750,7 @@ class ClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
             headers={"Content-type":None}
         )
 
-    def replace(self, action=params.Action(), correlation_id=None):
+    def replace(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -1695,6 +1759,7 @@ class ClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
         [@param action.force: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -1704,13 +1769,16 @@ class ClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{glustervolume:id}': self.parentclass.get_id(),
-                    '{brick:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{cluster:id}': self.parentclass.parentclass.get_id(),
+                        '{glustervolume:id}': self.parentclass.get_id(),
+                        '{brick:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -3251,6 +3319,7 @@ class DataCenter(params.DataCenter, Base):
         [@param action.force: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return None:
@@ -3414,10 +3483,11 @@ class DataCenterCluster(params.Cluster, Base):
             self.context
         )
 
-    def resetemulatedmachine(self, action=params.Action()):
+    def resetemulatedmachine(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -3426,12 +3496,15 @@ class DataCenterCluster(params.Cluster, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                    '{cluster:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.get_id(),
+                        '{cluster:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4087,10 +4160,11 @@ class DataCenterClusterGlusterHook(params.GlusterHook, Base):
             headers={"Content-type":None}
         )
 
-    def disable(self, action=params.Action()):
+    def disable(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4099,13 +4173,16 @@ class DataCenterClusterGlusterHook(params.GlusterHook, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glusterhook:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glusterhook:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4113,10 +4190,11 @@ class DataCenterClusterGlusterHook(params.GlusterHook, Base):
 
         return result
 
-    def enable(self, action=params.Action()):
+    def enable(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4125,13 +4203,16 @@ class DataCenterClusterGlusterHook(params.GlusterHook, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glusterhook:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glusterhook:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4139,10 +4220,11 @@ class DataCenterClusterGlusterHook(params.GlusterHook, Base):
 
         return result
 
-    def resolve(self, action=params.Action()):
+    def resolve(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4151,13 +4233,16 @@ class DataCenterClusterGlusterHook(params.GlusterHook, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glusterhook:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glusterhook:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4324,10 +4409,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
             headers={"Content-type":None}
         )
 
-    def activate(self, action=params.Action()):
+    def activate(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4336,13 +4422,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4350,10 +4439,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def migrate(self, action=params.Action()):
+    def migrate(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4362,13 +4452,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4376,10 +4469,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def stopmigrate(self, action=params.Action()):
+    def stopmigrate(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4388,13 +4482,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4402,10 +4499,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def rebalance(self, action=params.Action()):
+    def rebalance(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4414,13 +4512,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4428,10 +4529,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def resetalloptions(self, action=params.Action()):
+    def resetalloptions(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4440,13 +4542,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4454,10 +4559,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def resetoption(self, action=params.Action()):
+    def resetoption(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4466,13 +4572,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4480,10 +4589,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def setoption(self, action=params.Action()):
+    def setoption(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4492,13 +4602,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4506,10 +4619,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def start(self, action=params.Action()):
+    def start(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4518,13 +4632,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4532,10 +4649,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def startprofile(self, action=params.Action()):
+    def startprofile(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4544,13 +4662,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4558,10 +4679,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def stop(self, action=params.Action()):
+    def stop(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4570,13 +4692,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4584,10 +4709,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def stopprofile(self, action=params.Action()):
+    def stopprofile(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4596,13 +4722,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4610,10 +4739,11 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         return result
 
-    def stoprebalance(self, action=params.Action()):
+    def stoprebalance(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4622,13 +4752,16 @@ class DataCenterClusterGlusterVolume(params.GlusterVolume, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.get_id(),
-                    '{glustervolume:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.get_id(),
+                        '{glustervolume:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -4684,10 +4817,11 @@ class DataCenterClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
             headers={"Content-type":None}
         )
 
-    def replace(self, action=params.Action()):
+    def replace(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -4696,14 +4830,17 @@ class DataCenterClusterGlusterVolumeGlusterBrick(params.GlusterBrick, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
-                    '{cluster:id}': self.parentclass.parentclass.get_id(),
-                    '{glustervolume:id}': self.parentclass.get_id(),
-                    '{brick:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.parentclass.get_id(),
+                        '{cluster:id}': self.parentclass.parentclass.get_id(),
+                        '{glustervolume:id}': self.parentclass.get_id(),
+                        '{brick:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -9633,12 +9770,13 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def activate(self, action=params.Action(), correlation_id=None):
+    def activate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -9648,12 +9786,15 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                    '{storagedomain:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.get_id(),
+                        '{storagedomain:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -9661,12 +9802,13 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         return result
 
-    def deactivate(self, action=params.Action(), correlation_id=None):
+    def deactivate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -9676,12 +9818,15 @@ class DataCenterStorageDomain(params.StorageDomain, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.get_id(),
-                    '{storagedomain:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.get_id(),
+                        '{storagedomain:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -9738,10 +9883,11 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def copy(self, action=params.Action()):
+    def copy(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -9750,13 +9896,16 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -9764,13 +9913,14 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
 
         return result
 
-    def export(self, action=params.Action(), correlation_id=None):
+    def export(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param storagedomain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -9780,13 +9930,16 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -9794,10 +9947,11 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
 
         return result
 
-    def move(self, action=params.Action()):
+    def move(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -9806,13 +9960,16 @@ class DataCenterStorageDomainDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{datacenter:id}': self.parentclass.parentclass.get_id(),
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{datacenter:id}': self.parentclass.parentclass.get_id(),
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -10625,7 +10782,7 @@ class Disk(params.Disk, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def copy(self, action=params.Action(), correlation_id=None):
+    def copy(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -10633,6 +10790,7 @@ class Disk(params.Disk, Base):
         [@param action.disk.name|alias: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -10642,11 +10800,14 @@ class Disk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -10654,13 +10815,14 @@ class Disk(params.Disk, Base):
 
         return result
 
-    def export(self, action=params.Action(), correlation_id=None):
+    def export(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param action.storage_domain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -10670,11 +10832,14 @@ class Disk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -10682,13 +10847,14 @@ class Disk(params.Disk, Base):
 
         return result
 
-    def move(self, action=params.Action(), correlation_id=None):
+    def move(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param action.storage_domain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -10698,11 +10864,14 @@ class Disk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -12115,7 +12284,7 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
 
         return ExternalHostProvider(result, self.context)
 
-    def importcertificates(self, action=params.Action(), correlation_id=None):
+    def importcertificates(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -12125,6 +12294,7 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -12134,11 +12304,14 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{externalhostprovider:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{externalhostprovider:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -12146,12 +12319,13 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
 
         return result
 
-    def testconnectivity(self, action=params.Action(), correlation_id=None):
+    def testconnectivity(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -12161,11 +12335,14 @@ class ExternalHostProvider(params.ExternalHostProvider, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{externalhostprovider:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{externalhostprovider:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -13857,6 +14034,7 @@ class Host(params.Host, Base):
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return None:
@@ -13980,12 +14158,13 @@ class Host(params.Host, Base):
 
         return Host(result, self.context)
 
-    def activate(self, action=params.Action(), correlation_id=None):
+    def activate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -13995,11 +14174,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14007,7 +14189,7 @@ class Host(params.Host, Base):
 
         return result
 
-    def approve(self, action=params.Action(), correlation_id=None):
+    def approve(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -14023,6 +14205,7 @@ class Host(params.Host, Base):
           [@param host.ssh.user.password: string]
           [@param action.async: boolean]
           [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14032,11 +14215,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14044,12 +14230,13 @@ class Host(params.Host, Base):
 
         return result
 
-    def commitnetconfig(self, action=params.Action(), correlation_id=None):
+    def commitnetconfig(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14059,11 +14246,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14071,13 +14261,14 @@ class Host(params.Host, Base):
 
         return result
 
-    def deactivate(self, action=params.Action(), correlation_id=None):
+    def deactivate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.reason: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14087,11 +14278,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14099,10 +14293,11 @@ class Host(params.Host, Base):
 
         return result
 
-    def enrollcertificate(self, action=params.Action(), correlation_id=None):
+    def enrollcertificate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14112,11 +14307,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14124,13 +14322,14 @@ class Host(params.Host, Base):
 
         return result
 
-    def fence(self, action=params.Action(), correlation_id=None):
+    def fence(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param action.fence_type: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14140,11 +14339,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14152,12 +14354,13 @@ class Host(params.Host, Base):
 
         return result
 
-    def forceselectspm(self, action=params.Action(), correlation_id=None):
+    def forceselectspm(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14167,11 +14370,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14179,7 +14385,7 @@ class Host(params.Host, Base):
 
         return result
 
-    def install(self, action=params.Action(), correlation_id=None):
+    def install(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -14199,6 +14405,7 @@ class Host(params.Host, Base):
           [@param action.host.override_iptables: boolean]
           [@param action.async: boolean]
           [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14208,11 +14415,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14220,13 +14430,14 @@ class Host(params.Host, Base):
 
         return result
 
-    def iscsidiscover(self, action=params.Action(), correlation_id=None):
+    def iscsidiscover(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param action.iscsi.address: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14236,11 +14447,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14248,7 +14462,7 @@ class Host(params.Host, Base):
 
         return result
 
-    def iscsilogin(self, action=params.Action(), correlation_id=None):
+    def iscsilogin(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -14256,6 +14470,7 @@ class Host(params.Host, Base):
         @param action.iscsi.target: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14265,11 +14480,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14277,12 +14495,13 @@ class Host(params.Host, Base):
 
         return result
 
-    def refresh(self, action=params.Action(), correlation_id=None):
+    def refresh(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14292,11 +14511,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14304,7 +14526,7 @@ class Host(params.Host, Base):
 
         return result
 
-    def setupnetworks(self, action=params.Action(), correlation_id=None):
+    def setupnetworks(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -14365,6 +14587,7 @@ class Host(params.Host, Base):
         [@param action.connectivity_timeout: int]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14374,11 +14597,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14386,7 +14612,7 @@ class Host(params.Host, Base):
 
         return result
 
-    def unregisteredstoragedomainsdiscover(self, action=params.Action(), correlation_id=None):
+    def unregisteredstoragedomainsdiscover(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -14394,6 +14620,7 @@ class Host(params.Host, Base):
         [@param action.iscsi_target: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14403,11 +14630,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -14415,13 +14645,14 @@ class Host(params.Host, Base):
 
         return result
 
-    def upgrade(self, action=params.Action(), correlation_id=None):
+    def upgrade(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.image: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -14431,11 +14662,14 @@ class Host(params.Host, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -15805,13 +16039,14 @@ class HostNIC(params.HostNIC, Base):
             self.context
         )
 
-    def attach(self, action=params.Action(), correlation_id=None):
+    def attach(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param action.network.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -15821,12 +16056,15 @@ class HostNIC(params.HostNIC, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                    '{nic:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.parentclass.get_id(),
+                        '{nic:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -15834,12 +16072,13 @@ class HostNIC(params.HostNIC, Base):
 
         return result
 
-    def detach(self, action=params.Action(), correlation_id=None):
+    def detach(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -15849,12 +16088,15 @@ class HostNIC(params.HostNIC, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                    '{nic:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.parentclass.get_id(),
+                        '{nic:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -15862,7 +16104,7 @@ class HostNIC(params.HostNIC, Base):
 
         return result
 
-    def updatevirtualfunctionsconfiguration(self, action=params.Action(), correlation_id=None):
+    def updatevirtualfunctionsconfiguration(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -15870,6 +16112,7 @@ class HostNIC(params.HostNIC, Base):
         [@param action.virtual_functions_configuration.all_networks_allowed: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -15879,12 +16122,15 @@ class HostNIC(params.HostNIC, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                    '{nic:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.parentclass.get_id(),
+                        '{nic:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -16366,7 +16612,7 @@ class HostNICs(Base):
             context=self.context
         )
 
-    def setupnetworks(self, action=params.Action(), correlation_id=None):
+    def setupnetworks(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -16402,6 +16648,7 @@ class HostNICs(Base):
         [@param action.force: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -16411,11 +16658,14 @@ class HostNICs(Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{host:id}': self.parentclass.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{host:id}': self.parentclass.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -19020,12 +19270,13 @@ class Job(params.Job, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def clear(self, action=params.Action(), correlation_id=None):
+    def clear(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -19035,11 +19286,14 @@ class Job(params.Job, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{job:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{job:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -19047,7 +19301,7 @@ class Job(params.Job, Base):
 
         return result
 
-    def end(self, action=params.Action(), correlation_id=None):
+    def end(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -19055,6 +19309,7 @@ class Job(params.Job, Base):
         [@param action.force: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -19064,11 +19319,14 @@ class Job(params.Job, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{job:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{job:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -19099,7 +19357,7 @@ class JobStep(params.Step, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def end(self, action=params.Action(), correlation_id=None):
+    def end(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -19108,6 +19366,7 @@ class JobStep(params.Step, Base):
         [@param action.status.state: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -19117,12 +19376,15 @@ class JobStep(params.Step, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{job:id}': self.parentclass.get_id(),
-                    '{step:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{job:id}': self.parentclass.get_id(),
+                        '{step:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -20820,7 +21082,7 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
 
         return OpenStackImageProvider(result, self.context)
 
-    def importcertificates(self, action=params.Action(), correlation_id=None):
+    def importcertificates(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -20830,6 +21092,7 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -20839,11 +21102,14 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{openstackimageprovider:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{openstackimageprovider:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -20851,12 +21117,13 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
 
         return result
 
-    def testconnectivity(self, action=params.Action(), correlation_id=None):
+    def testconnectivity(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -20866,11 +21133,14 @@ class OpenStackImageProvider(params.OpenStackImageProvider, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{openstackimageprovider:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{openstackimageprovider:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -21030,7 +21300,7 @@ class OpenStackImageProviderOpenStackImage(params.OpenStackImage, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def import_image(self, action=params.Action(), correlation_id=None):
+    def import_image(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -21041,6 +21311,7 @@ class OpenStackImageProviderOpenStackImage(params.OpenStackImage, Base):
         [@param action.template.name: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -21050,12 +21321,15 @@ class OpenStackImageProviderOpenStackImage(params.OpenStackImage, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{openstackimageprovider:id}': self.parentclass.get_id(),
-                    '{image:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{openstackimageprovider:id}': self.parentclass.get_id(),
+                        '{image:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -21362,10 +21636,11 @@ class OpenStackNetworkProvider(params.OpenStackNetworkProvider, Base):
 
         return OpenStackNetworkProvider(result, self.context)
 
-    def importcertificates(self, action=params.Action()):
+    def importcertificates(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -21374,11 +21649,14 @@ class OpenStackNetworkProvider(params.OpenStackNetworkProvider, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{openstacknetworkprovider:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{openstacknetworkprovider:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -21386,10 +21664,11 @@ class OpenStackNetworkProvider(params.OpenStackNetworkProvider, Base):
 
         return result
 
-    def testconnectivity(self, action=params.Action()):
+    def testconnectivity(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -21398,11 +21677,14 @@ class OpenStackNetworkProvider(params.OpenStackNetworkProvider, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{openstacknetworkprovider:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{openstacknetworkprovider:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -22053,10 +22335,11 @@ class OpenStackVolumeProvider(params.OpenStackVolumeProvider, Base):
 
         return OpenStackVolumeProvider(result, self.context)
 
-    def importcertificates(self, action=params.Action()):
+    def importcertificates(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -22065,11 +22348,14 @@ class OpenStackVolumeProvider(params.OpenStackVolumeProvider, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{openstackvolumeprovider:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{openstackvolumeprovider:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -22077,10 +22363,11 @@ class OpenStackVolumeProvider(params.OpenStackVolumeProvider, Base):
 
         return result
 
-    def testconnectivity(self, action=params.Action()):
+    def testconnectivity(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -22089,11 +22376,14 @@ class OpenStackVolumeProvider(params.OpenStackVolumeProvider, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{openstackvolumeprovider:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{openstackvolumeprovider:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -24200,6 +24490,7 @@ class StorageConnection(params.StorageConnection, Base):
         [@param action.host.id|name: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return None:
@@ -24488,13 +24779,14 @@ class StorageDomain(params.StorageDomain, Base):
 
         return StorageDomain(result, self.context)
 
-    def isattached(self, action=params.Action(), correlation_id=None):
+    def isattached(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param action.host.id: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -24504,11 +24796,14 @@ class StorageDomain(params.StorageDomain, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -24516,7 +24811,7 @@ class StorageDomain(params.StorageDomain, Base):
 
         return result
 
-    def refreshluns(self, action=params.Action(), correlation_id=None):
+    def refreshluns(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -24526,6 +24821,7 @@ class StorageDomain(params.StorageDomain, Base):
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -24535,11 +24831,14 @@ class StorageDomain(params.StorageDomain, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -24595,10 +24894,11 @@ class StorageDomainDisk(params.Disk, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def copy(self, action=params.Action()):
+    def copy(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -24607,12 +24907,15 @@ class StorageDomainDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -24620,13 +24923,14 @@ class StorageDomainDisk(params.Disk, Base):
 
         return result
 
-    def export(self, action=params.Action(), correlation_id=None):
+    def export(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param storagedomain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -24636,12 +24940,15 @@ class StorageDomainDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -24649,10 +24956,11 @@ class StorageDomainDisk(params.Disk, Base):
 
         return result
 
-    def move(self, action=params.Action()):
+    def move(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -24661,12 +24969,15 @@ class StorageDomainDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -25670,7 +25981,7 @@ class StorageDomainImage(params.Image, Base):
         #still available at client's code.
         raise DisconnectedError
 
-    def import_image(self, action=params.Action(), correlation_id=None):
+    def import_image(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -25680,6 +25991,7 @@ class StorageDomainImage(params.Image, Base):
         [@param action.disk.alias|name: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -25689,12 +26001,15 @@ class StorageDomainImage(params.Image, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                    '{image:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                        '{image:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -26238,7 +26553,7 @@ class StorageDomainTemplate(params.Template, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def import_template(self, action=params.Action(), correlation_id=None):
+    def import_template(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -26253,6 +26568,7 @@ class StorageDomainTemplate(params.Template, Base):
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -26262,12 +26578,15 @@ class StorageDomainTemplate(params.Template, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                    '{template:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                        '{template:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -26275,7 +26594,7 @@ class StorageDomainTemplate(params.Template, Base):
 
         return result
 
-    def register(self, action=params.Action(), correlation_id=None):
+    def register(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -26285,6 +26604,7 @@ class StorageDomainTemplate(params.Template, Base):
         [@param action.template.name: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -26294,12 +26614,15 @@ class StorageDomainTemplate(params.Template, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                    '{template:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                        '{template:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -26596,7 +26919,7 @@ class StorageDomainVM(params.VM, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def import_vm(self, action=params.Action(), correlation_id=None):
+    def import_vm(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -26614,6 +26937,7 @@ class StorageDomainVM(params.VM, Base):
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -26623,12 +26947,15 @@ class StorageDomainVM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -26636,7 +26963,7 @@ class StorageDomainVM(params.VM, Base):
 
         return result
 
-    def register(self, action=params.Action(), correlation_id=None):
+    def register(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -26645,6 +26972,7 @@ class StorageDomainVM(params.VM, Base):
         [@param action.vm.name: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -26654,12 +26982,15 @@ class StorageDomainVM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{storagedomain:id}': self.parentclass.get_id(),
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{storagedomain:id}': self.parentclass.get_id(),
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -27395,7 +27726,7 @@ class Template(params.Template, Base):
 
         return Template(result, self.context)
 
-    def export(self, action=params.Action(), correlation_id=None):
+    def export(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -27403,6 +27734,7 @@ class Template(params.Template, Base):
         [@param action.exclusive: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -27412,11 +27744,14 @@ class Template(params.Template, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{template:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{template:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -27584,6 +27919,7 @@ class TemplateDisk(params.Disk, Base):
         [@param action.force: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return None:
@@ -27606,13 +27942,14 @@ class TemplateDisk(params.Disk, Base):
             headers={"Correlation-Id":correlation_id}
         )
 
-    def copy(self, action=params.Action(), correlation_id=None):
+    def copy(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param storagedomain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -27622,12 +27959,15 @@ class TemplateDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{template:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{template:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -27635,13 +27975,14 @@ class TemplateDisk(params.Disk, Base):
 
         return result
 
-    def export(self, action=params.Action(), correlation_id=None):
+    def export(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param storagedomain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -27651,12 +27992,15 @@ class TemplateDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{template:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{template:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30135,6 +30479,7 @@ class VM(params.VM, Base):
         [@param action.vm.disks.detach_only: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return None:
@@ -30271,10 +30616,11 @@ class VM(params.VM, Base):
 
         return VM(result, self.context)
 
-    def cancelmigration(self, action=params.Action()):
+    def cancelmigration(self, action=params.Action(), async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
 
         @return Action:
         '''
@@ -30283,11 +30629,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={}
@@ -30295,13 +30644,14 @@ class VM(params.VM, Base):
 
         return result
 
-    def clone(self, action=params.Action(), correlation_id=None):
+    def clone(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param action.vm.name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30311,11 +30661,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30323,10 +30676,11 @@ class VM(params.VM, Base):
 
         return result
 
-    def commit_snapshot(self, action=params.Action(), correlation_id=None):
+    def commit_snapshot(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30336,11 +30690,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30348,12 +30705,13 @@ class VM(params.VM, Base):
 
         return result
 
-    def detach(self, action=params.Action(), correlation_id=None):
+    def detach(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30363,11 +30721,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30375,7 +30736,7 @@ class VM(params.VM, Base):
 
         return result
 
-    def export(self, action=params.Action(), correlation_id=None):
+    def export(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -30384,6 +30745,7 @@ class VM(params.VM, Base):
         [@param action.storage_domain.id|name: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30393,11 +30755,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30405,12 +30770,13 @@ class VM(params.VM, Base):
 
         return result
 
-    def freezefilesystems(self, action=params.Action(), correlation_id=None):
+    def freezefilesystems(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30420,11 +30786,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30432,12 +30801,13 @@ class VM(params.VM, Base):
 
         return result
 
-    def logon(self, action=params.Action(), correlation_id=None):
+    def logon(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30447,11 +30817,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30459,13 +30832,14 @@ class VM(params.VM, Base):
 
         return result
 
-    def maintenance(self, action=params.Action(), correlation_id=None):
+    def maintenance(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param action.maintenance_enabled: boolean
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30475,11 +30849,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30487,7 +30864,7 @@ class VM(params.VM, Base):
 
         return result
 
-    def migrate(self, action=params.Action(), correlation_id=None):
+    def migrate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -30496,6 +30873,7 @@ class VM(params.VM, Base):
         [@param action.cluster.id: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30505,11 +30883,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30517,13 +30898,14 @@ class VM(params.VM, Base):
 
         return result
 
-    def move(self, action=params.Action(), correlation_id=None):
+    def move(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param action.storage_domain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30533,11 +30915,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30545,7 +30930,7 @@ class VM(params.VM, Base):
 
         return result
 
-    def preview_snapshot(self, action=params.Action(), correlation_id=None):
+    def preview_snapshot(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -30559,6 +30944,7 @@ class VM(params.VM, Base):
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30568,11 +30954,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30580,10 +30969,11 @@ class VM(params.VM, Base):
 
         return result
 
-    def reboot(self, action=params.Action(), correlation_id=None):
+    def reboot(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30593,11 +30983,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30605,10 +30998,11 @@ class VM(params.VM, Base):
 
         return result
 
-    def reordermacaddresses(self, action=params.Action(), correlation_id=None):
+    def reordermacaddresses(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30618,11 +31012,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30630,12 +31027,13 @@ class VM(params.VM, Base):
 
         return result
 
-    def shutdown(self, action=params.Action(), correlation_id=None):
+    def shutdown(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30645,11 +31043,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30657,7 +31058,7 @@ class VM(params.VM, Base):
 
         return result
 
-    def start(self, action=params.Action(), correlation_id=None):
+    def start(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -30718,6 +31119,7 @@ class VM(params.VM, Base):
         [@param action.use_cloud_init: boolean]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30727,11 +31129,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30739,12 +31144,13 @@ class VM(params.VM, Base):
 
         return result
 
-    def stop(self, action=params.Action(), correlation_id=None):
+    def stop(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30754,11 +31160,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30766,12 +31175,13 @@ class VM(params.VM, Base):
 
         return result
 
-    def suspend(self, action=params.Action(), correlation_id=None):
+    def suspend(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30781,11 +31191,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30793,12 +31206,13 @@ class VM(params.VM, Base):
 
         return result
 
-    def thawfilesystems(self, action=params.Action(), correlation_id=None):
+    def thawfilesystems(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30808,11 +31222,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30820,13 +31237,14 @@ class VM(params.VM, Base):
 
         return result
 
-    def ticket(self, action=params.Action(), correlation_id=None):
+    def ticket(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.ticket.value: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30836,11 +31254,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -30848,10 +31269,11 @@ class VM(params.VM, Base):
 
         return result
 
-    def undo_snapshot(self, action=params.Action(), correlation_id=None):
+    def undo_snapshot(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -30861,11 +31283,14 @@ class VM(params.VM, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -31231,6 +31656,7 @@ class VMDisk(params.Disk, Base):
         @param action.detach: boolean
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return None:
@@ -31300,12 +31726,13 @@ class VMDisk(params.Disk, Base):
             self.context
         )
 
-    def activate(self, action=params.Action(), correlation_id=None):
+    def activate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -31315,12 +31742,15 @@ class VMDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -31328,12 +31758,13 @@ class VMDisk(params.Disk, Base):
 
         return result
 
-    def deactivate(self, action=params.Action(), correlation_id=None):
+    def deactivate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -31343,12 +31774,15 @@ class VMDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -31356,13 +31790,14 @@ class VMDisk(params.Disk, Base):
 
         return result
 
-    def export(self, action=params.Action(), correlation_id=None):
+    def export(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param storagedomain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -31372,12 +31807,15 @@ class VMDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -31385,13 +31823,14 @@ class VMDisk(params.Disk, Base):
 
         return result
 
-    def move(self, action=params.Action(), correlation_id=None):
+    def move(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         @param storagedomain.id|name: string
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -31401,12 +31840,15 @@ class VMDisk(params.Disk, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                    '{disk:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                        '{disk:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -32524,10 +32966,11 @@ class VMNIC(params.NIC, Base):
             self.context
         )
 
-    def activate(self, action=params.Action(), correlation_id=None):
+    def activate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -32537,12 +32980,15 @@ class VMNIC(params.NIC, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                    '{nic:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                        '{nic:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -32550,10 +32996,11 @@ class VMNIC(params.NIC, Base):
 
         return result
 
-    def deactivate(self, action=params.Action(), correlation_id=None):
+    def deactivate(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -32563,12 +33010,15 @@ class VMNIC(params.NIC, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                    '{nic:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                        '{nic:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -33500,7 +33950,7 @@ class VMSnapshot(params.Snapshot, Base):
             headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
-    def restore(self, action=params.Action(), correlation_id=None):
+    def restore(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
@@ -33512,6 +33962,7 @@ class VMSnapshot(params.Snapshot, Base):
         }
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -33521,12 +33972,15 @@ class VMSnapshot(params.Snapshot, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vm:id}': self.parentclass.get_id(),
-                    '{snapshot:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vm:id}': self.parentclass.get_id(),
+                        '{snapshot:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
@@ -35360,12 +35814,13 @@ class VmPool(params.VmPool, Base):
 
         return VmPool(result, self.context)
 
-    def allocatevm(self, action=params.Action(), correlation_id=None):
+    def allocatevm(self, action=params.Action(), correlation_id=None, async=None):
         '''
         @type Action:
 
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
         @return Action:
@@ -35375,11 +35830,14 @@ class VmPool(params.VmPool, Base):
 
         result = self.__getProxy().request(
             method='POST',
-            url=UrlHelper.replace(
-                url,
-                {
-                    '{vmpool:id}': self.get_id(),
-                }
+            url=UrlHelper.appendParameters(
+                url=UrlHelper.replace(
+                    url,
+                    {
+                        '{vmpool:id}': self.get_id(),
+                    }
+                ),
+                args={'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}
