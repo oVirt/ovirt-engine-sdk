@@ -49,7 +49,8 @@ cp "${tar_file}" packaging/.
 pushd packaging
   export tar_version="${version}"
   export tar_url="$(basename ${tar_file})"
-  export rpm_release="0.0${suffix}"
+  export rpm_dist="$(rpm --eval '%dist')"
+  export rpm_release="0.0${suffix}${rpm_dist}"
   ./build.sh
 popd
 
