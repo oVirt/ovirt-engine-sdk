@@ -19,8 +19,6 @@
 
 import ovirtsdk4 as sdk
 
-dir(sdk)
-
 # This example will connect to the server and display a summary of the
 # relevant objects in the system, stracted from the root service:
 
