@@ -516,6 +516,15 @@ public class ServicesGenerator implements PythonGenerator {
             if (type == model.getBooleanType()) {
                 buffer.addLine("%1$s = Writer.render_boolean(%1$s)", arg);
             }
+            else if (type == model.getIntegerType()) {
+                buffer.addLine("%1$s = Writer.render_integer(%1$s)", arg);
+            }
+            else if (type == model.getDecimalType()) {
+                buffer.addLine("%1$s = Writer.render_decimal(%1$s)", arg);
+            }
+            else if (type == model.getDateType()) {
+                buffer.addLine("%1$s = Writer.render_date(%1$s)", arg);
+            }
         }
         buffer.addLine("query['%1$s'] = %2$s", tag, arg);
         buffer.addLine("matrix['%1$s'] = %2$s", tag, arg);
