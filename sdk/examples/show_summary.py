@@ -35,6 +35,7 @@ connection = sdk.Connection(
 
 # Get API information from the root service:
 api = connection.system_service().get()
+print("version: %s" % api.product_info.version.full_version)
 print("hosts: %d" % api.summary.hosts.total)
 print("sds: %d" % api.summary.storage_domains.total)
 print("users: %d" % api.summary.users.total)
