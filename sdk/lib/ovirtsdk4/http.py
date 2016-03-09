@@ -299,6 +299,22 @@ class Connection(object):
 
         return self.system_service().service(path)
 
+    def test(self, raise_exception=False):
+        """
+        Tests the connectivity with the server. If connectivity works
+        correctly it returns `True`. If there is any connectivy problem
+        it will either return `False` or raise an exception if the
+        `raise_exception` parameter is `True`.
+        """
+
+        try:
+            self.system_service().get()
+            return True
+        except Exception as exception:
+            if raise_exception:
+                raise exception
+            return False
+
     def close(self):
         """
         Releases the resources used by this connection.
