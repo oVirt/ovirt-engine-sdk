@@ -261,7 +261,6 @@ public class ReadersGenerator implements PythonGenerator {
         Model model = type.getModel();
         if (type == model.getStringType()) {
             buffer.addLine("%1$s = Reader.read_string(reader)", variable);
-            buffer.addLine("reader.next_element()");
         }
         else if (type == model.getBooleanType()) {
             buffer.addLine("%1$s = Reader.read_boolean(reader)", variable);
@@ -282,7 +281,6 @@ public class ReadersGenerator implements PythonGenerator {
 
     private void generateReadEnum(StructMember member, String variable) {
         buffer.addLine("%1$s = Reader.read_string(reader)", variable);
-        buffer.addLine("reader.next_element()");
     }
 
     private void generateReadStruct(StructMember member, String variable) {
