@@ -19,6 +19,7 @@
 import io
 import os
 import pycurl
+import sys
 import threading
 
 try:
@@ -93,6 +94,7 @@ class Connection(object):
         ca_file=None,
         timeout=None,
         debug=False,
+        log=None,
         kerberos=False,
     ):
         """
@@ -120,6 +122,14 @@ class Connection(object):
         generated. If the values is `True` all the data sent to and received
         from the server will be written to `stdout`. Be aware that user names
         and passwords will also be written, so handle it with care.
+
+        `log`:: The log file where the debug output will be written. The
+        value can be a string contaiing a file name or an IO object. If
+        it is a filename then the file will be created if it doesn't
+        exist, and the debug output will be added to the end. The file
+        will be closed when the connection is closed. If it is an IO
+        object then the debug output will be written directly, and it
+        won't be closed.
 
         `kerberos`:: A boolean flag indicating if Kerberos
         authentication should be used instead of the default basic
@@ -165,7 +175,15 @@ class Connection(object):
             self._curl.setopt(pycurl.TIMEOUT, timeout)
 
         # Configure debug mode:
+        self._close_log = False
         if debug:
+            if log is None:
+                self._log = sys.stdout
+            elif type(log) == str:
+                self._log = open(log, 'a')
+                self._close_log = True
+            else:
+                self._log = log
             self._curl.setopt(pycurl.VERBOSE, 1)
             self._curl.setopt(pycurl.DEBUGFUNCTION, self._curl_debug)
 
@@ -325,6 +343,10 @@ class Connection(object):
         request = Request(method='GET')
         self.send(request, last=True)
 
+        # Close the log file, if we did open it:
+        if self._close_log:
+            self._log.close()
+
         # Release resources used by the cURL handle:
         with self._curl_lock:
             self._curl.close()
@@ -365,8 +387,7 @@ class Connection(object):
             url = '%s?%s' % (url, urlencode(query))
         return url
 
-    @staticmethod
-    def _curl_debug(debug_type, debug_message):
+    def _curl_debug(self, debug_type, debug_message):
         """
         This is the implementation of the cURL debug callback.
         """
@@ -382,4 +403,4 @@ class Connection(object):
             prefix = '> '
         lines = debug_message.replace('\r\n', '\n').strip().split('\n')
         for line in lines:
-            print('%s%s' % (prefix, line))
+            self._log.write('%s%s\n' % (prefix, line))
