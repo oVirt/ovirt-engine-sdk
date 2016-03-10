@@ -116,7 +116,7 @@ public class ReadersGenerator implements PythonGenerator {
 
         // Generate the method that reads one instance:
         buffer.addLine("@staticmethod");
-        buffer.addLine("def read_one(reader, connection=None):");
+        buffer.addLine("def read_one(reader):");
         buffer.startBlock();
         buffer.addLine("# Do nothing if there aren't more tags:");
         buffer.addLine("if not reader.forward():");
@@ -126,7 +126,6 @@ public class ReadersGenerator implements PythonGenerator {
         buffer.addLine();
         buffer.addLine("# Create the object:");
         buffer.addLine("obj = types.%1$s()", typeName.getClassName());
-        buffer.addLine("obj.connection = connection");
         buffer.addLine();
         buffer.addLine("# Process the attributes:");
         buffer.addLine("obj.href = reader.get_attribute('href')");
@@ -152,11 +151,10 @@ public class ReadersGenerator implements PythonGenerator {
 
         // Generate the method that reads many instances:
         buffer.addLine("@staticmethod");
-        buffer.addLine("def read_many(reader, connection=None):");
+        buffer.addLine("def read_many(reader):");
         buffer.startBlock();
         buffer.addLine("# Do nothing if there aren't more tags:");
         buffer.addLine("objs = list.List()");
-        buffer.addLine("objs.connection = connection");
         buffer.addLine("if not reader.forward():");
         buffer.startBlock();
         buffer.addLine("return objs");
@@ -176,7 +174,7 @@ public class ReadersGenerator implements PythonGenerator {
         buffer.addLine("# Process the inner elements:");
         buffer.addLine("while reader.forward():");
         buffer.startBlock();
-        buffer.addLine("objs.append(%1$s.read_one(reader, connection))", readerName.getClassName());
+        buffer.addLine("objs.append(%1$s.read_one(reader))", readerName.getClassName());
         buffer.endBlock();
         buffer.addLine();
         buffer.addLine("# Discard the end tag:");
@@ -285,8 +283,7 @@ public class ReadersGenerator implements PythonGenerator {
 
     private void generateReadStruct(StructMember member, String variable) {
         PythonClassName readerName = pythonNames.getReaderName(member.getType());
-        buffer.addLine("%1$s = %2$s.read_one(reader, connection)", variable, readerName.getClassName());
-        buffer.addLine("%1$s.is_link = %2$s", variable, member instanceof Link? "True": "False");
+        buffer.addLine("%1$s = %2$s.read_one(reader)", variable, readerName.getClassName());
     }
 
     private void generateReadList(StructMember member, String variable) {
@@ -297,8 +294,7 @@ public class ReadersGenerator implements PythonGenerator {
         }
         else if (elementType instanceof StructType) {
             PythonClassName readerName = pythonNames.getReaderName(elementType);
-            buffer.addLine("%1$s = %2$s.read_many(reader, connection)", variable, readerName.getClassName());
-            buffer.addLine("%1$s.is_link = %2$s", variable, member instanceof Link? "True": "False");
+            buffer.addLine("%1$s = %2$s.read_many(reader)", variable, readerName.getClassName());
         }
         else {
             buffer.addLine("reader.next_element()");

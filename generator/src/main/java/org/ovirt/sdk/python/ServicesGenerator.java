@@ -437,13 +437,13 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("reader = xml.XmlReader(buf)");
         if (type instanceof StructType) {
             PythonClassName reader = pythonNames.getReaderName(type);
-            buffer.addLine("return readers.%1$s.read_one(reader, self._connection)", reader.getClassName());
+            buffer.addLine("return readers.%1$s.read_one(reader)", reader.getClassName());
         }
         else if (type instanceof ListType) {
             ListType listType = (ListType) type;
             Type elementType = listType.getElementType();
             PythonClassName reader = pythonNames.getReaderName(elementType);
-            buffer.addLine("return readers.%1$s.read_many(reader, self._connection)", reader.getClassName());
+            buffer.addLine("return readers.%1$s.read_many(reader)", reader.getClassName());
         }
         buffer.endBlock();
         buffer.addLine("finally:");

@@ -23,9 +23,10 @@ import sys
 import threading
 
 try:
-    from urllib.parse import quote_plus, urlencode
+    from urllib.parse import quote_plus, urlencode, urlparse
 except ImportError:
     from urllib import quote_plus, urlencode
+    from urlparse import urlparse
 
 from ovirtsdk4 import version
 
@@ -332,6 +333,46 @@ class Connection(object):
             if raise_exception:
                 raise exception
             return False
+
+    def is_link(self, obj):
+        """
+        Indicates if the given object is a link. An object is a link if
+        it has an `href` attribute.
+        """
+
+        return obj.href is not None
+
+    def follow_link(self, obj):
+        """
+        Follows the `href` attribute of this object, retrieves the object
+        and returns it.
+        """
+
+        # Check that the "href" attribute has a values, as it is needed
+        # in order to retrieve the representation of the object:
+        href = obj.href
+        if href is None:
+            raise Exception(
+                "Can't follow link because the 'href' attribute does't " +
+                "have a value"
+            )
+
+        # Check that the value of the "href" attribute is compatible with the
+        # base URL of the connection:
+        prefix = urlparse(self._url).path
+        if not prefix.endswith('/'):
+            prefix += '/'
+        if not href.startswith(prefix):
+            raise Exception(
+                "The URL '%s' isn't compatible with the base URL of the " +
+                "connection" % href
+            )
+
+        # Remove the prefix from the URL, follow the path to the relevant
+        # service and invoke the "get" method to retrieve its representation:
+        path = href[len(prefix):]
+        service = self.service(path)
+        return service.get()
 
     def close(self):
         """

@@ -46,20 +46,10 @@ vm = vms_service.list(search='name=myvm')[0]
 # <cluster id="123" href="/api/clusters/123"/>
 # <template id="456" href="/api/templates/456"/>
 #
-# The SDK provides a "follow_link" that can be used to retrieve the
-# complete content of these related objects.
-cluster = vm.cluster
-if cluster.is_link:
-    cluster = cluster.follow_link()
-template = vm.template
-if template.is_link:
-    template = template.follow_link()
-
-# Note that the "is_link" property provides a hint. It will return "True"
-# iif the attribute is defined as link in the specification of the API,
-# but the server can decide to return additional information. This means
-# that even if "is_link" returns "True" the server may have returned
-# additional fields like "name", etc.
+# The SDK provides a "follow_link" method that can be used to retrieve
+# the complete content of these related objects.
+cluster = connection.follow_link(vm.cluster)
+template = connection.follow_link(vm.template)
 
 # Now we can use the details of the cluster and the template:
 print("cluster: %s" % cluster.name)
