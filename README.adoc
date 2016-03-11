@@ -7,6 +7,18 @@ oVirt Engine API.
 
 == Building
 
+The SDK uses http://www.xmlsoft.org[libxml2] for parsing and rendering
+XML documents, and the part that interacts with this library is written
+in C. This means that before building you must make sure you have the C
+compiler and the required header and libraries files installed in your
+system. For example to install with the `yum` package manager you will
+need to do the following:
+
+  # yum -y install \
+  gcc \
+  libxml2-devel \
+  python-devel
+
 Most of the source code of the Python SDK is automatically generated
 from the API model.
 
