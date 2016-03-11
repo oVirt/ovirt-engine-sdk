@@ -93,10 +93,10 @@ class Connection(object):
         password=None,
         insecure=False,
         ca_file=None,
-        timeout=None,
         debug=False,
         log=None,
         kerberos=False,
+        timeout=0,
     ):
         """
         Creates a new connection to the API server.
@@ -117,8 +117,6 @@ class Connection(object):
         certificate presented by the server will be verified using these CA
         certificates.
 
-        `timeout`:: The request timeout, in seconds.
-
         `debug`:: A boolean flag indicating if debug output should be
         generated. If the values is `True` all the data sent to and received
         from the server will be written to `stdout`. Be aware that user names
@@ -135,6 +133,11 @@ class Connection(object):
         `kerberos`:: A boolean flag indicating if Kerberos
         authentication should be used instead of the default basic
         authentication.
+
+        `timeout`:: The maximum total time to wait for the response, in
+        seconds. A value of zero (the default) means wait for ever. If
+        the timeout expires before the response is received an exception
+        will be raised.
         """
 
         # Check mandatory parameters:
@@ -172,8 +175,7 @@ class Connection(object):
                 self._curl.setopt(pycurl.CAINFO, ca_file)
 
         # Configure timeouts:
-        if timeout is not None:
-            self._curl.setopt(pycurl.TIMEOUT, timeout)
+        self._curl.setopt(pycurl.TIMEOUT, timeout)
 
         # Configure debug mode:
         self._close_log = False
