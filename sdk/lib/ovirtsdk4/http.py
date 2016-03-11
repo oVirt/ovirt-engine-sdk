@@ -447,3 +447,54 @@ class Connection(object):
         lines = debug_message.replace('\r\n', '\n').strip().split('\n')
         for line in lines:
             self._log.write('%s%s\n' % (prefix, line))
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.close()
+
+
+class ConnectionBuilder(object):
+    """
+    This class is a mechanism to simplify the repeated creation of
+    multiple connections. It stores the connection parameters given
+    in its constructor, and has a single `build` method that is
+    equivalent to calling the constructor of the `Connection`
+    class. Typical use will be like this:
+
+    [source,python]
+    ----
+    # Create the builder once:
+    builder = ConnectionBuilder(
+        url='https://enginer40.example.com/ovirt-engine/api',
+        username='admin@internal',
+        password='redhat123',
+        ca_file='ca.pem',
+    )
+
+    # Create and use first connection:
+    with builder.build() as connection:
+       ...
+
+    # Create and use a second connection:
+    with builder.build() as connection:
+       ...
+    ----
+    """
+
+    def __init__(self, **kwargs):
+        """
+        Creates a new connection builder. The parameters are the same
+        accepted by the constructor of the `Connnection` class.
+        """
+
+        self._kwargs = kwargs
+
+    def build(self):
+        """
+        Creates a new connection using the parameters passed to the
+        constructor, and returns it.
+        """
+
+        return Connection(**self._kwargs)

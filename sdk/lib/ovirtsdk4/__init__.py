@@ -18,3 +18,4 @@
 
 
 from ovirtsdk4.http import Connection
+from ovirtsdk4.http import ConnectionBuilder
