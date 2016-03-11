@@ -29,7 +29,7 @@ connection = sdk.Connection(
   username=admin@internal',
   password='...',
   ca_file='ca.pem',
-})
+)
 
 # Get the reference to the system service:
 system_service = connection.system_service()
