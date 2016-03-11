@@ -5,6 +5,10 @@
 The oVirt Python SDK is a Python package that simplyfies access to the
 oVirt Engine API.
 
+IMPORTANT: This document describes how to generate, build and test the
+SDK. If you are interested in how to use it read the `README.adoc` file
+in the `sdk` directory instead.
+
 == Building
 
 The SDK uses http://www.xmlsoft.org[libxml2] for parsing and rendering
