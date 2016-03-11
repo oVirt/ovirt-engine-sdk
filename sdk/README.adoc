@@ -15,7 +15,7 @@ directory.
 == Usage
 
 To use the SDK import the `ovirtsdk4` module. That will give you
-access to all the classes of th SDK, and in particular to the
+access to all the classes of the SDK, and in particular to the
 `Connection` class. This is the entry point of the SDK,
 and gives you access to the root of the tree of services of the API:
 
@@ -68,4 +68,4 @@ for vm in vms:
   print("%s: %s" % (vm.name, vm.id))
 ----
 
-You will find more usuage examples in the `examples` directory.
+You will find more usage examples in the `examples` directory.
