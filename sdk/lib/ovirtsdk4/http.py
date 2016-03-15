@@ -23,9 +23,9 @@ import sys
 import threading
 
 try:
-    from urllib.parse import quote_plus, urlencode, urlparse
+    from urllib.parse import urlencode, urlparse
 except ImportError:
-    from urllib import quote_plus, urlencode
+    from urllib import urlencode
     from urlparse import urlparse
 
 from ovirtsdk4 import version
@@ -43,14 +43,12 @@ class Request(object):
     def __init__(self,
         method='GET',
         path='',
-        matrix=None,
         query=None,
         headers=None,
         body=None,
     ):
         self.method = method
         self.path = path
-        self.matrix = matrix if matrix is not None else {}
         self.query = query if query is not None else {}
         self.headers = headers if headers is not None else {}
         self.body = body
@@ -235,7 +233,6 @@ class Connection(object):
         url = self._build_url(
             path=request.path,
             query=request.query,
-            matrix=request.matrix,
         )
         self._curl.setopt(pycurl.URL, url)
 
@@ -406,10 +403,9 @@ class Connection(object):
         with self._curl_lock:
             self._curl.close()
 
-    def _build_url(self, path='', query=None, matrix=None):
+    def _build_url(self, path='', query=None):
         """
-        Builds a request URL from a path, and the sets of matrix and query
-        parameters.
+        Builds a request URL from a path, and the set of query parameters.
 
         This method is intended for internal use by other components of the
         SDK. Refrain from using it directly, as backwards compatibility isn't
@@ -425,19 +421,11 @@ class Connection(object):
         of the parameters, and the values should be strings containing the
         values.
 
-        `matrix`:: A dictionary containing the matrix parameters to add to the
-        URL. The keys of the dictionary should be strings containing the names
-        of the parameters, and the values should be strings containing the
-        values.
-
         The returned value is an string containing the URL.
         """
 
         # Add the path and the parameters:
         url = '%s%s' % (self._url, path)
-        if matrix:
-            for key, value in matrix.items():
-                url = '%s;%s=%s' % (url, key, quote_plus(value))
         if query:
             url = '%s?%s' % (url, urlencode(query))
         return url

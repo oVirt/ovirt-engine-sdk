@@ -325,17 +325,15 @@ public class ServicesGenerator implements PythonGenerator {
         // Start body:
         buffer.startBlock();
 
-        // Generate the input parameters, both as matrix and query parameters, as some versions of the server use
-        // matrix parameters and some other use query parameters:
+        // Generate the input parameters:
         buffer.addLine("query = {}");
-        buffer.addLine("matrix = {}");
         method.parameters()
             .filter(Parameter::isIn)
             .sorted()
             .forEach(this::generateUrlParameter);
 
         // Body:
-        buffer.addLine("request = http.Request(method='GET', path=self._path, query=query, matrix=matrix)");
+        buffer.addLine("request = http.Request(method='GET', path=self._path, query=query)");
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code in [200]:");
         buffer.startBlock();
@@ -477,14 +475,13 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Generate the input parameters:
         buffer.addLine("query = {}");
-        buffer.addLine("matrix = {}");
         method.parameters()
             .filter(Parameter::isIn)
             .sorted()
             .forEach(this::generateUrlParameter);
 
         // Generate the method:
-        buffer.addLine("request = http.Request(method='DELETE', path=self._path, query=query, matrix=matrix)");
+        buffer.addLine("request = http.Request(method='DELETE', path=self._path, query=query)");
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code not in [200]:");
         buffer.startBlock();
@@ -501,10 +498,6 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateUrlParameter(Parameter parameter) {
-        // Note that parameters are currently generated as both as matrix and query parameters. This is because some of
-        // the services expect them as matrix parameters and some as query parameters. In the future this will fixed
-        // in the server side, so that both query and matrix parameters are accepted by all the services. Once that is
-        // done this method will be simplified.
         Type type = parameter.getType();
         Name name = parameter.getName();
         String arg = pythonNames.getMemberStyleName(name);
@@ -527,7 +520,6 @@ public class ServicesGenerator implements PythonGenerator {
             }
         }
         buffer.addLine("query['%1$s'] = %2$s", tag, arg);
-        buffer.addLine("matrix['%1$s'] = %2$s", tag, arg);
         buffer.endBlock();
     }
 
