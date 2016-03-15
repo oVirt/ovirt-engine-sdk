@@ -97,6 +97,7 @@ class Connection(object):
         log=None,
         kerberos=False,
         timeout=0,
+        compress=False,
     ):
         """
         Creates a new connection to the API server.
@@ -138,6 +139,11 @@ class Connection(object):
         seconds. A value of zero (the default) means wait for ever. If
         the timeout expires before the response is received an exception
         will be raised.
+
+        `compress`:: A boolean flag indicating if the SDK should ask
+        the server to send compressed responses. The default is `False`.
+        Note that this is a hint for the server, and that it may return
+        uncompressed data even when this parameter is set to `True`.
         """
 
         # Check mandatory parameters:
@@ -176,6 +182,12 @@ class Connection(object):
 
         # Configure timeouts:
         self._curl.setopt(pycurl.TIMEOUT, timeout)
+
+        # Configure compression of responses (setting the value to a zero
+        # length string means accepting all the compression types that
+        # libcurl supports):
+        if compress:
+            self._curl.setopt(pycurl.ENCODING, '')
 
         # Configure debug mode:
         self._close_log = False
