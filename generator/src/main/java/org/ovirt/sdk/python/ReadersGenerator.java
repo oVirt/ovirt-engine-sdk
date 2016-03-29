@@ -25,7 +25,6 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.EnumType;
-import org.ovirt.api.metamodel.concepts.Link;
 import org.ovirt.api.metamodel.concepts.ListType;
 import org.ovirt.api.metamodel.concepts.Model;
 import org.ovirt.api.metamodel.concepts.Name;
@@ -101,6 +100,7 @@ public class ReadersGenerator implements PythonGenerator {
         buffer.startBlock();
         buffer.addLine("super(%1$s, self).__init__()", readerName.getClassName());
         buffer.endBlock();
+        buffer.addLine();
 
         // Methods:
         generateMethods(type);
@@ -186,28 +186,48 @@ public class ReadersGenerator implements PythonGenerator {
     }
 
     private void generateAttributesRead(StructType type) {
-        List<StructMember> members = Stream.concat(type.attributes(), type.links())
+        Stream.concat(type.attributes(), type.links())
+            .filter(x -> schemaNames.isRepresentedAsAttribute(x.getName()))
             .sorted()
-            .collect(toList());
-        members.forEach(this::generateAttributeRead);
+            .forEach(this::generateAttributeRead);
     }
 
     private void generateAttributeRead(StructMember member) {
         Name name = member.getName();
         Type type = member.getType();
-        if (type instanceof PrimitiveType || type instanceof EnumType) {
-            String property = pythonNames.getMemberStyleName(name);
-            String tag = schemaNames.getSchemaTagName(name);
-            buffer.addLine("value = reader.get_attribute('%s')", tag);
-            buffer.addLine("if value is not None:");
-            buffer.startBlock();
-            buffer.addLine("obj.%1$s = value", property);
-            buffer.endBlock();
+        PythonClassName typeName = pythonNames.getTypeName(type);
+        String property = pythonNames.getMemberStyleName(name);
+        String tag = schemaNames.getSchemaTagName(name);
+        buffer.addLine("value = reader.get_attribute('%s')", tag);
+        buffer.addLine("if value is not None:");
+        buffer.startBlock();
+        if (type instanceof PrimitiveType) {
+            Model model = type.getModel();
+            if (type == model.getStringType()) {
+                buffer.addLine("obj.%1$s = value", property);
+            }
+            else if (type == model.getBooleanType()) {
+                buffer.addLine("obj.%1$s = Reader.parse_boolean(value)", property);
+            }
+            else if (type == model.getIntegerType()) {
+                buffer.addLine("obj.%1$s = Reader.parse_integer(value)", property);
+            }
+            else if (type == model.getDecimalType()) {
+                buffer.addLine("obj.%1$s = Reader.parse_decimal(value)", property);
+            }
+            else if (type == model.getDateType()) {
+                buffer.addLine("obj.%1$s = Reader.parse_date(value)", property);
+            }
         }
+        else if (type instanceof EnumType) {
+            buffer.addLine("obj.%1$s = types.%2$s(value)", property, typeName.getClassName());
+        }
+        buffer.endBlock();
     }
 
     private void generateElementsRead(StructType type) {
         List<StructMember> members = Stream.concat(type.attributes(), type.links())
+            .filter(x -> !schemaNames.isRepresentedAsAttribute(x.getName()))
             .sorted()
             .collect(toList());
         if (!members.isEmpty()) {
@@ -278,7 +298,8 @@ public class ReadersGenerator implements PythonGenerator {
     }
 
     private void generateReadEnum(StructMember member, String variable) {
-        buffer.addLine("%1$s = Reader.read_string(reader)", variable);
+        PythonClassName typeName = pythonNames.getTypeName(member.getType());
+        buffer.addLine("%1$s = types.%2$s(Reader.read_string(reader))", variable, typeName.getClassName());
     }
 
     private void generateReadStruct(StructMember member, String variable) {

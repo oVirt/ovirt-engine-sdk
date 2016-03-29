@@ -54,7 +54,7 @@ while True:
     time.sleep(5)
     host = host_service.get()
     state = host.status.state
-    if state == types.HostStatus.UP:
+    if state == types.HostStatus.UP.value:
         break
 
 # Close the connection to the server:

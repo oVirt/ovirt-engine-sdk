@@ -42,7 +42,7 @@ host = hosts_service.list(search='name=myhost')[0]
 host_service = hosts_service.host_service(host.id)
 
 # If the host isn't down or in maintenance then move it to maintenance:
-if host.status.state != types.HostStatus.MAINTENANCE:
+if host.status.state != types.HostStatus.MAINTENANCE.value:
   host_service.deactivate()
 
 # Remove the host:

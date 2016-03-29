@@ -22,12 +22,23 @@ import distutils.extension
 import glob
 import os
 import setuptools
+import sys
 
 # Load the long description from the README:
 root_dir = os.path.abspath(os.path.dirname(__file__))
 doc_file = os.path.join(root_dir, 'README.adoc')
 with codecs.open(doc_file, encoding='utf-8') as doc_fd:
     long_description = doc_fd.read()
+
+# Required packages:
+requires = [
+    'pycurl >= 7.19.0',
+]
+
+# Python before version 3.4 doesn't support enum types, which we need,
+# so we need to use the "enum34" package:
+if sys.version_info < (3, 4):
+  requires.append('enum34')
 
 # Setup the package:
 setuptools.setup(
@@ -48,9 +59,7 @@ setuptools.setup(
     ],
     package_dir={'': 'lib'},
     packages=setuptools.find_packages('lib'),
-    install_requires=[
-        'pycurl >= 7.19.0',
-    ],
+    install_requires=requires,
     ext_modules=[
         distutils.extension.Extension(
             name='ovirtsdk4.xml',

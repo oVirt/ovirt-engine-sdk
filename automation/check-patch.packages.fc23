@@ -6,11 +6,13 @@ libxml2-devel
 maven
 python
 python-devel
+python-enum34
 python-nose
 python-pycurl
 python-wheel
 python3
 python3-devel
+python3-enum34
 python3-nose
 python3-pycurl
 python3-wheel

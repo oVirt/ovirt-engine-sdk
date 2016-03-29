@@ -15,6 +15,7 @@ BuildRequires: python2-devel
 
 Requires: libxml2
 Requires: python
+Requires: python-enum34
 Requires: python-pycurl
 
 %description

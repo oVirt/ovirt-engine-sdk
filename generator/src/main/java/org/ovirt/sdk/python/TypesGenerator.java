@@ -74,6 +74,7 @@ public class TypesGenerator implements PythonGenerator {
     private void generateTypes(Model model) {
         // Generate the import statements for structs that aren't generated:
         String rootModuleName = pythonNames.getRootModuleName();
+        buffer.addLine("from enum import Enum, unique", rootModuleName);
         buffer.addLine("from %1$s.list import List", rootModuleName);
         buffer.addLine("from %1$s.struct import Struct", rootModuleName);
         buffer.addLine();
@@ -201,14 +202,28 @@ public class TypesGenerator implements PythonGenerator {
     private void generateEnum(EnumType type) {
         // Begin class:
         PythonClassName typeName = pythonNames.getTypeName(type);
-        buffer.addLine("class %1$s(object):", typeName.getClassName());
-        buffer.addLine();
+        buffer.addLine("@unique");
+        buffer.addLine("class %1$s(Enum):", typeName.getClassName());
 
         // Begin body:
         buffer.startBlock();
 
         // Values:
         type.values().sorted().forEach(this::generateEnumValue);
+        buffer.addLine();
+
+        // Constructor:
+        buffer.addLine("def __init__(self, image):");
+        buffer.startBlock();
+        buffer.addLine("self._image = image");
+        buffer.endBlock();
+        buffer.addLine();
+
+        // Method to convert to string:
+        buffer.addLine("def __str__(self):");
+        buffer.startBlock();
+        buffer.addLine("return self._image");
+        buffer.endBlock();
         buffer.addLine();
 
         // End body:

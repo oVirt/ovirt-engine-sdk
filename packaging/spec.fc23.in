@@ -16,6 +16,7 @@ BuildRequires: python3-devel
 
 Requires: libxml2
 Requires: python
+Requires: python-enum34
 Requires: python-pycurl
 
 Provides: ovirt-engine-sdk = %{version}-%{release}
@@ -27,9 +28,10 @@ API.
 
 %package -n python3-ovirt-engine-sdk4
 Summary: oVirt Engine Software Development Kit (Python)
-Requires: python3
-Requires: python3-pycurl
 Requires: libxml2
+Requires: python3
+Requires: python3-enum34
+Requires: python3-pycurl
 
 %description -n python3-ovirt-engine-sdk4
 This package contains the Python SDK for version 4 of the oVirt Engine

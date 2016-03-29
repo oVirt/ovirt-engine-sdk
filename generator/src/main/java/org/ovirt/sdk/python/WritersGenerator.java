@@ -215,9 +215,9 @@ public class WritersGenerator implements PythonGenerator {
     }
 
     private void generateWriteEnumPropertyAsAttribute(EnumType type, String attribute, String value) {
-        buffer.addLine("if %1$s is not None:");
+        buffer.addLine("if %1$s is not None:", value);
         buffer.startBlock();
-        buffer.addLine("writer.write_element('%1$s', %2$s)", attribute, value);
+        buffer.addLine("writer.write_element('%1$s', %2$s.value)", attribute, value);
         buffer.endBlock();
     }
 
@@ -265,7 +265,7 @@ public class WritersGenerator implements PythonGenerator {
     private void generateWriteEnumPropertyAsElement(EnumType type, String tag, String value) {
         buffer.addLine("if %1$s is not None:", value);
         buffer.startBlock();
-        buffer.addLine("Writer.write_string(writer, '%1$s', %2$s)", tag, value);
+        buffer.addLine("Writer.write_string(writer, '%1$s', %2$s.value)", tag, value);
         buffer.endBlock();
     }
 

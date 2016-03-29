@@ -51,7 +51,7 @@ while True:
     time.sleep(5)
     vm = vm_service.get()
     state = vm.status.state
-    if state == types.VmStatus.UP:
+    if state == types.VmStatus.UP.value:
         break
 
 # Close the connection to the server:
