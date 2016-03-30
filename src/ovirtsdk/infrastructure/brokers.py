@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2016-02-24 12:40:25.000365'''
+'''Generated at: 2016-03-30 12:52:59.000716'''
 
 
 from ovirtsdk.xml import params
@@ -3438,7 +3438,7 @@ class DataCenterCluster(params.Cluster, Base):
         [@param cluster.scheduling_policy.thresholds.low: int]
         [@param cluster.scheduling_policy.thresholds.high: int]
         [@param cluster.scheduling_policy.thresholds.duration: int]
-        [@param cluster.scheduling_policy.id: string]
+        [@param cluster.scheduling_policy.id|name: string]
         [@param cluster.scheduling_policy.properties.property: collection]
         {
           [@ivar property.name: string]
@@ -14261,13 +14261,14 @@ class Host(params.Host, Base):
 
         return result
 
-    def deactivate(self, action=params.Action(), correlation_id=None, async=None):
+    def deactivate(self, action=params.Action(), correlation_id=None, stop_gluster_service=None, async=None):
         '''
         @type Action:
 
         [@param action.reason: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
+        [@param stop_gluster_service: boolean (true|false)]
         [@param async: boolean (true|false)]
         [@param correlation_id: any string]
 
@@ -14285,7 +14286,7 @@ class Host(params.Host, Base):
                         '{host:id}': self.get_id(),
                     }
                 ),
-                args={'async:matrix':async}
+                args={'stop_gluster_service:matrix':stop_gluster_service,'async:matrix':async}
             ),
             body=ParseHelper.toXml(action),
             headers={"Correlation-Id":correlation_id}

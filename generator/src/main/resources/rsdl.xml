@@ -2809,7 +2809,7 @@ or less indicates that the session should never timeout</description>
                             <deprecated>true</deprecated>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>cluster.scheduling_policy.id</name>
+                            <name>cluster.scheduling_policy.id|name</name>
                         </parameter>
                         <parameter required="false" type="collection">
                             <name>cluster.scheduling_policy.properties.property</name>
@@ -8343,6 +8343,10 @@ or less indicates that the session should never timeout</description>
                 </headers>
                 <url>
                     <parameters_set>
+                        <parameter required="false" type="xs:boolean" context="matrix">
+                            <name>stop_gluster_service</name>
+                            <value>true|false</value>
+                        </parameter>
                         <parameter required="false" type="xs:boolean" context="matrix">
                             <name>async</name>
                             <value>true|false</value>
