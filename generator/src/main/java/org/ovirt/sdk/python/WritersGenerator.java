@@ -302,7 +302,7 @@ public class WritersGenerator implements PythonGenerator {
                 generateWriteEnumPropertyAsElement((EnumType) elementType, singularTag, "item");
             }
             buffer.endBlock();
-            buffer.addLine("writer.end_element()");
+            buffer.addLine("writer.write_end()");
             buffer.endBlock();
         }
         else if (elementType instanceof StructType) {
