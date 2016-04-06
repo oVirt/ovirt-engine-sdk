@@ -80,12 +80,11 @@ limitations under the License.
               <goal>java</goal>
             </goals>
             <configuration>
-              <mainClass>org.ovirt.sdk.python.Main</mainClass>
+              <mainClass>org.ovirt.api.metamodel.tool.Main</mainClass>
               <arguments>
-                <argument>--model</argument>
-                <argument>${project.basedir}/target/model.jar</argument>
-                <argument>--out</argument>
-                <argument>${project.basedir}/lib</argument>
+                <mainClass>org.ovirt.sdk.python.Tool</mainClass>
+                <argument>--model=${project.basedir}/target/model.jar</argument>
+                <argument>--out=${project.basedir}/lib</argument>
               </arguments>
               <includePluginDependencies>true</includePluginDependencies>
               <includeProjectDependencies>false</includeProjectDependencies>
