@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Mar 30 12:52:58 2016 by generateDS.py version 2.12a.
+# Generated Wed Apr 13 18:34:45 2016 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -50220,5 +50220,30 @@ def findRootClass(rootTag):
     new code as it may be removed in the future.
     """
     return _rootClassMap.get(rootTag)
+
+def parseClass(inString, rootClass):
+    """
+    This method parses the XML document given in the `parseClass` parameter
+    assuming that it is an instance of the class given in the `rootClass`
+    template. This is needed because in some cases the XML element name
+    isn't enough to determine the correct class. For example, if the
+    XML element name is `version` then the class can be `VersionCaps`
+    or `Version`, depending on where from the API the document was
+    retrieved.
+    """
+    from StringIO import StringIO
+    doc = parsexml_(StringIO(inString))
+    rootNode = doc.getroot()
+    if rootClass is None:
+        roots = get_root_tag(rootNode)
+        rootClass = roots[1]
+        if rootClass is None:
+            rootClass = KeyValuePair
+    rootObj = rootClass.factory()
+    rootObj.build(rootNode)
+    # Enable Python to collect the space used by the DOM.
+    doc = None
+    return rootObj
+
 
 # End NOT_GENERATED

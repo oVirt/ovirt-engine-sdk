@@ -34,57 +34,63 @@ class Proxy(object):
         self.__persistent_auth = persistent_auth
         self.__prefix = prefix
 
-    def get(self, url, headers=None):
+    def get(self, url, headers=None, cls=None):
         """
         Performs get request
         
         @param url: request URI
         @param body: request body
         @param headers: request headers
+        @param cls: the class of the body
         """
-        return self.request(method='GET', url=url, headers=headers)
+        return self.request(method='GET', url=url, headers=headers, cls=cls)
 
-    def delete(self, url, body=None, headers=None):
+    def delete(self, url, body=None, headers=None, cls=None):
         """
         Performs delete request
         
         @param url: request URI
         @param body: request body
         @param headers: request headers
+        @param cls: the class of the body
         """
-        return self.request('DELETE', url, body, headers)
+        return self.request('DELETE', url, body, headers, cls=cls)
 
-    def update(self, url, body=None, headers=None):
+    def update(self, url, body=None, headers=None, cls=None):
         """
         Performs update request
         
         @param url: request URI
         @param body: request body
         @param headers: request headers
+        @param cls: the class of the body
         """
-        return self.request('PUT', url, body, headers)
+        return self.request('PUT', url, body, headers, cls=cls)
 
-    def add(self, url, body=None, headers=None):
+    def add(self, url, body=None, headers=None, cls=None):
         """
         Performs add request
         
         @param url: request URI
         @param body: request body
         @param headers: request headers
+        @param cls: the class of the body
         """
-        return self.request('POST', url, body, headers)
+        return self.request('POST', url, body, headers, cls=cls)
 
-    def action(self, url, body=None, headers=None):
+    def action(self, url, body=None, headers=None, cls=None):
         """
         Performs action request
         
         @param url: request URI
         @param body: request body
         @param headers: request headers
+        @param cls: the class of the body
         """
-        return self.request('POST', url, body, headers)
+        return self.request('POST', url, body, headers, cls=cls)
 
-    def request(self, method, url, body=None, headers=None, last=False):
+    def request(self, method, url, body=None, headers=None, last=False,
+                cls=None):
         """
         Performs HTTP request
         
@@ -93,6 +99,7 @@ class Proxy(object):
         @param body: request body
         @param headers: request headers
         @param last: disables persistence authentication
+        @param cls: the class of the body
         """
 
         # Create the dictionary of headers if needed, as the rest of the code
@@ -115,19 +122,19 @@ class Proxy(object):
             persistent_auth=self.__persistent_auth
         )
 
-        return self.__xml2py(response)
+        return self.__xml2py(response, cls)
 
     def close(self):
         self.__pool.close()
 
     @staticmethod
-    def __xml2py(obj):
+    def __xml2py(obj, cls=None):
         """
         Parse XML in to python entity
         """
         if obj is not None and obj is not '':
             try:
-                return params.parseString(obj, silence=True)
+                return params.parseClass(obj, cls)
             except etree.XMLSyntaxError:
                 # raised when server replies in non-XML format,
                 # the motivation for this error is #915036

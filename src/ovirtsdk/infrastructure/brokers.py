@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2016-03-30 12:52:59.000716'''
+'''Generated at: 2016-04-13 18:34:46.000607'''
 
 
 from ovirtsdk.xml import params
@@ -222,7 +222,7 @@ class Capabilities(Base):
         if id:
             try :
                 return VersionCaps(
-                    self.__getProxy().get(url=UrlHelper.append(url, id)),
+                    self.__getProxy().get(url=UrlHelper.append(url, id), cls=params.VersionCaps),
                     self.context
                 )
             except RequestError as err:
@@ -230,7 +230,7 @@ class Capabilities(Base):
                     return None
                 raise err
         elif kwargs:
-            result = self.__getProxy().get(url=url).version
+            result = self.__getProxy().get(url=url, cls=params.VersionCaps).version
 
             return VersionCaps(
                 FilterHelper.getItem(FilterHelper.filter(result, kwargs)),

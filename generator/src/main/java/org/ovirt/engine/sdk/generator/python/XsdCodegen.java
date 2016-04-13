@@ -33,6 +33,7 @@ import org.ovirt.engine.sdk.generator.XsdData;
 import org.ovirt.engine.sdk.generator.python.templates.BasestringHackTemplate;
 import org.ovirt.engine.sdk.generator.python.templates.BrokersImportsTemplate;
 import org.ovirt.engine.sdk.generator.python.templates.FindRootClassTemplate;
+import org.ovirt.engine.sdk.generator.python.templates.ParseClassTemplate;
 import org.ovirt.engine.sdk.generator.python.templates.SuperAttributesTemplate;
 import org.ovirt.engine.sdk.generator.templates.AbstractTemplate;
 
@@ -228,12 +229,14 @@ public class XsdCodegen {
 
     private void appendFunctions() throws IOException {
         appendFunction(new FindRootClassTemplate());
+        appendFunction(new ParseClassTemplate());
     }
 
     private void appendFunction(AbstractTemplate template) throws IOException {
         String text = template.evaluate();
         String[] lines = text.split("\n");
         addLines(source.size(), 0, lines);
+        source.add("");
     }
 
     /**
