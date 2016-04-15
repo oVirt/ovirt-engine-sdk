@@ -220,7 +220,7 @@ public class ReadersGenerator implements PythonGenerator {
             }
         }
         else if (type instanceof EnumType) {
-            buffer.addLine("obj.%1$s = types.%2$s(value)", property, typeName.getClassName());
+            buffer.addLine("obj.%1$s = types.%2$s(value.lower())", property, typeName.getClassName());
         }
         buffer.endBlock();
     }
