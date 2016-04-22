@@ -119,3 +119,5 @@ class Service(object):
                 buf.close()
         if action is not None and action.fault is not None:
             Service._raise_error(response, action.fault)
+
+        return action
