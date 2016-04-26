@@ -17,6 +17,7 @@
 #
 
 import io
+import json
 import os
 import pycurl
 import sys
@@ -40,7 +41,8 @@ class Request(object):
     guarantee.
     """
 
-    def __init__(self,
+    def __init__(
+        self,
         method='GET',
         path='',
         query=None,
@@ -96,6 +98,9 @@ class Connection(object):
         kerberos=False,
         timeout=0,
         compress=False,
+        sso_url=None,
+        sso_revoke_url=None,
+        sso_token_name='access_token',
     ):
         """
         Creates a new connection to the API server.
@@ -142,6 +147,19 @@ class Connection(object):
         the server to send compressed responses. The default is `False`.
         Note that this is a hint for the server, and that it may return
         uncompressed data even when this parameter is set to `True`.
+
+        `sso_url`:: A string containing the base SSO URL of the serve.
+        Default SSO url is computed from the `url` if no `sso_url` is provided.
+
+        `sso_revoke_url`:: A string containing the base URL of the SSO
+        revoke service. This needs to be specified only when using
+        an external authentication service. By default this URL
+        is automatically calculated from the value of the `url` parameter,
+        so that SSO token revoke will be performed using the SSO service
+        that is part of the engine.
+
+        `sso_token_name`:: The token name in the JSON SSO response returned
+        from the SSO server. Default value is `access_token`.
         """
 
         # Check mandatory parameters:
@@ -165,6 +183,12 @@ class Connection(object):
         # The curl object can be used by several threads, but not
         # simultaneously, so we need a lock to prevent that:
         self._curl_lock = threading.Lock()
+
+        # Set SSO attributes:
+        self._sso_url = sso_url
+        self._sso_revoke_url = sso_revoke_url
+        self._sso_token_name = sso_token_name
+        self._sso_token = None
 
         # Create the curl handle that manages the pool of connections:
         self._curl = pycurl.Curl()
@@ -203,7 +227,7 @@ class Connection(object):
         # Initialize the reference to the system service:
         self.__system_service = None
 
-    def send(self, request, last=False):
+    def send(self, request):
         """
         Sends an HTTP request and waits for the response.
 
@@ -216,16 +240,18 @@ class Connection(object):
         `request`:: The Request object containing the details of the HTTP
         request to send.
 
-        `last`:: A boolean flag indicating if this is the last request.
-
         The returned value is a Request object containing the details of the
         HTTP response received.
         """
 
         with self._curl_lock:
-            return self.__send(request, last)
+            return self.__send(request)
 
-    def __send(self, request, last=False):
+    def __send(self, request):
+        # Create SSO token if needed:
+        if self._sso_token is None:
+            self._sso_token = self._get_access_token()
+
         # Set the method:
         self._curl.setopt(pycurl.CUSTOMREQUEST, request.method)
 
@@ -254,11 +280,7 @@ class Connection(object):
         header_lines.append('Version: 4')
         header_lines.append('Content-Type: application/xml')
         header_lines.append('Accept: application/xml')
-
-        # Every request except the last one should indicate that we prefer
-        # to use persistent authentication:
-        if not last:
-            header_lines.append('Prefer: persistent-auth')
+        header_lines.append('Authorization: Bearer %s' % self._sso_token)
 
         # Copy headers and the request body to the curl object:
         self._curl.setopt(pycurl.HTTPHEADER, header_lines)
@@ -303,6 +325,112 @@ class Connection(object):
         """
 
         return self._url
+
+    def _revoke_access_token(self):
+        """
+        Revokes access token
+        """
+
+        # Build the SSO revoke URL:
+        if self._sso_revoke_url is None:
+            self._sso_revoke_url = (
+                '{url}/services/sso-logout?{query}'
+            ).format(
+                url=self._url[:self._url.rindex('/')],
+                query=urlencode({
+                    'scope': 'ovirt-app-api',
+                    'token': self._sso_token,
+                })
+            )
+
+        sso_response = self._get_sso_response(self._sso_revoke_url)
+
+        if isinstance(sso_response, list):
+            sso_response = sso_response[0]
+
+        if 'error' in sso_response:
+            raise Exception(
+                'Error during SSO revoke %s : %s' % (
+                    sso_response['error_code'],
+                    sso_response['error']
+                )
+            )
+
+    def _get_access_token(self):
+        """
+        Creates access token which reflect authentication method.
+        """
+
+        # Build SSO URL:
+        if self._kerberos:
+            entry_point = 'token-http-auth'
+            grant_type = 'urn:ovirt:params:oauth:grant-type:http'
+        else:
+            entry_point = 'token'
+            grant_type = 'password'
+
+        if self._sso_url is None:
+            self._sso_url = (
+                '{url}/sso/oauth/{entry_point}?{query}'
+            ).format(
+                url=self._url[:self._url.rindex('/')],
+                entry_point=entry_point,
+                query=urlencode({
+                    'grant_type': grant_type,
+                    'scope': 'ovirt-app-api',
+                })
+            )
+            if not self._kerberos:
+                self._sso_url += '&' + urlencode({
+                    'username': self._username,
+                    'password': self._password,
+                })
+
+        # Set proper Authorization header if using kerberos:
+        if self._kerberos:
+            self._curl.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_GSSNEGOTIATE)
+            self._curl.setopt(pycurl.USERPWD, ':')
+
+        # Send SSO request:
+        sso_response = self._get_sso_response(self._sso_url)
+
+        if isinstance(sso_response, list):
+            sso_response = sso_response[0]
+
+        if 'error' in sso_response:
+            raise Exception(
+                'Error during SSO authentication %s : %s' % (
+                    sso_response['error_code'],
+                    sso_response['error']
+                )
+            )
+
+        return sso_response[self._sso_token_name]
+
+    def _get_sso_response(self, url):
+        """
+        Perform SSO request and return response body data.
+        """
+
+        # Set HTTP method and URL:
+        self._curl.setopt(pycurl.CUSTOMREQUEST, 'GET')
+        self._curl.setopt(pycurl.URL, url)
+
+        # Prepare headers:
+        header_lines = [
+            'User-Agent: PythonSDK/%s' % version.VERSION,
+            'Accept: application/json'
+        ]
+        self._curl.setopt(pycurl.HTTPHEADER, header_lines)
+        self._curl.setopt(pycurl.POSTFIELDS, '')
+
+        # Prepare the buffer to receive the response:
+        body_buf = io.BytesIO()
+        self._curl.setopt(pycurl.WRITEFUNCTION, body_buf.write)
+
+        # Send the request and wait for the response:
+        self._curl.perform()
+        return json.loads(body_buf.getvalue().decode('utf-8'))
 
     def system_service(self):
         """
@@ -390,10 +518,8 @@ class Connection(object):
         Releases the resources used by this connection.
         """
 
-        # Send the last request to indicate the server that the session should
-        # be closed:
-        request = Request(method='GET')
-        self.send(request, last=True)
+        # Revoke access token:
+        self._revoke_access_token()
 
         # Close the log file, if we did open it:
         if self._close_log:
