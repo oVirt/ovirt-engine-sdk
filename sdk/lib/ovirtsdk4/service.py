@@ -73,9 +73,9 @@ class Service(object):
         Reads the response body assuming that it contains a fault message,
         converts it to an exception and raises it.
 
-        This method is intended for internal use by other components of the SDK.
-        Refrain from using it directly, as backwards compatibility isn't
-        guaranteed.
+        This method is intended for internal use by other
+        components of the SDK. Refrain from using it directly,
+        as backwards compatibility isn't guaranteed.
         """
 
         buf = None
@@ -100,9 +100,9 @@ class Service(object):
         it contains an fault, and if it does converts it to an exception and
         raises it.
 
-        This method is intended for internal use by other components of the SDK.
-        Refrain from using it directly, as backwards compatibility isn't
-        guaranteed.
+        This method is intended for internal use by other
+        components of the SDK. Refrain from using it directly,
+        as backwards compatibility isn't guaranteed.
         """
 
         buf = None

@@ -91,6 +91,22 @@ limitations under the License.
             </configuration>
           </execution>
 
+          <!-- Run code format check: -->
+          <execution>
+            <id>format-check</id>
+            <phase>package</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>flake8</executable>
+              <arguments>
+                <argument>--ignore=E501</argument>
+                <argument>lib</argument>
+              </arguments>
+            </configuration>
+          </execution>
+
           <!-- Run the tests: -->
           <execution>
             <id>test</id>

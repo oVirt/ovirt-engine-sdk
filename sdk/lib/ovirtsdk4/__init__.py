@@ -30,6 +30,7 @@ except ImportError:
     from urlparse import urlparse
 
 from ovirtsdk4 import version
+from ovirtsdk4.http import Response
 
 
 class Connection(object):

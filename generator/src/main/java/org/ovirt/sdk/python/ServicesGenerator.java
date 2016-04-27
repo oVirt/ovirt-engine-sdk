@@ -250,11 +250,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code in [200]:");
         buffer.startBlock();
-        buffer.addLine("action = self._check_action(response)");
-        method.parameters()
-            .filter(Parameter::isOut)
-            .findFirst()
-            .ifPresent(this::generateActionResponse);
+        generateActionResponse(method);
         buffer.endBlock();
         buffer.addLine("else:");
         buffer.startBlock();
@@ -266,8 +262,19 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine();
     }
 
-    private void generateActionResponse(Parameter parameter) {
-        buffer.addLine("return action.%1$s", pythonNames.getMemberStyleName(parameter.getName()));
+    private void generateActionResponse(Method method) {
+        Parameter parameter = method.parameters()
+            .filter(Parameter::isOut)
+            .findFirst()
+            .orElse(null);
+
+        if (parameter == null) {
+            buffer.addLine("self._check_action(response)");
+        }
+        else {
+            buffer.addLine("action = self._check_action(response)");
+            buffer.addLine("return action.%1$s", pythonNames.getMemberStyleName(parameter.getName()));
+        }
     }
 
     private void generateWriteActionParameter(Parameter parameter) {
@@ -385,7 +392,6 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("if response.code in [200]:");
         buffer.startBlock();
         generateReturnResponseBody(parameter);
-        buffer.addLine("return result");
         buffer.endBlock();
         buffer.addLine("else:");
         buffer.startBlock();

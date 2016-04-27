@@ -96,7 +96,7 @@ public class ReadersGenerator implements PythonGenerator {
         buffer.startBlock();
 
         // Constructor:
-        buffer.addLine("def __init__():");
+        buffer.addLine("def __init__(self):");
         buffer.startBlock();
         buffer.addLine("super(%1$s, self).__init__()", readerName.getClassName());
         buffer.endBlock();

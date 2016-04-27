@@ -72,9 +72,9 @@ public class WritersGenerator implements PythonGenerator {
         // Generate the imports:
         String rootModuleName = pythonNames.getRootModuleName();
         buffer.addLine("from %1$s import list", rootModuleName);
-        buffer.addLine("from %1$s import types", rootModuleName);
         buffer.addLine();
         buffer.addLine("from %1$s.writer import Writer", rootModuleName);
+        buffer.addLine();
         buffer.addLine();
 
         // Generate the writer classes:
@@ -95,10 +95,11 @@ public class WritersGenerator implements PythonGenerator {
         buffer.startBlock();
 
         // Constructor:
-        buffer.addLine("def __init__():");
+        buffer.addLine("def __init__(self):");
         buffer.startBlock();
         buffer.addLine("super(%1$s, self).__init__()", writerName.getClassName());
         buffer.endBlock();
+        buffer.addLine();
 
         // Methods:
         generateMethods(type);

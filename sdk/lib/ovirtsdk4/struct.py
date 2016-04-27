@@ -16,11 +16,6 @@
 # limitations under the License.
 #
 
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
-
 
 class Struct(object):
     """
@@ -58,9 +53,9 @@ class Struct(object):
                 raise TypeError((
                     "The type '{actual}' isn't valid for "
                     "attribute '{attribute}', it must be "
-                    "'{expected}'").format(
-                        attribute=attribute,
-                        actual=actual.__name__,
-                        expected=expected.__name__,
-                    )
-                )
+                    "'{expected}'"
+                ).format(
+                    attribute=attribute,
+                    actual=actual.__name__,
+                    expected=expected.__name__,
+                ))
