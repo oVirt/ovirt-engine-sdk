@@ -17,7 +17,7 @@
 #
 
 # The version of the SDK:
-VERSION = '4.0.0a0'
+VERSION = '4.0.0a1'
 
 # This module is executed as a script during the build process, and it
 # should print to the output the value of the version:
