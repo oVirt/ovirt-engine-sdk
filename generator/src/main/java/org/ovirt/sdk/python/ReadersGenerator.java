@@ -72,7 +72,7 @@ public class ReadersGenerator implements PythonGenerator {
     private void generateReaders(Model model) {
         // Generate the imports:
         String rootModuleName = pythonNames.getRootModuleName();
-        buffer.addLine("from %1$s import list", rootModuleName);
+        buffer.addLine("from %1$s import List", rootModuleName);
         buffer.addLine("from %1$s import types", rootModuleName);
         buffer.addLine("from %1$s.reader import Reader", rootModuleName);
         buffer.addLine();
@@ -154,7 +154,7 @@ public class ReadersGenerator implements PythonGenerator {
         buffer.addLine("def read_many(reader):");
         buffer.startBlock();
         buffer.addLine("# Do nothing if there aren't more tags:");
-        buffer.addLine("objs = list.List()");
+        buffer.addLine("objs = List()");
         buffer.addLine("if not reader.forward():");
         buffer.startBlock();
         buffer.addLine("return objs");

@@ -71,7 +71,7 @@ public class WritersGenerator implements PythonGenerator {
     private void generateWriters(Model model) {
         // Generate the imports:
         String rootModuleName = pythonNames.getRootModuleName();
-        buffer.addLine("from %1$s import list", rootModuleName);
+        buffer.addLine("from %1$s import List", rootModuleName);
         buffer.addLine();
         buffer.addLine("from %1$s.writer import Writer", rootModuleName);
         buffer.addLine();
@@ -147,7 +147,7 @@ public class WritersGenerator implements PythonGenerator {
         buffer.addLine("plural = '%1$s'", pluralName);
         buffer.endBlock();
         buffer.addLine("writer.write_start(plural)", pluralName);
-        buffer.addLine("if type(objs) == list.List:");
+        buffer.addLine("if type(objs) == List:");
         buffer.startBlock();
         buffer.addLine("href = objs.href");
         buffer.addLine("if href is not None:");

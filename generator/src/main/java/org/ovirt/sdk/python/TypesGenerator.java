@@ -75,7 +75,7 @@ public class TypesGenerator implements PythonGenerator {
         // Generate the import statements for structs that aren't generated:
         String rootModuleName = pythonNames.getRootModuleName();
         buffer.addLine("from enum import Enum, unique", rootModuleName);
-        buffer.addLine("from %1$s.struct import Struct", rootModuleName);
+        buffer.addLine("from %1$s import Struct", rootModuleName);
         buffer.addLine();
         buffer.addLine();
 
