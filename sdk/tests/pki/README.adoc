@@ -1,0 +1,22 @@
+= PKI Resources
+
+This directory contains private key files and certificates used by the
+tests:
+
+ca.crt:: The certificate of the CA that is used to sign all the other
+certificates.
+
+localhost.key:: The private key of the `localhost` certificate.
+
+localhost.crt:: The certificate for `localhost`.
+
+ugly.key:: The private key of the `ugly` certificate.
+
+ugly.crt:: The certificate for `ugly`.
+
+The `ugly` private key and certificate are intended for tests that
+check that connections to servers whose host name doesn't match the
+certifcate common name fail.
+
+All these certificates expire in 100 years, hopefully they will live
+longer than the SDK.
