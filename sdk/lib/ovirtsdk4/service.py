@@ -18,6 +18,7 @@
 
 import io
 
+from ovirtsdk4 import Error
 from ovirtsdk4 import readers
 from ovirtsdk4 import xml
 
@@ -65,7 +66,7 @@ class Service(object):
                 if msg:
                     msg += ' '
                 msg = msg + 'HTTP response message is "%s".' % response.message
-        raise Exception(msg)
+        raise Error(msg)
 
     @staticmethod
     def _check_fault(response):

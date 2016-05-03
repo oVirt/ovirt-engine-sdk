@@ -33,6 +33,14 @@ from ovirtsdk4 import version
 from ovirtsdk4.http import Response
 
 
+class Error(Exception):
+    """
+    General exception which is thrown by SDK,
+    indicates that some exception happened in SDK.
+    """
+    pass
+
+
 class List(list):
     """
     This is the base class for all the list types of the SDK. It contains the
@@ -188,13 +196,13 @@ class Connection(object):
 
         # Check mandatory parameters:
         if url is None:
-            raise Exception('The \'url\' parameter is mandatory')
+            raise Error('The \'url\' parameter is mandatory')
         if not insecure and ca_file is None:
-            raise Exception('The \'ca_file\' is mandatory in secure mode')
+            raise Error('The \'ca_file\' is mandatory in secure mode')
 
         # Check that the CA file exists:
         if ca_file is not None and not os.path.exists(ca_file):
-            raise Exception('The CA file \'%s\' doesn\'t exist' % ca_file)
+            raise Error('The CA file \'%s\' doesn\'t exist' % ca_file)
 
         # Save the URL:
         self._url = url
@@ -373,7 +381,7 @@ class Connection(object):
             sso_response = sso_response[0]
 
         if 'error' in sso_response:
-            raise Exception(
+            raise Error(
                 'Error during SSO revoke %s : %s' % (
                     sso_response['error_code'],
                     sso_response['error']
@@ -422,7 +430,7 @@ class Connection(object):
             sso_response = sso_response[0]
 
         if 'error' in sso_response:
-            raise Exception(
+            raise Error(
                 'Error during SSO authentication %s : %s' % (
                     sso_response['error_code'],
                     sso_response['error']
@@ -494,7 +502,7 @@ class Connection(object):
             return True
         except Exception as exception:
             if raise_exception:
-                raise exception
+                raise Error(exception)
             return False
 
     def is_link(self, obj):
@@ -515,7 +523,7 @@ class Connection(object):
         # in order to retrieve the representation of the object:
         href = obj.href
         if href is None:
-            raise Exception(
+            raise Error(
                 "Can't follow link because the 'href' attribute does't " +
                 "have a value"
             )
@@ -526,7 +534,7 @@ class Connection(object):
         if not prefix.endswith('/'):
             prefix += '/'
         if not href.startswith(prefix):
-            raise Exception(
+            raise Error(
                 "The URL '%s' isn't compatible with the base URL of the " +
                 "connection" % href
             )

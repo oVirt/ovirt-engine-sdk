@@ -90,6 +90,7 @@ public class ServicesGenerator implements PythonGenerator {
         String rootModuleName = pythonNames.getRootModuleName();
         buffer.addLine("import io");
         buffer.addLine();
+        buffer.addLine("from %1$s import Error", rootModuleName);
         buffer.addLine("from %1$s import http", rootModuleName);
         buffer.addLine("from %1$s import readers", rootModuleName);
         buffer.addLine("from %1$s import writers", rootModuleName);
@@ -631,7 +632,7 @@ public class ServicesGenerator implements PythonGenerator {
             );
         }
         else {
-            buffer.addLine("raise Exception('The path \\\"%%s\\\" doesn\\'t correspond to any service' %% path)");
+            buffer.addLine("raise Error('The path \\\"%%s\\\" doesn\\'t correspond to any service' %% path)");
         }
 
         // End method:
