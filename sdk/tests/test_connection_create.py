@@ -103,3 +103,29 @@ class ConnectionCreateTest(unittest.TestCase):
         connection.close()
         assert_true(os.path.getsize(path) > 0)
         os.remove(path)
+
+    @raises(sdk.Error)
+    def test_invalid_header(self):
+        """
+        When invalid header is used Error should be raised
+        """
+        request = sdk.http.Request(
+            method='GET',
+            headers={'X-header': 'žčě'},
+        )
+        connection = self.server.connection()
+        connection.send(request)
+
+    def test_valid_header(self):
+        """
+        When valid header is properly encoded and sent
+        """
+        request = sdk.http.Request(
+            method='GET',
+            headers={
+                'X-header1': u'ABCDEF123',
+                'X-header2': 'ABCDEF123',
+            },
+        )
+        connection = self.server.connection()
+        connection.send(request)

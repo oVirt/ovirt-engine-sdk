@@ -16,7 +16,6 @@
 # limitations under the License.
 #
 
-import SimpleHTTPServer
 import json
 import os.path
 import ovirtsdk4 as sdk
@@ -24,12 +23,13 @@ import socket
 import ssl
 
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+from SimpleHTTPServer import SimpleHTTPRequestHandler
 from threading import Thread
 from time import sleep
 from urlparse import urlparse
 
 
-class TestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+class TestHandler(SimpleHTTPRequestHandler):
     # Path handlers:
     handlers = {}
 
@@ -45,7 +45,7 @@ class TestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         if params.path in self.handlers:
             self.handlers[params.path](self)
         else:
-            super(TestHandler, self).do_GET(self)
+            SimpleHTTPRequestHandler.do_GET(self)
 
 
 class TestServer(object):

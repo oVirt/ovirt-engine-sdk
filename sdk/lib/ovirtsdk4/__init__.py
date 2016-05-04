@@ -314,6 +314,22 @@ class Connection(object):
         header_lines.append('Accept: application/xml')
         header_lines.append('Authorization: Bearer %s' % self._sso_token)
 
+        # Make sure headers values are strings, because
+        # pycurl version 7.19.0 supports only string in headers
+        for i, header in enumerate(header_lines):
+            try:
+                header_lines[i] = header.encode('ascii')
+            except UnicodeDecodeError:
+                header_name, header_value = header.split(':')
+                raise Error(
+                    "The value '{header_value}' of header '{header_name}' "
+                    "contains characters that can't be encoded using ASCII, "
+                    "as required by the HTTP protocol.".format(
+                        header_value=header_value,
+                        header_name=header_name,
+                    )
+                )
+
         # Copy headers and the request body to the curl object:
         self._curl.setopt(pycurl.HTTPHEADER, header_lines)
         body = request.body
