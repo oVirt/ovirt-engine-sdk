@@ -22,10 +22,15 @@ import static java.util.stream.Collectors.toCollection;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 
+import org.ovirt.api.metamodel.concepts.Concept;
 import org.ovirt.api.metamodel.concepts.EnumType;
 import org.ovirt.api.metamodel.concepts.ListType;
 import org.ovirt.api.metamodel.concepts.Locator;
@@ -128,6 +133,7 @@ public class ServicesGenerator implements PythonGenerator {
         PythonClassName baseName = base != null? pythonNames.getServiceName(base): pythonNames.getBaseServiceName();
         buffer.addLine("class %1$s(%2$s):", serviceName.getClassName(), baseName.getClassName());
         buffer.startBlock();
+        generateDoc(service);
         buffer.addLine();
 
         // Generate the constructor:
@@ -189,6 +195,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.endBlock();
         buffer.addLine("):");
         buffer.startBlock();
+        generateActionDoc(method, (Parameter p) -> p.isIn() && p.isOut());
         buffer.endBlock();
 
         // Start body:
@@ -227,6 +234,7 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Start body:
         buffer.startBlock();
+        generateActionDoc(method, Parameter::isIn);
 
         // Generate the method:
         buffer.addLine("buf = io.BytesIO()");
@@ -340,6 +348,7 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Start body:
         buffer.startBlock();
+        generateActionDoc(method, Parameter::isIn);
 
         // Generate the input parameters:
         buffer.addLine("query = {}");
@@ -385,6 +394,7 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Start body:
         buffer.startBlock();
+        generateActionDoc(method, (Parameter p) -> p.isIn() && p.isOut());
 
         // Body:
         buffer.addLine("request = http.Request(method='PUT', path=self._path)");
@@ -487,6 +497,7 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Begin body:
         buffer.startBlock();
+        generateActionDoc(method, Parameter::isIn);
 
         // Generate the input parameters:
         buffer.addLine("query = {}");
@@ -569,6 +580,7 @@ public class ServicesGenerator implements PythonGenerator {
         PythonClassName serviceName = pythonNames.getServiceName(locator.getService());
         buffer.addLine("def %1$s_service(self, %2$s):", methodName, argName);
         buffer.startBlock();
+        generateDoc(locator);
         buffer.addLine("return %1$s(self._connection, '%%s/%%s' %% (self._path, %2$s))", serviceName.getClassName(),
             argName);
         buffer.endBlock();
@@ -581,6 +593,7 @@ public class ServicesGenerator implements PythonGenerator {
         PythonClassName serviceName = pythonNames.getServiceName(locator.getService());
         buffer.addLine("def %1$s_service(self):", methodName);
         buffer.startBlock();
+        generateDoc(locator);
         buffer.addLine("return %1$s(self._connection, '%%s/%2$s' %% self._path)", serviceName.getClassName(),
             urlSegment);
         buffer.endBlock();
@@ -591,6 +604,9 @@ public class ServicesGenerator implements PythonGenerator {
         // Begin method:
         buffer.addLine("def service(self, path):");
         buffer.startBlock();
+        buffer.startComment();
+        buffer.addLine("Service locator method, returns individual service on which the URI is dispatched.");
+        buffer.endComment();
 
         buffer.addLine("if not path:");
         buffer.startBlock();
@@ -642,5 +658,42 @@ public class ServicesGenerator implements PythonGenerator {
 
     private String getPath(Name name) {
         return name.words().map(String::toLowerCase).collect(joining());
+    }
+
+    private void generateActionDoc(Method method, Predicate<Parameter> predicate) {
+        buffer.startComment();
+        if (method.getDoc() != null) {
+            generateDocText(method);
+            buffer.addLine();
+        }
+        if (method.parameters().filter(predicate).findFirst().orElse(null) != null) {
+            buffer.addLine("Keyword arguments:");
+            method.parameters()
+                .filter(predicate)
+                .filter(p -> p.getDoc() != null)
+                .map(p -> String.format("%s -- %s", pythonNames.getMemberStyleName(p.getName()), p.getDoc()))
+                .forEach(this::generateDocText);
+        }
+        buffer.endComment();
+    }
+
+    protected void generateDoc(Concept concept) {
+        buffer.startComment();
+        generateDocText(concept);
+        buffer.endComment();
+    }
+
+    private void generateDocText(Concept concept) {
+        generateDocText(concept.getDoc());
+    }
+
+    private void generateDocText(String doc) {
+        List<String> lines = new ArrayList<>();
+        if (doc != null) {
+            Collections.addAll(lines, doc.split("\n"));
+        }
+        if (!lines.isEmpty()) {
+            lines.stream().filter(l -> !l.isEmpty()).forEach(buffer::addLine);
+        }
     }
 }
