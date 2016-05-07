@@ -16,14 +16,7 @@
 
 import inspect
 
-try:
-    import thread
-except ImportError:
-    import _thread as thread
-
 class ReflectionHelper():
-    cache = {}
-    __plock = thread.allocate_lock()
     '''Provides reflection capabilities'''
     @staticmethod
     def getClasses(module, byName=False):
@@ -49,19 +42,11 @@ class ReflectionHelper():
         return ReflectionHelper.getClasses(module, True)
 
     @staticmethod
-    def isModuleMember(module, typ, invalidate=False):
+    def isModuleMember(module, typ):
         '''
         Checks if specific type exist in given module
         
         @param module: the name of the module for lookup
         @param typ: the type to check
-        @param invalidate: force cache invalidation
         '''
-        with ReflectionHelper.__plock:
-            if invalidate or (module not in ReflectionHelper.cache.keys() or \
-               (len(inspect.getmembers(module, inspect.isclass)) > len(ReflectionHelper.cache[module]))):
-                ReflectionHelper.cache[module] = ReflectionHelper.getClasses(module)
-            if typ.__name__.lower() in ReflectionHelper.cache[module] and \
-               ReflectionHelper.cache[module][typ.__name__.lower()] == typ:
-                return True
-            return False
+        return typ is not None and typ.__module__ == module

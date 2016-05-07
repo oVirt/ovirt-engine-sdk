@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Wed Apr 13 18:34:45 2016 by generateDS.py version 2.12a.
+# Generated Sat May  7 13:48:37 2016 by generateDS.py version 2.12a.
 #
 
 import sys
@@ -368,15 +368,16 @@ except ImportError, exp:
             if (value is not None and
                 not isinstance(value, list) and
                 ReflectionHelper.isModuleMember(
-                    sys.modules['ovirtsdk.infrastructure.brokers'],
+                    'ovirtsdk.infrastructure.brokers',
                     type(value)) and
-                not ReflectionHelper.isModuleMember(sys.modules[__name__],
+                not ReflectionHelper.isModuleMember(
+                    __name__,
                     type(value)) and
                 'superclass' in value.__dict__ and
                 value.superclass is not None and
                 value.superclass != BaseResource):
                 if (ReflectionHelper.isModuleMember(
-                        sys.modules['ovirtsdk.infrastructure.brokers'],
+                        'ovirtsdk.infrastructure.brokers',
                         type(self)) and
                    'superclass' in self.__dict__ and
                    self.superclass is not None):
@@ -385,12 +386,12 @@ except ImportError, exp:
                     object.__setattr__(self, item, value.superclass)
             elif (not isinstance(value, list) and
                  ReflectionHelper.isModuleMember(
-                         sys.modules['ovirtsdk.infrastructure.brokers'],
+                         'ovirtsdk.infrastructure.brokers',
                          type(self)) and
                  'superclass' in self.__dict__ and
                  self.superclass is not None and
                  not ReflectionHelper.isModuleMember(
-                         sys.modules['ovirtsdk.infrastructure.brokers'],
+                         'ovirtsdk.infrastructure.brokers',
                          type(value)) and
                  item is not 'superclass' and
                  item is not 'parentclass'):
@@ -399,7 +400,7 @@ except ImportError, exp:
                 parsed_list = []
                 for obj in value:
                     if (ReflectionHelper.isModuleMember(
-                            sys.modules['ovirtsdk.infrastructure.brokers'],
+                            'ovirtsdk.infrastructure.brokers',
                             type(obj)) and
                        'superclass' in obj.__dict__ and
                        obj.superclass is not None and

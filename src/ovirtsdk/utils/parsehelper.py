@@ -30,7 +30,7 @@ class ParseHelper():
         # The given object may be a broker. If it is then we need to extract
         # the actual entity object.
         entity = obj
-        if ReflectionHelper.isModuleMember(sys.modules['ovirtsdk.infrastructure.brokers'],
+        if ReflectionHelper.isModuleMember('ovirtsdk.infrastructure.brokers',
                                            type(obj)) and hasattr(obj, 'superclass'):
             entity = obj.superclass
 
