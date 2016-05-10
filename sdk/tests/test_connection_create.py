@@ -41,17 +41,6 @@ class ConnectionCreateTest(unittest.TestCase):
     def teardown_class(cls):
         cls.server.stop_server()
 
-    @raises(sdk.Error)
-    def test_secure_mode_without_ca(self):
-        """
-        Test exception is thrown when no CA is provided to connection
-        """
-        sdk.Connection(
-            url=self.server.url(),
-            username=self.server.user(),
-            password=self.server.password(),
-        )
-
     def test_secure_mode_with_ca(self):
         """
         Test no exception is thrown when CA is provided to connection

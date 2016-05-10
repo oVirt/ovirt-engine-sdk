@@ -151,7 +151,8 @@ class Connection(object):
 
         `ca_file`:: A PEM file containing the trusted CA certificates. The
         certificate presented by the server will be verified using these CA
-        certificates.
+        certificates. If `ca_file` parameter is not set, system wide
+        CA certificate store is used.
 
         `debug`:: A boolean flag indicating if debug output should be
         generated. If the values is `True` all the data sent to and received
@@ -197,8 +198,6 @@ class Connection(object):
         # Check mandatory parameters:
         if url is None:
             raise Error('The \'url\' parameter is mandatory')
-        if not insecure and ca_file is None:
-            raise Error('The \'ca_file\' is mandatory in secure mode')
 
         # Check that the CA file exists:
         if ca_file is not None and not os.path.exists(ca_file):

@@ -40,7 +40,8 @@ connection.close()
 
 The `ca.pem` file is required when connecting to a server protected
 with TLS. In an usual oVirt installation it will be in
-`/etc/pki/ovirt-engine/ca.pem`.
+`/etc/pki/ovirt-engine/ca.pem`. If you don't specify `ca_file`, then
+system wide CA certificate store will be used.
 
 Once you have the reference to the system service you can use it to get
 references to other services, and call their methods. For example, to
