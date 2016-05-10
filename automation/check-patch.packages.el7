@@ -10,4 +10,5 @@ python-enum34
 python-flake8
 python-nose
 python-pycurl
+python-six
 python-wheel

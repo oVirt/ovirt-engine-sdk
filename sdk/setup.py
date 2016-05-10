@@ -33,6 +33,7 @@ with codecs.open(doc_file, encoding='utf-8') as doc_fd:
 # Required packages:
 requires = [
     'pycurl >= 7.19.0',
+    'six',
 ]
 
 # Python before version 3.4 doesn't support enum types, which we need,

@@ -20,6 +20,7 @@ import io
 import json
 import os
 import pycurl
+import six
 import sys
 import threading
 
@@ -276,7 +277,14 @@ class Connection(object):
         """
 
         with self._curl_lock:
-            return self.__send(request)
+            try:
+                return self.__send(request)
+            except pycurl.error as e:
+                six.reraise(
+                    Error,
+                    Error("Error while sending HTTP request", e),
+                    sys.exc_info()[2]
+                )
 
     def __send(self, request):
         # Create SSO token if needed:

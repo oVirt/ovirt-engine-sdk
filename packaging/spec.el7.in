@@ -17,6 +17,7 @@ Requires: libxml2
 Requires: python
 Requires: python-enum34
 Requires: python-pycurl
+Requires: python-six
 
 %description
 This package contains the Python SDK for version 4 of the oVirt Engine
