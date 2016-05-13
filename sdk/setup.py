@@ -44,11 +44,15 @@ if sys.version_info < (3, 4):
 # Setup the package:
 setuptools.setup(
     name='ovirt-engine-sdk',
-    version='4.0.0a1',
+    version='4.0.0a2',
     description='Python SDK for oVirt Engine API',
     long_description=long_description,
-    author='Michael Pasternak, Juan Hernandez',
-    author_email='mishka8520@yahoo.com, juan.hernandez@redhat.com',
+    author='Michael Pasternak, Juan Hernandez, Ondra Machacek',
+    author_email=(
+        'mishka8520@yahoo.com, '
+        'juan.hernandez@redhat.com, '
+        'omachace@redhat.com'
+    ),
     license='ASL2',
     classifiers=[
         'Development Status :: 3 - Alpha',

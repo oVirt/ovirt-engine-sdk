@@ -1,11 +1,11 @@
 #!/bin/bash -ex
 
 # Name and version of the package:
-tar_version="${tar_version:=4.0.0a1}"
+tar_version="${tar_version:=4.0.0a2}"
 tar_url="${tar_url:=https://pypi.python.org/packages/source/o/ovirt-engine-sdk-python/ovirt-engine-sdk-python-${tar_version}.tar.gz}"
 rpm_version="${rpm_version:=4.0.0}"
 rpm_dist="${rpm_dist:=$(rpm --eval '%dist')}"
-rpm_release="${rpm_release:=0.0.a1${rpm_dist}}"
+rpm_release="${rpm_release:=0.0.a2${rpm_dist}}"
 
 # Generate the .spec file from the template for the distribution where the
 # build process is running:
