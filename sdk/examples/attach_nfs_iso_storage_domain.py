@@ -65,8 +65,7 @@ attached_sd_service = attached_sds_service.storage_domain_service(sd.id)
 while True:
     time.sleep(5)
     sd = attached_sd_service.get()
-    state = sd.status.state
-    if state == types.StorageDomainStatus.ACTIVE.value:
+    if sd.status == types.StorageDomainStatus.ACTIVE:
         break
 
 # Close the connection to the server:

@@ -63,8 +63,7 @@ disk_service = disks_service.disk_service(disk.id)
 while True:
     time.sleep(5)
     disk = disk_service.get()
-    state = disk.status.state
-    if state == types.DiskStatus.OK.value:
+    if disk.status == types.DiskStatus.OK:
         break
 
 # Close the connection to the server:
