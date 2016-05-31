@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2016-04-13 18:34:46.000607'''
+'''Generated at: 2016-05-31 17:50:14.000507'''
 
 
 from ovirtsdk.xml import params
@@ -28372,6 +28372,30 @@ class TemplateNIC(params.NIC, Base):
             self.parentclass,
             result,
             self.context
+        )
+
+    def delete(self, async=None, correlation_id=None):
+        '''
+        [@param async: boolean (true|false)]
+        [@param correlation_id: any string]
+
+        @return None:
+        '''
+
+        url = UrlHelper.replace(
+            '/templates/{template:id}/nics/{nic:id}',
+            {
+                '{template:id}': self.parentclass.get_id(),
+                '{nic:id}': self.get_id(),
+            }
+        )
+
+        return self.__getProxy().delete(
+            url=UrlHelper.appendParameters(
+                url,
+                {'async:matrix':async}
+            ),
+            headers={"Correlation-Id":correlation_id,"Content-type":None}
         )
 
 class TemplateNICs(Base):
