@@ -643,7 +643,7 @@ public class ServicesGenerator implements PythonGenerator {
             buffer.addLine("return self.%1$s_service(path)", pythonNames.getMemberStyleName(name));
             buffer.endBlock();
             buffer.addLine(
-                "return self.%1$s_service(path[:index - 1]).service(path[index + 1:])",
+                "return self.%1$s_service(path[:index]).service(path[index + 1:])",
                 pythonNames.getMemberStyleName(name)
             );
         }
