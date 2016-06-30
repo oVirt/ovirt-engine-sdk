@@ -16,6 +16,7 @@ limitations under the License.
 
 package org.ovirt.sdk.python;
 
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
 import java.io.File;
@@ -25,6 +26,7 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.EnumType;
+import org.ovirt.api.metamodel.concepts.Link;
 import org.ovirt.api.metamodel.concepts.ListType;
 import org.ovirt.api.metamodel.concepts.Model;
 import org.ovirt.api.metamodel.concepts.Name;
@@ -183,6 +185,40 @@ public class ReadersGenerator implements PythonGenerator {
         buffer.addLine("return objs");
         buffer.endBlock();
         buffer.addLine();
+
+        // Generate the method that reads links to lists:
+        List<Link> links = type.links()
+            .filter(link -> link.getType() instanceof ListType)
+            .sorted()
+            .collect(toList());
+        if (!links.isEmpty()) {
+            buffer.addLine("@staticmethod");
+            buffer.addLine("def _read_link(reader, obj):");
+            buffer.startBlock();
+            buffer.addLine(  "# Process the attributes:");
+            buffer.addLine(  "href = reader.get_attribute('href')");
+            buffer.addLine(  "rel = reader.get_attribute('rel')");
+            buffer.addLine(  "if href and rel:");
+            buffer.startBlock();
+            buffer.addLine(    "list = List(href)");
+
+            boolean firstLink = true;
+            for (Link link : links) {
+                String keyword = firstLink ? "if" : "elif";
+                String field = pythonNames.getMemberStyleName(link.getName());
+                String rel = link.getName().words().map(String::toLowerCase).collect(joining());
+                buffer.addLine("%1$s rel == \"%2$s\":", keyword, rel);
+                buffer.startBlock();
+                buffer.addLine("obj.%1$s = list", field);
+                buffer.endBlock();
+                firstLink = false;
+            }
+
+            buffer.endBlock(); // End if
+            buffer.addLine("reader.next_element()");
+            buffer.endBlock();  // End method
+            buffer.addLine();
+        }
     }
 
     private void generateAttributesRead(StructType type) {
@@ -226,6 +262,9 @@ public class ReadersGenerator implements PythonGenerator {
     }
 
     private void generateElementsRead(StructType type) {
+        long listLinksCount = type.links()
+            .filter(link -> link.getType() instanceof ListType)
+            .count();
         List<StructMember> members = Stream.concat(type.attributes(), type.links())
             .filter(x -> !schemaNames.isRepresentedAsAttribute(x.getName()))
             .sorted()
@@ -236,6 +275,12 @@ public class ReadersGenerator implements PythonGenerator {
             buffer.addLine("tag = reader.node_name()");
             members.stream().limit(1).forEach(member -> generateElementRead(member, true));
             members.stream().skip(1).forEach(member -> generateElementRead(member, false));
+            if (listLinksCount > 0) {
+                buffer.addLine("elif tag == 'link':");
+                buffer.startBlock();
+                buffer.addLine("%1$s._read_link(reader, obj)", pythonNames.getReaderName(type).getClassName());
+                buffer.endBlock();
+            }
             buffer.addLine("else:");
             buffer.startBlock();
             buffer.addLine("reader.next_element()");
