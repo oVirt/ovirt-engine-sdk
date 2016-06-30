@@ -563,10 +563,13 @@ class Connection(object):
             )
 
         # Remove the prefix from the URL, follow the path to the relevant
-        # service and invoke the "get" method to retrieve its representation:
+        # service and invoke the "get", or "list method to retrieve its representation:
         path = href[len(prefix):]
         service = self.service(path)
-        return service.get()
+        if isinstance(obj, List):
+            return service.list()
+        else:
+            return service.get()
 
     def close(self):
         """
