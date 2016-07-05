@@ -18239,7 +18239,7 @@ or less indicates that the session should never timeout</description>
             </response>
         </link>
         <link href="vmpools" rel="add">
-            <description>add anew vm pool to the system</description>
+            <description>add a new vm pool to the system</description>
             <request>
                 <http_method>POST</http_method>
                 <headers>
@@ -18261,37 +18261,40 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>add a new vm pool to the system</description>
                         <parameter required="true" type="xs:string">
-                            <name>vmpool.cluster.id|name</name>
+                            <name>vm_pool.cluster.id|name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>vmpool.template.id|name</name>
+                            <name>vm_pool.name</name>
                         </parameter>
                         <parameter required="true" type="xs:string">
-                            <name>vmpool.name</name>
+                            <name>vm_pool.template.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.comment</name>
+                            <name>vm_pool.comment</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm_pool.description</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm_pool.display.proxy</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>vmpool.size</name>
+                            <name>vm_pool.max_user_vms</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>vmpool.max_user_vms</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vmpool.display.proxy</name>
-                        </parameter>
-                        <parameter required="false" type="xs:string">
-                            <name>vmpool.description</name>
+                            <name>vm_pool.size</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
-                            <name>vmpool.soundcard_enabled</name>
+                            <name>vm_pool.soundcard_enabled</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.type</name>
+                            <name>vm_pool.type</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm_pool.use_latest_template_version</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>vm_pool.prestarted_vms</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -18404,31 +18407,37 @@ or less indicates that the session should never timeout</description>
                     <parameters_set>
                         <description>update the specified virtual machine pool in the system</description>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.cluster.id|name</name>
+                            <name>vm_pool.cluster.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.template.id|name</name>
+                            <name>vm_pool.template.id|name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.name</name>
+                            <name>vm_pool.name</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.comment</name>
+                            <name>vm_pool.comment</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>vmpool.size</name>
+                            <name>vm_pool.size</name>
                         </parameter>
                         <parameter required="false" type="xs:int">
-                            <name>vmpool.max_user_vms</name>
+                            <name>vm_pool.max_user_vms</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.display.proxy</name>
+                            <name>vm_pool.display.proxy</name>
                         </parameter>
                         <parameter required="false" type="xs:string">
-                            <name>vmpool.description</name>
+                            <name>vm_pool.description</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>vm_pool.use_latest_template_version</name>
+                        </parameter>
+                        <parameter required="false" type="xs:int">
+                            <name>vm_pool.prestarted_vms</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>vm_pool.type</name>
                         </parameter>
                     </parameters_set>
                 </body>
@@ -22313,6 +22322,77 @@ or less indicates that the session should never timeout</description>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.use_cloud_init</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.host_name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.custom_script</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.active_directory_ou</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.authorized_ssh_keys</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.dns_search</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.dns_servers</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.domain</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.input_locale</name>
+                        </parameter>
+                        <parameter required="false" type="collection">
+                            <name>action.vm.initialization.nic_configurations.nic_configuration</name>
+                            <parameters_set>
+<parameter required="false" type="xs:string">
+    <name>nic_configuration.name</name>
+</parameter>
+<parameter required="false" type="xs:boolean">
+    <name>nic_configuration.on_boot</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>nic_configuration.boot_protocol</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>nic_configuration.ip.address</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>nic_configuration.ip.netmask</name>
+</parameter>
+<parameter required="false" type="xs:string">
+    <name>nic_configuration.ip.gateway</name>
+</parameter>
+                            </parameters_set>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.org_name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.regenerate_ssh_keys</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.root_password</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.system_locale</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.timezone</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.ui_language</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.user_name</name>
+                        </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>action.vm.initialization.windows_license_key</name>
                         </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>action.async</name>

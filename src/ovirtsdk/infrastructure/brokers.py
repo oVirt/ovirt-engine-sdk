@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2016-05-31 17:50:14.000507'''
+'''Generated at: 2016-07-05 14:20:25.000314'''
 
 
 from ovirtsdk.xml import params
@@ -31142,6 +31142,31 @@ class VM(params.VM, Base):
         }
         [@param action.use_sysprep: boolean]
         [@param action.use_cloud_init: boolean]
+        [@param action.vm.initialization.host_name: string]
+        [@param action.vm.initialization.custom_script: string]
+        [@param action.vm.initialization.active_directory_ou: string]
+        [@param action.vm.initialization.authorized_ssh_keys: string]
+        [@param action.vm.initialization.dns_search: string]
+        [@param action.vm.initialization.dns_servers: string]
+        [@param action.vm.initialization.domain: string]
+        [@param action.vm.initialization.input_locale: string]
+        [@param action.vm.initialization.nic_configurations.nic_configuration: collection]
+        {
+          [@ivar nic_configuration.name: string]
+          [@ivar nic_configuration.on_boot: boolean]
+          [@ivar nic_configuration.boot_protocol: string]
+          [@ivar nic_configuration.ip.address: string]
+          [@ivar nic_configuration.ip.netmask: string]
+          [@ivar nic_configuration.ip.gateway: string]
+        }
+        [@param action.vm.initialization.org_name: string]
+        [@param action.vm.initialization.regenerate_ssh_keys: string]
+        [@param action.vm.initialization.root_password: string]
+        [@param action.vm.initialization.system_locale: string]
+        [@param action.vm.initialization.timezone: string]
+        [@param action.vm.initialization.ui_language: string]
+        [@param action.vm.initialization.user_name: string]
+        [@param action.vm.initialization.windows_license_key: string]
         [@param action.async: boolean]
         [@param action.grace_period.expiry: long]
         [@param async: boolean (true|false)]
@@ -35809,15 +35834,17 @@ class VmPool(params.VmPool, Base):
 
     def update(self, correlation_id=None, expect=None):
         '''
-        [@param vmpool.cluster.id|name: string]
-        [@param vmpool.template.id|name: string]
-        [@param vmpool.name: string]
-        [@param vmpool.comment: string]
-        [@param vmpool.size: int]
-        [@param vmpool.max_user_vms: int]
-        [@param vmpool.display.proxy: string]
-        [@param vmpool.description: string]
+        [@param vm_pool.cluster.id|name: string]
+        [@param vm_pool.template.id|name: string]
+        [@param vm_pool.name: string]
+        [@param vm_pool.comment: string]
+        [@param vm_pool.size: int]
+        [@param vm_pool.max_user_vms: int]
+        [@param vm_pool.display.proxy: string]
+        [@param vm_pool.description: string]
         [@param vm_pool.use_latest_template_version: boolean]
+        [@param vm_pool.prestarted_vms: int]
+        [@param vm_pool.type: string]
         [@param correlation_id: any string]
         [@param expect: 202-accepted]
 
@@ -36080,17 +36107,18 @@ class VmPools(Base):
         '''
         @type VmPool:
 
-        @param vmpool.cluster.id|name: string
-        @param vmpool.template.id|name: string
-        @param vmpool.name: string
-        [@param vmpool.comment: string]
-        [@param vmpool.size: int]
-        [@param vmpool.max_user_vms: int]
-        [@param vmpool.display.proxy: string]
-        [@param vmpool.description: string]
-        [@param vmpool.soundcard_enabled: boolean]
-        [@param vmpool.type: string]
+        @param vm_pool.cluster.id|name: string
+        @param vm_pool.name: string
+        @param vm_pool.template.id|name: string
+        [@param vm_pool.comment: string]
+        [@param vm_pool.description: string]
+        [@param vm_pool.display.proxy: string]
+        [@param vm_pool.max_user_vms: int]
+        [@param vm_pool.size: int]
+        [@param vm_pool.soundcard_enabled: boolean]
+        [@param vm_pool.type: string]
         [@param vm_pool.use_latest_template_version: boolean]
+        [@param vm_pool.prestarted_vms: int]
         [@param correlation_id: any string]
         [@param expect: 201-created]
 
