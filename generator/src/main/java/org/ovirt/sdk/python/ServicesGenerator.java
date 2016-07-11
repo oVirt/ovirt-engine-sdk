@@ -415,9 +415,7 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateWriteRequestBody(Parameter parameter, String variable) {
-        Name name = parameter.getName();
         Type type = parameter.getType();
-        String tag = schemaNames.getSchemaTagName(name);
         buffer.addLine("buf = None");
         buffer.addLine("writer = None");
         buffer.addLine("try:");
@@ -426,13 +424,13 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("writer = xml.XmlWriter(buf, indent=True)");
         if (type instanceof StructType) {
             PythonClassName writer = pythonNames.getWriterName(type);
-            buffer.addLine("writers.%1$s.write_one(%2$s, writer, '%3$s')", writer.getClassName(), variable, tag);
+            buffer.addLine("writers.%1$s.write_one(%2$s, writer)", writer.getClassName(), variable);
         }
         else if (type instanceof ListType) {
             ListType listType = (ListType) type;
             Type elementType = listType.getElementType();
             PythonClassName writer = pythonNames.getWriterName(elementType);
-            buffer.addLine("writers.%1$s.write_many(%2$s, writer, '%3$s')", writer.getClassName(), variable, tag);
+            buffer.addLine("writers.%1$s.write_many(%2$s, writer)", writer.getClassName(), variable);
         }
         buffer.addLine("writer.flush()");
         buffer.addLine("request.body = buf.getvalue()");
