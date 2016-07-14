@@ -40,14 +40,14 @@ vm = vms_service.list(search='name=myvm')[0]
 # Locate the service that manages the virtual machine:
 vm_service = vms_service.vm_service(vm.id)
 
-# Locate the service that manages the disks of the virtual
+# Locate the service that manages the disk attachments of the virtual
 # machine:
-disks_service = vm_service.disks_service()
+disk_attachments_service = vm_service.disk_attachments_service()
 
-# Retrieve the list of disks, and print them:
-disks = disks_service.list()
-for disk in disks:
-    print(disk.id)
+# Retrieve the list of disks attachments, and print them:
+disk_attachments = disk_attachments_service.list()
+for disk_attachment in disk_attachments:
+    print(disk_attachment.disk.id)
 
 # Close the connection to the server:
 connection.close()
