@@ -22,7 +22,7 @@ import time
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
 
-# This example will connect to the server and add a disk to an existing
+# This example will connect to the server and attach a disk to an existing
 # virtual machine.
 
 # Create the connection to the server:
@@ -39,27 +39,32 @@ connection = sdk.Connection(
 vms_service = connection.system_service().vms_service()
 vm = vms_service.list(search='name=myvm')[0]
 
-# Locate the service that manages the disks of the virtual machine:
-disks_service = vms_service.vm_service(vm.id).disks_service()
+# Locate the service that manages the disk attachments of the virtual
+# machine:
+disk_attachments_service = vms_service.vm_service(vm.id).disk_attachments_service()
 
-# Use the "add" method of the disks service to add the disk:
-disk = disks_service.add(
-    types.Disk(
-        name='mydisk',
-        description='My disk',
+# Use the "add" method of the disk attachments service to add the disk:
+disk_attachment = disk_attachments_service.add(
+    types.DiskAttachment(
+        disk=types.Disk(
+            name='mydisk',
+            description='My disk',
+            format=types.DiskFormat.COW,
+            provisioned_size=1 * 2**20,
+            storage_domains=[
+                types.StorageDomain(
+                    name='om03',
+                ),
+            ],
+        ),
         interface=types.DiskInterface.VIRTIO,
-        format=types.DiskFormat.COW,
-        provisioned_size=1 * 2**20,
-        storage_domains=[
-            types.StorageDomain(
-                name='mydata',
-            ),
-        ],
+        bootable=False,
     ),
 )
 
 # Wait till the disk is OK:
-disk_service = disks_service.disk_service(disk.id)
+disks_service = connection.system_service().disks_service()
+disk_service = disks_service.disk_service(disk_attachment.disk.id)
 while True:
     time.sleep(5)
     disk = disk_service.get()

@@ -502,9 +502,10 @@ class Connection(object):
     def service(self, path):
         """
         Returns a reference to the service corresponding to the given
-        path. For example, if the `path` parameter is `vms/123/disks`
-        then it will return a reference to the service that manages the
-        disks for the virtual machine with identifier `123`.
+        path. For example, if the `path` parameter is
+        `vms/123/diskattachments` then it will return a reference to
+        the service that manages the disk attachments for the virtual
+        machine with identifier `123`.
 
         If there is no service corresponding to the given path an exception
         will be raised.

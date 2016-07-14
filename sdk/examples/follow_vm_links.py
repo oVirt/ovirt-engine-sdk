@@ -21,8 +21,8 @@ import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
 
 # This example will connect to the server, retrieve the detail of a
-# virtual machine and then it will follow the link to the disks of the
-# virtual machine:
+# virtual machine and then it will follow the link to the permissions
+# of the virtual machine:
 
 # Create the connection to the server:
 connection = sdk.Connection(
