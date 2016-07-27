@@ -6,7 +6,7 @@ Version: @RPM_VERSION@
 Release: @RPM_RELEASE@
 Group: Development/Languages
 License: ASL 2.0
-URL: http://ovirt.org/wiki/SDK
+URL: http://ovirt.org
 Source: @TAR_URL@
 
 BuildRequires: gcc
@@ -24,7 +24,7 @@ This package contains the Python SDK for version 4 of the oVirt Engine
 API.
 
 %prep
-%setup -q -n ovirt-engine-sdk-%{tar_version}
+%setup -q -n ovirt-engine-sdk-python-%{tar_version}
 
 %build
 %py2_build

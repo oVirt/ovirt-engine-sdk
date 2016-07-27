@@ -43,8 +43,8 @@ if sys.version_info < (3, 4):
 
 # Setup the package:
 setuptools.setup(
-    name='ovirt-engine-sdk',
-    version='4.0.0a3',
+    name='ovirt-engine-sdk-python',
+    version='4.1.0a0',
     description='Python SDK for oVirt Engine API',
     long_description=long_description,
     author='Michael Pasternak, Juan Hernandez, Ondra Machacek',
