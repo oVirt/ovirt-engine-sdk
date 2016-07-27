@@ -39,19 +39,18 @@ version="$(python sdk/lib/ovirtsdk4/version.py)"
 mvn package -s "${settings}"
 
 # Find the generated .tar.gz file:
-tar_file="${PWD}/sdk/dist/ovirt-engine-sdk-${version}.tar.gz"
+tar_file="${PWD}/sdk/dist/ovirt-engine-sdk-python-${version}.tar.gz"
 
 # Build the RPM:
 date="$(date --utc +%Y%m%d)"
 commit="$(git log -1 --pretty=format:%h)"
-#suffix=".${date}git${commit}"
-suffix=".a5"
+suffix=".${date}git${commit}"
+#suffix=".a5"
 cp "${tar_file}" packaging/.
 pushd packaging
   export tar_version="${version}"
   export tar_url="$(basename ${tar_file})"
   export rpm_dist="$(rpm --eval '%dist')"
-  #export rpm_release="0.0${suffix}${rpm_dist}"
   export rpm_release="0.5${suffix}${rpm_dist}"
   ./build.sh
 popd

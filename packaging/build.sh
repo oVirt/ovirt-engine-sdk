@@ -2,7 +2,7 @@
 
 # Name and version of the package:
 tar_version="${tar_version:=4.0.0a5}"
-tar_url="${tar_url:=https://pypi.python.org/packages/source/o/ovirt-engine-sdk-python/ovirt-engine-sdk-python-${tar_version}.tar.gz}"
+tar_url="${tar_url:=https://pypi.io/packages/source/o/ovirt-engine-sdk-python/ovirt-engine-sdk-python-${tar_version}.tar.gz}"
 rpm_version="${rpm_version:=4.0.0}"
 rpm_dist="${rpm_dist:=$(rpm --eval '%dist')}"
 rpm_release="${rpm_release:=0.5.a5${rpm_dist}}"
