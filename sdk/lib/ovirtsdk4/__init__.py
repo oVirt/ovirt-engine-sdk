@@ -124,6 +124,7 @@ class Connection(object):
         url=None,
         username=None,
         password=None,
+        token=None,
         insecure=False,
         ca_file=None,
         debug=False,
@@ -146,6 +147,10 @@ class Connection(object):
         `username`:: The name of the user, something like `admin@internal`.
 
         `password`:: The name password of the user.
+
+        `token`:: : The token to be used to access API. Optionally, user can
+        use token, instead of username and password to access API. If user
+        don't specify `token` parameter, SDK will automatically create one.
 
         `insecure`:: A boolean flag that indicates if the server TLS
         certificate and host name should be checked.
@@ -210,6 +215,7 @@ class Connection(object):
         # Save the credentials:
         self._username = username
         self._password = password
+        self._sso_token = token
         self._kerberos = kerberos
 
         # The curl object can be used by several threads, but not
@@ -220,7 +226,6 @@ class Connection(object):
         self._sso_url = sso_url
         self._sso_revoke_url = sso_revoke_url
         self._sso_token_name = sso_token_name
-        self._sso_token = None
 
         # Create the curl handle that manages the pool of connections:
         self._curl = pycurl.Curl()
@@ -285,6 +290,15 @@ class Connection(object):
                     Error("Error while sending HTTP request", e),
                     sys.exc_info()[2]
                 )
+
+    def authenticate(self):
+        """
+        Return token which can be used for authentication instead of credentials.
+        It will be created, if it not exists, yet.
+        """
+        if self._sso_token is None:
+            self._sso_token = self._get_access_token()
+        return self._sso_token
 
     def __send(self, request):
         # Create SSO token if needed:
