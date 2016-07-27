@@ -388,10 +388,14 @@ class Connection(object):
 
         # Build the SSO revoke URL:
         if self._sso_revoke_url is None:
+            url = urlparse(self._url)
             self._sso_revoke_url = (
-                '{url}/services/sso-logout?{query}'
+                '{url}/ovirt-engine/services/sso-logout?{query}'
             ).format(
-                url=self._url[:self._url.rindex('/')],
+                url='{scheme}://{netloc}'.format(
+                    scheme=url.scheme,
+                    netloc=url.netloc
+                ),
                 query=urlencode({
                     'scope': 'ovirt-app-api',
                     'token': self._sso_token,
@@ -425,10 +429,14 @@ class Connection(object):
             grant_type = 'password'
 
         if self._sso_url is None:
+            url = urlparse(self._url)
             self._sso_url = (
-                '{url}/sso/oauth/{entry_point}?{query}'
+                '{url}/ovirt-engine/sso/oauth/{entry_point}?{query}'
             ).format(
-                url=self._url[:self._url.rindex('/')],
+                url='{scheme}://{netloc}'.format(
+                    scheme=url.scheme,
+                    netloc=url.netloc
+                ),
                 entry_point=entry_point,
                 query=urlencode({
                     'grant_type': grant_type,
