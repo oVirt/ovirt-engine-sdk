@@ -294,7 +294,9 @@ class Connection(object):
     def authenticate(self):
         """
         Return token which can be used for authentication instead of credentials.
-        It will be created, if it not exists, yet.
+        It will be created, if it not exists, yet. By default the token will be
+        revoked when the connection is closed, unless the `logout` parameter of
+        the `close` method is `False`.
         """
         if self._sso_token is None:
             self._sso_token = self._get_access_token()
@@ -594,13 +596,17 @@ class Connection(object):
         else:
             return service.get()
 
-    def close(self):
+    def close(self, logout=True):
         """
         Releases the resources used by this connection.
+
+        `logout`:: A boolean, which specify if token should be revoked,
+        and so user should be logged out.
         """
 
         # Revoke access token:
-        self._revoke_access_token()
+        if logout:
+            self._revoke_access_token()
 
         # Close the log file, if we did open it:
         if self._close_log:
