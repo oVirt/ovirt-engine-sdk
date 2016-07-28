@@ -17,10 +17,13 @@
 # limitations under the License.
 #
 
+import logging
 import time
 
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
+
+logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
 # This example will connect to the server and add a new host:
 # Create the connection to the server:
@@ -30,6 +33,7 @@ connection = sdk.Connection(
     password='redhat123',
     ca_file='ca.pem',
     debug=True,
+    log=logging.getLogger(),
 )
 
 # Get the reference to the hosts service:

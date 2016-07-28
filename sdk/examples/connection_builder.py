@@ -17,7 +17,11 @@
 # limitations under the License.
 #
 
+import logging
+
 import ovirtsdk4 as sdk
+
+logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
 # This example demonstrates how to use multiple connections, using the
 # connection builder class and the Python "with" mechanism.
@@ -32,6 +36,7 @@ builder = sdk.ConnectionBuilder(
     password='redhat123',
     ca_file='ca.pem',
     debug=True,
+    log=logging.getLogger(),
 )
 
 # Creating the connection builder doesn't do anything, it just stores

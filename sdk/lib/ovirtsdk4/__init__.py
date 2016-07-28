@@ -161,17 +161,12 @@ class Connection(object):
         CA certificate store is used.
 
         `debug`:: A boolean flag indicating if debug output should be
-        generated. If the values is `True` all the data sent to and received
-        from the server will be written to `stdout`. Be aware that user names
-        and passwords will also be written, so handle it with care.
+        generated. If the value is `True` and the `log` parameter isn't
+        `None` then the data sent to and received from the server will
+        be written to the log. Be aware that user names and passwords will
+        also be written, so handle it with care.
 
-        `log`:: The log file where the debug output will be written. The
-        value can be a string contaiing a file name or an IO object. If
-        it is a filename then the file will be created if it doesn't
-        exist, and the debug output will be added to the end. The file
-        will be closed when the connection is closed. If it is an IO
-        object then the debug output will be written directly, and it
-        won't be closed.
+        `log`:: The logger where the log messages will be written.
 
         `kerberos`:: A boolean flag indicating if Kerberos
         authentication should be used instead of the default basic
@@ -212,6 +207,9 @@ class Connection(object):
         # Save the URL:
         self._url = url
 
+        # Save the logger:
+        self._log = log
+
         # Save the credentials:
         self._username = username
         self._password = password
@@ -249,15 +247,7 @@ class Connection(object):
             self._curl.setopt(pycurl.ENCODING, '')
 
         # Configure debug mode:
-        self._close_log = False
-        if debug:
-            if log is None:
-                self._log = sys.stdout
-            elif type(log) == str:
-                self._log = open(log, 'a')
-                self._close_log = True
-            else:
-                self._log = log
+        if debug and log is not None:
             self._curl.setopt(pycurl.VERBOSE, 1)
             self._curl.setopt(pycurl.DEBUGFUNCTION, self._curl_debug)
 
@@ -608,10 +598,6 @@ class Connection(object):
         if logout:
             self._revoke_access_token()
 
-        # Close the log file, if we did open it:
-        if self._close_log:
-            self._log.close()
-
         # Release resources used by the cURL handle:
         with self._curl_lock:
             self._curl.close()
@@ -648,18 +634,9 @@ class Connection(object):
         This is the implementation of the cURL debug callback.
         """
 
-        prefix = '* '
-        if debug_type == pycurl.INFOTYPE_DATA_IN:
-            prefix = '< '
-        elif debug_type == pycurl.INFOTYPE_DATA_OUT:
-            prefix = '> '
-        elif debug_type == pycurl.INFOTYPE_HEADER_IN:
-            prefix = '< '
-        elif debug_type == pycurl.INFOTYPE_HEADER_OUT:
-            prefix = '> '
         lines = debug_message.replace('\r\n', '\n').strip().split('\n')
         for line in lines:
-            self._log.write('%s%s\n' % (prefix, line))
+            self._log.debug(line)
 
     def __enter__(self):
         return self

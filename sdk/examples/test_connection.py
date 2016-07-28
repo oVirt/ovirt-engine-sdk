@@ -17,7 +17,11 @@
 # limitations under the License.
 #
 
+import logging
+
 import ovirtsdk4 as sdk
+
+logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
 # This example will create a connection and call the "test" method:
 
@@ -28,6 +32,7 @@ connection = sdk.Connection(
     password='redhat123',
     ca_file='ca.pem',
     debug=True,
+    log=logging.getLogger(),
 )
 
 # Call the test method to check the connectivity with the server. If

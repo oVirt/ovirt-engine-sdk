@@ -17,8 +17,12 @@
 # limitations under the License.
 #
 
+import logging
+
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
+
+logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
 # This example will connect to the server, retrieve the detail of a
 # virtual machine and then it will follow the link to the permissions
@@ -31,6 +35,7 @@ connection = sdk.Connection(
     password='redhat123',
     ca_file='ca.pem',
     debug=True,
+    log=logging.getLogger(),
 )
 
 # Get the reference to the service that manages virtual machines:

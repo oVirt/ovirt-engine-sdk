@@ -86,23 +86,6 @@ class ConnectionCreateTest(unittest.TestCase):
         )
         connection.close()
 
-    def test_log_file_is_used(self):
-        """
-        given a log IO object something is written to it
-        """
-        _, path = tempfile.mkstemp('log')
-        connection = sdk.Connection(
-            url=self.server.url(),
-            username=self.server.user(),
-            password=self.server.password(),
-            ca_file=self.server.ca_file(),
-            debug=True,
-            log=path,
-        )
-        connection.close()
-        assert_true(os.path.getsize(path) > 0)
-        os.remove(path)
-
     @raises(sdk.Error)
     def test_invalid_header(self):
         """

@@ -17,7 +17,11 @@
 # limitations under the License.
 #
 
+import logging
+
 import ovirtsdk4 as sdk
+
+logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
 # This example will connect to the server and display a summary of the
 # relevant objects in the system, stracted from the root service:
@@ -29,6 +33,7 @@ connection = sdk.Connection(
     password='redhat123',
     ca_file='ca.pem',
     debug=True,
+    log=logging.getLogger(),
 )
 
 # Get API information from the root service:
