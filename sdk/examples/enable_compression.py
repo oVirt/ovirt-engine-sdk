@@ -17,8 +17,12 @@
 # limitations under the License.
 #
 
+import logging
+
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
+
+logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
 # This example shows how to enable compression of the responses sent by
 # the server:
@@ -31,6 +35,7 @@ connection = sdk.Connection(
     ca_file='ca.pem',
     compress=True,
     debug=False,
+    log=logging.getLogger(),
 )
 
 # Note that when compression and debug are enabled the raw compressed
