@@ -91,3 +91,10 @@ class Writer(object):
         if type(value) != datetime.datetime:
             raise TypeError('The \'value\' parameter must be a date')
         return value.isoformat()
+
+    @staticmethod
+    def write_date(writer, name, value):
+        """
+        Writes an element with the given name and date value.
+        """
+        return writer.write_element(name, Writer.render_date(value))

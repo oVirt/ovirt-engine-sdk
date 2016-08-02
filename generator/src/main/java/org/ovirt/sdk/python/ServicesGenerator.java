@@ -296,23 +296,23 @@ public class ServicesGenerator implements PythonGenerator {
         if (type instanceof PrimitiveType) {
             Model model = type.getModel();
             if (type == model.getStringType()) {
-                buffer.addLine("writer.write_string('%1$s', %2$s)", tag, arg);
+                buffer.addLine("Writer.write_string(writer, '%1$s', %2$s)", tag, arg);
             }
             else if (type == model.getBooleanType()) {
-                buffer.addLine("writer.write_boolean('%1$s', %2$s)", tag, arg);
+                buffer.addLine("Writer.write_boolean(writer, '%1$s', %2$s)", tag, arg);
             }
             else if (type == model.getIntegerType()) {
-                buffer.addLine("writer.write_integer('%1$s', %2$s)", tag, arg);
+                buffer.addLine("Writer.write_integer(writer, '%1$s', %2$s)", tag, arg);
             }
             else if (type == model.getDecimalType()) {
-                buffer.addLine("writer.write_decimal('%1$s', %2$s)", tag, arg);
+                buffer.addLine("Writer.write_decimal(writer, '%1$s', %2$s)", tag, arg);
             }
             else if (type == model.getDateType()) {
-                buffer.addLine("writer.write_date('%1$s', %2$s)", tag, arg);
+                buffer.addLine("Writer.write_date(writer, '%1$s', %2$s)", tag, arg);
             }
         }
         else if (type instanceof EnumType) {
-            buffer.addLine("writer.write_string('%1$s', %2$s)", tag, arg);
+            buffer.addLine("Writer.write_string(writer, '%1$s', %2$s)", tag, arg);
         }
         else if (type instanceof StructType) {
             PythonClassName writer = pythonNames.getWriterName(type);
