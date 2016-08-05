@@ -259,14 +259,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.endBlock();
         buffer.addLine(")");
         buffer.addLine("response = self._connection.send(request)");
-        buffer.addLine("if response.code in [200]:");
-        buffer.startBlock();
         generateActionResponse(method);
-        buffer.endBlock();
-        buffer.addLine("else:");
-        buffer.startBlock();
-        buffer.addLine("self._check_fault(response)");
-        buffer.endBlock();
 
         // End method:
         buffer.endBlock();
