@@ -19,7 +19,9 @@
 import io
 
 from ovirtsdk4 import Error
+from ovirtsdk4 import reader
 from ovirtsdk4 import readers
+from ovirtsdk4 import types
 from ovirtsdk4 import xml
 
 
@@ -80,15 +82,15 @@ class Service(object):
         """
 
         buf = None
-        reader = None
+        xmlreader = None
         fault = None
         try:
             buf = io.BytesIO(response.body)
-            reader = xml.XmlReader(buf)
-            fault = readers.FaultReader.read_one(reader)
+            xmlreader = xml.XmlReader(buf)
+            fault = readers.FaultReader.read_one(xmlreader)
         finally:
-            if reader is not None:
-                reader.close()
+            if xmlreader is not None:
+                xmlreader.close()
             if io is not None:
                 buf.close()
         if fault is not None:
@@ -107,18 +109,22 @@ class Service(object):
         """
 
         buf = None
-        reader = None
-        action = None
+        xmlreader = None
+        result = None
         try:
             buf = io.BytesIO(response.body)
-            reader = xml.XmlReader(buf)
-            action = readers.ActionReader.read_one(reader)
+            xmlreader = xml.XmlReader(buf)
+            result = reader.Reader.read(xmlreader)
         finally:
-            if reader is not None:
-                reader.close()
+            if xmlreader is not None:
+                xmlreader.close()
             if io is not None:
                 buf.close()
-        if action is not None and action.fault is not None:
-            Service._raise_error(response, action.fault)
 
-        return action
+        if result is not None:
+            if isinstance(result, types.Fault):
+                Service._raise_error(response, result)
+            elif isinstance(result, types.Action) and result.fault is not None:
+                Service._raise_error(response, result.fault)
+
+        return result
