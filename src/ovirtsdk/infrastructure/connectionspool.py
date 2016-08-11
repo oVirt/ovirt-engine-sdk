@@ -94,7 +94,13 @@ class ConnectionsPool(object):
             self.__curl.setopt(pycurl.USERPWD, ":")
         elif not self.__in_session():
             self.__curl.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_BASIC)
-            self.__curl.setopt(pycurl.USERPWD, "%s:%s" % (self.__username, self.__password))
+            self.__curl.setopt(
+                pycurl.USERPWD,
+                u"{0}:{1}".format(
+                    self.__username,
+                    self.__password
+                ).encode('utf-8')
+            )
 
         # Add headers, avoiding those that have no value:
         header_lines = []
