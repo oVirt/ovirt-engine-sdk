@@ -16,6 +16,7 @@
 # limitations under the License.
 #
 
+import ovirtsdk4.types as types
 import unittest
 
 from nose.tools import (
@@ -77,3 +78,27 @@ class VmServiceTest(unittest.TestCase):
         dc = self.vms_service.vm_service("123").get()
         assert_equal(dc.id, "123")
         assert_equal(dc.name, "testvm")
+
+    def test_add_vm_with_clone_parameter(self):
+        """
+        Test when adding clone vm the query with this parameter is sent.
+        """
+        self.server.set_xml_response("vms", 201, "<vm/>")
+        self.vms_service.add(types.Vm(), clone=True)
+        assert_equal(self.server.last_request_query, 'clone=true')
+
+    def test_add_vm_with_clone_and_clone_permissions_parameters(self):
+        """
+        Test when adding vm clone and clone_permissions the query with
+        those parameters is sent.
+        """
+        self.server.set_xml_response("vms", 201, "<vm/>")
+        self.vms_service.add(
+            types.Vm(),
+            clone=True,
+            clone_permissions=True
+        )
+        assert_equal(
+            self.server.last_request_query,
+            'clone=true&clone_permissions=true'
+        )

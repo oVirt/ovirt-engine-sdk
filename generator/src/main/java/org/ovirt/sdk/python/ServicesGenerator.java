@@ -28,6 +28,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.Concept;
@@ -178,20 +179,17 @@ public class ServicesGenerator implements PythonGenerator {
 
     private void generateAddHttpPost(Method method) {
         // Get the main parameter:
-        Parameter parameter = method.parameters()
-            .filter(x -> x.isIn() && x.isOut())
-            .findFirst()
-            .orElse(null);
+        Parameter parameter = getFirstParameter(method);
 
         // Begin method:
         Name methodName = method.getName();
-        Type parameterType = parameter.getType();
         Name parameterName = parameter.getName();
         String arg = pythonNames.getMemberStyleName(parameterName);
         buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(methodName));
         buffer.startBlock();
         buffer.addLine("self,");
         buffer.addLine("%1$s,", arg);
+        getSecondaryParameters(method).forEach(this::generateFormalParameter);
         buffer.endBlock();
         buffer.addLine("):");
         buffer.startBlock();
@@ -201,8 +199,12 @@ public class ServicesGenerator implements PythonGenerator {
         // Start body:
         buffer.startBlock();
 
+        // Generate the input parameters:
+        buffer.addLine("query = {}");
+        getSecondaryParameters(method).forEach(this::generateUrlParameter);
+
         // Body:
-        buffer.addLine("request = http.Request(method='POST', path=self._path)");
+        buffer.addLine("request = http.Request(method='POST', path=self._path, query=query)");
         generateWriteRequestBody(parameter, arg);
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code in [201, 202]:");
@@ -376,10 +378,7 @@ public class ServicesGenerator implements PythonGenerator {
 
     private void generateHttpPut(Method method) {
         // Get the main parameter:
-        Parameter parameter = method.parameters()
-            .filter(x -> x.isIn() && x.isOut())
-            .findFirst()
-            .orElse(null);
+        Parameter parameter = getFirstParameter(method);
 
         // Begin method:
         Name methodName = method.getName();
@@ -389,6 +388,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.startBlock();
         buffer.addLine("self,");
         buffer.addLine("%1$s,", arg);
+        getSecondaryParameters(method).forEach(this::generateFormalParameter);
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -396,8 +396,12 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.startBlock();
         generateActionDoc(method, (Parameter p) -> p.isIn() && p.isOut());
 
+        // Generate the input parameters:
+        buffer.addLine("query = {}");
+        getSecondaryParameters(method).forEach(this::generateUrlParameter);
+
         // Body:
-        buffer.addLine("request = http.Request(method='PUT', path=self._path)");
+        buffer.addLine("request = http.Request(method='PUT', path=self._path, query=query)");
         generateWriteRequestBody(parameter, arg);
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code in [200]:");
@@ -693,5 +697,18 @@ public class ServicesGenerator implements PythonGenerator {
         if (!lines.isEmpty()) {
             lines.stream().filter(l -> !l.isEmpty()).forEach(buffer::addLine);
         }
+    }
+
+    private Parameter getFirstParameter(Method method) {
+        return method.parameters()
+            .filter(x -> x.isIn() && x.isOut())
+            .findFirst()
+            .orElse(null);
+    }
+
+    private Stream<Parameter> getSecondaryParameters(Method method) {
+        return method.parameters()
+            .filter(x -> x.isIn() && !x.isOut())
+            .sorted();
     }
 }
