@@ -324,7 +324,13 @@ public class ServicesGenerator implements PythonGenerator {
             ListType listType = (ListType) type;
             Type elementType = listType.getElementType();
             PythonClassName writer = pythonNames.getWriterName(elementType);
-            buffer.addLine("writers.%1$s.write_many(%2$s, writer)", writer.getClassName(), arg);
+            buffer.addLine(
+                "writers.%1$s.write_many(%2$s, writer, \"%3$s\", \"%4$s\")",
+                writer.getClassName(),
+                arg,
+                schemaNames.getSchemaTagName(elementType.getName()),
+                schemaNames.getSchemaTagName(parameter.getName())
+            );
         }
         buffer.endBlock();
     }
