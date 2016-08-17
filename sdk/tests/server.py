@@ -19,6 +19,7 @@
 import json
 import os.path
 import ovirtsdk4 as sdk
+import re
 import socket
 import ssl
 
@@ -73,10 +74,18 @@ class TestServer(object):
     # Thread for http server:
     _thread = None
 
+    def _get_request_content(self, handler):
+        content_len = int(handler.headers.getheader('content-length', 0))
+        content = handler.rfile.read(content_len)
+        content = re.sub(r">\s+<", "><", content)
+        return content.strip()
+
     def set_xml_response(self, path, code, body, delay=0):
         def _handle_request(handler):
-            # Store request query parameter
+            # Store request query parameter:
             self.last_request_query = urlparse(handler.path).query
+            # Store request content:
+            self.last_request_content = self._get_request_content(handler)
 
             authorization = handler.headers.getheader('Authorization')
             if authorization != "Bearer %s" % self.TOKEN:
