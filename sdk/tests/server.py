@@ -47,6 +47,14 @@ class TestHandler(SimpleHTTPRequestHandler):
         else:
             SimpleHTTPRequestHandler.do_GET(self)
 
+    def do_POST(self):
+        params = urlparse(self.path)
+
+        if params.path in self.handlers:
+            self.handlers[params.path](self)
+        else:
+            SimpleHTTPRequestHandler.do_POST(self)
+
 
 class TestServer(object):
     # The authentication details used by the embedded tests web server:
@@ -67,6 +75,9 @@ class TestServer(object):
 
     def set_xml_response(self, path, code, body, delay=0):
         def _handle_request(handler):
+            # Store request query parameter
+            self.last_request_query = urlparse(handler.path).query
+
             authorization = handler.headers.getheader('Authorization')
             if authorization != "Bearer %s" % self.TOKEN:
                 handler.send_response(401)
