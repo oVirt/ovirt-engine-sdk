@@ -79,12 +79,12 @@ class SetupNetworksTest(unittest.TestCase):
                       "</option>" +
                     "</options>" +
                     "<slaves>" +
-                      "<slave>" +
+                      "<host_nic>" +
                         "<name>eth1</name>" +
-                      "</slave>" +
-                      "<slave>" +
+                      "</host_nic>" +
+                      "<host_nic>" +
                         "<name>eth2</name>" +
-                      "</slave>" +
+                      "</host_nic>" +
                     "</slaves>" +
                   "</bonding>" +
                   "<name>bond0</name>" +

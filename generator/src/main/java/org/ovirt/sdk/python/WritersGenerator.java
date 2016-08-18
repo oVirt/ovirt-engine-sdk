@@ -308,13 +308,14 @@ public class WritersGenerator implements PythonGenerator {
         }
         else if (elementType instanceof StructType) {
             PythonClassName elementWriterName = pythonNames.getWriterName(elementType);
+            String elementTag = schemaNames.getSchemaTagName(elementType.getName());
             buffer.addLine("if obj.%1$s is not None:", property);
             buffer.startBlock();
             buffer.addLine(
                 "%1$s.write_many(obj.%2$s, writer, '%3$s', '%4$s')",
                 elementWriterName.getClassName(),
                 property,
-                singularTag,
+                elementTag,
                 pluralTag
             );
             buffer.endBlock();
