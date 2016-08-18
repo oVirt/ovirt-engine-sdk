@@ -46,8 +46,8 @@ limitations under the License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Version of the metamodel and model used to generate the SDK: -->
-    <metamodel.version>1.0.16</metamodel.version>
-    <model.version>4.0.28</model.version>
+    <metamodel.version>1.0.17</metamodel.version>
+    <model.version>4.0.32</model.version>
 
   </properties>
 
