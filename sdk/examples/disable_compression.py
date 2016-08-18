@@ -24,7 +24,7 @@ import ovirtsdk4.types as types
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
-# This example shows how to enable compression of the responses sent by
+# This example shows how to disable compression of the responses sent by
 # the server:
 
 # Create the connection to the server:
@@ -33,15 +33,15 @@ connection = sdk.Connection(
     username='admin@internal',
     password='redhat123',
     ca_file='ca.pem',
-    compress=True,
-    debug=False,
+    compress=False,
+    debug=True,
     log=logging.getLogger(),
 )
 
-# Note that when compression and debug are enabled the raw compressed
-# responses will be written to the log output, so it isn't good idea to
-# use standard output for that, as it will most probably make your
-# terminal behave incorrectly.
+# By disabling compression you can debug the communication,
+# as communication will be visible in plain text and won't
+# be raw compressed. Note that compression is automatically
+# disabled in case user pass debug parameter set to `true`.
 
 # Get some data:
 api = connection.system_service().get()

@@ -131,7 +131,7 @@ class Connection(object):
         log=None,
         kerberos=False,
         timeout=0,
-        compress=False,
+        compress=True,
         sso_url=None,
         sso_revoke_url=None,
         sso_token_name='access_token',
@@ -178,9 +178,11 @@ class Connection(object):
         will be raised.
 
         `compress`:: A boolean flag indicating if the SDK should ask
-        the server to send compressed responses. The default is `False`.
+        the server to send compressed responses. The default is `True`.
         Note that this is a hint for the server, and that it may return
         uncompressed data even when this parameter is set to `True`.
+        Note that compression will be disabled if user pass `debug`
+        parameter set to `true`, so the debug messages are in plain text.
 
         `sso_url`:: A string containing the base SSO URL of the serve.
         Default SSO url is computed from the `url` if no `sso_url` is provided.
@@ -243,7 +245,7 @@ class Connection(object):
         # Configure compression of responses (setting the value to a zero
         # length string means accepting all the compression types that
         # libcurl supports):
-        if compress:
+        if compress and not debug:
             self._curl.setopt(pycurl.ENCODING, '')
 
         # Configure debug mode:
