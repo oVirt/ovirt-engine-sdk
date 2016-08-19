@@ -17,7 +17,11 @@
 #
 
 import datetime
+import io
 import re
+
+from ovirtsdk4 import xml
+
 
 # Regular expression used to check if the representation of a date contains a
 # time zone offset:
@@ -58,6 +62,13 @@ class Reader(object):
     This is the base class for all the readers of the SDK. It contains
     the utility methods used by all of them.
     """
+
+    # This dictionary stores for each known tag a reference to the method
+    # that read the object corresponding for that tag. For example, for the
+    # `vm` tag it will contain a reference to the `VmReader.read_one` method,
+    # and for the `vms` tag it will contain a reference to the
+    # `VmReader.read_many` method.
+    _readers = {}
 
     def __init__(self):
         pass
@@ -228,3 +239,55 @@ class Reader(object):
         at the start element of the element that contains the first value.
         """
         return list(map(Reader.parse_date, reader.read_elements()))
+
+    @classmethod
+    def register(cls, tag, reader):
+        """
+        Registers a read method.
+
+        :param tag: The tag name.
+        :param reader: The reference to the method that reads the object corresponding to the `tag`.
+        """
+        cls._readers[tag] = reader
+
+    @classmethod
+    def read(cls, source):
+        """
+        Reads one object, determining the reader method to use based on the
+        tag name of the first element. For example, if the first tag name
+        is `vm` then it will create a `Vm` object, if it the tag is `vms`
+        it will create an array of `Vm` objects, so on.
+
+        :param source: The string, IO or XML reader where the input will be taken from.
+        """
+        # If the source is a string or IO object then create a XML reader from it:
+        cursor = None
+        if isinstance(source, io.BytesIO):
+            cursor = xml.XmlReader(source)
+        elif isinstance(source, xml.XmlReader):
+            cursor = source
+        else:
+            raise AttributeError(
+                "Expected a 'String' or 'XmlReader', but got '{source}'".format(
+                    source=type(source)
+                )
+            )
+
+        try:
+            # Do nothing if there aren't more tags:
+            if not cursor.forward():
+                return None
+
+            # Select the specific reader according to the tag:
+            tag = cursor.node_name()
+            reader = cls._readers[tag]
+            if reader is None:
+                raise Exception(
+                    "Can't find a reader for tag '{tag}'".format(tag=tag)
+                )
+
+            # Read the object using the specific reader:
+            return reader(cursor)
+        finally:
+            if cursor is not None and cursor != source:
+                cursor.close()
