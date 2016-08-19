@@ -307,15 +307,6 @@ class Connection(object):
         )
         self._curl.setopt(pycurl.URL, url)
 
-        # Basic credentials should be sent only if there isn't a session:
-        if self._kerberos:
-            self._curl.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_GSSNEGOTIATE)
-            self._curl.setopt(pycurl.USERPWD, ':')
-        else:
-            authorization = '%s:%s' % (self._username, self._password)
-            self._curl.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_BASIC)
-            self._curl.setopt(pycurl.USERPWD, authorization)
-
         # Add headers, avoiding those that have no value:
         header_lines = []
         for header_name, header_value in request.headers.items():
@@ -396,19 +387,22 @@ class Connection(object):
         if self._sso_revoke_url is None:
             url = urlparse(self._url)
             self._sso_revoke_url = (
-                '{url}/ovirt-engine/services/sso-logout?{query}'
+                '{url}/ovirt-engine/services/sso-logout'
             ).format(
                 url='{scheme}://{netloc}'.format(
                     scheme=url.scheme,
                     netloc=url.netloc
-                ),
-                query=urlencode({
-                    'scope': 'ovirt-app-api',
-                    'token': self._sso_token,
-                })
+                )
             )
 
-        sso_response = self._get_sso_response(self._sso_revoke_url)
+        # Construct POST data:
+        post_data = {
+            'scope': 'ovirt-app-api',
+            'token': self._sso_token,
+        }
+
+        # Send SSO request:
+        sso_response = self._get_sso_response(self._sso_revoke_url, post_data)
 
         if isinstance(sso_response, list):
             sso_response = sso_response[0]
@@ -437,23 +431,25 @@ class Connection(object):
         if self._sso_url is None:
             url = urlparse(self._url)
             self._sso_url = (
-                '{url}/ovirt-engine/sso/oauth/{entry_point}?{query}'
+                '{url}/ovirt-engine/sso/oauth/{entry_point}'
             ).format(
                 url='{scheme}://{netloc}'.format(
                     scheme=url.scheme,
                     netloc=url.netloc
                 ),
                 entry_point=entry_point,
-                query=urlencode({
-                    'grant_type': grant_type,
-                    'scope': 'ovirt-app-api',
-                })
             )
-            if not self._kerberos:
-                self._sso_url += '&' + urlencode({
-                    'username': self._username,
-                    'password': self._password,
-                })
+
+        # Construct POST data:
+        post_data = {
+            'grant_type': grant_type,
+            'scope': 'ovirt-app-api',
+        }
+        if not self._kerberos:
+            post_data.update({
+                'username': self._username,
+                'password': self._password,
+            })
 
         # Set proper Authorization header if using kerberos:
         if self._kerberos:
@@ -461,7 +457,7 @@ class Connection(object):
             self._curl.setopt(pycurl.USERPWD, ':')
 
         # Send SSO request:
-        sso_response = self._get_sso_response(self._sso_url)
+        sso_response = self._get_sso_response(self._sso_url, post_data)
 
         if isinstance(sso_response, list):
             sso_response = sso_response[0]
@@ -476,13 +472,13 @@ class Connection(object):
 
         return sso_response[self._sso_token_name]
 
-    def _get_sso_response(self, url):
+    def _get_sso_response(self, url, params=''):
         """
         Perform SSO request and return response body data.
         """
 
         # Set HTTP method and URL:
-        self._curl.setopt(pycurl.CUSTOMREQUEST, 'GET')
+        self._curl.setopt(pycurl.CUSTOMREQUEST, 'POST')
         self._curl.setopt(pycurl.URL, url)
 
         # Prepare headers:
@@ -491,7 +487,7 @@ class Connection(object):
             'Accept: application/json'
         ]
         self._curl.setopt(pycurl.HTTPHEADER, header_lines)
-        self._curl.setopt(pycurl.POSTFIELDS, '')
+        self._curl.setopt(pycurl.POSTFIELDS, urlencode(params))
 
         # Prepare the buffer to receive the response:
         body_buf = io.BytesIO()
