@@ -447,6 +447,9 @@ or less indicates that the session should never timeout</description>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.gluster_service</name>
                         </parameter>
+                        <parameter required="false" type="xs:string">
+                            <name>cluster.scheduling_policy.id|name</name>
+                        </parameter>
                         <parameter required="false" type="xs:boolean">
                             <name>cluster.threads_as_cores</name>
                         </parameter>

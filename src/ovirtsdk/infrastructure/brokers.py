@@ -19,7 +19,7 @@
 ############ GENERATED CODE ############
 ########################################
 
-'''Generated at: 2016-07-05 14:20:25.000314'''
+'''Generated at: 2016-08-23 10:28:57.000916'''
 
 
 from ovirtsdk.xml import params
@@ -329,6 +329,7 @@ class Cluster(params.Cluster, Base):
         [@param cluster.error_handling.on_error: string]
         [@param cluster.virt_service: boolean]
         [@param cluster.gluster_service: boolean]
+        [@param cluster.scheduling_policy.id|name: string]
         [@param cluster.threads_as_cores: boolean]
         [@param cluster.tunnel_migration: boolean]
         [@param cluster.ballooning_enabled: boolean]
