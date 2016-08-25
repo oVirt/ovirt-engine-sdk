@@ -26,7 +26,7 @@ import ovirtsdk4 as sdk
 # Create a connection to the server:
 connection = sdk.Connection(
   url='https://engine.example.com/ovirt-engine/api',
-  username=admin@internal',
+  username='admin@internal',
   password='...',
   ca_file='ca.pem',
 )
