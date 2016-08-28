@@ -207,7 +207,7 @@ public class WritersGenerator implements PythonGenerator {
             buffer.addLine("writer.write_attribute('%1$s', %2$s)", tag, value);
         }
         else if (type == model.getBooleanType() || type == model.getIntegerType() || type == model.getDecimalType()) {
-            buffer.addLine("writer.write_attribute('%1$s', %2$s.to_s)", tag, value);
+            buffer.addLine("writer.write_attribute('%1$s', str(%2$s))", tag, value);
         }
         else if (type == model.getDateType()) {
             buffer.addLine("writer.write_attribute('%1$s', %2$s.isoformat()", tag, value);
