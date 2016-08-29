@@ -33,7 +33,7 @@ def make_buffer(str):
     """
     Creates an IO object to be used for writing.
     """
-    return BytesIO(str)
+    return BytesIO(str.encode('utf-8'))
 
 
 def test_read_boolean_false():

@@ -85,7 +85,7 @@ class TestServer(object):
 
     def _get_request_content(self, handler):
         content_len = int(handler.headers.get('content-length', 0))
-        content = handler.rfile.read(content_len)
+        content = handler.rfile.read(content_len).decode('utf-8')
         content = re.sub(r">\s+<", "><", content)
         return content.strip()
 
@@ -106,7 +106,8 @@ class TestServer(object):
                 handler.send_header('Content-Type', 'application/xml')
                 handler.end_headers()
 
-                handler.wfile.write(body)
+                data = body.encode('utf-8')
+                handler.wfile.write(data)
 
         TestHandler.handlers[
             '%s/api/%s' % (self.prefix(), path)
@@ -118,7 +119,8 @@ class TestServer(object):
             handler.send_header('Content-Type', 'application/json')
             handler.end_headers()
 
-            handler.wfile.write(json.dumps(body))
+            data = json.dumps(body, ensure_ascii=False).encode('utf-8')
+            handler.wfile.write(data)
 
         TestHandler.handlers[path] = _handle_request
 
