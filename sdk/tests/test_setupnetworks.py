@@ -20,7 +20,7 @@ import ovirtsdk4.types as types
 import unittest
 
 from nose.tools import assert_equal
-from server import TestServer
+from .server import TestServer
 
 
 class SetupNetworksTest(unittest.TestCase):
