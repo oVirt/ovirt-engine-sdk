@@ -323,7 +323,7 @@ class Connection(object):
         for i, header in enumerate(header_lines):
             try:
                 header_lines[i] = header.encode('ascii')
-            except UnicodeDecodeError:
+            except (UnicodeEncodeError, UnicodeDecodeError):
                 header_name, header_value = header.split(':')
                 raise Error(
                     "The value '{header_value}' of header '{header_name}' "
