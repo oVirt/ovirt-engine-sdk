@@ -22,7 +22,7 @@ from nose.tools import (
     assert_is_not_none,
     assert_equal
 )
-from server import TestServer
+from .server import TestServer
 
 
 class DataCenterServiceTest(unittest.TestCase):

@@ -26,7 +26,7 @@ from nose.tools import (
     assert_true,
     raises
 )
-from server import TestServer
+from .server import TestServer
 
 
 class ConnectionCreateTest(unittest.TestCase):
