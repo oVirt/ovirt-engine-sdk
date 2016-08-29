@@ -23,11 +23,20 @@ import re
 import socket
 import ssl
 
-from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-from SimpleHTTPServer import SimpleHTTPRequestHandler
+try:
+  from http.server import HTTPServer, BaseHTTPRequestHandler
+  from http.server import SimpleHTTPRequestHandler
+except ImportError:
+  from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+  from SimpleHTTPServer import SimpleHTTPRequestHandler
+
 from threading import Thread
 from time import sleep
-from urlparse import urlparse
+
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
 
 
 class TestHandler(SimpleHTTPRequestHandler):
