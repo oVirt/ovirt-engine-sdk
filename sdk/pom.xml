@@ -115,7 +115,7 @@ limitations under the License.
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>python</executable>
+              <executable>${python.command}</executable>
               <arguments>
                 <argument>setup.py</argument>
                 <argument>nosetests</argument>
@@ -131,7 +131,7 @@ limitations under the License.
               <goal>exec</goal>
             </goals>
             <configuration>
-              <executable>python</executable>
+              <executable>${python.command}</executable>
               <arguments>
                 <argument>setup.py</argument>
                 <argument>sdist</argument>

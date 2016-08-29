@@ -35,8 +35,14 @@ export JAVA_HOME="$(dirname $(rpm -ql java-1.8.0-openjdk-devel | grep '/bin$'))"
 # Calculate the version number:
 version="$(python sdk/lib/ovirtsdk4/version.py)"
 
-# Build the code generator and run it:
-mvn package -s "${settings}"
+# Build and run the tests using Python 2 and 3, if they are available:
+for python_command in python2 python3
+do
+  if which "${python_command}" 2> /dev/null
+  then
+    mvn package -s "${settings}" -Dpython.command="${python_command}"
+  fi
+done
 
 # Find the generated .tar.gz file:
 tar_file="${PWD}/sdk/dist/ovirt-engine-sdk-python-${version}.tar.gz"
