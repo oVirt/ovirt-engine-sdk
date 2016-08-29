@@ -45,6 +45,12 @@ command:
 
   $ mvn package -Dmodel.version=4.1.0
 
+By default the build and the tests are executed using the `python` command.
+If you wish to use a different version of Python you can use the
+`python.command` property:
+
+  $ mvn package -Dpython.command=python3
+
 The generated `.tar.gz` and `.whl` files will be located in the
 `sdk/dist` directory:
 
