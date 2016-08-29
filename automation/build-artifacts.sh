@@ -50,14 +50,14 @@ tar_file="${PWD}/sdk/dist/ovirt-engine-sdk-python-${version}.tar.gz"
 # Build the RPM:
 date="$(date --utc +%Y%m%d)"
 commit="$(git log -1 --pretty=format:%h)"
-#suffix=".${date}git${commit}"
-suffix=".a6"
+#suffix="1.${date}git${commit}"
+suffix="1"
 cp "${tar_file}" packaging/.
 pushd packaging
   export tar_version="${version}"
   export tar_url="$(basename ${tar_file})"
   export rpm_dist="$(rpm --eval '%dist')"
-  export rpm_release="0.6${suffix}${rpm_dist}"
+  export rpm_release="${suffix}${rpm_dist}"
   ./build.sh
 popd
 
