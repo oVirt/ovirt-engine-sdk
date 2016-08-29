@@ -622,7 +622,7 @@ class Connection(object):
         # Add the path and the parameters:
         url = '%s%s' % (self._url, path)
         if query:
-            url = '%s?%s' % (url, urlencode(query))
+            url = '%s?%s' % (url, urlencode(sorted(query.items())))
         return url
 
     def _curl_debug(self, debug_type, debug_message):
