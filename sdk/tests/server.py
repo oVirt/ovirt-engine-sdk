@@ -84,7 +84,7 @@ class TestServer(object):
     _thread = None
 
     def _get_request_content(self, handler):
-        content_len = int(handler.headers.getheader('content-length', 0))
+        content_len = int(handler.headers.get('content-length', 0))
         content = handler.rfile.read(content_len)
         content = re.sub(r">\s+<", "><", content)
         return content.strip()
@@ -96,7 +96,7 @@ class TestServer(object):
             # Store request content:
             self.last_request_content = self._get_request_content(handler)
 
-            authorization = handler.headers.getheader('Authorization')
+            authorization = handler.headers.get('Authorization')
             if authorization != "Bearer %s" % self.TOKEN:
                 handler.send_response(401)
                 handler.wfile.write('')
