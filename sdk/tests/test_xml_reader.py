@@ -79,7 +79,6 @@ def test_read_empty_list():
     returns an empty list.
     """
     reader = make_reader('<list></list>')
-    reader.read()
     assert_equals(reader.read_elements(), [])
 
 
@@ -89,7 +88,6 @@ def test_read_list_with_empty_element():
     returns a list containing `None`.
     """
     reader = make_reader('<list><item/></list>')
-    reader.read()
     assert_equals(reader.read_elements(), [None])
 
 
@@ -99,7 +97,6 @@ def test_read_list_with_blank_element():
     returns a list containing an empty string.
     """
     reader = make_reader('<list><item></item></list>')
-    reader.read()
     assert_equals(reader.read_elements(), [''])
 
 
@@ -109,7 +106,6 @@ def test_read_list_one_element():
     returns a list containing it.
     """
     reader = make_reader('<list><item>first</item></list>')
-    reader.read()
     assert_equals(reader.read_elements(), ['first'])
 
 
@@ -124,7 +120,6 @@ def test_read_list_two_element():
             <item>second</item>
         </list>
     """)
-    reader.read()
     assert_equals(reader.read_elements(), ['first', 'second'])
 
 

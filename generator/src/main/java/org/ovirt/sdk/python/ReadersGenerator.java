@@ -372,7 +372,10 @@ public class ReadersGenerator implements PythonGenerator {
         ListType type = (ListType) member.getType();
         Type elementType = type.getElementType();
         if (elementType instanceof PrimitiveType) {
-            buffer.addLine("reader.next_element()");
+            generateReadPrimitives((PrimitiveType) elementType, variable);
+        }
+        else if (elementType instanceof EnumType) {
+            generateReadEnums((EnumType) elementType, variable);
         }
         else if (elementType instanceof StructType) {
             PythonClassName readerName = pythonNames.getReaderName(elementType);
@@ -381,6 +384,36 @@ public class ReadersGenerator implements PythonGenerator {
         else {
             buffer.addLine("reader.next_element()");
         }
+    }
+
+    private void generateReadPrimitives(PrimitiveType type, String variable) {
+        Model model = type.getModel();
+        if (type == model.getStringType()) {
+            buffer.addLine("%1$s = Reader.read_strings(reader)", variable);
+        }
+        else if (type == model.getBooleanType()) {
+            buffer.addLine("%1$s = Reader.read_booleans(reader)", variable);
+        }
+        else if (type == model.getIntegerType()) {
+            buffer.addLine("%1$s = Reader.read_integers(reader)", variable);
+        }
+        else if (type == model.getDecimalType()) {
+            buffer.addLine("%1$s = Reader.read_decimals(reader)", variable);
+        }
+        else if (type == model.getDateType()) {
+            buffer.addLine("%1$s = Reader.read_dates(reader)", variable);
+        }
+        else {
+            buffer.addLine("reader.next_element");
+        }
+    }
+
+    private void generateReadEnums(EnumType type, String variable) {
+        buffer.addLine(
+            "%1$s = [types.%2$s(s.lower()) for s in Reader.read_strings(reader)]",
+            variable,
+            pythonNames.getClassStyleName(type.getName())
+        );
     }
 }
 

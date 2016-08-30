@@ -284,26 +284,53 @@ ov_xml_reader_read_elements(ov_xml_reader_object* self) {
     int c_type = 0;
     int rc = 0;
 
+    /* This method assumes that the reader is positioned at the element that contains the values to read. For example
+       if the XML document is the following:
+
+       <list>
+         <value>first</value>
+         <value>second</value>
+       </list>
+
+       The reader should be positioned at the <list> element. The first thing we need to do is to check that this is
+       true, and then discard it, as we are only interested in the nested <value>...</value> elements. */
+    c_type = xmlTextReaderNodeType(self->reader);
+    if (c_type == -1) {
+        PyErr_Format(PyExc_Exception, "Can't get current node type");
+        goto error;
+    }
+    if (c_type != XML_READER_TYPE_ELEMENT) {
+        PyErr_Format(PyExc_Exception, "Current node isn't the start of an element");
+        goto error;
+    }
+    rc = xmlTextReaderRead(self->reader);
+    if (rc == -1) {
+        PyErr_Format(PyExc_Exception, "Can't move to next node");
+        goto error;
+    }
+
     list = PyList_New(0);
     if (list == NULL) {
         PyErr_Format(PyExc_Exception, "Can't allocate list");
-        return NULL;
+        goto error;
     }
+
+    /* Process the nested elements: */
     for (;;) {
         c_type = xmlTextReaderNodeType(self->reader);
         if (c_type == -1) {
             PyErr_Format(PyExc_Exception, "Can't get current node type");
-            return NULL;
+            goto error;
         }
         else if (c_type == XML_READER_TYPE_ELEMENT) {
             element = ov_xml_reader_read_element(self);
             if (element == NULL) {
-                return NULL;
+                goto error;
             }
             rc = PyList_Append(list, element);
             if (rc == -1) {
                 PyErr_Format(PyExc_Exception, "Can't extend list");
-                return NULL;
+                goto error;
             }
         }
         else if (c_type == XML_READER_TYPE_END_ELEMENT || c_type == XML_READER_TYPE_NONE) {
@@ -312,12 +339,29 @@ ov_xml_reader_read_elements(ov_xml_reader_object* self) {
         else {
             rc = xmlTextReaderNext(self->reader);
             if (rc == -1) {
-                PyErr_Format(PyExc_Exception, "Can't move to the next element");
-                return NULL;
+                PyErr_Format(PyExc_Exception, "Can't move to the next node");
+                goto error;
             }
         }
     }
+
+     /* Once all the nested <value>...</value> elements are processed the reader will be positioned at the closing
+       </list> element, or at the end of the document. If it is the closing element then we need to discard it. */
+    if (c_type == XML_READER_TYPE_END_ELEMENT) {
+        rc = xmlTextReaderRead(self->reader);
+        if (rc == -1) {
+            PyErr_Format(PyExc_Exception, "Can't move to the next node");
+            goto error;
+        }
+    }
+
     return list;
+
+    error:
+        if (list != NULL) {
+          Py_DECREF(list);
+        }
+        return NULL;
 }
 
 static PyObject*

@@ -106,7 +106,6 @@ def test_read_booleans_empty_list_with_close_tag():
     """
     io_buffer = make_buffer('<list></list>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_booleans(xml_reader), [])
 
 
@@ -116,7 +115,6 @@ def test_read_booleans_empty_list_without_close_tag():
     """
     io_buffer = make_buffer('<list/>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_booleans(xml_reader), [])
 
 
@@ -126,7 +124,6 @@ def test_read_booleans_with_one_value():
     """
     io_buffer = make_buffer('<list><value>false</value></list>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_booleans(xml_reader), [False])
 
 
@@ -138,7 +135,6 @@ def test_read_booleans_with_two_values():
         '<list><value>false</value><value>true</value></list>'
     )
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_booleans(xml_reader), [False, True])
 
 
@@ -167,7 +163,6 @@ def test_read_integers_empty_list_with_close_tag():
     """
     io_buffer = make_buffer('<list></list>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_integers(xml_reader), [])
 
 
@@ -177,7 +172,6 @@ def test_read_integers_empty_list_without_close_tag():
     """
     io_buffer = make_buffer('<list/>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_integers(xml_reader), [])
 
 
@@ -187,7 +181,6 @@ def test_read_integers_with_one_value():
     """
     io_buffer = make_buffer('<list><value>0</value></list>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_integers(xml_reader), [0])
 
 
@@ -197,7 +190,6 @@ def test_read_integers_with_two_values():
     """
     io_buffer = make_buffer('<list><value>0</value><value>1</value></list>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_integers(xml_reader), [0, 1])
 
 
@@ -226,7 +218,6 @@ def test_read_decimals_empty_list_with_close_tag():
     """
     io_buffer = make_buffer('<list></list>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_decimals(xml_reader), [])
 
 
@@ -236,7 +227,6 @@ def test_read_decimals_empty_list_without_close_tag():
     """
     io_buffer = make_buffer('<list/>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_decimals(xml_reader), [])
 
 
@@ -246,7 +236,6 @@ def test_read_decimals_with_one_value():
     """
     io_buffer = make_buffer('<list><value>1.1</value></list>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_decimals(xml_reader), [1.1])
 
 
@@ -258,7 +247,6 @@ def test_read_decimals_with_two_values():
         '<list><value>1.1</value><value>2.2</value></list>'
     )
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_decimals(xml_reader), [1.1, 2.2])
 
 
@@ -288,7 +276,6 @@ def test_read_dates_empty_list_with_close_tag():
     """
     io_buffer = make_buffer('<list></list>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_dates(xml_reader), [])
 
 
@@ -298,7 +285,6 @@ def test_read_dates_empty_list_without_close_tag():
     """
     io_buffer = make_buffer('<list/>')
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     assert_equals(Reader.read_dates(xml_reader), [])
 
 
@@ -310,7 +296,6 @@ def test_read_dates_with_one_value():
         '<list><value>2015-12-10T22:00:30+01:00</value></list>'
     )
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     date = datetime(2015, 12, 10, 22, 0, 30, tzinfo=TZ(60, None))
     assert_equals(Reader.read_dates(xml_reader), [date])
 
@@ -326,7 +311,6 @@ def test_read_dates_with_two_values():
         '</list>'
     )
     xml_reader = XmlReader(io_buffer)
-    xml_reader.read()
     date1 = datetime(2015, 12, 10, 22, 0, 30, tzinfo=TZ(60, None))
     date2 = datetime(2016, 12, 10, 22, 0, 30, tzinfo=TZ(60, None))
     assert_equals(Reader.read_dates(xml_reader), [date1, date2])
