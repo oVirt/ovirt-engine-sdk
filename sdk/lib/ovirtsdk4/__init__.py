@@ -625,12 +625,20 @@ class Connection(object):
             url = '%s?%s' % (url, urlencode(sorted(query.items())))
         return url
 
-    def _curl_debug(self, debug_type, debug_message):
+    def _curl_debug(self, debug_type, data):
         """
         This is the implementation of the cURL debug callback.
         """
 
-        lines = debug_message.replace('\r\n', '\n').strip().split('\n')
+        # Some versions of PycURL provide the debug data as strings, and
+        # some as arrays of bytes, so we need to check the type of the
+        # provided data and convert it to strings before trying to
+        # manipulate it with the "replace", "strip" and "split" methods:
+        text = data.decode('utf-8') if type(data) == bytes else data
+
+        # Split the debug data into lines and send a debug message for
+        # each line:
+        lines = text.replace('\r\n', '\n').strip().split('\n')
         for line in lines:
             self._log.debug(line)
 
