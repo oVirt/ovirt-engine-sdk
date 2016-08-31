@@ -107,6 +107,20 @@ public class PythonBuffer {
     }
 
     /**
+     * Adds a non-formatted line to the body of the class.
+     */
+    public void addRawLine(String line) {
+        StringBuilder buffer = new StringBuilder(line);
+        // Indent the line:
+        for (int i = 0; i < level; i++) {
+            buffer.insert(0, "    ");
+        }
+
+        // Add the line to the list:
+        lines.add(buffer.toString());
+    }
+
+    /**
      * Starts a multi line comment.
      */
     public void startComment() {
