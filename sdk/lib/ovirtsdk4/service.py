@@ -85,13 +85,14 @@ class Service(object):
         xmlreader = None
         fault = None
         try:
-            buf = io.BytesIO(response.body)
-            xmlreader = xml.XmlReader(buf)
-            fault = readers.FaultReader.read_one(xmlreader)
+            if response.body:
+                buf = io.BytesIO(response.body)
+                xmlreader = xml.XmlReader(buf)
+                fault = readers.FaultReader.read_one(xmlreader)
         finally:
             if xmlreader is not None:
                 xmlreader.close()
-            if io is not None:
+            if buf is not None:
                 buf.close()
         if fault is not None:
             Service._raise_error(response, fault)
