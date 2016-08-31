@@ -47,7 +47,7 @@ limitations under the License.
 
     <!-- Version of the metamodel and model used to generate the SDK: -->
     <metamodel.version>1.0.17</metamodel.version>
-    <model.version>4.0.32</model.version>
+    <model.version>4.0.33</model.version>
 
     <!-- The command used to start Python: -->
     <python.command>python</python.command>
