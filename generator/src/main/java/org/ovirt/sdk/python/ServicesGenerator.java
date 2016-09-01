@@ -32,7 +32,6 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.Concept;
-import org.ovirt.api.metamodel.concepts.EnumType;
 import org.ovirt.api.metamodel.concepts.ListType;
 import org.ovirt.api.metamodel.concepts.Locator;
 import org.ovirt.api.metamodel.concepts.Method;
@@ -99,6 +98,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("from %1$s import Error", rootModuleName);
         buffer.addLine("from %1$s import http", rootModuleName);
         buffer.addLine("from %1$s import readers", rootModuleName);
+        buffer.addLine("from %1$s import types", rootModuleName);
         buffer.addLine("from %1$s import writers", rootModuleName);
         buffer.addLine("from %1$s import xml", rootModuleName);
         buffer.addLine();
@@ -240,13 +240,19 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Generate the method:
         buffer.addLine("buf = io.BytesIO()");
-        buffer.addLine("writer = xml.XmlWriter(buf, indent=True)");
-        buffer.addLine("writer.write_start('action')");
+        buffer.addLine("action = types.Action(");
+        buffer.startBlock();
         method.parameters()
             .filter(Parameter::isIn)
             .sorted()
-            .forEach(this::generateWriteActionParameter);
-        buffer.addLine("writer.write_end()");
+            .forEach(parameter -> {
+                String arg = pythonNames.getMemberStyleName(parameter.getName());
+                buffer.addLine("%1$s=%1$s,", arg);
+            });
+        buffer.endBlock();
+        buffer.addLine(")");
+        buffer.addLine("writer = xml.XmlWriter(buf, indent=True)");
+        buffer.addLine("writers.ActionWriter.write_one(action, writer)");
         buffer.addLine("writer.flush()");
         buffer.addLine("body = buf.getvalue()");
         buffer.addLine("writer.close()");
@@ -279,53 +285,6 @@ public class ServicesGenerator implements PythonGenerator {
             buffer.addLine("action = self._check_action(response)");
             buffer.addLine("return action.%1$s", pythonNames.getMemberStyleName(parameter.getName()));
         }
-    }
-
-    private void generateWriteActionParameter(Parameter parameter) {
-        Type type = parameter.getType();
-        Name name = parameter.getName();
-        String arg = pythonNames.getMemberStyleName(name);
-        String tag = schemaNames.getSchemaTagName(name);
-        buffer.addLine("if %1$s is not None:", arg);
-        buffer.startBlock();
-        if (type instanceof PrimitiveType) {
-            Model model = type.getModel();
-            if (type == model.getStringType()) {
-                buffer.addLine("Writer.write_string(writer, '%1$s', %2$s)", tag, arg);
-            }
-            else if (type == model.getBooleanType()) {
-                buffer.addLine("Writer.write_boolean(writer, '%1$s', %2$s)", tag, arg);
-            }
-            else if (type == model.getIntegerType()) {
-                buffer.addLine("Writer.write_integer(writer, '%1$s', %2$s)", tag, arg);
-            }
-            else if (type == model.getDecimalType()) {
-                buffer.addLine("Writer.write_decimal(writer, '%1$s', %2$s)", tag, arg);
-            }
-            else if (type == model.getDateType()) {
-                buffer.addLine("Writer.write_date(writer, '%1$s', %2$s)", tag, arg);
-            }
-        }
-        else if (type instanceof EnumType) {
-            buffer.addLine("Writer.write_string(writer, '%1$s', %2$s)", tag, arg);
-        }
-        else if (type instanceof StructType) {
-            PythonClassName writer = pythonNames.getWriterName(type);
-            buffer.addLine("writers.%1$s.write_one(%2$s, writer)", writer.getClassName(), arg);
-        }
-        else if (type instanceof ListType) {
-            ListType listType = (ListType) type;
-            Type elementType = listType.getElementType();
-            PythonClassName writer = pythonNames.getWriterName(elementType);
-            buffer.addLine(
-                "writers.%1$s.write_many(%2$s, writer, \"%3$s\", \"%4$s\")",
-                writer.getClassName(),
-                arg,
-                schemaNames.getSchemaTagName(elementType.getName()),
-                schemaNames.getSchemaTagName(parameter.getName())
-            );
-        }
-        buffer.endBlock();
     }
 
     private void generateHttpGet(Method method) {
