@@ -18,6 +18,7 @@ package org.ovirt.sdk.python;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toCollection;
+import static java.util.stream.Collectors.toList;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +29,6 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.Concept;
@@ -93,19 +93,15 @@ public class ServicesGenerator implements PythonGenerator {
     private void generateServices(Model model) {
         // Generate the imports:
         String rootModuleName = pythonNames.getRootModuleName();
-        buffer.addLine("import io");
-        buffer.addLine();
-        buffer.addLine("from %1$s import Error", rootModuleName);
-        buffer.addLine("from %1$s import http", rootModuleName);
-        buffer.addLine("from %1$s import readers", rootModuleName);
-        buffer.addLine("from %1$s import types", rootModuleName);
-        buffer.addLine("from %1$s import writers", rootModuleName);
-        buffer.addLine("from %1$s import xml", rootModuleName);
-        buffer.addLine();
-        buffer.addLine("from %1$s.service import Service", rootModuleName);
-        buffer.addLine("from %1$s.writer import Writer", rootModuleName);
-        buffer.addLine();
-        buffer.addLine();
+        buffer.addImport("import io");
+        buffer.addImport("from %1$s import Error", rootModuleName);
+        buffer.addImport("from %1$s import http", rootModuleName);
+        buffer.addImport("from %1$s import readers", rootModuleName);
+        buffer.addImport("from %1$s import types", rootModuleName);
+        buffer.addImport("from %1$s import writers", rootModuleName);
+        buffer.addImport("from %1$s import xml", rootModuleName);
+        buffer.addImport("from %1$s.service import Service", rootModuleName);
+        buffer.addImport("from %1$s.writer import Writer", rootModuleName);
 
         // The declarations of the services need to appear in inheritance order, otherwise some symbols won't be
         // defined and that will produce errors. To order them correctly we need first to sort them by name, and
@@ -178,18 +174,19 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateAddHttpPost(Method method) {
-        // Get the main parameter:
-        Parameter parameter = getFirstParameter(method);
+        // Get the parameters:
+        Parameter primaryParameter = getFirstParameter(method);
+        List<Parameter> secondaryParameters = getSecondaryParameters(method);
 
         // Begin method:
         Name methodName = method.getName();
-        Name parameterName = parameter.getName();
-        String arg = pythonNames.getMemberStyleName(parameterName);
+        Name primaryParameterName = primaryParameter.getName();
+        String primaryArg = pythonNames.getMemberStyleName(primaryParameterName);
         buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(methodName));
         buffer.startBlock();
         buffer.addLine("self,");
-        buffer.addLine("%1$s,", arg);
-        getSecondaryParameters(method).forEach(this::generateFormalParameter);
+        buffer.addLine("%1$s,", primaryArg);
+        secondaryParameters.forEach(this::generateFormalParameter);
         buffer.endBlock();
         buffer.addLine("):");
         buffer.startBlock();
@@ -199,17 +196,30 @@ public class ServicesGenerator implements PythonGenerator {
         // Start body:
         buffer.startBlock();
 
-        // Generate the input parameters:
-        buffer.addLine("query = {}");
-        getSecondaryParameters(method).forEach(this::generateUrlParameter);
+        // Generate the code to check the type of the parameters:
+        buffer.addLine("# Check the types of the parameters:");
+        buffer.addLine("Service._check_types([");
+        buffer.startBlock();
+        generateCheckTypeTuple(primaryParameter);
+        secondaryParameters.forEach(this::generateCheckTypeTuple);
+        buffer.endBlock();
+        buffer.addLine("])");
+        buffer.addLine();
 
-        // Body:
+        // Generate the code to build the URL query:
+        buffer.addLine("# Build the URL:");
+        buffer.addLine("query = {}");
+        secondaryParameters.forEach(this::generateUrlParameter);
+        buffer.addLine();
+
+        // Generate the code to send the request and wait for the response:
+        buffer.addLine("# Send the request and wait for the response:");
         buffer.addLine("request = http.Request(method='POST', path=self._path, query=query)");
-        generateWriteRequestBody(parameter, arg);
+        generateWriteRequestBody(primaryParameter, primaryArg);
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code in [201, 202]:");
         buffer.startBlock();
-        generateReturnResponseBody(parameter);
+        generateReturnResponseBody(primaryParameter);
         buffer.endBlock();
         buffer.addLine("else:");
         buffer.startBlock();
@@ -222,15 +232,18 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateActionHttpPost(Method method) {
+        // Get the input parameters:
+        List<Parameter> inParameters = method.parameters()
+            .filter(Parameter::isIn)
+            .sorted()
+            .collect(toList());
+
         // Begin method:
         Name name = method.getName();
         buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(name));
         buffer.startBlock();
         buffer.addLine("self,");
-        method.parameters()
-            .filter(Parameter::isIn)
-            .sorted()
-            .forEach(this::generateFormalParameter);
+        inParameters.forEach(this::generateFormalParameter);
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -238,25 +251,37 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.startBlock();
         generateActionDoc(method, Parameter::isIn);
 
-        // Generate the method:
-        buffer.addLine("buf = io.BytesIO()");
+        // Generate the code to check type types of the parameters:
+        buffer.addLine("# Check the types of the parameters:");
+        buffer.addLine("Service._check_types([");
+        buffer.startBlock();
+        inParameters.forEach(this::generateCheckTypeTuple);
+        buffer.endBlock();
+        buffer.addLine("])");
+        buffer.addLine();
+
+        // Generate the code to populate the action:
+        buffer.addLine("# Populate the action:");
         buffer.addLine("action = types.Action(");
         buffer.startBlock();
-        method.parameters()
-            .filter(Parameter::isIn)
-            .sorted()
-            .forEach(parameter -> {
-                String arg = pythonNames.getMemberStyleName(parameter.getName());
-                buffer.addLine("%1$s=%1$s,", arg);
-            });
+        inParameters.forEach(this::generateSetActionAttribute);
         buffer.endBlock();
         buffer.addLine(")");
+        buffer.addLine();
+
+        // Generate the code to build the request body:
+        buffer.addLine("# Build the request body:");
+        buffer.addLine("buf = io.BytesIO()");
         buffer.addLine("writer = xml.XmlWriter(buf, indent=True)");
         buffer.addLine("writers.ActionWriter.write_one(action, writer)");
         buffer.addLine("writer.flush()");
         buffer.addLine("body = buf.getvalue()");
         buffer.addLine("writer.close()");
         buffer.addLine("buf.close()");
+        buffer.addLine();
+
+        // Generate the code to send the request and wait for the response:
+        buffer.addLine("# Send the request and wait for the response:");
         buffer.addLine("request = http.Request(");
         buffer.startBlock();
         buffer.addLine("method='POST',");
@@ -288,8 +313,14 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateHttpGet(Method method) {
+        // Get the input parameters:
+        List<Parameter> inParameters = method.parameters()
+            .filter(Parameter::isIn)
+            .sorted()
+            .collect(toList());
+
         // Get the output parameter:
-        Parameter parameter = method.parameters()
+        Parameter outParameter = method.parameters()
             .filter(Parameter::isOut)
             .findFirst()
             .orElse(null);
@@ -299,10 +330,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(methodName));
         buffer.startBlock();
         buffer.addLine("self,");
-        method.parameters()
-            .filter(Parameter::isIn)
-            .sorted()
-            .forEach(this::generateFormalParameter);
+        inParameters.forEach(this::generateFormalParameter);
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -310,19 +338,28 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.startBlock();
         generateActionDoc(method, Parameter::isIn);
 
-        // Generate the input parameters:
-        buffer.addLine("query = {}");
-        method.parameters()
-            .filter(Parameter::isIn)
-            .sorted()
-            .forEach(this::generateUrlParameter);
+        // Generate the code to check the types of the input parameters:
+        buffer.addLine("# Check the types of the parameters:");
+        buffer.addLine("Service._check_types([");
+        buffer.startBlock();
+        inParameters.forEach(this::generateCheckTypeTuple);
+        buffer.endBlock();
+        buffer.addLine("])");
+        buffer.addLine();
 
-        // Body:
+        // Generate the code to build the URL:
+        buffer.addLine("# Build the URL:");
+        buffer.addLine("query = {}");
+        inParameters.forEach(this::generateUrlParameter);
+        buffer.addLine();
+
+        // Generate the code to send the request and wait for the response:
+        buffer.addLine("# Send the request and wait for the response:");
         buffer.addLine("request = http.Request(method='GET', path=self._path, query=query)");
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code in [200]:");
         buffer.startBlock();
-        generateReturnResponseBody(parameter);
+        generateReturnResponseBody(outParameter);
         buffer.endBlock();
         buffer.addLine("else:");
         buffer.startBlock();
@@ -335,17 +372,18 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateHttpPut(Method method) {
-        // Get the main parameter:
-        Parameter parameter = getFirstParameter(method);
+        // Classify the parameters:
+        Parameter primaryParameter = getFirstParameter(method);
+        List<Parameter> secondaryParameters = getSecondaryParameters(method);
 
         // Begin method:
         Name methodName = method.getName();
-        Name parameterName = parameter.getName();
-        String arg = pythonNames.getMemberStyleName(parameterName);
+        Name primaryParameterName = primaryParameter.getName();
+        String primaryArg = pythonNames.getMemberStyleName(primaryParameterName);
         buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(methodName));
         buffer.startBlock();
         buffer.addLine("self,");
-        buffer.addLine("%1$s,", arg);
+        buffer.addLine("%1$s,", primaryArg);
         getSecondaryParameters(method).forEach(this::generateFormalParameter);
         buffer.endBlock();
         buffer.addLine("):");
@@ -354,17 +392,27 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.startBlock();
         generateActionDoc(method, (Parameter p) -> p.isIn() && p.isOut());
 
-        // Generate the input parameters:
+        // Generate the code to check the types of the input parameters:
+        buffer.addLine("# Check the types of the parameters:");
+        buffer.addLine("Service._check_types([");
+        buffer.startBlock();
+        generateCheckTypeTuple(primaryParameter);
+        secondaryParameters.forEach(this::generateCheckTypeTuple);
+        buffer.endBlock();
+        buffer.addLine("])");
+        buffer.addLine();
+
+        // Generate the code the build the query URL from the input parameters:
         buffer.addLine("query = {}");
         getSecondaryParameters(method).forEach(this::generateUrlParameter);
 
         // Body:
         buffer.addLine("request = http.Request(method='PUT', path=self._path, query=query)");
-        generateWriteRequestBody(parameter, arg);
+        generateWriteRequestBody(primaryParameter, primaryArg);
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code in [200]:");
         buffer.startBlock();
-        generateReturnResponseBody(parameter);
+        generateReturnResponseBody(primaryParameter);
         buffer.endBlock();
         buffer.addLine("else:");
         buffer.startBlock();
@@ -443,15 +491,17 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateHttpDelete(Method method) {
+        // Get the parameters:
+        List<Parameter> inParameters = method.parameters()
+            .filter(Parameter::isIn)
+            .collect(toList());
+
         // Begin method:
         Name name = method.getName();
         buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(name));
         buffer.startBlock();
         buffer.addLine("self,");
-        method.parameters()
-            .filter(Parameter::isIn)
-            .sorted()
-            .forEach(this::generateFormalParameter);
+        inParameters.forEach(this::generateFormalParameter);
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -459,14 +509,23 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.startBlock();
         generateActionDoc(method, Parameter::isIn);
 
-        // Generate the input parameters:
-        buffer.addLine("query = {}");
-        method.parameters()
-            .filter(Parameter::isIn)
-            .sorted()
-            .forEach(this::generateUrlParameter);
+        // Generate the code to check the types of the input parameters:
+        buffer.addLine("# Check the types of the parameters:");
+        buffer.addLine("Service._check_types([");
+        buffer.startBlock();
+        inParameters.forEach(this::generateCheckTypeTuple);
+        buffer.endBlock();
+        buffer.addLine("])");
+        buffer.addLine();
 
-        // Generate the method:
+        // Generate the code to build the URL query from the input parameters:
+        buffer.addLine("# Build the URL query:");
+        buffer.addLine("query = {}");
+        inParameters.forEach(this::generateUrlParameter);
+        buffer.addLine();
+
+        // Generate the method to send the request and wait for the response:
+        buffer.addLine("# Send the request and wait for the response:");
         buffer.addLine("request = http.Request(method='DELETE', path=self._path, query=query)");
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code not in [200]:");
@@ -664,9 +723,22 @@ public class ServicesGenerator implements PythonGenerator {
             .orElse(null);
     }
 
-    private Stream<Parameter> getSecondaryParameters(Method method) {
+    private List<Parameter> getSecondaryParameters(Method method) {
         return method.parameters()
             .filter(x -> x.isIn() && !x.isOut())
-            .sorted();
+            .sorted()
+            .collect(toList());
+    }
+
+    private void generateSetActionAttribute(Parameter parameter) {
+        String name = pythonNames.getMemberStyleName(parameter.getName());
+        buffer.addLine("%1$s=%1$s,", name);
+    }
+
+    private void generateCheckTypeTuple(Parameter parameter) {
+        String name = pythonNames.getMemberStyleName(parameter.getName());
+        PythonTypeReference reference = pythonNames.getTypeReference(parameter.getType());
+        buffer.addImports(reference.getImports());
+        buffer.addLine("('%1$s', %1$s, %2$s),", name, reference.getText());
     }
 }

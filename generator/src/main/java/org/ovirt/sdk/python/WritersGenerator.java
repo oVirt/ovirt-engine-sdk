@@ -71,11 +71,8 @@ public class WritersGenerator implements PythonGenerator {
     private void generateWriters(Model model) {
         // Generate the imports:
         String rootModuleName = pythonNames.getRootModuleName();
-        buffer.addLine("from %1$s import List", rootModuleName);
-        buffer.addLine();
-        buffer.addLine("from %1$s.writer import Writer", rootModuleName);
-        buffer.addLine();
-        buffer.addLine();
+        buffer.addImport("from %1$s import List", rootModuleName);
+        buffer.addImport("from %1$s.writer import Writer", rootModuleName);
 
         // Generate the writer classes:
         model.types()

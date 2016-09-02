@@ -23,9 +23,14 @@ import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+import org.ovirt.api.metamodel.concepts.EnumType;
+import org.ovirt.api.metamodel.concepts.ListType;
+import org.ovirt.api.metamodel.concepts.Model;
 import org.ovirt.api.metamodel.concepts.Name;
 import org.ovirt.api.metamodel.concepts.NameParser;
+import org.ovirt.api.metamodel.concepts.PrimitiveType;
 import org.ovirt.api.metamodel.concepts.Service;
+import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
 import org.ovirt.api.metamodel.tool.ReservedWords;
 import org.ovirt.api.metamodel.tool.Words;
@@ -116,6 +121,48 @@ public class PythonNames {
     }
 
     /**
+     * Calculates that should be used in Python to reference the given type. For example, for the boolean type it will
+     * return the {@code bool} string.
+     */
+    public PythonTypeReference getTypeReference(Type type) {
+        PythonTypeReference reference = new PythonTypeReference();
+        if (type instanceof PrimitiveType) {
+            Model model = type.getModel();
+            if (type == model.getBooleanType()) {
+                reference.setText("bool");
+            }
+            else if (type == model.getIntegerType()) {
+                reference.setText("int");
+            }
+            else if (type == model.getDecimalType()) {
+                reference.setText("float");
+            }
+            else if (type == model.getStringType()) {
+                reference.setText("str");
+            }
+            else if (type == model.getDateType()) {
+                reference.addImport("import datatime");
+                reference.setText("datetime.date");
+            }
+            else {
+                throw new IllegalArgumentException(
+                    "Don't know how to build reference for primitive type \"" + type + "\""
+                );
+            }
+        }
+        else if (type instanceof StructType || type instanceof EnumType) {
+            reference.addImport(String.format("from %1$s import %2$s", getRootModuleName(), TYPES_MODULE));
+            reference.setText(TYPES_MODULE + "." + getTypeName(type).getClassName());
+        }
+        else if (type instanceof ListType) {
+            reference.setText("list");
+        }
+        else {
+            throw new IllegalArgumentException("Don't know how to build reference for type \"" + type + "\"");
+        }
+        return reference;
+    }
+    /**
      * Calculates the Python name of the base class of the services.
      */
     public PythonClassName getBaseServiceName() {
@@ -161,7 +208,7 @@ public class PythonNames {
         Name name = new Name(words);
         PythonClassName result = new PythonClassName();
         result.setClassName(getClassStyleName(name));
-        result.setModuleName(getModuleName(module, getModuleStyleName(base)));
+        result.setModuleName(getModuleName(module));
         return result;
     }
 
