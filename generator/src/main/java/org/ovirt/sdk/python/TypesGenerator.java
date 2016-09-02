@@ -74,10 +74,8 @@ public class TypesGenerator implements PythonGenerator {
     private void generateTypes(Model model) {
         // Generate the import statements for structs that aren't generated:
         String rootModuleName = pythonNames.getRootModuleName();
-        buffer.addLine("from enum import Enum, unique", rootModuleName);
-        buffer.addLine("from %1$s import Struct", rootModuleName);
-        buffer.addLine();
-        buffer.addLine();
+        buffer.addImport("from enum import Enum, unique", rootModuleName);
+        buffer.addImport("from %1$s import Struct", rootModuleName);
 
         // The declarations of struct types need to appear in inheritance order, otherwise some symbols won't be
         // defined and that will produce errors. To order them correctly we need first to sort them by name, and

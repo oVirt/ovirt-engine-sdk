@@ -24,7 +24,9 @@ import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
@@ -43,6 +45,9 @@ public class PythonBuffer {
 
     // The name of the module:
     private String moduleName;
+
+    // The imports:
+    private Set<String> imports = new HashSet<>();
 
     // The source lines:
     private List<String> lines = new ArrayList<>();
@@ -78,6 +83,26 @@ public class PythonBuffer {
         if (level > 0) {
             level--;
         }
+    }
+
+    /**
+     * Adds one import.
+     */
+    public void addImport(String format, Object ... args) {
+        // Format the line:
+        StringBuilder buffer = new StringBuilder();
+        Formatter formatter = new Formatter(buffer);
+        formatter.format(format, args);
+
+        // Add the line to the set:
+        imports.add(buffer.toString());
+    }
+
+    /**
+     * Adds multiple imports.
+     */
+    public void addImports(List<String> imports) {
+        imports.forEach(this::addImport);
     }
 
     /**
@@ -160,6 +185,16 @@ public class PythonBuffer {
         buffer.append("# See the License for the specific language governing permissions and\n");
         buffer.append("# limitations under the License.\n");
         buffer.append("#\n");
+
+        // Two blank lines, as required by PEP8:
+        buffer.append("\n");
+        buffer.append("\n");
+
+        // Add the imports:
+        imports.stream().sorted().forEach(line -> {
+            buffer.append(line);
+            buffer.append("\n");
+        });
 
         // Two blank lines, as required by PEP8:
         buffer.append("\n");

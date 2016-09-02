@@ -76,11 +76,9 @@ public class ReadersGenerator implements PythonGenerator {
     private void generateReaders(Model model) {
         // Generate the imports:
         String rootModuleName = pythonNames.getRootModuleName();
-        buffer.addLine("from %1$s import List", rootModuleName);
-        buffer.addLine("from %1$s import types", rootModuleName);
-        buffer.addLine("from %1$s.reader import Reader", rootModuleName);
-        buffer.addLine();
-        buffer.addLine();
+        buffer.addImport("from %1$s import List", rootModuleName);
+        buffer.addImport("from %1$s import types", rootModuleName);
+        buffer.addImport("from %1$s.reader import Reader", rootModuleName);
 
         // Generate the classes:
         model.types()

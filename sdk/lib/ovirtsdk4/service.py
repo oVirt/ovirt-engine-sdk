@@ -129,3 +129,33 @@ class Service(object):
                 Service._raise_error(response, result.fault)
 
         return result
+
+    @staticmethod
+    def _check_types(tuples):
+        """
+        Receives a list of tuples with three elements: the name of a
+        parameter, its value and its expected type. For each tuple it
+        checks that the value is either `None` or a valid value of
+        the given types. If any of the checks fails, it raises an
+        exception.
+
+        This method is intended for internal use by other
+        components of the SDK. Refrain from using it directly,
+        as backwards compatibility isn't guaranteed.
+        """
+
+        messages = []
+        for name, value, expected in tuples:
+            if value is not None:
+                actual = type(value)
+                if actual != expected:
+                    messages.append((
+                        "The '{name}' parameter should be of type "
+                        "'{expected}', but it is of type \'{actual}\'."
+                    ).format(
+                        name=name,
+                        expected=expected.__name__,
+                        actual=actual.__name__,
+                    ))
+        if len(messages) > 0:
+            raise TypeError(' '.join(messages))
