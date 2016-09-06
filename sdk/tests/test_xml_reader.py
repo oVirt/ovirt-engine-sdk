@@ -154,3 +154,15 @@ def test_forward_with_empty_element():
     assert_equals(reader.forward(), True)
     assert_equals(reader.node_name(), 'target')
     assert_equals(reader.empty_element(), True)
+
+
+def test_read_element_after_empty_list():
+    """
+    Checks that given an empty list without a close element the
+    `read_elements` method returns an empty list and the next element
+    can be read with the `read_element` method.
+    """
+    reader = make_reader('<root><list/><value>next</value></root>')
+    reader.read()
+    assert_equals(reader.read_elements(), [])
+    assert_equals(reader.read_element(), 'next')
