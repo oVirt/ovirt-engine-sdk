@@ -181,7 +181,14 @@ ov_xml_reader_node_name(ov_xml_reader_object* self) {
 
 static PyObject*
 ov_xml_reader_empty_element(ov_xml_reader_object* self) {
-    if (xmlTextReaderIsEmptyElement(self->reader)) {
+    int c_empty = 0;
+
+    c_empty = xmlTextReaderIsEmptyElement(self->reader);
+    if (c_empty == -1) {
+        PyErr_Format(PyExc_Exception, "Can't check if current element is empty");
+        return NULL;
+    }
+    if (c_empty) {
         Py_RETURN_TRUE;
     }
     Py_RETURN_FALSE;
@@ -279,8 +286,9 @@ ov_xml_reader_read_element(ov_xml_reader_object* self) {
 
 static PyObject*
 ov_xml_reader_read_elements(ov_xml_reader_object* self) {
-    PyObject* list = NULL;
     PyObject* element = NULL;
+    PyObject* list = NULL;
+    int c_empty = 0;
     int c_type = 0;
     int rc = 0;
 
@@ -292,8 +300,7 @@ ov_xml_reader_read_elements(ov_xml_reader_object* self) {
          <value>second</value>
        </list>
 
-       The reader should be positioned at the <list> element. The first thing we need to do is to check that this is
-       true, and then discard it, as we are only interested in the nested <value>...</value> elements. */
+       The reader should be positioned at the <list> element. The first thing we need to do is to check that: */
     c_type = xmlTextReaderNodeType(self->reader);
     if (c_type == -1) {
         PyErr_Format(PyExc_Exception, "Can't get current node type");
@@ -303,16 +310,33 @@ ov_xml_reader_read_elements(ov_xml_reader_object* self) {
         PyErr_Format(PyExc_Exception, "Current node isn't the start of an element");
         goto error;
     }
+
+    /* If we are indeed posititoned in the first element, then we need to check if it is empty, <list/>, as we will need
+       this later, after discarding the element: */
+    c_empty = xmlTextReaderIsEmptyElement(self->reader);
+    if (c_empty == -1) {
+        PyErr_Format(PyExc_Exception, "Can't check if current element is empty");
+        goto error;
+    }
+
+    /* Now we need to discard the current element, as we are interested only in the nested <value>...</value>
+       elements: */
     rc = xmlTextReaderRead(self->reader);
     if (rc == -1) {
         PyErr_Format(PyExc_Exception, "Can't move to next node");
         goto error;
     }
 
+    /* Create the list that will contain the results: */
     list = PyList_New(0);
     if (list == NULL) {
         PyErr_Format(PyExc_Exception, "Can't allocate list");
         goto error;
+    }
+
+    /* At this point, if the start element was empty, we don't need to do anything else: */
+    if (c_empty) {
+        goto success;
     }
 
     /* Process the nested elements: */
@@ -345,7 +369,7 @@ ov_xml_reader_read_elements(ov_xml_reader_object* self) {
         }
     }
 
-     /* Once all the nested <value>...</value> elements are processed the reader will be positioned at the closing
+    /* Once all the nested <value>...</value> elements are processed the reader will be positioned at the closing
        </list> element, or at the end of the document. If it is the closing element then we need to discard it. */
     if (c_type == XML_READER_TYPE_END_ELEMENT) {
         rc = xmlTextReaderRead(self->reader);
@@ -355,13 +379,14 @@ ov_xml_reader_read_elements(ov_xml_reader_object* self) {
         }
     }
 
+success:
     return list;
 
-    error:
-        if (list != NULL) {
-          Py_DECREF(list);
-        }
-        return NULL;
+error:
+    if (list != NULL) {
+        Py_DECREF(list);
+    }
+    return NULL;
 }
 
 static PyObject*
