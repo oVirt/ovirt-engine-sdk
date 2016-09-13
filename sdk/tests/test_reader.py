@@ -397,6 +397,43 @@ def test_read_given_two_disks():
     assert_true(isinstance(disks[1], types.Disk))
 
 
+def test_read_given_openstack_image_provider():
+    """
+    Test if given Openstack image provider, it creates Openstack
+    image provider object.
+    """
+    openstack_image_provider = Reader.read(
+        make_buffer(
+            '<openstack_image_provider>' +
+                '<name>myprovider</name>' +
+            '</openstack_image_provider>'
+        )
+    )
+    assert_true(
+        isinstance(openstack_image_provider, types.OpenStackImageProvider)
+    )
+    assert_equals(openstack_image_provider.name, "myprovider")
+
+
+def test_read_given_two_openstack_image_providers():
+    """
+    Test if given two Openstack image provider, it creates list
+    of Openstack image providers object.
+    """
+    openstack_image_providers = Reader.read(
+        make_buffer(
+            '<openstack_image_providers>' +
+                '<openstack_image_provider/>' +
+                '<openstack_image_provider/>' +
+            '</openstack_image_providers>'
+        )
+    )
+    assert_true(isinstance(openstack_image_providers, list))
+    assert_equals(len(openstack_image_providers), 2)
+    assert_true(isinstance(openstack_image_providers[0], types.OpenStackImageProvider))
+    assert_true(isinstance(openstack_image_providers[1], types.OpenStackImageProvider))
+
+
 def test_read_given_two_different_objects():
     """
     Test if given two different consecutive objects, they can be read with two calls.
