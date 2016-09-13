@@ -111,6 +111,8 @@ public class WritersGenerator implements PythonGenerator {
         PythonClassName writerName = pythonNames.getWriterName(type);
         Name singularName = type.getName();
         Name pluralName = names.getPlural(singularName);
+        String singularTagName = schemaNames.getSchemaTagName(singularName);
+        String pluralTagName = schemaNames.getSchemaTagName(pluralName);
 
         // Generate the method that writes one object:
         buffer.addLine("@staticmethod");
@@ -118,7 +120,7 @@ public class WritersGenerator implements PythonGenerator {
         buffer.startBlock();
         buffer.addLine("if singular is None:");
         buffer.startBlock();
-        buffer.addLine("singular = '%1$s'", singularName);
+        buffer.addLine("singular = '%1$s'", singularTagName);
         buffer.endBlock();
         buffer.addLine("writer.write_start(singular)");
         buffer.addLine("href = obj.href");
@@ -137,13 +139,13 @@ public class WritersGenerator implements PythonGenerator {
         buffer.startBlock();
         buffer.addLine("if singular is None:");
         buffer.startBlock();
-        buffer.addLine("singular = '%1$s'", singularName);
+        buffer.addLine("singular = '%1$s'", singularTagName);
         buffer.endBlock();
         buffer.addLine("if plural is None:");
         buffer.startBlock();
-        buffer.addLine("plural = '%1$s'", pluralName);
+        buffer.addLine("plural = '%1$s'", pluralTagName);
         buffer.endBlock();
-        buffer.addLine("writer.write_start(plural)", pluralName);
+        buffer.addLine("writer.write_start(plural)");
         buffer.addLine("if type(objs) == List:");
         buffer.startBlock();
         buffer.addLine("href = objs.href");
