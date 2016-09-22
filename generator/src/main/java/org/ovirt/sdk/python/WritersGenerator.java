@@ -290,7 +290,7 @@ public class WritersGenerator implements PythonGenerator {
         String pluralTag = schemaNames.getSchemaTagName(name);
         String singularTag = schemaNames.getSchemaTagName(names.getSingular(name));
         if (elementType instanceof PrimitiveType || elementType instanceof EnumType) {
-            buffer.addLine("if obj.%1$s is not None and len(obj.%1$s) > 0:", property);
+            buffer.addLine("if obj.%1$s is not None:", property);
             buffer.startBlock();
             buffer.addLine("writer.write_start('%1$s')", pluralTag);
             buffer.addLine("for item in obj.%1$s:", property);
