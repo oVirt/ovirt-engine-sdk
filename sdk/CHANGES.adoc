@@ -2,6 +2,35 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.0.2 / Sep 27 2016
+
+Update to model 4.0.35 and metamodel 1.0.20.
+
+New features:
+
+* Add the `sparsify` method to `DiskService`.
+
+* Add the `discardMaxSize` and `discardZeroesData` to the `LogicalUnit` type.
+
+* Add services to support disk attachments of virtual machines available
+  for import from storage domains.
+
+Bug fixes:
+
+* Fix the type of the `ticket` parameter of the `VmService.ticket` method.
+
+* Fix the type of the `authentication_method` attribute of the `Ssh` type.
+
+* Rename the `AuthenticationMethod` enum type to `SshAuthenticationMethod`.
+
+* Fix the name of the `exclusive` parameter o the `TemplateService.export` method.
+
+* Add the missing `cluster` parameter to the `OpenstackImageService.import` method.
+
+* Empty list is not written to XML.
+
+* Fix generating of singular and plural tag names.
+
 == 4.0.1 / Sep 6 2016
 
 Update to model 4.0.33.
