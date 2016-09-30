@@ -6,7 +6,11 @@ This directory contains the files required to package the SDK for
 packaging systems other than the Python standard ackaging system.
 
 == RPM
+The RPM .spec files in this directory are examples of how to package the
+SDK, and are also used by the automation scripts to build the packages
+with each commit.
 
-To build the RPM simply run the `build.sh` script. It will download the
-source file from https://pypi.python.org/pypi[PyPI] and then will
-package it.
+If you want to use these RPM .spec files directly you will have to copy
+the file corresponding to your distribution, rename it to
+`python-ovirt-engine-sdk.spec` and adjust the `Version`, `Release` and
+`Source` tags.

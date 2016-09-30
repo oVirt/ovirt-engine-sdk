@@ -1,13 +1,13 @@
-%global tar_version @TAR_VERSION@
+%global tar_version 4.1.0
 
 Name: python-ovirt-engine-sdk4
 Summary: Python SDK for version 4 of the oVirt Engine API
-Version: @RPM_VERSION@
-Release: @RPM_RELEASE@
+Version: 4.1.0
+Release: 0.1%{?dist}
 Group: Development/Languages
 License: ASL 2.0
 URL: http://ovirt.org
-Source: @TAR_URL@
+Source: ovirt-engine-sdk-python-%{tar_version}.tar.gz
 
 BuildRequires: gcc
 BuildRequires: libxml2-devel
@@ -18,6 +18,9 @@ Requires: python
 Requires: python-enum34
 Requires: python-pycurl
 Requires: python-six
+
+Provides: ovirt-engine-sdk = %{version}-%{release}
+Obsoletes: ovirt-engine-sdk < 3.3.0.6
 
 %description
 This package contains the Python SDK for version 4 of the oVirt Engine

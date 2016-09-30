@@ -8,6 +8,7 @@ python
 python-devel
 python-enum34
 python-flake8
+python-lxml
 python-nose
 python-pycurl
 python-six
@@ -15,6 +16,7 @@ python-wheel
 python3
 python3-devel
 python3-enum34
+python3-lxml
 python3-nose
 python3-pycurl
 python3-six

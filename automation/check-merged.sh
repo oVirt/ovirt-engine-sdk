@@ -1,3 +1,1 @@
-#!/bin/sh -ex
-
-# Nothing yet.
+build.py

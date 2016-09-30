@@ -30,6 +30,10 @@ limitations under the License.
 
   <name>oVirt Python SDK Parent</name>
 
+  <description>
+    Python SDK for the oVirt Engine API.
+  </description>
+
   <url>http://www.ovirt.org</url>
 
   <licenses>
@@ -39,6 +43,32 @@ limitations under the License.
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <developers>
+    <developer>
+      <name>Michael Pasternak</name>
+      <email>mishka8520@yahoo.com</email>
+    </developer>
+    <developer>
+      <name>Ondra Machacek</name>
+      <email>omachace@redhat.com</email>
+      <organization>oVirt</organization>
+      <organizationUrl>http://www.ovirt.org</organizationUrl>
+    </developer>
+    <developer>
+      <name>Juan Hernandez</name>
+      <email>juan.hernandez@redhat.com</email>
+      <organization>oVirt</organization>
+      <organizationUrl>http://www.ovirt.org</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://gerrit.ovirt.org/ovirt-engine-sdk.git</connection>
+    <developerConnection>scm:git:git://gerrit.ovirt.org/ovirt-engine-sdk.git</developerConnection>
+    <url>git://gerrit.ovirt.org/ovirt-engine-sdk.git</url>
+    <tag>HEAD</tag>
+  </scm>
 
   <properties>
 
@@ -60,6 +90,23 @@ limitations under the License.
   </modules>
 
   <build>
+
+    <pluginManagement>
+      <plugins>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
+          <configuration>
+            <source>1.8</source>
+            <target>1.8</target>
+          </configuration>
+        </plugin>
+
+      </plugins>
+    </pluginManagement>
+
     <plugins>
 
       <plugin>
@@ -72,7 +119,70 @@ limitations under the License.
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.2</version>
+        <configuration>
+          <tagNameFormat>@{version}</tagNameFormat>
+          <pushChanges>false</pushChanges>
+        </configuration>
+      </plugin>
+
     </plugins>
+
   </build>
+
+
+  <profiles>
+
+    <profile>
+      <id>sign</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+    </repository>
+  </distributionManagement>
 
 </project>
