@@ -52,11 +52,13 @@ API.
 
 %files
 %doc README.adoc
+%doc examples
 %license LICENSE.txt
 %{python2_sitearch}/*
 
 %files -n python3-ovirt-engine-sdk4
 %doc README.adoc
+%doc examples
 %license LICENSE.txt
 %{python3_sitearch}/*
 
