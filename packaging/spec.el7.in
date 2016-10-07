@@ -37,6 +37,7 @@ API.
 
 %files
 %doc README.adoc
+%doc examples
 %license LICENSE.txt
 %{python2_sitearch}/*
 
