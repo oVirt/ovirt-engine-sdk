@@ -217,7 +217,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("request = http.Request(method='POST', path=self._path, query=query)");
         generateWriteRequestBody(primaryParameter, primaryArg);
         buffer.addLine("response = self._connection.send(request)");
-        buffer.addLine("if response.code in [201, 202]:");
+        buffer.addLine("if response.code in [200, 201, 202]:");
         buffer.startBlock();
         generateReturnResponseBody(primaryParameter);
         buffer.endBlock();
