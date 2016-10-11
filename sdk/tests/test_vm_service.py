@@ -102,3 +102,27 @@ class VmServiceTest(unittest.TestCase):
             self.server.last_request_query,
             'clone=true&clone_permissions=true'
         )
+
+    def test_response_200_not_raise_exception(self):
+        """
+        Test when server return response with 200 code,
+        the SDK don't raise exception.
+        """
+        self.server.set_xml_response("vms", 200, "<vm/>")
+        self.vms_service.add(types.Vm())
+
+    def test_response_201_not_raise_exception(self):
+        """
+        Test when server return response with 201 code,
+        the SDK don't raise exception.
+        """
+        self.server.set_xml_response("vms", 201, "<vm/>")
+        self.vms_service.add(types.Vm())
+
+    def test_response_202_not_raise_exception(self):
+        """
+        Test when server return response with 202 code,
+        the SDK don't raise exception.
+        """
+        self.server.set_xml_response("vms", 202, "<vm/>")
+        self.vms_service.add(types.Vm())
