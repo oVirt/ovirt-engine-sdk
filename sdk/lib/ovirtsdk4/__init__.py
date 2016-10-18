@@ -307,6 +307,16 @@ class Connection(object):
         )
         self._curl.setopt(pycurl.URL, url)
 
+        # Older versions of the engine (before 4.1) required the
+        # 'all_content' parameter as an HTTP header instead of a query
+        # parameter. In order to better support these older versions of
+        # the engine we need to check if this parameter is included in
+        # the request, and add the corresponding header.
+        if request.query is not None:
+            all_content = request.query.get('all_content')
+            if all_content is not None:
+                request.headers['All-Content'] = all_content
+
         # Add headers, avoiding those that have no value:
         header_lines = []
         for header_name, header_value in request.headers.items():
