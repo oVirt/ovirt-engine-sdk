@@ -49,10 +49,17 @@ vm_service = vms_service.vm_service(vm.id)
 # machine:
 disk_attachments_service = vm_service.disk_attachments_service()
 
-# Retrieve the list of disks attachments, and print them:
+# Retrieve the list of disks attachments, and print the disk details.
+# Note that each attachment contains a link to the corresponding disk,
+# but not the actual disk data. In order to retrieve the actual disk
+# data we use the `follow_link` method.
 disk_attachments = disk_attachments_service.list()
 for disk_attachment in disk_attachments:
-    print(disk_attachment.disk.id)
+    disk = connection.follow_link(disk_attachment.disk)
+    print("name: %s" % disk.name)
+    print("id: %s" % disk.id)
+    print("status: %s" % disk.status)
+    print("provisioned_size: %s" % disk.provisioned_size)
 
 # Close the connection to the server:
 connection.close()
