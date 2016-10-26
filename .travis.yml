@@ -1,0 +1,15 @@
+language: java
+
+env:
+  global:
+    - PYCURL_CURL_CONFIG=/usr/local/opt/curl/bin/curl-config
+    - LD_LIBRARY_PATH=/usr/local/opt/curl/lib:$LD_LIBRARY_PATH
+    - PYCURL_SSL_LIBRARY=openssl
+
+before_install:
+  - brew install curl --with-openssl
+  - pip install flake8
+  - pip install nose
+
+os:
+  - osx
