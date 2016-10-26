@@ -23,7 +23,7 @@ limitations under the License.
 #define OV_XML_MODULE_NAME "ovirtsdk4.xml"
 
 /* Module: */
-PyObject* ov_xml_module;
+extern PyObject* ov_xml_module;
 
 /* Initialization function: */
 extern void ov_xml_module_define(void);

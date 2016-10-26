@@ -18,6 +18,9 @@ limitations under the License.
 
 #include "ov_xml_module.h"
 
+/* Module: */
+PyObject* ov_xml_module;
+
 #if PY_MAJOR_VERSION >= 3
 static struct PyModuleDef ov_xml_module_definition = {
     PyModuleDef_HEAD_INIT,
