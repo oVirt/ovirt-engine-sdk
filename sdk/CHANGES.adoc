@@ -2,6 +2,29 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.0.3 / Oct 26 2016
+
+Update to model 4.0.37 and metamodel 1.0.21.
+
+New features:
+
+* Add examples to the RPM packages.
+
+* Accept 200 code for 'Add' methods.
+
+Bug fixes:
+
+* Add missing `template` and `storage_domain` parameters to the
+  operation that imports an image.
+
+* Add the `next_run` parameter to the operation that updates a virtual
+  machine.
+
+* Add the `all_content` parameters to the operations that list and
+  retrieve virtual machines.
+
+* Fix building of SDK on Mac OS environment.
+
 == 4.0.2 / Sep 27 2016
 
 Update to model 4.0.35 and metamodel 1.0.20.
