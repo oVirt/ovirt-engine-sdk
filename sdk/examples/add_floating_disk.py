@@ -41,13 +41,15 @@ connection = sdk.Connection(
 # Get the reference to the disks service:
 disks_service = connection.system_service().disks_service()
 
-# Add the disk:
+# Add the disk. Note that the size of the disk, the `provisioned_size`
+# attribute, is specified in bytes, so to create a disk of 10 GiB the
+# value should be 10 * 2^30.
 disk = disks_service.add(
     types.Disk(
         name='mydisk',
         description='My disk',
         format=types.DiskFormat.COW,
-        provisioned_size=1 * 2**20,
+        provisioned_size=10 * 2**30,
         storage_domains=[
             types.StorageDomain(
                 name='mydata'
