@@ -686,12 +686,17 @@ public class ServicesGenerator implements PythonGenerator {
             buffer.addLine();
         }
         if (method.parameters().filter(predicate).findFirst().orElse(null) != null) {
-            buffer.addLine("Keyword arguments:");
-            method.parameters()
+            List<String> lines = method.parameters()
                 .filter(predicate)
                 .filter(p -> p.getDoc() != null)
-                .map(p -> String.format("%s -- %s", pythonNames.getMemberStyleName(p.getName()), p.getDoc()))
-                .forEach(this::generateDocText);
+                .map(p -> String.format("`%s`:: %s", pythonNames.getMemberStyleName(p.getName()), p.getDoc()))
+                .collect(toList());
+
+            if (!lines.isEmpty()) {
+                buffer.addLine("This method supports the following parameters:");
+                buffer.addLine();
+                lines.forEach(this::generateDocText);
+            }
         }
         buffer.endComment();
     }
@@ -713,6 +718,7 @@ public class ServicesGenerator implements PythonGenerator {
         }
         if (!lines.isEmpty()) {
             lines.stream().filter(l -> !l.isEmpty()).forEach(buffer::addRawLine);
+            buffer.addLine();
         }
     }
 
