@@ -349,7 +349,7 @@ class Connection(object):
         body = request.body
         if body is None:
             body = ''
-        self._curl.setopt(pycurl.POSTFIELDS, body)
+        self._curl.setopt(pycurl.COPYPOSTFIELDS, body)
 
         # Prepare the buffers to receive the response:
         body_buf = io.BytesIO()
@@ -497,7 +497,7 @@ class Connection(object):
             'Accept: application/json'
         ]
         self._curl.setopt(pycurl.HTTPHEADER, header_lines)
-        self._curl.setopt(pycurl.POSTFIELDS, urlencode(params))
+        self._curl.setopt(pycurl.COPYPOSTFIELDS, urlencode(params))
 
         # Prepare the buffer to receive the response:
         body_buf = io.BytesIO()
