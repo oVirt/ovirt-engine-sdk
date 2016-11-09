@@ -66,6 +66,7 @@ disk_attachment = disk_attachments_service.add(
         ),
         interface=types.DiskInterface.VIRTIO,
         bootable=False,
+        active=True,
     ),
 )
 
