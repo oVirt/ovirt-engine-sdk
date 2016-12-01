@@ -45,6 +45,17 @@ vm = vms_service.list(search = 'name=myvm')[0]
 # Find the service that manages the virtual machine:
 vm_service = vms_service.vm_service(vm.id)
 
+# Create cloud-init script, which you want to execute in
+# deployed virtual machine, please note that the script must
+# be properly formatted and indented as it's using YAML.
+my_script="""
+write_files:
+  - content: |
+      Hello, world!
+    path: /tmp/greeting.txt
+    permissions: '0644'
+"""
+
 # Start the virtual machine enabling cloud-init and providing the
 # password for the `root` user and the network configuration:
 vm_service.start(
@@ -68,7 +79,8 @@ vm_service.start(
                 )
             ],
             dns_servers='192.168.0.1 192.168.0.2 192.168.0.3',
-            dns_search='example.com'
+            dns_search='example.com',
+            custom_script=my_script,
         )
     )
 )
