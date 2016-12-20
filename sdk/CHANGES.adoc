@@ -2,6 +2,69 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.1.0-a1 / Dec 20 2016
+
+Update to model 4.1.24:
+
+* Added new `v4` value to the `StorageFormat` enum.
+
+* Add `seal` operation to the service that manages templates.
+
+* Add `progress` attribute to the `Disk` and `Step` types.
+
+* Add `allow_partial_import` parameter to the operations that import
+  virtual machines and templates.
+
+* Add `ticket` operation to the service that manages the graphics
+  console of a virtual machine.
+
+* Added `urandom` to the `RngSource` enumerated type.
+
+* Added `migratable` flag to the `VnicProfile` type.
+
+* Add `gluster_tuned_profile` to the `Cluster` type.
+
+* Add `skip_if_gluster_bricks_up` and `skip_if_gluster_quorum_not_met`
+  attributes to the `FencingPolicy` type.
+
+* Add the `ImageTransferDirection` enumerated type and the `direction`
+  attribute to the `ImageTransfer` type.
+
+* Replace the generic `GraphicsConsole` and `GraphicsConsoles` with
+  specific services for virtual machines, templates and instance
+  types.
+
+* Deprecate the `legacy` USB type.
+
+* Add `remoteviewerconnectionfile` action to the `GraphicsConsole`
+  service.
+
+* Add `max` attribute to the `MemoryPolicy` type.
+
+* Make `Ip.version` optional.
+
+* Add the `active_slave` link to the `Bonding` type.
+
+* Add DNS configuration support to `Network` and `NetworkAttachment`.
+
+* Add the `uses_scsi_reservation` attribute to the `DiskAttachment`
+  type.
+
+* Add the `sparsify` method to `DiskService`.
+
+* Add the `discard_max_size` and `discard_zeroes_data` to the `LogicalUnit`
+  type.
+
+* Add `logical_name` attribute to the disk attachment type.
+
+* Add the `upgradecheck` action to the host service.
+
+* Add the `original_template` link to the virtual machine type.
+
+New features:
+
+* Enable compression by default https://bugzilla.redhat.com/1367826[#1367826].
+
 == 4.0.4 / Tue 15 2016
 
 Bug fixes:
