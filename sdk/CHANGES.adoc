@@ -1,0 +1,91 @@
+= Changes
+
+This document describes the relevant changes between releases of the SDK.
+
+== 4.0.4 / Tue 15 2016
+
+Bug fixes:
+
+* Use COPYPOSTFIELDS for HTTP POST data https://bugzilla.redhat.com/1392878[#1392878].
+
+== 4.0.3 / Oct 26 2016
+
+Update to model 4.0.37 and metamodel 1.0.21.
+
+New features:
+
+* Add examples to the RPM packages.
+
+* Accept 200 code for 'Add' methods.
+
+Bug fixes:
+
+* Add missing `template` and `storage_domain` parameters to the
+  operation that imports an image.
+
+* Add the `next_run` parameter to the operation that updates a virtual
+  machine.
+
+* Add the `all_content` parameters to the operations that list and
+  retrieve virtual machines.
+
+* Fix building of SDK on Mac OS environment.
+
+== 4.0.2 / Sep 27 2016
+
+Update to model 4.0.35 and metamodel 1.0.20.
+
+New features:
+
+* Add the `sparsify` method to `DiskService`.
+
+* Add the `discardMaxSize` and `discardZeroesData` to the `LogicalUnit` type.
+
+* Add services to support disk attachments of virtual machines available
+  for import from storage domains.
+
+Bug fixes:
+
+* Fix the type of the `ticket` parameter of the `VmService.ticket` method.
+
+* Fix the type of the `authentication_method` attribute of the `Ssh` type.
+
+* Rename the `AuthenticationMethod` enum type to `SshAuthenticationMethod`.
+
+* Fix the name of the `exclusive` parameter o the `TemplateService.export` method.
+
+* Add the missing `cluster` parameter to the `OpenstackImageService.import` method.
+
+* Empty list is not written to XML.
+
+* Fix generating of singular and plural tag names.
+
+== 4.0.1 / Sep 6 2016
+
+Update to model 4.0.33.
+
+New features:
+
+* Add the `custom_scheduling_policy_properties` attribute to the
+  `Cluster` type.
+
+* Add services and types to support transfer of images.
+
+* Improve type checking.
+
+Bug fixes:
+
+* Remove the `add` and `remove` operations of virtual machine
+  CDROMs.
+
+* Fix the type of the `usages` attribute of the `Network` type, it
+  should be a list of values of the `NetworkUsage` enum, not a list
+  of strings.
+
+* Fix reading of lists of elements https://bugzilla.redhat.com/1373431[#1373431].
+
+* Accept `action` and `fault` from actions.
+
+* Fix reading of list of primitive and enum types.
+
+* Avoid of reading fault response in case response body is empty.
