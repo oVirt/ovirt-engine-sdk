@@ -20,6 +20,7 @@ import datetime
 import io
 import re
 
+from ovirtsdk4 import Error
 from ovirtsdk4 import xml
 
 
@@ -280,9 +281,9 @@ class Reader(object):
 
             # Select the specific reader according to the tag:
             tag = cursor.node_name()
-            reader = cls._readers[tag]
+            reader = cls._readers.get(tag)
             if reader is None:
-                raise Exception(
+                raise Error(
                     "Can't find a reader for tag '{tag}'".format(tag=tag)
                 )
 

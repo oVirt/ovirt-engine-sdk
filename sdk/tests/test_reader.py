@@ -21,9 +21,11 @@ from io import BytesIO
 from nose.tools import (
     assert_equals,
     assert_is_none,
+    assert_raises,
     assert_true,
     raises,
 )
+from ovirtsdk4 import Error
 from ovirtsdk4 import types
 from ovirtsdk4.reader import Reader, TZ
 from ovirtsdk4.xml import XmlReader
@@ -454,3 +456,15 @@ def test_read_given_two_different_objects():
     cursor.read()
     object = Reader.read(cursor)
     assert_is_none(object)
+
+
+def test_read_unknonw_tag():
+    """
+    Test that when an unknonw tag is received an exception with a
+    message is generated.
+    """
+    cursor = XmlReader(make_buffer('<html>blah<html>'))
+    cursor.read()
+    with assert_raises(Error) as context:
+        Reader.read(cursor)
+    assert_equals(str(context.exception), "Can't find a reader for tag 'html'")
