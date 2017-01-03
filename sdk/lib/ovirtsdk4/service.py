@@ -94,7 +94,7 @@ class Service(object):
                 xmlreader.close()
             if buf is not None:
                 buf.close()
-        if fault is not None:
+        if fault is not None or response.code >= 400:
             Service._raise_error(response, fault)
 
     @staticmethod
