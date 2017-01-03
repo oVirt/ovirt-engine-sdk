@@ -2,7 +2,7 @@
 
 This document describes the relevant changes between releases of the SDK.
 
-== 4.1.0-a1 / Dec 20 2016
+== 4.1.0-a1 / Jan 9 2016
 
 Update to model 4.1.24:
 
@@ -60,6 +60,8 @@ Update to model 4.1.24:
 * Add the `upgradecheck` action to the host service.
 
 * Add the `original_template` link to the virtual machine type.
+
+* Check return code of the HTTP reponses
 
 New features:
 
