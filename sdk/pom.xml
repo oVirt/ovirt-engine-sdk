@@ -112,6 +112,7 @@ limitations under the License.
               <goal>exec</goal>
             </goals>
             <configuration>
+              <skip>${skipTests}</skip>
               <executable>${python.command}</executable>
               <arguments>
                 <argument>setup.py</argument>
