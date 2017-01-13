@@ -26,7 +26,8 @@ import ovirtsdk4.types as types
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
 # This example will connect to the server, and create a virtual machine
-# from a specific version of a template.
+# from a specific version of a template and specify storage domain where
+# virtual machine disk should be created.
 
 # Create the connection to the server:
 connection = sdk.Connection(
@@ -40,6 +41,12 @@ connection = sdk.Connection(
 
 # Get the reference to the root of the tree of services:
 system_service = connection.system_service()
+
+# Get the reference to the service that manages the storage domains:
+storage_domains_service = system_service.storage_domains_service()
+
+# Find the storage domain we want to be used for virtual machine disks:
+storage_domain = storage_domains_service.list(search='name=mydata')[0]
 
 # Get the reference to the service that manages the templates:
 templates_service = system_service.templates_service()
@@ -55,11 +62,18 @@ for template in templates:
         template_id = template.id
         break
 
+# Find the template disk we want be created on specific storage domain
+# for our virtual machine:
+template_service = templates_service.template_service(template_id)
+disk_attachments = connection.follow_link(template_service.get().disk_attachments)
+disk = disk_attachments[0].disk
+
 # Get the reference to the service that manages the virtual machines:
 vms_service = system_service.vms_service()
 
 # Add a new virtual machine explicitly indicating the identifier of the
-# template version that we want to use:
+# template version that we want to use and indicating that template disk
+# should be created on specific storage domain for the virtual machine:
 vm = vms_service.add(
     types.Vm(
         name='myvm',
@@ -68,7 +82,20 @@ vm = vms_service.add(
         ),
         template=types.Template(
             id=template_id
-        )
+        ),
+        disk_attachments=[
+            types.DiskAttachment(
+                disk=types.Disk(
+                    id=disk.id,
+                    format=types.DiskFormat.COW,
+                    storage_domains=[
+                        types.StorageDomain(
+                            id=storage_domain.id,
+                        ),
+                    ],
+                ),
+            ),
+        ],
     )
 )
 
