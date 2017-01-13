@@ -45,7 +45,7 @@ function _copy_to_master {
 
 
 function _copy_to_tagged {
-    description=$(git describe)
+    description=$(git describe --always)
     major_version=${description:0:3}
     full_version=${description:0:8}
 
@@ -55,18 +55,18 @@ function _copy_to_tagged {
 
 
 function _push_gh_pages {
+    commit=$(git log --format="%H" -n 1)
+    description=$(git describe --always)
+
+    pushd gh-pages
     # Push only if there are changes in documentation:
     if git status --porcelain 2>/dev/null| grep -E "^??|^M"
     then
-      commit=$(git log --format="%H" -n 1)
-      description=$(git describe)
-
-      pushd gh-pages
       git add .
       git commit -m "gh-pages ${description} ${commit}"
       git push origin HEAD:gh-pages
-      popd
     fi
+    popd
 }
 
 _load_ssh_key
