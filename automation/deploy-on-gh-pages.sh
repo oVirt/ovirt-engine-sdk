@@ -56,7 +56,7 @@ function _copy_to_tagged {
 
 function _push_gh_pages {
     # Push only if there are changes in documentation:
-    if ! git diff-index --quiet HEAD --
+    if git status --porcelain 2>/dev/null| grep -E "^??|^M"
     then
       commit=$(git log --format="%H" -n 1)
       description=$(git describe)
