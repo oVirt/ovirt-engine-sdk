@@ -600,6 +600,11 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("def %1$s_service(self, %2$s):", methodName, argName);
         buffer.startBlock();
         generateDoc(locator);
+        buffer.addLine("Service._check_types([");
+        buffer.startBlock();
+        generateCheckTypeTuple(parameter);
+        buffer.endBlock();
+        buffer.addLine("])");
         buffer.addLine("return %1$s(self._connection, '%%s/%%s' %% (self._path, %2$s))", serviceName.getClassName(),
             argName);
         buffer.endBlock();

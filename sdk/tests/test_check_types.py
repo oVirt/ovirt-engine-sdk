@@ -51,3 +51,18 @@ class CheckTypesTest(unittest.TestCase):
             "type 'Disk'",
             message
         )
+
+    def test_locator_type_error(self):
+        """
+        Test that calling a service locator with a wrong parameter type
+        generates an informative exception.
+        """
+        vms_service = services.VmsService(None, None)
+        with assert_raises(TypeError) as context:
+            vms_service.vm_service(types.Vm())
+        message = str(context.exception)
+        assert_in(
+            "The 'id' parameter should be of type 'str', but it is of "
+            "type 'Vm'.",
+            message
+        )
