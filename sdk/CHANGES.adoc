@@ -2,6 +2,25 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.1.0 / Jan 31 2016
+
+Update to model 4.1.29:
+
+* Documentation improvements.
+
+* Add new `lease` attribute to virtual machines and templates.
+
+* Add `execution_host` link to the `Step` type.
+
+* Add `initial_size` attribute to the `Disk` type.
+
+* Add `succeeded` parameter to the operation that end an external job.
+
+Update to metamodel 1.1.10:
+
+* Fix reading of XML attributes of enum types
+  https://bugzilla.redhat.com/1408839[#1408839]
+
 == 4.1.0-a1 / Jan 9 2016
 
 Update to model 4.1.24:
