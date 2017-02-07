@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016 Red Hat, Inc.
+Copyright (c) 2016-2017 Red Hat, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ public class Tool {
     // The names of the command line options:
     private static final String MODEL_OPTION = "model";
     private static final String OUT_OPTION = "out";
+    private static final String VERSION_OPTION = "version";
 
     // Reference to the objects used to calculate Python names:
     @Inject private PythonNames pythonNames;
@@ -76,6 +77,17 @@ public class Tool {
             .build()
         );
 
+        // Option to specify the version number:
+        options.addOption(Option.builder()
+            .longOpt(VERSION_OPTION)
+            .desc("The the version number of the SDK, for example \"4.0.0.a0\".")
+            .type(File.class)
+            .required(true)
+            .hasArg(true)
+            .argName("VERSION")
+            .build()
+        );
+
         // Parse the command line:
         CommandLineParser parser = new DefaultParser();
         CommandLine line = null;
@@ -93,6 +105,13 @@ public class Tool {
         File modelFile = (File) line.getParsedOptionValue(MODEL_OPTION);
         File outDir = (File) line.getParsedOptionValue(OUT_OPTION);
 
+        // Extract the version number:
+        String version = line.getOptionValue(VERSION_OPTION);
+
+        // The version will usually come from the root POM of the project, where it will the "-SNAPSHOT" suffix for non
+        // release versions. We need to remove that suffix.
+        version = version.replaceAll("-SNAPSHOT$", "");
+
         // Analyze the model files:
         Model model = new Model();
         ModelAnalyzer modelAnalyzer = new ModelAnalyzer();
@@ -101,6 +120,9 @@ public class Tool {
 
         // Add the built-in types:
         builtinTypes.addBuiltinTypes(model);
+
+        // Configure the object used to generate names:
+        pythonNames.setVersion(version);
 
         // Run the generators:
         if (outDir != null) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-Copyright (c) 2016 Red Hat, Inc.
+Copyright (c) 2016-2017 Red Hat, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,6 +30,15 @@ limitations under the License.
   <packaging>pom</packaging>
 
   <name>oVirt Python SDK</name>
+
+  <properties>
+
+    <!-- By default the version of the SDK will be calculated from the
+         version of the project, but it is defined as a property so that
+         it can be overriden (by automation scripts, for example): -->
+    <sdk.version>${project.version}</sdk.version>
+
+  </properties>
 
   <build>
     <plugins>
@@ -82,6 +91,7 @@ limitations under the License.
                 <mainClass>org.ovirt.sdk.python.Tool</mainClass>
                 <argument>--model=${project.basedir}/target/model.jar</argument>
                 <argument>--out=${project.basedir}/lib</argument>
+                <argument>--version=${sdk.version}</argument>
               </arguments>
               <includePluginDependencies>true</includePluginDependencies>
               <includeProjectDependencies>false</includeProjectDependencies>
