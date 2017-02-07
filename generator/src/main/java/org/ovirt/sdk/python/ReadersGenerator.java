@@ -207,14 +207,13 @@ public class ReadersGenerator implements PythonGenerator {
             .collect(toList());
         if (!links.isEmpty()) {
             buffer.addLine("@staticmethod");
-            buffer.addLine("def _read_link(reader, obj):");
+            buffer.addLine("def _process_link(link, obj):");
             buffer.startBlock();
             buffer.addLine(  "# Process the attributes:");
-            buffer.addLine(  "href = reader.get_attribute('href')");
-            buffer.addLine(  "rel = reader.get_attribute('rel')");
+            buffer.addLine(  "rel = link[0]");
+            buffer.addLine(  "href = link[1]");
             buffer.addLine(  "if href and rel:");
             buffer.startBlock();
-            buffer.addLine(    "list = List(href)");
 
             boolean firstLink = true;
             for (Link link : links) {
@@ -223,13 +222,19 @@ public class ReadersGenerator implements PythonGenerator {
                 String rel = link.getName().words().map(String::toLowerCase).collect(joining());
                 buffer.addLine("%1$s rel == \"%2$s\":", keyword, rel);
                 buffer.startBlock();
-                buffer.addLine("obj.%1$s = list", field);
+                buffer.addLine("if obj.%1$s is not None:", field);
+                buffer.startBlock();
+                buffer.addLine("obj.%1$s.href = href", field);
+                buffer.endBlock();
+                buffer.addLine("else:");
+                buffer.startBlock();
+                buffer.addLine("obj.%1$s = List(href)", field);
+                buffer.endBlock();
                 buffer.endBlock();
                 firstLink = false;
             }
 
             buffer.endBlock(); // End if
-            buffer.addLine("reader.next_element()");
             buffer.endBlock();  // End method
             buffer.addLine();
         }
@@ -284,6 +289,7 @@ public class ReadersGenerator implements PythonGenerator {
             .sorted()
             .collect(toList());
         if (!members.isEmpty()) {
+            buffer.addLine("links = []");
             buffer.addLine("while reader.forward():");
             buffer.startBlock();
             buffer.addLine("tag = reader.node_name()");
@@ -292,13 +298,20 @@ public class ReadersGenerator implements PythonGenerator {
             if (listLinksCount > 0) {
                 buffer.addLine("elif tag == 'link':");
                 buffer.startBlock();
-                buffer.addLine("%1$s._read_link(reader, obj)", pythonNames.getReaderName(type).getClassName());
+                buffer.addLine("links.append((reader.get_attribute('rel'), reader.get_attribute('href')))");
+                buffer.addLine("reader.next_element()");
                 buffer.endBlock();
             }
             buffer.addLine("else:");
             buffer.startBlock();
             buffer.addLine("reader.next_element()");
             buffer.endBlock();
+            buffer.endBlock();
+
+            // Process the links:
+            buffer.addLine("for link in links:");
+            buffer.startBlock();
+            buffer.addLine("%1$s._process_link(link, obj)", pythonNames.getReaderName(type).getClassName());
             buffer.endBlock();
         }
         else {
