@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016 Red Hat, Inc.
+Copyright (c) 2016-2017 Red Hat, Inc.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -50,6 +50,7 @@ public class PythonNames {
     public static final String SERVICES_MODULE = "services";
     public static final String TYPES_MODULE = "types";
     public static final String WRITERS_MODULE = "writers";
+    public static final String VERSION_MODULE = "version";
 
     // Reference to the object used to do computations with words.
     @Inject
@@ -62,6 +63,23 @@ public class PythonNames {
 
     // The name of the root module:
     private String rootModuleName = "ovirtsdk4";
+
+    // The version number:
+    private String version;
+
+    /**
+     * Sets the version.
+     */
+    public void setVersion(String newVersion) {
+        version = newVersion;
+    }
+
+    /**
+     * Get the version.
+     */
+    public String getVersion() {
+        return version;
+    }
 
     /**
      * Get the name of the root module.
@@ -96,6 +114,13 @@ public class PythonNames {
      */
     public String getServicesModuleName() {
         return getModuleName(SERVICES_MODULE);
+    }
+
+    /**
+     * Get the name of the version module.
+     */
+    public String getVersionModuleName() {
+        return getModuleName(VERSION_MODULE);
     }
 
     /**

@@ -191,14 +191,14 @@ public class PythonBuffer {
         buffer.append("\n");
 
         // Add the imports:
-        imports.stream().sorted().forEach(line -> {
-            buffer.append(line);
+        if (!imports.isEmpty()) {
+            imports.stream().sorted().forEach(line -> {
+                buffer.append(line);
+                buffer.append("\n");
+            });
             buffer.append("\n");
-        });
-
-        // Two blank lines, as required by PEP8:
-        buffer.append("\n");
-        buffer.append("\n");
+            buffer.append("\n");
+        }
 
         // Remove empty lines at the end of the file, as required by PEP8:
         for (;;) {

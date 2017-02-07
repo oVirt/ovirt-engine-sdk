@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Copyright (c) 2016 Red Hat, Inc.
+# Copyright (c) 2016-2017 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,11 @@ doc_file = os.path.join(root_dir, 'README.adoc')
 with codecs.open(doc_file, encoding='utf-8') as doc_fd:
     long_description = doc_fd.read()
 
+# Load the version from the 'version.py' file:
+version_file = os.path.join(root_dir, 'lib', 'ovirtsdk4', 'version.py')
+with open(version_file) as version_fd:
+    exec(version_fd.read())
+
 # Required packages:
 requires = [
     'pycurl >= 7.19.0',
@@ -44,7 +49,7 @@ if sys.version_info < (3, 4):
 # Setup the package:
 setuptools.setup(
     name='ovirt-engine-sdk-python',
-    version='4.1.0a0',
+    version=VERSION,
     description='Python SDK for oVirt Engine API',
     long_description=long_description,
     author='Michael Pasternak, Juan Hernandez, Ondra Machacek',
