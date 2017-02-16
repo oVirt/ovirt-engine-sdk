@@ -107,7 +107,7 @@ def main():
         print("Can't find version in POM file \"%s\"." % pom_path)
         sys.exit(1)
     pom_version = version_nodes[0].text
-    print("POM version is \"%s\".", pom_version)
+    print("POM version is \"%s\"." % pom_version)
 
     # Extract the subject and identifier of the latest commit:
     print("Extracting commit information ...")
@@ -156,15 +156,15 @@ def main():
         sys.exit(1)
     version_xyz = version_match.group("xyz")
     version_qualifier = version_match.group("q")
-    version_suffix = "%sgit%s" % (
-        datetime.datetime.now().strftime("%Y%m%d"),
-        commit_id,
-    )
+    version_date = datetime.datetime.now().strftime("%Y%m%d")
+    pep440_version = version_xyz
+    if version_qualifier is not None:
+        pep440_version += version_qualifier
     if not is_release:
-        full_version += ".%s" % version_suffix
+        pep440_version += ".dev%s+git%s" % (version_date, commit_id)
     print("SDK version XYZ is \"%s\"." % version_xyz)
     print("SDK version qualifier is \"%s\"." % version_qualifier)
-    print("SDK full version is \"%s\"." % full_version)
+    print("SDK PEP440 version is \"%s\"." % pep440_version)
 
     # Build the SDK code generator, run it, and build the tar:
     print("Running Maven build ...")
@@ -178,27 +178,28 @@ def main():
             "package",
             "--settings=%s" % settings_path,
             "-Dpython.command=%s" % python_command,
+            "-Dsdk.version=%s" % pep440_version,
         ])
     if result != 0:
         print("Maven build failed with exit code %d." % result)
         sys.exit(1)
 
-    # Create the tarball:
-    print("Creating tarball ...")
-    tar_prefix = "ovirt-engine-sdk-python-%s" % full_version
-    tar_path = "%s.tar.gz" % tar_prefix
-    result = run_command([
-        "tar",
-        "-czf",
-        tar_path,
-        "--transform=s|^\.|%s|" % tar_prefix,
-        '--directory=sdk',
-        '.',
-    ])
-
-    if result != 0:
-        print("Tarball creation failed with exit code %d." % result)
-        sys.exit(1)
+    # Locate the tarball. Different versions of distutils generate different
+    # file names. For example, the version in CentOS 7 replaces the '+' in the
+    # version with a '-', so we need to try twice.
+    print("Locating the tarball ...")
+    tar_dir = os.path.join("sdk", "dist")
+    tar_base = "ovirt-engine-sdk-python"
+    tar_version = pep440_version
+    tar_name = "%s-%s.tar.gz" % (tar_base, tar_version)
+    tar_path = os.path.join(tar_dir, tar_name)
+    if not os.path.exists(tar_path):
+        tar_version = tar_version.replace('+', '-')
+        tar_name = "%s-%s.tar.gz" % (tar_base, tar_version)
+        tar_path = os.path.join(tar_dir, tar_name)
+        if not os.path.exists(tar_path):
+            print("The expected tarball file \"%s\" doesn't exist." % tar_path)
+            sys.exit(1)
     artifacts_list.append(tar_path)
     print("Tarball file is \"%s\"." % tar_path)
 
@@ -281,9 +282,10 @@ def main():
     print("Calculating RPM version and release numbers ...")
     rpm_version = version_xyz
     if version_qualifier is not None:
+        rpm_release = dec_version(rpm_release)
         rpm_release += ".%s" % version_qualifier
     if not is_release:
-        rpm_release += ".%s" % version_suffix
+        rpm_release += ".%sgit%s" % (version_date, commit_id)
     print("RPM version is \"%s\"." % rpm_version)
     print("RPM release is \"%s\"." % rpm_release)
 
@@ -292,7 +294,7 @@ def main():
     print("Generating RPM spec file ...")
     spec_lines[version_tag[1]] = "Version: %s\n" % rpm_version
     spec_lines[release_tag[1]] = "Release: %s%%{?dist}\n" % rpm_release
-    spec_lines[tar_version_global[1]] = "%%global tar_version %s\n" % full_version
+    spec_lines[tar_version_global[1]] = "%%global tar_version %s\n" % tar_version
     spec_path = "python-ovirt-engine-sdk4.spec"
     with open(spec_path, "w") as spec_fd:
         spec_fd.writelines(spec_lines)
@@ -302,7 +304,7 @@ def main():
     result = run_command([
         "rpmbuild",
         "-ba",
-        "--define=_sourcedir %s" % cwd,
+        "--define=_sourcedir %s" % os.path.join(cwd, tar_dir),
         "--define=_srcrpmdir %s" % cwd,
         "--define=_rpmdir %s" % cwd,
         spec_path,
