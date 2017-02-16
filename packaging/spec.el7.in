@@ -3,7 +3,7 @@
 Name: python-ovirt-engine-sdk4
 Summary: Python SDK for version 4 of the oVirt Engine API
 Version: 4.1.0
-Release: 0.1%{?dist}
+Release: 1%{?dist}
 Group: Development/Languages
 License: ASL 2.0
 URL: http://ovirt.org
