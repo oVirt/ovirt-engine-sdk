@@ -1,15 +1,45 @@
 language: java
 
-env:
-  global:
-    - PYCURL_CURL_CONFIG=/usr/local/opt/curl/bin/curl-config
-    - LD_LIBRARY_PATH=/usr/local/opt/curl/lib:$LD_LIBRARY_PATH
-    - PYCURL_SSL_LIBRARY=openssl
+matrix:
+  include:
+    - os: linux
+      jdk: oraclejdk8
+    - os: osx
+      env:
+        global:
+          - PYCURL_CURL_CONFIG=/usr/local/opt/curl/bin/curl-config
+          - LD_LIBRARY_PATH=/usr/local/opt/curl/lib:$LD_LIBRARY_PATH
+          - PYCURL_SSL_LIBRARY=openssl
 
 before_install:
-  - brew install curl --with-openssl
-  - pip install flake8
-  - pip install nose
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl --with-openssl ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install rubygems ; fi
+  - sudo gem install asciidoctor
+  - sudo pip install flake8
+  - sudo pip install nose
+  - sudo pip install pygments
+  - sudo pip install six
+  - sudo pip install wheel
+  - git clone https://github.com/machacekondra/pdoc.git pdoc
+  - sudo pip install ./pdoc -U
 
-os:
-  - osx
+install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mvn package -DskipTests ; fi
+
+after_success:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo pip install ./sdk -U ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then travis_wait 20 pdoc --overwrite --html --html-dir=target/generated-html/ sdk/lib/ovirtsdk4/ ; fi
+
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: automation/deploy-on-gh-pages.sh master
+    on:
+      branch: master
+      condition: $TRAVIS_OS_NAME = linux
+  - provider: script
+    skip_cleanup: true
+    script: automation/deploy-on-gh-pages.sh tagged
+    on:
+      tags: true
+      condition: $TRAVIS_OS_NAME = linux
