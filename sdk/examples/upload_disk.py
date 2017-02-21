@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Copyright (c) 2016 Red Hat, Inc.
+# Copyright (c) 2016-2017 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,23 +53,35 @@ connection = sdk.Connection(
 # Get the reference to the root service:
 system_service = connection.system_service()
 
-# Add the disk. Note that the size of the disk, the `provisioned_size`
-# attribute, is specified in bytes, so to create a disk of 1 GiB the
-# value should be 1 * 2^30. Note that the disk size must be bigger or
-# the same as the size of the disk you will upload, otherwise upload
-# will fail.
+# Add the disk. Note the following:
+#
+# 1. The size of the disk is specified in bytes, so to create a disk
+#    of 10 GiB the value should be 10 * 2^30.
+#
+# 2. The disk size is indicated using the 'provisioned_size' attribute,
+#    but due to current limitations in the engine, the 'initial_size'
+#    attribute also needs to be explicitly provided for _copy on write_
+#    disks created on block storage domains, so that all the required
+#    space is allocated upfront, otherwise the upload will eventually
+#    fail.
+#
+# 3. The disk initial size must be bigger or the same as the size of the data
+#    you will upload.
+initial_size = 1 * 2**30
+provisioned_size = 10 * 2**30
 disks_service = connection.system_service().disks_service()
 disk = disks_service.add(
     disk=types.Disk(
         name='mydisk',
         description='My disk',
         format=types.DiskFormat.COW,
-        provisioned_size=1 * 2**30,
+        provisioned_size=provisioned_size,
+        initial_size=initial_size,
         storage_domains=[
             types.StorageDomain(
-                name='data',
-            ),
-        ],
+                name='data'
+            )
+        ]
     )
 )
 
