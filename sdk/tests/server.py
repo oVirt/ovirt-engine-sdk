@@ -95,6 +95,8 @@ class TestServer(object):
             self.last_request_query = urlparse(handler.path).query
             # Store request content:
             self.last_request_content = self._get_request_content(handler)
+            # Store request headers:
+            self.last_request_headers = handler.headers
 
             authorization = handler.headers.get('Authorization')
             if authorization != "Bearer %s" % self.TOKEN:
