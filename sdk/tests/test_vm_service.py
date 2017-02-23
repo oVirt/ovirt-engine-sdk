@@ -126,3 +126,74 @@ class VmServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("vms", 202, "<vm/>")
         self.vms_service.add(types.Vm())
+
+
+    def test_start_with_custom_parameter(self):
+        """
+        Test that sending one parameter a request is sent with that parameter.
+        """
+        self.server.set_xml_response("vms/123/start", 200, "<action/>")
+        self.vms_service.vm_service("123").start(query={'my': 'value'})
+        assert_equal(self.server.last_request_query, 'my=value')
+
+    def test_start_with_two_custom_parameters(self):
+        """
+        Test that sending two parameters a request is sent with that two parameters.
+        """
+        self.server.set_xml_response("vms/123/start", 200, "<action/>")
+        self.vms_service.vm_service("123").start(
+            query={'my': 'value', 'your': 'value'}
+        )
+        assert_equal(self.server.last_request_query, 'my=value&your=value')
+
+    def test_start_with_custom_header(self):
+        """
+        Test that sending one header a request is sent with that header.
+        """
+        self.server.set_xml_response("vms/123/start", 200, "<action/>")
+        self.vms_service.vm_service("123").start(headers={'my': 'value'})
+        assert_equal(self.server.last_request_headers.get('my'), 'value')
+
+    def test_start_with_two_custom_headers(self):
+        """
+        Test that sending two headers a request is sent with that two headers.
+        """
+        self.server.set_xml_response("vms/123/start", 200, "<action/>")
+        self.vms_service.vm_service("123").start(
+            headers={'my': 'value', 'your': 'value'}
+        )
+        assert_equal(self.server.last_request_headers.get('my'), 'value')
+        assert_equal(self.server.last_request_headers.get('your'), 'value')
+
+    def test_add_vm_with_custom_parameter(self):
+        """
+        Test that adding a VM with one parameter a request is sent with that parameter.
+        """
+        self.server.set_xml_response("vms", 201, "<vm/>")
+        self.vms_service.add(types.Vm(), query={'my': 'value'})
+        assert_equal(self.server.last_request_query, 'my=value')
+
+    def test_add_vm_with_two_custom_parameters(self):
+        """
+        Test that adding a VM with two parameters a request is sent with that two parameters.
+        """
+        self.server.set_xml_response("vms", 201, "<vm/>")
+        self.vms_service.add(types.Vm(), query={'my': 'value', 'your': 'value'})
+        assert_equal(self.server.last_request_query, 'my=value&your=value')
+
+    def test_add_vm_with_custom_header(self):
+        """
+        Test that adding a VM with one header a request is sent with that header.
+        """
+        self.server.set_xml_response("vms", 201, "<vm/>")
+        self.vms_service.add(types.Vm(), headers={'my': 'value'})
+        assert_equal(self.server.last_request_headers.get('my'), 'value')
+
+    def test_add_vm_with_two_custom_headers(self):
+        """
+        Test that adding a VM with two headers a request is sent with that two headers.
+        """
+        self.server.set_xml_response("vms", 201, "<vm/>")
+        self.vms_service.add(types.Vm(), headers={'my': 'value', 'your': 'value'})
+        assert_equal(self.server.last_request_headers.get('my'), 'value')
+        assert_equal(self.server.last_request_headers.get('your'), 'value')

@@ -187,6 +187,8 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("self,");
         buffer.addLine("%1$s,", primaryArg);
         secondaryParameters.forEach(this::generateFormalParameter);
+        buffer.addLine("headers=None,");
+        buffer.addLine("query=None,");
         buffer.endBlock();
         buffer.addLine("):");
         buffer.startBlock();
@@ -208,13 +210,18 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Generate the code to build the URL query:
         buffer.addLine("# Build the URL:");
-        buffer.addLine("query = {}");
+        buffer.addLine("query = query or {}");
         secondaryParameters.forEach(this::generateUrlParameter);
+        buffer.addLine();
+
+        // Generate the code to build the headers:
+        buffer.addLine("# Populate the headers:");
+        buffer.addLine("headers = headers or {}");
         buffer.addLine();
 
         // Generate the code to send the request and wait for the response:
         buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("request = http.Request(method='POST', path=self._path, query=query)");
+        buffer.addLine("request = http.Request(method='POST', path=self._path, query=query, headers=headers)");
         generateWriteRequestBody(primaryParameter, primaryArg);
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code in [200, 201, 202]:");
@@ -244,6 +251,8 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.startBlock();
         buffer.addLine("self,");
         inParameters.forEach(this::generateFormalParameter);
+        buffer.addLine("headers=None,");
+        buffer.addLine("query=None,");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -287,6 +296,8 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("method='POST',");
         buffer.addLine("path='%%s/%%s' %% (self._path, '%1$s'),", getPath(name));
         buffer.addLine("body=body,");
+        buffer.addLine("query=query,");
+        buffer.addLine("headers=headers,");
         buffer.endBlock();
         buffer.addLine(")");
         buffer.addLine("response = self._connection.send(request)");
@@ -331,6 +342,8 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.startBlock();
         buffer.addLine("self,");
         inParameters.forEach(this::generateFormalParameter);
+        buffer.addLine("headers=None,");
+        buffer.addLine("query=None,");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -347,15 +360,20 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("])");
         buffer.addLine();
 
-        // Generate the code to build the URL:
+        // Generate the code to build the URL query:
         buffer.addLine("# Build the URL:");
-        buffer.addLine("query = {}");
+        buffer.addLine("query = query or {}");
         inParameters.forEach(this::generateUrlParameter);
+        buffer.addLine();
+
+        // Generate the code to build the headers:
+        buffer.addLine("# Populate the headers:");
+        buffer.addLine("headers = headers or {}");
         buffer.addLine();
 
         // Generate the code to send the request and wait for the response:
         buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("request = http.Request(method='GET', path=self._path, query=query)");
+        buffer.addLine("request = http.Request(method='GET', path=self._path, query=query, headers=headers)");
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code in [200]:");
         buffer.startBlock();
@@ -385,6 +403,8 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("self,");
         buffer.addLine("%1$s,", primaryArg);
         getSecondaryParameters(method).forEach(this::generateFormalParameter);
+        buffer.addLine("headers=None,");
+        buffer.addLine("query=None,");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -402,12 +422,19 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("])");
         buffer.addLine();
 
-        // Generate the code the build the query URL from the input parameters:
-        buffer.addLine("query = {}");
-        getSecondaryParameters(method).forEach(this::generateUrlParameter);
+        // Generate the code to build the URL query:
+        buffer.addLine("# Build the URL:");
+        buffer.addLine("query = query or {}");
+        secondaryParameters.forEach(this::generateUrlParameter);
+        buffer.addLine();
+
+        // Generate the code to build the headers:
+        buffer.addLine("# Populate the headers:");
+        buffer.addLine("headers = headers or {}");
+        buffer.addLine();
 
         // Body:
-        buffer.addLine("request = http.Request(method='PUT', path=self._path, query=query)");
+        buffer.addLine("request = http.Request(method='PUT', path=self._path, query=query, headers=headers)");
         generateWriteRequestBody(primaryParameter, primaryArg);
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code in [200]:");
@@ -502,6 +529,8 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.startBlock();
         buffer.addLine("self,");
         inParameters.forEach(this::generateFormalParameter);
+        buffer.addLine("headers=None,");
+        buffer.addLine("query=None,");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -518,15 +547,20 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("])");
         buffer.addLine();
 
-        // Generate the code to build the URL query from the input parameters:
-        buffer.addLine("# Build the URL query:");
-        buffer.addLine("query = {}");
+        // Generate the code to build the URL query:
+        buffer.addLine("# Build the URL:");
+        buffer.addLine("query = query or {}");
         inParameters.forEach(this::generateUrlParameter);
+        buffer.addLine();
+
+        // Generate the code to build the headers:
+        buffer.addLine("# Populate the headers:");
+        buffer.addLine("headers = headers or {}");
         buffer.addLine();
 
         // Generate the method to send the request and wait for the response:
         buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("request = http.Request(method='DELETE', path=self._path, query=query)");
+        buffer.addLine("request = http.Request(method='DELETE', path=self._path, query=query, headers=headers)");
         buffer.addLine("response = self._connection.send(request)");
         buffer.addLine("if response.code not in [200]:");
         buffer.startBlock();
@@ -701,6 +735,9 @@ public class ServicesGenerator implements PythonGenerator {
                 buffer.addLine("This method supports the following parameters:");
                 buffer.addLine();
                 lines.forEach(this::generateDocText);
+                buffer.addLine("`headers`:: Additional HTTP headers.");
+                buffer.addLine();
+                buffer.addLine("`query`:: Additional URL query parameters.");
             }
         }
         buffer.endComment();
