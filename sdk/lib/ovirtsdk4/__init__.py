@@ -135,6 +135,7 @@ class Connection(object):
         sso_url=None,
         sso_revoke_url=None,
         sso_token_name='access_token',
+        headers=None,
     ):
         """
         Creates a new connection to the API server.
@@ -196,6 +197,9 @@ class Connection(object):
 
         `sso_token_name`:: The token name in the JSON SSO response returned
         from the SSO server. Default value is `access_token`.
+
+        `headers`:: A dictionary with headers which should be send with every
+        request.
         """
 
         # Check mandatory parameters:
@@ -226,6 +230,9 @@ class Connection(object):
         self._sso_url = sso_url
         self._sso_revoke_url = sso_revoke_url
         self._sso_token_name = sso_token_name
+
+        # Headers:
+        self._headers = headers or {}
 
         # Create the curl handle that manages the pool of connections:
         self._curl = pycurl.Curl()
@@ -319,11 +326,18 @@ class Connection(object):
             if all_content is not None:
                 request.headers['All-Content'] = all_content
 
+        # Add global headers:
+        headers_dict = self._headers.copy()
+
         # Add headers, avoiding those that have no value:
         header_lines = []
         for header_name, header_value in request.headers.items():
             if header_value is not None:
-                header_lines.append('%s: %s' % (header_name, header_value))
+                headers_dict[header_name] = header_value
+
+        for header_name, header_value in headers_dict.items():
+            header_lines.append('%s: %s' % (header_name, header_value))
+
         header_lines.append('User-Agent: PythonSDK/%s' % version.VERSION)
         header_lines.append('Version: 4')
         header_lines.append('Content-Type: application/xml')
