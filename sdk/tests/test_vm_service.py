@@ -197,3 +197,34 @@ class VmServiceTest(unittest.TestCase):
         self.vms_service.add(types.Vm(), headers={'my': 'value', 'your': 'value'})
         assert_equal(self.server.last_request_headers.get('my'), 'value')
         assert_equal(self.server.last_request_headers.get('your'), 'value')
+
+    def test_add_vm_with_global_header(self):
+        """
+        Test that adding a VM with global header a request is sent with that header.
+        """
+        connection = self.server.connection(headers={'my': 'value'})
+        vms_service = connection.system_service().vms_service()
+        self.server.set_xml_response("vms", 201, "<vm/>")
+        vms_service.add(types.Vm())
+        assert_equal(self.server.last_request_headers.get('my'), 'value')
+
+    def test_start_vm_with_global_header(self):
+        """
+        Test that starting a VM with header a request is sent with that header.
+        """
+        connection = self.server.connection(headers={'my': 'value'})
+        vms_service = connection.system_service().vms_service()
+        self.server.set_xml_response("vms/123/start", 200, "<action/>")
+        vms_service.vm_service("123").start()
+        assert_equal(self.server.last_request_headers.get('my'), 'value')
+
+    def test_add_vm_with_global_header_overridden(self):
+        """
+        Test that adding a VM with global header set and a request header set,
+        the header is overridden by request header.
+        """
+        connection = self.server.connection(headers={'my': 'value'})
+        vms_service = connection.system_service().vms_service()
+        self.server.set_xml_response("vms", 201, "<vm/>")
+        vms_service.add(types.Vm(), headers={'my': 'overridden'})
+        assert_equal(self.server.last_request_headers.get('my'), 'overridden')

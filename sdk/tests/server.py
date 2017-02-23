@@ -201,12 +201,13 @@ class TestServer(object):
     def host(self):
         return self.HOST
 
-    def connection(self):
+    def connection(self, headers=None):
         return sdk.Connection(
             url=self.url(),
             username=self.user(),
             password=self.password(),
             ca_file=self.ca_file(),
+            headers=headers,
         )
 
     def __absolute_path(self, str):
