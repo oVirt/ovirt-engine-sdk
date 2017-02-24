@@ -468,3 +468,10 @@ def test_read_unknonw_tag():
     with assert_raises(Error) as context:
         Reader.read(cursor)
     assert_equals(str(context.exception), "Can't find a reader for tag 'html'")
+
+def test_read_supports_strings():
+    """
+    Test that the generic `read` methods supports strings as parameters.
+    """
+    vm = Reader.read('<vm/>')
+    assert_true(isinstance(vm, types.Vm))
