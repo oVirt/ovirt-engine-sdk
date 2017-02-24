@@ -263,13 +263,15 @@ class Reader(object):
         """
         # If the source is a string or IO object then create a XML reader from it:
         cursor = None
-        if isinstance(source, io.BytesIO):
+        if isinstance(source, str):
+            cursor = xml.XmlReader(io.BytesIO(source.encode('utf-8')))
+        elif isinstance(source, io.BytesIO):
             cursor = xml.XmlReader(source)
         elif isinstance(source, xml.XmlReader):
             cursor = source
         else:
             raise AttributeError(
-                "Expected a 'String' or 'XmlReader', but got '{source}'".format(
+                "Expected a 'str', 'BytesIO' or 'XmlReader', but got '{source}'".format(
                     source=type(source)
                 )
             )
