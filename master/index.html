@@ -1166,7 +1166,7 @@ services provided by the API.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.Connection.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, url=None, username=None, password=None, token=None, insecure=False, ca_file=None, debug=False, log=None, kerberos=False, timeout=0, compress=True, sso_url=None, sso_revoke_url=None, sso_token_name=&#39;access_token&#39;)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, url=None, username=None, password=None, token=None, insecure=False, ca_file=None, debug=False, log=None, kerberos=False, timeout=0, compress=True, sso_url=None, sso_revoke_url=None, sso_token_name=&#39;access_token&#39;, headers=None)</p>
     </div>
     
 
@@ -1263,6 +1263,11 @@ that is part of the engine.</p>
 <dd>
 <p>The token name in the JSON SSO response returned
 from the SSO server. Default value is <code>access_token</code>.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>A dictionary with headers which should be send with every
+request.</p>
 </dd>
 </dl>
 </div>
