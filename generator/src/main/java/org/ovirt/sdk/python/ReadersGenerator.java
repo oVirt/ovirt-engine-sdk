@@ -371,7 +371,11 @@ public class ReadersGenerator implements PythonGenerator {
 
     private void generateReadEnum(StructMember member, String variable) {
         PythonClassName typeName = pythonNames.getTypeName(member.getType());
-        buffer.addLine("%1$s = types.%2$s(Reader.read_string(reader).lower())", variable, typeName.getClassName());
+        buffer.addLine(
+            "%1$s = Reader.read_enum(types.%2$s, reader)",
+            variable,
+            typeName.getClassName()
+        );
     }
 
     private void generateReadStruct(StructMember member, String variable) {
@@ -421,7 +425,7 @@ public class ReadersGenerator implements PythonGenerator {
 
     private void generateReadEnums(EnumType type, String variable) {
         buffer.addLine(
-            "%1$s = [types.%2$s(s.lower()) for s in Reader.read_strings(reader)]",
+            "%1$s = Reader.read_enums(types.%2$s, reader)",
             variable,
             pythonNames.getClassStyleName(type.getName())
         );

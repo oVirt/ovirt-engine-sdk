@@ -241,6 +241,36 @@ class Reader(object):
         """
         return list(map(Reader.parse_date, reader.read_elements()))
 
+    @staticmethod
+    def parse_enum(enum_type, text):
+        """
+        Converts the given text to an enum.
+        """
+        if text is None:
+            return None
+        try:
+            return enum_type(text)
+        except ValueError:
+            return None
+
+    @staticmethod
+    def read_enum(enum_type, reader):
+        """
+        Reads a enum value, assuming that the cursor is positioned at the
+        start element that contains the value.
+        """
+        return Reader.parse_enum(enum_type, reader.read_element())
+
+    @staticmethod
+    def read_enums(enum_type, reader):
+        """
+        Reads a list of enum values, assuming that the cursor is positioned
+        at the start element of the element that contains the first value.
+        """
+        return [
+            Reader.parse_enum(enum_type, e) for e in reader.read_elements()
+        ]
+
     @classmethod
     def register(cls, tag, reader):
         """
