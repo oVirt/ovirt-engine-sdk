@@ -52,3 +52,20 @@ def test_cluster_with_no_rng_sources_and_switch_type():
     assert_true(isinstance(result, types.Cluster))
     assert_equals(result.required_rng_sources, [])
     assert_equals(result.switch_type, types.SwitchType.LEGACY)
+
+
+
+def test_unsupported_switch_type_dont_raise_exception():
+    """
+    Test when given switch type is unsupported, it don't raise exception.
+    """
+    reader = XmlReader(make_buffer(
+        '<cluster>'
+        '<switch_type>ugly</switch_type>'
+        '</cluster>'
+    ))
+    result = ClusterReader.read_one(reader)
+    reader.close()
+
+    assert_true(isinstance(result, types.Cluster))
+    assert_is_none(result.switch_type)
