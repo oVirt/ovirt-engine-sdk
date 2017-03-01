@@ -4539,7 +4539,7 @@ table {
 <dl>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
-<p>Indicates if the remove should be performed asynchronously.</p>
+<p>Indicates if the removal should be performed asynchronously.</p>
 </dd>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
@@ -4676,7 +4676,7 @@ group.</p>
 <dl>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
-<p>Indicates if the remove should be performed asynchronously.</p>
+<p>Indicates if the removal should be performed asynchronously.</p>
 </dd>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
@@ -4716,7 +4716,7 @@ group.</p>
       
   
     <div class="desc"><div class="paragraph">
-<p>This service manages a collection of all virtual machines assigned to an affinity group.</p>
+<p>This service manages a collection of all the virtual machines assigned to an affinity group.</p>
 </div>
 </div>
 
@@ -4752,7 +4752,7 @@ group.</p>
   
     <div class="desc"><div class="paragraph">
 <p>Add a virtual machine to the affinity group.
-For example to add the virtual machine 000-000 to affinity group 123-456 send a request to:</p>
+For example, to add the virtual machine 000-000 to affinity group 123-456 send a request to:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -4790,7 +4790,7 @@ For example to add the virtual machine 000-000 to affinity group 123-456 send a 
 <dl>
 <dt class="hdlist1"><code>max</code></dt>
 <dd>
-<p>Sets the maximum number of virtual machines to return. If not specified all the virtual machines are
+<p>Sets the maximum number of virtual machines to return. If not specified, all the virtual machines are
 returned.</p>
 </dd>
 <dt class="hdlist1"><code>headers</code></dt>
@@ -4847,7 +4847,7 @@ returned.</p>
       
   
     <div class="desc"><div class="paragraph">
-<p>Affinity groups service manages virtual machine relationships and dependencies.</p>
+<p>The affinity groups service manages virtual machine relationships and dependencies.</p>
 </div>
 </div>
 
@@ -4935,7 +4935,7 @@ Post a request like in the example below to create a new affinity group:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Access affinity group service that manages the affinity group specified by an id.</p>
+<p>Access the affinity group service that manages the affinity group specified by an ID.</p>
 </div>
 </div>
 
@@ -5183,7 +5183,7 @@ allow label removal.</p>
       
   
     <div class="desc"><div class="paragraph">
-<p>Single affinity label details.</p>
+<p>The details of a single affinity label.</p>
 </div>
 </div>
 
@@ -5218,7 +5218,7 @@ allow label removal.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Retrieves details about a label.</p>
+<p>Retrieves the details of a label.</p>
 </div>
 </div>
 
@@ -5234,7 +5234,7 @@ allow label removal.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>List all Hosts with this label.</p>
+<p>List all hosts with this label.</p>
 </div>
 </div>
 
@@ -5250,7 +5250,7 @@ allow label removal.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Removes a label from system and clears all assignments
+<p>Removes a label from the system and clears all assignments
 of the removed label.</p>
 </div>
 </div>
@@ -5283,8 +5283,7 @@ of the removed label.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Updates a label.
-This call will update all metadata like name
+<p>Updates a label. This call will update all metadata, such as the name
 or description.</p>
 </div>
 </div>
@@ -5301,7 +5300,7 @@ or description.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>List all VMs with this label.</p>
+<p>List all virtual machines with this label.</p>
 </div>
 </div>
 
@@ -31170,7 +31169,7 @@ registration of a template when some of the storage domains are not available. T
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.StorageDomainVmService.import_">
-    <p>def <span class="ident">import_</span>(</p><p>self, async=None, clone=None, cluster=None, collapse_snapshots=None, reassign_bad_macs=None, storage_domain=None, vm=None, vnic_profile_mappings=None, headers=None, query=None)</p>
+    <p>def <span class="ident">import_</span>(</p><p>self, async=None, clone=None, cluster=None, collapse_snapshots=None, storage_domain=None, vm=None, headers=None, query=None)</p>
     </div>
     
 
@@ -31262,25 +31261,6 @@ without snapshots.
 This parameter is optional, and if it isn&#8217;t explicitly specified the
 default value is <code>false</code>.</p>
 </dd>
-<dt class="hdlist1"><code>vnic_profile_mappings</code></dt>
-<dd>
-<p>Mapping rules for virtual NIC profiles that will be applied during the import process.</p>
-</dd>
-<dt class="hdlist1"><code>reassign_bad_macs</code></dt>
-<dd>
-<p>Indicates if the problematic MAC addresses should be re-assigned during the import process by the engine.
-A MAC address would be considered as a problematic one if one of the following is true:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>It conflicts with a MAC address that is already allocated to a virtual machine in the target environment.</p>
-</li>
-<li>
-<p>It&#8217;s out of the range of the target MAC address pool.</p>
-</li>
-</ul>
-</div>
-</dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
 <p>Indicates if the import should be performed asynchronously.</p>
@@ -31302,7 +31282,7 @@ A MAC address would be considered as a problematic one if one of the following i
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.StorageDomainVmService.register">
-    <p>def <span class="ident">register</span>(</p><p>self, allow_partial_import=None, async=None, clone=None, cluster=None, vm=None, headers=None, query=None)</p>
+    <p>def <span class="ident">register</span>(</p><p>self, allow_partial_import=None, async=None, clone=None, cluster=None, reassign_bad_macs=None, vm=None, vnic_profile_mappings=None, headers=None, query=None)</p>
     </div>
     
 
@@ -31320,6 +31300,25 @@ If this flag is <code>true</code>, the engine will not fail in the validation pr
 instead it will allow the virtual machine to be registered without the missing disks. This is mainly used
 during registration of a virtual machine when some of the storage domains are not available. The default
 value is <code>false</code>.</p>
+</dd>
+<dt class="hdlist1"><code>vnic_profile_mappings</code></dt>
+<dd>
+<p>Mapping rules for virtual NIC profiles that will be applied during the import process.</p>
+</dd>
+<dt class="hdlist1"><code>reassign_bad_macs</code></dt>
+<dd>
+<p>Indicates if the problematic MAC addresses should be re-assigned during the import process by the engine.
+A MAC address would be considered as a problematic one if one of the following is true:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>It conflicts with a MAC address that is already allocated to a virtual machine in the target environment.</p>
+</li>
+<li>
+<p>It&#8217;s out of the range of the target MAC address pool.</p>
+</li>
+</ul>
+</div>
 </dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
