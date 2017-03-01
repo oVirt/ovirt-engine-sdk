@@ -1061,6 +1061,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.parse_boolean">parse_boolean</a></li>
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.parse_date">parse_date</a></li>
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.parse_decimal">parse_decimal</a></li>
+    <li class="mono"><a href="#ovirtsdk4.reader.Reader.parse_enum">parse_enum</a></li>
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.parse_integer">parse_integer</a></li>
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.read_boolean">read_boolean</a></li>
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.read_booleans">read_booleans</a></li>
@@ -1068,6 +1069,8 @@ table {
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.read_dates">read_dates</a></li>
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.read_decimal">read_decimal</a></li>
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.read_decimals">read_decimals</a></li>
+    <li class="mono"><a href="#ovirtsdk4.reader.Reader.read_enum">read_enum</a></li>
+    <li class="mono"><a href="#ovirtsdk4.reader.Reader.read_enums">read_enums</a></li>
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.read_integer">read_integer</a></li>
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.read_integers">read_integers</a></li>
     <li class="mono"><a href="#ovirtsdk4.reader.Reader.read_string">read_string</a></li>
@@ -1194,6 +1197,22 @@ the utility methods used by all of them.</p>
   
             
   <div class="item">
+    <div class="name def" id="ovirtsdk4.reader.Reader.parse_enum">
+    <p>def <span class="ident">parse_enum</span>(</p><p>enum_type, text)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Converts the given text to an enum.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="ovirtsdk4.reader.Reader.parse_integer">
     <p>def <span class="ident">parse_integer</span>(</p><p>text)</p>
     </div>
@@ -1304,6 +1323,40 @@ start element that contains the value.</p>
   
     <div class="desc"><div class="paragraph">
 <p>Reads a list of decimal values, assuming that the cursor is positioned
+at the start element of the element that contains the first value.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.reader.Reader.read_enum">
+    <p>def <span class="ident">read_enum</span>(</p><p>enum_type, reader)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Reads a enum value, assuming that the cursor is positioned at the
+start element that contains the value.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.reader.Reader.read_enums">
+    <p>def <span class="ident">read_enums</span>(</p><p>enum_type, reader)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Reads a list of enum values, assuming that the cursor is positioned
 at the start element of the element that contains the first value.</p>
 </div>
 </div>
