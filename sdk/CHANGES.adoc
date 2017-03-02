@@ -2,7 +2,41 @@
 
 This document describes the relevant changes between releases of the SDK.
 
-== 4.1.0 / Jan 31 2016
+== 4.1.1 / Mar 02 2017
+
+Update to model 4.1.31 and metamodel 1.1.12:
+
+New features:
+
+  * Add `auto_storage_select` attribute to the `VmPool` type.
+
+  * Add IPv6 details to the `NicConfiguration` type.
+
+  * Add NFS 4.2 support.
+
+  * Add new `lease` attribute to virtual machines and templates.
+
+  * Add `execution_host` link to the `Step` type.
+
+  * Add `initial_size` attribute to the `Disk` type.
+
+  * Add `succeeded` parameter to the operation that end an external job.
+
+  * Add support for custom headers and query parameters.
+
+  * Support strings as parameters to the `Reader.read` method.
+
+Bug fixes:
+
+* Move `vnic_profile_mappings` and `reassign_bad_macs` from
+  the `import` operation to the `register` operation
+  https://bugzilla.redhat.com/1425731[#1425731].
+
+* Ignore unsupported Enum values.
+
+* Merge link with element if it has same name.
+
+== 4.1.0 / Jan 31 2017
 
 Update to model 4.1.29:
 
@@ -21,7 +55,7 @@ Update to metamodel 1.1.10:
 * Fix reading of XML attributes of enum types
   https://bugzilla.redhat.com/1408839[#1408839]
 
-== 4.1.0-a1 / Jan 9 2016
+== 4.1.0-a1 / Jan 9 2017
 
 Update to model 4.1.24:
 
