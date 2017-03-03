@@ -424,10 +424,11 @@ public class ReadersGenerator implements PythonGenerator {
     }
 
     private void generateReadEnums(EnumType type, String variable) {
+        PythonClassName pythonName = pythonNames.getTypeName(type);
         buffer.addLine(
             "%1$s = Reader.read_enums(types.%2$s, reader)",
             variable,
-            pythonNames.getClassStyleName(type.getName())
+            pythonName.getClassName()
         );
     }
 }
