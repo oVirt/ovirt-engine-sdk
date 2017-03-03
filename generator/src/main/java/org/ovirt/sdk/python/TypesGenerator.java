@@ -35,6 +35,7 @@ import org.ovirt.api.metamodel.concepts.Name;
 import org.ovirt.api.metamodel.concepts.StructMember;
 import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
+import org.ovirt.api.metamodel.tool.Names;
 
 /**
  * This class is responsible for generating the classes that represent the types of the model.
@@ -44,6 +45,8 @@ public class TypesGenerator implements PythonGenerator {
     protected File out;
 
     // Reference to the objects used to generate the code:
+    @Inject
+    private Names names;
     @Inject
     private PythonNames pythonNames;
 
@@ -229,8 +232,9 @@ public class TypesGenerator implements PythonGenerator {
     }
 
     private void generateEnumValue(EnumValue value) {
-        String constantName = pythonNames.getConstantStyleName(value.getName());
-        String constantValue = pythonNames.getMemberStyleName(value.getName());
+        Name name = value.getName();
+        String constantName = pythonNames.getConstantStyleName(name);
+        String constantValue = names.getLowerJoined(name, "_");
         buffer.addLine("%1$s = '%2$s'", constantName, constantValue);
     }
 
