@@ -147,6 +147,7 @@ snaps_service = data_vm_service.snapshots_service()
 snap = snaps_service.add(
     snapshot=types.Snapshot(
         description=snap_description,
+        persist_memorystate=False,
     ),
 )
 logging.info(
