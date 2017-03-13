@@ -143,6 +143,8 @@ logging.info('Wrote OVF to file \'%s\'.', os.path.abspath(ovf_file))
 # Send the request to create the snapshot. Note that this will return
 # before the snapshot is completely created, so we will later need to
 # wait till the snapshot is completely created.
+# The snapshot will not include memory. Change to True the parameter
+# persist_memorystate to get it (in that case the VM will be paused for a while).
 snaps_service = data_vm_service.snapshots_service()
 snap = snaps_service.add(
     snapshot=types.Snapshot(
