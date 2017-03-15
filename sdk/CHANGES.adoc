@@ -2,7 +2,7 @@
 
 This document describes the relevant changes between releases of the SDK.
 
-== 4.1.2 / Mar 15 2017
+== 4.1.3 / Mar 15 2017
 
 Update to model 4.1.33 and metamodel 1.1.13:
 
@@ -18,6 +18,14 @@ Update to model 4.1.33 and metamodel 1.1.13:
   service, must be out only.
 
 * Revert the addition of the operation to update disks.
+
+== 4.1.2 / Mar 03 2017
+
+Bug fixes:
+
+ * Read correctly attributes with enum values.
+
+ * Don't avoid reserved words in enum values text
 
 == 4.1.1 / Mar 02 2017
 
