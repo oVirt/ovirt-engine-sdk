@@ -2,6 +2,23 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.1.2 / Mar 15 2017
+
+Update to model 4.1.33 and metamodel 1.1.13:
+
+* Replace the `Seal` operation of the service that manages a template
+  with a new `seal` parameter in the operation that adds a template
+  https://bugzilla.redhat.com/1335642[#1335642].
+
+* Add `unregistered` parameter for the operations to list disks,
+  virtual machines, and templates in storage domains
+  https://bugzilla.redhat.com/1428159[#1428159].
+
+* Fix the direction of the `statistic` parameter of the `Statistic`
+  service, must be out only.
+
+* Revert the addition of the operation to update disks.
+
 == 4.1.1 / Mar 02 2017
 
 Update to model 4.1.31 and metamodel 1.1.12:
