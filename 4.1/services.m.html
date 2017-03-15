@@ -1626,7 +1626,6 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.DiskService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DiskService.sparsify">sparsify</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DiskService.statistics_service">statistics_service</a></li>
-    <li class="mono"><a href="#ovirtsdk4.services.DiskService.update">update</a></li>
   </ul>
 
         </li>
@@ -3808,7 +3807,6 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.nics_service">nics_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.permissions_service">permissions_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.remove">remove</a></li>
-    <li class="mono"><a href="#ovirtsdk4.services.TemplateService.seal">seal</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.tags_service">tags_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.update">update</a></li>
@@ -10334,62 +10332,6 @@ having derived disks are also not allowed.</p>
 
   </div>
   
-            
-  <div class="item">
-    <div class="name def" id="ovirtsdk4.services.DiskService.update">
-    <p>def <span class="ident">update</span>(</p><p>self, disk, headers=None, query=None)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><div class="paragraph">
-<p>This operation updates the disk with the appropriate parameters.
-The only field that can be updated is <code>qcow_version</code>.
-For example, update disk can be facilitated using the following request:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code>PUT /ovirt-engine/api/disks/123</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>With a request body like this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="pygments highlight"><code data-lang="xml">&lt;disk&gt;
-  &lt;qcow_version&gt;qcow2_v3&lt;/qcow_version&gt;
-&lt;/disk&gt;</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Since the backend operation is asynchronous the disk element which will be returned
-to the user might not be synced with the changed properties.</p>
-</div>
-<div class="paragraph">
-<p>This method supports the following parameters:</p>
-</div>
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><code>disk</code></dt>
-<dd>
-<p>The update to apply to the disk.</p>
-</dd>
-<dt class="hdlist1"><code>headers</code></dt>
-<dd>
-<p>Additional HTTP headers.</p>
-</dd>
-<dt class="hdlist1"><code>query</code></dt>
-<dd>
-<p>Additional URL query parameters.</p>
-</dd>
-</dl>
-</div>
-</div>
-
-  </div>
-  
       </div>
       </div>
       
@@ -10749,7 +10691,7 @@ To create a new floating Cinder disk, send a request as follows:</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.DisksService.list">
-    <p>def <span class="ident">list</span>(</p><p>self, case_sensitive=None, max=None, search=None, headers=None, query=None)</p>
+    <p>def <span class="ident">list</span>(</p><p>self, case_sensitive=None, max=None, search=None, unregistered=None, headers=None, query=None)</p>
     </div>
     
 
@@ -10808,6 +10750,26 @@ To create a new floating Cinder disk, send a request as follows:</p>
 account. The default value is <code>true</code>, which means that case is taken into account. If you want to search
 ignoring case set it to <code>false</code>.</p>
 </dd>
+<dt class="hdlist1"><code>unregistered</code></dt>
+<dd>
+<p>Indicates whether to retrieve a list of registered or unregistered disks in the storage domain.
+To get a list of unregistered disks in the storage domain the call should indicate the unregistered flag.
+For example, to get a list of unregistered disks the REST API call should look like this:</p>
+</dd>
+</dl>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/storagedomains/123/disks?unregistered=true</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The default value of the unregistered flag is <code>false</code>.
+IMPORTANT: This parameter only applies to the <code>disks</code> sub-collection of attached storage domains, it
+does not apply to the top level <code>disks</code> collection.</p>
+</div>
+<div class="dlist">
+<dl>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
 <p>Additional HTTP headers.</p>
@@ -17188,6 +17150,19 @@ Example of installing a host, using <code>curl</code> and JSON, plain:</p>
 '         "https://engine.example.com/ovirt-engine/api/hosts/123?deploy_hosted_engine=true"</code></pre>
 </div>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Since version 4.1.2 of the engine when a host is reinstalled we override the host firewall
+definitions by default.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
@@ -18142,6 +18117,8 @@ For example, to add a host send the following request:</p>
 <td class="content">
 The <code>root_password</code> element is only included in the client-provided initial representation and is not
 exposed in the representations returned from subsequent requests.
+IMPORTANT: Since version 4.1.2 of the engine when a host is newly added we override the host firewall
+definitions by default.
 To add a hosted engine host, use the optional <code>deploy_hosted_engine</code> parameter:
 </td>
 </tr>
@@ -27452,6 +27429,31 @@ For example, to create a new snapshot for virtual machine <code>123</code> send 
 &lt;/snapshot&gt;</code></pre>
 </div>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When a snapshot is created the default value for the <a href="#types/snapshot/attributes/persist_memorystate">persist_memorystate</a> attribute is <code>true</code>. That means that the content of the memory of the virtual
+machine will be included in the snapshot, and it also means that the virtual machine will be paused
+for a longer time. That can negatively affect applications that are very sensitive to timing (NTP
+servers, for example). In those cases make sure that you set the attribute to <code>false</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;snapshot&gt;
+  &lt;description&gt;My snapshot&lt;/description&gt;
+  &lt;persist_memorystate&gt;false&lt;/persist_memorystate&gt;
+&lt;/snapshot&gt;</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 
   </div>
@@ -27750,7 +27752,7 @@ For example, to create a new snapshot for virtual machine <code>123</code> send 
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.StatisticService.get">
-    <p>def <span class="ident">get</span>(</p><p>self, statistic=None, headers=None, query=None)</p>
+    <p>def <span class="ident">get</span>(</p><p>self, headers=None, query=None)</p>
     </div>
     
 
@@ -29427,7 +29429,7 @@ registration of a template when some of the storage domains are not available. T
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.StorageDomainTemplatesService.list">
-    <p>def <span class="ident">list</span>(</p><p>self, max=None, headers=None, query=None)</p>
+    <p>def <span class="ident">list</span>(</p><p>self, max=None, unregistered=None, headers=None, query=None)</p>
     </div>
     
 
@@ -29442,6 +29444,25 @@ registration of a template when some of the storage domains are not available. T
 <dd>
 <p>Sets the maximum number of templates to return. If not specified all the templates are returned.</p>
 </dd>
+<dt class="hdlist1"><code>unregistered</code></dt>
+<dd>
+<p>Indicates whether to retrieve a list of registered or unregistered templates which contain disks on the storage domain.
+To get a list of unregistered templates the call should indicate the unregistered flag.
+For example, to get a list of unregistered templates the REST API call should look like this:</p>
+</dd>
+</dl>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/storagedomains/123/templates?unregistered=true</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The default value of the unregisterd flag is <code>false</code>.
+The request only apply to storage domains that are attached.</p>
+</div>
+<div class="dlist">
+<dl>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
 <p>Additional HTTP headers.</p>
@@ -29994,7 +30015,7 @@ action.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.StorageDomainVmsService.list">
-    <p>def <span class="ident">list</span>(</p><p>self, max=None, headers=None, query=None)</p>
+    <p>def <span class="ident">list</span>(</p><p>self, max=None, unregistered=None, headers=None, query=None)</p>
     </div>
     
 
@@ -30010,6 +30031,26 @@ action.</p>
 <p>Sets the maximum number of virtual machines to return. If not specified all the virtual machines are
 returned.</p>
 </dd>
+<dt class="hdlist1"><code>unregistered</code></dt>
+<dd>
+<p>Indicates whether to retrieve a list of registered or unregistered virtual machines which
+contain disks on the storage domain.
+To get a list of unregistered virtual machines the call should indicate the unregistered flag.
+For example, to get a list of unregistered virtual machines the REST API call should look like this:</p>
+</dd>
+</dl>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/storagedomains/123/vms?unregistered=true</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The default value of the unregisterd flag is <code>false</code>.
+The request only apply to storage domains that are attached.</p>
+</div>
+<div class="dlist">
+<dl>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
 <p>Additional HTTP headers.</p>
@@ -33434,27 +33475,6 @@ Set this parameter to <code>true</code> to change this behavior and overwrite an
   
             
   <div class="item">
-    <div class="name def" id="ovirtsdk4.services.TemplateService.seal">
-    <p>def <span class="ident">seal</span>(</p><p>self, headers=None, query=None)</p>
-    </div>
-    
-
-    
-  
-    <div class="desc"><div class="paragraph">
-<p>Seal the template.
-Sealing erases all host-specific configuration from the filesystem:
-SSH keys, UDEV rules, MAC addresses, system ID, hostname etc.,
-thus making easy to use the template to create multiple virtual
-machines without manual intervention.
-Currently sealing is supported only for Linux OS.</p>
-</div>
-</div>
-
-  </div>
-  
-            
-  <div class="item">
     <div class="name def" id="ovirtsdk4.services.TemplateService.service">
     <p>def <span class="ident">service</span>(</p><p>self, path)</p>
     </div>
@@ -33786,7 +33806,7 @@ template versions:</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.TemplatesService.add">
-    <p>def <span class="ident">add</span>(</p><p>self, template, clone_permissions=None, headers=None, query=None)</p>
+    <p>def <span class="ident">add</span>(</p><p>self, template, clone_permissions=None, seal=None, headers=None, query=None)</p>
     </div>
     
 
