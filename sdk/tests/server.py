@@ -112,7 +112,7 @@ class TestServer(object):
                 handler.wfile.write(data)
 
         TestHandler.handlers[
-            '%s/api/%s' % (self.prefix(), path)
+            '%s/api%s' % (self.prefix(), '/%s' % path if path else '')
         ] = _handle_request
 
     def set_json_response(self, path, code, body):

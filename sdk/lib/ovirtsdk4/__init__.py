@@ -20,6 +20,7 @@ import io
 import json
 import os
 import pycurl
+import re
 import six
 import sys
 import threading
@@ -118,6 +119,15 @@ class Connection(object):
     access to the `system` service and, from there, to the rest of the
     services provided by the API.
     """
+
+    # Regular expression used to check XML content type.
+    __XML_CONTENT_TYPE_RE = re.compile("^\s*(application|text)/xml\s*(;.*)?$")
+
+    # Regular expression used to check JSON content type.
+    __JSON_CONTENT_TYPE_RE = re.compile("^\s*(application|text)/json\s*(;.*)?$")
+
+    # The typical URL path, used just to generate informative error messages.
+    __TYPICAL_PATH = '/ovirt-engine/api'
 
     def __init__(
         self,
@@ -393,6 +403,10 @@ class Connection(object):
             if len(response_fields) >= 3:
                 response.reason = ' '.join(response_fields[2:])
 
+        # Check the returned content type:
+        content_type = self._get_header_value(header_lines, 'content-type')
+        self._check_content_type(self.__XML_CONTENT_TYPE_RE, 'XML', content_type)
+
         # Return the response:
         return response
 
@@ -517,10 +531,21 @@ class Connection(object):
 
         # Prepare the buffer to receive the response:
         body_buf = io.BytesIO()
+        headers_buf = io.BytesIO()
         self._curl.setopt(pycurl.WRITEFUNCTION, body_buf.write)
+        self._curl.setopt(pycurl.HEADERFUNCTION, headers_buf.write)
 
         # Send the request and wait for the response:
         self._curl.perform()
+
+        # Get headers:
+        headers_text = headers_buf.getvalue().decode('ascii')
+        header_lines = headers_text.split('\n')
+
+        # Check the returned content type:
+        content_type = self._get_header_value(header_lines, 'content-type')
+        self._check_content_type(self.__JSON_CONTENT_TYPE_RE, 'JSON', content_type)
+
         return json.loads(body_buf.getvalue().decode('utf-8'))
 
     def system_service(self):
@@ -650,6 +675,42 @@ class Connection(object):
         if query:
             url = '%s?%s' % (url, urlencode(sorted(query.items())))
         return url
+
+    def _check_content_type(self, expected_re, expected_name, actual):
+        """
+        Checks the given content type and raises an exception if it isn't the
+        expected one.
+
+        `expected_re`:: The regular expression used to check the expected
+                        content type.
+        `expected_name`:: The name of the expected content type.
+        `actual`:: The actual value of the `Content-Type` header.
+        """
+        if expected_re.match(actual) is None:
+            msg = "The response content type '{}' isn't the expected {}".format(
+                actual,
+                expected_name,
+            )
+            url = urlparse(self._url)
+            if url.path != self.__TYPICAL_PATH:
+                msg += (
+                    ". Is the path '{}' included in the 'url' "
+                    "parameter correct?"
+                ).format(url.path)
+                msg += " The typical one is '{}'".format(self.__TYPICAL_PATH)
+            raise Error(msg)
+
+    def _get_header_value(self, headers, name):
+        """
+        Return header value by its name.
+
+        `headers`:: list of headers
+        `name`:: name of the header
+        """
+        return next(
+            (h.split(':')[1].strip() for h in headers if h.lower().startswith(name)),
+            None
+        )
 
     def _curl_debug(self, debug_type, data):
         """
