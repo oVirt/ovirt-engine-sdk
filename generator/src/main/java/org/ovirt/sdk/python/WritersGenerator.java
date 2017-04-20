@@ -72,6 +72,7 @@ public class WritersGenerator implements PythonGenerator {
         // Generate the imports:
         String rootModuleName = pythonNames.getRootModuleName();
         buffer.addImport("from %1$s import List", rootModuleName);
+        buffer.addImport("from %1$s import types", rootModuleName);
         buffer.addImport("from %1$s.writer import Writer", rootModuleName);
 
         // Generate the writer classes:
@@ -80,6 +81,21 @@ public class WritersGenerator implements PythonGenerator {
             .map(StructType.class::cast)
             .sorted()
             .forEach(this::generateWriter);
+
+        // Generate code to register the writers:
+        model.types()
+            .filter(StructType.class::isInstance)
+            .map(StructType.class::cast)
+            .sorted()
+            .forEach(type -> {
+                PythonClassName typeName = pythonNames.getTypeName(type);
+                PythonClassName writerName = pythonNames.getWriterName(type);
+                buffer.addLine(
+                    "Writer.register(types.%1$s, %2$s.write_one)",
+                    typeName.getClassName(),
+                    writerName.getClassName()
+                );
+            });
     }
 
     private void generateWriter(StructType type) {
