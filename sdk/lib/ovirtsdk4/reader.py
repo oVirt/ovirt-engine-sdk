@@ -295,6 +295,8 @@ class Reader(object):
         cursor = None
         if isinstance(source, str):
             cursor = xml.XmlReader(io.BytesIO(source.encode('utf-8')))
+        elif isinstance(source, bytes):
+            cursor = xml.XmlReader(io.BytesIO(source))
         elif isinstance(source, io.BytesIO):
             cursor = xml.XmlReader(source)
         elif isinstance(source, xml.XmlReader):

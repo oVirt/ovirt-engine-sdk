@@ -16,12 +16,15 @@
 # limitations under the License.
 #
 
+import ovirtsdk4
 import ovirtsdk4.types as types
 import unittest
 
 from nose.tools import (
     assert_is_not_none,
-    assert_equal
+    assert_equal,
+    assert_raises,
+    assert_regexp_matches
 )
 from .server import TestServer
 
@@ -127,6 +130,14 @@ class VmServiceTest(unittest.TestCase):
         self.server.set_xml_response("vms", 202, "<vm/>")
         self.vms_service.add(types.Vm())
 
+    def test_404_error_is_raise_when_vm_dont_exist(self):
+        """
+        Test that get raises an 404 error if the VM does not exist
+        """
+        self.server.set_xml_response("vms/123", 404, "")
+        with assert_raises(ovirtsdk4.Error) as context:
+            self.vms_service.vm_service('123').get()
+        assert_regexp_matches(str(context.exception), "404")
 
     def test_start_with_custom_parameter(self):
         """
