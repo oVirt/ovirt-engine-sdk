@@ -375,7 +375,7 @@ class Connection(object):
         body = request.body
         if body is None:
             body = ''
-        self._curl.setopt(pycurl.COPYPOSTFIELDS, body)
+        self._curl.setopt(pycurl.COPYPOSTFIELDS, body.encode('utf-8'))
 
         # Prepare the buffers to receive the response:
         body_buf = io.BytesIO()
@@ -397,15 +397,12 @@ class Connection(object):
         response.reason = ""
         headers_text = headers_buf.getvalue().decode('ascii')
         header_lines = headers_text.split('\n')
+        response.headers = header_lines
         if len(header_lines) >= 1:
             response_line = header_lines[0]
             response_fields = response_line.split()
             if len(response_fields) >= 3:
                 response.reason = ' '.join(response_fields[2:])
-
-        # Check the returned content type:
-        content_type = self._get_header_value(header_lines, 'content-type')
-        self._check_content_type(self.__XML_CONTENT_TYPE_RE, 'XML', content_type)
 
         # Return the response:
         return response
@@ -543,8 +540,7 @@ class Connection(object):
         header_lines = headers_text.split('\n')
 
         # Check the returned content type:
-        content_type = self._get_header_value(header_lines, 'content-type')
-        self._check_content_type(self.__JSON_CONTENT_TYPE_RE, 'JSON', content_type)
+        self._check_content_type(self.__JSON_CONTENT_TYPE_RE, 'JSON', header_lines)
 
         return json.loads(body_buf.getvalue().decode('utf-8'))
 
@@ -676,7 +672,35 @@ class Connection(object):
             url = '%s?%s' % (url, urlencode(sorted(query.items())))
         return url
 
-    def _check_content_type(self, expected_re, expected_name, actual):
+    def check_xml_content_type(self, response):
+        """
+         Checks that the content type of the given response is XML. If it is
+         XML then it does nothing. If it isn't XML then it raises an
+         exception.
+
+         `response`:: The HTTP response to check.
+        """
+        return self._check_content_type(
+            self.__XML_CONTENT_TYPE_RE,
+            'XML',
+            response.headers
+        )
+
+    def check_json_content_type(self, response):
+        """
+         Checks that the content type of the given response is JSON. If it is
+         JSON then it does nothing. If it isn't JSON then it raises an
+         exception.
+
+         `response`:: The HTTP response to check.
+        """
+        return self._check_content_type(
+            self.__JSON_CONTENT_TYPE_RE,
+            'JSON',
+            response.headers
+        )
+
+    def _check_content_type(self, expected_re, expected_name, headers):
         """
         Checks the given content type and raises an exception if it isn't the
         expected one.
@@ -684,11 +708,12 @@ class Connection(object):
         `expected_re`:: The regular expression used to check the expected
                         content type.
         `expected_name`:: The name of the expected content type.
-        `actual`:: The actual value of the `Content-Type` header.
+        `headers`:: The HTTP headers to check.
         """
-        if expected_re.match(actual) is None:
+        content_type = self._get_header_value(headers, 'content-type')
+        if expected_re.match(content_type) is None:
             msg = "The response content type '{}' isn't the expected {}".format(
-                actual,
+                content_type,
                 expected_name,
             )
             url = urlparse(self._url)

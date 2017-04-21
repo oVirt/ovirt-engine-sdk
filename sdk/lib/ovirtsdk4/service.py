@@ -16,13 +16,13 @@
 # limitations under the License.
 #
 
-import io
+import six
 
 from ovirtsdk4 import Error
+from ovirtsdk4 import http
 from ovirtsdk4 import reader
-from ovirtsdk4 import readers
 from ovirtsdk4 import types
-from ovirtsdk4 import xml
+from ovirtsdk4 import writer
 
 
 class Service(object):
@@ -39,7 +39,7 @@ class Service(object):
         self._path = path
 
     @staticmethod
-    def _raise_error(response, fault):
+    def _raise_error(response, detail=None):
         """
         Creates and raises an error containing the details of the given HTTP
         response and fault.
@@ -48,6 +48,7 @@ class Service(object):
         SDK. Refrain from using it directly, as backwards compatibility isn't
         guaranteed.
         """
+        fault = detail if isinstance(detail, types.Fault) else None
 
         msg = ''
         if fault:
@@ -68,10 +69,15 @@ class Service(object):
                 if msg:
                     msg += ' '
                 msg = msg + 'HTTP response message is "%s".' % response.message
+
+        if isinstance(detail, six.string_types):
+            if msg:
+                msg += ' '
+            msg = msg + detail + '.'
+
         raise Error(msg)
 
-    @staticmethod
-    def _check_fault(response):
+    def _check_fault(self, response):
         """
         Reads the response body assuming that it contains a fault message,
         converts it to an exception and raises it.
@@ -81,24 +87,12 @@ class Service(object):
         as backwards compatibility isn't guaranteed.
         """
 
-        buf = None
-        xmlreader = None
-        fault = None
-        try:
-            if response.body:
-                buf = io.BytesIO(response.body)
-                xmlreader = xml.XmlReader(buf)
-                fault = readers.FaultReader.read_one(xmlreader)
-        finally:
-            if xmlreader is not None:
-                xmlreader.close()
-            if buf is not None:
-                buf.close()
-        if fault is not None or response.code >= 400:
-            Service._raise_error(response, fault)
+        body = self._internal_read_body(response)
+        if isinstance(body, types.Fault):
+            self._raise_error(response, body)
+        raise Error("Expected a fault, but got %s" % type(body).__name__)
 
-    @staticmethod
-    def _check_action(response):
+    def _check_action(self, response):
         """
         Reads the response body assuming that it contains an action, checks if
         it contains an fault, and if it does converts it to an exception and
@@ -109,26 +103,20 @@ class Service(object):
         as backwards compatibility isn't guaranteed.
         """
 
-        buf = None
-        xmlreader = None
-        result = None
-        try:
-            buf = io.BytesIO(response.body)
-            xmlreader = xml.XmlReader(buf)
-            result = reader.Reader.read(xmlreader)
-        finally:
-            if xmlreader is not None:
-                xmlreader.close()
-            if io is not None:
-                buf.close()
-
-        if result is not None:
-            if isinstance(result, types.Fault):
-                Service._raise_error(response, result)
-            elif isinstance(result, types.Action) and result.fault is not None:
-                Service._raise_error(response, result.fault)
-
-        return result
+        body = self._internal_read_body(response)
+        if isinstance(body, types.Fault):
+            self._raise_error(response, body)
+        elif isinstance(body, types.Action) and body.fault is not None:
+            self._raise_error(response, body.fault)
+        elif isinstance(body, types.Action):
+            return body
+        else:
+            raise Error(
+                "Expected a fault or action, but got %s" % (
+                    type(body).__name__
+                )
+            )
+        return body
 
     @staticmethod
     def _check_types(tuples):
@@ -159,3 +147,106 @@ class Service(object):
                     ))
         if len(messages) > 0:
             raise TypeError(' '.join(messages))
+
+    def _internal_get(self, headers=None, query=None):
+        """
+        Executes an `get` method.
+        """
+        # Populate the headers:
+        headers = headers or {}
+
+        # Send the request and wait for the response:
+        request = http.Request(method='GET', path=self._path, query=query, headers=headers)
+        response = self._connection.send(request)
+        if response.code in [200]:
+            return self._internal_read_body(response)
+        else:
+            self._check_fault(response)
+
+    def _internal_add(self, object, headers=None, query=None):
+        """
+        Executes an `add` method.
+        """
+        # Populate the headers:
+        headers = headers or {}
+
+        # Send the request and wait for the response:
+        request = http.Request(method='POST', path=self._path, query=query, headers=headers)
+        request.body = writer.Writer.write(object, indent=True)
+        response = self._connection.send(request)
+        if response.code in [200, 201, 202]:
+            return self._internal_read_body(response)
+        else:
+            self._check_fault(response)
+
+    def _internal_update(self, object, headers=None, query=None):
+        """
+        Executes an `update` method.
+        """
+        # Populate the headers:
+        headers = headers or {}
+
+        # Send the request and wait for the response:
+        request = http.Request(method='PUT', path=self._path, query=query, headers=headers)
+        request.body = writer.Writer.write(object, indent=True)
+        response = self._connection.send(request)
+        if response.code in [200]:
+            return self._internal_read_body(response)
+        else:
+            self._check_fault(response)
+
+    def _internal_remove(self, headers=None, query=None):
+        """
+        Executes an `remove` method.
+        """
+        # Populate the headers:
+        headers = headers or {}
+
+        # Send the request and wait for the response:
+        request = http.Request(method='DELETE', path=self._path, query=query, headers=headers)
+        response = self._connection.send(request)
+        if response.code not in [200]:
+            self._check_fault(response)
+
+    def _internal_action(self, action, path, member=None, headers=None, query=None):
+        """
+        Executes an action method.
+        """
+        # Populate the headers:
+        headers = headers or {}
+
+        # Send the request and wait for the response:
+        request = http.Request(
+            method='POST',
+            path='%s/%s' % (self._path, path),
+            query=query,
+            headers=headers,
+        )
+        request.body = writer.Writer.write(action, indent=True)
+        response = self._connection.send(request)
+        if response.code in [200]:
+            result = self._check_action(response)
+            if member:
+                return getattr(result, member)
+        else:
+            self._check_fault(response)
+
+    def _internal_read_body(self, response):
+        """
+        Checks the content type of the given response, and if it is XML, as
+        expected, reads the body and converts it to an object. If it isn't
+        XML, then it raises an exception.
+
+        `response`:: The HTTP response to check.
+        """
+        # First check if the response body is empty, as it makes no sense to check the content type if there is
+        # no body:
+        if not response.body:
+            self._raise_error(response)
+
+        # Check the content type, as otherwise the parsing will fail, and the resulting error message won't be explicit
+        # about the cause of the problem:
+        self._connection.check_xml_content_type(response)
+
+        # Parse the XML and generate the SDK object:
+        return reader.Reader.read(response.body)

@@ -93,13 +93,8 @@ public class ServicesGenerator implements PythonGenerator {
     private void generateServices(Model model) {
         // Generate the imports:
         String rootModuleName = pythonNames.getRootModuleName();
-        buffer.addImport("import io");
         buffer.addImport("from %1$s import Error", rootModuleName);
-        buffer.addImport("from %1$s import http", rootModuleName);
-        buffer.addImport("from %1$s import readers", rootModuleName);
         buffer.addImport("from %1$s import types", rootModuleName);
-        buffer.addImport("from %1$s import writers", rootModuleName);
-        buffer.addImport("from %1$s import xml", rootModuleName);
         buffer.addImport("from %1$s.service import Service", rootModuleName);
         buffer.addImport("from %1$s.writer import Writer", rootModuleName);
 
@@ -214,24 +209,9 @@ public class ServicesGenerator implements PythonGenerator {
         secondaryParameters.forEach(this::generateUrlParameter);
         buffer.addLine();
 
-        // Generate the code to build the headers:
-        buffer.addLine("# Populate the headers:");
-        buffer.addLine("headers = headers or {}");
-        buffer.addLine();
-
         // Generate the code to send the request and wait for the response:
         buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("request = http.Request(method='POST', path=self._path, query=query, headers=headers)");
-        generateWriteRequestBody(primaryParameter, primaryArg);
-        buffer.addLine("response = self._connection.send(request)");
-        buffer.addLine("if response.code in [200, 201, 202]:");
-        buffer.startBlock();
-        generateReturnResponseBody(primaryParameter);
-        buffer.endBlock();
-        buffer.addLine("else:");
-        buffer.startBlock();
-        buffer.addLine("self._check_fault(response)");
-        buffer.endBlock();
+        buffer.addLine("return self._internal_add(%1$s, headers, query)", primaryArg);
 
         // End body:
         buffer.endBlock();
@@ -278,49 +258,28 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine(")");
         buffer.addLine();
 
-        // Generate the code to build the request body:
-        buffer.addLine("# Build the request body:");
-        buffer.addLine("buf = io.BytesIO()");
-        buffer.addLine("writer = xml.XmlWriter(buf, indent=True)");
-        buffer.addLine("writers.ActionWriter.write_one(action, writer)");
-        buffer.addLine("writer.flush()");
-        buffer.addLine("body = buf.getvalue()");
-        buffer.addLine("writer.close()");
-        buffer.addLine("buf.close()");
-        buffer.addLine();
-
         // Generate the code to send the request and wait for the response:
-        buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("request = http.Request(");
-        buffer.startBlock();
-        buffer.addLine("method='POST',");
-        buffer.addLine("path='%%s/%%s' %% (self._path, '%1$s'),", getPath(name));
-        buffer.addLine("body=body,");
-        buffer.addLine("query=query,");
-        buffer.addLine("headers=headers,");
-        buffer.endBlock();
-        buffer.addLine(")");
-        buffer.addLine("response = self._connection.send(request)");
-        generateActionResponse(method);
-
-        // End method:
-        buffer.endBlock();
-        buffer.addLine();
-    }
-
-    private void generateActionResponse(Method method) {
         Parameter parameter = method.parameters()
             .filter(Parameter::isOut)
             .findFirst()
             .orElse(null);
+        String member = parameter == null ? null : pythonNames.getMemberStyleName(parameter.getName());
 
-        if (parameter == null) {
-            buffer.addLine("self._check_action(response)");
+        buffer.addLine("# Send the request and wait for the response:");
+        if (member == null) {
+            buffer.addLine("return self._internal_action(action, '%1$s', None, headers, query)",  getPath(name));
         }
         else {
-            buffer.addLine("action = self._check_action(response)");
-            buffer.addLine("return action.%1$s", pythonNames.getMemberStyleName(parameter.getName()));
+            buffer.addLine(
+                "return self._internal_action(action, '%1$s', '%2$s', headers, query)",
+                getPath(name),
+                member
+            );
         }
+
+        // End body:
+        buffer.endBlock();
+        buffer.addLine();
     }
 
     private void generateHttpGet(Method method) {
@@ -329,12 +288,6 @@ public class ServicesGenerator implements PythonGenerator {
             .filter(Parameter::isIn)
             .sorted()
             .collect(toList());
-
-        // Get the output parameter:
-        Parameter outParameter = method.parameters()
-            .filter(Parameter::isOut)
-            .findFirst()
-            .orElse(null);
 
         // Begin method:
         Name methodName = method.getName();
@@ -366,23 +319,9 @@ public class ServicesGenerator implements PythonGenerator {
         inParameters.forEach(this::generateUrlParameter);
         buffer.addLine();
 
-        // Generate the code to build the headers:
-        buffer.addLine("# Populate the headers:");
-        buffer.addLine("headers = headers or {}");
-        buffer.addLine();
-
         // Generate the code to send the request and wait for the response:
         buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("request = http.Request(method='GET', path=self._path, query=query, headers=headers)");
-        buffer.addLine("response = self._connection.send(request)");
-        buffer.addLine("if response.code in [200]:");
-        buffer.startBlock();
-        generateReturnResponseBody(outParameter);
-        buffer.endBlock();
-        buffer.addLine("else:");
-        buffer.startBlock();
-        buffer.addLine("self._check_fault(response)");
-        buffer.endBlock();
+        buffer.addLine("return self._internal_get(headers, query)");
 
         // End body:
         buffer.endBlock();
@@ -428,93 +367,13 @@ public class ServicesGenerator implements PythonGenerator {
         secondaryParameters.forEach(this::generateUrlParameter);
         buffer.addLine();
 
-        // Generate the code to build the headers:
-        buffer.addLine("# Populate the headers:");
-        buffer.addLine("headers = headers or {}");
-        buffer.addLine();
-
-        // Body:
-        buffer.addLine("request = http.Request(method='PUT', path=self._path, query=query, headers=headers)");
-        generateWriteRequestBody(primaryParameter, primaryArg);
-        buffer.addLine("response = self._connection.send(request)");
-        buffer.addLine("if response.code in [200]:");
-        buffer.startBlock();
-        generateReturnResponseBody(primaryParameter);
-        buffer.endBlock();
-        buffer.addLine("else:");
-        buffer.startBlock();
-        buffer.addLine("self._check_fault(response)");
-        buffer.endBlock();
+        // Generate the code to send the request and wait for the response:
+        buffer.addLine("# Send the request and wait for the response:");
+        buffer.addLine("return self._internal_update(%1$s, headers, query)", primaryArg);
 
         // End body:
         buffer.endBlock();
         buffer.addLine();
-    }
-
-    private void generateWriteRequestBody(Parameter parameter, String variable) {
-        Type type = parameter.getType();
-        buffer.addLine("buf = None");
-        buffer.addLine("writer = None");
-        buffer.addLine("try:");
-        buffer.startBlock();
-        buffer.addLine("buf = io.BytesIO()");
-        buffer.addLine("writer = xml.XmlWriter(buf, indent=True)");
-        if (type instanceof StructType) {
-            PythonClassName writer = pythonNames.getWriterName(type);
-            buffer.addLine("writers.%1$s.write_one(%2$s, writer)", writer.getClassName(), variable);
-        }
-        else if (type instanceof ListType) {
-            ListType listType = (ListType) type;
-            Type elementType = listType.getElementType();
-            PythonClassName writer = pythonNames.getWriterName(elementType);
-            buffer.addLine("writers.%1$s.write_many(%2$s, writer)", writer.getClassName(), variable);
-        }
-        buffer.addLine("writer.flush()");
-        buffer.addLine("request.body = buf.getvalue()");
-        buffer.endBlock();
-        buffer.addLine("finally:");
-        buffer.startBlock();
-        buffer.addLine("if writer is not None:");
-        buffer.startBlock();
-        buffer.addLine("writer.close()");
-        buffer.endBlock();
-        buffer.addLine("if buf is not None:");
-        buffer.startBlock();
-        buffer.addLine("buf.close()");
-        buffer.endBlock();
-        buffer.endBlock();
-    }
-
-    private void generateReturnResponseBody(Parameter parameter) {
-        Type type = parameter.getType();
-        buffer.addLine("buf = None");
-        buffer.addLine("reader = None");
-        buffer.addLine("try:");
-        buffer.startBlock();
-        buffer.addLine("buf = io.BytesIO(response.body)");
-        buffer.addLine("reader = xml.XmlReader(buf)");
-        if (type instanceof StructType) {
-            PythonClassName reader = pythonNames.getReaderName(type);
-            buffer.addLine("return readers.%1$s.read_one(reader)", reader.getClassName());
-        }
-        else if (type instanceof ListType) {
-            ListType listType = (ListType) type;
-            Type elementType = listType.getElementType();
-            PythonClassName reader = pythonNames.getReaderName(elementType);
-            buffer.addLine("return readers.%1$s.read_many(reader)", reader.getClassName());
-        }
-        buffer.endBlock();
-        buffer.addLine("finally:");
-        buffer.startBlock();
-        buffer.addLine("if buf is not None:");
-        buffer.startBlock();
-        buffer.addLine("buf.close()");
-        buffer.endBlock();
-        buffer.addLine("if reader is not None:");
-        buffer.startBlock();
-        buffer.addLine("reader.close()");
-        buffer.endBlock();
-        buffer.endBlock();
     }
 
     private void generateHttpDelete(Method method) {
@@ -553,19 +412,9 @@ public class ServicesGenerator implements PythonGenerator {
         inParameters.forEach(this::generateUrlParameter);
         buffer.addLine();
 
-        // Generate the code to build the headers:
-        buffer.addLine("# Populate the headers:");
-        buffer.addLine("headers = headers or {}");
-        buffer.addLine();
-
-        // Generate the method to send the request and wait for the response:
+        // Generate the code to send the request and wait for the response:
         buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("request = http.Request(method='DELETE', path=self._path, query=query, headers=headers)");
-        buffer.addLine("response = self._connection.send(request)");
-        buffer.addLine("if response.code not in [200]:");
-        buffer.startBlock();
-        buffer.addLine("self._check_fault(response)");
-        buffer.endBlock();
+        buffer.addLine("self._internal_remove(headers, query)");
 
         // End body:
         buffer.endBlock();
