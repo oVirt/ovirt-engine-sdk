@@ -779,3 +779,17 @@ class ConnectionBuilder(object):
         """
 
         return Connection(**self._kwargs)
+
+
+# We need to import readers and writers here, so the generic
+# writer and reader are initialized. This has also benefit that
+# the readers/writers/types/services can be used right after the
+# top level sdk module import, for example:
+#
+#   import ovirtsdk4 as sdk
+#   vm = sdk.types.Vm()
+#
+from ovirtsdk4 import readers  # noqa: F401
+from ovirtsdk4 import services  # noqa: F401
+from ovirtsdk4 import types  # noqa: F401
+from ovirtsdk4 import writers  # noqa: F401
