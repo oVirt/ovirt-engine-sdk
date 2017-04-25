@@ -146,6 +146,8 @@ class Connection(object):
         sso_revoke_url=None,
         sso_token_name='access_token',
         headers=None,
+        pipeline=0,
+        connections=0,
     ):
         """
         Creates a new connection to the API server.
@@ -210,6 +212,14 @@ class Connection(object):
 
         `headers`:: A dictionary with headers which should be send with every
         request.
+
+        `connections`:: The maximum number of connections to open to the host.
+        If the value is `0` (the default) then the number of connections will
+        be unlimited.
+
+        `pipeline`:: The maximum number of request to put in an HTTP pipeline
+        without waiting for the response. If the value is `0` (the default)
+        then pipelining is disabled.
         """
 
         # Check mandatory parameters:
@@ -231,6 +241,11 @@ class Connection(object):
         self._password = password
         self._sso_token = token
         self._kerberos = kerberos
+        self._ca_file = ca_file
+        self._insecure = insecure
+        self._timeout = timeout
+        self._debug = debug
+        self._compress = compress
 
         # The curl object can be used by several threads, but not
         # simultaneously, so we need a lock to prevent that:
@@ -245,30 +260,15 @@ class Connection(object):
         self._headers = headers or {}
 
         # Create the curl handle that manages the pool of connections:
-        self._curl = pycurl.Curl()
-        self._curl.setopt(pycurl.COOKIEFILE, '/dev/null')
-        self._curl.setopt(pycurl.COOKIEJAR, '/dev/null')
+        self._multi = pycurl.CurlMulti()
+        self._multi.setopt(pycurl.M_PIPELINING, bool(pipeline))
+        # Since libcurl 7.30.0:
+        if hasattr(pycurl, 'M_MAX_PIPELINE_LENGTH'):
+            self._multi.setopt(pycurl.M_MAX_PIPELINE_LENGTH, pipeline)
+            self._multi.setopt(pycurl.M_MAX_HOST_CONNECTIONS, connections)
 
-        # Configure TLS parameters:
-        if url.startswith('https'):
-            self._curl.setopt(pycurl.SSL_VERIFYPEER, 0 if insecure else 1)
-            self._curl.setopt(pycurl.SSL_VERIFYHOST, 0 if insecure else 2)
-            if ca_file is not None:
-                self._curl.setopt(pycurl.CAINFO, ca_file)
-
-        # Configure timeouts:
-        self._curl.setopt(pycurl.TIMEOUT, timeout)
-
-        # Configure compression of responses (setting the value to a zero
-        # length string means accepting all the compression types that
-        # libcurl supports):
-        if compress and not debug:
-            self._curl.setopt(pycurl.ENCODING, '')
-
-        # Configure debug mode:
-        if debug and log is not None:
-            self._curl.setopt(pycurl.VERBOSE, 1)
-            self._curl.setopt(pycurl.DEBUGFUNCTION, self._curl_debug)
+        # Connections:
+        self._curls = set()
 
         # Initialize the reference to the system service:
         self.__system_service = None
@@ -316,15 +316,41 @@ class Connection(object):
         if self._sso_token is None:
             self._sso_token = self._get_access_token()
 
+        # Init curl easy:
+        curl = pycurl.Curl()
+        curl.setopt(pycurl.COOKIEFILE, '/dev/null')
+        curl.setopt(pycurl.COOKIEJAR, '/dev/null')
+
+        # Configure TLS parameters:
+        if self._url.startswith('https'):
+            curl.setopt(pycurl.SSL_VERIFYPEER, 0 if self._insecure else 1)
+            curl.setopt(pycurl.SSL_VERIFYHOST, 0 if self._insecure else 2)
+            if self._ca_file is not None:
+                curl.setopt(pycurl.CAINFO, self._ca_file)
+
+        # Configure timeouts:
+        curl.setopt(pycurl.TIMEOUT, self._timeout)
+
+        # Configure compression of responses (setting the value to a zero
+        # length string means accepting all the compression types that
+        # libcurl supports):
+        if self._compress and not self._debug:
+            curl.setopt(pycurl.ENCODING, '')
+
+        # Configure debug mode:
+        if self._debug and self._log is not None:
+            curl.setopt(pycurl.VERBOSE, 1)
+            curl.setopt(pycurl.DEBUGFUNCTION, self._curl_debug)
+
         # Set the method:
-        self._curl.setopt(pycurl.CUSTOMREQUEST, request.method)
+        curl.setopt(pycurl.CUSTOMREQUEST, request.method)
 
         # Build the URL:
         url = self._build_url(
             path=request.path,
             query=request.query,
         )
-        self._curl.setopt(pycurl.URL, url)
+        curl.setopt(pycurl.URL, url)
 
         # Older versions of the engine (before 4.1) required the
         # 'all_content' parameter as an HTTP header instead of a query
@@ -371,41 +397,37 @@ class Connection(object):
                 )
 
         # Copy headers and the request body to the curl object:
-        self._curl.setopt(pycurl.HTTPHEADER, header_lines)
+        curl.setopt(pycurl.HTTPHEADER, header_lines)
         body = request.body
         if body is None:
             body = ''
-        self._curl.setopt(pycurl.COPYPOSTFIELDS, body.encode('utf-8'))
+        curl.setopt(pycurl.COPYPOSTFIELDS, body.encode('utf-8'))
 
         # Prepare the buffers to receive the response:
         body_buf = io.BytesIO()
         headers_buf = io.BytesIO()
-        self._curl.setopt(pycurl.WRITEFUNCTION, body_buf.write)
-        self._curl.setopt(pycurl.HEADERFUNCTION, headers_buf.write)
+        curl.setopt(pycurl.WRITEFUNCTION, body_buf.write)
+        curl.setopt(pycurl.HEADERFUNCTION, headers_buf.write)
 
-        # Send the request and wait for the response:
-        self._curl.perform()
+        # Add the curl easy to the multi handle:
+        self._multi.add_handle(curl)
 
-        # Extract the response code and body:
-        response = Response()
-        response.code = self._curl.getinfo(pycurl.HTTP_CODE)
-        response.body = body_buf.getvalue()
+        return curl, body_buf, headers_buf
 
-        # The response code can be extracted directly, but cURL doesn't
-        # have a method to extract the response message, so we have to
-        # parse the first header line to find it:
-        response.reason = ""
-        headers_text = headers_buf.getvalue().decode('ascii')
-        header_lines = headers_text.split('\n')
-        response.headers = header_lines
-        if len(header_lines) >= 1:
-            response_line = header_lines[0]
-            response_fields = response_line.split()
-            if len(response_fields) >= 3:
-                response.reason = ' '.join(response_fields[2:])
+    def wait(self, context):
+        while True:
+            self._multi.perform()
+            _, ok_list, err_list = self._multi.info_read()
+            self._curls = self._curls.union(set(ok_list))
+            if err_list:
+                raise Error("Failed to read response.")
+            elif context[0] in self._curls:
+                # Remove the curl:
+                self._curls.remove(context[0])
+                self._multi.remove_handle(context[0])
 
-        # Return the response:
-        return response
+                # Read the response:
+                return self._read_reponse(context)
 
     @property
     def url(self):
@@ -490,8 +512,8 @@ class Connection(object):
 
         # Set proper Authorization header if using kerberos:
         if self._kerberos:
-            self._curl.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_GSSNEGOTIATE)
-            self._curl.setopt(pycurl.USERPWD, ':')
+            self._multi.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_GSSNEGOTIATE)
+            self._multi.setopt(pycurl.USERPWD, ':')
 
         # Send SSO request:
         sso_response = self._get_sso_response(self._sso_url, post_data)
@@ -515,25 +537,34 @@ class Connection(object):
         """
 
         # Set HTTP method and URL:
-        self._curl.setopt(pycurl.CUSTOMREQUEST, 'POST')
-        self._curl.setopt(pycurl.URL, url)
+        curl = pycurl.Curl()
+        curl.setopt(pycurl.CUSTOMREQUEST, 'POST')
+        curl.setopt(pycurl.URL, url)
+
+        # Configure TLS parameters:
+        if self._url.startswith('https'):
+            curl.setopt(pycurl.SSL_VERIFYPEER, 0 if self._insecure else 1)
+            curl.setopt(pycurl.SSL_VERIFYHOST, 0 if self._insecure else 2)
+            if self._ca_file is not None:
+                curl.setopt(pycurl.CAINFO, self._ca_file)
 
         # Prepare headers:
         header_lines = [
             'User-Agent: PythonSDK/%s' % version.VERSION,
             'Accept: application/json'
         ]
-        self._curl.setopt(pycurl.HTTPHEADER, header_lines)
-        self._curl.setopt(pycurl.COPYPOSTFIELDS, urlencode(params))
+        curl.setopt(pycurl.HTTPHEADER, header_lines)
+        curl.setopt(pycurl.COPYPOSTFIELDS, urlencode(params))
 
         # Prepare the buffer to receive the response:
         body_buf = io.BytesIO()
         headers_buf = io.BytesIO()
-        self._curl.setopt(pycurl.WRITEFUNCTION, body_buf.write)
-        self._curl.setopt(pycurl.HEADERFUNCTION, headers_buf.write)
+        curl.setopt(pycurl.WRITEFUNCTION, body_buf.write)
+        curl.setopt(pycurl.HEADERFUNCTION, headers_buf.write)
 
         # Send the request and wait for the response:
-        self._curl.perform()
+        curl.perform()
+        curl.close()
 
         # Get headers:
         headers_text = headers_buf.getvalue().decode('ascii')
@@ -643,7 +674,7 @@ class Connection(object):
 
         # Release resources used by the cURL handle:
         with self._curl_lock:
-            self._curl.close()
+            self._multi.close()
 
     def _build_url(self, path='', query=None):
         """
@@ -724,6 +755,34 @@ class Connection(object):
                 ).format(url.path)
                 msg += " The typical one is '{}'".format(self.__TYPICAL_PATH)
             raise Error(msg)
+
+    def _read_reponse(self, context):
+        """
+        Read the response.
+
+        `context`:: tuple which contains cur easy, response body and headers
+        """
+        # Extract the response code and body:
+        response = Response()
+        response.code = context[0].getinfo(pycurl.HTTP_CODE)
+        response.body = context[1].getvalue()
+
+        # The response code can be extracted directly, but cURL doesn't
+        # have a method to extract the response message, so we have to
+        # parse the first header line to find it:
+        response.reason = ""
+        headers_text = context[2].getvalue().decode('ascii')
+        header_lines = headers_text.split('\n')
+        response.headers = header_lines
+        if len(header_lines) >= 1:
+            response_line = header_lines[0]
+            response_fields = response_line.split()
+            if len(response_fields) >= 3:
+                response.reason = ' '.join(response_fields[2:])
+
+        context[0].close()
+        # Return the response:
+        return response
 
     def _get_header_value(self, headers, name):
         """

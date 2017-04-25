@@ -184,6 +184,7 @@ public class ServicesGenerator implements PythonGenerator {
         secondaryParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers=None,");
         buffer.addLine("query=None,");
+        buffer.addLine("wait=True,");
         buffer.endBlock();
         buffer.addLine("):");
         buffer.startBlock();
@@ -211,7 +212,7 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Generate the code to send the request and wait for the response:
         buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("return self._internal_add(%1$s, headers, query)", primaryArg);
+        buffer.addLine("return self._internal_add(%1$s, headers, query, wait)", primaryArg);
 
         // End body:
         buffer.endBlock();
@@ -233,6 +234,7 @@ public class ServicesGenerator implements PythonGenerator {
         inParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers=None,");
         buffer.addLine("query=None,");
+        buffer.addLine("wait=True,");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -267,11 +269,11 @@ public class ServicesGenerator implements PythonGenerator {
 
         buffer.addLine("# Send the request and wait for the response:");
         if (member == null) {
-            buffer.addLine("return self._internal_action(action, '%1$s', None, headers, query)",  getPath(name));
+            buffer.addLine("return self._internal_action(action, '%1$s', None, headers, query, wait)",  getPath(name));
         }
         else {
             buffer.addLine(
-                "return self._internal_action(action, '%1$s', '%2$s', headers, query)",
+                "return self._internal_action(action, '%1$s', '%2$s', headers, query, wait)",
                 getPath(name),
                 member
             );
@@ -297,6 +299,7 @@ public class ServicesGenerator implements PythonGenerator {
         inParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers=None,");
         buffer.addLine("query=None,");
+        buffer.addLine("wait=True,");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -321,7 +324,7 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Generate the code to send the request and wait for the response:
         buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("return self._internal_get(headers, query)");
+        buffer.addLine("return self._internal_get(headers, query, wait)");
 
         // End body:
         buffer.endBlock();
@@ -344,6 +347,7 @@ public class ServicesGenerator implements PythonGenerator {
         getSecondaryParameters(method).forEach(this::generateFormalParameter);
         buffer.addLine("headers=None,");
         buffer.addLine("query=None,");
+        buffer.addLine("wait=True,");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -369,7 +373,7 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Generate the code to send the request and wait for the response:
         buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("return self._internal_update(%1$s, headers, query)", primaryArg);
+        buffer.addLine("return self._internal_update(%1$s, headers, query, wait)", primaryArg);
 
         // End body:
         buffer.endBlock();
@@ -390,6 +394,7 @@ public class ServicesGenerator implements PythonGenerator {
         inParameters.forEach(this::generateFormalParameter);
         buffer.addLine("headers=None,");
         buffer.addLine("query=None,");
+        buffer.addLine("wait=True,");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -414,7 +419,7 @@ public class ServicesGenerator implements PythonGenerator {
 
         // Generate the code to send the request and wait for the response:
         buffer.addLine("# Send the request and wait for the response:");
-        buffer.addLine("self._internal_remove(headers, query)");
+        buffer.addLine("self._internal_remove(headers, query, wait)");
 
         // End body:
         buffer.endBlock();
@@ -587,6 +592,8 @@ public class ServicesGenerator implements PythonGenerator {
                 buffer.addLine("`headers`:: Additional HTTP headers.");
                 buffer.addLine();
                 buffer.addLine("`query`:: Additional URL query parameters.");
+                buffer.addLine();
+                buffer.addLine("`wait`:: If `True` wait for the response.");
             }
         }
         buffer.endComment();
