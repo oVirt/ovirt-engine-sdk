@@ -25,6 +25,34 @@ from ovirtsdk4 import types
 from ovirtsdk4 import writer
 
 
+class Future(object):
+    """
+    Instances of this class are returned for operations that specify the
+    `wait=False` parameter.
+    """
+    def __init__(self, connection, context, code):
+        """
+        Creates a new future result.
+
+        `connection`:: The connection to be used by this future.
+        `context`:: The request that this future will wait for when the `wait`
+        method is called.
+        `code`:: The function that will be executed to check the response, and
+        to convert its body into the right type of object.
+        """
+        self._connection = connection
+        self._context = context
+        self._code = code
+
+    def wait(self):
+        """
+        Waits till the result of the operation that created this future is
+        available.
+        """
+        response = self._connection.wait(self._context)
+        return self._code(response)
+
+
 class Service(object):
     """
     This is the base class for all the services of the SDK. It contains the
@@ -87,7 +115,9 @@ class Service(object):
         as backwards compatibility isn't guaranteed.
         """
 
-        body = self._internal_read_body(response)
+        if not response.body:
+            self._raise_error(response)
+        body = reader.Reader.read(response.body)
         if isinstance(body, types.Fault):
             self._raise_error(response, body)
         raise Error("Expected a fault, but got %s" % type(body).__name__)
@@ -148,22 +178,27 @@ class Service(object):
         if len(messages) > 0:
             raise TypeError(' '.join(messages))
 
-    def _internal_get(self, headers=None, query=None):
+    def _internal_get(self, headers=None, query=None, wait=None):
         """
         Executes an `get` method.
         """
         # Populate the headers:
         headers = headers or {}
 
-        # Send the request and wait for the response:
+        # Send the request:
         request = http.Request(method='GET', path=self._path, query=query, headers=headers)
-        response = self._connection.send(request)
-        if response.code in [200]:
-            return self._internal_read_body(response)
-        else:
-            self._check_fault(response)
+        context = self._connection.send(request)
 
-    def _internal_add(self, object, headers=None, query=None):
+        def callback(response):
+            if response.code in [200]:
+                return self._internal_read_body(response)
+            else:
+                self._check_fault(response)
+
+        future = Future(self._connection, context, callback)
+        return future.wait() if wait else future
+
+    def _internal_add(self, object, headers=None, query=None, wait=None):
         """
         Executes an `add` method.
         """
@@ -173,13 +208,18 @@ class Service(object):
         # Send the request and wait for the response:
         request = http.Request(method='POST', path=self._path, query=query, headers=headers)
         request.body = writer.Writer.write(object, indent=True)
-        response = self._connection.send(request)
-        if response.code in [200, 201, 202]:
-            return self._internal_read_body(response)
-        else:
-            self._check_fault(response)
+        context = self._connection.send(request)
 
-    def _internal_update(self, object, headers=None, query=None):
+        def callback(response):
+            if response.code in [200, 201, 202]:
+                return self._internal_read_body(response)
+            else:
+                self._check_fault(response)
+
+        future = Future(self._connection, context, callback)
+        return future.wait() if wait else future
+
+    def _internal_update(self, object, headers=None, query=None, wait=None):
         """
         Executes an `update` method.
         """
@@ -189,13 +229,18 @@ class Service(object):
         # Send the request and wait for the response:
         request = http.Request(method='PUT', path=self._path, query=query, headers=headers)
         request.body = writer.Writer.write(object, indent=True)
-        response = self._connection.send(request)
-        if response.code in [200]:
-            return self._internal_read_body(response)
-        else:
-            self._check_fault(response)
+        context = self._connection.send(request)
 
-    def _internal_remove(self, headers=None, query=None):
+        def callback(response):
+            if response.code in [200]:
+                return self._internal_read_body(response)
+            else:
+                self._check_fault(response)
+
+        future = Future(self._connection, context, callback)
+        return future.wait() if wait else future
+
+    def _internal_remove(self, headers=None, query=None, wait=None):
         """
         Executes an `remove` method.
         """
@@ -204,11 +249,16 @@ class Service(object):
 
         # Send the request and wait for the response:
         request = http.Request(method='DELETE', path=self._path, query=query, headers=headers)
-        response = self._connection.send(request)
-        if response.code not in [200]:
-            self._check_fault(response)
+        context = self._connection.send(request)
 
-    def _internal_action(self, action, path, member=None, headers=None, query=None):
+        def callback(response):
+            if response.code not in [200]:
+                self._check_fault(response)
+
+        future = Future(self._connection, context, callback)
+        return future.wait() if wait else future
+
+    def _internal_action(self, action, path, member=None, headers=None, query=None, wait=None):
         """
         Executes an action method.
         """
@@ -223,13 +273,18 @@ class Service(object):
             headers=headers,
         )
         request.body = writer.Writer.write(action, indent=True)
-        response = self._connection.send(request)
-        if response.code in [200]:
-            result = self._check_action(response)
-            if member:
-                return getattr(result, member)
-        else:
-            self._check_fault(response)
+        context = self._connection.send(request)
+
+        def callback(response):
+            if response.code in [200]:
+                result = self._check_action(response)
+                if member:
+                    return getattr(result, member)
+            else:
+                self._check_fault(response)
+
+        future = Future(self._connection, context, callback)
+        return future.wait() if wait else future
 
     def _internal_read_body(self, response):
         """
