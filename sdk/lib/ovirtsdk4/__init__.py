@@ -412,9 +412,9 @@ class Connection(object):
         # Add the curl easy to the multi handle:
         self._multi.add_handle(curl)
 
-        return curl, body_buf, headers_buf
+        return curl, body_buf, headers_buf, request
 
-    def wait(self, context):
+    def wait(self, context, failed_auth=False):
         while True:
             self._multi.perform()
             _, ok_list, err_list = self._multi.info_read()
@@ -427,7 +427,19 @@ class Connection(object):
                 self._multi.remove_handle(context[0])
 
                 # Read the response:
-                return self._read_reponse(context)
+                response = self._read_reponse(context)
+
+                # If the request failed because of authentication, and it
+                # wasn't a request to the SSO service, then the most likely
+                # cause is an expired SSO token. In this case we need to
+                # request a new token, and try the original request again, but
+                # only once. It if fails again, we just return the failed
+                # response.
+                if response.code == 401 and not failed_auth:
+                    self._sso_token = self._get_access_token()
+                    context = self.__send(context[3])
+                    response = self.wait(context, True)
+                return response
 
     @property
     def url(self):
@@ -760,7 +772,8 @@ class Connection(object):
         """
         Read the response.
 
-        `context`:: tuple which contains cur easy, response body and headers
+        `context`:: tuple which contains cur easy, response body,
+        response headers, original request
         """
         # Extract the response code and body:
         response = Response()
