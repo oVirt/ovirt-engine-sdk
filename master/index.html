@@ -1052,6 +1052,8 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.Connection.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.authenticate">authenticate</a></li>
+    <li class="mono"><a href="#ovirtsdk4.Connection.check_json_content_type">check_json_content_type</a></li>
+    <li class="mono"><a href="#ovirtsdk4.Connection.check_xml_content_type">check_xml_content_type</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.close">close</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.follow_link">follow_link</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.is_link">is_link</a></li>
@@ -1289,6 +1291,58 @@ request.</p>
 It will be created, if it not exists, yet. By default the token will be
 revoked when the connection is closed, unless the <code>logout</code> parameter of
 the <code>close</code> method is <code>False</code>.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.Connection.check_json_content_type">
+    <p>def <span class="ident">check_json_content_type</span>(</p><p>self, response)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Checks that the content type of the given response is JSON. If it is
+JSON then it does nothing. If it isn&#8217;t JSON then it raises an
+exception.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>response</code></dt>
+<dd>
+<p>The HTTP response to check.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.Connection.check_xml_content_type">
+    <p>def <span class="ident">check_xml_content_type</span>(</p><p>self, response)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Checks that the content type of the given response is XML. If it is
+XML then it does nothing. If it isn&#8217;t XML then it raises an
+exception.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>response</code></dt>
+<dd>
+<p>The HTTP response to check.</p>
+</dd>
+</dl>
 </div>
 </div>
 
