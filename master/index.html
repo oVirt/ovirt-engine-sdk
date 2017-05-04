@@ -1061,6 +1061,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.Connection.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.system_service">system_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.test">test</a></li>
+    <li class="mono"><a href="#ovirtsdk4.Connection.wait">wait</a></li>
   </ul>
 
         </li>
@@ -1168,7 +1169,7 @@ services provided by the API.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.Connection.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, url=None, username=None, password=None, token=None, insecure=False, ca_file=None, debug=False, log=None, kerberos=False, timeout=0, compress=True, sso_url=None, sso_revoke_url=None, sso_token_name=&#39;access_token&#39;, headers=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, url=None, username=None, password=None, token=None, insecure=False, ca_file=None, debug=False, log=None, kerberos=False, timeout=0, compress=True, sso_url=None, sso_revoke_url=None, sso_token_name=&#39;access_token&#39;, headers=None, pipeline=0, connections=0)</p>
     </div>
     
 
@@ -1270,6 +1271,18 @@ from the SSO server. Default value is <code>access_token</code>.</p>
 <dd>
 <p>A dictionary with headers which should be send with every
 request.</p>
+</dd>
+<dt class="hdlist1"><code>connections</code></dt>
+<dd>
+<p>The maximum number of connections to open to the host.
+If the value is <code>0</code> (the default) then the number of connections will
+be unlimited.</p>
+</dd>
+<dt class="hdlist1"><code>pipeline</code></dt>
+<dd>
+<p>The maximum number of request to put in an HTTP pipeline
+without waiting for the response. If the value is <code>0</code> (the default)
+then pipelining is disabled.</p>
 </dd>
 </dl>
 </div>
@@ -1503,6 +1516,18 @@ it will either return <code>False</code> or raise an exception if the
 <code>raise_exception</code> parameter is <code>True</code>.</p>
 </div>
 </div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.Connection.wait">
+    <p>def <span class="ident">wait</span>(</p><p>self, context)</p>
+    </div>
+    
+
+    
+  
 
   </div>
   
