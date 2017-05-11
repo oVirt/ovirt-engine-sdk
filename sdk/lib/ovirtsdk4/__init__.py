@@ -415,6 +415,10 @@ class Connection(object):
         return curl, body_buf, headers_buf, request
 
     def wait(self, context, failed_auth=False):
+        with self._curl_lock:
+            return self.__wait(context, failed_auth)
+
+    def __wait(self, context, failed_auth=False):
         while True:
             self._multi.perform()
             _, ok_list, err_list = self._multi.info_read()
