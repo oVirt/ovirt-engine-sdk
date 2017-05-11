@@ -276,7 +276,7 @@ class Service(object):
         context = self._connection.send(request)
 
         def callback(response):
-            if response.code in [200]:
+            if response.code in [200, 201, 202]:
                 result = self._check_action(response)
                 if member:
                     return getattr(result, member)
