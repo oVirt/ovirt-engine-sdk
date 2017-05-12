@@ -437,7 +437,12 @@ class Connection(object):
         body = request.body
         if body is None:
             body = ''
-        curl.setopt(pycurl.COPYPOSTFIELDS, body.encode('utf-8'))
+
+        # HTTP pipelining is valid only for idempotent operations,
+        # pycurl automatically disables pipelining if COPYPOSTFIELDS
+        # is set, even if pipelining is explicitly set.
+        if request.method in ['POST', 'PUT']:
+            curl.setopt(pycurl.COPYPOSTFIELDS, body.encode('utf-8'))
 
         # Prepare the buffers to receive the response:
         body_buf = io.BytesIO()
