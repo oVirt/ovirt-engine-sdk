@@ -129,6 +129,16 @@ class Connection(object):
     # The typical URL path, used just to generate informative error messages.
     __TYPICAL_PATH = '/ovirt-engine/api'
 
+    # Debug types that we know how to handle. Everything else will be
+    # silently ignored.
+    __KNOWN_DEBUG_TYPES = [
+        pycurl.INFOTYPE_TEXT,
+        pycurl.INFOTYPE_HEADER_IN,
+        pycurl.INFOTYPE_HEADER_OUT,
+        pycurl.INFOTYPE_DATA_IN,
+        pycurl.INFOTYPE_DATA_OUT,
+    ]
+
     def __init__(
         self,
         url=None,
@@ -817,6 +827,12 @@ class Connection(object):
         """
         This is the implementation of the cURL debug callback.
         """
+
+        # Exclude all types of debug data that we don't know how to
+        # handle, as trying to decode and manipulate that data as
+        # strings will likely fail.
+        if debug_type not in self.__KNOWN_DEBUG_TYPES:
+            return
 
         # Some versions of PycURL provide the debug data as strings, and
         # some as arrays of bytes, so we need to check the type of the
