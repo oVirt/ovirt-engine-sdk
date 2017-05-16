@@ -139,6 +139,15 @@ class Connection(object):
         pycurl.INFOTYPE_DATA_OUT,
     ]
 
+    # Prefixes to use for debug data types:
+    __DEBUG_PREFIXES = {
+        pycurl.INFOTYPE_TEXT: '* ',
+        pycurl.INFOTYPE_HEADER_IN: '> ',
+        pycurl.INFOTYPE_HEADER_OUT: '< ',
+        pycurl.INFOTYPE_DATA_IN: '> ',
+        pycurl.INFOTYPE_DATA_OUT: '< ',
+    }
+
     def __init__(
         self,
         url=None,
@@ -843,7 +852,10 @@ class Connection(object):
         # Split the debug data into lines and send a debug message for
         # each line:
         lines = text.replace('\r\n', '\n').strip().split('\n')
+        prefix = self.__DEBUG_PREFIXES.get(debug_type)
         for line in lines:
+            if prefix is not None:
+                line = prefix + line
             self._log.debug(line)
 
     def __enter__(self):
