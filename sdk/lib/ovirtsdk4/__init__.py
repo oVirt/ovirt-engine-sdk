@@ -41,7 +41,7 @@ class Error(Exception):
     indicates that some exception happened in SDK.
     """
 
-    def __init__(self, message, code=None):
+    def __init__(self, message, code=None, fault=None):
         """
         Creates an instance of Error class.
 
@@ -52,9 +52,12 @@ class Error(Exception):
         For example, if retrieving of a virtual machine fails because it
         doesn't exist this attribute will contain the integer value 404. Note
         that this may be `nil` if the error is not HTTP related.
+
+        `fault`:: The `Fault` object associated to the error.
         """
         super(Error, self).__init__(message)
         self.code = code
+        self.fault = fault
 
 
 class List(list):

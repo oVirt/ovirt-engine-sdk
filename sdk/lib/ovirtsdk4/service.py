@@ -105,6 +105,7 @@ class Service(object):
 
         error = Error(msg)
         error.code = response.code if response else None
+        error.fault = fault
         raise error
 
     def _check_fault(self, response):
