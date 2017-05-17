@@ -139,6 +139,15 @@ class VmServiceTest(unittest.TestCase):
             self.vms_service.vm_service('123').get()
         assert_regexp_matches(str(context.exception), "404")
 
+    def test_error_code_is_returned_in_exception(self):
+        """
+        Test that 404 error code is returned in exception if VM don't exist
+        """
+        self.server.set_xml_response("vms/123", 404, "")
+        with assert_raises(ovirtsdk4.Error) as context:
+            self.vms_service.vm_service('123').get()
+        assert_equal(context.exception.code, 404)
+
     def test_start_with_custom_parameter(self):
         """
         Test that sending one parameter a request is sent with that parameter.

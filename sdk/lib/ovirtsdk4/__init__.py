@@ -40,7 +40,21 @@ class Error(Exception):
     General exception which is thrown by SDK,
     indicates that some exception happened in SDK.
     """
-    pass
+
+    def __init__(self, message, code=None):
+        """
+        Creates an instance of Error class.
+
+        `message`:: The exception message.
+
+        `code`:: An error code associated to the error. For HTTP related
+        errors, this will be the HTTP response code returned by the server.
+        For example, if retrieving of a virtual machine fails because it
+        doesn't exist this attribute will contain the integer value 404. Note
+        that this may be `nil` if the error is not HTTP related.
+        """
+        super(Error, self).__init__(message)
+        self.code = code
 
 
 class List(list):
