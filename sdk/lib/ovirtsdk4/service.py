@@ -103,7 +103,9 @@ class Service(object):
                 msg += ' '
             msg = msg + detail + '.'
 
-        raise Error(msg)
+        error = Error(msg)
+        error.code = response.code if response else None
+        raise error
 
     def _check_fault(self, response):
         """
