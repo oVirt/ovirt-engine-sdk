@@ -248,3 +248,45 @@ class VmServiceTest(unittest.TestCase):
         self.server.set_xml_response("vms", 201, "<vm/>")
         vms_service.add(types.Vm(), headers={'my': 'overridden'})
         assert_equal(self.server.last_request_headers.get('my'), 'overridden')
+
+    def test_when_the_server_return_fault_it_raises_error_with_fault(self):
+        """
+        Test that when server return a fault the SDK will raise an exception
+        with fault object.
+        """
+        self.server.set_xml_response(
+            path='vms/123/start',
+            code=201,
+            body=
+              '<action>' +
+                '<fault>' +
+                  '<reason>myreason</reason>' +
+                  '<detail>mydetail</detail>' +
+                '</fault>' +
+              '</action>'
+        )
+        with assert_raises(ovirtsdk4.Error) as context:
+            self.vms_service.vm_service('123').start()
+            assert_regexp_matches(str(context.exception), 'myreason')
+            assert_equal(context.exception.fault.reason, 'myreason')
+            assert_equal(context.exception.fault.detail, 'mydetail')
+
+    def test_the_server_return_fault_without_action_it_raises_error(self):
+        """
+        Test that when server return a fault without action the SDK will raise
+        an exception with fault object.
+        """
+        self.server.set_xml_response(
+            path='vms/123/start',
+            code=400,
+            body=
+              '<fault>' +
+                '<reason>myreason</reason>' +
+                '<detail>mydetail</detail>' +
+              '</fault>'
+        )
+        with assert_raises(ovirtsdk4.Error) as context:
+            self.vms_service.vm_service('123').start()
+            assert_regexp_matches(str(context.exception), 'myreason')
+            assert_equal(context.exception.fault.reason, 'myreason')
+            assert_equal(context.exception.fault.detail, 'mydetail')
