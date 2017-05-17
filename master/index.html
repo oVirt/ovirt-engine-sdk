@@ -1661,19 +1661,11 @@ indicates that some exception happened in SDK.</p>
   
 
             </div>
-            <div class="item">
-            <p id="ovirtsdk4.Error.fault" class="name">var <span class="ident">fault</span></p>
-            
-
-            
-  
-
-            </div>
           <h3>Methods</h3>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.Error.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, message, code=None, fault=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, message, code=None)</p>
     </div>
     
 
@@ -1695,10 +1687,6 @@ errors, this will be the HTTP response code returned by the server.
 For example, if retrieving of a virtual machine fails because it
 doesn&#8217;t exist this attribute will contain the integer value 404. Note
 that this may be <code>nil</code> if the error is not HTTP related.</p>
-</dd>
-<dt class="hdlist1"><code>fault</code></dt>
-<dd>
-<p>The <code>Fault</code> object associated to the error.</p>
 </dd>
 </dl>
 </div>
