@@ -1078,6 +1078,11 @@ table {
         <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.Error">Error</a></span>
         
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.Error.__init__">__init__</a></li>
+  </ul>
+
         </li>
         <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.List">List</a></span>
@@ -1647,6 +1652,60 @@ indicates that some exception happened in SDK.</p>
   
 
             </div>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.Error.code" class="name">var <span class="ident">code</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.Error.fault" class="name">var <span class="ident">fault</span></p>
+            
+
+            
+  
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.Error.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, message, code=None, fault=None)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Creates an instance of Error class.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>message</code></dt>
+<dd>
+<p>The exception message.</p>
+</dd>
+<dt class="hdlist1"><code>code</code></dt>
+<dd>
+<p>An error code associated to the error. For HTTP related
+errors, this will be the HTTP response code returned by the server.
+For example, if retrieving of a virtual machine fails because it
+doesn&#8217;t exist this attribute will contain the integer value 404. Note
+that this may be <code>nil</code> if the error is not HTTP related.</p>
+</dd>
+<dt class="hdlist1"><code>fault</code></dt>
+<dd>
+<p>The <code>Fault</code> object associated to the error.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
       </div>
       </div>
       
