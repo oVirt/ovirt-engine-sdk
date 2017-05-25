@@ -1052,6 +1052,8 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.Connection.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.authenticate">authenticate</a></li>
+    <li class="mono"><a href="#ovirtsdk4.Connection.check_json_content_type">check_json_content_type</a></li>
+    <li class="mono"><a href="#ovirtsdk4.Connection.check_xml_content_type">check_xml_content_type</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.close">close</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.follow_link">follow_link</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.is_link">is_link</a></li>
@@ -1059,6 +1061,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.Connection.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.system_service">system_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.Connection.test">test</a></li>
+    <li class="mono"><a href="#ovirtsdk4.Connection.wait">wait</a></li>
   </ul>
 
         </li>
@@ -1075,6 +1078,11 @@ table {
         <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.Error">Error</a></span>
         
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.Error.__init__">__init__</a></li>
+  </ul>
+
         </li>
         <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.List">List</a></span>
@@ -1166,7 +1174,7 @@ services provided by the API.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.Connection.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, url=None, username=None, password=None, token=None, insecure=False, ca_file=None, debug=False, log=None, kerberos=False, timeout=0, compress=True, sso_url=None, sso_revoke_url=None, sso_token_name=&#39;access_token&#39;, headers=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, url=None, username=None, password=None, token=None, insecure=False, ca_file=None, debug=False, log=None, kerberos=False, timeout=0, compress=True, sso_url=None, sso_revoke_url=None, sso_token_name=&#39;access_token&#39;, headers=None, pipeline=0, connections=0)</p>
     </div>
     
 
@@ -1269,6 +1277,18 @@ from the SSO server. Default value is <code>access_token</code>.</p>
 <p>A dictionary with headers which should be send with every
 request.</p>
 </dd>
+<dt class="hdlist1"><code>connections</code></dt>
+<dd>
+<p>The maximum number of connections to open to the host.
+If the value is <code>0</code> (the default) then the number of connections will
+be unlimited.</p>
+</dd>
+<dt class="hdlist1"><code>pipeline</code></dt>
+<dd>
+<p>The maximum number of request to put in an HTTP pipeline
+without waiting for the response. If the value is <code>0</code> (the default)
+then pipelining is disabled.</p>
+</dd>
 </dl>
 </div>
 </div>
@@ -1289,6 +1309,58 @@ request.</p>
 It will be created, if it not exists, yet. By default the token will be
 revoked when the connection is closed, unless the <code>logout</code> parameter of
 the <code>close</code> method is <code>False</code>.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.Connection.check_json_content_type">
+    <p>def <span class="ident">check_json_content_type</span>(</p><p>self, response)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Checks that the content type of the given response is JSON. If it is
+JSON then it does nothing. If it isn&#8217;t JSON then it raises an
+exception.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>response</code></dt>
+<dd>
+<p>The HTTP response to check.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.Connection.check_xml_content_type">
+    <p>def <span class="ident">check_xml_content_type</span>(</p><p>self, response)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Checks that the content type of the given response is XML. If it is
+XML then it does nothing. If it isn&#8217;t XML then it raises an
+exception.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>response</code></dt>
+<dd>
+<p>The HTTP response to check.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -1452,6 +1524,18 @@ it will either return <code>False</code> or raise an exception if the
 
   </div>
   
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.Connection.wait">
+    <p>def <span class="ident">wait</span>(</p><p>self, context, failed_auth=False)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
       </div>
       </div>
       
@@ -1568,6 +1652,60 @@ indicates that some exception happened in SDK.</p>
   
 
             </div>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.Error.code" class="name">var <span class="ident">code</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.Error.fault" class="name">var <span class="ident">fault</span></p>
+            
+
+            
+  
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.Error.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, message, code=None, fault=None)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Creates an instance of Error class.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>message</code></dt>
+<dd>
+<p>The exception message.</p>
+</dd>
+<dt class="hdlist1"><code>code</code></dt>
+<dd>
+<p>An error code associated to the error. For HTTP related
+errors, this will be the HTTP response code returned by the server.
+For example, if retrieving of a virtual machine fails because it
+doesn&#8217;t exist this attribute will contain the integer value 404. Note
+that this may be <code>nil</code> if the error is not HTTP related.</p>
+</dd>
+<dt class="hdlist1"><code>fault</code></dt>
+<dd>
+<p>The <code>Fault</code> object associated to the error.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
       </div>
       </div>
       

@@ -1046,6 +1046,16 @@ table {
     <li class="set"><h3><a href="#header-classes">Classes</a></h3>
       <ul>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.service.Future">Future</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.service.Future.__init__">__init__</a></li>
+    <li class="mono"><a href="#ovirtsdk4.service.Future.wait">wait</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.service.Service">Service</a></span>
         
           
@@ -1076,6 +1086,78 @@ table {
 
 
     <h2 class="section-title" id="header-classes">Classes</h2>
+      
+      <div class="item">
+      <p id="ovirtsdk4.service.Future" class="name">class <span class="ident">Future</span></p>
+      
+  
+    <div class="desc"><div class="paragraph">
+<p>Instances of this class are returned for operations that specify the
+<code>wait=False</code> parameter.</p>
+</div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.service.Future">Future</a></li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.service.Future.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, connection, context, code)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Creates a new future result.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>connection</code></dt>
+<dd>
+<p>The connection to be used by this future.</p>
+</dd>
+<dt class="hdlist1"><code>context</code></dt>
+<dd>
+<p>The request that this future will wait for when the <code>wait</code>
+method is called.</p>
+</dd>
+<dt class="hdlist1"><code>code</code></dt>
+<dd>
+<p>The function that will be executed to check the response, and
+to convert its body into the right type of object.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.service.Future.wait">
+    <p>def <span class="ident">wait</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Waits till the result of the operation that created this future is
+available.</p>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
       
       <div class="item">
       <p id="ovirtsdk4.service.Service" class="name">class <span class="ident">Service</span></p>
