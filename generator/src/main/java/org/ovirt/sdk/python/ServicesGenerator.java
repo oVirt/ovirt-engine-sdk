@@ -150,6 +150,11 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateMethod(Method method) {
+        // FIXME: Ignore methods with different signatures
+        if (method.getBase() != null) {
+           return;
+        }
+
         Name name = method.getName();
         if (ADD.equals(name)) {
             generateAddHttpPost(method);
