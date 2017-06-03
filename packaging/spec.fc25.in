@@ -17,7 +17,7 @@ BuildRequires: python3-devel
 Requires: libxml2
 Requires: python
 Requires: python-enum34
-Requires: python-pycurl
+Requires: python-pycurl >= 7.43.0-6
 Requires: python-six
 
 Provides: ovirt-engine-sdk = %{version}-%{release}
@@ -32,7 +32,7 @@ Summary: oVirt Engine Software Development Kit (Python)
 Requires: libxml2
 Requires: python3
 Requires: python3-enum34
-Requires: python3-pycurl
+Requires: python3-pycurl >= 7.43.0-6
 Requires: python3-six
 
 %description -n python3-ovirt-engine-sdk4
