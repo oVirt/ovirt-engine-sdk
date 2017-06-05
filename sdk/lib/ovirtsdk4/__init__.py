@@ -483,7 +483,7 @@ class Connection(object):
                 if response.code == 401 and not failed_auth:
                     self._sso_token = self._get_access_token()
                     context = self.__send(context[3])
-                    response = self.wait(context, True)
+                    response = self.__wait(context, True)
                 return response
 
     @property
@@ -597,6 +597,11 @@ class Connection(object):
         curl = pycurl.Curl()
         curl.setopt(pycurl.CUSTOMREQUEST, 'POST')
         curl.setopt(pycurl.URL, url)
+
+        # Configure debug mode:
+        if self._debug and self._log is not None:
+            curl.setopt(pycurl.VERBOSE, 1)
+            curl.setopt(pycurl.DEBUGFUNCTION, self._curl_debug)
 
         # Configure TLS parameters:
         if self._url.startswith('https'):
