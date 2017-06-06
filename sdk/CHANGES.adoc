@@ -2,7 +2,118 @@
 
 This document describes the relevant changes between releases of the SDK.
 
-== 4.1.0-a1 / Dec 20 2016
+== 4.2.0-a1 / Juan 6 2017
+Update to model 4.2.6 and metamodel 1.2.2.
+
+== 4.1.4 / May 25 2017
+Update to model 4.1.33 and metamodel 1.1.13:
+
+ * Add `readOnly` attribute to the `DiskAttachment` type.a
+
+ * Replace generic assigned networks services with services specific to
+   the type of object that they are assigned to, in particular data
+   centers and clusters.
+
+ * Add `driver` attribute to `HostDevice` type.
+
+New features:
+
+ * Add debug data prefixes to indicate direction
+   https://bugzilla.redhat.com/1451042[#1451042].
+
+ * Automatically replace bad token
+   https://bugzilla.redhat.com/1434830[#1434830].
+
+ * Add support for asynchronous requests
+   https://bugzilla.redhat.com/1436981[#1436981].
+
+ * Add generic writer
+   https://bugzilla.redhat.com/1444114[#1444114].
+
+ * Improve error message for wrong content type
+   https://bugzilla.redhat.com/1440292[#1440292].
+
+Improved examples.
+
+== 4.1.3 / Mar 15 2017
+
+Update to model 4.1.33 and metamodel 1.1.13:
+
+* Replace the `Seal` operation of the service that manages a template
+  with a new `seal` parameter in the operation that adds a template
+  https://bugzilla.redhat.com/1335642[#1335642].
+
+* Add `unregistered` parameter for the operations to list disks,
+  virtual machines, and templates in storage domains
+  https://bugzilla.redhat.com/1428159[#1428159].
+
+* Fix the direction of the `statistic` parameter of the `Statistic`
+  service, must be out only.
+
+* Revert the addition of the operation to update disks.
+
+== 4.1.2 / Mar 03 2017
+
+Bug fixes:
+
+ * Read correctly attributes with enum values.
+
+ * Don't avoid reserved words in enum values text
+
+== 4.1.1 / Mar 02 2017
+
+Update to model 4.1.31 and metamodel 1.1.12:
+
+New features:
+
+  * Add `auto_storage_select` attribute to the `VmPool` type.
+
+  * Add IPv6 details to the `NicConfiguration` type.
+
+  * Add NFS 4.2 support.
+
+  * Add new `lease` attribute to virtual machines and templates.
+
+  * Add `execution_host` link to the `Step` type.
+
+  * Add `initial_size` attribute to the `Disk` type.
+
+  * Add `succeeded` parameter to the operation that end an external job.
+
+  * Add support for custom headers and query parameters.
+
+  * Support strings as parameters to the `Reader.read` method.
+
+Bug fixes:
+
+* Move `vnic_profile_mappings` and `reassign_bad_macs` from
+  the `import` operation to the `register` operation
+  https://bugzilla.redhat.com/1425731[#1425731].
+
+* Ignore unsupported Enum values.
+
+* Merge link with element if it has same name.
+
+== 4.1.0 / Jan 31 2017
+
+Update to model 4.1.29:
+
+* Documentation improvements.
+
+* Add new `lease` attribute to virtual machines and templates.
+
+* Add `execution_host` link to the `Step` type.
+
+* Add `initial_size` attribute to the `Disk` type.
+
+* Add `succeeded` parameter to the operation that end an external job.
+
+Update to metamodel 1.1.10:
+
+* Fix reading of XML attributes of enum types
+  https://bugzilla.redhat.com/1408839[#1408839]
+
+== 4.1.0-a1 / Jan 9 2017
 
 Update to model 4.1.24:
 
@@ -60,6 +171,8 @@ Update to model 4.1.24:
 * Add the `upgradecheck` action to the host service.
 
 * Add the `original_template` link to the virtual machine type.
+
+* Check return code of the HTTP reponses
 
 New features:
 
