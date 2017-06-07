@@ -567,11 +567,6 @@ class Connection(object):
                 'password': self._password,
             })
 
-        # Set proper Authorization header if using kerberos:
-        if self._kerberos:
-            self._multi.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_GSSNEGOTIATE)
-            self._multi.setopt(pycurl.USERPWD, ':')
-
         # Send SSO request:
         sso_response = self._get_sso_response(self._sso_url, post_data)
 
@@ -597,6 +592,11 @@ class Connection(object):
         curl = pycurl.Curl()
         curl.setopt(pycurl.CUSTOMREQUEST, 'POST')
         curl.setopt(pycurl.URL, url)
+
+        # Set proper Authorization header if using kerberos:
+        if self._kerberos:
+            curl.setopt(pycurl.HTTPAUTH, pycurl.HTTPAUTH_GSSNEGOTIATE)
+            curl.setopt(pycurl.USERPWD, ':')
 
         # Configure debug mode:
         if self._debug and self._log is not None:
