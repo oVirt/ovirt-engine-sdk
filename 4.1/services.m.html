@@ -4685,12 +4685,13 @@ group.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Add a virtual machine to the affinity group.
-For example, to add the virtual machine 000-000 to affinity group 123-456 send a request to:</p>
+<p>Adds a virtual machine to the affinity group.
+For example, to add the virtual machine <code>789</code> to the affinity group <code>456</code> of cluster <code>123</code>, send a request like
+this:</p>
 </div>
-<div class="listingblock">
+<div class="literalblock">
 <div class="content">
-<pre class="pygments highlight"><code>POST /ovirt-engine/api/clusters/000-000/affinitygroups/123-456/vms</code></pre>
+<pre>POST /ovirt-engine/api/clusters/123/affinitygroups/456/vms</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -4698,7 +4699,7 @@ For example, to add the virtual machine 000-000 to affinity group 123-456 send a
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="xml">&lt;vm id="000-000"/&gt;</code></pre>
+<pre class="pygments highlight"><code data-lang="xml">&lt;vm id="789"/&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -4715,7 +4716,8 @@ For example, to add the virtual machine 000-000 to affinity group 123-456 send a
     
   
     <div class="desc"><div class="paragraph">
-<p>List all virtual machines assigned to this affinity group.</p>
+<p>List all virtual machines assigned to this affinity group.
+The order of the returned virtual machines isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -4893,7 +4895,8 @@ Post a request like in the example below to create a new affinity group:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>List existing affinity groups.</p>
+<p>List existing affinity groups.
+The order of the affinity groups results isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -5099,7 +5102,8 @@ allow label removal.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>List all hosts with the label.</p>
+<p>List all hosts with the label.
+The order of the returned hosts isn&#8217;t guaranteed.</p>
 </div>
 </div>
 
@@ -5396,7 +5400,8 @@ subcollection.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>List all vms with the label.</p>
+<p>List all virtual machines with the label.
+The order of the returned virtual machines isn&#8217;t guaranteed.</p>
 </div>
 </div>
 
@@ -5511,7 +5516,8 @@ to all entities mentioned in the vms or hosts lists.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists all labels present in the system.</p>
+<p>Lists all labels present in the system.
+The order of the returned labels isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -5715,7 +5721,8 @@ removal.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists all labels that are attached to an entity.</p>
+<p>Lists all labels that are attached to an entity.
+The order of the returned entities isn&#8217;t guaranteed.</p>
 </div>
 </div>
 
@@ -5881,6 +5888,10 @@ removal.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>List the CPU profiles assigned to the cluster.
+The order of the returned CPU profiles isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -6079,6 +6090,10 @@ removal.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of disk profiles assigned to the storage domain.
+The order of the returned disk profiles isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -6303,6 +6318,9 @@ For example to list all the permissions of the cluster with id <code>123</code> 
 &lt;/permissions&gt;</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>The order of the returned permissions isn&#8217;t guaranteed.</p>
+</div>
 </div>
 
   </div>
@@ -6383,6 +6401,10 @@ dispatched.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the roles assigned to the permission.
+The order of the returned roles isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -6685,6 +6707,9 @@ For example to list all the tags of the virtual machine with id <code>123</code>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned tags isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -6899,6 +6924,10 @@ For example to list all the tags of the virtual machine with id <code>123</code>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of VNIC profiles assifned to the network.
+The order of the returned VNIC profiles isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -7173,6 +7202,10 @@ so the request body should contain an empty <code>action</code>:</p>
       <p id="ovirtsdk4.services.AttachedStorageDomainsService" class="name">class <span class="ident">AttachedStorageDomainsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the storage domains attached to a data center.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -7204,6 +7237,10 @@ so the request body should contain an empty <code>action</code>:</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Attaches an existing storage domain to the data center.</p>
+</div>
+</div>
 
   </div>
   
@@ -7217,6 +7254,10 @@ so the request body should contain an empty <code>action</code>:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of storage domains attached to the data center.
+The order of the returned storage domains isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -7451,6 +7492,10 @@ so the request body should contain an empty <code>action</code>:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of balance modules used by the scheduling policy.
+The order of the returned balance modules isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -7812,6 +7857,9 @@ Example of listing bookmarks:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned bookmarks isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -8031,6 +8079,9 @@ service provides that information.</p>
   ...
 &lt;/cluster_levels&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The order of the returned cluster levels isn&#8217;t guaranteed.</p>
 </div>
 </div>
 
@@ -8268,7 +8319,8 @@ Post a request like in the example below to assign the network to a cluster:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists the networks that are assigned to the cluster.</p>
+<p>Lists the networks that are assigned to the cluster.
+The order of the returned clusters isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -8817,6 +8869,11 @@ or <code>name</code> attributes.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of clusters of the system.
+The order of the returned clusters is guaranteed only if the <code>sortby</code> clause is included in the
+<code>search</code> parameter.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -9122,6 +9179,10 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of CPU profiles of the system.
+The order of the returned list of CPU profiles isn&#8217;t guranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -9394,7 +9455,8 @@ Post a request like in the example below to create a new network in a data cente
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists networks in the data center.</p>
+<p>Lists networks in the data center.
+The order of the returned list of networks isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -9993,7 +10055,9 @@ The following request retrieves a representation of the data centers:</p>
 <p>Note the <code>id</code> code of your <code>Default</code> data center. This code identifies this data center in relation to other
 resources of your virtual environment.
 The data center also contains a link to the storage domains collection. The data center uses this collection to
-attach storage domains from the storage domains main collection.</p>
+attach storage domains from the storage domains main collection.
+The order of the returned list of data centers is guaranteed only if the <code>sortby</code> clause is included in the
+<code>search</code> parameter.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -10344,7 +10408,8 @@ value.
     
   
     <div class="desc"><div class="paragraph">
-<p>List the disk that are attached to the virtual machine.</p>
+<p>List the disk that are attached to the virtual machine.
+The order of the returned list of disks attachments isn&#8217;t guaranteed.</p>
 </div>
 </div>
 
@@ -10546,6 +10611,10 @@ value.
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of disk profiles of the system.
+The order of the returned list of disk profiles isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -11004,6 +11073,10 @@ having derived disks are also not allowed.</p>
       <p id="ovirtsdk4.services.DiskSnapshotsService" class="name">class <span class="ident">DiskSnapshotsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the collection of disk snapshots available in an storage domain.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -11036,6 +11109,10 @@ having derived disks are also not allowed.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of disk snapshots of the storage domain.
+The order of the returned list of disk snapshots isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -11316,6 +11393,10 @@ To create a new floating Cinder disk, send a request as follows:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of disks is guaranteed only if the <code>sortby</code> clause is included in the
+<code>search</code> parameter.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -11496,6 +11577,10 @@ does not apply to the top level <code>disks</code> collection.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of groups.
+The order of the returned list of groups isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -11824,6 +11909,9 @@ Usage:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of users isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -11976,6 +12064,9 @@ Usage:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of domains isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -12123,6 +12214,9 @@ Use this service to view the erratum by its id.</p>
   ...
 &lt;/katello_errata&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The order of the returned list of erratum isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -12469,7 +12563,16 @@ attribute, if provided, is simply ignored.
 <div class="paragraph">
 <p>The following events occur:
 * id="1" - The API logs in the admin user account.
-* id="2" - The API logs out of the admin user account.</p>
+* id="2" - The API logs out of the admin user account.
+The order of the returned list of events is always garanteed. If the <code>sortby</code> clause is included in the
+<code>search</code> parameter, then the events will be ordered according to that clause. If the <code>sortby</code> clause isn&#8217;t
+included, then the events will be sorted by the numeric value of the <code>id</code> attribute, starting with the
+highest value. This, combined with the <code>max</code> parameter, simplifies obtaining the most recent event:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/events?max=1</pre>
+</div>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -12478,10 +12581,10 @@ attribute, if provided, is simply ignored.
 <dl>
 <dt class="hdlist1"><code>from_</code></dt>
 <dd>
-<p>Indicates the identifier of the the first event that should be returned. The identifiers of events are
-strictly increasing, so when this parameter is used only the events with that identifiers equal or greater
-than the given value will be returned. For example, the following request will return only the events
-with identifiers greater or equal than <code>123</code>:</p>
+<p>Indicates the event index after which events should be returned. The indexes of events are
+strictly increasing, so when this parameter is used only the events with greater indexes
+will be returned. For example, the following request will return only the events
+with indexes greater than <code>123</code>:</p>
 </dd>
 </dl>
 </div>
@@ -12655,6 +12758,13 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.ExternalComputeResourceService" class="name">class <span class="ident">ExternalComputeResourceService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages a single external compute resource.
+Compute resource is a term of host external provider. The external provider also needs to know to where the
+provisioned host needs to register. The login details of the engine are saved as a compute resource  in the external
+provider side.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -12686,6 +12796,30 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Retrieves external compute resource details.
+For example, to get the details of compute resource <code>234</code> of provider <code>123</code>, send a request like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/externalhostproviders/123/computeresources/234</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It will return a response like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;external_compute_resource href="/ovirt-engine/api/externalhostproviders/123/computeresources/234" id="234"&gt;
+  &lt;name&gt;hostname&lt;/name&gt;
+  &lt;provider&gt;oVirt&lt;/provider&gt;
+  &lt;url&gt;https://hostname/api&lt;/url&gt;
+  &lt;user&gt;admin@internal&lt;/user&gt;
+  &lt;external_host_provider href="/ovirt-engine/api/externalhostproviders/123" id="123"/&gt;
+&lt;/external_compute_resource&gt;</code></pre>
+</div>
+</div>
+</div>
 
   </div>
   
@@ -12712,6 +12846,13 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.ExternalComputeResourcesService" class="name">class <span class="ident">ExternalComputeResourcesService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages a collection of external compute resources.
+Compute resource is a term of host external provider. The external provider also needs to know to where the
+provisioned host needs to register. The login details of the engine is saved as a compute resource in the external
+provider side.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -12744,6 +12885,35 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Retrieves a list of external compute resources.
+For example, to retrieve the compute resources of external host provider <code>123</code>, send a request like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/externalhostproviders/123/computeresources</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It will return a response like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;external_compute_resources&gt;
+  &lt;external_compute_resource href="/ovirt-engine/api/externalhostproviders/123/computeresources/234" id="234"&gt;
+    &lt;name&gt;hostname&lt;/name&gt;
+    &lt;provider&gt;oVirt&lt;/provider&gt;
+    &lt;url&gt;https://address/api&lt;/url&gt;
+    &lt;user&gt;admin@internal&lt;/user&gt;
+    &lt;external_host_provider href="/ovirt-engine/api/externalhostproviders/123" id="123"/&gt;
+   &lt;/external_compute_resource&gt;
+   ...
+&lt;/external_compute_resources&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The order of the returned list of compute resources isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -12779,6 +12949,10 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>This service manages compute resource instance</p>
+</div>
+</div>
 
   </div>
   
@@ -12805,6 +12979,10 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.ExternalDiscoveredHostService" class="name">class <span class="ident">ExternalDiscoveredHostService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>This service manages a single discovered host.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -12836,6 +13014,33 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Get discovered host info.
+Retrieves information about an host that is managed in external provider management system, such as Foreman. The
+information includes hostname, address, subnet, base image and more.
+For example, to get the details of host <code>234</code> from provider <code>123</code>, send a request like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/externalhostproviders/123/discoveredhosts/234</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The result will be like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;external_discovered_host href="/ovirt-engine/api/externalhostproviders/123/discoveredhosts/234" id="234"&gt;
+ &lt;name&gt;mac001a4ad04040&lt;/name&gt;
+ &lt;ip&gt;10.34.67.43&lt;/ip&gt;
+ &lt;last_report&gt;2017-04-24 11:05:41 UTC&lt;/last_report&gt;
+ &lt;mac&gt;00:1a:4a:d0:40:40&lt;/mac&gt;
+ &lt;subnet_name&gt;sat0&lt;/subnet_name&gt;
+ &lt;external_host_provider href="/ovirt-engine/api/externalhostproviders/123" id="123"/&gt;
+&lt;/external_discovered_host&gt;</code></pre>
+</div>
+</div>
+</div>
 
   </div>
   
@@ -12862,6 +13067,10 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.ExternalDiscoveredHostsService" class="name">class <span class="ident">ExternalDiscoveredHostsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>This service manages external discovered hosts.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -12906,6 +13115,42 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Get list of discovered hosts' information.
+Discovered hosts are fetched from third-party providers such as Foreman.
+To list all discovered hosts for provider <code>123</code> send the following:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>GET /ovirt-engine/api/externalhostproviders/123/discoveredhost</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;external_discovered_hosts&gt;
+ &lt;external_discovered_host href="/ovirt-engine/api/externalhostproviders/123/discoveredhosts/456" id="456"&gt;
+  &lt;name&gt;mac001a4ad04031&lt;/name&gt;
+  &lt;ip&gt;10.34.67.42&lt;/ip&gt;
+  &lt;last_report&gt;2017-04-24 11:05:41 UTC&lt;/last_report&gt;
+  &lt;mac&gt;00:1a:4a:d0:40:31&lt;/mac&gt;
+  &lt;subnet_name&gt;sat0&lt;/subnet_name&gt;
+  &lt;external_host_provider href="/ovirt-engine/api/externalhostproviders/123" id="123"/&gt;
+ &lt;/external_discovered_host&gt;
+ &lt;external_discovered_host href="/ovirt-engine/api/externalhostproviders/123/discoveredhosts/789" id="789"&gt;
+  &lt;name&gt;mac001a4ad04040&lt;/name&gt;
+  &lt;ip&gt;10.34.67.43&lt;/ip&gt;
+  &lt;last_report&gt;2017-04-24 11:05:41 UTC&lt;/last_report&gt;
+  &lt;mac&gt;00:1a:4a:d0:40:40&lt;/mac&gt;
+  &lt;subnet_name&gt;sat0&lt;/subnet_name&gt;
+  &lt;external_host_provider href="/ovirt-engine/api/externalhostproviders/123" id="123"/&gt;
+ &lt;/external_discovered_host&gt;
+ ...
+&lt;/external_discovered_hosts&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The order of the returned list of hosts isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -12955,6 +13200,12 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.ExternalHostGroupService" class="name">class <span class="ident">ExternalHostGroupService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>This service manages a single host group information.
+Host group is a term of host provider - the host group includes provision details that are applied to new discovered
+host. Information such as subnet, operating system, domain, etc.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -12986,6 +13237,31 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Get host group information.
+For example, to get the details of hostgroup <code>234</code> of provider <code>123</code>, send a request like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/externalhostproviders/123/hostgroups/234</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>It will return a response like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;external_host_group href="/ovirt-engine/api/externalhostproviders/123/hostgroups/234" id="234"&gt;
+  &lt;name&gt;rhel7&lt;/name&gt;
+  &lt;architecture_name&gt;x86_64&lt;/architecture_name&gt;
+  &lt;domain_name&gt;s.com&lt;/domain_name&gt;
+  &lt;operating_system_name&gt;RedHat 7.3&lt;/operating_system_name&gt;
+  &lt;subnet_name&gt;sat0&lt;/subnet_name&gt;
+  &lt;external_host_provider href="/ovirt-engine/api/externalhostproviders/123" id="123"/&gt;
+&lt;/external_host_group&gt;</code></pre>
+</div>
+</div>
+</div>
 
   </div>
   
@@ -13012,6 +13288,10 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.ExternalHostGroupsService" class="name">class <span class="ident">ExternalHostGroupsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>This service manages hostgroups.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -13043,6 +13323,10 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>This service manages hostgroup instance.</p>
+</div>
+</div>
 
   </div>
   
@@ -13056,6 +13340,38 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Get host groups list from external host provider.
+Host group is a term of host providers - the host group includes provision details. This API returns all possible
+hostgroups exposed by the external provider.
+For example, to get the details of all host groups of provider <code>123</code>, send a request like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/externalhostproviders/123/hostgroups</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The response will be like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;external_host_groups&gt;
+  &lt;external_host_group href="/ovirt-engine/api/externalhostproviders/123/hostgroups/234" id="234"&gt;
+    &lt;name&gt;rhel7&lt;/name&gt;
+    &lt;architecture_name&gt;x86_64&lt;/architecture_name&gt;
+    &lt;domain_name&gt;example.com&lt;/domain_name&gt;
+    &lt;operating_system_name&gt;RedHat 7.3&lt;/operating_system_name&gt;
+    &lt;subnet_name&gt;sat0&lt;/subnet_name&gt;
+    &lt;external_host_provider href="/ovirt-engine/api/externalhostproviders/123" id="123"/&gt;
+  &lt;/external_host_group&gt;
+  ...
+&lt;/external_host_groups&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The order of the returned list of host groups isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -13105,6 +13421,12 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.ExternalHostProviderService" class="name">class <span class="ident">ExternalHostProviderService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Represents an external host provider, such as Foreman or Satellite.
+See <a href="https://www.theforeman.org/" class="bare">https://www.theforeman.org/</a> for more details on Foreman.
+See <a href="https://access.redhat.com/products/red-hat-satellite" class="bare">https://access.redhat.com/products/red-hat-satellite</a> for more details on Red Hat Satellite.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -13145,6 +13467,10 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc inherited"><div class="paragraph">
+<p>A service to view certificates for this external provider.</p>
+</div>
+</div>
 
   </div>
   
@@ -13181,6 +13507,31 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Get external host provider information
+Host provider, Foreman or Satellite, can be set as an external provider in ovirt. To see details about specific
+host providers attached to ovirt use this API.
+For example, to get the details of host provider <code>123</code>, send a request like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/externalhostproviders/123</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The response will be like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;external_host_provider href="/ovirt-engine/api/externalhostproviders/123" id="123"&gt;
+  &lt;name&gt;mysatellite&lt;/name&gt;
+  &lt;requires_authentication&gt;true&lt;/requires_authentication&gt;
+  &lt;url&gt;https://mysatellite.example.com&lt;/url&gt;
+  &lt;username&gt;admin&lt;/username&gt;
+&lt;/external_host_provider&gt;</code></pre>
+</div>
+</div>
+</div>
 
   </div>
   
@@ -13294,6 +13645,15 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc inherited"><div class="paragraph">
+<p>In order to test connectivity for external provider we need
+to run following request where 123 is an id of a provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/externalhostproviders/123/testconnectivity</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -13383,6 +13743,10 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of external host providers.
+The order of the returned list of host providers isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -13545,6 +13909,10 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Return the list of external hosts.
+The order of the returned list of hosts isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -13594,6 +13962,10 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.ExternalProviderCertificateService" class="name">class <span class="ident">ExternalProviderCertificateService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>A service to view specific certificate for external provider.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -13625,6 +13997,27 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Get specific certificate.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>GET /ovirt-engine/api/externalhostproviders/123/certificate/0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And here is sample response:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;certificate id="0"&gt;
+  &lt;organization&gt;provider.example.com&lt;/organization&gt;
+  &lt;subject&gt;CN=provider.example.com&lt;/subject&gt;
+  &lt;content&gt;...&lt;/content&gt;
+&lt;/certificate&gt;</code></pre>
+</div>
+</div>
+</div>
 
   </div>
   
@@ -13651,6 +14044,10 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.ExternalProviderCertificatesService" class="name">class <span class="ident">ExternalProviderCertificatesService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>A service to view certificates for external provider.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -13682,6 +14079,11 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Reference to service that manages a specific certificate
+for this external provider.</p>
+</div>
+</div>
 
   </div>
   
@@ -13695,6 +14097,29 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the chain of certificates presented by the external provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>GET /ovirt-engine/api/externalhostproviders/123/certificates</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And here is sample response:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;certificates&gt;
+  &lt;certificate id="789"&gt;...&lt;/certificate&gt;
+  ...
+&lt;/certificates&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The order of the returned certificates is always guaranteed to be the sign order: the first is the
+certificate of the server itself, the second the certificate of the CA that signs the first, so on.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -13744,6 +14169,10 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.ExternalProviderService" class="name">class <span class="ident">ExternalProviderService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Provides capability to manage external providers.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -13775,6 +14204,10 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>A service to view certificates for this external provider.</p>
+</div>
+</div>
 
   </div>
   
@@ -13816,6 +14249,15 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>In order to test connectivity for external provider we need
+to run following request where 123 is an id of a provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/externalhostproviders/123/testconnectivity</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -13941,6 +14383,10 @@ For example import of a virtual machine from VMware can be facilitated using the
       <p id="ovirtsdk4.services.FenceAgentService" class="name">class <span class="ident">FenceAgentService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>A service to manage fence agent for a specific host.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -13972,6 +14418,31 @@ For example import of a virtual machine from VMware can be facilitated using the
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Gets details of this fence agent.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>GET /ovirt-engine/api/hosts/123/fenceagents/0</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And here is sample response:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;agent id="0"&gt;
+  &lt;type&gt;apc&lt;/type&gt;
+  &lt;order&gt;1&lt;/order&gt;
+  &lt;ip&gt;192.168.1.101&lt;/ip&gt;
+  &lt;user&gt;user&lt;/user&gt;
+  &lt;password&gt;xxx&lt;/password&gt;
+  &lt;port&gt;9&lt;/port&gt;
+  &lt;options&gt;name1=value1, name2=value2&lt;/options&gt;
+&lt;/agent&gt;</code></pre>
+</div>
+</div>
+</div>
 
   </div>
   
@@ -13985,6 +14456,14 @@ For example import of a virtual machine from VMware can be facilitated using the
     
   
     <div class="desc"><div class="paragraph">
+<p>Removes a fence agent for a specific host.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>DELETE /ovirt-engine/api/hosts/123/fenceagents/0</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -14036,6 +14515,30 @@ For example import of a virtual machine from VMware can be facilitated using the
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>agent</code></dt>
+<dd>
+<p>Fence agent details.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
 
   </div>
   
@@ -14046,6 +14549,10 @@ For example import of a virtual machine from VMware can be facilitated using the
       <p id="ovirtsdk4.services.FenceAgentsService" class="name">class <span class="ident">FenceAgentsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>A service to manage fence agents for a specific host.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -14089,6 +14596,11 @@ For example import of a virtual machine from VMware can be facilitated using the
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Reference to service that manages a specific fence agent
+for this host.</p>
+</div>
+</div>
 
   </div>
   
@@ -14102,6 +14614,35 @@ For example import of a virtual machine from VMware can be facilitated using the
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of fencing agents configured for the host.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>GET /ovirt-engine/api/hosts/123/fenceagents</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And here is sample response:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;agents&gt;
+  &lt;agent id="0"&gt;
+    &lt;type&gt;apc&lt;/type&gt;
+    &lt;order&gt;1&lt;/order&gt;
+    &lt;ip&gt;192.168.1.101&lt;/ip&gt;
+    &lt;user&gt;user&lt;/user&gt;
+    &lt;password&gt;xxx&lt;/password&gt;
+    &lt;port&gt;9&lt;/port&gt;
+    &lt;options&gt;name1=value1, name2=value2&lt;/options&gt;
+  &lt;/agent&gt;
+&lt;/agents&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The order of the returned list of fencing agents isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -14259,6 +14800,10 @@ The addition of a CDROM device to a virtual machine requires an ISO image from t
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of ISO images and virtual floppy disks available in the storage domain.
+The order returned list of ISO images and virtual floppy disks isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -14435,6 +14980,10 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.FiltersService" class="name">class <span class="ident">FiltersService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the filters used by an scheduling policy.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -14491,6 +15040,10 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of filters used by the scheduling policy.
+The order of the returned list of filters isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -14977,6 +15530,9 @@ For example, to list bricks of gluster volume <code>123</code>, send a request l
   &lt;/brick&gt;
 &lt;/bricks&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The order of the returned list is based on the brick order provided at gluster volume creation.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -15497,6 +16053,10 @@ in cluster.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of hooks.
+The order of the returned list of hooks isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -16339,6 +16899,9 @@ this:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of volumes isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -16414,6 +16977,11 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.GroupService" class="name">class <span class="ident">GroupService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages a group of users. Use this service to either get groups details or remove groups. In order
+to add new groups please use <a href="#services/groups">service</a> that manages the collection of groups.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -16445,6 +17013,34 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Gets the system group information.
+Usage:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/groups/123</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Will return the group information:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;group href="/ovirt-engine/api/groups/123" id="123"&gt;
+  &lt;name&gt;mygroup&lt;/name&gt;
+  &lt;link href="/ovirt-engine/api/groups/123/roles" rel="roles"/&gt;
+  &lt;link href="/ovirt-engine/api/groups/123/permissions" rel="permissions"/&gt;
+  &lt;link href="/ovirt-engine/api/groups/123/tags" rel="tags"/&gt;
+  &lt;domain_entry_id&gt;476652557A382F67696B6D2B32762B37796E46476D513D3D&lt;/domain_entry_id&gt;
+  &lt;namespace&gt;DC=example,DC=com&lt;/namespace&gt;
+  &lt;domain href="/ovirt-engine/api/domains/ABCDEF" id="ABCDEF"&gt;
+    &lt;name&gt;myextension-authz&lt;/name&gt;
+  &lt;/domain&gt;
+&lt;/group&gt;</code></pre>
+</div>
+</div>
+</div>
 
   </div>
   
@@ -16457,6 +17053,10 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Reference to the service that manages the collection of permissions assigned to this system group.</p>
+</div>
+</div>
 
   </div>
   
@@ -16470,6 +17070,15 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Removes the system group.
+Usage:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>DELETE /ovirt-engine/api/groups/123</pre>
+</div>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -16505,6 +17114,10 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Reference to the service that manages the collection of roles assigned to this system group.</p>
+</div>
+</div>
 
   </div>
   
@@ -16533,6 +17146,10 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Reference to the service that manages the collection of tags assigned to this system group.</p>
+</div>
+</div>
 
   </div>
   
@@ -16543,6 +17160,10 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.GroupsService" class="name">class <span class="ident">GroupsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the collection of groups of users.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -16597,6 +17218,29 @@ like this:</p>
 &lt;/group&gt;</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>group</code></dt>
+<dd>
+<p>The group to be added.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
 </div>
 
   </div>
@@ -16610,6 +17254,10 @@ like this:</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Reference to the service that manages a specific group.</p>
+</div>
+</div>
 
   </div>
   
@@ -16623,6 +17271,39 @@ like this:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>List all the groups in the system.
+Usage:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/groups</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Will return the list of groups:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;groups&gt;
+  &lt;group href="/ovirt-engine/api/groups/123" id="123"&gt;
+    &lt;name&gt;mygroup&lt;/name&gt;
+    &lt;link href="/ovirt-engine/api/groups/123/roles" rel="roles"/&gt;
+    &lt;link href="/ovirt-engine/api/groups/123/permissions" rel="permissions"/&gt;
+    &lt;link href="/ovirt-engine/api/groups/123/tags" rel="tags"/&gt;
+    &lt;domain_entry_id&gt;476652557A382F67696B6D2B32762B37796E46476D513D3D&lt;/domain_entry_id&gt;
+    &lt;namespace&gt;DC=example,DC=com&lt;/namespace&gt;
+    &lt;domain href="/ovirt-engine/api/domains/ABCDEF" id="ABCDEF"&gt;
+      &lt;name&gt;myextension-authz&lt;/name&gt;
+    &lt;/domain&gt;
+  &lt;/group&gt;
+  ...
+&lt;/groups&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The order of the returned list of groups isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -16817,7 +17498,8 @@ An example of getting a host device:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>List the devices of a host.</p>
+<p>List the devices of a host.
+The order of the returned list of devices isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -16970,6 +17652,10 @@ An example of getting a host device:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of hooks configured for the host.
+The order of the returned list of hooks isn&#8217;t guranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -17250,6 +17936,10 @@ in case that the current resource represents an SR-IOV physical function NIC.</p
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of network interfaces of the host.
+The order of the returned list of network interfaces isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -17429,6 +18119,10 @@ in case that the current resource represents an SR-IOV physical function NIC.</p
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of NUMA nodes of the host.
+The order of the returned list of NUMA nodes isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -17579,7 +18273,7 @@ in case that the current resource represents an SR-IOV physical function NIC.</p
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.approve">
-    <p>def <span class="ident">approve</span>(</p><p>self, async=None, cluster=None, headers=None, query=None, wait=True)</p>
+    <p>def <span class="ident">approve</span>(</p><p>self, async=None, cluster=None, host=None, headers=None, query=None, wait=True)</p>
     </div>
     
 
@@ -17594,6 +18288,14 @@ This action also accepts an optional cluster element to define the target cluste
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>host</code></dt>
+<dd>
+<p>Host to approve.</p>
+</dd>
+<dt class="hdlist1"><code>cluster</code></dt>
+<dd>
+<p>Cluster where the host will be added after approving it.</p>
+</dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
 <p>Indicates if the approval should be performed asynchronously.</p>
@@ -17899,7 +18601,7 @@ Use this service to manage fence and power management agents on the host object.
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.get">
-    <p>def <span class="ident">get</span>(</p><p>self, filter=None, headers=None, query=None, wait=True)</p>
+    <p>def <span class="ident">get</span>(</p><p>self, all_content=None, filter=None, headers=None, query=None, wait=True)</p>
     </div>
     
 
@@ -17907,6 +18609,11 @@ Use this service to manage fence and power management agents on the host object.
   
     <div class="desc"><div class="paragraph">
 <p>Get the host details.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>GET /ovirt-engine/api/hosts/123</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -17917,6 +18624,42 @@ Use this service to manage fence and power management agents on the host object.
 <dd>
 <p>Indicates if the results should be filtered according to the permissions of the user.</p>
 </dd>
+<dt class="hdlist1"><code>all_content</code></dt>
+<dd>
+<p>Indicates if all of the attributes of the host should be included in the response.
+By default the following attributes are excluded:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>hosted_engine</code>
+For example, to retrieve the complete representation of host '123':</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/hosts/123?all_content=true</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+These attributes are not included by default because retrieving them impacts performance. They are
+seldom used and require additional queries to the database. Use this parameter with caution and only when
+specifically required.
+</td>
+</tr>
+</table>
+</div>
+<div class="dlist">
+<dl>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
 <p>Additional HTTP headers.</p>
@@ -18806,6 +19549,9 @@ The upgrade can be started from the webadmin or by using the
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of storages isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -19048,7 +19794,7 @@ is returned.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostsService.list">
-    <p>def <span class="ident">list</span>(</p><p>self, case_sensitive=None, filter=None, max=None, search=None, headers=None, query=None, wait=True)</p>
+    <p>def <span class="ident">list</span>(</p><p>self, all_content=None, case_sensitive=None, filter=None, max=None, search=None, headers=None, query=None, wait=True)</p>
     </div>
     
 
@@ -19080,6 +19826,10 @@ For example, to list the hosts send the following request:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of hosts is guaranteed only if the <code>sortby</code> clause is included in
+the <code>search</code> parameter.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -19102,6 +19852,42 @@ ignoring case set it to <code>false</code>.</p>
 <dd>
 <p>Indicates if the results should be filtered according to the permissions of the user.</p>
 </dd>
+<dt class="hdlist1"><code>all_content</code></dt>
+<dd>
+<p>Indicates if all of the attributes of the hosts should be included in the response.
+By default the following host attributes are excluded:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>hosted_engine</code>
+For example, to retrieve the complete representation of the hosts:</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/hosts?all_content=true</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+These attributes are not included by default because retrieving them impacts performance. They are
+seldom used and require additional queries to the database. Use this parameter with caution and only when
+specifically required.
+</td>
+</tr>
+</table>
+</div>
+<div class="dlist">
+<dl>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
 <p>Additional HTTP headers.</p>
@@ -19296,6 +20082,9 @@ ignoring case set it to <code>false</code>.</p>
   ...
 &lt;/icons&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The order of the returned list of icons isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -19860,7 +20649,8 @@ specific image transfer.</p>
   
     <div class="desc"><div class="paragraph">
 <p>Retrieves the list of image transfers that are currently
-being performed.</p>
+being performed.
+The order of the returned list of image transfers isn&#8217;t guaranteed.</p>
 </div>
 </div>
 
@@ -19889,6 +20679,10 @@ being performed.</p>
       <p id="ovirtsdk4.services.ImagesService" class="name">class <span class="ident">ImagesService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of images available in an storage domain or in an OpenStack image provider.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -19933,6 +20727,10 @@ being performed.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of images available in the storage domain or provider.
+The order of the returned list of images isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -20146,7 +20944,8 @@ being performed.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists all the configured graphics consoles of the instance type.</p>
+<p>Lists all the configured graphics consoles of the instance type.
+The order of the returned list of graphics consoles isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -20362,7 +21161,8 @@ being performed.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists all the configured network interface of the instance type.</p>
+<p>Lists all the configured network interface of the instance type.
+The order of the returned list of network interfaces isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -20798,7 +21598,8 @@ to 2 sockets and 1 core, send a request like this:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists all the configured watchdogs of the instance type.</p>
+<p>Lists all the configured watchdogs of the instance type.
+The order of the returned list of watchdogs isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -21012,7 +21813,8 @@ virtual machine.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists all existing instance types in the system.</p>
+<p>Lists all existing instance types in the system.
+The order of the returned list of instance types isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -21319,6 +22121,10 @@ request like this:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of iSCSI bonds configured in the data center.
+The order of the returned list of iSCSI bonds isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -21581,7 +22387,8 @@ This parameter is optional, and the default value is <code>true</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>List all the steps of the job.</p>
+<p>List all the steps of the job.
+The order of the returned list of steps isn&#8217;t guaranteed.</p>
 </div>
 </div>
 
@@ -21756,6 +22563,9 @@ For example, to add a job with the following request:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of jobs isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -21890,6 +22700,9 @@ Use this service to view the erratum by its id.</p>
   ...
 &lt;/katello_errata&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The order of the returned list of erratum isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -22254,6 +23067,10 @@ For example, to create MAC address pool send a request like this:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Return the list of MAC address pools of the system.
+The returned list of MAC address pools isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -22558,6 +23375,10 @@ For example, to create MAC address pool send a request like this:</p>
       <p id="ovirtsdk4.services.NetworkAttachmentsService" class="name">class <span class="ident">NetworkAttachmentsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of network attachments of a host or host NIC.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -22614,6 +23435,10 @@ For example, to create MAC address pool send a request like this:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of network attachments of the host or host NIC.
+The order of the returned list of network attachments isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -22834,7 +23659,8 @@ Example of listing all of the supported network filters for a specific cluster:<
     
   
     <div class="desc"><div class="paragraph">
-<p>Retrieves the representations of the network filters.</p>
+<p>Retrieves the representations of the network filters.
+The order of the returned list of network filters isn&#8217;t guaranteed.</p>
 </div>
 </div>
 
@@ -22977,6 +23803,10 @@ For example, to remove the label <code>exemplary</code> from a logical network h
       <p id="ovirtsdk4.services.NetworkLabelsService" class="name">class <span class="ident">NetworkLabelsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the ser of labels attached to a network or to a host NIC.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -23053,6 +23883,10 @@ For example, to attach the label <code>mylabel</code> to a logical network havin
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of labels attached to the network or host NIC.
+The order of the returned list of labels isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -23473,6 +24307,10 @@ For example:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of networks is guaranteed only if the <code>sortby</code> clause is included in the
+<code>search</code> parameter.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -23588,6 +24426,10 @@ ignoring case set it to <code>false</code>.</p>
 
     
   
+    <div class="desc inherited"><div class="paragraph">
+<p>A service to view certificates for this external provider.</p>
+</div>
+</div>
 
   </div>
   
@@ -23701,6 +24543,15 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc inherited"><div class="paragraph">
+<p>In order to test connectivity for external provider we need
+to run following request where 123 is an id of a provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/externalhostproviders/123/testconnectivity</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -23790,6 +24641,10 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of providers.
+The order of the returned list of providers isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -24026,7 +24881,8 @@ for import glance image as template.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists the images of a Glance image storage domain.</p>
+<p>Lists the images of a Glance image storage domain.
+The order of the returned list of images isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -24122,6 +24978,10 @@ for import glance image as template.</p>
 
     
   
+    <div class="desc inherited"><div class="paragraph">
+<p>A service to view certificates for this external provider.</p>
+</div>
+</div>
 
   </div>
   
@@ -24258,6 +25118,15 @@ For example, to remove the OpenStack network provider with identifier <code>1234
     
   
     <div class="desc inherited"><div class="paragraph">
+<p>In order to test connectivity for external provider we need
+to run following request where 123 is an id of a provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/externalhostproviders/123/testconnectivity</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -24404,6 +25273,10 @@ If the <code>type</code> property is not present, a default value of <code>NEUTR
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of providers.
+The order of the returned list of providers isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -24617,6 +25490,10 @@ the attributes will be ignored.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of networks.
+The order of the returned list of networks isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -24815,6 +25692,10 @@ the attributes will be ignored.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of sub-networks.
+The order of the returned list of sub-networks isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -25037,6 +25918,10 @@ the attributes will be ignored.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of authentication keys.
+The order of the returned list of authentication keys isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -25138,6 +26023,10 @@ the attributes will be ignored.</p>
 
     
   
+    <div class="desc inherited"><div class="paragraph">
+<p>A service to view certificates for this external provider.</p>
+</div>
+</div>
 
   </div>
   
@@ -25239,6 +26128,15 @@ the attributes will be ignored.</p>
     
   
     <div class="desc inherited"><div class="paragraph">
+<p>In order to test connectivity for external provider we need
+to run following request where 123 is an id of a provider.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/externalhostproviders/123/testconnectivity</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -25368,7 +26266,8 @@ For example:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Retrieves the list of volume providers.</p>
+<p>Retrieves the list of volume providers.
+The order of the returned list of volume providers isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -25521,6 +26420,10 @@ For example:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of volume types.
+The order of the returned list of volume types isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -25639,6 +26542,10 @@ For example:</p>
       <p id="ovirtsdk4.services.OperatingSystemsService" class="name">class <span class="ident">OperatingSystemsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of types of operating systems available in the system.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -25671,6 +26578,10 @@ For example:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of types of operating system available in the system.
+The order of the returned list of operating systems isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -26067,6 +26978,9 @@ For example to list the permits of the role with the id <code>123</code> send a 
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of permits isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -26163,6 +27077,30 @@ For example to list the permits of the role with the id <code>123</code> send a 
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Get specified QoS in the data center.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>GET /ovirt-engine/api/datacenters/123/qoss/123</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will get response like this one below:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;qos href="/ovirt-engine/api/datacenters/123/qoss/123" id="123"&gt;
+  &lt;name&gt;123&lt;/name&gt;
+  &lt;description&gt;123&lt;/description&gt;
+  &lt;max_iops&gt;1&lt;/max_iops&gt;
+  &lt;max_throughput&gt;1&lt;/max_throughput&gt;
+  &lt;type&gt;storage&lt;/type&gt;
+  &lt;data_center href="/ovirt-engine/api/datacenters/123" id="123"/&gt;
+&lt;/qos&gt;</code></pre>
+</div>
+</div>
+</div>
 
   </div>
   
@@ -26176,6 +27114,14 @@ For example to list the permits of the role with the id <code>123</code> send a 
     
   
     <div class="desc"><div class="paragraph">
+<p>Remove specified QoS from datacenter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>DELETE /ovirt-engine/api/datacenters/123/qoss/123</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -26227,6 +27173,61 @@ For example to list the permits of the role with the id <code>123</code> send a 
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>Update the specified QoS in the dataCenter.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>PUT /ovirt-engine/api/datacenters/123/qoss/123</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For example with curl:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>curl -u admin@internal:123456 -X PUT -H "content-type: application/xml" -d         "&lt;qos&gt;&lt;name&gt;321&lt;/name&gt;&lt;description&gt;321&lt;/description&gt;&lt;max_iops&gt;10&lt;/max_iops&gt;&lt;/qos&gt;"         https://engine/ovirt-engine/api/datacenters/123/qoss/123</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will receive response like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;qos href="/ovirt-engine/api/datacenters/123/qoss/123" id="123"&gt;
+  &lt;name&gt;321&lt;/name&gt;
+  &lt;description&gt;321&lt;/description&gt;
+  &lt;max_iops&gt;10&lt;/max_iops&gt;
+  &lt;max_throughput&gt;1&lt;/max_throughput&gt;
+  &lt;type&gt;storage&lt;/type&gt;
+  &lt;data_center href="/ovirt-engine/api/datacenters/123" id="123"/&gt;
+&lt;/qos&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>qos</code></dt>
+<dd>
+<p>Updated QoS object.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
 
   </div>
   
@@ -26237,6 +27238,10 @@ For example to list the permits of the role with the id <code>123</code> send a 
       <p id="ovirtsdk4.services.QossService" class="name">class <span class="ident">QossService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of <em>quality of service</em> configurations available in a data center.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -26281,6 +27286,29 @@ For example to list the permits of the role with the id <code>123</code> send a 
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of <em>quality of service</em> configurations available in the data center.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>GET /ovirt-engine/api/datacenter/123/qoss</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You will get response which will look like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;qoss&gt;
+  &lt;qos href="/ovirt-engine/api/datacenters/123/qoss/1" id="1"&gt;...&lt;/qos&gt;
+  &lt;qos href="/ovirt-engine/api/datacenters/123/qoss/2" id="2"&gt;...&lt;/qos&gt;
+  &lt;qos href="/ovirt-engine/api/datacenters/123/qoss/3" id="3"&gt;...&lt;/qos&gt;
+&lt;/qoss&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The returned list of quality of service configurations isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -26435,6 +27463,10 @@ For example to list the permits of the role with the id <code>123</code> send a 
       <p id="ovirtsdk4.services.QuotaClusterLimitsService" class="name">class <span class="ident">QuotaClusterLimitsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of quota limits configured for a cluster.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -26491,6 +27523,10 @@ For example to list the permits of the role with the id <code>123</code> send a 
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the set of quota limits configured for the cluster.
+The returned list of quota limits isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -26828,6 +27864,10 @@ An example of updating a quota:</p>
       <p id="ovirtsdk4.services.QuotaStorageLimitsService" class="name">class <span class="ident">QuotaStorageLimitsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of storage limits configured for a quota.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -26884,6 +27924,10 @@ An example of updating a quota:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of storage limits configured for the quota.
+The order of the returned list of storage limits isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -26933,6 +27977,10 @@ An example of updating a quota:</p>
       <p id="ovirtsdk4.services.QuotasService" class="name">class <span class="ident">QuotasService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of quotas configured for a data center.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -26995,7 +28043,8 @@ An example of creating a new quota:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists quotas of a data center</p>
+<p>Lists quotas of a data center.
+The order of the returned list of quotas isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -27382,6 +28431,9 @@ send a request like this (note that you have to pass permit id):</p>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of roles isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -27447,6 +28499,10 @@ send a request like this (note that you have to pass permit id):</p>
       <p id="ovirtsdk4.services.SchedulingPoliciesService" class="name">class <span class="ident">SchedulingPoliciesService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of scheduling policies available in the system.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -27491,6 +28547,10 @@ send a request like this (note that you have to pass permit id):</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of scheduling policies available in the system.
+The order of the returned list of scheduling policies isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -27838,6 +28898,10 @@ send a request like this (note that you have to pass permit id):</p>
       <p id="ovirtsdk4.services.SchedulingPolicyUnitsService" class="name">class <span class="ident">SchedulingPolicyUnitsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of scheduling policy units available in the system.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -27870,6 +28934,10 @@ send a request like this (note that you have to pass permit id):</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of scheduling policy units available in the system.
+The order of the returned list of scheduling policy units isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -27992,6 +29060,10 @@ send a request like this (note that you have to pass permit id):</p>
       <p id="ovirtsdk4.services.SnapshotCdromsService" class="name">class <span class="ident">SnapshotCdromsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of CD-ROM devices of a virtual machine snapshot.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -28036,6 +29108,10 @@ send a request like this (note that you have to pass permit id):</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of CD-ROM devices of the snapshot.
+The order of the returned list of CD-ROM devices isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -28142,6 +29218,10 @@ send a request like this (note that you have to pass permit id):</p>
       <p id="ovirtsdk4.services.SnapshotDisksService" class="name">class <span class="ident">SnapshotDisksService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of disks of an snapshot.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -28186,6 +29266,10 @@ send a request like this (note that you have to pass permit id):</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of disks of the snapshot.
+The order of the returned list of disks isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -28292,6 +29376,10 @@ send a request like this (note that you have to pass permit id):</p>
       <p id="ovirtsdk4.services.SnapshotNicsService" class="name">class <span class="ident">SnapshotNicsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of NICs of an snapshot.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -28324,6 +29412,10 @@ send a request like this (note that you have to pass permit id):</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of NICs of the snapshot.
+The order of the returned list of NICs isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -28568,6 +29660,10 @@ request like this:</p>
       <p id="ovirtsdk4.services.SnapshotsService" class="name">class <span class="ident">SnapshotsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of snapshots of a storage domain or virtual machine.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -28657,6 +29753,10 @@ servers, for example). In those cases make sure that you set the attribute to <c
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of snapshots of the storage domain or virtual machine.
+The order of the returned list of snapshots isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -28879,6 +29979,10 @@ servers, for example). In those cases make sure that you set the attribute to <c
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns ths list of SSH public keys of the user.
+The order of the returned list of keys isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -29076,6 +30180,9 @@ request like this:</p>
   &lt;vm href="/ovirt-engine/api/vms/123" id="123"/&gt;
 &lt;/statistic&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The order of the returned list of statistics isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -29466,6 +30573,9 @@ following request:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of steps isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -29612,6 +30722,10 @@ following request:</p>
       <p id="ovirtsdk4.services.StorageDomainContentDisksService" class="name">class <span class="ident">StorageDomainContentDisksService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of disks available in a storage domain.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -29656,6 +30770,11 @@ following request:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of disks available in the storage domain.
+The order of the returned list of disks is guaranteed only if the <code>sortby</code> clause is included in
+the <code>search</code> parameter.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -29811,6 +30930,10 @@ ignoring case set it to <code>false</code>.</p>
       <p id="ovirtsdk4.services.StorageDomainServerConnectionsService" class="name">class <span class="ident">StorageDomainServerConnectionsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of connections to storage servers that exist in a storage domain.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -29867,6 +30990,10 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of connections to storage servers that existin the storage domain.
+The order of the returned list of connections isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -30117,6 +31244,12 @@ For example, in order to reduce two logical units from a storage domain send a r
      &lt;logical_unit id="1IET_00010002"/&gt;
    &lt;/logical_units&gt;
  &lt;/action&gt;</code></pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Note that this operation is only applicable to block storage domains (i.e., storage domains with the
+&lt;&lt;types/storage_type, storage type&gt; of iSCSI or FCP).</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -30673,6 +31806,10 @@ registration of a template when some of the storage domains are not available. T
       <p id="ovirtsdk4.services.StorageDomainTemplatesService" class="name">class <span class="ident">StorageDomainTemplatesService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of templates available in a storage domain.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -30705,6 +31842,10 @@ registration of a template when some of the storage domains are not available. T
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of templates availalbe in the storage domain.
+The order of the returned list of templates isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -30902,7 +32043,8 @@ The request only apply to storage domains that are attached.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>List the disks that are attached to the virtual machine.</p>
+<p>List the disks that are attached to the virtual machine.
+The order of the returned list of disk attachments isn&#8217;t guaranteed.</p>
 </div>
 </div>
 
@@ -31307,6 +32449,10 @@ action.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of virtual machines of the export storage domain.
+The order of the returned list of virtual machines isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -31389,6 +32535,10 @@ The request only apply to storage domains that are attached.</p>
       <p id="ovirtsdk4.services.StorageDomainsService" class="name">class <span class="ident">StorageDomainsService</span></p>
       
   
+    <div class="desc"><div class="paragraph">
+<p>Manages the set of storage domains of the system.</p>
+</div>
+</div>
 
 
       <div class="class">
@@ -31508,6 +32658,11 @@ and by using a host with an id <code>123</code>, send a request as follows:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of storage domains of the system.
+The order of the returned list of storage domains is guaranteed only if the <code>sortby</code> clause is included
+in the <code>search</code> parameter.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -31778,6 +32933,10 @@ like this:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list os storage connection extensions.
+The order of the returned list of storage connections isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -32058,6 +33217,10 @@ For example, to create a new storage connection for the NFS server <code>mynfs.e
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of storage connections.
+The order of the returned list of connections isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -32427,6 +33590,9 @@ For example to list all the permissions of the cluster with id <code>123</code> 
   &lt;/permission&gt;
 &lt;/permissions&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The order of the returned permissions isn&#8217;t guaranteed.</p>
 </div>
 </div>
 
@@ -33487,6 +34653,9 @@ For example to list the full hierarchy of the tags in the system send a request 
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of tags isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -33675,6 +34844,10 @@ For example, to get information about the CD-ROM device of template <code>123</c
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of CD-ROM devices of the template.
+The order of the returned list of CD-ROM devices isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -33889,7 +35062,8 @@ have copies on multiple storage domains).</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>List the disks that are attached to the template.</p>
+<p>List the disks that are attached to the template.
+The order of the returned list of attachments isn&#8217;t guaranteed.</p>
 </div>
 </div>
 
@@ -34135,6 +35309,10 @@ have copies on multiple storage domains).</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of disks of the template.
+The order of the returned list of disks isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -34348,7 +35526,8 @@ have copies on multiple storage domains).</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists all the configured graphics consoles of the template.</p>
+<p>Lists all the configured graphics consoles of the template.
+The order of the returned list of graphics consoles isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -34549,6 +35728,10 @@ have copies on multiple storage domains).</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of NICs of the template.
+The order of the returned list of NICs isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -35113,6 +36296,10 @@ template versions:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of watchdogs.
+The order of the returned list of watchdogs isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -35211,7 +36398,9 @@ template versions:</p>
   
     <div class="desc"><div class="paragraph">
 <p>Creates a new template.
-This requires the <code>name</code> and <code>vm</code> elements. Identify the virtual machine with the <code>id</code> <code>name</code> attributes.</p>
+This requires the <code>name</code> and <code>vm</code> elements. To identify the virtual machine use the <code>vm.id</code> or <code>vm.name</code>
+attributes. For example, to create a template from virtual machine with identifier <code>123</code> send a request
+like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -35226,6 +36415,31 @@ This requires the <code>name</code> and <code>vm</code> elements. Identify the v
 <pre class="pygments highlight"><code data-lang="xml">&lt;template&gt;
   &lt;name&gt;mytemplate&lt;/name&gt;
   &lt;vm id="123"/&gt;
+&lt;/template&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The disks of the template can be customized, making some of their characteristics different to the disks of the
+original virtual machine. To do so use the <code>vm.disk_attachments</code> attribute, specifying the identifier of the disk
+of the original virtual machine and the characteristics that you want to change. For example, if the original
+virtual machine has a disk with identifier <code>456</code>, and, for that disk, you want to change the format to
+<a href="#types/disk_format"><em>Copy On Write</em></a> and make the disk <a href="#types/disk">sparse</a>, send a request body
+like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;template&gt;
+  &lt;name&gt;mytemplate&lt;/name&gt;
+  &lt;vm id="123"&gt;
+    &lt;disk_attachments&gt;
+      &lt;disk_attachment&gt;
+        &lt;disk id="456"&gt;
+          &lt;format&gt;cow&lt;/format&gt;
+          &lt;sparse&gt;true&lt;/sparse&gt;
+        &lt;/disk&gt;
+      &lt;/disk_attachment&gt;
+    &lt;/disk_attachments&gt;
+  &lt;/vm&gt;
 &lt;/template&gt;</code></pre>
 </div>
 </div>
@@ -35293,7 +36507,8 @@ For example:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Will return the list of virtual machines and virtual machine templates.</p>
+<p>Will return the list of virtual machines and virtual machine templates.
+The order of the returned list of templates isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -35500,6 +36715,10 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of unmanaged networks of the host.
+The order of the returned list of networks isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -35874,6 +37093,9 @@ Usage:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of users isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -36082,6 +37304,10 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of networks.
+The order of the returned list of networks isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -36283,7 +37509,8 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Returns a list of applications installed in the virtual machine.</p>
+<p>Returns a list of applications installed in the virtual machine.
+The order of the returned list of applications isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -36609,7 +37836,8 @@ CDROM device.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Returns the list of CDROM devices of the virtual machine.</p>
+<p>Returns the list of CDROM devices of the virtual machine.
+The order of the returned list of CD-ROM devices isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -37017,6 +38245,10 @@ method of the top level disk service</a>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of disks of the virtual machine.
+The order of the returned list of disks isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -37452,7 +38684,8 @@ In any case, the response specifies the actual ticket value and expiry used.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists all the configured graphics consoles of the virtual machine.</p>
+<p>Lists all the configured graphics consoles of the virtual machine.
+The order of the returned list of graphics consoles isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -37783,7 +39016,8 @@ for it, and its <code>placeholder</code> flag will be cleared, and the device wi
     
   
     <div class="desc"><div class="paragraph">
-<p>List the host devices assigned to given virtual machine.</p>
+<p>List the host devices assigned to given virtual machine.
+The order of the returned list of devices isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -38219,6 +39453,10 @@ Example operating systems include:
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of NICs of the virtual machine.
+The order of the returned list of NICs isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -38492,7 +39730,8 @@ Content-type: application/xml</code></pre>
     
   
     <div class="desc"><div class="paragraph">
-<p>Lists virtual NUMA nodes of a virtual machine.</p>
+<p>Lists virtual NUMA nodes of a virtual machine.
+The order of the returned list of NUMA nodes isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -38960,6 +40199,10 @@ A new pool requires the <code>name</code>, <code>cluster</code> and <code>templa
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of pools is guaranteed only if the <code>sortby</code> clause is included in the
+<code>search</code> parameter.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -39128,6 +40371,10 @@ ignoring case set it to <code>false</code>.</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of reported devices of the virtual machine.
+The order of the returned list of devices isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -40818,6 +42065,9 @@ For example, to retrieve the session information for virtual machine <code>123</
 </div>
 </div>
 <div class="paragraph">
+<p>The order of the returned list of sessions isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -41157,7 +42407,8 @@ contains references to the added watchdog and to the virtual machine.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>The list of watchdogs of the virtual machine.</p>
+<p>The list of watchdogs of the virtual machine.
+The order of the returned list of watchdogs isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -41415,6 +42666,11 @@ attribute:</p>
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of virtual machines of the system.
+The order of the returned list of virtual machines is guaranteed only if the <code>sortby</code> clause is included
+in the <code>search</code> parameter.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -41832,7 +43088,8 @@ network filter regardless of the VNIC profiles&#8217;s default network filter. F
     
   
     <div class="desc"><div class="paragraph">
-<p>List all vNIC profiles.</p>
+<p>List all vNIC profiles.
+The order of the returned list of vNIC profiles isn&#8217;t guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -42057,6 +43314,10 @@ network filter regardless of the VNIC profiles&#8217;s default network filter. F
     
   
     <div class="desc"><div class="paragraph">
+<p>Returns the list of weights.
+The order of the returned list of weights isn&#8217;t guaranteed.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
