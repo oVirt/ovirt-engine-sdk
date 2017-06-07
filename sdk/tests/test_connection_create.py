@@ -16,10 +16,7 @@
 # limitations under the License.
 #
 
-import os
-import os.path
 import ovirtsdk4 as sdk
-import tempfile
 import unittest
 
 from nose.tools import (
@@ -45,11 +42,13 @@ class ConnectionCreateTest(unittest.TestCase):
         """
         Test connection can be created when no CA is provided
         """
-        sdk.Connection(
+        connection = sdk.Connection(
             url=self.server.url(),
             username=self.server.user(),
             password=self.server.password(),
         )
+        connection.authenticate()
+        connection.close()
 
     def test_secure_mode_with_ca(self):
         """
@@ -61,6 +60,7 @@ class ConnectionCreateTest(unittest.TestCase):
             password=self.server.password(),
             ca_file=self.server.ca_file(),
         )
+        connection.authenticate()
         connection.close()
 
     def test_insecure_mode_without_ca(self):
@@ -73,6 +73,7 @@ class ConnectionCreateTest(unittest.TestCase):
             password=self.server.password(),
             insecure=True,
         )
+        connection.authenticate()
         connection.close()
 
     def test_kerberos_auth(self):
@@ -84,6 +85,7 @@ class ConnectionCreateTest(unittest.TestCase):
             kerberos=True,
             ca_file=self.server.ca_file(),
         )
+        connection.authenticate()
         connection.close()
 
     @raises(sdk.Error)
@@ -111,3 +113,4 @@ class ConnectionCreateTest(unittest.TestCase):
         )
         connection = self.server.connection()
         connection.send(request)
+        connection.close()
