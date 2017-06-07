@@ -2,6 +2,26 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.1.5 / Jun 7 2017
+Update to model 4.1.37.
+
+Bug fixes:
+
+ * Ignore unrelated responses from server
+   https://bugzilla.redhat.com/1459254[#1459254].
+
+ * Set HTTPAUTH_GSSNEGOTIATE for Curl not CurlMulti
+   https://bugzilla.redhat.com/1459220[#1459220].
+
+ * Fix checking of fault response.
+   https://bugzilla.redhat.com/1440292[#1440292].
+
+ * Fix the token re-new process.
+   https://bugzilla.redhat.com/1434830[#1434830].
+
+ * Depend on python PyCurl version 7.43.0-6 on fc25
+   https://bugzilla.redhat.com/1456666[#1456666].
+
 == 4.1.4 / May 25 2017
 Update to model 4.1.33 and metamodel 1.1.13:
 
