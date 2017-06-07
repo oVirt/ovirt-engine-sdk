@@ -621,8 +621,18 @@ class Connection(object):
         # Prepare the buffer to receive the response:
         body_buf = io.BytesIO()
         headers_buf = io.BytesIO()
+
+        # We ignore all headers which are received before the last response
+        # from the server, because we can be forwarded by apache, and we
+        # are interested only in last response:
+        def write_header(buf):
+            if buf.startswith(b'HTTP/'):
+                headers_buf.truncate(0)
+                headers_buf.seek(0)
+            headers_buf.write(buf)
+
         curl.setopt(pycurl.WRITEFUNCTION, body_buf.write)
-        curl.setopt(pycurl.HEADERFUNCTION, headers_buf.write)
+        curl.setopt(pycurl.HEADERFUNCTION, write_header)
 
         # Send the request and wait for the response:
         curl.perform()
