@@ -118,11 +118,11 @@ class Service(object):
         as backwards compatibility isn't guaranteed.
         """
 
-        if not response.body:
-            self._raise_error(response)
-        body = reader.Reader.read(response.body)
+        body = self._internal_read_body(response)
         if isinstance(body, types.Fault):
             self._raise_error(response, body)
+        elif isinstance(body, types.Action) and body.fault:
+            self._raise_error(response, body.fault)
         raise Error("Expected a fault, but got %s" % type(body).__name__)
 
     def _check_action(self, response):
