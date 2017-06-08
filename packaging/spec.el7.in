@@ -19,9 +19,6 @@ Requires: python-enum34
 Requires: python-pycurl
 Requires: python-six
 
-Provides: ovirt-engine-sdk = %{version}-%{release}
-Obsoletes: ovirt-engine-sdk < 3.3.0.6
-
 %description
 This package contains the Python SDK for version 4 of the oVirt Engine
 API.
