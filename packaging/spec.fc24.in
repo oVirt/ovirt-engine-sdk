@@ -28,7 +28,6 @@ API.
 Summary: oVirt Engine Software Development Kit (Python)
 Requires: libxml2
 Requires: python3
-Requires: python3-enum34
 Requires: python3-pycurl
 Requires: python3-six
 
