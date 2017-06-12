@@ -16,6 +16,8 @@
 # limitations under the License.
 #
 
+import six
+
 from io import BytesIO
 from nose.tools import *
 from ovirtsdk4.xml import XmlReader
@@ -25,7 +27,9 @@ def make_reader(text):
     """
     Creates an IO objec that reads from the given text.
     """
-    return XmlReader(BytesIO(text.encode('utf-8')))
+    if six.PY3:
+        text = text.encode('utf-8')
+    return XmlReader(BytesIO(text))
 
 
 def test_get_attribute_with_value():
@@ -166,3 +170,12 @@ def test_read_element_after_empty_list():
     reader.read()
     assert_equals(reader.read_elements(), [])
     assert_equals(reader.read_element(), 'next')
+
+
+def test_read_accents():
+    """
+    Checks that reading text that is already encoded using UTF-8
+    works correctly.
+    """
+    reader = make_reader('<root>áéíóúÁÉÍÓÚ</root>')
+    assert_equals(reader.read_element(), 'áéíóúÁÉÍÓÚ')

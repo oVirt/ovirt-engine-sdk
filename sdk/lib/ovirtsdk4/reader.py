@@ -19,6 +19,7 @@
 import datetime
 import io
 import re
+import six
 
 from ovirtsdk4 import Error
 from ovirtsdk4 import xml
@@ -294,7 +295,12 @@ class Reader(object):
         # If the source is a string or IO object then create a XML reader from it:
         cursor = None
         if isinstance(source, str):
-            cursor = xml.XmlReader(io.BytesIO(source.encode('utf-8')))
+            # In Python 3 str is a list of 16 bits characters, so it
+            # needs to be converted to an array of bytes, using UTF-8,
+            # before trying to parse it.
+            if six.PY3:
+                source = source.encode('utf-8')
+            cursor = xml.XmlReader(io.BytesIO(source))
         elif isinstance(source, bytes):
             cursor = xml.XmlReader(io.BytesIO(source))
         elif isinstance(source, io.BytesIO):
