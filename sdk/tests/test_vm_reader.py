@@ -16,6 +16,8 @@
 # limitations under the License.
 #
 
+import six
+
 import ovirtsdk4.types as types
 
 from io import BytesIO
@@ -27,11 +29,13 @@ from ovirtsdk4.readers import VmReader
 from ovirtsdk4.xml import XmlReader
 
 
-def make_buffer(str):
+def make_buffer(text):
     """
     Creates an IO object to be used for writing.
     """
-    return BytesIO(str.encode('utf-8'))
+    if six.PY3:
+        text = text.encode('utf-8')
+    return BytesIO(text)
 
 
 def test_reading_of_INHERITABLE_BOOLEAN_FALSE():
@@ -103,3 +107,18 @@ def test_reading_of_INHERITABLE_BOOLEAN_unsupported_value():
 
     assert_true(isinstance(result, types.Vm))
     assert_equals(result.migration.auto_converge, None)
+
+def test_reading_name_with_accents():
+    """
+    Test that reading a VM that has a name with accents works correctly.
+    """
+    reader = XmlReader(make_buffer(
+        '<vm>'
+        '<name>áéíóúÁÉÍÓÚ</name>'
+        '</vm>'
+    ))
+    result = VmReader.read_one(reader)
+    reader.close()
+
+    assert_true(isinstance(result, types.Vm))
+    assert_equals(result.name, 'áéíóúÁÉÍÓÚ')
