@@ -28,8 +28,20 @@ from the API model.
 
 The code generator is a Java program that resides in the `generator`
 directory. This Java program will get the API model and the metamodel
-artifacts from the available Maven repositories. To build and run it use
-the following commands:
+artifacts from the available Maven repositories. Because of that in
+order to build the Python SDK you need to install some additional
+dependencies. For example to install with the `yum` package manager
+you will need to do the following:
+
+  # yum -y install \
+  git \
+  java-1.8.0-openjdk \
+  maven \
+  python-flake8 \
+  python-nose \
+  python-wheel
+
+To run the build use the following commands:
 
   $ git clone git://gerrit.ovirt.org/ovirt-engine-sdk
   $ mvn package
