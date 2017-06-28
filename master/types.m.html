@@ -3286,6 +3286,22 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Action.attachment" class="name">var <span class="ident">attachment</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Action.authorized_key" class="name">var <span class="ident">authorized_key</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Action.bricks" class="name">var <span class="ident">bricks</span></p>
             
 
@@ -3311,6 +3327,14 @@ table {
             </div>
             <div class="item">
             <p id="ovirtsdk4.types.Action.clone" class="name">var <span class="ident">clone</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Action.clone_permissions" class="name">var <span class="ident">clone_permissions</span></p>
             
 
             
@@ -3347,6 +3371,14 @@ table {
 <p>Returns the value of the <code>comment</code> property.</p>
 </div>
 </div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Action.connection" class="name">var <span class="ident">connection</span></p>
+            
+
+            
+  
 
             </div>
             <div class="item">
@@ -3638,6 +3670,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Action.permission" class="name">var <span class="ident">permission</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Action.power_management" class="name">var <span class="ident">power_management</span></p>
             
 
@@ -3853,11 +3893,19 @@ table {
   
 
             </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Action.volatile" class="name">var <span class="ident">volatile</span></p>
+            
+
+            
+  
+
+            </div>
           <h3>Methods</h3>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Action.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, allow_partial_import=None, async=None, bricks=None, certificates=None, check_connectivity=None, clone=None, cluster=None, collapse_snapshots=None, comment=None, connectivity_timeout=None, data_center=None, deploy_hosted_engine=None, description=None, details=None, discard_snapshots=None, disk=None, disks=None, exclusive=None, fault=None, fence_type=None, filter=None, fix_layout=None, force=None, grace_period=None, host=None, id=None, image=None, import_as_template=None, is_attached=None, iscsi=None, iscsi_targets=None, job=None, logical_units=None, maintenance_enabled=None, modified_bonds=None, modified_labels=None, modified_network_attachments=None, name=None, option=None, pause=None, power_management=None, proxy_ticket=None, reason=None, reassign_bad_macs=None, remote_viewer_connection_file=None, removed_bonds=None, removed_labels=None, removed_network_attachments=None, resolution_type=None, restore_memory=None, root_password=None, snapshot=None, ssh=None, status=None, stop_gluster_service=None, storage_domain=None, storage_domains=None, succeeded=None, synchronized_network_attachments=None, template=None, ticket=None, undeploy_hosted_engine=None, use_cloud_init=None, use_sysprep=None, virtual_functions_configuration=None, vm=None, vnic_profile_mappings=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, allow_partial_import=None, async=None, attachment=None, authorized_key=None, bricks=None, certificates=None, check_connectivity=None, clone=None, clone_permissions=None, cluster=None, collapse_snapshots=None, comment=None, connection=None, connectivity_timeout=None, data_center=None, deploy_hosted_engine=None, description=None, details=None, discard_snapshots=None, disk=None, disks=None, exclusive=None, fault=None, fence_type=None, filter=None, fix_layout=None, force=None, grace_period=None, host=None, id=None, image=None, import_as_template=None, is_attached=None, iscsi=None, iscsi_targets=None, job=None, logical_units=None, maintenance_enabled=None, modified_bonds=None, modified_labels=None, modified_network_attachments=None, name=None, option=None, pause=None, permission=None, power_management=None, proxy_ticket=None, reason=None, reassign_bad_macs=None, remote_viewer_connection_file=None, removed_bonds=None, removed_labels=None, removed_network_attachments=None, resolution_type=None, restore_memory=None, root_password=None, snapshot=None, ssh=None, status=None, stop_gluster_service=None, storage_domain=None, storage_domains=None, succeeded=None, synchronized_network_attachments=None, template=None, ticket=None, undeploy_hosted_engine=None, use_cloud_init=None, use_sysprep=None, virtual_functions_configuration=None, vm=None, vnic_profile_mappings=None, volatile=None)</p>
     </div>
     
     <p class="inheritance">
@@ -8489,6 +8537,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.DiskAttachment.read_only" class="name">var <span class="ident">read_only</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.DiskAttachment.template" class="name">var <span class="ident">template</span></p>
             
 
@@ -8516,7 +8572,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.DiskAttachment.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, bootable=None, comment=None, description=None, disk=None, id=None, interface=None, logical_name=None, name=None, pass_discard=None, template=None, uses_scsi_reservation=None, vm=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, bootable=None, comment=None, description=None, disk=None, id=None, interface=None, logical_name=None, name=None, pass_discard=None, read_only=None, template=None, uses_scsi_reservation=None, vm=None)</p>
     </div>
     
     <p class="inheritance">
@@ -10256,6 +10312,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Event.index" class="name">var <span class="ident">index</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Event.name" class="name">var <span class="ident">name</span></p>
             
     <p class="inheritance">
@@ -10331,7 +10395,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Event.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, cluster=None, code=None, comment=None, correlation_id=None, custom_data=None, custom_id=None, data_center=None, description=None, flood_rate=None, host=None, id=None, name=None, origin=None, severity=None, storage_domain=None, template=None, time=None, user=None, vm=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, cluster=None, code=None, comment=None, correlation_id=None, custom_data=None, custom_id=None, data_center=None, description=None, flood_rate=None, host=None, id=None, index=None, name=None, origin=None, severity=None, storage_domain=None, template=None, time=None, user=None, vm=None)</p>
     </div>
     
     <p class="inheritance">
@@ -15605,6 +15669,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.HostDevice.driver" class="name">var <span class="ident">driver</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.HostDevice.host" class="name">var <span class="ident">host</span></p>
             
 
@@ -15728,7 +15800,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.HostDevice.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, capability=None, comment=None, description=None, host=None, id=None, iommu_group=None, name=None, parent_device=None, physical_function=None, placeholder=None, product=None, vendor=None, virtual_functions=None, vm=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, capability=None, comment=None, description=None, driver=None, host=None, id=None, iommu_group=None, name=None, parent_device=None, physical_function=None, placeholder=None, product=None, vendor=None, virtual_functions=None, vm=None)</p>
     </div>
     
     <p class="inheritance">
@@ -21328,6 +21400,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.NetworkFilterParameter.nic" class="name">var <span class="ident">nic</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.NetworkFilterParameter.value" class="name">var <span class="ident">value</span></p>
             
 
@@ -21339,7 +21419,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.NetworkFilterParameter.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, comment=None, description=None, id=None, name=None, value=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, comment=None, description=None, id=None, name=None, nic=None, value=None)</p>
     </div>
     
     <p class="inheritance">
