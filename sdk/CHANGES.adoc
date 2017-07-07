@@ -2,6 +2,12 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.1.6 / Jul 7 2017
+Bug fixes:
+
+ * Fix parsing of multi-byte UTF-8 characters
+   https://bugzilla.redhat.com/1461060[#1461060].
+
 == 4.1.5 / Jun 7 2017
 Update to model 4.1.37.
 
