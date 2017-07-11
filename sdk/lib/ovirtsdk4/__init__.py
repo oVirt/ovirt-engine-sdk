@@ -524,10 +524,11 @@ class Connection(object):
             sso_response = sso_response[0]
 
         if 'error' in sso_response:
+            sso_error = self._get_sso_error(sso_response)
             raise Error(
                 'Error during SSO revoke %s : %s' % (
-                    sso_response['error_code'],
-                    sso_response['error']
+                    sso_error[0],
+                    sso_error[1]
                 )
             )
 
@@ -574,14 +575,24 @@ class Connection(object):
             sso_response = sso_response[0]
 
         if 'error' in sso_response:
+            sso_error = self._get_sso_error(sso_response)
             raise Error(
                 'Error during SSO authentication %s : %s' % (
-                    sso_response['error_code'],
-                    sso_response['error']
+                    sso_error[0],
+                    sso_error[1]
                 )
             )
 
         return sso_response[self._sso_token_name]
+
+    def _get_sso_error(self, sso_response):
+        # OpenId define `error_description` field, OAuth doesn't:
+        if 'error_description' in sso_response:
+            sso_error = (sso_response.get('error'), sso_response.get('error_description'))
+        else:
+            sso_error = (sso_response.get('error_code'), sso_response.get('error'))
+
+        return sso_error
 
     def _get_sso_response(self, url, params=''):
         """
