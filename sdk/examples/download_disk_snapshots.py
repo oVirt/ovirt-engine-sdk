@@ -92,6 +92,7 @@ def get_proxy_connection(proxy_url):
 def download_disk_snapshot(disk_snapshot):
     print "Downloading disk snapshot %s" % disk_snapshot.id
 
+    transfer_service = None
     try:
         transfer_service = get_transfer_service(disk_snapshot.id)
         transfer = transfer_service.get()
@@ -147,7 +148,8 @@ def download_disk_snapshot(disk_snapshot):
                 print "Completed", "{:.0%}".format(completed)
     finally:
         # Finalize the session.
-        transfer_service.finalize()
+        if transfer_service is not None:
+            transfer_service.finalize()
 
 if __name__ == "__main__":
 
