@@ -2,6 +2,22 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.1.7 / Oct 11 2017
+Update to model 4.1.39 and metamodel 1.1.14:
+
+New features:
+
+ * Add support for Link Layer Discovery Protocol (LLDP).
+ 
+ * Add support for listing cluster level features, and enabling/disabing
+   them for clusters.
+ 
+ * Add a `refresh` parameter to `FilesService.list`.
+
+Bug fixes:
+
+ * Use select of pycurl multi object.
+
 == 4.1.6 / Jul 7 2017
 Bug fixes:
 
