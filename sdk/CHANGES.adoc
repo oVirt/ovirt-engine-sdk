@@ -2,7 +2,7 @@
 
 This document describes the relevant changes between releases of the SDK.
 
-== 4.2.0-a3 / Sep 25 2017
+== 4.2.1-a2 / Sep 25 2017
 
 Update to model 4.2.19:
 
