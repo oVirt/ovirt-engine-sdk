@@ -2,7 +2,66 @@
 
 This document describes the relevant changes between releases of the SDK.
 
-== 4.2.0-a1 / Juan 6 2017
+== 4.2.0-a3 / Sep 25 2017
+
+Update to model 4.2.19:
+
+* Add new `NicNetworkFilterParameter` type and related services.
+
+* Add `StorageDomainDisks` and `AttachedStorageDomainDisks`.
+
+* Add operation to register storage domain disk.
+
+* Add `all_content` parameter to snapshots services.
+
+* Add `default_route` value to the `NetworkUsage` enum.
+
+* Add the `all_content` parameter to `Host.Get` and `Hosts.List`.
+
+* Fix the documentation of the method that lists events
+  https://bugzilla.redhat.com/1447622[#1447622].
+
+* Fix the direction of the main parameter of the method that adds a
+  CDROM to a virtual machine. It should be input and output.
+
+* Add the `index` attribute to the `Event` type
+  https://bugzilla.redhat.com/1448511[#1448511].
+
+* Add `volatile` parameter to the method that starts a virtual machine.
+
+* Add `RefreshLun` method to the service that manages a disk.
+  https://bugzilla.redhat.com/1404389[#1404389].
+
+* Add Link Layer Discovery Protocol (LLDP).
+
+* Add a `refresh` parameter to `FilesService.list`.
+
+* Add `firewal_type` attribute to the `Cluster` type.
+
+* Add `has_illegal_images` attribute to the `Vm` type.
+
+* Add support for creating image transfers using disks and snapshots.
+
+* Add `size` and `type` properties to the `Image` type.
+
+* Add `total_size` attribute to the `Disk` type.
+
+* Add support for listing cluster level features, and enabling/disabing
+  them for clusters.
+
+* Storage domain identifier isn't mandatory to create quota limit.
+
+* Don't require deprecated affinity group attributes
+  https://bugzilla.redhat.com/1488729[#1488729].
+
+* Fix optional fields in storage domain add and update
+  https://bugzilla.redhat.com/1488929[1488929].
+
+* Add new `HIGH_PERFORMANCE` value to the `VmType` enum.
+
+* Add new types and services for access to system configuration options.
+
+== 4.2.0-a2 / June 6 2017
 Update to model 4.2.6 and metamodel 1.2.2.
 
 == 4.1.4 / May 25 2017
