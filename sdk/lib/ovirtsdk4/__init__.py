@@ -461,30 +461,37 @@ class Connection(object):
 
     def __wait(self, context, failed_auth=False):
         while True:
-            self._multi.perform()
-            _, ok_list, err_list = self._multi.info_read()
-            self._curls = self._curls.union(set(ok_list))
-            if err_list:
-                raise Error("Failed to read response.")
-            elif context[0] in self._curls:
-                # Remove the curl:
-                self._curls.remove(context[0])
-                self._multi.remove_handle(context[0])
+            while True:
+                ret, _ = self._multi.perform()
+                if ret != pycurl.E_CALL_MULTI_PERFORM:
+                    break
+            while True:
+                num_q, ok_list, err_list = self._multi.info_read()
+                self._curls = self._curls.union(set(ok_list))
+                if err_list:
+                    raise Error("Failed to read response.")
+                elif context[0] in self._curls:
+                    # Remove the curl:
+                    self._curls.remove(context[0])
+                    self._multi.remove_handle(context[0])
 
-                # Read the response:
-                response = self._read_reponse(context)
+                    # Read the response:
+                    response = self._read_reponse(context)
 
-                # If the request failed because of authentication, and it
-                # wasn't a request to the SSO service, then the most likely
-                # cause is an expired SSO token. In this case we need to
-                # request a new token, and try the original request again, but
-                # only once. It if fails again, we just return the failed
-                # response.
-                if response.code == 401 and not failed_auth:
-                    self._sso_token = self._get_access_token()
-                    context = self.__send(context[3])
-                    response = self.__wait(context, True)
-                return response
+                    # If the request failed because of authentication, and it
+                    # wasn't a request to the SSO service, then the most likely
+                    # cause is an expired SSO token. In this case we need to
+                    # request a new token, and try the original request again, but
+                    # only once. It if fails again, we just return the failed
+                    # response.
+                    if response.code == 401 and not failed_auth:
+                        self._sso_token = self._get_access_token()
+                        context = self.__send(context[3])
+                        response = self.__wait(context, True)
+                    return response
+                elif num_q == 0:
+                    break
+            self._multi.select(1.0)
 
     @property
     def url(self):
