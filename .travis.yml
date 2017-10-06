@@ -13,7 +13,7 @@ matrix:
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl --with-openssl ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install rubygems ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install ruby ; fi
   - sudo gem install asciidoctor
   - sudo pip install flake8
   - sudo pip install nose
