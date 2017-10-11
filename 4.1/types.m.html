@@ -1273,6 +1273,15 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.ClusterFeature">ClusterFeature</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.types.ClusterFeature.__init__">__init__</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.types.ClusterLevel">ClusterLevel</a></span>
         
           
@@ -2067,6 +2076,15 @@ table {
           
   <ul>
     <li class="mono"><a href="#ovirtsdk4.types.Ksm.__init__">__init__</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.LinkLayerDiscoveryProtocolElement">LinkLayerDiscoveryProtocolElement</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.__init__">__init__</a></li>
   </ul>
 
         </li>
@@ -6289,6 +6307,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Cluster.enabled_features" class="name">var <span class="ident">enabled_features</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Cluster.error_handling" class="name">var <span class="ident">error_handling</span></p>
             
 
@@ -6556,7 +6582,130 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Cluster.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_groups=None, ballooning_enabled=None, comment=None, cpu=None, cpu_profiles=None, custom_scheduling_policy_properties=None, data_center=None, description=None, display=None, error_handling=None, fencing_policy=None, gluster_hooks=None, gluster_service=None, gluster_tuned_profile=None, gluster_volumes=None, ha_reservation=None, id=None, ksm=None, mac_pool=None, maintenance_reason_required=None, management_network=None, memory_policy=None, migration=None, name=None, network_filters=None, networks=None, optional_reason=None, permissions=None, required_rng_sources=None, scheduling_policy=None, serial_number=None, supported_versions=None, switch_type=None, threads_as_cores=None, trusted_service=None, tunnel_migration=None, version=None, virt_service=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_groups=None, ballooning_enabled=None, comment=None, cpu=None, cpu_profiles=None, custom_scheduling_policy_properties=None, data_center=None, description=None, display=None, enabled_features=None, error_handling=None, fencing_policy=None, gluster_hooks=None, gluster_service=None, gluster_tuned_profile=None, gluster_volumes=None, ha_reservation=None, id=None, ksm=None, mac_pool=None, maintenance_reason_required=None, management_network=None, memory_policy=None, migration=None, name=None, network_filters=None, networks=None, optional_reason=None, permissions=None, required_rng_sources=None, scheduling_policy=None, serial_number=None, supported_versions=None, switch_type=None, threads_as_cores=None, trusted_service=None, tunnel_migration=None, version=None, virt_service=None)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.__init__">__init__</a></code>
+    </p>
+
+    
+  
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.types.ClusterFeature" class="name">class <span class="ident">ClusterFeature</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.ClusterFeature">ClusterFeature</a></li>
+          <li><a href="#ovirtsdk4.types.Identified">Identified</a></li>
+          <li>ovirtsdk4.Struct</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.ClusterFeature.cluster_level" class="name">var <span class="ident">cluster_level</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ClusterFeature.comment" class="name">var <span class="ident">comment</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.comment">comment</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>comment</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ClusterFeature.description" class="name">var <span class="ident">description</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.description">description</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>description</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ClusterFeature.href" class="name">var <span class="ident">href</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.href">href</a></code>
+    </p>
+
+            
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Returns the value of the <code>href</code> attribute.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ClusterFeature.id" class="name">var <span class="ident">id</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.id">id</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>id</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ClusterFeature.name" class="name">var <span class="ident">name</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.name">name</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>name</code> property.</p>
+</div>
+</div>
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.types.ClusterFeature.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, cluster_level=None, comment=None, description=None, id=None, name=None)</p>
     </div>
     
     <p class="inheritance">
@@ -6587,6 +6736,14 @@ table {
           <li>__builtin__.object</li>
           </ul>
           <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.ClusterLevel.cluster_features" class="name">var <span class="ident">cluster_features</span></p>
+            
+
+            
+  
+
+            </div>
             <div class="item">
             <p id="ovirtsdk4.types.ClusterLevel.comment" class="name">var <span class="ident">comment</span></p>
             
@@ -6687,7 +6844,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.ClusterLevel.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, comment=None, cpu_types=None, description=None, id=None, name=None, permits=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, cluster_features=None, comment=None, cpu_types=None, description=None, id=None, name=None, permits=None)</p>
     </div>
     
     <p class="inheritance">
@@ -19610,6 +19767,153 @@ table {
     <p>def <span class="ident">__init__</span>(</p><p>self, enabled=None, merge_across_nodes=None)</p>
     </div>
     
+
+    
+  
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.types.LinkLayerDiscoveryProtocolElement" class="name">class <span class="ident">LinkLayerDiscoveryProtocolElement</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.LinkLayerDiscoveryProtocolElement">LinkLayerDiscoveryProtocolElement</a></li>
+          <li><a href="#ovirtsdk4.types.Identified">Identified</a></li>
+          <li>ovirtsdk4.Struct</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.comment" class="name">var <span class="ident">comment</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.comment">comment</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>comment</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.description" class="name">var <span class="ident">description</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.description">description</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>description</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.href" class="name">var <span class="ident">href</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.href">href</a></code>
+    </p>
+
+            
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Returns the value of the <code>href</code> attribute.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.id" class="name">var <span class="ident">id</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.id">id</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>id</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.name" class="name">var <span class="ident">name</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.name">name</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>name</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.oui" class="name">var <span class="ident">oui</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.properties" class="name">var <span class="ident">properties</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.subtype" class="name">var <span class="ident">subtype</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.type" class="name">var <span class="ident">type</span></p>
+            
+
+            
+  
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, comment=None, description=None, id=None, name=None, oui=None, properties=None, subtype=None, type=None)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.__init__">__init__</a></code>
+    </p>
 
     
   
