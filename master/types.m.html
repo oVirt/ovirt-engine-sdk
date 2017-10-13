@@ -1578,6 +1578,15 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.ExternalNetworkProviderConfiguration">ExternalNetworkProviderConfiguration</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.types.ExternalNetworkProviderConfiguration.__init__">__init__</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.types.ExternalProvider">ExternalProvider</a></span>
         
           
@@ -6414,6 +6423,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Cluster.external_network_providers" class="name">var <span class="ident">external_network_providers</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Cluster.fencing_policy" class="name">var <span class="ident">fencing_policy</span></p>
             
 
@@ -6681,7 +6698,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Cluster.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_groups=None, ballooning_enabled=None, comment=None, cpu=None, cpu_profiles=None, custom_scheduling_policy_properties=None, data_center=None, description=None, display=None, enabled_features=None, error_handling=None, fencing_policy=None, firewall_type=None, gluster_hooks=None, gluster_service=None, gluster_tuned_profile=None, gluster_volumes=None, ha_reservation=None, id=None, ksm=None, mac_pool=None, maintenance_reason_required=None, management_network=None, memory_policy=None, migration=None, name=None, network_filters=None, networks=None, optional_reason=None, permissions=None, required_rng_sources=None, scheduling_policy=None, serial_number=None, supported_versions=None, switch_type=None, threads_as_cores=None, trusted_service=None, tunnel_migration=None, version=None, virt_service=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_groups=None, ballooning_enabled=None, comment=None, cpu=None, cpu_profiles=None, custom_scheduling_policy_properties=None, data_center=None, description=None, display=None, enabled_features=None, error_handling=None, external_network_providers=None, fencing_policy=None, firewall_type=None, gluster_hooks=None, gluster_service=None, gluster_tuned_profile=None, gluster_volumes=None, ha_reservation=None, id=None, ksm=None, mac_pool=None, maintenance_reason_required=None, management_network=None, memory_policy=None, migration=None, name=None, network_filters=None, networks=None, optional_reason=None, permissions=None, required_rng_sources=None, scheduling_policy=None, serial_number=None, supported_versions=None, switch_type=None, threads_as_cores=None, trusted_service=None, tunnel_migration=None, version=None, virt_service=None)</p>
     </div>
     
     <p class="inheritance">
@@ -11475,6 +11492,137 @@ table {
       </div>
       
       <div class="item">
+      <p id="ovirtsdk4.types.ExternalNetworkProviderConfiguration" class="name">class <span class="ident">ExternalNetworkProviderConfiguration</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.ExternalNetworkProviderConfiguration">ExternalNetworkProviderConfiguration</a></li>
+          <li><a href="#ovirtsdk4.types.Identified">Identified</a></li>
+          <li>ovirtsdk4.Struct</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.ExternalNetworkProviderConfiguration.comment" class="name">var <span class="ident">comment</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.comment">comment</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>comment</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ExternalNetworkProviderConfiguration.description" class="name">var <span class="ident">description</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.description">description</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>description</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ExternalNetworkProviderConfiguration.external_network_provider" class="name">var <span class="ident">external_network_provider</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ExternalNetworkProviderConfiguration.host" class="name">var <span class="ident">host</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ExternalNetworkProviderConfiguration.href" class="name">var <span class="ident">href</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.href">href</a></code>
+    </p>
+
+            
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Returns the value of the <code>href</code> attribute.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ExternalNetworkProviderConfiguration.id" class="name">var <span class="ident">id</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.id">id</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>id</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ExternalNetworkProviderConfiguration.name" class="name">var <span class="ident">name</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.name">name</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>name</code> property.</p>
+</div>
+</div>
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.types.ExternalNetworkProviderConfiguration.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, comment=None, description=None, external_network_provider=None, host=None, id=None, name=None)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.__init__">__init__</a></code>
+    </p>
+
+    
+  
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="ovirtsdk4.types.ExternalProvider" class="name">class <span class="ident">ExternalProvider</span></p>
       
   
@@ -15506,6 +15654,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Host.external_network_provider_configurations" class="name">var <span class="ident">external_network_provider_configurations</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Host.external_status" class="name">var <span class="ident">external_status</span></p>
             
 
@@ -15853,7 +16009,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Host.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, address=None, affinity_labels=None, agents=None, auto_numa_status=None, certificate=None, cluster=None, comment=None, cpu=None, description=None, device_passthrough=None, devices=None, display=None, external_host_provider=None, external_status=None, hardware_information=None, hooks=None, hosted_engine=None, id=None, iscsi=None, katello_errata=None, kdump_status=None, ksm=None, libvirt_version=None, max_scheduling_memory=None, memory=None, name=None, network_attachments=None, nics=None, numa_nodes=None, numa_supported=None, os=None, override_iptables=None, permissions=None, port=None, power_management=None, protocol=None, root_password=None, se_linux=None, spm=None, ssh=None, statistics=None, status=None, status_detail=None, storage_connection_extensions=None, storages=None, summary=None, tags=None, transparent_huge_pages=None, type=None, unmanaged_networks=None, update_available=None, version=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, address=None, affinity_labels=None, agents=None, auto_numa_status=None, certificate=None, cluster=None, comment=None, cpu=None, description=None, device_passthrough=None, devices=None, display=None, external_host_provider=None, external_network_provider_configurations=None, external_status=None, hardware_information=None, hooks=None, hosted_engine=None, id=None, iscsi=None, katello_errata=None, kdump_status=None, ksm=None, libvirt_version=None, max_scheduling_memory=None, memory=None, name=None, network_attachments=None, nics=None, numa_nodes=None, numa_supported=None, os=None, override_iptables=None, permissions=None, port=None, power_management=None, protocol=None, root_password=None, se_linux=None, spm=None, ssh=None, statistics=None, status=None, status_detail=None, storage_connection_extensions=None, storages=None, summary=None, tags=None, transparent_huge_pages=None, type=None, unmanaged_networks=None, update_available=None, version=None)</p>
     </div>
     
     <p class="inheritance">

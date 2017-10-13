@@ -1473,6 +1473,17 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.services.ClusterExternalProvidersService">ClusterExternalProvidersService</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.services.ClusterExternalProvidersService.__init__">__init__</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ClusterExternalProvidersService.list">list</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ClusterExternalProvidersService.service">service</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.services.ClusterFeatureService">ClusterFeatureService</a></span>
         
           
@@ -1554,6 +1565,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.affinity_groups_service">affinity_groups_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.cpu_profiles_service">cpu_profiles_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.enabled_features_service">enabled_features_service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ClusterService.external_network_providers_service">external_network_providers_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.get">get</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.gluster_hooks_service">gluster_hooks_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.gluster_volumes_service">gluster_volumes_service</a></li>
@@ -2022,6 +2034,29 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.services.ExternalNetworkProviderConfigurationService">ExternalNetworkProviderConfigurationService</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.services.ExternalNetworkProviderConfigurationService.__init__">__init__</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ExternalNetworkProviderConfigurationService.get">get</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ExternalNetworkProviderConfigurationService.service">service</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.services.ExternalNetworkProviderConfigurationsService">ExternalNetworkProviderConfigurationsService</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.services.ExternalNetworkProviderConfigurationsService.__init__">__init__</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ExternalNetworkProviderConfigurationsService.configuration_service">configuration_service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ExternalNetworkProviderConfigurationsService.list">list</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ExternalNetworkProviderConfigurationsService.service">service</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.services.ExternalProviderCertificateService">ExternalProviderCertificateService</a></span>
         
           
@@ -2378,6 +2413,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.HostService.deactivate">deactivate</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.devices_service">devices_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.enroll_certificate">enroll_certificate</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.HostService.external_network_provider_configurations_service">external_network_provider_configurations_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.fence">fence</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.fence_agents_service">fence_agents_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.force_select_spm">force_select_spm</a></li>
@@ -8902,6 +8938,72 @@ For example, to get the features enabled for cluster <code>123</code> send a req
       </div>
       
       <div class="item">
+      <p id="ovirtsdk4.services.ClusterExternalProvidersService" class="name">class <span class="ident">ClusterExternalProvidersService</span></p>
+      
+  
+    <div class="desc"><div class="paragraph">
+<p>This service lists external providers.</p>
+</div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.services.ClusterExternalProvidersService">ClusterExternalProvidersService</a></li>
+          <li>ovirtsdk4.service.Service</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ClusterExternalProvidersService.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, connection, path)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ClusterExternalProvidersService.list">
+    <p>def <span class="ident">list</span>(</p><p>self, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the list of external providers.
+The order of the returned list of providers is not guaranteed.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ClusterExternalProvidersService.service">
+    <p>def <span class="ident">service</span>(</p><p>self, path)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Service locator method, returns individual service on which the URI is dispatched.</p>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="ovirtsdk4.services.ClusterFeatureService" class="name">class <span class="ident">ClusterFeatureService</span></p>
       
   
@@ -9581,7 +9683,7 @@ The order of the returned clusters isn&#8217;t guaranteed.</p>
       
   
     <div class="desc"><div class="paragraph">
-<p>A service to manage specific cluster.</p>
+<p>A service to manage a specific cluster.</p>
 </div>
 </div>
 
@@ -9616,7 +9718,7 @@ The order of the returned clusters isn&#8217;t guaranteed.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that manages affinity groups.</p>
+<p>A reference to the service that manages affinity groups.</p>
 </div>
 </div>
 
@@ -9632,7 +9734,7 @@ The order of the returned clusters isn&#8217;t guaranteed.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that manages assigned CPU profiles for cluster.</p>
+<p>A reference to the service that manages assigned CPU profiles for the cluster.</p>
 </div>
 </div>
 
@@ -9648,7 +9750,23 @@ The order of the returned clusters isn&#8217;t guaranteed.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that manages the collection of enabled features for this cluster.</p>
+<p>A reference to the service that manages the collection of enabled features for the cluster.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ClusterService.external_network_providers_service">
+    <p>def <span class="ident">external_network_providers_service</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>A reference to the service that manages the collection of external network providers.</p>
 </div>
 </div>
 
@@ -9664,7 +9782,7 @@ The order of the returned clusters isn&#8217;t guaranteed.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Get information about the cluster.
+<p>Gets information about the cluster.
 An example of getting a cluster:</p>
 </div>
 <div class="listingblock">
@@ -9780,7 +9898,7 @@ An example of getting a cluster:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that manages the Gluster hooks for cluster.</p>
+<p>A reference to the service that manages the Gluster hooks for the cluster.</p>
 </div>
 </div>
 
@@ -9796,7 +9914,7 @@ An example of getting a cluster:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that manages Gluster volumes for cluster.</p>
+<p>A reference to the service that manages Gluster volumes for the cluster.</p>
 </div>
 </div>
 
@@ -9812,7 +9930,7 @@ An example of getting a cluster:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>A sub collection with all the supported network filters for this cluster.</p>
+<p>A sub-collection with all the supported network filters for the cluster.</p>
 </div>
 </div>
 
@@ -9828,7 +9946,7 @@ An example of getting a cluster:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that manages assigned networks for cluster.</p>
+<p>A reference to the service that manages assigned networks for the cluster.</p>
 </div>
 </div>
 
@@ -9844,7 +9962,7 @@ An example of getting a cluster:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to permissions.</p>
+<p>A reference to permissions.</p>
 </div>
 </div>
 
@@ -9860,7 +9978,7 @@ An example of getting a cluster:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Removes cluster from the system.</p>
+<p>Removes the cluster from the system.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -9957,8 +10075,8 @@ An example of getting a cluster:</p>
   
     <div class="desc"><div class="paragraph">
 <p>Updates information about the cluster.
-Only specified fields are updated, others remain unchanged.
-E.g. update cluster&#8217;s CPU:</p>
+Only the specified fields are updated; others remain unchanged.
+For example, to update the cluster&#8217;s CPU:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -9966,7 +10084,7 @@ E.g. update cluster&#8217;s CPU:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>With request body like:</p>
+<p>With a request body like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -10025,8 +10143,8 @@ E.g. update cluster&#8217;s CPU:</p>
   
     <div class="desc"><div class="paragraph">
 <p>Creates a new cluster.
-This requires the <code>name</code>, <code>cpu.type</code> and <code>data_center</code> attributes. Identify the data center with either the <code>id</code>
-or <code>name</code> attributes.</p>
+This requires the <code>name</code>, <code>cpu.type</code>, and <code>data_center</code> attributes. Identify the data center with either the <code>id</code>
+or <code>name</code> attribute.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -10047,6 +10165,32 @@ or <code>name</code> attributes.</p>
 &lt;/cluster&gt;</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>To create a cluster with an external network provider to be deployed on
+every host that is added to the cluster, send a request like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/clusters</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body containing a reference to the desired provider:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;cluster&gt;
+  &lt;name&gt;mycluster&lt;/name&gt;
+  &lt;cpu&gt;
+    &lt;type&gt;Intel Penryn Family&lt;/type&gt;
+  &lt;/cpu&gt;
+  &lt;data_center id="123"/&gt;
+  &lt;external_network_providers&gt;
+    &lt;external_provider id="321"/&gt;
+  &lt;/external_network_providers&gt;
+&lt;/cluster&gt;</code></pre>
+</div>
+</div>
 </div>
 
   </div>
@@ -10061,7 +10205,7 @@ or <code>name</code> attributes.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that manages a specific cluster.</p>
+<p>A reference to the service that manages a specific cluster.</p>
 </div>
 </div>
 
@@ -10088,7 +10232,7 @@ The order of the returned clusters is guaranteed only if the <code>sortby</code>
 <dl>
 <dt class="hdlist1"><code>max</code></dt>
 <dd>
-<p>Sets the maximum number of clusters to return. If not specified all the clusters are returned.</p>
+<p>Sets the maximum number of clusters to return. If not specified, all the clusters are returned.</p>
 </dd>
 <dt class="hdlist1"><code>search</code></dt>
 <dd>
@@ -10096,9 +10240,9 @@ The order of the returned clusters is guaranteed only if the <code>sortby</code>
 </dd>
 <dt class="hdlist1"><code>case_sensitive</code></dt>
 <dd>
-<p>Indicates if the search performed using the <code>search</code> parameter should be performed taking case into
-account. The default value is <code>true</code>, which means that case is taken into account. If you want to search
-ignoring case set it to <code>false</code>.</p>
+<p>Indicates if the search should be performed taking case into account.
+The default value is <code>true</code>, which means that case is taken into account. To search
+ignoring case, set it to <code>false</code>.</p>
 </dd>
 <dt class="hdlist1"><code>filter</code></dt>
 <dd>
@@ -15334,6 +15478,149 @@ The order of the returned list of hosts isn&#8217;t guaranteed.</p>
       </div>
       
       <div class="item">
+      <p id="ovirtsdk4.services.ExternalNetworkProviderConfigurationService" class="name">class <span class="ident">ExternalNetworkProviderConfigurationService</span></p>
+      
+  
+    <div class="desc"><div class="paragraph">
+<p>Describes how an external network provider is provisioned by the system on the host.</p>
+</div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.services.ExternalNetworkProviderConfigurationService">ExternalNetworkProviderConfigurationService</a></li>
+          <li>ovirtsdk4.service.Service</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ExternalNetworkProviderConfigurationService.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, connection, path)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ExternalNetworkProviderConfigurationService.get">
+    <p>def <span class="ident">get</span>(</p><p>self, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the information about an external network provider on the host.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ExternalNetworkProviderConfigurationService.service">
+    <p>def <span class="ident">service</span>(</p><p>self, path)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Service locator method, returns individual service on which the URI is dispatched.</p>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.services.ExternalNetworkProviderConfigurationsService" class="name">class <span class="ident">ExternalNetworkProviderConfigurationsService</span></p>
+      
+  
+    <div class="desc"><div class="paragraph">
+<p>A service to list all external network providers provisioned by the system on the host.</p>
+</div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.services.ExternalNetworkProviderConfigurationsService">ExternalNetworkProviderConfigurationsService</a></li>
+          <li>ovirtsdk4.service.Service</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ExternalNetworkProviderConfigurationsService.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, connection, path)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ExternalNetworkProviderConfigurationsService.configuration_service">
+    <p>def <span class="ident">configuration_service</span>(</p><p>self, id)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ExternalNetworkProviderConfigurationsService.list">
+    <p>def <span class="ident">list</span>(</p><p>self, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the list of all external network providers on the host.
+The order of the returned list of networks is not guaranteed.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ExternalNetworkProviderConfigurationsService.service">
+    <p>def <span class="ident">service</span>(</p><p>self, path)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Service locator method, returns individual service on which the URI is dispatched.</p>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="ovirtsdk4.services.ExternalProviderCertificateService" class="name">class <span class="ident">ExternalProviderCertificateService</span></p>
       
   
@@ -19912,6 +20199,22 @@ Use this service to view the devices of the host object.</p>
   
             
   <div class="item">
+    <div class="name def" id="ovirtsdk4.services.HostService.external_network_provider_configurations_service">
+    <p>def <span class="ident">external_network_provider_configurations_service</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>External network providers provisioned by the system on the host.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.fence">
     <p>def <span class="ident">fence</span>(</p><p>self, async=None, fence_type=None, headers=None, query=None, wait=True)</p>
     </div>
@@ -21182,6 +21485,36 @@ To add a hosted engine host, use the optional <code>deploy_hosted_engine</code> 
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code>POST /ovirt-engine/api/hosts?deploy_hosted_engine=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the cluster has a default external network provider which is supported for automatic deployment,
+the external network provider is deployed when adding the host.
+Only external network providers for OVN are supported for the automatic deployment.
+To deploy an external network provider that differs to what is defined in the clusters, overwrite the external
+network provider when adding hosts by sending a request like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/hosts</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body that contains a reference to the desired provider in the
+<code>external_network_provider_configuration</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;host&gt;
+  &lt;name&gt;myhost&lt;/name&gt;
+  &lt;address&gt;myhost.example.com&lt;/address&gt;
+  &lt;root_password&gt;123456&lt;/root_password&gt;
+  &lt;external_network_provider_configurations&gt;
+    &lt;external_network_provider_configuration&gt;
+      &lt;external_network_provider id="123"/&gt;
+    &lt;/external_network_provider_configuration&gt;
+  &lt;/external_network_provider_configurations&gt;
+&lt;/host&gt;</code></pre>
 </div>
 </div>
 <div class="paragraph">
