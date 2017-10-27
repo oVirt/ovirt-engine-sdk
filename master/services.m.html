@@ -12834,6 +12834,55 @@ To create a new floating Cinder disk, send a request as follows:</p>
 </div>
 </div>
 <div class="paragraph">
+<p><strong>Adding a floating disks in order to upload disk snapshots:</strong>
+Since version 4.2 of the engine it is possible to upload disks with
+snapshots. This request should be used to create the base image of the
+images chain (The consecutive disk snapshots (images), should be created
+using <code>disk-attachments</code> element when creating a snapshot).
+The disk has to be created with the same disk identifier and image identifier
+of the uploaded image. I.e. the identifiers should be saved as part of the
+backup process. The image identifier can be also fetched using the
+<code>qemu-img info</code> command. For example, if the disk image is stored into
+a file named <code>b7a4c6c5-443b-47c5-967f-6abc79675e8b/myimage.img</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="shell">$ qemu-img info b7a4c6c5-443b-47c5-967f-6abc79675e8b/myimage.img
+image: b548366b-fb51-4b41-97be-733c887fe305
+file format: qcow2
+virtual size: 1.0G (1073741824 bytes)
+disk size: 196K
+cluster_size: 65536
+backing file: ad58716a-1fe9-481f-815e-664de1df04eb
+backing file format: raw</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To create a disk with with the disk identifier and image identifier obtained
+with the <code>qemu-img info</code> command shown above, send a request like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/disks</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;disk id="b7a4c6c5-443b-47c5-967f-6abc79675e8b"&gt;
+  &lt;image_id&gt;b548366b-fb51-4b41-97be-733c887fe305&lt;/image_id&gt;
+  &lt;storage_domains&gt;
+    &lt;storage_domain id="123"/&gt;
+  &lt;/storage_domains&gt;
+  &lt;name&gt;mydisk&lt;/name&gt;
+  &lt;provisioned_size&gt;1048576&lt;/provisioned_size&gt;
+  &lt;format&gt;cow&lt;/format&gt;
+&lt;/disk&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -19946,7 +19995,7 @@ The order of the returned list of NUMA nodes isn&#8217;t guaranteed.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Activate the host for use, such as running virtual machines.</p>
+<p>Activates the host for use, for example to run virtual machines.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -20011,11 +20060,11 @@ This action also accepts an optional cluster element to define the target cluste
 <dl>
 <dt class="hdlist1"><code>host</code></dt>
 <dd>
-<p>Host to approve.</p>
+<p>The host to approve.</p>
 </dd>
 <dt class="hdlist1"><code>cluster</code></dt>
 <dd>
-<p>Cluster where the host will be added after approving it.</p>
+<p>The cluster where the host will be added after it is approved.</p>
 </dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
@@ -20107,7 +20156,7 @@ For example, to commit the network configuration of host with id <code>123</code
     
   
     <div class="desc"><div class="paragraph">
-<p>Deactivate the host to perform maintenance tasks.</p>
+<p>Deactivates the host to perform maintenance tasks.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -20151,8 +20200,7 @@ performing maintenance operations on the gluster host. Default value for this va
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the host devices service.
-Use this service to view the devices of the host object.</p>
+<p>A reference to the host devices service. Use this service to view the devices of the host object.</p>
 </div>
 </div>
 
@@ -20168,7 +20216,8 @@ Use this service to view the devices of the host object.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Enroll certificate of the host. Useful in case you get a warning that it is about to, or already expired.</p>
+<p>Enrolls the certificate of the host. Useful in case you get a warning that it is about to expire or has already
+expired.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -20223,8 +20272,8 @@ Use this service to view the devices of the host object.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Controls host&#8217;s power management device.
-For example, let&#8217;s assume you want to start the host. This can be done via:</p>
+<p>Controls the host&#8217;s power management device.
+For example, to start the host. This can be done via:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -20276,8 +20325,8 @@ curl         --verbose         --cacert /etc/pki/ovirt-engine/ca.pem         --u
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the fence agents service.
-Use this service to manage fence and power management agents on the host object.</p>
+<p>A reference to the fence agents service. Use this service to manage fence and power management agents on the host
+object.</p>
 </div>
 </div>
 
@@ -20293,7 +20342,7 @@ Use this service to manage fence and power management agents on the host object.
     
   
     <div class="desc"><div class="paragraph">
-<p>Manually set a host as the storage pool manager (SPM).</p>
+<p>To manually set a host as the storage pool manager (SPM).</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -20345,7 +20394,7 @@ Use this service to manage fence and power management agents on the host object.
     
   
     <div class="desc"><div class="paragraph">
-<p>Get the host details.</p>
+<p>Gets the host details.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -20425,8 +20474,7 @@ specifically required.
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the host hooks service.
-Use this service to view the hooks available in the host object.</p>
+<p>A reference to the host hooks service. Use this service to view the hooks available in the host object.</p>
 </div>
 </div>
 
@@ -20442,7 +20490,7 @@ Use this service to view the hooks available in the host object.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Install VDSM and related software on the host. The host type defines additional parameters for the action.
+<p>Installs VDSM and related software on the host. The host type defines additional parameters for the action.
 Example of installing a host, using <code>curl</code> and JSON, plain:</p>
 </div>
 <div class="listingblock">
@@ -20494,12 +20542,12 @@ definitions by default.
 </dd>
 <dt class="hdlist1"><code>host</code></dt>
 <dd>
-<p>This <code>override_iptables</code> property is used to indicate if the firewall configuration should be
-replaced by the default one.</p>
+<p>The <code>override_iptables</code> property is used to indicate if the firewall configuration should be replaced by the
+default one.</p>
 </dd>
 <dt class="hdlist1"><code>image</code></dt>
 <dd>
-<p>When installing an oVirt node a image ISO file is needed.</p>
+<p>When installing an {product-name} node a image ISO file is required.</p>
 </dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
@@ -20507,18 +20555,15 @@ replaced by the default one.</p>
 </dd>
 <dt class="hdlist1"><code>deploy_hosted_engine</code></dt>
 <dd>
-<p>When set to <code>true</code> it means this host should deploy also hosted
-engine components. Missing value is treated as <code>true</code> i.e deploy.
-Omitting this parameter means <code>false</code> and will perform no operation
-in hosted engine area.</p>
+<p>When set to <code>true</code> it means this host should also deploy the self-hosted engine components. A missing value
+is treated as <code>true</code> i.e deploy. Omitting this parameter means <code>false</code> and will perform no operation in the
+self-hosted engine area.</p>
 </dd>
 <dt class="hdlist1"><code>undeploy_hosted_engine</code></dt>
 <dd>
-<p>When set to <code>true</code> it means this host should un-deploy hosted engine
-components and this host will not function as part of the High
-Availability cluster. Missing value is treated as <code>true</code> i.e un-deploy
-Omitting this parameter means <code>false</code> and will perform no operation
-in hosted engine area.</p>
+<p>When set to <code>true</code> it means this host should un-deploy the self-hosted engine components and this host will
+not function as part of the High Availability cluster. A missing value is treated as <code>true</code> i.e un-deploy
+Omitting this parameter means <code>false</code> and will perform no operation in the self-hosted engine area.</p>
 </dd>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
@@ -20548,7 +20593,7 @@ in hosted engine area.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Discover iSCSI targets on the host, using the initiator details.</p>
+<p>Discovers iSCSI targets on the host, using the initiator details.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -20634,8 +20679,8 @@ in hosted engine area.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that can show the applicable errata available on the host.
-This information is taken from Katello.</p>
+<p>A reference to the service that can show the applicable errata available on the host. This information is taken
+from Katello.</p>
 </div>
 </div>
 
@@ -20651,8 +20696,8 @@ This information is taken from Katello.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the network attachments service. You can use this service to attach
-Logical networks to host interfaces.</p>
+<p>A reference to the network attachments service. You can use this service to attach Logical networks to host
+interfaces.</p>
 </div>
 </div>
 
@@ -20668,7 +20713,7 @@ Logical networks to host interfaces.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that manages the network interface devices on the host.</p>
+<p>A reference to the service that manages the network interface devices on the host.</p>
 </div>
 </div>
 
@@ -20684,7 +20729,7 @@ Logical networks to host interfaces.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that manage NUMA nodes for the host.</p>
+<p>A reference to the service that manage NUMA nodes for the host.</p>
 </div>
 </div>
 
@@ -20700,7 +20745,7 @@ Logical networks to host interfaces.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the host permission service.
+<p>A reference to the host permission service.
 Use this service to manage permissions on the host object.</p>
 </div>
 </div>
@@ -20825,9 +20870,9 @@ curl         --verbose         --cacert /etc/pki/ovirt-engine/ca.pem         --u
   
     <div class="desc"><div class="paragraph">
 <p>This method is used to change the configuration of the network interfaces of a host.
-For example, lets assume that you have a host with three network interfaces <code>eth0</code>, <code>eth1</code> and <code>eth2</code> and that
-you want to configure a new bond using <code>eth0</code> and <code>eth1</code>, and put a VLAN on top of it. Using a simple shell
-script and the <code>curl</code> command line HTTP client that can be done as follows:</p>
+For example, if you have a host with three network interfaces <code>eth0</code>, <code>eth1</code> and <code>eth2</code> and you want to configure
+a new bond using <code>eth0</code> and <code>eth1</code>, and put a VLAN on top of it. Using a simple shell script and the <code>curl</code>
+command line HTTP client that can be done as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -20891,9 +20936,18 @@ curl         --verbose         --cacert /etc/pki/ovirt-engine/ca.pem         --u
 '         "${url}/hosts/1ff7a191-2f3b-4eff-812b-9f91a30c3acc/setupnetworks"</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Note that this is valid for version 4 of the API. In previous versions some elements were represented as XML
-attributes instead of XML elements. In particular the <code>options</code> and <code>ip</code> elements were represented as follows:</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+This is valid for version 4 of the API. In previous versions some elements were represented as XML
+attributes instead of XML elements. In particular the <code>options</code> and <code>ip</code> elements were represented as follows:
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -21038,7 +21092,7 @@ when the host is rebooted, remember to call <a href="#services/host/methods/comm
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to storage connection extensions.</p>
+<p>A reference to storage connection extensions.</p>
 </div>
 </div>
 
@@ -21054,7 +21108,7 @@ when the host is rebooted, remember to call <a href="#services/host/methods/comm
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that manage hosts storage.</p>
+<p>A reference to the service that manages the host&#8217;s storage.</p>
 </div>
 </div>
 
@@ -21070,8 +21124,7 @@ when the host is rebooted, remember to call <a href="#services/host/methods/comm
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the host tags service.
-Use this service to manage tags on the host object.</p>
+<p>A reference to the host tags service. Use this service to manage tags on the host object.</p>
 </div>
 </div>
 
@@ -21087,7 +21140,7 @@ Use this service to manage tags on the host object.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to unmanaged networks.</p>
+<p>A reference to unmanaged networks.</p>
 </div>
 </div>
 
@@ -21103,7 +21156,8 @@ Use this service to manage tags on the host object.</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Discover the block Storage Domains which are candidates to be imported to the setup. For FCP no arguments are needed.</p>
+<p>Discovers the block Storage Domains which are candidates to be imported to the setup. For FCP no arguments are
+required.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -21169,20 +21223,30 @@ For example, to update a the kernel command line of a host send a request like t
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.upgrade">
-    <p>def <span class="ident">upgrade</span>(</p><p>self, async=None, headers=None, query=None, wait=True)</p>
+    <p>def <span class="ident">upgrade</span>(</p><p>self, async=None, image=None, reboot=None, headers=None, query=None, wait=True)</p>
     </div>
     
 
     
   
     <div class="desc"><div class="paragraph">
-<p>Upgrade VDSM and selected software on the host.</p>
+<p>Upgrades VDSM and selected software on the host.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>image</code></dt>
+<dd>
+<p>The image parameter specifies path to image, which is used for upgrade. This parameter is used only to
+upgrade Vintage Node hosts and it is not relevant for other hosts types.</p>
+</dd>
+<dt class="hdlist1"><code>reboot</code></dt>
+<dd>
+<p>Indicates if the host should be rebooted after upgrade.
+By default the host is rebooted.</p>
+</dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
 <p>Indicates if the upgrade should be performed asynchronously.</p>
@@ -21215,10 +21279,9 @@ For example, to update a the kernel command line of a host send a request like t
     
   
     <div class="desc"><div class="paragraph">
-<p>Check if there are upgrades available for the host. If there are upgrades
-available an icon will be displayed next to host status icon in the webadmin.
-Audit log messages are also added to indicate the availability of upgrades.
-The upgrade can be started from the webadmin or by using the
+<p>Check if there are upgrades available for the host. If there are upgrades available an icon will be displayed
+next to host status icon in the Administration Portal. Audit log messages are also added to indicate the
+availability of upgrades. The upgrade can be started from the webadmin or by using the
 <a href="#services/host/methods/upgrade">upgrade</a> host action.</p>
 </div>
 </div>
@@ -31998,6 +32061,31 @@ For example, to create a new snapshot for virtual machine <code>123</code> send 
 &lt;/snapshot&gt;</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>For including only a sub-set of disks in the snapshots, add <code>disk_attachments</code> element to the
+request body. Note that disks which are not specified in <code>disk_attachments</code> element will not be a
+part of the snapshot. If an empty <code>disk_attachments</code> element is passed, the snapshot will include
+only the virtual machine configuration. If no <code>disk_attachments</code> element is passed, then all
+the disks will be included in the snapshot.
+For each disk, <code>image_id</code> element can be specified for setting the new active image id.
+This is used in order to restore a chain of images from backup. I.e. when restoring
+a disk with snapshots, the relevant <code>image_id</code> should be specified for each snapshot
+(so the identifiers of the disk snapshots are identical to the backup).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;snapshot&gt;
+  &lt;description&gt;My snapshot&lt;/description&gt;
+  &lt;disk_attachments&gt;
+    &lt;disk_attachment&gt;
+      &lt;disk id="123"&gt;
+        &lt;image_id&gt;456&lt;/image_id&gt;
+      &lt;/disk&gt;
+    &lt;/disk_attachment&gt;
+  &lt;/disk_attachments&gt;
+&lt;/snapshot&gt;</code></pre>
+</div>
+</div>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -34557,7 +34645,7 @@ from an export domain, with templates that was exported by a different {product-
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.StorageDomainTemplateService.register">
-    <p>def <span class="ident">register</span>(</p><p>self, allow_partial_import=None, async=None, clone=None, cluster=None, exclusive=None, template=None, headers=None, query=None, wait=True)</p>
+    <p>def <span class="ident">register</span>(</p><p>self, allow_partial_import=None, async=None, clone=None, cluster=None, exclusive=None, registration_configuration=None, template=None, vnic_profile_mappings=None, headers=None, query=None, wait=True)</p>
     </div>
     
 
@@ -34578,6 +34666,18 @@ Template and disks into the DB without the copy process.</p>
 If this flag is <code>true</code>, the engine will not fail in the validation process if an image is not found, but
 instead it will allow the template to be registered without the missing disks. This is mainly used during
 registration of a template when some of the storage domains are not available. The default value is <code>false</code>.</p>
+</dd>
+<dt class="hdlist1"><code>vnic_profile_mappings</code></dt>
+<dd>
+<p>Mapping rules for virtual NIC profiles that will be applied during the import process.</p>
+</dd>
+<dt class="hdlist1"><code>registration_configuration</code></dt>
+<dd>
+<p>This parameter describes how the template should be
+registered.
+This parameter is optional. If the parameter is not specified, the template
+will be registered with the same configuration that
+it had in the original environment where it was created.</p>
 </dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
@@ -35109,7 +35209,7 @@ default value is <code>false</code>.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.StorageDomainVmService.register">
-    <p>def <span class="ident">register</span>(</p><p>self, allow_partial_import=None, async=None, clone=None, cluster=None, reassign_bad_macs=None, vm=None, vnic_profile_mappings=None, headers=None, query=None, wait=True)</p>
+    <p>def <span class="ident">register</span>(</p><p>self, allow_partial_import=None, async=None, clone=None, cluster=None, reassign_bad_macs=None, registration_configuration=None, vm=None, vnic_profile_mappings=None, headers=None, query=None, wait=True)</p>
     </div>
     
 
@@ -35146,6 +35246,14 @@ A MAC address would be considered as a problematic one if one of the following i
 </li>
 </ul>
 </div>
+</dd>
+<dt class="hdlist1"><code>registration_configuration</code></dt>
+<dd>
+<p>This parameter describes how the virtual machine should be
+registered.
+This parameter is optional. If the parameter is not specified, the virtual
+machine will be registered with the same configuration that
+it had in the original environment where it was created.</p>
 </dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
@@ -39535,7 +39643,7 @@ The order of the returned list of watchdogs isn&#8217;t guaranteed.</p>
     <div class="desc"><div class="paragraph">
 <p>Creates a new template.
 This requires the <code>name</code> and <code>vm</code> elements. To identify the virtual machine use the <code>vm.id</code> or <code>vm.name</code>
-attributes. For example, to create a template from virtual machine with identifier <code>123</code> send a request
+attributes. For example, to create a template from a virtual machine with the identifier <code>123</code> send a request
 like this:</p>
 </div>
 <div class="listingblock">
@@ -39555,10 +39663,10 @@ like this:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The disks of the template can be customized, making some of their characteristics different to the disks of the
+<p>The disks of the template can be customized, making some of their characteristics different from the disks of the
 original virtual machine. To do so use the <code>vm.disk_attachments</code> attribute, specifying the identifier of the disk
 of the original virtual machine and the characteristics that you want to change. For example, if the original
-virtual machine has a disk with identifier <code>456</code>, and, for that disk, you want to change the format to
+virtual machine has a disk with the identifier <code>456</code>, and, for that disk, you want to change the format to
 <a href="#types/disk_format"><em>Copy On Write</em></a> and make the disk <a href="#types/disk">sparse</a>, send a request body
 like this:</p>
 </div>
@@ -39580,7 +39688,7 @@ like this:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The template can be created as a sub version of an existing template.This requires the <code>name</code> and <code>vm</code> attributes
+<p>The template can be created as a sub-version of an existing template. This requires the <code>name</code> and <code>vm</code> attributes
 for the new template, and the <code>base_template</code> and <code>version_name</code> attributes for the new template version. The
 <code>base_template</code> and <code>version_name</code> attributes must be specified within a <code>version</code> section enclosed in the
 <code>template</code> section. Identify the virtual machine with the <code>id</code> or <code>name</code> attributes.</p>
@@ -39596,6 +39704,60 @@ for the new template, and the <code>base_template</code> and <code>version_name<
   &lt;/version&gt;
 &lt;/template&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>The destination storage domain of the template can be customized, in one of two ways:
+1. Globally, at the request level. The request must list the desired disk attachments to be created on the
+storage domain. If the disk attachments are not listed, the global storage domain parameter will be ignored.</p>
+</div>
+<div class="paragraph">
+<p>+</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;template&gt;
+  &lt;name&gt;mytemplate&lt;/name&gt;
+  &lt;storage_domain id="123"/&gt;
+  &lt;vm id="456"&gt;
+    &lt;disk_attachments&gt;
+      &lt;disk_attachment&gt;
+        &lt;disk id="789"&gt;
+          &lt;format&gt;cow&lt;/format&gt;
+          &lt;sparse&gt;true&lt;/sparse&gt;
+        &lt;/disk&gt;
+      &lt;/disk_attachment&gt;
+    &lt;/disk_attachments&gt;
+  &lt;/vm&gt;
+&lt;/template&gt;</code></pre>
+</div>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Per each disk attachment. Specify the desired storage domain for each disk attachment.
+Specifying the global storage definition will override the storage domain per disk attachment specification.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;template&gt;
+  &lt;name&gt;mytemplate&lt;/name&gt;
+  &lt;vm id="123"&gt;
+    &lt;disk_attachments&gt;
+      &lt;disk_attachment&gt;
+        &lt;disk id="456"&gt;
+          &lt;format&gt;cow&lt;/format&gt;
+          &lt;sparse&gt;true&lt;/sparse&gt;
+          &lt;storage_domains&gt;
+             &lt;storage_domain id="789"/&gt;
+          &lt;/storage_domains&gt;
+        &lt;/disk&gt;
+      &lt;/disk_attachment&gt;
+    &lt;/disk_attachments&gt;
+  &lt;/vm&gt;
+&lt;/template&gt;</code></pre>
+</div>
+</div>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -39644,7 +39806,7 @@ For example:</p>
 </div>
 <div class="paragraph">
 <p>Will return the list of virtual machines and virtual machine templates.
-The order of the returned list of templates isn&#8217;t guaranteed.</p>
+The order of the returned list of templates is not guaranteed.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -39653,7 +39815,7 @@ The order of the returned list of templates isn&#8217;t guaranteed.</p>
 <dl>
 <dt class="hdlist1"><code>max</code></dt>
 <dd>
-<p>Sets the maximum number of templates to return. If not specified all the templates are returned.</p>
+<p>Sets the maximum number of templates to return. If not specified, all the templates are returned.</p>
 </dd>
 <dt class="hdlist1"><code>search</code></dt>
 <dd>
