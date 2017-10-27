@@ -135,7 +135,7 @@ class VmServiceTest(unittest.TestCase):
         Test that get raises an 404 error if the VM does not exist
         """
         self.server.set_xml_response("vms/123", 404, "")
-        with assert_raises(ovirtsdk4.Error) as context:
+        with assert_raises(ovirtsdk4.NotFoundError) as context:
             self.vms_service.vm_service('123').get()
         assert_regexp_matches(str(context.exception), "404")
 
@@ -144,7 +144,7 @@ class VmServiceTest(unittest.TestCase):
         Test that 404 error code is returned in exception if VM don't exist
         """
         self.server.set_xml_response("vms/123", 404, "")
-        with assert_raises(ovirtsdk4.Error) as context:
+        with assert_raises(ovirtsdk4.NotFoundError) as context:
             self.vms_service.vm_service('123').get()
         assert_equal(context.exception.code, 404)
 

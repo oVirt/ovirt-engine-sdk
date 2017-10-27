@@ -51,7 +51,7 @@ class InvalidAuthTest(unittest.TestCase):
                 'error_description': "Cannot authenticate user 'admin@internal': The username or password is incorrect..",
             },
         )
-        with assert_raises(sdk.Error) as ctx:
+        with assert_raises(sdk.AuthError) as ctx:
             connection.authenticate()
         message = str(ctx.exception)
         assert_equals(
@@ -74,7 +74,7 @@ class InvalidAuthTest(unittest.TestCase):
                 'error_code': 'access_denied',
             },
         )
-        with assert_raises(sdk.Error) as ctx:
+        with assert_raises(sdk.AuthError) as ctx:
             connection.authenticate()
         message = str(ctx.exception)
         assert_equals(

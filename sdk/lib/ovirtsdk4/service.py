@@ -18,7 +18,9 @@
 
 import six
 
+from ovirtsdk4 import AuthError
 from ovirtsdk4 import Error
+from ovirtsdk4 import NotFoundError
 from ovirtsdk4 import http
 from ovirtsdk4 import reader
 from ovirtsdk4 import types
@@ -103,7 +105,14 @@ class Service(object):
                 msg += ' '
             msg = msg + detail + '.'
 
-        error = Error(msg)
+        class_ = Error
+        if response is not None:
+            if response.code in [401, 403]:
+                class_ = AuthError
+            elif response.code == 404:
+                class_ = NotFoundError
+
+        error = class_(msg)
         error.code = response.code if response else None
         error.fault = fault
         raise error

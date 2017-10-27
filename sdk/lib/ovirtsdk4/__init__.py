@@ -60,6 +60,35 @@ class Error(Exception):
         self.fault = fault
 
 
+class AuthError(Error):
+    """
+    This class of error indicates that an authentiation or authorization
+    problem happenend, like incorrect user name, incorrect password, or
+    missing permissions.
+    """
+    pass
+
+
+class ConnectionError(Error):
+    """
+    This class of error indicates that the name of the server or the name of
+    the proxy can't be resolved to an IP address, or that the connection
+    can't be stablished because the server is down or unreachable.
+
+    Note that for this class of error the `code` and `fault` attributes will
+    always be empty, as no response from the server will be available to
+    populate them.
+    """
+    pass
+
+
+class NotFoundError(Error):
+    """
+    This class of error indicates that an object can't be found.
+    """
+    pass
+
+
 class List(list):
     """
     This is the base class for all the list types of the SDK. It contains the
@@ -327,14 +356,7 @@ class Connection(object):
         """
 
         with self._curl_lock:
-            try:
-                return self.__send(request)
-            except pycurl.error as e:
-                six.reraise(
-                    Error,
-                    Error("Error while sending HTTP request", e),
-                    sys.exc_info()[2]
-                )
+            return self.__send(request)
 
     def authenticate(self):
         """
@@ -343,14 +365,20 @@ class Connection(object):
         revoked when the connection is closed, unless the `logout` parameter of
         the `close` method is `False`.
         """
-        if self._sso_token is None:
-            self._sso_token = self._get_access_token()
-        return self._sso_token
+        try:
+            if self._sso_token is None:
+                self._sso_token = self._get_access_token()
+            return self._sso_token
+        except pycurl.error as e:
+            six.reraise(
+                ConnectionError,
+                ConnectionError("Error while sending HTTP request", e),
+                sys.exc_info()[2]
+            )
 
     def __send(self, request):
         # Create SSO token if needed:
-        if self._sso_token is None:
-            self._sso_token = self._get_access_token()
+        self.authenticate()
 
         # Init curl easy:
         curl = pycurl.Curl()
@@ -457,7 +485,14 @@ class Connection(object):
 
     def wait(self, context, failed_auth=False):
         with self._curl_lock:
-            return self.__wait(context, failed_auth)
+            try:
+                return self.__wait(context, failed_auth)
+            except pycurl.error as e:
+                six.reraise(
+                    ConnectionError,
+                    ConnectionError("Error while sending HTTP request", e),
+                    sys.exc_info()[2]
+                )
 
     def __wait(self, context, failed_auth=False):
         while True:
@@ -532,7 +567,7 @@ class Connection(object):
 
         if 'error' in sso_response:
             sso_error = self._get_sso_error(sso_response)
-            raise Error(
+            raise AuthError(
                 'Error during SSO revoke %s : %s' % (
                     sso_error[0],
                     sso_error[1]
@@ -583,7 +618,7 @@ class Connection(object):
 
         if 'error' in sso_response:
             sso_error = self._get_sso_error(sso_response)
-            raise Error(
+            raise AuthError(
                 'Error during SSO authentication %s : %s' % (
                     sso_error[0],
                     sso_error[1]
@@ -702,6 +737,8 @@ class Connection(object):
         try:
             self.system_service().get()
             return True
+        except Error:
+            six.reraise(*sys.exc_info())
         except Exception as exception:
             if raise_exception:
                 raise Error(exception)

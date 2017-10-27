@@ -81,8 +81,18 @@ This is the top level module. It most important element is the
 `Connection` class, as is the mechanism to connect to the server and to
 get the reference to the root of the services tree.
 +
-It also contains the `Error` class, which is the exception that the SDK
-will raise when it needs to report any error.
+The `Error` class, is the base exception class that the
+SDK will raise when it needs to report any error.
+
+For certain kinds of errors there are specific error classes, extending
+the base error class:
+
+* `AuthError` - Raised when authentication or authorization fail.
+
+* `ConnectionError` - Raised when the name of the server can't be resolved,
+and when the server is down or unreachable.
+
+* `NotFoundError` - Raised when the requested object doesn't exist.
 
 ovirtsdk4.types::
 
