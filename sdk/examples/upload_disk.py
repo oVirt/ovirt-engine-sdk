@@ -32,6 +32,11 @@ except ImportError:
     from urlparse import urlparse
 
 
+# This seems to give the best throughput when uploading from my laptop
+# SSD to a server that drop the data. You may need to tune this on your
+# setup.
+BUF_SIZE = 128 * 1024
+
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
 
@@ -116,11 +121,6 @@ while transfer.phase == types.ImageTransferPhase.INITIALIZING:
     time.sleep(1)
     transfer = transfer_service.get()
 
-# Set needed headers for uploading:
-upload_headers = {
-    'Authorization': transfer.signed_ticket,
-}
-
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it - regardless of the SDK.
 # In this example, we will use Python's httplib.HTTPSConnection for transferring the data.
@@ -138,33 +138,62 @@ proxy_connection = HTTPSConnection(
 )
 
 path = "/path/to/disk.qcow2"
-MiB_per_request = 8
+size = os.path.getsize(path)
+
+# Send the request head. Note the following:
+#
+# - We must send the Authorzation header with the signed ticket received
+#   from the transfer service.
+#
+# - the server requires Content-Range header even when sending the
+#   entire file.
+#
+# - the server requires also Content-Length.
+#
+
+proxy_connection.putrequest("PUT", proxy_url.path)
+proxy_connection.putheader('Authorization', transfer.signed_ticket)
+proxy_connection.putheader('Content-Range',
+                           "bytes %d-%d/%d" % (0, size - 1, size))
+proxy_connection.putheader('Content-Length', "%d" % (size,))
+proxy_connection.endheaders()
+
+# Send the request body. Note the following:
+#
+# - we must send the number of bytes we promised in the Content-Range
+#   header.
+#
+# - we must extend the session, otherwise it will expire and the upload
+#   will fail.
+
+last_extend = time.time()
+
 with open(path, "rb") as disk:
-    size = os.path.getsize(path)
-    chunk_size = 1024 * 1024 * MiB_per_request
     pos = 0
     while pos < size:
-        # Extend the transfer session.
-        transfer_service.extend()
-        # Set the content range, according to the chunk being sent.
-        upload_headers['Content-Range'] = "bytes %d-%d/%d" % (pos, min(pos + chunk_size, size) - 1, size)
-        # Perform the request.
-        proxy_connection.request(
-            'PUT',
-            proxy_url.path,
-            disk.read(chunk_size),
-            headers=upload_headers,
-        )
-        # Print response
-        r = proxy_connection.getresponse()
-        print r.status, r.reason, "Completed", "{:.0%}".format(pos / float(size))
-        # Continue to next chunk.
-        pos += chunk_size
+        # Send the next chunk to the proxy.
+        to_read = min(size - pos, BUF_SIZE)
+        chunk = disk.read(to_read)
+        if not chunk:
+            transfer_service.pause()
+            raise RuntimeError("Unexpected end of file at pos=%d" % pos)
 
+        proxy_connection.send(chunk)
+        pos += len(chunk)
 
-print "Completed", "{:.0%}".format(pos / float(size))
-# Finalize the session.
+        # Extend the transfer session once per minute.
+        now = time.time()
+        if now - last_extend > 60:
+            transfer_service.extend()
+            last_extend = now
+
+# Get the response
+response = proxy_connection.getresponse()
+if response.status != 200:
+    transfer_service.pause()
+    print "Upload failed: %s %s" % (response.status, response.reason)
+    sys.exit(1)
+
+# Successful cleanup
 transfer_service.finalize()
-
-# Close the connection to the server:
 connection.close()
