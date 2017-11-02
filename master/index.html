@@ -1046,6 +1046,15 @@ table {
     <li class="set"><h3><a href="#header-classes">Classes</a></h3>
       <ul>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.AuthError">AuthError</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.AuthError.__init__">__init__</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.Connection">Connection</a></span>
         
           
@@ -1076,6 +1085,15 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.ConnectionError">ConnectionError</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.ConnectionError.__init__">__init__</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.Error">Error</a></span>
         
           
@@ -1094,11 +1112,29 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.NotFoundError">NotFoundError</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.NotFoundError.__init__">__init__</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.Struct">Struct</a></span>
         
           
   <ul>
     <li class="mono"><a href="#ovirtsdk4.Struct.__init__">__init__</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.TimeoutError">TimeoutError</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.TimeoutError.__init__">__init__</a></li>
   </ul>
 
         </li>
@@ -1137,6 +1173,121 @@ table {
 
 
     <h2 class="section-title" id="header-classes">Classes</h2>
+      
+      <div class="item">
+      <p id="ovirtsdk4.AuthError" class="name">class <span class="ident">AuthError</span></p>
+      
+  
+    <div class="desc"><div class="paragraph">
+<p>This class of error indicates that an authentiation or authorization
+problem happenend, like incorrect user name, incorrect password, or
+missing permissions.</p>
+</div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.AuthError">AuthError</a></li>
+          <li><a href="#ovirtsdk4.Error">Error</a></li>
+          <li>exceptions.Exception</li>
+          <li>exceptions.BaseException</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.AuthError.args" class="name">var <span class="ident">args</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.args">args</a></code>
+    </p>
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.AuthError.message" class="name">var <span class="ident">message</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.message">message</a></code>
+    </p>
+
+            
+  
+
+            </div>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.AuthError.code" class="name">var <span class="ident">code</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.code">code</a></code>
+    </p>
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.AuthError.fault" class="name">var <span class="ident">fault</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.fault">fault</a></code>
+    </p>
+
+            
+  
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.AuthError.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, message, code=None, fault=None)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.__init__">__init__</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Creates an instance of Error class.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>message</code></dt>
+<dd>
+<p>The exception message.</p>
+</dd>
+<dt class="hdlist1"><code>code</code></dt>
+<dd>
+<p>An error code associated to the error. For HTTP related
+errors, this will be the HTTP response code returned by the server.
+For example, if retrieving of a virtual machine fails because it
+doesn&#8217;t exist this attribute will contain the integer value 404. Note
+that this may be <code>nil</code> if the error is not HTTP related.</p>
+</dd>
+<dt class="hdlist1"><code>fault</code></dt>
+<dd>
+<p>The <code>Fault</code> object associated to the error.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
       
       <div class="item">
       <p id="ovirtsdk4.Connection" class="name">class <span class="ident">Connection</span></p>
@@ -1617,6 +1768,126 @@ constructor, and returns it.</p>
       </div>
       
       <div class="item">
+      <p id="ovirtsdk4.ConnectionError" class="name">class <span class="ident">ConnectionError</span></p>
+      
+  
+    <div class="desc"><div class="paragraph">
+<p>This class of error indicates that the name of the server or the name of
+the proxy can&#8217;t be resolved to an IP address, or that the connection
+can&#8217;t be stablished because the server is down or unreachable.</p>
+</div>
+<div class="paragraph">
+<p>Note that for this class of error the <code>code</code> and <code>fault</code> attributes will
+always be empty, as no response from the server will be available to
+populate them.</p>
+</div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.ConnectionError">ConnectionError</a></li>
+          <li><a href="#ovirtsdk4.Error">Error</a></li>
+          <li>exceptions.Exception</li>
+          <li>exceptions.BaseException</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.ConnectionError.args" class="name">var <span class="ident">args</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.args">args</a></code>
+    </p>
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.ConnectionError.message" class="name">var <span class="ident">message</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.message">message</a></code>
+    </p>
+
+            
+  
+
+            </div>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.ConnectionError.code" class="name">var <span class="ident">code</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.code">code</a></code>
+    </p>
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.ConnectionError.fault" class="name">var <span class="ident">fault</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.fault">fault</a></code>
+    </p>
+
+            
+  
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.ConnectionError.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, message, code=None, fault=None)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.__init__">__init__</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Creates an instance of Error class.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>message</code></dt>
+<dd>
+<p>The exception message.</p>
+</dd>
+<dt class="hdlist1"><code>code</code></dt>
+<dd>
+<p>An error code associated to the error. For HTTP related
+errors, this will be the HTTP response code returned by the server.
+For example, if retrieving of a virtual machine fails because it
+doesn&#8217;t exist this attribute will contain the integer value 404. Note
+that this may be <code>nil</code> if the error is not HTTP related.</p>
+</dd>
+<dt class="hdlist1"><code>fault</code></dt>
+<dd>
+<p>The <code>Fault</code> object associated to the error.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="ovirtsdk4.Error" class="name">class <span class="ident">Error</span></p>
       
   
@@ -1757,6 +2028,119 @@ utility methods used by all of them.</p>
       </div>
       
       <div class="item">
+      <p id="ovirtsdk4.NotFoundError" class="name">class <span class="ident">NotFoundError</span></p>
+      
+  
+    <div class="desc"><div class="paragraph">
+<p>This class of error indicates that an object can&#8217;t be found.</p>
+</div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.NotFoundError">NotFoundError</a></li>
+          <li><a href="#ovirtsdk4.Error">Error</a></li>
+          <li>exceptions.Exception</li>
+          <li>exceptions.BaseException</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.NotFoundError.args" class="name">var <span class="ident">args</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.args">args</a></code>
+    </p>
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.NotFoundError.message" class="name">var <span class="ident">message</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.message">message</a></code>
+    </p>
+
+            
+  
+
+            </div>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.NotFoundError.code" class="name">var <span class="ident">code</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.code">code</a></code>
+    </p>
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.NotFoundError.fault" class="name">var <span class="ident">fault</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.fault">fault</a></code>
+    </p>
+
+            
+  
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.NotFoundError.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, message, code=None, fault=None)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.__init__">__init__</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Creates an instance of Error class.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>message</code></dt>
+<dd>
+<p>The exception message.</p>
+</dd>
+<dt class="hdlist1"><code>code</code></dt>
+<dd>
+<p>An error code associated to the error. For HTTP related
+errors, this will be the HTTP response code returned by the server.
+For example, if retrieving of a virtual machine fails because it
+doesn&#8217;t exist this attribute will contain the integer value 404. Note
+that this may be <code>nil</code> if the error is not HTTP related.</p>
+</dd>
+<dt class="hdlist1"><code>fault</code></dt>
+<dd>
+<p>The <code>Fault</code> object associated to the error.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="ovirtsdk4.Struct" class="name">class <span class="ident">Struct</span></p>
       
   
@@ -1796,6 +2180,124 @@ the utility methods used by all of them.</p>
 
     
   
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.TimeoutError" class="name">class <span class="ident">TimeoutError</span></p>
+      
+  
+    <div class="desc"><div class="paragraph">
+<p>This class of error indicates that an operation timed out.</p>
+</div>
+<div class="paragraph">
+<p>Note that for this class of error the <code>code</code> and <code>fault</code> attributes will
+always be empty, as no response from the server will be available to
+populate them.</p>
+</div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.TimeoutError">TimeoutError</a></li>
+          <li><a href="#ovirtsdk4.Error">Error</a></li>
+          <li>exceptions.Exception</li>
+          <li>exceptions.BaseException</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.TimeoutError.args" class="name">var <span class="ident">args</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.args">args</a></code>
+    </p>
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.TimeoutError.message" class="name">var <span class="ident">message</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.message">message</a></code>
+    </p>
+
+            
+  
+
+            </div>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.TimeoutError.code" class="name">var <span class="ident">code</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.code">code</a></code>
+    </p>
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.TimeoutError.fault" class="name">var <span class="ident">fault</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.fault">fault</a></code>
+    </p>
+
+            
+  
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.TimeoutError.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, message, code=None, fault=None)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.Error">Error</a></code>.<code><a href="#ovirtsdk4.Error.__init__">__init__</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Creates an instance of Error class.</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>message</code></dt>
+<dd>
+<p>The exception message.</p>
+</dd>
+<dt class="hdlist1"><code>code</code></dt>
+<dd>
+<p>An error code associated to the error. For HTTP related
+errors, this will be the HTTP response code returned by the server.
+For example, if retrieving of a virtual machine fails because it
+doesn&#8217;t exist this attribute will contain the integer value 404. Note
+that this may be <code>nil</code> if the error is not HTTP related.</p>
+</dd>
+<dt class="hdlist1"><code>fault</code></dt>
+<dd>
+<p>The <code>Fault</code> object associated to the error.</p>
+</dd>
+</dl>
+</div>
+</div>
 
   </div>
   
