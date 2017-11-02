@@ -94,6 +94,8 @@ and when the server is down or unreachable.
 
 * `NotFoundError` - Raised when the requested object doesn't exist.
 
+* `TimeoutError` - Raised when an operation times out.
+
 ovirtsdk4.types::
 
 This module contains the classes that implement the _types_ used in the

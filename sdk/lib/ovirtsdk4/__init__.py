@@ -89,6 +89,17 @@ class NotFoundError(Error):
     pass
 
 
+class TimeoutError(Error):
+    """
+    This class of error indicates that an operation timed out.
+
+    Note that for this class of error the `code` and `fault` attributes will
+    always be empty, as no response from the server will be available to
+    populate them.
+    """
+    pass
+
+
 class List(list):
     """
     This is the base class for all the list types of the SDK. It contains the
@@ -370,11 +381,7 @@ class Connection(object):
                 self._sso_token = self._get_access_token()
             return self._sso_token
         except pycurl.error as e:
-            six.reraise(
-                ConnectionError,
-                ConnectionError("Error while sending HTTP request", e),
-                sys.exc_info()[2]
-            )
+            self.__parse_error(e)
 
     def __send(self, request):
         # Create SSO token if needed:
@@ -488,11 +495,7 @@ class Connection(object):
             try:
                 return self.__wait(context, failed_auth)
             except pycurl.error as e:
-                six.reraise(
-                    ConnectionError,
-                    ConnectionError("Error while sending HTTP request", e),
-                    sys.exc_info()[2]
-                )
+                self.__parse_error(e)
 
     def __wait(self, context, failed_auth=False):
         while True:
@@ -911,6 +914,20 @@ class Connection(object):
         context[0].close()
         # Return the response:
         return response
+
+    def __parse_error(self, error):
+        e_code = error.args[0]
+        clazz = Error
+        error_msg = "Error while sending HTTP request: {}".format(error)
+
+        if e_code in [
+            pycurl.E_COULDNT_CONNECT, pycurl.E_COULDNT_RESOLVE_HOST
+        ]:
+            clazz = ConnectionError
+        elif e_code in pycurl.E_OPERATION_TIMEDOUT:
+            clazz = TimeoutError
+
+        six.reraise(clazz, clazz(error_msg), sys.exc_info()[2])
 
     def _get_header_value(self, headers, name):
         """
