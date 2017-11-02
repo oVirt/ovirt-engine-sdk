@@ -741,7 +741,9 @@ class Connection(object):
             self.system_service().get()
             return True
         except Error:
-            six.reraise(*sys.exc_info())
+            if raise_exception:
+                six.reraise(*sys.exc_info())
+            return False
         except Exception as exception:
             if raise_exception:
                 raise Error(exception)
@@ -799,7 +801,7 @@ class Connection(object):
         """
 
         # Revoke access token:
-        if logout:
+        if logout and self._sso_token is not None:
             self._revoke_access_token()
 
         # Release resources used by the cURL handle:
