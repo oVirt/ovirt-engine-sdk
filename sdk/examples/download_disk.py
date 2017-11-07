@@ -21,6 +21,7 @@ import logging
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
 import ssl
+import sys
 import time
 
 from httplib import HTTPSConnection
@@ -30,6 +31,9 @@ try:
 except ImportError:
     from urlparse import urlparse
 
+# This is the size of each downloaded chunck.
+# May be tuned according to setup needs.
+BUF_SIZE = 128 * 1024
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
@@ -102,42 +106,53 @@ proxy_connection = HTTPSConnection(
 )
 
 try:
+    # Send the request
+    proxy_connection.request(
+        'GET',
+        proxy_url.path,
+        headers=transfer_headers,
+    )
+    # Get response
+    r = proxy_connection.getresponse()
+
+    # Check the response status
+    if r.status not in (200, 204):
+        print "Error downloding (%s)" % (r.reason,)
+        try:
+            data = r.read(512)
+        except (EnvironmentError, HttpException):
+            pass
+        else:
+            print "Response:"
+            print data
+        sys.exit(1)
+
+    last_extend = time.time()
+    bytes_to_read = int(r.getheader('Content-Length'))
+
     path = "/path/to/disk.qcow2"
-    MiB_per_request = 8
     with open(path, "wb") as mydisk:
-        size = disk.provisioned_size
-        chunk_size = 1024 * 1024 * MiB_per_request
-        pos = 0
-        while pos < size:
-            # Extend the transfer session.
-            transfer_service.extend()
-            # Set the range, according to the chunk being downloaded.
-            transfer_headers['Range'] = 'bytes=%d-%d' % (pos, min(size, pos + chunk_size) - 1)
-            # Perform the request.
-            proxy_connection.request(
-                'GET',
-                proxy_url.path,
-                headers=transfer_headers,
-            )
-            # Get response
-            r = proxy_connection.getresponse()
+        while bytes_to_read > 0:
+            # Calculate next chunk to read
+            to_read = min(bytes_to_read, BUF_SIZE)
 
-            # Check the response status:
-            if r.status >= 300:
-                print "Error: %s" % r.read()
-                break
+            # Read next chunk
+            chunk = r.read(to_read)
+            if not chunk:
+                raise RuntimeError("Socket disconnected")
 
-            # Write the content to file:
-            mydisk.write(r.read())
-            print "Completed", "{:.0%}".format(pos / float(size))
-            # Continue to next chunk.
-            pos += chunk_size
+            # Write the content to file
+            mydisk.write(chunk)
+            bytes_to_read -= len(chunk)
 
+            # Extend the transfer session once per minute
+            now = time.time()
+            if now - last_extend > 60:
+                transfer_service.extend()
+                last_extend = now
 finally:
     # Finalize the session.
     transfer_service.finalize()
-
-print "Completed", "{:.0%}".format(pos / float(size))
 
 # Close the connection to the server:
 connection.close()
