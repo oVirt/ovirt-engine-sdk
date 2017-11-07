@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+from __future__ import print_function
+
 import logging
 import os
 import ovirtsdk4 as sdk
@@ -46,6 +48,8 @@ logging.basicConfig(level=logging.DEBUG, filename='example.log')
 # qcow2 disk to the newly created disk in server.
 
 # Create the connection to the server:
+print("Connecting...")
+
 connection = sdk.Connection(
     url='https://engine40.example.com/ovirt-engine/api',
     username='admin@internal',
@@ -72,6 +76,9 @@ system_service = connection.system_service()
 #
 # 3. The disk initial size must be bigger or the same as the size of the data
 #    you will upload.
+
+print("Creating disk...")
+
 initial_size = 1 * 2**30
 provisioned_size = 10 * 2**30
 disks_service = connection.system_service().disks_service()
@@ -99,6 +106,8 @@ while True:
     if disk.status == types.DiskStatus.OK:
         break
 
+print("Creating transfer session...")
+
 # Get a reference to the service that manages the image
 # transfer that was added in the previous step:
 transfers_service = system_service.image_transfers_service()
@@ -120,6 +129,8 @@ transfer_service = transfers_service.image_transfer_service(transfer.id)
 while transfer.phase == types.ImageTransferPhase.INITIALIZING:
     time.sleep(1)
     transfer = transfer_service.get()
+
+print("Uploading image...")
 
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it - regardless of the SDK.
@@ -166,7 +177,7 @@ proxy_connection.endheaders()
 # - we must extend the session, otherwise it will expire and the upload
 #   will fail.
 
-last_extend = time.time()
+start = last_progress = last_extend = time.time()
 
 with open(path, "rb") as disk:
     pos = 0
@@ -180,9 +191,14 @@ with open(path, "rb") as disk:
 
         proxy_connection.send(chunk)
         pos += len(chunk)
+        now = time.time()
+
+        # Report progress every 10 seconds.
+        if now - last_progress > 10:
+            print("Uploaded %.2f%%" % (float(pos) / size * 100))
+            last_progress = now
 
         # Extend the transfer session once per minute.
-        now = time.time()
         if now - last_extend > 60:
             transfer_service.extend()
             last_extend = now
@@ -191,9 +207,17 @@ with open(path, "rb") as disk:
 response = proxy_connection.getresponse()
 if response.status != 200:
     transfer_service.pause()
-    print "Upload failed: %s %s" % (response.status, response.reason)
+    print("Upload failed: %s %s" % (response.status, response.reason))
     sys.exit(1)
 
+elapsed = time.time() - start
+
+print("Uploaded %.2fg in %.2f seconds (%.2fm/s)" % ()
+    size / float(1024**3), elapsed, size / 1024**2 / elapsed)
+
+print("Finalizing transfer session...")
 # Successful cleanup
 transfer_service.finalize()
 connection.close()
+
+print("Upload completed successfully")
