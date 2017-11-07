@@ -17,13 +17,26 @@
 # limitations under the License.
 #
 
+"""
+Upload disk example code.
+
+Requires the qemu-img package for checking file type and virtual size.
+
+Usage:
+
+    upload_disk.py FILE
+"""
+
 from __future__ import print_function
 
+import json
 import logging
 import os
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
 import ssl
+import subprocess
+import sys
 import time
 
 from httplib import HTTPSConnection
@@ -41,6 +54,19 @@ BUF_SIZE = 128 * 1024
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
+image_path = sys.argv[1]
+image_size = os.path.getsize(image_path)
+
+# Get image info using qemu-img
+
+print("Checking image...")
+
+out = subprocess.check_output(
+    ["qemu-img", "info", "--output", "json", image_path])
+image_info = json.loads(out)
+
+if image_info["format"] not in ("qcow2", "raw"):
+    raise RuntimeError("Unsupported image format %(format)s" % image_info)
 
 # This example will connect to the server and create a new `floating`
 # disk, one that isn't attached to any virtual machine.
@@ -79,16 +105,20 @@ system_service = connection.system_service()
 
 print("Creating disk...")
 
-initial_size = 1 * 2**30
-provisioned_size = 10 * 2**30
+if image_info["format"] == "qcow2":
+    disk_format = types.DiskFormat.COW
+else:
+    disk_format = types.DiskFormat.RAW
+
 disks_service = connection.system_service().disks_service()
 disk = disks_service.add(
     disk=types.Disk(
-        name='mydisk',
-        description='My disk',
-        format=types.DiskFormat.COW,
-        provisioned_size=provisioned_size,
-        initial_size=initial_size,
+        name=os.path.basename(image_path),
+        description='Uploaded disk',
+        format=disk_format,
+        initial_size=image_size,
+        provisioned_size=image_info["virtual-size"],
+        sparse=disk_format == types.DiskFormat.COW,
         storage_domains=[
             types.StorageDomain(
                 name='data'
@@ -148,9 +178,6 @@ proxy_connection = HTTPSConnection(
     context=context,
 )
 
-path = "/path/to/disk.qcow2"
-size = os.path.getsize(path)
-
 # Send the request head. Note the following:
 #
 # - We must send the Authorzation header with the signed ticket received
@@ -165,8 +192,8 @@ size = os.path.getsize(path)
 proxy_connection.putrequest("PUT", proxy_url.path)
 proxy_connection.putheader('Authorization', transfer.signed_ticket)
 proxy_connection.putheader('Content-Range',
-                           "bytes %d-%d/%d" % (0, size - 1, size))
-proxy_connection.putheader('Content-Length', "%d" % (size,))
+                           "bytes %d-%d/%d" % (0, image_size - 1, image_size))
+proxy_connection.putheader('Content-Length', "%d" % (image_size,))
 proxy_connection.endheaders()
 
 # Send the request body. Note the following:
@@ -179,11 +206,11 @@ proxy_connection.endheaders()
 
 start = last_progress = last_extend = time.time()
 
-with open(path, "rb") as disk:
+with open(image_path, "rb") as disk:
     pos = 0
-    while pos < size:
+    while pos < image_size:
         # Send the next chunk to the proxy.
-        to_read = min(size - pos, BUF_SIZE)
+        to_read = min(image_size - pos, BUF_SIZE)
         chunk = disk.read(to_read)
         if not chunk:
             transfer_service.pause()
@@ -195,7 +222,7 @@ with open(path, "rb") as disk:
 
         # Report progress every 10 seconds.
         if now - last_progress > 10:
-            print("Uploaded %.2f%%" % (float(pos) / size * 100))
+            print("Uploaded %.2f%%" % (float(pos) / image_size * 100))
             last_progress = now
 
         # Extend the transfer session once per minute.
@@ -212,8 +239,8 @@ if response.status != 200:
 
 elapsed = time.time() - start
 
-print("Uploaded %.2fg in %.2f seconds (%.2fm/s)" % ()
-    size / float(1024**3), elapsed, size / 1024**2 / elapsed)
+print("Uploaded %.2fg in %.2f seconds (%.2fm/s)" % (
+      image_size / float(1024**3), elapsed, image_size / 1024**2 / elapsed))
 
 print("Finalizing transfer session...")
 # Successful cleanup
