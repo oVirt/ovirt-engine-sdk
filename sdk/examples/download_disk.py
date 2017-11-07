@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+from __future__ import print_function
+
 import logging
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
@@ -42,6 +44,8 @@ logging.basicConfig(level=logging.DEBUG, filename='example.log')
 # of the disk, to the local qcow2 file.
 
 # Create the connection to the server:
+print("Connecting...")
+
 connection = sdk.Connection(
     url='https://engine/ovirt-engine/api',
     username='admin@internal',
@@ -60,6 +64,8 @@ disks_service = connection.system_service().disks_service()
 # Find the disk we want to download by the id:
 disk_service = disks_service.disk_service('f2a0da15-2b7e-4ded-be3c-59ff968a6894')
 disk = disk_service.get()
+
+print("Creating a transfer session...")
 
 # Get a reference to the service that manages the image
 # transfer that was added in the previous step:
@@ -105,6 +111,8 @@ proxy_connection = HTTPSConnection(
     context=context,
 )
 
+print("Downloading image...")
+
 try:
     # Send the request
     proxy_connection.request(
@@ -117,24 +125,24 @@ try:
 
     # Check the response status
     if r.status not in (200, 204):
-        print "Error downloding (%s)" % (r.reason,)
+        print("Error downloding (%s)" % (r.reason,))
         try:
             data = r.read(512)
         except (EnvironmentError, HttpException):
             pass
         else:
-            print "Response:"
-            print data
+            print("Response:")
+            print(data)
         sys.exit(1)
 
-    last_extend = time.time()
-    bytes_to_read = int(r.getheader('Content-Length'))
-
     path = "/path/to/disk.qcow2"
+    start = last_progress = last_extend = time.time()
+    image_size = int(r.getheader('Content-Length'))
     with open(path, "wb") as mydisk:
-        while bytes_to_read > 0:
+        pos = 0
+        while pos < image_size:
             # Calculate next chunk to read
-            to_read = min(bytes_to_read, BUF_SIZE)
+            to_read = min(image_size - pos, BUF_SIZE)
 
             # Read next chunk
             chunk = r.read(to_read)
@@ -143,15 +151,26 @@ try:
 
             # Write the content to file
             mydisk.write(chunk)
-            bytes_to_read -= len(chunk)
+            pos += len(chunk)
+            now = time.time()
 
             # Extend the transfer session once per minute
-            now = time.time()
             if now - last_extend > 60:
                 transfer_service.extend()
                 last_extend = now
+
+            # Report progress every 10 seconds
+            if now - last_progress > 10:
+                print("Downloaded %.2f%%" % (pos / float(image_size) * 100))
+                last_progress = now
+
+    elapsed = time.time() - start
+    print("Downloaded %.2fg in %.2f seconds (%.2fm/s)" % (
+        image_size / float(1024**3), elapsed, image_size / 1024**2 / elapsed))
+
 finally:
     # Finalize the session.
+    print("Finalizing transfer session...")
     transfer_service.finalize()
 
 # Close the connection to the server:
