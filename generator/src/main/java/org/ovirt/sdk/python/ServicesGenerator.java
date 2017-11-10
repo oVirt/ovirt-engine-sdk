@@ -43,6 +43,7 @@ import org.ovirt.api.metamodel.concepts.PrimitiveType;
 import org.ovirt.api.metamodel.concepts.Service;
 import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
+import org.ovirt.api.metamodel.tool.Names;
 import org.ovirt.api.metamodel.tool.SchemaNames;
 
 /**
@@ -60,6 +61,7 @@ public class ServicesGenerator implements PythonGenerator {
     protected File out;
 
     // Reference to the objects used to generate the code:
+    @Inject private Names names;
     @Inject private PythonNames pythonNames;
     @Inject private SchemaNames schemaNames;
 
@@ -150,12 +152,8 @@ public class ServicesGenerator implements PythonGenerator {
     }
 
     private void generateMethod(Method method) {
-        // FIXME: Ignore methods with different signatures
-        if (method.getBase() != null) {
-           return;
-        }
-
-        Name name = method.getName();
+        Method base = getDeepestBase(method);
+        Name name = base.getName();
         if (ADD.equals(name)) {
             generateAddHttpPost(method);
         }
@@ -179,7 +177,7 @@ public class ServicesGenerator implements PythonGenerator {
         List<Parameter> secondaryParameters = getSecondaryParameters(method);
 
         // Begin method:
-        Name methodName = method.getName();
+        Name methodName = getFullName(method);
         Name primaryParameterName = primaryParameter.getName();
         String primaryArg = pythonNames.getMemberStyleName(primaryParameterName);
         buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(methodName));
@@ -232,7 +230,7 @@ public class ServicesGenerator implements PythonGenerator {
             .collect(toList());
 
         // Begin method:
-        Name name = method.getName();
+        Name name = getFullName(method);
         buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(name));
         buffer.startBlock();
         buffer.addLine("self,");
@@ -272,14 +270,17 @@ public class ServicesGenerator implements PythonGenerator {
             .orElse(null);
         String member = parameter == null ? null : pythonNames.getMemberStyleName(parameter.getName());
 
+        Method deepestBase = getDeepestBase(method);
+        Name deepestBaseName = deepestBase.getName();
+        String path = getPath(deepestBaseName);
         buffer.addLine("# Send the request and wait for the response:");
         if (member == null) {
-            buffer.addLine("return self._internal_action(action, '%1$s', None, headers, query, wait)",  getPath(name));
+            buffer.addLine("return self._internal_action(action, '%1$s', None, headers, query, wait)",  path);
         }
         else {
             buffer.addLine(
                 "return self._internal_action(action, '%1$s', '%2$s', headers, query, wait)",
-                getPath(name),
+                path,
                 member
             );
         }
@@ -297,7 +298,7 @@ public class ServicesGenerator implements PythonGenerator {
             .collect(toList());
 
         // Begin method:
-        Name methodName = method.getName();
+        Name methodName = getFullName(method);
         buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(methodName));
         buffer.startBlock();
         buffer.addLine("self,");
@@ -342,7 +343,7 @@ public class ServicesGenerator implements PythonGenerator {
         List<Parameter> secondaryParameters = getSecondaryParameters(method);
 
         // Begin method:
-        Name methodName = method.getName();
+        Name methodName = getFullName(method);
         Name primaryParameterName = primaryParameter.getName();
         String primaryArg = pythonNames.getMemberStyleName(primaryParameterName);
         buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(methodName));
@@ -392,7 +393,7 @@ public class ServicesGenerator implements PythonGenerator {
             .collect(toList());
 
         // Begin method:
-        Name name = method.getName();
+        Name name = getFullName(method);
         buffer.addLine("def %1$s(", pythonNames.getMemberStyleName(name));
         buffer.startBlock();
         buffer.addLine("self,");
@@ -649,5 +650,30 @@ public class ServicesGenerator implements PythonGenerator {
         PythonTypeReference reference = pythonNames.getTypeReference(parameter.getType());
         buffer.addImports(reference.getImports());
         buffer.addLine("('%1$s', %1$s, %2$s),", name, reference.getText());
+    }
+
+    /**
+     * Returns the deepest base of the given method, the one that doesn't have a base itself.
+     */
+    private Method getDeepestBase(Method method) {
+        Method base = method.getBase();
+        if (base == null) {
+            return method;
+        }
+        return getDeepestBase(base);
+    }
+
+    /**
+     * Calculates the full name of a method, taking into account that the method may extend other method. For this kind
+     * of methods the full name wil be the name of the base, followed by the name of the method. For example, if the
+     * name of the base is {@code Add} and the name of the method is {@code FromSnapsot} then the full method name will
+     * be {@code AddFromSnapshot}.
+     */
+    private Name getFullName(Method method) {
+        Method base = method.getBase();
+        if (base == null) {
+            return method.getName();
+        }
+        return names.concatenate(getFullName(base), method.getName());
     }
 }

@@ -106,6 +106,31 @@ class VmServiceTest(unittest.TestCase):
             'clone=true&clone_permissions=true'
         )
 
+    def test_add_vm_from_scratch_with_clone_parameter(self):
+        """
+        Test when adding clone vm from scratch the query with this
+        parameter is sent.
+        """
+        self.server.set_xml_response("vms", 201, "<vm/>")
+        self.vms_service.add_from_scratch(types.Vm(), clone=True)
+        assert_equal(self.server.last_request_query, 'clone=true')
+
+    def test_add_vm_from_scratch_with_clone_and_clone_permissions_parameters(self):
+        """
+        Test when adding vm clone and clone_permissions from scarch
+        the query with those parameters is sent.
+        """
+        self.server.set_xml_response("vms", 201, "<vm/>")
+        self.vms_service.add_from_scratch(
+            types.Vm(),
+            clone=True,
+            clone_permissions=True
+        )
+        assert_equal(
+            self.server.last_request_query,
+            'clone=true&clone_permissions=true'
+        )
+
     def test_response_200_not_raise_exception(self):
         """
         Test when server return response with 200 code,
