@@ -1266,6 +1266,15 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.add_cluster_permission">add_cluster_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.add_data_center_permission">add_data_center_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.add_group_level">add_group_level</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.add_host_permission">add_host_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.add_storage_domain_permission">add_storage_domain_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.add_template_permission">add_template_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.add_user_level">add_user_level</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.add_vm_permission">add_vm_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.add_vm_pool_permission">add_vm_pool_permission</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.list">list</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.permission_service">permission_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.AssignedPermissionsService.service">service</a></li>
@@ -1709,6 +1718,8 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.DiskAttachmentsService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DiskAttachmentsService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.DiskAttachmentsService.add_providing_disk_id">add_providing_disk_id</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.DiskAttachmentsService.add_signature1">add_signature1</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DiskAttachmentsService.attachment_service">attachment_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DiskAttachmentsService.list">list</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DiskAttachmentsService.service">service</a></li>
@@ -1793,6 +1804,8 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.DisksService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DisksService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.DisksService.add_lun">add_lun</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.DisksService.add_on_storage_domain">add_on_storage_domain</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DisksService.disk_service">disk_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DisksService.list">list</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DisksService.service">service</a></li>
@@ -2409,6 +2422,8 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.HostService.activate">activate</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.affinity_labels_service">affinity_labels_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.approve">approve</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.HostService.approve_using_root_password">approve_using_root_password</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.HostService.approve_using_ssh">approve_using_ssh</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.commit_net_config">commit_net_config</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.deactivate">deactivate</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.devices_service">devices_service</a></li>
@@ -2420,6 +2435,8 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.HostService.get">get</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.hooks_service">hooks_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.install">install</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.HostService.install_using_root_password">install_using_root_password</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.HostService.install_using_ssh">install_using_ssh</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.iscsi_discover">iscsi_discover</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.iscsi_login">iscsi_login</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.katello_errata_service">katello_errata_service</a></li>
@@ -2438,6 +2455,8 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.HostService.unmanaged_networks_service">unmanaged_networks_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.unregistered_storage_domains_discover">unregistered_storage_domains_discover</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.update">update</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.HostService.update_using_root_password">update_using_root_password</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.HostService.update_using_ssh">update_using_ssh</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.upgrade">upgrade</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.upgrade_check">upgrade_check</a></li>
   </ul>
@@ -2462,6 +2481,8 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.HostsService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostsService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.HostsService.add_using_root_password">add_using_root_password</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.HostsService.add_using_ssh">add_using_ssh</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostsService.host_service">host_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostsService.list">list</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostsService.service">service</a></li>
@@ -2525,6 +2546,9 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.ImageTransfersService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ImageTransfersService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ImageTransfersService.add_for_disk">add_for_disk</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ImageTransfersService.add_for_image">add_for_image</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ImageTransfersService.add_for_snapshot">add_for_snapshot</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ImageTransfersService.image_transfer_service">image_transfer_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ImageTransfersService.list">list</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ImageTransfersService.service">service</a></li>
@@ -3738,6 +3762,11 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.StorageDomainsService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageDomainsService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageDomainsService.add_block_domain">add_block_domain</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageDomainsService.add_by_path">add_by_path</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageDomainsService.add_direct_lun">add_direct_lun</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageDomainsService.add_gluster_or_postfs">add_gluster_or_postfs</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageDomainsService.add_local">add_local</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageDomainsService.list">list</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageDomainsService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageDomainsService.storage_domain_service">storage_domain_service</a></li>
@@ -3780,6 +3809,10 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.remove">remove</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.update">update</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.update_iscsi">update_iscsi</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.update_local">update_local</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.update_nfs">update_nfs</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.update_vfs">update_vfs</a></li>
   </ul>
 
         </li>
@@ -3790,6 +3823,10 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.add_iscsi">add_iscsi</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.add_local">add_local</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.add_nfs">add_nfs</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.add_vfs">add_vfs</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.list">list</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.storage_connection_service">storage_connection_service</a></li>
@@ -3836,6 +3873,15 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.add_cluster_permission">add_cluster_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.add_data_center_permission">add_data_center_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.add_group_level">add_group_level</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.add_host_permission">add_host_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.add_storage_domain_permission">add_storage_domain_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.add_template_permission">add_template_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.add_user_level">add_user_level</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.add_vm_permission">add_vm_permission</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.add_vm_pool_permission">add_vm_pool_permission</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.list">list</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.permission_service">permission_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.SystemPermissionsService.service">service</a></li>
@@ -4526,6 +4572,9 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.VmsService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmsService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmsService.add_from_configuration">add_from_configuration</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmsService.add_from_scratch">add_from_scratch</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmsService.add_from_snapshot">add_from_snapshot</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmsService.list">list</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmsService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmsService.vm_service">vm_service</a></li>
@@ -6553,6 +6602,357 @@ id <code>123</code> to the group with id <code>789</code> send a request like th
   &lt;group id="789"/&gt;
 &lt;/permission&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.AssignedPermissionsService.add_cluster_permission">
+    <p>def <span class="ident">add_cluster_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new permission on the cluster to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.AssignedPermissionsService.add_data_center_permission">
+    <p>def <span class="ident">add_data_center_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new permission on the data center to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.AssignedPermissionsService.add_group_level">
+    <p>def <span class="ident">add_group_level</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new group level permission for a given virtual machine.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.AssignedPermissionsService.add_host_permission">
+    <p>def <span class="ident">add_host_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new permission on the host to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.AssignedPermissionsService.add_storage_domain_permission">
+    <p>def <span class="ident">add_storage_domain_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new permission on the storage domain to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.AssignedPermissionsService.add_template_permission">
+    <p>def <span class="ident">add_template_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new permission on the template to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.AssignedPermissionsService.add_user_level">
+    <p>def <span class="ident">add_user_level</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new user level permission for a given virtual machine.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.AssignedPermissionsService.add_vm_permission">
+    <p>def <span class="ident">add_vm_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new permission on the vm to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.AssignedPermissionsService.add_vm_pool_permission">
+    <p>def <span class="ident">add_vm_pool_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new permission on the vm pool to the group in the system.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -11744,6 +12144,30 @@ value.
   
             
   <div class="item">
+    <div class="name def" id="ovirtsdk4.services.DiskAttachmentsService.add_providing_disk_id">
+    <p>def <span class="ident">add_providing_disk_id</span>(</p><p>self, attachment, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.DiskAttachmentsService.add_signature1">
+    <p>def <span class="ident">add_signature1</span>(</p><p>self, attachment, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="ovirtsdk4.services.DiskAttachmentsService.attachment_service">
     <p>def <span class="ident">attachment_service</span>(</p><p>self, id)</p>
     </div>
@@ -12881,6 +13305,84 @@ with the <code>qemu-img info</code> command shown above, send a request like thi
   &lt;format&gt;cow&lt;/format&gt;
 &lt;/disk&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>disk</code></dt>
+<dd>
+<p>The disk.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.DisksService.add_lun">
+    <p>def <span class="ident">add_lun</span>(</p><p>self, disk, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new lun disk to the storage domain.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>disk</code></dt>
+<dd>
+<p>The disk.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.DisksService.add_on_storage_domain">
+    <p>def <span class="ident">add_on_storage_domain</span>(</p><p>self, disk, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new disk to the storage domain with the specified size allocating space from the storage domain.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -20090,6 +20592,102 @@ This action also accepts an optional cluster element to define the target cluste
   
             
   <div class="item">
+    <div class="name def" id="ovirtsdk4.services.HostService.approve_using_root_password">
+    <p>def <span class="ident">approve_using_root_password</span>(</p><p>self, async=None, cluster=None, host=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Approve the specified host to be added to the engine by using the root password (deprecated verb). This
+occurs when the host registers itself with the engine.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>host</code></dt>
+<dd>
+<p>The host to approve.</p>
+</dd>
+<dt class="hdlist1"><code>cluster</code></dt>
+<dd>
+<p>The cluster where the host will be added after it is approved.</p>
+</dd>
+<dt class="hdlist1"><code>async</code></dt>
+<dd>
+<p>Indicates if the approval should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.HostService.approve_using_ssh">
+    <p>def <span class="ident">approve_using_ssh</span>(</p><p>self, async=None, cluster=None, host=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Approve the specified host to be added to the engine by using ssh authentication. This occurs when the host
+registers itself with the engine.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>host</code></dt>
+<dd>
+<p>The host to approve.</p>
+</dd>
+<dt class="hdlist1"><code>cluster</code></dt>
+<dd>
+<p>The cluster where the host will be added after it is approved.</p>
+</dd>
+<dt class="hdlist1"><code>async</code></dt>
+<dd>
+<p>Indicates if the approval should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.commit_net_config">
     <p>def <span class="ident">commit_net_config</span>(</p><p>self, async=None, headers=None, query=None, wait=True)</p>
     </div>
@@ -20526,6 +21124,144 @@ definitions by default.
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>root_password</code></dt>
+<dd>
+<p>The password of of the <code>root</code> user, used to connect to the host via SSH.</p>
+</dd>
+<dt class="hdlist1"><code>ssh</code></dt>
+<dd>
+<p>The SSH details used to connect to the host.</p>
+</dd>
+<dt class="hdlist1"><code>host</code></dt>
+<dd>
+<p>The <code>override_iptables</code> property is used to indicate if the firewall configuration should be replaced by the
+default one.</p>
+</dd>
+<dt class="hdlist1"><code>image</code></dt>
+<dd>
+<p>When installing an {product-name} node a image ISO file is required.</p>
+</dd>
+<dt class="hdlist1"><code>async</code></dt>
+<dd>
+<p>Indicates if the installation should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>deploy_hosted_engine</code></dt>
+<dd>
+<p>When set to <code>true</code> it means this host should also deploy the self-hosted engine components. A missing value
+is treated as <code>true</code> i.e deploy. Omitting this parameter means <code>false</code> and will perform no operation in the
+self-hosted engine area.</p>
+</dd>
+<dt class="hdlist1"><code>undeploy_hosted_engine</code></dt>
+<dd>
+<p>When set to <code>true</code> it means this host should un-deploy the self-hosted engine components and this host will
+not function as part of the High Availability cluster. A missing value is treated as <code>true</code> i.e un-deploy
+Omitting this parameter means <code>false</code> and will perform no operation in the self-hosted engine area.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.HostService.install_using_root_password">
+    <p>def <span class="ident">install_using_root_password</span>(</p><p>self, async=None, deploy_hosted_engine=None, host=None, image=None, root_password=None, ssh=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Install VDSM and other packages required to get the host ready to be used in the engine providing the root
+password. This has been deprecated.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>root_password</code></dt>
+<dd>
+<p>The password of of the <code>root</code> user, used to connect to the host via SSH.</p>
+</dd>
+<dt class="hdlist1"><code>ssh</code></dt>
+<dd>
+<p>The SSH details used to connect to the host.</p>
+</dd>
+<dt class="hdlist1"><code>host</code></dt>
+<dd>
+<p>The <code>override_iptables</code> property is used to indicate if the firewall configuration should be replaced by the
+default one.</p>
+</dd>
+<dt class="hdlist1"><code>image</code></dt>
+<dd>
+<p>When installing an {product-name} node a image ISO file is required.</p>
+</dd>
+<dt class="hdlist1"><code>async</code></dt>
+<dd>
+<p>Indicates if the installation should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>deploy_hosted_engine</code></dt>
+<dd>
+<p>When set to <code>true</code> it means this host should also deploy the self-hosted engine components. A missing value
+is treated as <code>true</code> i.e deploy. Omitting this parameter means <code>false</code> and will perform no operation in the
+self-hosted engine area.</p>
+</dd>
+<dt class="hdlist1"><code>undeploy_hosted_engine</code></dt>
+<dd>
+<p>When set to <code>true</code> it means this host should un-deploy the self-hosted engine components and this host will
+not function as part of the High Availability cluster. A missing value is treated as <code>true</code> i.e un-deploy
+Omitting this parameter means <code>false</code> and will perform no operation in the self-hosted engine area.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.HostService.install_using_ssh">
+    <p>def <span class="ident">install_using_ssh</span>(</p><p>self, async=None, deploy_hosted_engine=None, host=None, image=None, root_password=None, ssh=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Install VDSM and other packages required to get the host ready to be used in the engine providing the SSH
+password.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -21222,6 +21958,38 @@ For example, to update a the kernel command line of a host send a request like t
   
             
   <div class="item">
+    <div class="name def" id="ovirtsdk4.services.HostService.update_using_root_password">
+    <p>def <span class="ident">update_using_root_password</span>(</p><p>self, host, async=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Update the specified host in the system. This is deprecated and is provided only for backwards compatibility.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.HostService.update_using_ssh">
+    <p>def <span class="ident">update_using_ssh</span>(</p><p>self, host, async=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Updates the specified host in the system.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.upgrade">
     <p>def <span class="ident">upgrade</span>(</p><p>self, async=None, image=None, reboot=None, headers=None, query=None, wait=True)</p>
     </div>
@@ -21579,6 +22347,86 @@ network provider when adding hosts by sending a request like this:</p>
   &lt;/external_network_provider_configurations&gt;
 &lt;/host&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>host</code></dt>
+<dd>
+<p>The host definition from which to create the new host is passed as parameter, and the newly created host
+is returned.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.HostsService.add_using_root_password">
+    <p>def <span class="ident">add_using_root_password</span>(</p><p>self, host, deploy_hosted_engine=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new host to the system providing the host root password. This has been deprecated and provided for backwards compatibility.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>host</code></dt>
+<dd>
+<p>The host definition from which to create the new host is passed as parameter, and the newly created host
+is returned.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.HostsService.add_using_ssh">
+    <p>def <span class="ident">add_using_ssh</span>(</p><p>self, host, deploy_hosted_engine=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new host to the system providing the ssh password or fingerprint.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -22453,6 +23301,42 @@ IMPORTANT: The <code>image</code> attribute is deprecated since version 4.2 of t
 Use the <code>disk</code> or <code>snapshot</code> attributes instead.</p>
 </div>
 </div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ImageTransfersService.add_for_disk">
+    <p>def <span class="ident">add_for_disk</span>(</p><p>self, image_transfer, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ImageTransfersService.add_for_image">
+    <p>def <span class="ident">add_for_image</span>(</p><p>self, image_transfer, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ImageTransfersService.add_for_snapshot">
+    <p>def <span class="ident">add_for_snapshot</span>(</p><p>self, image_transfer, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
 
   </div>
   
@@ -35612,6 +36496,86 @@ and by using a host with an id <code>123</code>, send a request as follows:</p>
   
             
   <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageDomainsService.add_block_domain">
+    <p>def <span class="ident">add_block_domain</span>(</p><p>self, storage_domain, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Import an existing block storage domain to the system using the targets already connected to the host.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageDomainsService.add_by_path">
+    <p>def <span class="ident">add_by_path</span>(</p><p>self, storage_domain, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new storage domain to the system using the storage on the given host and path.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageDomainsService.add_direct_lun">
+    <p>def <span class="ident">add_direct_lun</span>(</p><p>self, storage_domain, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new storage domain to the system using a direct lun.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageDomainsService.add_gluster_or_postfs">
+    <p>def <span class="ident">add_gluster_or_postfs</span>(</p><p>self, storage_domain, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new storage domain to the system using the gluster or posixfs storage.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageDomainsService.add_local">
+    <p>def <span class="ident">add_local</span>(</p><p>self, storage_domain, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a new storage domain to the system using the storage on the localhost at the given path.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="ovirtsdk4.services.StorageDomainsService.list">
     <p>def <span class="ident">list</span>(</p><p>self, case_sensitive=None, filter=None, max=None, search=None, headers=None, query=None, wait=True)</p>
     </div>
@@ -36102,6 +37066,70 @@ For example, to change the address of the storage server send a request like thi
 
   </div>
   
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageServerConnectionService.update_iscsi">
+    <p>def <span class="ident">update_iscsi</span>(</p><p>self, connection, async=None, force=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Update the specified iSCSI storage connection in the system.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageServerConnectionService.update_local">
+    <p>def <span class="ident">update_local</span>(</p><p>self, connection, async=None, force=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Update the specified local storage connection in the system.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageServerConnectionService.update_nfs">
+    <p>def <span class="ident">update_nfs</span>(</p><p>self, connection, async=None, force=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Update the specified nfs storage connection in the system.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageServerConnectionService.update_vfs">
+    <p>def <span class="ident">update_vfs</span>(</p><p>self, connection, async=None, force=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Update the specified vfs storage connection in the system.</p>
+</div>
+</div>
+
+  </div>
+  
       </div>
       </div>
       
@@ -36164,6 +37192,70 @@ For example, to create a new storage connection for the NFS server <code>mynfs.e
   &lt;/host&gt;
 &lt;/storage_connection&gt;</code></pre>
 </div>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageServerConnectionsService.add_iscsi">
+    <p>def <span class="ident">add_iscsi</span>(</p><p>self, connection, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a iSCSI storage connection to the system.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageServerConnectionsService.add_local">
+    <p>def <span class="ident">add_local</span>(</p><p>self, connection, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a local storage connection to the system.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageServerConnectionsService.add_nfs">
+    <p>def <span class="ident">add_nfs</span>(</p><p>self, connection, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a nfs storage connection to the system.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageServerConnectionsService.add_vfs">
+    <p>def <span class="ident">add_vfs</span>(</p><p>self, connection, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a vfs storage connection to the system.</p>
 </div>
 </div>
 
@@ -36734,6 +37826,393 @@ id <code>123</code> to the group with id <code>789</code> send a request like th
   &lt;group id="789"/&gt;
 &lt;/permission&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.SystemPermissionsService.add_cluster_permission">
+    <p>def <span class="ident">add_cluster_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.services.AssignedPermissionsService">AssignedPermissionsService</a></code>.<code><a href="#ovirtsdk4.services.AssignedPermissionsService.add_cluster_permission">add_cluster_permission</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Add a new permission on the cluster to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.SystemPermissionsService.add_data_center_permission">
+    <p>def <span class="ident">add_data_center_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.services.AssignedPermissionsService">AssignedPermissionsService</a></code>.<code><a href="#ovirtsdk4.services.AssignedPermissionsService.add_data_center_permission">add_data_center_permission</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Add a new permission on the data center to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.SystemPermissionsService.add_group_level">
+    <p>def <span class="ident">add_group_level</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.services.AssignedPermissionsService">AssignedPermissionsService</a></code>.<code><a href="#ovirtsdk4.services.AssignedPermissionsService.add_group_level">add_group_level</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Add a new group level permission for a given virtual machine.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.SystemPermissionsService.add_host_permission">
+    <p>def <span class="ident">add_host_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.services.AssignedPermissionsService">AssignedPermissionsService</a></code>.<code><a href="#ovirtsdk4.services.AssignedPermissionsService.add_host_permission">add_host_permission</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Add a new permission on the host to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.SystemPermissionsService.add_storage_domain_permission">
+    <p>def <span class="ident">add_storage_domain_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.services.AssignedPermissionsService">AssignedPermissionsService</a></code>.<code><a href="#ovirtsdk4.services.AssignedPermissionsService.add_storage_domain_permission">add_storage_domain_permission</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Add a new permission on the storage domain to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.SystemPermissionsService.add_template_permission">
+    <p>def <span class="ident">add_template_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.services.AssignedPermissionsService">AssignedPermissionsService</a></code>.<code><a href="#ovirtsdk4.services.AssignedPermissionsService.add_template_permission">add_template_permission</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Add a new permission on the template to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.SystemPermissionsService.add_user_level">
+    <p>def <span class="ident">add_user_level</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.services.AssignedPermissionsService">AssignedPermissionsService</a></code>.<code><a href="#ovirtsdk4.services.AssignedPermissionsService.add_user_level">add_user_level</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Add a new user level permission for a given virtual machine.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.SystemPermissionsService.add_vm_permission">
+    <p>def <span class="ident">add_vm_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.services.AssignedPermissionsService">AssignedPermissionsService</a></code>.<code><a href="#ovirtsdk4.services.AssignedPermissionsService.add_vm_permission">add_vm_permission</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Add a new permission on the vm to the group in the system.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>permission</code></dt>
+<dd>
+<p>The permission.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.SystemPermissionsService.add_vm_pool_permission">
+    <p>def <span class="ident">add_vm_pool_permission</span>(</p><p>self, permission, headers=None, query=None, wait=True)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.services.AssignedPermissionsService">AssignedPermissionsService</a></code>.<code><a href="#ovirtsdk4.services.AssignedPermissionsService.add_vm_pool_permission">add_vm_pool_permission</a></code>
+    </p>
+
+    
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Add a new permission on the vm pool to the group in the system.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -46010,6 +47489,54 @@ attribute:</p>
 </div>
 <div class="paragraph">
 <p>In all cases the name or identifier of the cluster where the virtual machine will be created is mandatory.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmsService.add_from_configuration">
+    <p>def <span class="ident">add_from_configuration</span>(</p><p>self, vm, clone=None, clone_permissions=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>add a virtual machine to the system from a configuration - requires the configuration type and the configuration data</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmsService.add_from_scratch">
+    <p>def <span class="ident">add_from_scratch</span>(</p><p>self, vm, clone=None, clone_permissions=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>add a virtual machine to the system from scratch</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmsService.add_from_snapshot">
+    <p>def <span class="ident">add_from_snapshot</span>(</p><p>self, vm, clone=None, clone_permissions=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>add a virtual machine to the system by cloning from a snapshot</p>
 </div>
 </div>
 
