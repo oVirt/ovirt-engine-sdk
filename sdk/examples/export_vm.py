@@ -25,7 +25,7 @@ import ovirtsdk4.types as types
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
-# This example shows how export a virtual machine to an export storage
+# This example shows how to export a virtual machine to an export storage
 # domain.
 
 # Create the connection to the server:
@@ -46,7 +46,7 @@ vms_service = system_service.vms_service()
 vm = vms_service.list(search='name=myvm')[0]
 
 # Export the virtual machine. Note that the 'exclusive' parameter is
-# optional, and only required if you wnt to overwrite a virtual machine
+# optional, and only required if you want to overwrite a virtual machine
 # that has already been exported before.
 vm_service = vms_service.vm_service(vm.id)
 vm_service.export(
