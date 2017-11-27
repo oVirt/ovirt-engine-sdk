@@ -926,7 +926,7 @@ class Connection(object):
             pycurl.E_COULDNT_CONNECT, pycurl.E_COULDNT_RESOLVE_HOST
         ]:
             clazz = ConnectionError
-        elif e_code in pycurl.E_OPERATION_TIMEDOUT:
+        elif e_code == pycurl.E_OPERATION_TIMEDOUT:
             clazz = TimeoutError
 
         six.reraise(clazz, clazz(error_msg), sys.exc_info()[2])
