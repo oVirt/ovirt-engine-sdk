@@ -38,6 +38,7 @@ class ConnectionCreateTest(unittest.TestCase):
     def teardown_class(cls):
         cls.server.stop_server()
 
+    @raises(sdk.Error)
     def test_secure_mode_without_ca(self):
         """
         Test connection can be created when no CA is provided
@@ -46,6 +47,7 @@ class ConnectionCreateTest(unittest.TestCase):
             url=self.server.url(),
             username=self.server.user(),
             password=self.server.password(),
+            ca_file='ugly.pem'
         )
         connection.authenticate()
         connection.close()
