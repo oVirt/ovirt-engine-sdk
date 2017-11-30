@@ -2,6 +2,70 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.2.2 / Nov 30 2017
+Update to model 4.2.26.
+
+* Added new `discovered_targets` output parameter to the operation that
+  discovers host iSCSI storage
+  https://bugzilla.redhat.com/1510860[#1510860].
+
+* Add new `S390X` value to the `Architecture` type.
+
+* Add new `DIAG288` value to the `WatchdogModel` type.
+
+* Add `OVA` value to the `ConfigurationType` enumerated type.
+
+* Add search parameters to the operation that lists jobs.
+
+* Add `auto_sync` attribute to the _OpenStack_ network provider type
+  https://bugzilla.redhat.com/1511823[#1511823].
+
+* Add operation to export a virtual machine as `OVA` file.
+
+* Add `active` and `transferred` attributes to the `ImageTransfer` type.
+
+* Add `external_provider` and `external_provider_physical_network`
+  attributes to the `Network` type.
+
+* Add `transfer_url` to the `ImageTransfer` type.
+
+* Add the `follow` parameter to all the `Get` and `List` operations.
+
+* Add the `force` parameter to the operation that puts a storage domain
+  into maintenance mode https://bugzilla.redhat.com/1321585[#1321585].
+
+* Deprecate the _OpenStack_ network provider `pluginType` attribute,
+  replacing it with `externalPluginType`.
+
+* Add `quota` and `diskProfile` parameters to the operations that move
+  and copy disks https://bugzilla.redhat.com/1496704[#1496704].
+
+* Add `authenticatedUser` and `effectiveUser` links to the `Api` type
+  https://bugzilla.redhat.com/472418[#1472418].
+
+* Add `reboot` parameter to the `upgrade` method of the service that
+  manages a host.
+
+* Add `registrationConfiguration` parameter to the operations that
+  register virtual machines and templates.
+
+* Add documentation explaining how to add snapshots with disk
+  attachments.
+
+* Add new services and types to enable automatic provisioning of
+  external network providers during host installation.
+
+* Add `storageErrorResumeBehaviour` to virtual machines, templates and
+  instance types https://bugzilla.redhat.com/1317450[#1317450].
+
+New features:
+
+* Add support for method extensions.
+
+Bug fixes:
+
+* No exceptions when 'raise_exception=False'.
+
 == 4.2.1-a2 / Sep 25 2017
 
 Update to model 4.2.19:
