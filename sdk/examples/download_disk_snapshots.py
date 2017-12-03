@@ -140,9 +140,6 @@ def download_disk_snapshot(disk_snapshot):
                 # Update bytes_to_read
                 bytes_to_read -= len(chunk)
 
-                # Extend the transfer session.
-                transfer_service.extend()
-
                 completed = 1 - (bytes_to_read / float(r.getheader('Content-Length')))
 
                 print "Completed", "{:.0%}".format(completed)
