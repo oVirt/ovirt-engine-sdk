@@ -201,15 +201,12 @@ proxy_connection.putheader('Content-Range',
 proxy_connection.putheader('Content-Length', "%d" % (image_size,))
 proxy_connection.endheaders()
 
-# Send the request body. Note the following:
-#
-# - we must send the number of bytes we promised in the Content-Range
-#   header.
-#
-# - we must extend the session, otherwise it will expire and the upload
-#   will fail.
+# Send the request body.
 
-start = last_progress = last_extend = time.time()
+# Note that we must send the number of bytes we promised in the
+# Content-Range header.
+
+start = last_progress = time.time()
 
 with open(image_path, "rb") as disk:
     pos = 0
@@ -229,11 +226,6 @@ with open(image_path, "rb") as disk:
         if now - last_progress > 10:
             print("Uploaded %.2f%%" % (float(pos) / image_size * 100))
             last_progress = now
-
-        # Extend the transfer session once per minute.
-        if now - last_extend > 60:
-            transfer_service.extend()
-            last_extend = now
 
 # Get the response
 response = proxy_connection.getresponse()
