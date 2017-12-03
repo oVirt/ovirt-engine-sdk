@@ -136,7 +136,7 @@ try:
         sys.exit(1)
 
     path = "/path/to/disk.qcow2"
-    start = last_progress = last_extend = time.time()
+    start = last_progress = time.time()
     image_size = int(r.getheader('Content-Length'))
     with open(path, "wb") as mydisk:
         pos = 0
@@ -153,11 +153,6 @@ try:
             mydisk.write(chunk)
             pos += len(chunk)
             now = time.time()
-
-            # Extend the transfer session once per minute
-            if now - last_extend > 60:
-                transfer_service.extend()
-                last_extend = now
 
             # Report progress every 10 seconds
             if now - last_progress > 10:
