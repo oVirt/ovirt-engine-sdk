@@ -54,7 +54,12 @@ BUF_SIZE = 128 * 1024
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
-image_path = sys.argv[1]
+direct_upload = False
+if sys.argv[1] == "-d" or sys.argv[1] == "--direct":
+    direct_upload = True
+    image_path = sys.argv[2]
+else:
+    image_path = sys.argv[1]
 image_size = os.path.getsize(image_path)
 
 # Get image info using qemu-img
@@ -165,7 +170,7 @@ print("Uploading image...")
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it - regardless of the SDK.
 # In this example, we will use Python's httplib.HTTPSConnection for transferring the data.
-proxy_url = urlparse(transfer.proxy_url)
+destination_url = urlparse(transfer.transfer_url) if direct_upload else urlparse(transfer.proxy_url)
 context = ssl.create_default_context()
 
 # Note that ovirt-imageio-proxy by default checks the certificates, so if you don't have
@@ -173,8 +178,8 @@ context = ssl.create_default_context()
 context.load_verify_locations(cafile='ca.pem')
 
 proxy_connection = HTTPSConnection(
-    proxy_url.hostname,
-    proxy_url.port,
+    destination_url.hostname,
+    destination_url.port,
     context=context,
 )
 
@@ -189,7 +194,7 @@ proxy_connection = HTTPSConnection(
 # - the server requires also Content-Length.
 #
 
-proxy_connection.putrequest("PUT", proxy_url.path)
+proxy_connection.putrequest("PUT", destination_url.path)
 proxy_connection.putheader('Authorization', transfer.signed_ticket)
 proxy_connection.putheader('Content-Range',
                            "bytes %d-%d/%d" % (0, image_size - 1, image_size))
@@ -246,5 +251,6 @@ print("Finalizing transfer session...")
 # Successful cleanup
 transfer_service.finalize()
 connection.close()
+proxy_connection.close()
 
 print("Upload completed successfully")
