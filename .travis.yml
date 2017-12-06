@@ -12,16 +12,16 @@ matrix:
           - PYCURL_SSL_LIBRARY=openssl
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl --with-openssl ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl --with-openssl; brew install python; sudo easy_install pip; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install ruby ; fi
   - sudo gem install asciidoctor
-  - sudo pip install flake8
-  - sudo pip install nose
-  - sudo pip install pygments
-  - sudo pip install six
-  - sudo pip install wheel
+  - pip install --user flake8
+  - pip install --user nose
+  - pip install --user pygments
+  - pip install --user six
+  - pip install --user wheel
   - git clone https://github.com/machacekondra/pdoc.git pdoc
-  - sudo pip install ./pdoc -U
+  - pip install --user ./pdoc -U
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mvn package -DskipTests ; fi
