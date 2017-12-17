@@ -47,7 +47,7 @@ sds_service = connection.system_service().storage_domains_service()
 # version, the host returns the luns' discard related information.
 sd = sds_service.add(
     types.StorageDomain(
-        name='myiscsi',
+        name='mydata',
         description='My iSCSI With Discard After Delete',
         type=types.StorageDomainType.DATA,
         discard_after_delete=True,

@@ -126,7 +126,7 @@ disk = disks_service.add(
         sparse=disk_format == types.DiskFormat.COW,
         storage_domains=[
             types.StorageDomain(
-                name='data'
+                name='mydata'
             )
         ]
     )

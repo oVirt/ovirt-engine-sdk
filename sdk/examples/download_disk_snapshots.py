@@ -152,7 +152,7 @@ if __name__ == "__main__":
 
     # Set relevant disk and stroage domain IDs
     disk_id = 'ccdd6487-0a8f-40c8-9f45-40e0e2b30d79'
-    sd_name = 'data1'
+    sd_name = 'mydata'
 
     # Create a connection to the server:
     connection = get_connection()

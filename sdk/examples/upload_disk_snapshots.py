@@ -151,7 +151,7 @@ def create_vm_from_ovf(ovf_file_path, vms_service):
     vm = vms_service.add(
         types.Vm(
             cluster=types.Cluster(
-                name='Default',
+                name='mycluster',
             ),
             initialization = types.Initialization(
                 configuration = types.Configuration(

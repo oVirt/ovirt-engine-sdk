@@ -40,7 +40,7 @@ connection = sdk.Connection(
 # Locate the networks service and use it to find the network:
 networks_service = connection.system_service().networks_service()
 network = networks_service.list(
-    search='name=mynetwork and datacenter=mydatacenter'
+    search='name=mynetwork and datacenter=mydc'
 )[0]
 
 # Locate the clusters service and use it to find the cluster:

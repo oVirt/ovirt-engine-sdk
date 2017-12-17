@@ -40,13 +40,13 @@ connection = sdk.Connection(
 networks_service = connection.system_service().networks_service()
 
 # Use the "add" method to create new VM logical network in data center
-# called "mydatacenter", with VLAN tag 100 and MTU 1500.
+# called "mydc", with VLAN tag 100 and MTU 1500.
 network = networks_service.add(
     network=types.Network(
-        name='MyNetwork',
+        name='mynetwork',
         description='My logical network',
         data_center=types.DataCenter(
-            name='mydatacenter'
+            name='mydc'
         ),
         vlan=types.Vlan(id='100'),
         usages=[types.NetworkUsage.VM],

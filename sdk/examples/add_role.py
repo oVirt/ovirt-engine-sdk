@@ -43,7 +43,7 @@ roles_service = connection.system_service().roles_service()
 # permit id not the name, when creating new role):
 role = roles_service.add(
     types.Role(
-        name='MyRole',
+        name='myrole',
         administrative=False,
         description='My custom role to create virtual machines',
         permits=[

@@ -43,7 +43,7 @@ groups_service = connection.system_service().groups_service()
 # Please note that domain name is name of the authorization provider (authz):
 group = groups_service.add(
     types.Group(
-        name='Developers',
+        name='mygroup',
         domain=types.Domain(
             name='internal-authz'
         ),
