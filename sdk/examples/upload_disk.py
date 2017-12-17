@@ -170,7 +170,14 @@ print("Uploading image...")
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it - regardless of the SDK.
 # In this example, we will use Python's httplib.HTTPSConnection for transferring the data.
-destination_url = urlparse(transfer.transfer_url) if direct_upload else urlparse(transfer.proxy_url)
+if direct_upload:
+    if transfer.transfer_url is not None:
+        destination_url = urlparse(transfer.transfer_url)
+    else:
+        print("Direct upload to host not supported (requires ovirt-engine 4.2 or above).")
+        sys.exit(1)
+else:
+    destination_url = urlparse(transfer.proxy_url)
 context = ssl.create_default_context()
 
 # Note that ovirt-imageio-proxy by default checks the certificates, so if you don't have
