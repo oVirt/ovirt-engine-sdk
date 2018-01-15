@@ -1424,6 +1424,10 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.DiskContentType">DiskContentType</a></span>
+        
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.types.DiskFormat">DiskFormat</a></span>
         
         </li>
@@ -2703,6 +2707,15 @@ table {
           
   <ul>
     <li class="mono"><a href="#ovirtsdk4.types.RegistrationRoleMapping.__init__">__init__</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.RegistrationVnicProfileMapping">RegistrationVnicProfileMapping</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.types.RegistrationVnicProfileMapping.__init__">__init__</a></li>
   </ul>
 
         </li>
@@ -8417,6 +8430,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Disk.content_type" class="name">var <span class="ident">content_type</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Disk.description" class="name">var <span class="ident">description</span></p>
             
     <p class="inheritance">
@@ -8756,7 +8777,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Disk.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, actual_size=None, alias=None, bootable=None, comment=None, description=None, disk_profile=None, format=None, id=None, image_id=None, initial_size=None, instance_type=None, interface=None, logical_name=None, lun_storage=None, name=None, openstack_volume_type=None, permissions=None, propagate_errors=None, provisioned_size=None, qcow_version=None, quota=None, read_only=None, sgio=None, shareable=None, snapshot=None, sparse=None, statistics=None, status=None, storage_domain=None, storage_domains=None, storage_type=None, template=None, total_size=None, uses_scsi_reservation=None, vm=None, vms=None, wipe_after_delete=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, actual_size=None, alias=None, bootable=None, comment=None, content_type=None, description=None, disk_profile=None, format=None, id=None, image_id=None, initial_size=None, instance_type=None, interface=None, logical_name=None, lun_storage=None, name=None, openstack_volume_type=None, permissions=None, propagate_errors=None, provisioned_size=None, qcow_version=None, quota=None, read_only=None, sgio=None, shareable=None, snapshot=None, sparse=None, statistics=None, status=None, storage_domain=None, storage_domains=None, storage_type=None, template=None, total_size=None, uses_scsi_reservation=None, vm=None, vms=None, wipe_after_delete=None)</p>
     </div>
     
     <p class="inheritance">
@@ -8964,6 +8985,63 @@ table {
 
   </div>
   
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.types.DiskContentType" class="name">class <span class="ident">DiskContentType</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.DiskContentType">DiskContentType</a></li>
+          <li>enum.Enum</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.DiskContentType.DATA" class="name">var <span class="ident">DATA</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.DiskContentType.ISO" class="name">var <span class="ident">ISO</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.DiskContentType.MEMORY_DUMP_VOLUME" class="name">var <span class="ident">MEMORY_DUMP_VOLUME</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.DiskContentType.MEMORY_METADATA_VOLUME" class="name">var <span class="ident">MEMORY_METADATA_VOLUME</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.DiskContentType.OVF_STORE" class="name">var <span class="ident">OVF_STORE</span></p>
+            
+
+            
+  
+
+            </div>
       </div>
       </div>
       
@@ -9281,6 +9359,22 @@ table {
   
     <div class="desc inherited"><div class="paragraph">
 <p>Returns the value of the <code>comment</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.DiskSnapshot.content_type" class="name">var <span class="ident">content_type</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Disk">Disk</a></code>.<code><a href="#ovirtsdk4.types.Disk.content_type">content_type</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>content_type</code> property.</p>
 </div>
 </div>
 
@@ -9841,7 +9935,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.DiskSnapshot.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, actual_size=None, alias=None, bootable=None, comment=None, description=None, disk=None, disk_profile=None, format=None, id=None, image_id=None, initial_size=None, instance_type=None, interface=None, logical_name=None, lun_storage=None, name=None, openstack_volume_type=None, permissions=None, propagate_errors=None, provisioned_size=None, qcow_version=None, quota=None, read_only=None, sgio=None, shareable=None, snapshot=None, sparse=None, statistics=None, status=None, storage_domain=None, storage_domains=None, storage_type=None, template=None, total_size=None, uses_scsi_reservation=None, vm=None, vms=None, wipe_after_delete=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, actual_size=None, alias=None, bootable=None, comment=None, content_type=None, description=None, disk=None, disk_profile=None, format=None, id=None, image_id=None, initial_size=None, instance_type=None, interface=None, logical_name=None, lun_storage=None, name=None, openstack_volume_type=None, permissions=None, propagate_errors=None, provisioned_size=None, qcow_version=None, quota=None, read_only=None, sgio=None, shareable=None, snapshot=None, sparse=None, statistics=None, status=None, storage_domain=None, storage_domains=None, storage_type=None, template=None, total_size=None, uses_scsi_reservation=None, vm=None, vms=None, wipe_after_delete=None)</p>
     </div>
     
     <p class="inheritance">
@@ -24163,6 +24257,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.OpenStackNetworkProvider.unmanaged" class="name">var <span class="ident">unmanaged</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.OpenStackNetworkProvider.url" class="name">var <span class="ident">url</span></p>
             
     <p class="inheritance">
@@ -24198,7 +24300,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.OpenStackNetworkProvider.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, agent_configuration=None, authentication_url=None, auto_sync=None, certificates=None, comment=None, description=None, external_plugin_type=None, id=None, name=None, networks=None, password=None, plugin_type=None, properties=None, read_only=None, requires_authentication=None, subnets=None, tenant_name=None, type=None, url=None, username=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, agent_configuration=None, authentication_url=None, auto_sync=None, certificates=None, comment=None, description=None, external_plugin_type=None, id=None, name=None, networks=None, password=None, plugin_type=None, properties=None, read_only=None, requires_authentication=None, subnets=None, tenant_name=None, type=None, unmanaged=None, url=None, username=None)</p>
     </div>
     
     <p class="inheritance">
@@ -28148,11 +28250,19 @@ table {
   
 
             </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.RegistrationConfiguration.vnic_profile_mappings" class="name">var <span class="ident">vnic_profile_mappings</span></p>
+            
+
+            
+  
+
+            </div>
           <h3>Methods</h3>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.RegistrationConfiguration.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_group_mappings=None, affinity_label_mappings=None, cluster_mappings=None, domain_mappings=None, lun_mappings=None, role_mappings=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_group_mappings=None, affinity_label_mappings=None, cluster_mappings=None, domain_mappings=None, lun_mappings=None, role_mappings=None, vnic_profile_mappings=None)</p>
     </div>
     
 
@@ -28326,6 +28436,64 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.RegistrationRoleMapping.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, from_=None, to=None)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.types.RegistrationVnicProfileMapping" class="name">class <span class="ident">RegistrationVnicProfileMapping</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.RegistrationVnicProfileMapping">RegistrationVnicProfileMapping</a></li>
+          <li>ovirtsdk4.Struct</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.RegistrationVnicProfileMapping.from_" class="name">var <span class="ident">from_</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.RegistrationVnicProfileMapping.href" class="name">var <span class="ident">href</span></p>
+            
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>href</code> attribute.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.RegistrationVnicProfileMapping.to" class="name">var <span class="ident">to</span></p>
+            
+
+            
+  
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.types.RegistrationVnicProfileMapping.__init__">
     <p>def <span class="ident">__init__</span>(</p><p>self, from_=None, to=None)</p>
     </div>
     
