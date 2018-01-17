@@ -2,6 +2,31 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.2.3 / Jan 17 2018
+Update to model 4.2.28 and metamodel 1.2.16.
+
+New features:
+
+* Deprecate the `discard_zeroes_data` attribute of the `LogicalUnit`
+  type and the `supports_discard_zeroes_data` of the `StorageDomain`
+  type, as they have been removed from the kernel.
+
+* Add new `content_type` attribute to the `Disk` type
+  https://bugzilla.redhat.com/1511420[#1511420].
+
+* Add support for setting external network providers by name when adding
+  or updating a cluster https://bugzilla.redhat.com/1511369[#1511369].
+
+* Add new `unmanaged` attribute to the `OpenStackNetworkProvider` type.
+
+* Move virtual NIC profile mappings insde registration configuration
+   https://bugzilla.redhat.com/1522799[#1522799].
+
+Bug fixes:
+
+* Make CPU type optional when adding a cluster
+  https://bugzilla.redhat.com/1525912[#1525912].
+
 == 4.2.2 / Nov 30 2017
 Update to model 4.2.26.
 
