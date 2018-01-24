@@ -2,6 +2,11 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.2.4 / Jan 24 2018
+Bug fixes:
+
+* Change pycrul E_OPERATION_TIMEDOUT to E_OPERATION_TIMEOUTED.
+
 == 4.2.3 / Jan 17 2018
 Update to model 4.2.28 and metamodel 1.2.16.
 
