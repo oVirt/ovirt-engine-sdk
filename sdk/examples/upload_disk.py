@@ -189,15 +189,15 @@ proxy_connection = HTTPSConnection(
 #   the signed ticket received from the transfer service.
 #   I.e. proxy_connection.putheader('Authorization', transfer.signed_ticket)
 #
-# - the server requires Content-Range header even when sending the
-#   entire file.
+# - For ovirt-engine < 4.2, the server requires 'Content-Range' header
+#   even when sending the entire file.
+#   I.e. proxy_connection.putheader('Content-Range',
+#            "bytes %d-%d/%d" % (0, image_size - 1, image_size))
 #
 # - the server requires also Content-Length.
 #
 
 proxy_connection.putrequest("PUT", destination_url.path)
-proxy_connection.putheader('Content-Range',
-                           "bytes %d-%d/%d" % (0, image_size - 1, image_size))
 proxy_connection.putheader('Content-Length', "%d" % (image_size,))
 proxy_connection.endheaders()
 
