@@ -23,7 +23,7 @@ limitations under the License.
   <groupId>org.ovirt.engine.api</groupId>
   <artifactId>python-sdk-parent</artifactId>
   <packaging>pom</packaging>
-  <version>4.2.5-SNAPSHOT</version>
+  <version>4.3.0.a1-SNAPSHOT</version>
 
   <name>oVirt Python SDK Parent</name>
 
