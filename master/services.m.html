@@ -2461,6 +2461,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.HostService.statistics_service">statistics_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.storage_connection_extensions_service">storage_connection_extensions_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.storage_service">storage_service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.HostService.sync_all_networks">sync_all_networks</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.tags_service">tags_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.unmanaged_networks_service">unmanaged_networks_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.HostService.unregistered_storage_domains_discover">unregistered_storage_domains_discover</a></li>
@@ -23495,6 +23496,10 @@ when the host is rebooted, remember to call <a href="#services/host/methods/comm
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>synchronized_network_attachments</code></dt>
+<dd>
+<p>A list of network attachments that will be synchronized.</p>
+</dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
 <p>Indicates if the action should be performed asynchronously.</p>
@@ -23560,6 +23565,58 @@ when the host is rebooted, remember to call <a href="#services/host/methods/comm
   
     <div class="desc"><div class="paragraph">
 <p>A reference to the service that manages the host&#8217;s storage.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.HostService.sync_all_networks">
+    <p>def <span class="ident">sync_all_networks</span>(</p><p>self, async=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>To synchronize all networks on the host, send a request like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/hosts/123/syncallnetworks</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;action/&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>async</code></dt>
+<dd>
+<p>Indicates if the action should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -24730,8 +24787,8 @@ to create a transfer by using <a href="#services/image_transfers/methods/add">ad
 of the <a href="#services/image_transfers">[services/image_transfers]</a> service, stating the image to transfer
 data to/from.
 After doing that, the transfer is managed by this service.
-E.g., for uploading to the disk image with id <code>52cb593f-837c-4633-a444-35a0a0383706</code>,
-the client can use oVirt&#8217;s Python&#8217;s SDK as follows:</p>
+E.g., for uploading/downloading a disk with id <code>52cb593f-837c-4633-a444-35a0a0383706</code>:
+<strong>Using oVirt&#8217;s Python&#8217;s SDK:</strong></p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -24893,7 +24950,110 @@ For example:</p>
 <a href="#types/image_transfer_phase">finished_failure</a>, and
 the disk&#8217;s status will be changed to <code>Illegal</code>. Otherwise it will be changed to
 <a href="#types/image_transfer_phase">finished_success</a>, and the disk will be ready
-to be used. In both cases, the transfer entity will be removed shortly after.</p>
+to be used. In both cases, the transfer entity will be removed shortly after.
+<strong>Using HTTP and cURL calls:</strong>
+- For upload, create a new disk first:
+* Specify 'initial_size' and 'provisioned_size' in bytes.
+* 'initial_size' must be bigger or the same as the size of the uploaded data.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/disks</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;disk&gt;
+  &lt;storage_domains&gt;
+    &lt;storage_domain id="123"/&gt;
+  &lt;/storage_domains&gt;
+  &lt;alias&gt;mydisk&lt;/alias&gt;
+  &lt;initial_size&gt;1073741824&lt;/initial_size&gt;
+  &lt;provisioned_size&gt;1073741824&lt;/provisioned_size&gt;
+  &lt;format&gt;raw&lt;/format&gt;
+&lt;/disk&gt;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a new image transfer for downloading/uploading a <code>disk</code> with id <code>456</code>:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>POST /ovirt-engine/api/imagetransfers</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;image_transfer&gt;
+  &lt;disk id="456"/&gt;
+  &lt;direction&gt;upload|download&lt;/direction&gt;
+&lt;/image_transfer&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Will respond:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;image_transfer id="123"&gt;
+  &lt;direction&gt;download|upload&lt;/direction&gt;
+  &lt;phase&gt;initializing|transferring&lt;/phase&gt;
+  &lt;proxy_url&gt;https://proxy_fqdn:54323/images/41c732d4-2210-4e7b-9e5c-4e2805baadbb&lt;/proxy_url&gt;
+  &lt;transfer_url&gt;https://daemon_fqdn:54322/images/41c732d4-2210-4e7b-9e5c-4e2805baadbb&lt;/transfer_url&gt;
+  ...
+&lt;/image_transfer&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note: If the phase is 'initializing', poll the <code>image_transfer</code> till its phase changes to 'transferring'.
+- Use the 'transfer_url' or 'proxy_url' to invoke a curl command:
+- use 'transfer_url' for transferring directly from/to ovirt-imageio-daemon,
+  or, use 'proxy_url' for transferring from/to ovirt-imageio-proxy.
+  Note: using the proxy would mitigate scenarios where there&#8217;s no direct connectivity
+  to the daemon machine, e.g. vdsm machines are on a different network than the engine.&#8201;&#8212;&#8201;Download:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="shell">$ curl --cacert /etc/pki/ovirt-engine/ca.pem https://daemon_fqdn:54322/images/41c732d4-2210-4e7b-9e5c-4e2805baadbb -o &lt;output_file&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>&#8201;&#8212;&#8201;Upload:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="shell">$ curl --cacert /etc/pki/ovirt-engine/ca.pem --upload-file &lt;file_to_upload&gt; -X PUT https://daemon_fqdn:54322/images/41c732d4-2210-4e7b-9e5c-4e2805baadbb</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Finalize the image transfer by invoking the action:</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>POST /ovirt-engine/api/imagetransfers/123/finalize</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body as follows:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;action /&gt;</code></pre>
+</div>
 </div>
 </div>
 
@@ -25101,7 +25261,47 @@ documentation.</p>
 <p>Add a new image transfer. An image, disk or disk snapshot needs to be specified
 in order to make a new transfer.
 IMPORTANT: The <code>image</code> attribute is deprecated since version 4.2 of the engine.
-Use the <code>disk</code> or <code>snapshot</code> attributes instead.</p>
+Use the <code>disk</code> or <code>snapshot</code> attributes instead.
+<strong>Creating a new image transfer for downloading or uploading a <code>disk</code>:</strong>
+To create an image transfer to download or upload a disk with id <code>123</code>,
+send the following request:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/imagetransfers</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;image_transfer&gt;
+  &lt;disk id="123"/&gt;
+  &lt;direction&gt;upload|download&lt;/direction&gt;
+&lt;/image_transfer&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>Creating a new image transfer for downloading or uploading a <code>disk_snapshot</code>:</strong>
+To create an image transfer to download or upload a <code>disk_snapshot</code> with id <code>456</code>,
+send the following request:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/imagetransfers</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;image_transfer&gt;
+  &lt;snapshot id="456"/&gt;
+  &lt;direction&gt;download|upload&lt;/direction&gt;
+&lt;/image_transfer&gt;</code></pre>
+</div>
 </div>
 </div>
 
@@ -27244,7 +27444,7 @@ For example, to add a job with the following request:</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.JobsService.list">
-    <p>def <span class="ident">list</span>(</p><p>self, follow=None, max=None, headers=None, query=None, wait=True)</p>
+    <p>def <span class="ident">list</span>(</p><p>self, case_sensitive=None, follow=None, max=None, search=None, headers=None, query=None, wait=True)</p>
     </div>
     
 
@@ -27291,6 +27491,16 @@ For example, to add a job with the following request:</p>
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>search</code></dt>
+<dd>
+<p>A query string used to restrict the returned jobs.</p>
+</dd>
+<dt class="hdlist1"><code>case_sensitive</code></dt>
+<dd>
+<p>Indicates if the search performed using the <code>search</code> parameter should be performed taking case into
+account. The default value is <code>true</code>, which means that case is taken into account. If you want to search
+ignoring case set it to <code>false</code>.</p>
+</dd>
 <dt class="hdlist1"><code>max</code></dt>
 <dd>
 <p>Sets the maximum number of jobs to return. If not specified all the jobs are returned.</p>
@@ -50025,7 +50235,7 @@ requires a specific host, the user can specify the host with either an <code>id<
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.VmService.preview_snapshot">
-    <p>def <span class="ident">preview_snapshot</span>(</p><p>self, async=None, disks=None, restore_memory=None, snapshot=None, vm=None, headers=None, query=None, wait=True)</p>
+    <p>def <span class="ident">preview_snapshot</span>(</p><p>self, async=None, disks=None, lease=None, restore_memory=None, snapshot=None, vm=None, headers=None, query=None, wait=True)</p>
     </div>
     
 
@@ -50043,6 +50253,16 @@ be inspected. Once that inspection is finished, the state of the virtual machine
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>lease</code></dt>
+<dd>
+<p>Specify the lease storage domain ID to use in the preview of the snapshot.
+If lease parameter is not passed, then the previewed snapshot lease storage domain will be used.
+If lease parameter is passed with empty storage domain parameter, then no lease will be used
+for the snapshot preview.
+If lease parameter is passed with storage domain parameter then the storage domain ID can be
+only one of the leases domain IDs that belongs to one of the virtual machine snapshots.
+This is an optional parameter, set by default to <code>null</code></p>
+</dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
 <p>Indicates if the preview should be performed asynchronously.</p>
