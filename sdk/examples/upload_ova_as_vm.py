@@ -21,6 +21,7 @@ import logging
 import lxml.etree
 import re
 import ssl
+import sys
 import tarfile
 import time
 
@@ -39,15 +40,30 @@ except ImportError:
 # setup.
 BUF_SIZE = 128 * 1024
 
-# Path to the OVA file.
-ova_path = "/tmp/ovirt.ova"
-# The name of the cluster where the virtual machine will be created.
-target_cluster_name = "Default"
+logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
 # This example shows how to upload a virtual appliance (OVA) file
 # as a virtual machine.
 
+if len(sys.argv) < 2:
+    print("Usage: upload_ova_as_vm ova_path [cluster] [storage_domain]")
+    sys.exit(1)
+else:
+    # Path to the OVA file.
+    ova_path = sys.argv[1]
+    # The name of the cluster where the virtual machine will be created.
+    target_cluster_name = "Default"
+    if len(sys.argv) > 2:
+        target_cluster_name = sys.argv[2]
+    # The name of the storage domain where the disks will be uploaded to.
+    target_storage_domain_name = "mydata"
+    if len(sys.argv) > 3:
+        target_storage_domain_name = sys.argv[3]
+
+
 # Create the connection to the server:
+print("Connecting...")
+
 connection = sdk.Connection(
     url='https://engine40.example.com/ovirt-engine/api',
     username='admin@internal',
@@ -93,6 +109,8 @@ for disk_element in disk_elements:
     for key, value in disk_element.items():
         key = key.replace('{%s}' % namespaces['ovf'], '')
         props[key] = value
+
+    print("Creating disk...")
     print (props)
 
     # Determine the volume format
@@ -112,7 +130,7 @@ for disk_element in disk_elements:
             initial_size=int(props['populatedSize']),
             storage_domains=[
                 types.StorageDomain(
-                    name='scsi'
+                    name=target_storage_domain_name
                 )
             ]
         )
@@ -124,6 +142,7 @@ for disk_element in disk_elements:
     while disk_service.get().status != types.DiskStatus.OK:
         time.sleep(5)
 
+    print("Creating transfer session...")
     # Add a new image transfer:
     transfer = transfers_service.add(
         types.ImageTransfer(
@@ -141,11 +160,6 @@ for disk_element in disk_elements:
     # start when its status is "Transferring".
     while transfer_service.get().phase == types.ImageTransferPhase.INITIALIZING:
         time.sleep(1)
-
-    # Set needed headers for uploading:
-    upload_headers = {
-        'Authorization': transfer.signed_ticket,
-    }
 
     # At this stage, the SDK granted the permission to start transferring the
     # disk, and the user should choose its preferred tool for doing it -
@@ -171,9 +185,9 @@ for disk_element in disk_elements:
             disk_entry = ova_entry
             break
 
-    print ("starting to transfer disk %s" % disk_entry.name)
+    print ("Uploading disk %s..." % disk_entry.name)
     disk_file = ova_file.extractfile(disk_entry)
-    size = disk_entry.size
+    image_size = disk_entry.size
 
     # Send the request head. Note the following:
     #
@@ -188,9 +202,9 @@ for disk_element in disk_elements:
 
     proxy_connection.putrequest("PUT", proxy_url.path)
     proxy_connection.putheader('Authorization', transfer.signed_ticket)
-    proxy_connection.putheader('Content-Range',
-                               "bytes %d-%d/%d" % (0, size - 1, size))
-    proxy_connection.putheader('Content-Length', "%d" % (size,))
+    content_range = "bytes %d-%d/%d" % (0, image_size - 1, image_size)
+    proxy_connection.putheader('Content-Range', content_range)
+    proxy_connection.putheader('Content-Length', "%d" % (image_size,))
     proxy_connection.endheaders()
 
     # Send the request body. Note the following:
@@ -201,11 +215,11 @@ for disk_element in disk_elements:
     # - we must extend the session, otherwise it will expire and the upload
     #   will fail.
 
-    last_extend = time.time()
+    start = last_progress = time.time()
 
     pos = 0
-    while pos < size:
-        to_read = min(size - pos, BUF_SIZE)
+    while pos < image_size:
+        to_read = min(image_size - pos, BUF_SIZE)
         chunk = disk_file.read(to_read)
         if not chunk:
             transfer_service.pause()
@@ -215,9 +229,9 @@ for disk_element in disk_elements:
 
         # Extend the transfer session once per minute.
         now = time.time()
-        if now - last_extend > 60:
-            transfer_service.extend()
-            last_extend = now
+        if now - last_progress > 10:
+            print("Uploaded %.2f%%" % (float(pos) / image_size * 100))
+            last_progress = now
 
     # Get the response
     response = proxy_connection.getresponse()
@@ -226,6 +240,11 @@ for disk_element in disk_elements:
         print("Upload failed: %s %s" % (response.status, response.reason))
         sys.exit(1)
 
+    elapsed = time.time() - start
+    print("Uploaded %.2fg in %.2f seconds (%.2fm/s)" % (
+          image_size / float(1024**3), elapsed, image_size / 1024**2 / elapsed))
+
+    print("Finalizing transfer session...")
     # Successful cleanup
     transfer_service.finalize()
 
@@ -237,6 +256,8 @@ for disk_element in disk_elements:
     except sdk.NotFoundError:
         pass
 
+    print("Upload disk completed successfully")
+
 # Find the name of the virtual machine within the OVF:
 vm_name = ovf.xpath(
     '/ovf:Envelope/ovf:VirtualSystem/ovf:Name',
@@ -245,7 +266,7 @@ vm_name = ovf.xpath(
 
 # Add the virtual machine, the transfered disks will be
 # attached to this virtual machine:
-print ("adding the virtual machine %s" % vm_name)
+print ("Adding virtual machine %s" % vm_name)
 vms_service = connection.system_service().vms_service()
 vm = vms_service.add(
     types.Vm(
