@@ -190,7 +190,8 @@ The constructors of these classes have multiple optional arguments, one
 for each attribute of the type. This is intended to simplify creation of
 objects using nested calls to multiple constructors. For example, to
 create an instance of a virtual machine, with an specification of the
-cluster and template that it should use, and the memory it should have:
+cluster and template that it should use, and the memory in bytes it
+should have:
 
 [source,python]
 ----
