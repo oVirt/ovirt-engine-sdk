@@ -507,7 +507,7 @@ class Connection(object):
                 num_q, ok_list, err_list = self._multi.info_read()
                 self._curls = self._curls.union(set(ok_list))
                 if err_list:
-                    raise Error("Failed to read response.")
+                    raise Error("Failed to read response: {}".format(err_list))
                 elif context[0] in self._curls:
                     # Remove the curl:
                     self._curls.remove(context[0])
