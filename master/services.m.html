@@ -1849,6 +1849,17 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.services.DomainUserGroupsService">DomainUserGroupsService</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.services.DomainUserGroupsService.__init__">__init__</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.DomainUserGroupsService.list">list</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.DomainUserGroupsService.service">service</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.services.DomainUserService">DomainUserService</a></span>
         
           
@@ -2541,6 +2552,7 @@ table {
           
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.ImageTransferService.__init__">__init__</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ImageTransferService.cancel">cancel</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ImageTransferService.extend">extend</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ImageTransferService.finalize">finalize</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ImageTransferService.get">get</a></li>
@@ -4109,6 +4121,8 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.cdroms_service">cdroms_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.disk_attachments_service">disk_attachments_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.export">export</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.TemplateService.export_to_export_domain">export_to_export_domain</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.TemplateService.export_to_path_on_host">export_to_path_on_host</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.get">get</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.graphics_consoles_service">graphics_consoles_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplateService.nics_service">nics_service</a></li>
@@ -4191,6 +4205,7 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.UserService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.UserService.get">get</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.UserService.groups_service">groups_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.UserService.permissions_service">permissions_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.UserService.remove">remove</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.UserService.roles_service">roles_service</a></li>
@@ -14845,6 +14860,95 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
       </div>
       
       <div class="item">
+      <p id="ovirtsdk4.services.DomainUserGroupsService" class="name">class <span class="ident">DomainUserGroupsService</span></p>
+      
+  
+    <div class="desc"><div class="paragraph">
+<p>A service that shows a user&#8217;s group membership in the AAA extension.</p>
+</div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.services.DomainUserGroupsService">DomainUserGroupsService</a></li>
+          <li>ovirtsdk4.service.Service</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.DomainUserGroupsService.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, connection, path)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.DomainUserGroupsService.list">
+    <p>def <span class="ident">list</span>(</p><p>self, follow=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the list of groups that the user is a member of.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>follow</code></dt>
+<dd>
+<p>Indicates which inner links should be <em>followed</em>. The objects referenced by these links will be fetched as part
+of the current request. See <a href="#documents/003_common_concepts/follow">here</a> for details.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.DomainUserGroupsService.service">
+    <p>def <span class="ident">service</span>(</p><p>self, path)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Service locator method, returns individual service on which the URI is dispatched.</p>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="ovirtsdk4.services.DomainUserService" class="name">class <span class="ident">DomainUserService</span></p>
       
   
@@ -25075,6 +25179,22 @@ to be used. In both cases, the transfer entity will be removed shortly after.
 
     
   
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ImageTransferService.cancel">
+    <p>def <span class="ident">cancel</span>(</p><p>self, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Cancel the image transfer session. This terminates the transfer operation and removes the partial image.</p>
+</div>
+</div>
 
   </div>
   
@@ -35954,6 +36074,36 @@ request like this:</p>
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>disks</code></dt>
+<dd>
+<p>Specify the disks included in the snapshot&#8217;s restore.
+For each disk parameter, it is also required to specify its <code>image_id</code>.
+For example, to restore a snapshot with an identifier <code>456</code> of a virtual machine with identifier <code>123</code>, including
+a disk with identifier <code>111</code> and <code>image_id</code> of <code>222</code>, send a request like this:</p>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/vms/123/snapshots/456/restore</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Request body:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;action&gt;
+  &lt;disks&gt;
+    &lt;disk id="111"&gt;
+      &lt;image_id&gt;222&lt;/image_id&gt;
+    &lt;/disk&gt;
+  &lt;/disks&gt;
+&lt;/action&gt;</code></pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
 <p>Indicates if the restore should be performed asynchronously.</p>
@@ -44279,7 +44429,7 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
     
   
     <div class="desc"><div class="paragraph">
-<p>Returns a reference to the service that manages the CDROMs that are associated with the template.</p>
+<p>Returns a reference to the service that manages the CD-ROMs that are associated with the template.</p>
 </div>
 </div>
 
@@ -44295,7 +44445,7 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
     
   
     <div class="desc"><div class="paragraph">
-<p>Reference to the service that manages a specific
+<p>Returns a reference to the service that manages a specific
 disk attachment of the template.</p>
 </div>
 </div>
@@ -44313,7 +44463,7 @@ disk attachment of the template.</p>
   
     <div class="desc"><div class="paragraph">
 <p>Exports a template to the data center export domain.
-For example, the operation can be facilitated using the following request:</p>
+For example, send the following request:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -44336,6 +44486,110 @@ For example, the operation can be facilitated using the following request:</p>
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>exclusive</code></dt>
+<dd>
+<p>Indicates if the existing templates with the same name should be overwritten.
+The export action reports a failed action if a template of the same name exists in the destination domain.
+Set this parameter to <code>true</code> to change this behavior and overwrite any existing template.</p>
+</dd>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>Specifies the destination export storage domain.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.TemplateService.export_to_export_domain">
+    <p>def <span class="ident">export_to_export_domain</span>(</p><p>self, exclusive=None, storage_domain=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Exports a template to an export domain.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>exclusive</code></dt>
+<dd>
+<p>Indicates if the existing templates with the same name should be overwritten.
+The export action reports a failed action if a template of the same name exists in the destination domain.
+Set this parameter to <code>true</code> to change this behavior and overwrite any existing template.</p>
+</dd>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>Specifies the destination export storage domain.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.TemplateService.export_to_path_on_host">
+    <p>def <span class="ident">export_to_path_on_host</span>(</p><p>self, directory=None, exclusive=None, filename=None, host=None, storage_domain=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Exports a template as an OVA file to a given path on a specified host.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>host</code></dt>
+<dd>
+<p>The host to generate the OVA file on.</p>
+</dd>
+<dt class="hdlist1"><code>directory</code></dt>
+<dd>
+<p>An absolute path of a directory on the host to generate the OVA file in.</p>
+</dd>
+<dt class="hdlist1"><code>filename</code></dt>
+<dd>
+<p>The name of the OVA file.
+This is an optional parameter. If it is not specified, the name of the OVA file is determined according
+to the name of the template. It will conform to the following pattern: "&lt;template name&gt;.ova".</p>
+</dd>
 <dt class="hdlist1"><code>exclusive</code></dt>
 <dd>
 <p>Indicates if the existing templates with the same name should be overwritten.
@@ -44480,7 +44734,7 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
 <dl>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
-<p>Indicates if the remove should be performed asynchronously.</p>
+<p>Indicates if the removal should be performed asynchronously.</p>
 </dd>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
@@ -44544,8 +44798,8 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
     <div class="desc"><div class="paragraph">
 <p>Updates the template.
 The <code>name</code>, <code>description</code>, <code>type</code>, <code>memory</code>, <code>cpu</code>, <code>topology</code>, <code>os</code>, <code>high_availability</code>, <code>display</code>,
-<code>stateless</code>, <code>usb</code> and <code>timezone</code> elements can be updated after a template has been created.
-For example, to update a template to so that it has 1 GiB of memory send a request like this:</p>
+<code>stateless</code>, <code>usb</code>, and <code>timezone</code> elements can be updated after a template has been created.
+For example, to update a template so that it has 1 GiB of memory send a request like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -45459,6 +45713,18 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
 </dl>
 </div>
 </div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.UserService.groups_service">
+    <p>def <span class="ident">groups_service</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
 
   </div>
   
@@ -50250,6 +50516,37 @@ be inspected. Once that inspection is finished, the state of the virtual machine
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>disks</code></dt>
+<dd>
+<p>Specify the disks included in the snapshot&#8217;s preview.
+For each disk parameter, it is also required to specify its <code>image_id</code>.
+For example, to preview a snapshot with identifier <code>456</code> which includes a disk with identifier <code>111</code> and its
+<code>image_id</code> as <code>222</code>, send a request like this:</p>
+</dd>
+</dl>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/vms/123/previewsnapshot</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Request body:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;action&gt;
+  &lt;disks&gt;
+    &lt;disk id="111"&gt;
+      &lt;image_id&gt;222&lt;/image_id&gt;
+    &lt;/disk&gt;
+  &lt;/disks&gt;
+  &lt;snapshot id="456"/&gt;
+&lt;/action&gt;</code></pre>
+</div>
 </div>
 <div class="dlist">
 <dl>
