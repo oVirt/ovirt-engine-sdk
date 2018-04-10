@@ -2,6 +2,36 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.2.5 / Apr 10 2018
+Update to model 4.2.31.
+
+New features:
+
+* Add `cancel` action to transfer image session.
+
+* Add `export` template as OVA to a given path on a host 
+  https://bugzilla.redhat.com/1526033[#1526033].
+
+* Add service to list user groups
+  https://bugzilla.redhat.com/1545716[1545716].
+
+* Expose `syncAllNetworks` command for `HostService`.
+
+* Move `VmPlacementPolicy` attribute from Vm to `VmBase`
+  https://bugzilla.redhat.com/1375678[#1375678].
+
+* Document `JobsService` as a searchable entity.
+
+* Add `lease` parameter to preview snapshot
+  https://bugzilla.redhat.com/1532577[#1532577].
+
+Bug fixes:
+
+* Add reason message to failed request.
+
+* Deprecate `OsType`
+  https://bugzilla.redhat.com/1537679[#1537679].
+
 == 4.2.4 / Jan 24 2018
 Bug fixes:
 
