@@ -4168,6 +4168,8 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.add_from_configuration">add_from_configuration</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.add_from_vm">add_from_vm</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.list">list</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.template_service">template_service</a></li>
@@ -31228,7 +31230,11 @@ The network will be added to the data center specified.</p>
 <p>The data center into which the network is to be imported.
 Data center is mandatory, and can be specified
 using the <code>id</code> or <code>name</code> attributes, the rest of
-the attributes will be ignored.</p>
+the attributes will be ignored.
+NOTE: If <a href="#types/open_stack_network_provider/attributes/auto_sync"><code>auto_sync</code></a> is
+enabled for the provider, the network might be already imported automatically. To
+prevent this, automatic import can be disabled by setting the <code>auto_sync</code> to false
+and enabled after importing the network again.</p>
 </dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
@@ -38362,6 +38368,9 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
     
   
     <div class="desc"><div class="paragraph">
+<p>Retrieves the description of the storage domain.</p>
+</div>
+<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -38424,6 +38433,10 @@ Executing this API will cause the host to disconnect from the storage domain.</p
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>host</code></dt>
+<dd>
+<p>Indicates the data center&#8217;s host.</p>
+</dd>
 <dt class="hdlist1"><code>async</code></dt>
 <dd>
 <p>Indicates if the action should be performed asynchronously.</p>
@@ -38765,6 +38778,29 @@ request as follows:</p>
   &lt;wipe_after_delete&gt;true&lt;/wipe_after_delete&gt;
 &lt;/storage_domain&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>The updated storage domain.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -45262,6 +45298,84 @@ Specifying the global storage definition will override the storage domain per di
 </div>
 </li>
 </ol>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>template</code></dt>
+<dd>
+<p>The information about the template or template version.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.TemplatesService.add_from_configuration">
+    <p>def <span class="ident">add_from_configuration</span>(</p><p>self, template, clone_permissions=None, seal=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a virtual machine template to the system from a configuration. Requires the configuration type, the configuration data, and the target cluster.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>template</code></dt>
+<dd>
+<p>The information about the template or template version.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.TemplatesService.add_from_vm">
+    <p>def <span class="ident">add_from_vm</span>(</p><p>self, template, clone_permissions=None, seal=None, headers=None, query=None, wait=True)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a virtual machine template to the system from an existing virtual machine.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
