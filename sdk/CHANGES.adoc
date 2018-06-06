@@ -2,6 +2,14 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.2.7 / Jun 6 2018
+Update to model 4.2.33.
+
+New features:
+
+* Add search parameter to providers
+  https://bugzilla.redhat.com/1572071[#1572071].
+
 == 4.2.6 / Apr 17 2018
 Update to model 4.2.32.
 
