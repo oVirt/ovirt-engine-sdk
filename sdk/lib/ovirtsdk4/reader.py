@@ -17,6 +17,7 @@
 #
 
 import datetime
+import time
 import io
 import re
 import six
@@ -214,7 +215,12 @@ class Reader(object):
         if TZ_USEC_RE.search(text):
             format += '.%f'
         try:
-            date = datetime.datetime.strptime(text, format)
+            try:
+                date = datetime.datetime.strptime(text, format)
+            except TypeError:
+                # when have TypeError: attribute of type 'NoneType'
+                #  workaround to treat a issue of python module: https://bugs.python.org/issue27400
+                date = datetime.datetime.fromtimestamp(time.mktime(time.strptime(text, format)))
         except ValueError:
             raise ValueError(
                 'The text \'%s\' isn\'t a valid date value' % text
