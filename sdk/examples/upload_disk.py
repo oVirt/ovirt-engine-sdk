@@ -73,6 +73,33 @@ image_info = json.loads(out)
 if image_info["format"] not in ("qcow2", "raw"):
     raise RuntimeError("Unsupported image format %(format)s" % image_info)
 
+print("Disk format: %s" % image_info["format"])
+
+# Detect disk content type
+#
+# ISO format structure
+# ---------------------------------------------------------------------------
+# offset    type    value       comment
+# ---------------------------------------------------------------------------
+# 0x0000                        system area (e.g. DOS/MBR boot sector)
+# 0x8000    int8    0x01        primary volume descriptor type code
+# 0x8001    strA    "CD001"     primary volume descriptor indentifier
+# 0x8006    int8    0x01        primary volume desctptor version
+# 0x8007            0x00        unused field
+#
+# See https://wiki.osdev.org/ISO_9660#Overview_and_caveats for more info.
+
+content_type = types.DiskContentType.DATA
+
+if image_info["format"] == "raw":
+    with open(image_path, "rb") as f:
+        f.seek(0x8000)
+        primary_volume_descriptor = f.read(8)
+    if primary_volume_descriptor == b"\x01CD001\x01\x00":
+        content_type = types.DiskContentType.ISO
+
+print("Disk content type: %s" % content_type)
+
 # This example will connect to the server and create a new `floating`
 # disk, one that isn't attached to any virtual machine.
 # Then using transfer service it will transfer disk data from local
@@ -119,6 +146,7 @@ disks_service = connection.system_service().disks_service()
 disk = disks_service.add(
     disk=types.Disk(
         name=os.path.basename(image_path),
+        content_type=content_type,
         description='Uploaded disk',
         format=disk_format,
         initial_size=image_size,
