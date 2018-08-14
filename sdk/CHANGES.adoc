@@ -2,6 +2,32 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.2.8 / Aug 14 2018
+Update to model 4.2.36.
+
+New features:
+
+* Add sync all networks in cluster
+  https://bugzilla.redhat.com/1558847[1558847].
+
+* Add note to upgrade host
+  https://bugzilla.redhat.com/1603020[1603020].
+
+* Indicate network operation in progress
+  https://bugzilla.redhat.com/1477599[1477599].
+
+* Poly dhcpv6 and autoconf iface config
+  https://bugzilla.redhat.com/1360839[1360839].
+
+* Add 'Multi Queues Enabled' to VmBase
+  https://bugzilla.redhat.com/1574771[1574771].
+
+* Added Reduce action to Disk services
+  https://bugzilla.redhat.com/1443963[#1443963].
+
+* Add documentation to DiskService
+  https://bugzilla.redhat.com/1585572[1585572].
+
 == 4.2.7 / Jun 6 2018
 Update to model 4.2.33.
 
