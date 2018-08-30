@@ -39,12 +39,24 @@ connection = sdk.Connection(
 
 # Locate the virtual machines service and use it to find the virtual
 # machine:
-vms_service = connection.system_service().vms_service()
+system_service = connection.system_service()
+vms_service = system_service.vms_service()
 vm = vms_service.list(search='name=myvm')[0]
 
 # In order to specify the network that the new interface will be
 # connected to we need to specify the identifier of the virtual network
-# interface profile, so we need to find it:
+# interface profile, so we need to find it. We can have duplicate names
+# for vnic profiles in different clusters, so we must also find first the
+# network by datacenter and cluster:
+cluster = system_service.clusters_service().cluster_service(vm.cluster.id).get()
+dcs_service = connection.system_service().data_centers_service()
+dc = dcs_service.list(search='Clusters.name=%s' % cluster.name)[0]
+networks_service = dcs_service.service(dc.id).networks_service()
+network = next(
+    (n for n in networks_service.list()
+     if n.name == 'mynetwork'),
+    None
+)
 profiles_service = connection.system_service().vnic_profiles_service()
 profile_id = None
 for profile in profiles_service.list():
