@@ -2,6 +2,18 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.2.9 / Oct 4 2018
+Update to model 4.2.37.
+
+New features:
+
+*  Add support for OpenStack Identity API v3
+   https://bugzilla.redhat.com/1598391[1598391].
+
+*  Added linkedGlusterVolume to the StorageServerConnection
+   type and services
+   https://bugzilla.redhat.com/1563257[1563257].
+
 == 4.2.8 / Aug 14 2018
 Update to model 4.2.36.
 
