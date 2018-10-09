@@ -188,6 +188,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("headers=None,");
         buffer.addLine("query=None,");
         buffer.addLine("wait=True,");
+        buffer.addLine("**kwargs");
         buffer.endBlock();
         buffer.addLine("):");
         buffer.startBlock();
@@ -206,6 +207,8 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.endBlock();
         buffer.addLine("])");
         buffer.addLine();
+
+        proccessKwargs(secondaryParameters);
 
         // Generate the code to build the URL query:
         buffer.addLine("# Build the URL:");
@@ -238,6 +241,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("headers=None,");
         buffer.addLine("query=None,");
         buffer.addLine("wait=True,");
+        buffer.addLine("**kwargs");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -253,6 +257,9 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.endBlock();
         buffer.addLine("])");
         buffer.addLine();
+
+        // Process kwargs parameters:
+        proccessKwargs(inParameters);
 
         // Generate the code to populate the action:
         buffer.addLine("# Populate the action:");
@@ -306,6 +313,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("headers=None,");
         buffer.addLine("query=None,");
         buffer.addLine("wait=True,");
+        buffer.addLine("**kwargs");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -321,6 +329,8 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.endBlock();
         buffer.addLine("])");
         buffer.addLine();
+
+        proccessKwargs(inParameters);
 
         // Generate the code to build the URL query:
         buffer.addLine("# Build the URL:");
@@ -354,6 +364,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("headers=None,");
         buffer.addLine("query=None,");
         buffer.addLine("wait=True,");
+        buffer.addLine("**kwargs");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -370,6 +381,8 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.endBlock();
         buffer.addLine("])");
         buffer.addLine();
+
+        proccessKwargs(getSecondaryParameters(method));
 
         // Generate the code to build the URL query:
         buffer.addLine("# Build the URL:");
@@ -401,6 +414,7 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("headers=None,");
         buffer.addLine("query=None,");
         buffer.addLine("wait=True,");
+        buffer.addLine("**kwargs");
         buffer.endBlock();
         buffer.addLine("):");
 
@@ -417,6 +431,8 @@ public class ServicesGenerator implements PythonGenerator {
         buffer.addLine("])");
         buffer.addLine();
 
+        proccessKwargs(inParameters);
+
         // Generate the code to build the URL query:
         buffer.addLine("# Build the URL:");
         buffer.addLine("query = query or {}");
@@ -430,6 +446,26 @@ public class ServicesGenerator implements PythonGenerator {
         // End body:
         buffer.endBlock();
         buffer.addLine();
+    }
+
+
+    /**
+     * This method proccess kwargs parameters, which are used for backward compatibility.
+     */
+    private void proccessKwargs(List<Parameter> inParameters) {
+        boolean asyncPresent = inParameters.stream()
+            .filter(p -> p.getName().equals(NameParser.parseUsingCase("async")))
+            .findAny()
+            .isPresent();
+
+        if (asyncPresent) {
+            buffer.addLine("# Since Python 3.7 async is reserved keyword, support backward compatibility");
+            buffer.addLine("if 'async' in kwargs:");
+            buffer.startBlock();
+            buffer.addLine("async_ = kwargs.get('async')");
+            buffer.endBlock();
+            buffer.addLine();
+        }
     }
 
     private void generateFormalParameter(Parameter parameter) {

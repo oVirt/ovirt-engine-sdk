@@ -44,6 +44,8 @@ public class PythonReservedWords {
         words.add("and");
         words.add("as");
         words.add("assert");
+        words.add("async");
+        words.add("await");
         words.add("break");
         words.add("class");
         words.add("continue");
