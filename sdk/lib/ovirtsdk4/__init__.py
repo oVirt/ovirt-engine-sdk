@@ -302,9 +302,10 @@ class Connection(object):
         if url is None:
             raise Error('The \'url\' parameter is mandatory')
 
-        # Check that the CA file exists:
-        if ca_file is not None and not os.path.exists(ca_file):
-            raise Error('The CA file \'%s\' doesn\'t exist' % ca_file)
+        # Check that the CA file exists if insecure is not set:
+        if not insecure:
+            if ca_file is not None and not os.path.exists(ca_file):
+                raise Error('The CA file \'%s\' doesn\'t exist' % ca_file)
 
         # Save the URL:
         self._url = url
