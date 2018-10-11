@@ -2,6 +2,96 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.2.9 / Oct 4 2018
+Update to model 4.2.37.
+
+New features:
+
+*  Add support for OpenStack Identity API v3
+   https://bugzilla.redhat.com/1598391[1598391].
+
+*  Added linkedGlusterVolume to the StorageServerConnection
+   type and services
+   https://bugzilla.redhat.com/1563257[1563257].
+
+== 4.2.8 / Aug 14 2018
+Update to model 4.2.36.
+
+New features:
+
+* Add sync all networks in cluster
+  https://bugzilla.redhat.com/1558847[1558847].
+
+* Add note to upgrade host
+  https://bugzilla.redhat.com/1603020[1603020].
+
+* Indicate network operation in progress
+  https://bugzilla.redhat.com/1477599[1477599].
+
+* Poly dhcpv6 and autoconf iface config
+  https://bugzilla.redhat.com/1360839[1360839].
+
+* Add 'Multi Queues Enabled' to VmBase
+  https://bugzilla.redhat.com/1574771[1574771].
+
+* Added Reduce action to Disk services
+  https://bugzilla.redhat.com/1443963[#1443963].
+
+* Add documentation to DiskService
+  https://bugzilla.redhat.com/1585572[1585572].
+
+== 4.2.7 / Jun 6 2018
+Update to model 4.2.33.
+
+New features:
+
+* Add search parameter to providers
+  https://bugzilla.redhat.com/1572071[#1572071].
+
+== 4.2.6 / Apr 17 2018
+Update to model 4.2.32.
+
+New features:
+
+* ImageTransfer - adding 'clientInactivityTimeout' property
+  https://bugzilla.redhat.com/1563278[#1563278].
+
+* Add architecture to OperatingSystemInfo
+  https://bugzilla.redhat.com/1552026[#1552026].
+
+* Add import template from configuration
+  https://bugzilla.redhat.com/1526032[#1526032].
+
+== 4.2.5 / Apr 10 2018
+Update to model 4.2.31.
+
+New features:
+
+* Add `cancel` action to transfer image session.
+
+* Add `export` template as OVA to a given path on a host 
+  https://bugzilla.redhat.com/1526033[#1526033].
+
+* Add service to list user groups
+  https://bugzilla.redhat.com/1545716[1545716].
+
+* Expose `syncAllNetworks` command for `HostService`.
+
+* Move `VmPlacementPolicy` attribute from Vm to `VmBase`
+  https://bugzilla.redhat.com/1375678[#1375678].
+
+* Document `JobsService` as a searchable entity.
+
+* Add `lease` parameter to preview snapshot
+  https://bugzilla.redhat.com/1532577[#1532577].
+
+Bug fixes:
+
+* Add reason message to failed request.
+
+* Deprecate `OsType`
+  https://bugzilla.redhat.com/1537679[#1537679].
+
 == 4.2.4 / Jan 24 2018
 Bug fixes:
 
