@@ -27,7 +27,16 @@ import ovirtsdk4.types as types
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
-# This example shows how the virtual machine backup process.
+# This example shows how the virtual machine backup process. Please note 
+# actual data backup is outside of scope of the API. The script will give
+# you the disks-to-backup attached to another VM (the Agent VM)
+# 
+# In short:
+# 1) Script creates a snap
+# 2) Disks from that snapshot are attached to the agent
+# 3) It is left as an exercise to the reader to backup the disks
+# 4) Script cleans up the disks
+# 
 
 # The connection details:
 API_URL = 'https://engine40.example.com/ovirt-engine/api'
@@ -162,7 +171,7 @@ logging.info(
 snap_service = snaps_service.snapshot_service(snap.id)
 while snap.snapshot_status != types.SnapshotStatus.OK:
     logging.info(
-        'Waiting till the snapshot is created, the satus is now \'%s\'.',
+        'Waiting till the snapshot is created, the status is now \'%s\'.',
         snap.snapshot_status,
     )
     time.sleep(1)
