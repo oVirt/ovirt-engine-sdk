@@ -178,10 +178,10 @@ class Connection(object):
     """
 
     # Regular expression used to check XML content type.
-    __XML_CONTENT_TYPE_RE = re.compile("^\s*(application|text)/xml\s*(;.*)?$")
+    __XML_CONTENT_TYPE_RE = re.compile(r"^\s*(application|text)/xml\s*(;.*)?$")
 
     # Regular expression used to check JSON content type.
-    __JSON_CONTENT_TYPE_RE = re.compile("^\s*(application|text)/json\s*(;.*)?$")
+    __JSON_CONTENT_TYPE_RE = re.compile(r"^\s*(application|text)/json\s*(;.*)?$")
 
     # The typical URL path, used just to generate informative error messages.
     __TYPICAL_PATH = '/ovirt-engine/api'
@@ -769,7 +769,7 @@ class Connection(object):
         href = obj.href
         if href is None:
             raise Error(
-                "Can't follow link because the 'href' attribute does't " +
+                "Can't follow link because the 'href' attribute does't "
                 "have a value"
             )
 
@@ -780,7 +780,7 @@ class Connection(object):
             prefix += '/'
         if not href.startswith(prefix):
             raise Error(
-                "The URL '%s' isn't compatible with the base URL of the " +
+                "The URL '%s' isn't compatible with the base URL of the "
                 "connection" % href
             )
 
