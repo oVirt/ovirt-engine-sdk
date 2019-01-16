@@ -1157,6 +1157,19 @@ table {
         
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.Backup">Backup</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.types.Backup.__init__">__init__</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.BackupPhase">BackupPhase</a></span>
+        
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.types.Balance">Balance</a></span>
         
           
@@ -1173,6 +1186,10 @@ table {
     <li class="mono"><a href="#ovirtsdk4.types.Bios.__init__">__init__</a></li>
   </ul>
 
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.BiosType">BiosType</a></span>
+        
         </li>
         <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.types.BlockStatistic">BlockStatistic</a></span>
@@ -1262,6 +1279,10 @@ table {
     <li class="mono"><a href="#ovirtsdk4.types.CloudInit.__init__">__init__</a></li>
   </ul>
 
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.CloudInitNetworkProtocol">CloudInitNetworkProtocol</a></span>
+        
         </li>
         <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.types.Cluster">Cluster</a></span>
@@ -1422,6 +1443,10 @@ table {
     <li class="mono"><a href="#ovirtsdk4.types.DiskAttachment.__init__">__init__</a></li>
   </ul>
 
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.DiskBackup">DiskBackup</a></span>
+        
         </li>
         <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.types.DiskContentType">DiskContentType</a></span>
@@ -2108,6 +2133,10 @@ table {
     <li class="mono"><a href="#ovirtsdk4.types.LinkLayerDiscoveryProtocolElement.__init__">__init__</a></li>
   </ul>
 
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.LogMaxMemoryUsedThresholdType">LogMaxMemoryUsedThresholdType</a></span>
+        
         </li>
         <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.types.LogSeverity">LogSeverity</a></span>
@@ -3162,6 +3191,10 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.types.VgpuPlacement">VgpuPlacement</a></span>
+        
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.types.VirtioScsi">VirtioScsi</a></span>
         
           
@@ -3403,6 +3436,14 @@ table {
           </ul>
           <h3>Instance variables</h3>
             <div class="item">
+            <p id="ovirtsdk4.types.Action.activate" class="name">var <span class="ident">activate</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Action.allow_partial_import" class="name">var <span class="ident">allow_partial_import</span></p>
             
 
@@ -3504,6 +3545,14 @@ table {
 <p>Returns the value of the <code>comment</code> property.</p>
 </div>
 </div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Action.commit_on_success" class="name">var <span class="ident">commit_on_success</span></p>
+            
+
+            
+  
 
             </div>
             <div class="item">
@@ -4118,7 +4167,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Action.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, allow_partial_import=None, async_=None, attachment=None, authorized_key=None, bricks=None, certificates=None, check_connectivity=None, clone=None, clone_permissions=None, cluster=None, collapse_snapshots=None, comment=None, connection=None, connectivity_timeout=None, data_center=None, deploy_hosted_engine=None, description=None, details=None, directory=None, discard_snapshots=None, discovered_targets=None, disk=None, disk_profile=None, disks=None, exclusive=None, fault=None, fence_type=None, filename=None, filter=None, fix_layout=None, force=None, grace_period=None, host=None, id=None, image=None, image_transfer=None, import_as_template=None, is_attached=None, iscsi=None, iscsi_targets=None, job=None, lease=None, logical_units=None, maintenance_enabled=None, modified_bonds=None, modified_labels=None, modified_network_attachments=None, name=None, option=None, pause=None, permission=None, power_management=None, proxy_ticket=None, quota=None, reason=None, reassign_bad_macs=None, reboot=None, registration_configuration=None, remote_viewer_connection_file=None, removed_bonds=None, removed_labels=None, removed_network_attachments=None, resolution_type=None, restore_memory=None, root_password=None, seal=None, snapshot=None, ssh=None, status=None, stop_gluster_service=None, storage_domain=None, storage_domains=None, succeeded=None, synchronized_network_attachments=None, template=None, ticket=None, undeploy_hosted_engine=None, use_cloud_init=None, use_sysprep=None, virtual_functions_configuration=None, vm=None, vnic_profile_mappings=None, volatile=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, activate=None, allow_partial_import=None, async_=None, attachment=None, authorized_key=None, bricks=None, certificates=None, check_connectivity=None, clone=None, clone_permissions=None, cluster=None, collapse_snapshots=None, comment=None, commit_on_success=None, connection=None, connectivity_timeout=None, data_center=None, deploy_hosted_engine=None, description=None, details=None, directory=None, discard_snapshots=None, discovered_targets=None, disk=None, disk_profile=None, disks=None, exclusive=None, fault=None, fence_type=None, filename=None, filter=None, fix_layout=None, force=None, grace_period=None, host=None, id=None, image=None, image_transfer=None, import_as_template=None, is_attached=None, iscsi=None, iscsi_targets=None, job=None, lease=None, logical_units=None, maintenance_enabled=None, modified_bonds=None, modified_labels=None, modified_network_attachments=None, name=None, option=None, pause=None, permission=None, power_management=None, proxy_ticket=None, quota=None, reason=None, reassign_bad_macs=None, reboot=None, registration_configuration=None, remote_viewer_connection_file=None, removed_bonds=None, removed_labels=None, removed_network_attachments=None, resolution_type=None, restore_memory=None, root_password=None, seal=None, snapshot=None, ssh=None, status=None, stop_gluster_service=None, storage_domain=None, storage_domains=None, succeeded=None, synchronized_network_attachments=None, template=None, ticket=None, undeploy_hosted_engine=None, use_cloud_init=None, use_sysprep=None, virtual_functions_configuration=None, vm=None, vnic_profile_mappings=None, volatile=None)</p>
     </div>
     
     <p class="inheritance">
@@ -5362,6 +5411,218 @@ table {
       </div>
       
       <div class="item">
+      <p id="ovirtsdk4.types.Backup" class="name">class <span class="ident">Backup</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.Backup">Backup</a></li>
+          <li><a href="#ovirtsdk4.types.Identified">Identified</a></li>
+          <li>ovirtsdk4.Struct</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Instance variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.Backup.comment" class="name">var <span class="ident">comment</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.comment">comment</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>comment</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Backup.creation_date" class="name">var <span class="ident">creation_date</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Backup.description" class="name">var <span class="ident">description</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.description">description</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>description</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Backup.disks" class="name">var <span class="ident">disks</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Backup.from_checkpoint_id" class="name">var <span class="ident">from_checkpoint_id</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Backup.href" class="name">var <span class="ident">href</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.href">href</a></code>
+    </p>
+
+            
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Returns the value of the <code>href</code> attribute.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Backup.id" class="name">var <span class="ident">id</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.id">id</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>id</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Backup.name" class="name">var <span class="ident">name</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.name">name</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>name</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Backup.phase" class="name">var <span class="ident">phase</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Backup.to_checkpoint_id" class="name">var <span class="ident">to_checkpoint_id</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Backup.vm" class="name">var <span class="ident">vm</span></p>
+            
+
+            
+  
+
+            </div>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.types.Backup.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, comment=None, creation_date=None, description=None, disks=None, from_checkpoint_id=None, id=None, name=None, phase=None, to_checkpoint_id=None, vm=None)</p>
+    </div>
+    
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Identified">Identified</a></code>.<code><a href="#ovirtsdk4.types.Identified.__init__">__init__</a></code>
+    </p>
+
+    
+  
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.types.BackupPhase" class="name">class <span class="ident">BackupPhase</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.BackupPhase">BackupPhase</a></li>
+          <li>enum.Enum</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.BackupPhase.FINALIZING" class="name">var <span class="ident">FINALIZING</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.BackupPhase.INITIALIZING" class="name">var <span class="ident">INITIALIZING</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.BackupPhase.READY" class="name">var <span class="ident">READY</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.BackupPhase.STARTING" class="name">var <span class="ident">STARTING</span></p>
+            
+
+            
+  
+
+            </div>
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="ovirtsdk4.types.Balance" class="name">class <span class="ident">Balance</span></p>
       
   
@@ -5526,11 +5787,19 @@ table {
 </div>
 
             </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Bios.type" class="name">var <span class="ident">type</span></p>
+            
+
+            
+  
+
+            </div>
           <h3>Methods</h3>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Bios.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, boot_menu=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, boot_menu=None, type=None)</p>
     </div>
     
 
@@ -5539,6 +5808,55 @@ table {
 
   </div>
   
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.types.BiosType" class="name">class <span class="ident">BiosType</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.BiosType">BiosType</a></li>
+          <li>enum.Enum</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.BiosType.I440FX_SEA_BIOS" class="name">var <span class="ident">I440FX_SEA_BIOS</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.BiosType.Q35_OVMF" class="name">var <span class="ident">Q35_OVMF</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.BiosType.Q35_SEA_BIOS" class="name">var <span class="ident">Q35_SEA_BIOS</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.BiosType.Q35_SECURE_BOOT" class="name">var <span class="ident">Q35_SECURE_BOOT</span></p>
+            
+
+            
+  
+
+            </div>
       </div>
       </div>
       
@@ -5962,6 +6280,14 @@ table {
             </div>
             <div class="item">
             <p id="ovirtsdk4.types.BootProtocol.NONE" class="name">var <span class="ident">NONE</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.BootProtocol.POLY_DHCP_AUTOCONF" class="name">var <span class="ident">POLY_DHCP_AUTOCONF</span></p>
             
 
             
@@ -6480,6 +6806,39 @@ table {
       </div>
       
       <div class="item">
+      <p id="ovirtsdk4.types.CloudInitNetworkProtocol" class="name">class <span class="ident">CloudInitNetworkProtocol</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.CloudInitNetworkProtocol">CloudInitNetworkProtocol</a></li>
+          <li>enum.Enum</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.CloudInitNetworkProtocol.ENI" class="name">var <span class="ident">ENI</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.CloudInitNetworkProtocol.OPENSTACK_METADATA" class="name">var <span class="ident">OPENSTACK_METADATA</span></p>
+            
+
+            
+  
+
+            </div>
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="ovirtsdk4.types.Cluster" class="name">class <span class="ident">Cluster</span></p>
       
   
@@ -6703,6 +7062,22 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Cluster.log_max_memory_used_threshold" class="name">var <span class="ident">log_max_memory_used_threshold</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Cluster.log_max_memory_used_threshold_type" class="name">var <span class="ident">log_max_memory_used_threshold_type</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Cluster.mac_pool" class="name">var <span class="ident">mac_pool</span></p>
             
 
@@ -6874,7 +7249,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Cluster.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_groups=None, ballooning_enabled=None, comment=None, cpu=None, cpu_profiles=None, custom_scheduling_policy_properties=None, data_center=None, description=None, display=None, enabled_features=None, error_handling=None, external_network_providers=None, fencing_policy=None, firewall_type=None, gluster_hooks=None, gluster_service=None, gluster_tuned_profile=None, gluster_volumes=None, ha_reservation=None, id=None, ksm=None, mac_pool=None, maintenance_reason_required=None, management_network=None, memory_policy=None, migration=None, name=None, network_filters=None, networks=None, optional_reason=None, permissions=None, required_rng_sources=None, scheduling_policy=None, serial_number=None, supported_versions=None, switch_type=None, threads_as_cores=None, trusted_service=None, tunnel_migration=None, version=None, virt_service=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_groups=None, ballooning_enabled=None, comment=None, cpu=None, cpu_profiles=None, custom_scheduling_policy_properties=None, data_center=None, description=None, display=None, enabled_features=None, error_handling=None, external_network_providers=None, fencing_policy=None, firewall_type=None, gluster_hooks=None, gluster_service=None, gluster_tuned_profile=None, gluster_volumes=None, ha_reservation=None, id=None, ksm=None, log_max_memory_used_threshold=None, log_max_memory_used_threshold_type=None, mac_pool=None, maintenance_reason_required=None, management_network=None, memory_policy=None, migration=None, name=None, network_filters=None, networks=None, optional_reason=None, permissions=None, required_rng_sources=None, scheduling_policy=None, serial_number=None, supported_versions=None, switch_type=None, threads_as_cores=None, trusted_service=None, tunnel_migration=None, version=None, virt_service=None)</p>
     </div>
     
     <p class="inheritance">
@@ -8422,6 +8797,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Disk.backup" class="name">var <span class="ident">backup</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Disk.bootable" class="name">var <span class="ident">bootable</span></p>
             
 
@@ -8793,7 +9176,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Disk.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, actual_size=None, alias=None, bootable=None, comment=None, content_type=None, description=None, disk_profile=None, format=None, id=None, image_id=None, initial_size=None, instance_type=None, interface=None, logical_name=None, lun_storage=None, name=None, openstack_volume_type=None, permissions=None, propagate_errors=None, provisioned_size=None, qcow_version=None, quota=None, read_only=None, sgio=None, shareable=None, snapshot=None, sparse=None, statistics=None, status=None, storage_domain=None, storage_domains=None, storage_type=None, template=None, total_size=None, uses_scsi_reservation=None, vm=None, vms=None, wipe_after_delete=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, actual_size=None, alias=None, backup=None, bootable=None, comment=None, content_type=None, description=None, disk_profile=None, format=None, id=None, image_id=None, initial_size=None, instance_type=None, interface=None, logical_name=None, lun_storage=None, name=None, openstack_volume_type=None, permissions=None, propagate_errors=None, provisioned_size=None, qcow_version=None, quota=None, read_only=None, sgio=None, shareable=None, snapshot=None, sparse=None, statistics=None, status=None, storage_domain=None, storage_domains=None, storage_type=None, template=None, total_size=None, uses_scsi_reservation=None, vm=None, vms=None, wipe_after_delete=None)</p>
     </div>
     
     <p class="inheritance">
@@ -9005,6 +9388,39 @@ table {
       </div>
       
       <div class="item">
+      <p id="ovirtsdk4.types.DiskBackup" class="name">class <span class="ident">DiskBackup</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.DiskBackup">DiskBackup</a></li>
+          <li>enum.Enum</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.DiskBackup.INCREMENTAL" class="name">var <span class="ident">INCREMENTAL</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.DiskBackup.NONE" class="name">var <span class="ident">NONE</span></p>
+            
+
+            
+  
+
+            </div>
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="ovirtsdk4.types.DiskContentType" class="name">class <span class="ident">DiskContentType</span></p>
       
   
@@ -9110,6 +9526,14 @@ table {
           <h3>Class variables</h3>
             <div class="item">
             <p id="ovirtsdk4.types.DiskInterface.IDE" class="name">var <span class="ident">IDE</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.DiskInterface.SATA" class="name">var <span class="ident">SATA</span></p>
             
 
             
@@ -9343,6 +9767,22 @@ table {
   
     <div class="desc"><div class="paragraph">
 <p>Returns the value of the <code>alias</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.DiskSnapshot.backup" class="name">var <span class="ident">backup</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Disk">Disk</a></code>.<code><a href="#ovirtsdk4.types.Disk.backup">backup</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>backup</code> property.</p>
 </div>
 </div>
 
@@ -9951,7 +10391,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.DiskSnapshot.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, actual_size=None, alias=None, bootable=None, comment=None, content_type=None, description=None, disk=None, disk_profile=None, format=None, id=None, image_id=None, initial_size=None, instance_type=None, interface=None, logical_name=None, lun_storage=None, name=None, openstack_volume_type=None, permissions=None, propagate_errors=None, provisioned_size=None, qcow_version=None, quota=None, read_only=None, sgio=None, shareable=None, snapshot=None, sparse=None, statistics=None, status=None, storage_domain=None, storage_domains=None, storage_type=None, template=None, total_size=None, uses_scsi_reservation=None, vm=None, vms=None, wipe_after_delete=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, actual_size=None, alias=None, backup=None, bootable=None, comment=None, content_type=None, description=None, disk=None, disk_profile=None, format=None, id=None, image_id=None, initial_size=None, instance_type=None, interface=None, logical_name=None, lun_storage=None, name=None, openstack_volume_type=None, permissions=None, propagate_errors=None, provisioned_size=None, qcow_version=None, quota=None, read_only=None, sgio=None, shareable=None, snapshot=None, sparse=None, statistics=None, status=None, storage_domain=None, storage_domains=None, storage_type=None, template=None, total_size=None, uses_scsi_reservation=None, vm=None, vms=None, wipe_after_delete=None)</p>
     </div>
     
     <p class="inheritance">
@@ -10040,6 +10480,14 @@ table {
             </div>
             <div class="item">
             <p id="ovirtsdk4.types.DiskStorageType.LUN" class="name">var <span class="ident">LUN</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.DiskStorageType.MANAGED_BLOCK_STORAGE" class="name">var <span class="ident">MANAGED_BLOCK_STORAGE</span></p>
             
 
             
@@ -16071,6 +16519,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Host.network_operation_in_progress" class="name">var <span class="ident">network_operation_in_progress</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Host.nics" class="name">var <span class="ident">nics</span></p>
             
 
@@ -16270,11 +16726,19 @@ table {
   
 
             </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Host.vgpu_placement" class="name">var <span class="ident">vgpu_placement</span></p>
+            
+
+            
+  
+
+            </div>
           <h3>Methods</h3>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Host.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, address=None, affinity_labels=None, agents=None, auto_numa_status=None, certificate=None, cluster=None, comment=None, cpu=None, description=None, device_passthrough=None, devices=None, display=None, external_host_provider=None, external_network_provider_configurations=None, external_status=None, hardware_information=None, hooks=None, hosted_engine=None, id=None, iscsi=None, katello_errata=None, kdump_status=None, ksm=None, libvirt_version=None, max_scheduling_memory=None, memory=None, name=None, network_attachments=None, nics=None, numa_nodes=None, numa_supported=None, os=None, override_iptables=None, permissions=None, port=None, power_management=None, protocol=None, root_password=None, se_linux=None, spm=None, ssh=None, statistics=None, status=None, status_detail=None, storage_connection_extensions=None, storages=None, summary=None, tags=None, transparent_huge_pages=None, type=None, unmanaged_networks=None, update_available=None, version=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, address=None, affinity_labels=None, agents=None, auto_numa_status=None, certificate=None, cluster=None, comment=None, cpu=None, description=None, device_passthrough=None, devices=None, display=None, external_host_provider=None, external_network_provider_configurations=None, external_status=None, hardware_information=None, hooks=None, hosted_engine=None, id=None, iscsi=None, katello_errata=None, kdump_status=None, ksm=None, libvirt_version=None, max_scheduling_memory=None, memory=None, name=None, network_attachments=None, network_operation_in_progress=None, nics=None, numa_nodes=None, numa_supported=None, os=None, override_iptables=None, permissions=None, port=None, power_management=None, protocol=None, root_password=None, se_linux=None, spm=None, ssh=None, statistics=None, status=None, status_detail=None, storage_connection_extensions=None, storages=None, summary=None, tags=None, transparent_huge_pages=None, type=None, unmanaged_networks=None, update_available=None, version=None, vgpu_placement=None)</p>
     </div>
     
     <p class="inheritance">
@@ -17150,6 +17614,22 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.HostStorage.driver_options" class="name">var <span class="ident">driver_options</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.HostStorage.driver_sensitive_options" class="name">var <span class="ident">driver_sensitive_options</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.HostStorage.host" class="name">var <span class="ident">host</span></p>
             
 
@@ -17329,7 +17809,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.HostStorage.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, address=None, comment=None, description=None, host=None, id=None, logical_units=None, mount_options=None, name=None, nfs_retrans=None, nfs_timeo=None, nfs_version=None, override_luns=None, password=None, path=None, port=None, portal=None, target=None, type=None, username=None, vfs_type=None, volume_group=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, address=None, comment=None, description=None, driver_options=None, driver_sensitive_options=None, host=None, id=None, logical_units=None, mount_options=None, name=None, nfs_retrans=None, nfs_timeo=None, nfs_version=None, override_luns=None, password=None, path=None, port=None, portal=None, target=None, type=None, username=None, vfs_type=None, volume_group=None)</p>
     </div>
     
     <p class="inheritance">
@@ -17877,6 +18357,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.ImageTransfer.backup" class="name">var <span class="ident">backup</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.ImageTransfer.comment" class="name">var <span class="ident">comment</span></p>
             
     <p class="inheritance">
@@ -17918,6 +18406,14 @@ table {
             </div>
             <div class="item">
             <p id="ovirtsdk4.types.ImageTransfer.disk" class="name">var <span class="ident">disk</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.ImageTransfer.format" class="name">var <span class="ident">format</span></p>
             
 
             
@@ -18048,7 +18544,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.ImageTransfer.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, comment=None, description=None, direction=None, disk=None, host=None, id=None, image=None, inactivity_timeout=None, name=None, phase=None, proxy_url=None, signed_ticket=None, snapshot=None, transfer_url=None, transferred=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, active=None, backup=None, comment=None, description=None, direction=None, disk=None, format=None, host=None, id=None, image=None, inactivity_timeout=None, name=None, phase=None, proxy_url=None, signed_ticket=None, snapshot=None, transfer_url=None, transferred=None)</p>
     </div>
     
     <p class="inheritance">
@@ -18282,6 +18778,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Initialization.cloud_init_network_protocol" class="name">var <span class="ident">cloud_init_network_protocol</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Initialization.configuration" class="name">var <span class="ident">configuration</span></p>
             
 
@@ -18441,7 +18945,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Initialization.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, active_directory_ou=None, authorized_ssh_keys=None, cloud_init=None, configuration=None, custom_script=None, dns_search=None, dns_servers=None, domain=None, host_name=None, input_locale=None, nic_configurations=None, org_name=None, regenerate_ids=None, regenerate_ssh_keys=None, root_password=None, system_locale=None, timezone=None, ui_language=None, user_locale=None, user_name=None, windows_license_key=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, active_directory_ou=None, authorized_ssh_keys=None, cloud_init=None, cloud_init_network_protocol=None, configuration=None, custom_script=None, dns_search=None, dns_servers=None, domain=None, host_name=None, input_locale=None, nic_configurations=None, org_name=None, regenerate_ids=None, regenerate_ssh_keys=None, root_password=None, system_locale=None, timezone=None, ui_language=None, user_locale=None, user_name=None, windows_license_key=None)</p>
     </div>
     
 
@@ -18951,6 +19455,22 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.InstanceType.multi_queues_enabled" class="name">var <span class="ident">multi_queues_enabled</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Template">Template</a></code>.<code><a href="#ovirtsdk4.types.Template.multi_queues_enabled">multi_queues_enabled</a></code>
+    </p>
+
+            
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Returns the value of the <code>multi_queues_enabled</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.InstanceType.name" class="name">var <span class="ident">name</span></p>
             
     <p class="inheritance">
@@ -19370,7 +19890,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.InstanceType.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, bios=None, cdroms=None, cluster=None, comment=None, console=None, cpu=None, cpu_profile=None, cpu_shares=None, creation_time=None, custom_compatibility_version=None, custom_cpu_model=None, custom_emulated_machine=None, custom_properties=None, delete_protected=None, description=None, disk_attachments=None, display=None, domain=None, graphics_consoles=None, high_availability=None, id=None, initialization=None, io=None, large_icon=None, lease=None, memory=None, memory_policy=None, migration=None, migration_downtime=None, name=None, nics=None, origin=None, os=None, permissions=None, placement_policy=None, quota=None, rng_device=None, serial_number=None, small_icon=None, soundcard_enabled=None, sso=None, start_paused=None, stateless=None, status=None, storage_domain=None, storage_error_resume_behaviour=None, tags=None, time_zone=None, tunnel_migration=None, type=None, usb=None, version=None, virtio_scsi=None, vm=None, watchdogs=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, bios=None, cdroms=None, cluster=None, comment=None, console=None, cpu=None, cpu_profile=None, cpu_shares=None, creation_time=None, custom_compatibility_version=None, custom_cpu_model=None, custom_emulated_machine=None, custom_properties=None, delete_protected=None, description=None, disk_attachments=None, display=None, domain=None, graphics_consoles=None, high_availability=None, id=None, initialization=None, io=None, large_icon=None, lease=None, memory=None, memory_policy=None, migration=None, migration_downtime=None, multi_queues_enabled=None, name=None, nics=None, origin=None, os=None, permissions=None, placement_policy=None, quota=None, rng_device=None, serial_number=None, small_icon=None, soundcard_enabled=None, sso=None, start_paused=None, stateless=None, status=None, storage_domain=None, storage_error_resume_behaviour=None, tags=None, time_zone=None, tunnel_migration=None, type=None, usb=None, version=None, virtio_scsi=None, vm=None, watchdogs=None)</p>
     </div>
     
     <p class="inheritance">
@@ -20634,6 +21154,39 @@ table {
 
   </div>
   
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.types.LogMaxMemoryUsedThresholdType" class="name">class <span class="ident">LogMaxMemoryUsedThresholdType</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.LogMaxMemoryUsedThresholdType">LogMaxMemoryUsedThresholdType</a></li>
+          <li>enum.Enum</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.LogMaxMemoryUsedThresholdType.ABSOLUTE_VALUE_IN_MB" class="name">var <span class="ident">ABSOLUTE_VALUE_IN_MB</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.LogMaxMemoryUsedThresholdType.PERCENTAGE" class="name">var <span class="ident">PERCENTAGE</span></p>
+            
+
+            
+  
+
+            </div>
       </div>
       </div>
       
@@ -24225,6 +24778,22 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.OpenStackNetworkProvider.project_domain_name" class="name">var <span class="ident">project_domain_name</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.OpenStackNetworkProvider.project_name" class="name">var <span class="ident">project_name</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.OpenStackNetworkProvider.properties" class="name">var <span class="ident">properties</span></p>
             
     <p class="inheritance">
@@ -24321,6 +24890,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.OpenStackNetworkProvider.user_domain_name" class="name">var <span class="ident">user_domain_name</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.OpenStackNetworkProvider.username" class="name">var <span class="ident">username</span></p>
             
     <p class="inheritance">
@@ -24340,7 +24917,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.OpenStackNetworkProvider.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, agent_configuration=None, authentication_url=None, auto_sync=None, certificates=None, comment=None, description=None, external_plugin_type=None, id=None, name=None, networks=None, password=None, plugin_type=None, properties=None, read_only=None, requires_authentication=None, subnets=None, tenant_name=None, type=None, unmanaged=None, url=None, username=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, agent_configuration=None, authentication_url=None, auto_sync=None, certificates=None, comment=None, description=None, external_plugin_type=None, id=None, name=None, networks=None, password=None, plugin_type=None, project_domain_name=None, project_name=None, properties=None, read_only=None, requires_authentication=None, subnets=None, tenant_name=None, type=None, unmanaged=None, url=None, user_domain_name=None, username=None)</p>
     </div>
     
     <p class="inheritance">
@@ -30222,6 +30799,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Snapshot.disks" class="name">var <span class="ident">disks</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Snapshot.display" class="name">var <span class="ident">display</span></p>
             
     <p class="inheritance">
@@ -30601,6 +31186,22 @@ table {
   
     <div class="desc inherited"><div class="paragraph">
 <p>Returns the value of the <code>migration_downtime</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.Snapshot.multi_queues_enabled" class="name">var <span class="ident">multi_queues_enabled</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.Vm">Vm</a></code>.<code><a href="#ovirtsdk4.types.Vm.multi_queues_enabled">multi_queues_enabled</a></code>
+    </p>
+
+            
+  
+    <div class="desc inherited"><div class="paragraph">
+<p>Returns the value of the <code>multi_queues_enabled</code> property.</p>
 </div>
 </div>
 
@@ -31297,7 +31898,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Snapshot.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_labels=None, applications=None, bios=None, cdroms=None, cluster=None, comment=None, console=None, cpu=None, cpu_profile=None, cpu_shares=None, creation_time=None, custom_compatibility_version=None, custom_cpu_model=None, custom_emulated_machine=None, custom_properties=None, date=None, delete_protected=None, description=None, disk_attachments=None, display=None, domain=None, external_host_provider=None, floppies=None, fqdn=None, graphics_consoles=None, guest_operating_system=None, guest_time_zone=None, has_illegal_images=None, high_availability=None, host=None, host_devices=None, id=None, initialization=None, instance_type=None, io=None, katello_errata=None, large_icon=None, lease=None, memory=None, memory_policy=None, migration=None, migration_downtime=None, name=None, next_run_configuration_exists=None, nics=None, numa_nodes=None, numa_tune_mode=None, origin=None, original_template=None, os=None, payloads=None, permissions=None, persist_memorystate=None, placement_policy=None, quota=None, reported_devices=None, rng_device=None, run_once=None, serial_number=None, sessions=None, small_icon=None, snapshot_status=None, snapshot_type=None, snapshots=None, soundcard_enabled=None, sso=None, start_paused=None, start_time=None, stateless=None, statistics=None, status=None, status_detail=None, stop_reason=None, stop_time=None, storage_domain=None, storage_error_resume_behaviour=None, tags=None, template=None, time_zone=None, tunnel_migration=None, type=None, usb=None, use_latest_template_version=None, virtio_scsi=None, vm=None, vm_pool=None, watchdogs=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_labels=None, applications=None, bios=None, cdroms=None, cluster=None, comment=None, console=None, cpu=None, cpu_profile=None, cpu_shares=None, creation_time=None, custom_compatibility_version=None, custom_cpu_model=None, custom_emulated_machine=None, custom_properties=None, date=None, delete_protected=None, description=None, disk_attachments=None, disks=None, display=None, domain=None, external_host_provider=None, floppies=None, fqdn=None, graphics_consoles=None, guest_operating_system=None, guest_time_zone=None, has_illegal_images=None, high_availability=None, host=None, host_devices=None, id=None, initialization=None, instance_type=None, io=None, katello_errata=None, large_icon=None, lease=None, memory=None, memory_policy=None, migration=None, migration_downtime=None, multi_queues_enabled=None, name=None, next_run_configuration_exists=None, nics=None, numa_nodes=None, numa_tune_mode=None, origin=None, original_template=None, os=None, payloads=None, permissions=None, persist_memorystate=None, placement_policy=None, quota=None, reported_devices=None, rng_device=None, run_once=None, serial_number=None, sessions=None, small_icon=None, snapshot_status=None, snapshot_type=None, snapshots=None, soundcard_enabled=None, sso=None, start_paused=None, start_time=None, stateless=None, statistics=None, status=None, status_detail=None, stop_reason=None, stop_time=None, storage_domain=None, storage_error_resume_behaviour=None, tags=None, template=None, time_zone=None, tunnel_migration=None, type=None, usb=None, use_latest_template_version=None, virtio_scsi=None, vm=None, vm_pool=None, watchdogs=None)</p>
     </div>
     
     <p class="inheritance">
@@ -32660,6 +33261,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.StorageConnection.gluster_volume" class="name">var <span class="ident">gluster_volume</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.StorageConnection.host" class="name">var <span class="ident">host</span></p>
             
 
@@ -32815,7 +33424,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.StorageConnection.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, address=None, comment=None, description=None, host=None, id=None, mount_options=None, name=None, nfs_retrans=None, nfs_timeo=None, nfs_version=None, password=None, path=None, port=None, portal=None, target=None, type=None, username=None, vfs_type=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, address=None, comment=None, description=None, gluster_volume=None, host=None, id=None, mount_options=None, name=None, nfs_retrans=None, nfs_timeo=None, nfs_version=None, password=None, path=None, port=None, portal=None, target=None, type=None, username=None, vfs_type=None)</p>
     </div>
     
     <p class="inheritance">
@@ -33003,6 +33612,14 @@ table {
             </div>
             <div class="item">
             <p id="ovirtsdk4.types.StorageDomain.backup" class="name">var <span class="ident">backup</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.StorageDomain.block_size" class="name">var <span class="ident">block_size</span></p>
             
 
             
@@ -33309,7 +33926,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.StorageDomain.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, available=None, backup=None, comment=None, committed=None, critical_space_action_blocker=None, data_center=None, data_centers=None, description=None, discard_after_delete=None, disk_profiles=None, disk_snapshots=None, disks=None, external_status=None, files=None, host=None, id=None, images=None, import_=None, master=None, name=None, permissions=None, status=None, storage=None, storage_connections=None, storage_format=None, supports_discard=None, supports_discard_zeroes_data=None, templates=None, type=None, used=None, vms=None, warning_low_space_indicator=None, wipe_after_delete=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, available=None, backup=None, block_size=None, comment=None, committed=None, critical_space_action_blocker=None, data_center=None, data_centers=None, description=None, discard_after_delete=None, disk_profiles=None, disk_snapshots=None, disks=None, external_status=None, files=None, host=None, id=None, images=None, import_=None, master=None, name=None, permissions=None, status=None, storage=None, storage_connections=None, storage_format=None, supports_discard=None, supports_discard_zeroes_data=None, templates=None, type=None, used=None, vms=None, warning_low_space_indicator=None, wipe_after_delete=None)</p>
     </div>
     
     <p class="inheritance">
@@ -33519,6 +34136,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.StorageDomainType.MANAGED_BLOCK_STORAGE" class="name">var <span class="ident">MANAGED_BLOCK_STORAGE</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.StorageDomainType.VOLUME" class="name">var <span class="ident">VOLUME</span></p>
             
 
@@ -33569,6 +34194,14 @@ table {
             </div>
             <div class="item">
             <p id="ovirtsdk4.types.StorageFormat.V4" class="name">var <span class="ident">V4</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.StorageFormat.V5" class="name">var <span class="ident">V5</span></p>
             
 
             
@@ -33634,6 +34267,14 @@ table {
             </div>
             <div class="item">
             <p id="ovirtsdk4.types.StorageType.LOCALFS" class="name">var <span class="ident">LOCALFS</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.StorageType.MANAGED_BLOCK_STORAGE" class="name">var <span class="ident">MANAGED_BLOCK_STORAGE</span></p>
             
 
             
@@ -34509,6 +35150,22 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Template.multi_queues_enabled" class="name">var <span class="ident">multi_queues_enabled</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.VmBase">VmBase</a></code>.<code><a href="#ovirtsdk4.types.VmBase.multi_queues_enabled">multi_queues_enabled</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>multi_queues_enabled</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Template.name" class="name">var <span class="ident">name</span></p>
             
     <p class="inheritance">
@@ -34872,7 +35529,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Template.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, bios=None, cdroms=None, cluster=None, comment=None, console=None, cpu=None, cpu_profile=None, cpu_shares=None, creation_time=None, custom_compatibility_version=None, custom_cpu_model=None, custom_emulated_machine=None, custom_properties=None, delete_protected=None, description=None, disk_attachments=None, display=None, domain=None, graphics_consoles=None, high_availability=None, id=None, initialization=None, io=None, large_icon=None, lease=None, memory=None, memory_policy=None, migration=None, migration_downtime=None, name=None, nics=None, origin=None, os=None, permissions=None, placement_policy=None, quota=None, rng_device=None, serial_number=None, small_icon=None, soundcard_enabled=None, sso=None, start_paused=None, stateless=None, status=None, storage_domain=None, storage_error_resume_behaviour=None, tags=None, time_zone=None, tunnel_migration=None, type=None, usb=None, version=None, virtio_scsi=None, vm=None, watchdogs=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, bios=None, cdroms=None, cluster=None, comment=None, console=None, cpu=None, cpu_profile=None, cpu_shares=None, creation_time=None, custom_compatibility_version=None, custom_cpu_model=None, custom_emulated_machine=None, custom_properties=None, delete_protected=None, description=None, disk_attachments=None, display=None, domain=None, graphics_consoles=None, high_availability=None, id=None, initialization=None, io=None, large_icon=None, lease=None, memory=None, memory_policy=None, migration=None, migration_downtime=None, multi_queues_enabled=None, name=None, nics=None, origin=None, os=None, permissions=None, placement_policy=None, quota=None, rng_device=None, serial_number=None, small_icon=None, soundcard_enabled=None, sso=None, start_paused=None, stateless=None, status=None, storage_domain=None, storage_error_resume_behaviour=None, tags=None, time_zone=None, tunnel_migration=None, type=None, usb=None, version=None, virtio_scsi=None, vm=None, watchdogs=None)</p>
     </div>
     
     <p class="inheritance">
@@ -36079,6 +36736,39 @@ table {
       </div>
       
       <div class="item">
+      <p id="ovirtsdk4.types.VgpuPlacement" class="name">class <span class="ident">VgpuPlacement</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.types.VgpuPlacement">VgpuPlacement</a></li>
+          <li>enum.Enum</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Class variables</h3>
+            <div class="item">
+            <p id="ovirtsdk4.types.VgpuPlacement.CONSOLIDATED" class="name">var <span class="ident">CONSOLIDATED</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
+            <p id="ovirtsdk4.types.VgpuPlacement.SEPARATED" class="name">var <span class="ident">SEPARATED</span></p>
+            
+
+            
+  
+
+            </div>
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="ovirtsdk4.types.VirtioScsi" class="name">class <span class="ident">VirtioScsi</span></p>
       
   
@@ -36975,6 +37665,22 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.Vm.multi_queues_enabled" class="name">var <span class="ident">multi_queues_enabled</span></p>
+            
+    <p class="inheritance">
+     <strong>Inheritance:</strong>
+       <code><a href="#ovirtsdk4.types.VmBase">VmBase</a></code>.<code><a href="#ovirtsdk4.types.VmBase.multi_queues_enabled">multi_queues_enabled</a></code>
+    </p>
+
+            
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the value of the <code>multi_queues_enabled</code> property.</p>
+</div>
+</div>
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.Vm.name" class="name">var <span class="ident">name</span></p>
             
     <p class="inheritance">
@@ -37458,7 +38164,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.Vm.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_labels=None, applications=None, bios=None, cdroms=None, cluster=None, comment=None, console=None, cpu=None, cpu_profile=None, cpu_shares=None, creation_time=None, custom_compatibility_version=None, custom_cpu_model=None, custom_emulated_machine=None, custom_properties=None, delete_protected=None, description=None, disk_attachments=None, display=None, domain=None, external_host_provider=None, floppies=None, fqdn=None, graphics_consoles=None, guest_operating_system=None, guest_time_zone=None, has_illegal_images=None, high_availability=None, host=None, host_devices=None, id=None, initialization=None, instance_type=None, io=None, katello_errata=None, large_icon=None, lease=None, memory=None, memory_policy=None, migration=None, migration_downtime=None, name=None, next_run_configuration_exists=None, nics=None, numa_nodes=None, numa_tune_mode=None, origin=None, original_template=None, os=None, payloads=None, permissions=None, placement_policy=None, quota=None, reported_devices=None, rng_device=None, run_once=None, serial_number=None, sessions=None, small_icon=None, snapshots=None, soundcard_enabled=None, sso=None, start_paused=None, start_time=None, stateless=None, statistics=None, status=None, status_detail=None, stop_reason=None, stop_time=None, storage_domain=None, storage_error_resume_behaviour=None, tags=None, template=None, time_zone=None, tunnel_migration=None, type=None, usb=None, use_latest_template_version=None, virtio_scsi=None, vm_pool=None, watchdogs=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, affinity_labels=None, applications=None, bios=None, cdroms=None, cluster=None, comment=None, console=None, cpu=None, cpu_profile=None, cpu_shares=None, creation_time=None, custom_compatibility_version=None, custom_cpu_model=None, custom_emulated_machine=None, custom_properties=None, delete_protected=None, description=None, disk_attachments=None, display=None, domain=None, external_host_provider=None, floppies=None, fqdn=None, graphics_consoles=None, guest_operating_system=None, guest_time_zone=None, has_illegal_images=None, high_availability=None, host=None, host_devices=None, id=None, initialization=None, instance_type=None, io=None, katello_errata=None, large_icon=None, lease=None, memory=None, memory_policy=None, migration=None, migration_downtime=None, multi_queues_enabled=None, name=None, next_run_configuration_exists=None, nics=None, numa_nodes=None, numa_tune_mode=None, origin=None, original_template=None, os=None, payloads=None, permissions=None, placement_policy=None, quota=None, reported_devices=None, rng_device=None, run_once=None, serial_number=None, sessions=None, small_icon=None, snapshots=None, soundcard_enabled=None, sso=None, start_paused=None, start_time=None, stateless=None, statistics=None, status=None, status_detail=None, stop_reason=None, stop_time=None, storage_domain=None, storage_error_resume_behaviour=None, tags=None, template=None, time_zone=None, tunnel_migration=None, type=None, usb=None, use_latest_template_version=None, virtio_scsi=None, vm_pool=None, watchdogs=None)</p>
     </div>
     
     <p class="inheritance">
@@ -37779,6 +38485,14 @@ table {
 
             </div>
             <div class="item">
+            <p id="ovirtsdk4.types.VmBase.multi_queues_enabled" class="name">var <span class="ident">multi_queues_enabled</span></p>
+            
+
+            
+  
+
+            </div>
+            <div class="item">
             <p id="ovirtsdk4.types.VmBase.name" class="name">var <span class="ident">name</span></p>
             
     <p class="inheritance">
@@ -37942,7 +38656,7 @@ table {
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.types.VmBase.__init__">
-    <p>def <span class="ident">__init__</span>(</p><p>self, bios=None, cluster=None, comment=None, console=None, cpu=None, cpu_profile=None, cpu_shares=None, creation_time=None, custom_compatibility_version=None, custom_cpu_model=None, custom_emulated_machine=None, custom_properties=None, delete_protected=None, description=None, display=None, domain=None, high_availability=None, id=None, initialization=None, io=None, large_icon=None, lease=None, memory=None, memory_policy=None, migration=None, migration_downtime=None, name=None, origin=None, os=None, placement_policy=None, quota=None, rng_device=None, serial_number=None, small_icon=None, soundcard_enabled=None, sso=None, start_paused=None, stateless=None, storage_domain=None, storage_error_resume_behaviour=None, time_zone=None, tunnel_migration=None, type=None, usb=None, virtio_scsi=None)</p>
+    <p>def <span class="ident">__init__</span>(</p><p>self, bios=None, cluster=None, comment=None, console=None, cpu=None, cpu_profile=None, cpu_shares=None, creation_time=None, custom_compatibility_version=None, custom_cpu_model=None, custom_emulated_machine=None, custom_properties=None, delete_protected=None, description=None, display=None, domain=None, high_availability=None, id=None, initialization=None, io=None, large_icon=None, lease=None, memory=None, memory_policy=None, migration=None, migration_downtime=None, multi_queues_enabled=None, name=None, origin=None, os=None, placement_policy=None, quota=None, rng_device=None, serial_number=None, small_icon=None, soundcard_enabled=None, sso=None, start_paused=None, stateless=None, storage_domain=None, storage_error_resume_behaviour=None, time_zone=None, tunnel_migration=None, type=None, usb=None, virtio_scsi=None)</p>
     </div>
     
     <p class="inheritance">

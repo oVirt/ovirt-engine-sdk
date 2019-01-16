@@ -1584,6 +1584,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.remove">remove</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.reset_emulated_machine">reset_emulated_machine</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.service">service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ClusterService.sync_all_networks">sync_all_networks</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.update">update</a></li>
   </ul>
 
@@ -1764,6 +1765,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.DiskService.get">get</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DiskService.move">move</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DiskService.permissions_service">permissions_service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.DiskService.reduce">reduce</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DiskService.refresh_lun">refresh_lun</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DiskService.remove">remove</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.DiskService.service">service</a></li>
@@ -3628,6 +3630,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.StorageDomainDiskService.get">get</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageDomainDiskService.move">move</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageDomainDiskService.permissions_service">permissions_service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageDomainDiskService.reduce">reduce</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageDomainDiskService.remove">remove</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageDomainDiskService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageDomainDiskService.sparsify">sparsify</a></li>
@@ -3832,6 +3835,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.remove">remove</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.update">update</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.update_glusterfs">update_glusterfs</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.update_iscsi">update_iscsi</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.update_local">update_local</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionService.update_nfs">update_nfs</a></li>
@@ -3846,6 +3850,7 @@ table {
   <ul>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.add_glusterfs">add_glusterfs</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.add_iscsi">add_iscsi</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.add_local">add_local</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.StorageServerConnectionsService.add_nfs">add_nfs</a></li>
@@ -4170,6 +4175,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.add">add</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.add_from_configuration">add_from_configuration</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.add_from_vm">add_from_vm</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.add_from_vm_snapshot">add_from_vm_snapshot</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.list">list</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.TemplatesService.template_service">template_service</a></li>
@@ -4279,6 +4285,55 @@ table {
 
         </li>
         <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.services.VmBackupDiskService">VmBackupDiskService</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupDiskService.__init__">__init__</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupDiskService.get">get</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupDiskService.service">service</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.services.VmBackupDisksService">VmBackupDisksService</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupDisksService.__init__">__init__</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupDisksService.disk_service">disk_service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupDisksService.list">list</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupDisksService.service">service</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.services.VmBackupService">VmBackupService</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupService.__init__">__init__</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupService.disks_service">disks_service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupService.finalize">finalize</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupService.get">get</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupService.service">service</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
+        <span class="class_name"><a href="#ovirtsdk4.services.VmBackupsService">VmBackupsService</a></span>
+        
+          
+  <ul>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupsService.__init__">__init__</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupsService.add">add</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupsService.backup_service">backup_service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupsService.list">list</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmBackupsService.service">service</a></li>
+  </ul>
+
+        </li>
+        <li class="mono">
         <span class="class_name"><a href="#ovirtsdk4.services.VmCdromService">VmCdromService</a></span>
         
           
@@ -4315,6 +4370,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.VmDiskService.get">get</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmDiskService.move">move</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmDiskService.permissions_service">permissions_service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmDiskService.reduce">reduce</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmDiskService.remove">remove</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmDiskService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmDiskService.statistics_service">statistics_service</a></li>
@@ -4504,6 +4560,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.VmService.__init__">__init__</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmService.affinity_labels_service">affinity_labels_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmService.applications_service">applications_service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.VmService.backups_service">backups_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmService.cancel_migration">cancel_migration</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmService.cdroms_service">cdroms_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.VmService.clone">clone</a></li>
@@ -8905,6 +8962,29 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
     <div class="desc"><div class="paragraph">
 <p>Attaches an existing storage domain to the data center.</p>
 </div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>The storage domain to attach to the data center.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
 </div>
 
   </div>
@@ -10293,7 +10373,7 @@ information which describes the cluster level:</p>
 <pre class="pygments highlight"><code data-lang="xml">&lt;cluster_level id="3.6"&gt;
   &lt;cpu_types&gt;
     &lt;cpu_type&gt;
-      &lt;name&gt;Intel Conroe Family&lt;/name&gt;
+      &lt;name&gt;Intel Nehalem Family&lt;/name&gt;
       &lt;level&gt;3&lt;/level&gt;
       &lt;architecture&gt;x86_64&lt;/architecture&gt;
     &lt;/cpu_type&gt;
@@ -10920,7 +11000,7 @@ An example of getting a cluster:</p>
   &lt;ballooning_enabled&gt;false&lt;/ballooning_enabled&gt;
   &lt;cpu&gt;
     &lt;architecture&gt;x86_64&lt;/architecture&gt;
-    &lt;type&gt;Intel Penryn Family&lt;/type&gt;
+    &lt;type&gt;Intel Nehalem Family&lt;/type&gt;
   &lt;/cpu&gt;
   &lt;error_handling&gt;
     &lt;on_error&gt;migrate&lt;/on_error&gt;
@@ -10941,7 +11021,6 @@ An example of getting a cluster:</p>
     &lt;enabled&gt;true&lt;/enabled&gt;
     &lt;merge_across_nodes&gt;true&lt;/merge_across_nodes&gt;
   &lt;/ksm&gt;
-  &lt;maintenance_reason_required&gt;false&lt;/maintenance_reason_required&gt;
   &lt;memory_policy&gt;
     &lt;over_commit&gt;
       &lt;percent&gt;100&lt;/percent&gt;
@@ -10957,7 +11036,6 @@ An example of getting a cluster:</p>
     &lt;/bandwidth&gt;
     &lt;compressed&gt;inherit&lt;/compressed&gt;
   &lt;/migration&gt;
-  &lt;optional_reason&gt;false&lt;/optional_reason&gt;
   &lt;required_rng_sources&gt;
     &lt;required_rng_source&gt;random&lt;/required_rng_source&gt;
   &lt;/required_rng_sources&gt;
@@ -11184,6 +11262,58 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
   
             
   <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ClusterService.sync_all_networks">
+    <p>def <span class="ident">sync_all_networks</span>(</p><p>self, async_=None, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Synchronizes all networks on the cluster.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/clusters/123/syncallnetworks</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;action/&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>async_</code></dt>
+<dd>
+<p>Indicates if the action should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="ovirtsdk4.services.ClusterService.update">
     <p>def <span class="ident">update</span>(</p><p>self, cluster, async_=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
@@ -11277,7 +11407,7 @@ or <code>name</code> attribute.</p>
 <pre class="pygments highlight"><code data-lang="xml">&lt;cluster&gt;
   &lt;name&gt;mycluster&lt;/name&gt;
   &lt;cpu&gt;
-    &lt;type&gt;Intel Penryn Family&lt;/type&gt;
+    &lt;type&gt;Intel Nehalem Family&lt;/type&gt;
   &lt;/cpu&gt;
   &lt;data_center id="123"/&gt;
 &lt;/cluster&gt;</code></pre>
@@ -11300,7 +11430,7 @@ every host that is added to the cluster, send a request like this:</p>
 <pre class="pygments highlight"><code data-lang="xml">&lt;cluster&gt;
   &lt;name&gt;mycluster&lt;/name&gt;
   &lt;cpu&gt;
-    &lt;type&gt;Intel Penryn Family&lt;/type&gt;
+    &lt;type&gt;Intel Nehalem Family&lt;/type&gt;
   &lt;/cpu&gt;
   &lt;data_center id="123"/&gt;
   &lt;external_network_providers&gt;
@@ -11688,7 +11818,7 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
   
     <div class="desc"><div class="paragraph">
 <p>Returns the list of CPU profiles of the system.
-The order of the returned list of CPU profiles isn&#8217;t guranteed.</p>
+The order of the returned list of CPU profiles is random.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -11697,7 +11827,7 @@ The order of the returned list of CPU profiles isn&#8217;t guranteed.</p>
 <dl>
 <dt class="hdlist1"><code>max</code></dt>
 <dd>
-<p>Sets the maximum number of profiles to return. If not specified all the profiles are returned.</p>
+<p>Sets the maximum number of profiles to return. If not specified, all the profiles are returned.</p>
 </dd>
 <dt class="hdlist1"><code>follow</code></dt>
 <dd>
@@ -12954,6 +13084,29 @@ value.
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>attachment</code></dt>
+<dd>
+<p>The disk attachment to add to the virtual machine.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
 </div>
 
   </div>
@@ -12967,6 +13120,30 @@ value.
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>attachment</code></dt>
+<dd>
+<p>The disk attachment to add to the virtual machine.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
 
   </div>
   
@@ -12979,6 +13156,30 @@ value.
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>attachment</code></dt>
+<dd>
+<p>The disk attachment to add to the virtual machine.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
 
   </div>
   
@@ -13368,7 +13569,7 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
   
     <div class="desc"><div class="paragraph">
 <p>This operation copies a disk to the specified storage domain.
-For example, copy of a disk can be facilitated using the following request:</p>
+For example, a disk can be copied using the following request:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -13389,9 +13590,9 @@ For example, copy of a disk can be facilitated using the following request:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>If the disk profile or the quota used currently by the disk aren&#8217;t defined for the new storage domain, then they
-can be explicitly specified. If they aren&#8217;t then the first available disk profile and the default quota are used.
-For example, to explicitly use disk profile <code>987</code> and quota <code>753</code> send a request body like this:</p>
+<p>If the disk profile or the quota currently used by the disk are not defined for the new storage domain, they
+can be explicitly specified. If they are not specified, the first available disk profile and the default quota are used.
+For example, to specify disk profile <code>987</code> and quota <code>753</code>, send a request body like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -13409,8 +13610,8 @@ For example, to explicitly use disk profile <code>987</code> and quota <code>753
 <dl>
 <dt class="hdlist1"><code>storage_domain</code></dt>
 <dd>
-<p>The storage domain where the new disk will be created. Can be specified using the <code>id</code> or <code>name</code>
-attributes. For example, to copy a disk to the storage domain named <code>mydata</code> send a request like this:</p>
+<p>The storage domain where the new disk is created. This can be specified using the <code>id</code> or <code>name</code>
+attributes. For example, to copy a disk to the storage domain called <code>mydata</code>, send a request like this:</p>
 </dd>
 </dl>
 </div>
@@ -13492,6 +13693,10 @@ the default (unlimited) quota will be assigned to the disk.</p>
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>The export storage domain where the disk will be exported to.</p>
+</dd>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
 <p>Indicates if the export should be performed asynchronously.</p>
@@ -13521,7 +13726,7 @@ the default (unlimited) quota will be assigned to the disk.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.DiskService.get">
-    <p>def <span class="ident">get</span>(</p><p>self, follow=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">get</span>(</p><p>self, all_content=None, follow=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -13532,6 +13737,28 @@ the default (unlimited) quota will be assigned to the disk.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>all_content</code></dt>
+<dd>
+<p>Indicates if all of the attributes of the disk should be included in the response.
+By default the following disk attributes are excluded:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>vms</code>
+For example, to retrieve the complete representation of disk '123':</p>
+</li>
+</ul>
+</div>
+</dd>
+</dl>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/disks/123?all_content=true</pre>
+</div>
 </div>
 <div class="dlist">
 <dl>
@@ -13610,6 +13837,10 @@ quota <code>753</code> send a request body like this:</p>
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>The storage domain where the disk will be moved to.</p>
+</dd>
 <dt class="hdlist1"><code>disk_profile</code></dt>
 <dd>
 <p>Disk profile for the disk in the new storage domain.
@@ -13663,6 +13894,48 @@ the default (unlimited) quota will be assigned to the disk.</p>
   
     <div class="desc"><div class="paragraph">
 <p>Reference to the service that manages the permissions assigned to the disk.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.DiskService.reduce">
+    <p>def <span class="ident">reduce</span>(</p><p>self, async_=None, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Reduces the size of the disk image.
+Invokes <em>reduce</em> on the logical volume (i.e. this is only applicable for block storage domains).
+This is applicable for floating disks and disks attached to non-running virtual machines.
+There is no need to specify the size as the optimal size is calculated automatically.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>async_</code></dt>
+<dd>
+<p>Indicates if the remove should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -13834,7 +14107,7 @@ having derived disks are also not allowed.</p>
     <div class="desc"><div class="paragraph">
 <p>This operation updates the disk with the appropriate parameters.
 The only field that can be updated is <code>qcow_version</code>.
-For example, update disk can be facilitated using the following request:</p>
+For example, disk update can be done using the following request:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -13852,7 +14125,7 @@ For example, update disk can be facilitated using the following request:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Since the backend operation is asynchronous the disk element which will be returned
+<p>Since the backend operation is asynchronous, the disk element that is returned
 to the user might not be synced with the changed properties.</p>
 </div>
 <div class="paragraph">
@@ -17124,7 +17397,7 @@ to run following request where 123 is an id of a provider.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.ExternalHostProvidersService.list">
-    <p>def <span class="ident">list</span>(</p><p>self, follow=None, max=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">list</span>(</p><p>self, follow=None, max=None, search=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -17142,6 +17415,10 @@ The order of the returned list of host providers isn&#8217;t guaranteed.</p>
 <dt class="hdlist1"><code>max</code></dt>
 <dd>
 <p>Sets the maximum number of providers to return. If not specified all the providers are returned.</p>
+</dd>
+<dt class="hdlist1"><code>search</code></dt>
+<dd>
+<p>A query string used to restrict the returned external host providers.</p>
 </dd>
 <dt class="hdlist1"><code>follow</code></dt>
 <dd>
@@ -21624,7 +21901,7 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
   
     <div class="desc"><div class="paragraph">
 <p>Returns the list of hooks configured for the host.
-The order of the returned list of hooks isn&#8217;t guranteed.</p>
+The order of the returned list of hooks is random.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -21633,7 +21910,7 @@ The order of the returned list of hooks isn&#8217;t guranteed.</p>
 <dl>
 <dt class="hdlist1"><code>max</code></dt>
 <dd>
-<p>Sets the maximum number of hooks to return. If not specified all the hooks are returned.</p>
+<p>Sets the maximum number of hooks to return. If not specified, all the hooks are returned.</p>
 </dd>
 <dt class="hdlist1"><code>follow</code></dt>
 <dd>
@@ -22325,7 +22602,7 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.approve">
-    <p>def <span class="ident">approve</span>(</p><p>self, async_=None, cluster=None, host=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">approve</span>(</p><p>self, activate=None, async_=None, cluster=None, host=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -22352,6 +22629,12 @@ This action also accepts an optional cluster element to define the target cluste
 <dd>
 <p>Indicates if the approval should be performed asynchronously.</p>
 </dd>
+<dt class="hdlist1"><code>activate</code></dt>
+<dd>
+<p>When set to 'true', this host will be activated after its approval completes. When set to 'false'
+the host will remain in 'maintenance' status after its approval. Absence of this parameter will be
+interpreted as 'true', since the desired default behavior is activating the host after approval.</p>
+</dd>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
 <p>Additional HTTP headers.</p>
@@ -22373,17 +22656,13 @@ This action also accepts an optional cluster element to define the target cluste
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.approve_using_root_password">
-    <p>def <span class="ident">approve_using_root_password</span>(</p><p>self, async_=None, cluster=None, host=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">approve_using_root_password</span>(</p><p>self, activate=None, async_=None, cluster=None, host=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
     
   
     <div class="desc"><div class="paragraph">
-<p>Approve the specified host to be added to the engine by using the root password (deprecated verb). This
-occurs when the host registers itself with the engine.</p>
-</div>
-<div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
 <div class="dlist">
@@ -22399,6 +22678,12 @@ occurs when the host registers itself with the engine.</p>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
 <p>Indicates if the approval should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>activate</code></dt>
+<dd>
+<p>When set to 'true', this host will be activated after its approval completes. When set to 'false'
+the host will remain in 'maintenance' status after its approval. Absence of this parameter will be
+interpreted as 'true', since the desired default behavior is activating the host after approval.</p>
 </dd>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
@@ -22421,7 +22706,7 @@ occurs when the host registers itself with the engine.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.approve_using_ssh">
-    <p>def <span class="ident">approve_using_ssh</span>(</p><p>self, async_=None, cluster=None, host=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">approve_using_ssh</span>(</p><p>self, activate=None, async_=None, cluster=None, host=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -22447,6 +22732,12 @@ registers itself with the engine.</p>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
 <p>Indicates if the approval should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>activate</code></dt>
+<dd>
+<p>When set to 'true', this host will be activated after its approval completes. When set to 'false'
+the host will remain in 'maintenance' status after its approval. Absence of this parameter will be
+interpreted as 'true', since the desired default behavior is activating the host after approval.</p>
 </dd>
 <dt class="hdlist1"><code>headers</code></dt>
 <dd>
@@ -22496,6 +22787,22 @@ For example, to commit the network configuration of host with id <code>123</code
 <div class="content">
 <pre class="pygments highlight"><code data-lang="xml">&lt;action/&gt;</code></pre>
 </div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Important</div>
+</td>
+<td class="content">
+Since {engine-name} 4.3, it is possible to also specify <code>commit_on_success</code> in
+the <a href="#services/host/methods/setup_networks">setupnetworks</a> request, in which case the new
+configuration is automatically saved in the {hypervisor-name} upon completing the setup and
+re-establishing connectivity between the {hypervisor-name} and {engine-name}, and without
+waiting for a separate <a href="#services/host/methods/commit_net_config">commitnetconfig</a> request.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -22866,7 +23173,7 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.install">
-    <p>def <span class="ident">install</span>(</p><p>self, async_=None, deploy_hosted_engine=None, host=None, image=None, root_password=None, ssh=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">install</span>(</p><p>self, activate=None, async_=None, deploy_hosted_engine=None, host=None, image=None, root_password=None, ssh=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -22918,6 +23225,12 @@ definitions by default.
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>activate</code></dt>
+<dd>
+<p>When set to 'true', this host will be activated after its installation completes. When set to 'false'
+the host will remain in 'maintenance' status after its installation. Absence of this parameter will be
+interpreted as 'true', since the desired default behavior is activating the host after install.</p>
+</dd>
 <dt class="hdlist1"><code>root_password</code></dt>
 <dd>
 <p>The password of of the <code>root</code> user, used to connect to the host via SSH.</p>
@@ -22933,7 +23246,7 @@ default one.</p>
 </dd>
 <dt class="hdlist1"><code>image</code></dt>
 <dd>
-<p>When installing an {product-name} node a image ISO file is required.</p>
+<p>When installing {hypervisor-name}, an ISO image file is required.</p>
 </dd>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
@@ -22972,7 +23285,7 @@ Omitting this parameter means <code>false</code> and will perform no operation i
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.install_using_root_password">
-    <p>def <span class="ident">install_using_root_password</span>(</p><p>self, async_=None, deploy_hosted_engine=None, host=None, image=None, root_password=None, ssh=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">install_using_root_password</span>(</p><p>self, activate=None, async_=None, deploy_hosted_engine=None, host=None, image=None, root_password=None, ssh=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -22987,6 +23300,12 @@ password. This has been deprecated.</p>
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>activate</code></dt>
+<dd>
+<p>When set to 'true', this host will be activated after its installation completes. When set to 'false'
+the host will remain in 'maintenance' status after its installation. Absence of this parameter will be
+interpreted as 'true', since the desired default behavior is activating the host after install.</p>
+</dd>
 <dt class="hdlist1"><code>root_password</code></dt>
 <dd>
 <p>The password of of the <code>root</code> user, used to connect to the host via SSH.</p>
@@ -23002,7 +23321,7 @@ default one.</p>
 </dd>
 <dt class="hdlist1"><code>image</code></dt>
 <dd>
-<p>When installing an {product-name} node a image ISO file is required.</p>
+<p>When installing {hypervisor-name}, an ISO image file is required.</p>
 </dd>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
@@ -23041,7 +23360,7 @@ Omitting this parameter means <code>false</code> and will perform no operation i
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.install_using_ssh">
-    <p>def <span class="ident">install_using_ssh</span>(</p><p>self, async_=None, deploy_hosted_engine=None, host=None, image=None, root_password=None, ssh=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">install_using_ssh</span>(</p><p>self, activate=None, async_=None, deploy_hosted_engine=None, host=None, image=None, root_password=None, ssh=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -23056,6 +23375,12 @@ password.</p>
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>activate</code></dt>
+<dd>
+<p>When set to 'true', this host will be activated after its installation completes. When set to 'false'
+the host will remain in 'maintenance' status after its installation. Absence of this parameter will be
+interpreted as 'true', since the desired default behavior is activating the host after install.</p>
+</dd>
 <dt class="hdlist1"><code>root_password</code></dt>
 <dd>
 <p>The password of of the <code>root</code> user, used to connect to the host via SSH.</p>
@@ -23071,7 +23396,7 @@ default one.</p>
 </dd>
 <dt class="hdlist1"><code>image</code></dt>
 <dd>
-<p>When installing an {product-name} node a image ISO file is required.</p>
+<p>When installing {hypervisor-name}, an ISO image file is required.</p>
 </dd>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
@@ -23420,7 +23745,7 @@ curl         --verbose         --cacert /etc/pki/ovirt-engine/ca.pem         --u
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.setup_networks">
-    <p>def <span class="ident">setup_networks</span>(</p><p>self, async_=None, check_connectivity=None, connectivity_timeout=None, modified_bonds=None, modified_labels=None, modified_network_attachments=None, removed_bonds=None, removed_labels=None, removed_network_attachments=None, synchronized_network_attachments=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">setup_networks</span>(</p><p>self, async_=None, check_connectivity=None, commit_on_success=None, connectivity_timeout=None, modified_bonds=None, modified_labels=None, modified_network_attachments=None, removed_bonds=None, removed_labels=None, removed_network_attachments=None, synchronized_network_attachments=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -23593,6 +23918,11 @@ host_service.commit_net_config()</code></pre>
 <td class="content">
 To make sure that the network configuration has been saved in the host, and that it will be applied
 when the host is rebooted, remember to call <a href="#services/host/methods/commit_net_config">commitnetconfig</a>.
+IMPORTANT: Since {engine-name} 4.3, it is possible to also specify <code>commit_on_success</code> in
+the <a href="#services/host/methods/setup_networks">setupnetworks</a> request, in which case the new
+configuration is automatically saved in the {hypervisor-name} upon completing the setup and
+re-establishing connectivity between the {hypervisor-name} and {engine-name}, and without
+waiting for a separate <a href="#services/host/methods/commit_net_config">commitnetconfig</a> request.
 </td>
 </tr>
 </table>
@@ -23605,6 +23935,15 @@ when the host is rebooted, remember to call <a href="#services/host/methods/comm
 <dt class="hdlist1"><code>synchronized_network_attachments</code></dt>
 <dd>
 <p>A list of network attachments that will be synchronized.</p>
+</dd>
+<dt class="hdlist1"><code>commit_on_success</code></dt>
+<dd>
+<p>Specifies whether to automatically save the configuration in the {hypervisor-name} upon completing
+the setup and re-establishing connectivity between the {hypervisor-name} and {engine-name},
+and without waiting for a separate <a href="#services/host/methods/commit_net_config">commitnetconfig</a>
+request.
+The default value is <code>false</code>, which means that the configuration will not be
+saved automatically.</p>
 </dd>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
@@ -23891,7 +24230,8 @@ upgrade Vintage Node hosts and it is not relevant for other hosts types.</p>
 <dt class="hdlist1"><code>reboot</code></dt>
 <dd>
 <p>Indicates if the host should be rebooted after upgrade.
-By default the host is rebooted.</p>
+By default the host is rebooted.
+NOTE: This parameter is ignored for {hypervisor-name}, which is always rebooted after upgrade.</p>
 </dd>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
@@ -24151,7 +24491,7 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostsService.add">
-    <p>def <span class="ident">add</span>(</p><p>self, host, deploy_hosted_engine=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">add</span>(</p><p>self, host, activate=None, deploy_hosted_engine=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -24159,9 +24499,9 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
   
     <div class="desc"><div class="paragraph">
 <p>Creates a new host.
-The host is created based on the attributes of the <code>host</code> parameter. The <code>name</code>, <code>address</code> and <code>root_password</code>
+The host is created based on the attributes of the <code>host</code> parameter. The <code>name</code>, <code>address</code>, and <code>root_password</code>
 properties are required.
-For example, to add a host send the following request:</p>
+For example, to add a host, send the following request:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -24189,8 +24529,8 @@ For example, to add a host send the following request:</p>
 <td class="content">
 The <code>root_password</code> element is only included in the client-provided initial representation and is not
 exposed in the representations returned from subsequent requests.
-IMPORTANT: Since version 4.1.2 of the engine when a host is newly added we override the host firewall
-definitions by default.
+IMPORTANT: Since version 4.1.2 of the engine, when a host is newly added, the host&#8217;s firewall
+definitions are overridden by default.
 To add a hosted engine host, use the optional <code>deploy_hosted_engine</code> parameter:
 </td>
 </tr>
@@ -24202,11 +24542,11 @@ To add a hosted engine host, use the optional <code>deploy_hosted_engine</code> 
 </div>
 </div>
 <div class="paragraph">
-<p>If the cluster has a default external network provider which is supported for automatic deployment,
+<p>If the cluster has a default external network provider that is supported for automatic deployment,
 the external network provider is deployed when adding the host.
 Only external network providers for OVN are supported for the automatic deployment.
-To deploy an external network provider that differs to what is defined in the clusters, overwrite the external
-network provider when adding hosts by sending a request like this:</p>
+To deploy an external network provider other than the one defined in the clusters, overwrite the external
+network provider when adding hosts, by sending the following request:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -24238,7 +24578,7 @@ network provider when adding hosts by sending a request like this:</p>
 <dl>
 <dt class="hdlist1"><code>host</code></dt>
 <dd>
-<p>The host definition from which to create the new host is passed as parameter, and the newly created host
+<p>The host definition with which the new host is created is passed as a parameter, and the newly created host
 is returned.</p>
 </dd>
 <dt class="hdlist1"><code>headers</code></dt>
@@ -24262,7 +24602,7 @@ is returned.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostsService.add_using_root_password">
-    <p>def <span class="ident">add_using_root_password</span>(</p><p>self, host, deploy_hosted_engine=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">add_using_root_password</span>(</p><p>self, host, activate=None, deploy_hosted_engine=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -24278,7 +24618,7 @@ is returned.</p>
 <dl>
 <dt class="hdlist1"><code>host</code></dt>
 <dd>
-<p>The host definition from which to create the new host is passed as parameter, and the newly created host
+<p>The host definition with which the new host is created is passed as a parameter, and the newly created host
 is returned.</p>
 </dd>
 <dt class="hdlist1"><code>headers</code></dt>
@@ -24302,7 +24642,7 @@ is returned.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostsService.add_using_ssh">
-    <p>def <span class="ident">add_using_ssh</span>(</p><p>self, host, deploy_hosted_engine=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">add_using_ssh</span>(</p><p>self, host, activate=None, deploy_hosted_engine=None, undeploy_hosted_engine=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -24318,7 +24658,7 @@ is returned.</p>
 <dl>
 <dt class="hdlist1"><code>host</code></dt>
 <dd>
-<p>The host definition from which to create the new host is passed as parameter, and the newly created host
+<p>The host definition with which the new host is created is passed as a parameter, and the newly created host
 is returned.</p>
 </dd>
 <dt class="hdlist1"><code>headers</code></dt>
@@ -24358,7 +24698,7 @@ is returned.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostsService.list">
-    <p>def <span class="ident">list</span>(</p><p>self, all_content=None, case_sensitive=None, filter=None, follow=None, max=None, search=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">list</span>(</p><p>self, all_content=None, case_sensitive=None, filter=None, follow=None, max=None, migration_target_of=None, search=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -24374,7 +24714,7 @@ For example, to list the hosts send the following request:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The response body will be something like this:</p>
+<p>The response body will be similar to this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -24449,6 +24789,22 @@ specifically required.
 </td>
 </tr>
 </table>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>migration_target_of</code></dt>
+<dd>
+<p>Accepts a comma-separated list of virtual machine IDs and returns the hosts
+that these virtual machines can be migrated to.
+For example, to retrieve the list of hosts to which the virtual machine with ID 123 and
+the virtual machine with ID 456 can be migrated to, send the following request:</p>
+</dd>
+</dl>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/hosts?migration_target_of=123,456</pre>
+</div>
 </div>
 <div class="dlist">
 <dl>
@@ -24893,17 +25249,35 @@ to create a transfer by using <a href="#services/image_transfers/methods/add">ad
 of the <a href="#services/image_transfers">[services/image_transfers]</a> service, stating the image to transfer
 data to/from.
 After doing that, the transfer is managed by this service.
-E.g., for uploading/downloading a disk with id <code>52cb593f-837c-4633-a444-35a0a0383706</code>:
-<strong>Using oVirt&#8217;s Python&#8217;s SDK:</strong></p>
+<strong>Using oVirt&#8217;s Python&#8217;s SDK:</strong>
+Uploading a <code>disk</code> with id <code>123</code> (on a random host in the data center):</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="pygments highlight"><code data-lang="python">transfers_service = system_service.image_transfers_service()
 transfer = transfers_service.add(
    types.ImageTransfer(
-      image=types.Image(
-         id='52cb593f-837c-4633-a444-35a0a0383706'
+      disk=types.Disk(
+         id='123'
       )
+   )
+)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Uploading a <code>disk</code> with id <code>123</code> on <code>host</code> id <code>456</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="python">transfers_service = system_service.image_transfers_service()
+transfer = transfers_service.add(
+   types.ImageTransfer(
+      disk=types.Disk(
+         id='123'
+      ),
+      host=types.Host(
+         id='456'
+     )
    )
 )</code></pre>
 </div>
@@ -24919,8 +25293,8 @@ E.g:</p>
 <pre class="pygments highlight"><code data-lang="python">transfers_service = system_service.image_transfers_service()
 transfer = transfers_service.add(
    types.ImageTransfer(
-      image=types.Image(
-         id='52cb593f-837c-4633-a444-35a0a0383706'
+      disk=types.Disk(
+         id='123'
       ),
       direction=types.ImageTransferDirection.DOWNLOAD
    )
@@ -25425,6 +25799,29 @@ send the following request:</p>
 &lt;/image_transfer&gt;</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>image_transfer</code></dt>
+<dd>
+<p>The image transfer to add.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
 </div>
 
   </div>
@@ -25438,6 +25835,30 @@ send the following request:</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>image_transfer</code></dt>
+<dd>
+<p>The image transfer to add.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
 
   </div>
   
@@ -25450,6 +25871,30 @@ send the following request:</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>image_transfer</code></dt>
+<dd>
+<p>The image transfer to add.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
 
   </div>
   
@@ -25462,6 +25907,30 @@ send the following request:</p>
 
     
   
+    <div class="desc"><div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>image_transfer</code></dt>
+<dd>
+<p>The image transfer to add.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
 
   </div>
   
@@ -27039,6 +27508,29 @@ update the iSCSI bond <code>456</code> of data center <code>123</code>, send a r
    &lt;description&gt;My iSCSI bond&lt;/description&gt;
 &lt;/iscsi_bond&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>bond</code></dt>
+<dd>
+<p>The iSCSI bond to update.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -29411,6 +29903,22 @@ For example, to remove the association of network <code>456</code> to data cente
 <pre class="pygments highlight"><code>DELETE /ovirt-engine/api/datacenters/123/networks/456</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+To remove an external logical network, the network has to be removed directly from its provider by
+<a href="https://developer.openstack.org/api-ref/network">OpenStack Networking API</a>.
+The entity representing the external network inside {product-name} is removed automatically,
+if <a href="#types/open_stack_network_provider/attributes/auto_sync"><code>auto_sync</code></a> is enabled for the provider,
+otherwise the entity has to be removed using this method.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
@@ -29502,6 +30010,18 @@ For example, to set the maximum transmission unit send a request like this:</p>
   &lt;mtu&gt;1500&lt;/mtu&gt;
 &lt;/network&gt;</code></pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Updating external networks is not propagated to the provider.
+</td>
+</tr>
+</table>
 </div>
 </div>
 
@@ -30372,7 +30892,7 @@ to run following request where 123 is an id of a provider.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.OpenstackImageProvidersService.list">
-    <p>def <span class="ident">list</span>(</p><p>self, follow=None, max=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">list</span>(</p><p>self, follow=None, max=None, search=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -30390,6 +30910,10 @@ The order of the returned list of providers isn&#8217;t guaranteed.</p>
 <dt class="hdlist1"><code>max</code></dt>
 <dd>
 <p>Sets the maximum number of providers to return. If not specified all the providers are returned.</p>
+</dd>
+<dt class="hdlist1"><code>search</code></dt>
+<dd>
+<p>A query string used to restrict the returned OpenStack image providers.</p>
 </dd>
 <dt class="hdlist1"><code>follow</code></dt>
 <dd>
@@ -31067,7 +31591,7 @@ If the <code>type</code> property is not present, a default value of <code>NEUTR
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.OpenstackNetworkProvidersService.list">
-    <p>def <span class="ident">list</span>(</p><p>self, follow=None, max=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">list</span>(</p><p>self, follow=None, max=None, search=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -31085,6 +31609,10 @@ The order of the returned list of providers isn&#8217;t guaranteed.</p>
 <dt class="hdlist1"><code>max</code></dt>
 <dd>
 <p>Sets the maximum number of providers to return. If not specified all the providers are returned.</p>
+</dd>
+<dt class="hdlist1"><code>search</code></dt>
+<dd>
+<p>A query string used to restrict the returned OpenStack network providers.</p>
 </dd>
 <dt class="hdlist1"><code>follow</code></dt>
 <dd>
@@ -31217,8 +31745,8 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
     
   
     <div class="desc"><div class="paragraph">
-<p>This operation imports an external network into oVirt.
-The network will be added to the data center specified.</p>
+<p>This operation imports an external network into {product-name}.
+The network will be added to the specified data center.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -31229,12 +31757,12 @@ The network will be added to the data center specified.</p>
 <dd>
 <p>The data center into which the network is to be imported.
 Data center is mandatory, and can be specified
-using the <code>id</code> or <code>name</code> attributes, the rest of
+using the <code>id</code> or <code>name</code> attributes. The rest of
 the attributes will be ignored.
 NOTE: If <a href="#types/open_stack_network_provider/attributes/auto_sync"><code>auto_sync</code></a> is
-enabled for the provider, the network might be already imported automatically. To
-prevent this, automatic import can be disabled by setting the <code>auto_sync</code> to false
-and enabled after importing the network again.</p>
+enabled for the provider, the network might be imported automatically. To
+prevent this, automatic import can be disabled by setting the <code>auto_sync</code> to false,
+and enabling it again after importing the network.</p>
 </dd>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
@@ -32206,7 +32734,7 @@ For example:</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.OpenstackVolumeProvidersService.list">
-    <p>def <span class="ident">list</span>(</p><p>self, follow=None, max=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">list</span>(</p><p>self, follow=None, max=None, search=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -32224,6 +32752,10 @@ The order of the returned list of volume providers isn&#8217;t guaranteed.</p>
 <dt class="hdlist1"><code>max</code></dt>
 <dd>
 <p>Sets the maximum number of providers to return. If not specified all the providers are returned.</p>
+</dd>
+<dt class="hdlist1"><code>search</code></dt>
+<dd>
+<p>A query string used to restrict the returned volume providers.</p>
 </dd>
 <dt class="hdlist1"><code>follow</code></dt>
 <dd>
@@ -37747,6 +38279,48 @@ operation of the service that manages that disk.</p>
   
             
   <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageDomainDiskService.reduce">
+    <p>def <span class="ident">reduce</span>(</p><p>self, async_=None, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Reduces the size of the disk image.
+Invokes <em>reduce</em> on the logical volume (i.e. this is only applicable for block storage domains).
+This is applicable for floating disks and disks attached to non-running virtual machines.
+There is no need to specify the size as the optimal size is calculated automatically.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>async_</code></dt>
+<dd>
+<p>Indicates if the remove should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="ovirtsdk4.services.StorageDomainDiskService.remove">
     <p>def <span class="ident">remove</span>(</p><p>self, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
@@ -39990,7 +40564,7 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
       
   
     <div class="desc"><div class="paragraph">
-<p>Manages the set of storage domains of the system.</p>
+<p>Manages the set of storage domains in the system.</p>
 </div>
 </div>
 
@@ -40026,13 +40600,13 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
   
     <div class="desc"><div class="paragraph">
 <p>Adds a new storage domain.
-Creation of a new <a href="#types/storage_domain">StorageDomain</a> requires the <code>name</code>, <code>type</code>, <code>host</code> and <code>storage</code>
-attributes. Identify the <code>host</code> attribute with the <code>id</code> or <code>name</code> attributes. In oVirt 3.6 and later you can
-enable the wipe after delete option by default on the storage domain. To configure this, specify
+Creation of a new <a href="#types/storage_domain">StorageDomain</a> requires the <code>name</code>, <code>type</code>, <code>host</code>, and <code>storage</code>
+attributes. Identify the <code>host</code> attribute with the <code>id</code> or <code>name</code> attributes. In {product-name} 3.6 and
+later you can enable the wipe after delete option by default on the storage domain. To configure this, specify
 <code>wipe_after_delete</code> in the POST request. This option can be edited after the domain is created, but doing so will
 not change the wipe after delete property of disks that already exist.
-To add a new storage domain with specified <code>name</code>, <code>type</code>, <code>storage.type</code>, <code>storage.address</code> and <code>storage.path</code>
-and by using a host with an id <code>123</code>, send a request as follows:</p>
+To add a new storage domain with specified <code>name</code>, <code>type</code>, <code>storage.type</code>, <code>storage.address</code>, and <code>storage.path</code>,
+and using a host with an id <code>123</code>, send a request like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -40040,7 +40614,7 @@ and by using a host with an id <code>123</code>, send a request as follows:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>With a request body as follows:</p>
+<p>With a request body like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -40098,6 +40672,29 @@ and by using a host with an id <code>123</code>, send a request as follows:</p>
 &lt;/storage_domain&gt;</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>The storage domain to add.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
 </div>
 
   </div>
@@ -40113,6 +40710,29 @@ and by using a host with an id <code>123</code>, send a request as follows:</p>
   
     <div class="desc"><div class="paragraph">
 <p>Import an existing block storage domain to the system using the targets already connected to the host.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>The storage domain to add.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -40130,6 +40750,29 @@ and by using a host with an id <code>123</code>, send a request as follows:</p>
     <div class="desc"><div class="paragraph">
 <p>Add a new storage domain to the system using the storage on the given host and path.</p>
 </div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>The storage domain to add.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
 </div>
 
   </div>
@@ -40144,7 +40787,30 @@ and by using a host with an id <code>123</code>, send a request as follows:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Add a new storage domain to the system using a direct lun.</p>
+<p>Add a new storage domain to the system using a direct LUN.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>The storage domain to add.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -40160,7 +40826,30 @@ and by using a host with an id <code>123</code>, send a request as follows:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Add a new storage domain to the system using the gluster or posixfs storage.</p>
+<p>Add a new storage domain to the system using Gluster or POSIX FS storage.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>The storage domain to add.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -40176,7 +40865,30 @@ and by using a host with an id <code>123</code>, send a request as follows:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Add a new storage domain to the system using the storage on the localhost at the given path.</p>
+<p>Add a new storage domain to the system using the storage on the local host at the given path.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>storage_domain</code></dt>
+<dd>
+<p>The storage domain to add.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -40192,7 +40904,7 @@ and by using a host with an id <code>123</code>, send a request as follows:</p>
     
   
     <div class="desc"><div class="paragraph">
-<p>Returns the list of storage domains of the system.
+<p>Returns the list of storage domains in the system.
 The order of the returned list of storage domains is guaranteed only if the <code>sortby</code> clause is included
 in the <code>search</code> parameter.</p>
 </div>
@@ -40203,7 +40915,7 @@ in the <code>search</code> parameter.</p>
 <dl>
 <dt class="hdlist1"><code>max</code></dt>
 <dd>
-<p>Sets the maximum number of storage domains to return. If not specified all the storage domains are returned.</p>
+<p>Sets the maximum number of storage domains to return. If not specified, all the storage domains are returned.</p>
 </dd>
 <dt class="hdlist1"><code>search</code></dt>
 <dd>
@@ -40211,9 +40923,9 @@ in the <code>search</code> parameter.</p>
 </dd>
 <dt class="hdlist1"><code>case_sensitive</code></dt>
 <dd>
-<p>Indicates if the search performed using the <code>search</code> parameter should be performed taking case into
-account. The default value is <code>true</code>, which means that case is taken into account. If you want to search
-ignoring case set it to <code>false</code>.</p>
+<p>Indicates if the search should be performed taking case into account.
+The default value is <code>true</code>, which means that case is taken into account. If you want to search
+ignoring case, set it to <code>false</code>.</p>
 </dd>
 <dt class="hdlist1"><code>filter</code></dt>
 <dd>
@@ -40710,7 +41422,7 @@ send a request like this:</p>
   
     <div class="desc"><div class="paragraph">
 <p>Updates the storage connection.
-For example, to change the address of the storage server send a request like this:</p>
+For example, to change the address of an NFS storage server, send a request like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -40724,11 +41436,43 @@ For example, to change the address of the storage server send a request like thi
 <div class="content">
 <pre class="pygments highlight"><code data-lang="xml">&lt;storage_connection&gt;
   &lt;address&gt;mynewnfs.example.com&lt;/address&gt;
-  &lt;host&gt;
-    &lt;name&gt;myhost&lt;/name&gt;
-  &lt;/host&gt;
 &lt;/storage_connection&gt;</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>To change the connection of an iSCSI storage server, send a request like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">PUT /ovirt-engine/api/storageconnections/123</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;storage_connection&gt;
+  &lt;port&gt;3260&lt;/port&gt;
+  &lt;target&gt;iqn.2017-01.com.myhost:444&lt;/target&gt;
+&lt;/storage_connection&gt;</code></pre>
+</div>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageServerConnectionService.update_glusterfs">
+    <p>def <span class="ident">update_glusterfs</span>(</p><p>self, connection, async_=None, force=None, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Update the specified Glusterfs storage connection in the system.</p>
 </div>
 </div>
 
@@ -40776,7 +41520,7 @@ For example, to change the address of the storage server send a request like thi
     
   
     <div class="desc"><div class="paragraph">
-<p>Update the specified nfs storage connection in the system.</p>
+<p>Update the specified NFS storage connection in the system.</p>
 </div>
 </div>
 
@@ -40792,7 +41536,7 @@ For example, to change the address of the storage server send a request like thi
     
   
     <div class="desc"><div class="paragraph">
-<p>Update the specified vfs storage connection in the system.</p>
+<p>Update the specified VFS storage connection in the system.</p>
 </div>
 </div>
 
@@ -40860,6 +41604,22 @@ For example, to create a new storage connection for the NFS server <code>mynfs.e
   &lt;/host&gt;
 &lt;/storage_connection&gt;</code></pre>
 </div>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.StorageServerConnectionsService.add_glusterfs">
+    <p>def <span class="ident">add_glusterfs</span>(</p><p>self, connection, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a Glusterfs storage connection to the system.</p>
 </div>
 </div>
 
@@ -45202,6 +45962,21 @@ like this:</p>
 </div>
 </div>
 <div class="paragraph">
+<p>Since version 4.3, in order to create virtual machine template from a snapshot send a request body like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;template&gt;
+  &lt;name&gt;mytemplate&lt;/name&gt;
+  &lt;vm id="123"&gt;
+    &lt;snapshots&gt;
+      &lt;snapshot id="456"/&gt;
+    &lt;/snapshots&gt;
+  &lt;/vm&gt;
+&lt;/template&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>The disks of the template can be customized, making some of their characteristics different from the disks of the
 original virtual machine. To do so use the <code>vm.disk_attachments</code> attribute, specifying the identifier of the disk
 of the original virtual machine and the characteristics that you want to change. For example, if the original
@@ -45376,6 +46151,45 @@ Specifying the global storage definition will override the storage domain per di
   
     <div class="desc"><div class="paragraph">
 <p>Add a virtual machine template to the system from an existing virtual machine.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>template</code></dt>
+<dd>
+<p>The information about the template or template version.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.TemplatesService.add_from_vm_snapshot">
+    <p>def <span class="ident">add_from_vm_snapshot</span>(</p><p>self, template, clone_permissions=None, seal=None, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Add a virtual machine template to the system from a snapshot.</p>
 </div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
@@ -46595,6 +47409,506 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
       </div>
       
       <div class="item">
+      <p id="ovirtsdk4.services.VmBackupDiskService" class="name">class <span class="ident">VmBackupDiskService</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.services.VmBackupDiskService">VmBackupDiskService</a></li>
+          <li>ovirtsdk4.service.Service</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupDiskService.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, connection, path)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupDiskService.get">
+    <p>def <span class="ident">get</span>(</p><p>self, follow=None, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Retrieves the description of the disk.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>follow</code></dt>
+<dd>
+<p>Indicates which inner links should be <em>followed</em>. The objects referenced by these links will be fetched as part
+of the current request. See <a href="#documents/003_common_concepts/follow">here</a> for details.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupDiskService.service">
+    <p>def <span class="ident">service</span>(</p><p>self, path)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Service locator method, returns individual service on which the URI is dispatched.</p>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.services.VmBackupDisksService" class="name">class <span class="ident">VmBackupDisksService</span></p>
+      
+  
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.services.VmBackupDisksService">VmBackupDisksService</a></li>
+          <li>ovirtsdk4.service.Service</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupDisksService.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, connection, path)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupDisksService.disk_service">
+    <p>def <span class="ident">disk_service</span>(</p><p>self, id)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>A reference to the service that manages a specific disk.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupDisksService.list">
+    <p>def <span class="ident">list</span>(</p><p>self, follow=None, max=None, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns the list of disks in backup.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>max</code></dt>
+<dd>
+<p>Sets the maximum number of disks to return. If not specified, all the disks are returned.</p>
+</dd>
+<dt class="hdlist1"><code>follow</code></dt>
+<dd>
+<p>Indicates which inner links should be <em>followed</em>. The objects referenced by these links will be fetched as part
+of the current request. See <a href="#documents/003_common_concepts/follow">here</a> for details.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupDisksService.service">
+    <p>def <span class="ident">service</span>(</p><p>self, path)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Service locator method, returns individual service on which the URI is dispatched.</p>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.services.VmBackupService" class="name">class <span class="ident">VmBackupService</span></p>
+      
+  
+    <div class="desc"><div class="paragraph">
+<p>A service managing a backup of a virtual machines.</p>
+</div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.services.VmBackupService">VmBackupService</a></li>
+          <li>ovirtsdk4.service.Service</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupService.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, connection, path)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupService.disks_service">
+    <p>def <span class="ident">disks_service</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>A reference to the service that lists the disks in backup.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupService.finalize">
+    <p>def <span class="ident">finalize</span>(</p><p>self, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Finalize the virtual machine backup entity.
+End backup, unlock resources, and perform cleanups.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupService.get">
+    <p>def <span class="ident">get</span>(</p><p>self, follow=None, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns information about the virtual machine backup.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>follow</code></dt>
+<dd>
+<p>Indicates which inner links should be <em>followed</em>. The objects referenced by these links will be fetched as part
+of the current request. See <a href="#documents/003_common_concepts/follow">here</a> for details.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupService.service">
+    <p>def <span class="ident">service</span>(</p><p>self, path)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Service locator method, returns individual service on which the URI is dispatched.</p>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
+      <p id="ovirtsdk4.services.VmBackupsService" class="name">class <span class="ident">VmBackupsService</span></p>
+      
+  
+    <div class="desc"><div class="paragraph">
+<p>Lists the backups of a virtual machine.</p>
+</div>
+</div>
+
+
+      <div class="class">
+          <h3>Ancestors (in MRO)</h3>
+          <ul class="class_list">
+          <li><a href="#ovirtsdk4.services.VmBackupsService">VmBackupsService</a></li>
+          <li>ovirtsdk4.service.Service</li>
+          <li>__builtin__.object</li>
+          </ul>
+          <h3>Methods</h3>
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupsService.__init__">
+    <p>def <span class="ident">__init__</span>(</p><p>self, connection, path)</p>
+    </div>
+    
+
+    
+  
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupsService.add">
+    <p>def <span class="ident">add</span>(</p><p>self, backup, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Adds a new backup entity to a virtual machine.
+For example, to start a new incremental backup of a virtual machine
+since checkpoint id <code>previous-checkpoint-uuid</code>, send a request like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/vms/123/backups</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body like this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">POST /ovirt-engine/api/vms/123/backups
+&lt;backup&gt;
+  &lt;from_checkpoint_id&gt;previous-checkpoint-uuid&lt;/from_checkpoint_id&gt;
+  &lt;disks&gt;
+      &lt;disk id="disk-uuid" /&gt;
+      ...
+  &lt;/disks&gt;
+&lt;/backup&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The response body:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;backup id="backup-uuid"&gt;
+    &lt;from_checkpoint_id&gt;previous-checkpoint-uuid&lt;/from_checkpoint_id&gt;
+    &lt;to_checkpoint_id&gt;new-checkpoint-uuid&lt;/to_checkpoint_id&gt;
+    &lt;disks&gt;
+        &lt;disk id="disk-uuid" /&gt;
+        ...
+        ...
+    &lt;/disks&gt;
+    &lt;status&gt;initializing&lt;/status&gt;
+    &lt;creation_date&gt;
+&lt;/backup&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>backup</code></dt>
+<dd>
+<p>The information about the virtual machine backup entity.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupsService.backup_service">
+    <p>def <span class="ident">backup_service</span>(</p><p>self, id)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Returns a reference to the service that manages a specific VM backup.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupsService.list">
+    <p>def <span class="ident">list</span>(</p><p>self, follow=None, max=None, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>The list of virtual machine backups.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>max</code></dt>
+<dd>
+<p>Sets the maximum number of virtual machine backups to return. If not specified, all the virtual machine backups are returned.</p>
+</dd>
+<dt class="hdlist1"><code>follow</code></dt>
+<dd>
+<p>Indicates which inner links should be <em>followed</em>. The objects referenced by these links will be fetched as part
+of the current request. See <a href="#documents/003_common_concepts/follow">here</a> for details.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmBackupsService.service">
+    <p>def <span class="ident">service</span>(</p><p>self, path)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Service locator method, returns individual service on which the URI is dispatched.</p>
+</div>
+</div>
+
+  </div>
+  
+      </div>
+      </div>
+      
+      <div class="item">
       <p id="ovirtsdk4.services.VmCdromService" class="name">class <span class="ident">VmCdromService</span></p>
       
   
@@ -47172,6 +48486,48 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
 
     
   
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmDiskService.reduce">
+    <p>def <span class="ident">reduce</span>(</p><p>self, async_=None, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Reduces the size of the disk image.
+Invokes <em>reduce</em> on the logical volume (i.e. this is only applicable for block storage domains).
+This is applicable for floating disks and disks attached to non-running virtual machines.
+There is no need to specify the size as the optimal size is calculated automatically.</p>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>async_</code></dt>
+<dd>
+<p>Indicates if the remove should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
+</div>
+</div>
 
   </div>
   
@@ -48788,6 +50144,19 @@ An example of removing a virtual NUMA node:</p>
 <pre class="pygments highlight"><code>DELETE /ovirt-engine/api/vms/123/numanodes/456</code></pre>
 </div>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+It&#8217;s required to remove the numa nodes from the highest index
+first.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>This method supports the following parameters:</p>
 </div>
@@ -49756,6 +51125,22 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
   
             
   <div class="item">
+    <div class="name def" id="ovirtsdk4.services.VmService.backups_service">
+    <p>def <span class="ident">backups_service</span>(</p><p>self)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>List of backups of this virtual machine.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
     <div class="name def" id="ovirtsdk4.services.VmService.cancel_migration">
     <p>def <span class="ident">cancel_migration</span>(</p><p>self, async_=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
@@ -50541,7 +51926,9 @@ Example:</p>
 <dt class="hdlist1"><code>cluster</code></dt>
 <dd>
 <p>Specifies the cluster the virtual machine should migrate to. This is an optional parameter. By default, the
-virtual machine is migrated to another host within the same cluster.</p>
+virtual machine is migrated to another host within the same cluster.
+WARNING: Live migration to another cluster is not supported. Strongly consider the target cluster&#8217;s hardware
+architecture and network architecture before attempting a migration.</p>
 </dd>
 <dt class="hdlist1"><code>force</code></dt>
 <dd>
@@ -52026,7 +53413,7 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.VmsService.add">
-    <p>def <span class="ident">add</span>(</p><p>self, vm, clone=None, clone_permissions=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">add</span>(</p><p>self, vm, clone=None, clone_permissions=None, filter=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -52184,7 +53571,7 @@ attribute:</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.VmsService.add_from_configuration">
-    <p>def <span class="ident">add_from_configuration</span>(</p><p>self, vm, clone=None, clone_permissions=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">add_from_configuration</span>(</p><p>self, vm, clone=None, clone_permissions=None, filter=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -52200,7 +53587,7 @@ attribute:</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.VmsService.add_from_scratch">
-    <p>def <span class="ident">add_from_scratch</span>(</p><p>self, vm, clone=None, clone_permissions=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">add_from_scratch</span>(</p><p>self, vm, clone=None, clone_permissions=None, filter=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -52216,7 +53603,7 @@ attribute:</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.VmsService.add_from_snapshot">
-    <p>def <span class="ident">add_from_snapshot</span>(</p><p>self, vm, clone=None, clone_permissions=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">add_from_snapshot</span>(</p><p>self, vm, clone=None, clone_permissions=None, filter=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -52612,6 +53999,7 @@ For example to add vNIC profile <code>123</code> to network <code>456</code> sen
 <p>Please note that there is a default network filter to each VNIC profile.
 For more details of how the default network filter is calculated please refer to
 the documentation in <a href="#services/network_filters">NetworkFilters</a>.
+NOTE: The automatically created vNIC profile for the external network will be without network filter.
 The output of creating a new VNIC profile depends in the  body  arguments that were given.
 In case no network filter was given, the default network filter will be configured. For example:</p>
 </div>
