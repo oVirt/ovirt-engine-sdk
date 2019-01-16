@@ -2,6 +2,44 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.3.0 / Jan 16 2018
+Update to model 4.3.21.
+
+New features:
+
+* Add `activate` input param to add/install/approve host
+  http://bugzilla.redhat.com/1561539[1561539].
+
+* Added support for incremental backup.
+
+* Added block size Storage domain property
+  https://bugzilla.redhat.com/1592916[1592916].
+
+* Added V5 storage format
+  https://bugzilla.redhat.com/1592916[1592916].
+
+* Add driverSensitiveOptions to managed block storage type.
+
+* Add managed block storage type.
+
+* Setup networks commit on success.
+
+* Add vGPU placement to Host
+  https://bugzilla.redhat.com/1641125[1641125].
+
+* Specify cloud-init protocol in vm intialization
+  https://bugzilla.redhat.com/1611889[1611889].
+
+* Added SATA to DiskInterface enum.
+
+* Add disks link to Snapshot type.
+
+Bug fixes:
+
+* Change HostNic statistics and labels to Link
+  https://bugzilla.redhat.com/1661207[1661207].
+
+
 == 4.2.9 / Oct 4 2018
 Update to model 4.2.37.
 
