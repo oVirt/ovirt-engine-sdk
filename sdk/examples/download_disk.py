@@ -26,7 +26,7 @@ import ssl
 import sys
 import time
 
-from httplib import HTTPSConnection
+from httplib import HTTPSConnection, HttpException
 
 try:
     from urllib.parse import urlparse

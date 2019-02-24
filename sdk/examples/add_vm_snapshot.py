@@ -33,7 +33,7 @@ connection = sdk.Connection(
   password='redhat123',
   ca_file='ca.pem',
   debug=True,
-  log=logger.getLogger(),
+  log=logging.getLogger(),
 )
 
 # Locate the virtual machines service and use it to find the virtual

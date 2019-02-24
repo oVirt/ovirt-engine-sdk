@@ -33,6 +33,7 @@ with codecs.open(doc_file, encoding='utf-8') as doc_fd:
 # Load the version from the 'version.py' file:
 version_file = os.path.join(root_dir, 'lib', 'ovirtsdk4', 'version.py')
 with open(version_file) as version_fd:
+    # This sets the VERSION variable that will be used subsequently:
     exec(version_fd.read())
 
 # Required packages:
@@ -49,7 +50,7 @@ if sys.version_info < (3, 4):
 # Setup the package:
 setuptools.setup(
     name='ovirt-engine-sdk-python',
-    version=VERSION,
+    version=VERSION,  # noqa: F821
     description='Python SDK for oVirt Engine API',
     long_description=long_description,
     author='Michael Pasternak, Juan Hernandez, Ondra Machacek',

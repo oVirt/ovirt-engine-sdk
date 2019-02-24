@@ -16,6 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from __future__ import print_function
 
 import logging
 import ovirtsdk4 as sdk
@@ -90,7 +91,7 @@ def get_proxy_connection(proxy_url):
     )
 
 def download_disk_snapshot(disk_snapshot):
-    print "Downloading disk snapshot %s" % disk_snapshot.id
+    print("Downloading disk snapshot %s" % disk_snapshot.id)
 
     transfer_service = None
     try:
@@ -117,12 +118,12 @@ def download_disk_snapshot(disk_snapshot):
 
             # Check the response status:
             if r.status >= 300:
-                print "Error: %s" % r.read()
+                print("Error: %s" % r.read())
 
             bytes_to_read = int(r.getheader('Content-Length'))
             chunk_size = 64 * 1024 * 1024
 
-            print "Disk snapshot size: %s bytes" % str(bytes_to_read)
+            print("Disk snapshot size: %s bytes" % str(bytes_to_read))
 
             while bytes_to_read > 0:
                 # Calculate next chunk to read
@@ -142,7 +143,7 @@ def download_disk_snapshot(disk_snapshot):
 
                 completed = 1 - (bytes_to_read / float(r.getheader('Content-Length')))
 
-                print "Completed", "{:.0%}".format(completed)
+                print("Completed", "{:.0%}".format(completed))
     finally:
         # Finalize the session.
         if transfer_service is not None:

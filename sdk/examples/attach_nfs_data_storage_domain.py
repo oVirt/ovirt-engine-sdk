@@ -35,7 +35,7 @@ connection = sdk.Connection(
     password='redhat123',
     ca_file='ca.pem',
     debug=True,
-    log=logger.getLogger(),
+    log=logging.getLogger(),
 )
 
 # Locate the service that manages the storage domains and use it to

@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+from __future__ import print_function
+
 import json
 import logging
 import os
@@ -134,11 +136,11 @@ def upload_disk_snapshot(disk_path):
                 )
                 # Print response
                 r = proxy_connection.getresponse()
-                print r.status, r.reason, "Completed", "{:.0%}".format(pos / float(size))
+                print(r.status, r.reason, "Completed", "{:.0%}".format(pos / float(size)))
                 # Continue to next chunk.
                 pos += chunk_size
 
-        print "Completed", "{:.0%}".format(pos / float(size))
+        print("Completed", "{:.0%}".format(pos / float(size)))
     finally:
         # Finalize the session.
         transfer_service.finalize()
@@ -301,11 +303,11 @@ if __name__ == "__main__":
         # Create disk by base volume info
         base_volume = images_chain[0]
         disks_service = system_service.disks_service()
-        print "Creating disk: %s" % disk_id
+        print("Creating disk: %s" % disk_id)
         disk = create_disk(base_volume, disk_id, sd_name, disks_service)
 
         # Add VM from saved OVF file
-        print "Creating VM from OVF: %s" % ovf_file_path
+        print("Creating VM from OVF: %s" % ovf_file_path)
         vmId = create_vm_from_ovf(ovf_file_path, vms_service)
 
         # Locate VM service
@@ -314,13 +316,13 @@ if __name__ == "__main__":
         # Creating a snapshot for each image
         for image in images_chain[1:]:
             image_id = os.path.basename(image['filename'])
-            print "Creating snapshot - Image: %s, Disk: %s" % (image_id, disk_id)
+            print("Creating snapshot - Image: %s, Disk: %s" % (image_id, disk_id))
             create_snapshot("description", image_id, disk_id, vm_service)
 
         # Uploading images
         for image in images_chain:
             image_path = image['filename']
-            print "Uploading image %s" % image_path
+            print("Uploading image %s" % image_path)
             upload_disk_snapshot(image_path)
     finally:
         # Close the connection to the server:

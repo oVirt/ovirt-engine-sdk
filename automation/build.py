@@ -152,7 +152,7 @@ def main():
     version_re = re.compile(r"^(?P<xyz>\d+\.\d+.\d+)(\.(?P<q>.*))?$")
     version_match = version_re.match(full_version)
     if version_match is None:
-        print("SDK version \"%s\" doesn't match format \"%s\"." % (version, version_re.pattern))
+        print("SDK version \"%s\" doesn't match format \"%s\"." % (full_version, version_re.pattern))
         sys.exit(1)
     version_xyz = version_match.group("xyz")
     version_qualifier = version_match.group("q")
