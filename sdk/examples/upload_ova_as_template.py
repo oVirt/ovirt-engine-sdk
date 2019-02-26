@@ -28,12 +28,9 @@ import time
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
 
-from httplib import HTTPSConnection
+from six.moves.http_client import HTTPSConnection
+from six.moves.urllib.parse import urlparse
 
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
 
 # This seems to give the best throughput when uploading from my laptop
 # SSD to a server that drop the data. You may need to tune this on your

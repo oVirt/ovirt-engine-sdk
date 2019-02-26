@@ -26,12 +26,9 @@ import ssl
 import sys
 import time
 
-from httplib import HTTPSConnection, HttpException
+from six.moves.http_client import HTTPSConnection, HTTPException
+from six.moves.urllib.parse import urlparse
 
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
 
 # This is the size of each downloaded chunck.
 # May be tuned according to setup needs.
@@ -128,7 +125,7 @@ try:
         print("Error downloding (%s)" % (r.reason,))
         try:
             data = r.read(512)
-        except (EnvironmentError, HttpException):
+        except (EnvironmentError, HTTPException):
             pass
         else:
             print("Response:")

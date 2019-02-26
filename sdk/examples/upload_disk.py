@@ -39,12 +39,8 @@ import subprocess
 import sys
 import time
 
-from httplib import HTTPSConnection
-
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
+from six.moves.http_client import HTTPSConnection
+from six.moves.urllib.parse import urlparse
 
 
 # This seems to give the best throughput when uploading from my laptop

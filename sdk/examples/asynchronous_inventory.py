@@ -19,7 +19,7 @@
 import logging
 import ovirtsdk4 as sdk
 
-from itertools import izip_longest
+from six.moves import zip_longest
 
 # This example shows how to use the asynchronous and pipelining capabilities
 # of the SDK to download from the server large amounts of data in an efficient
@@ -39,7 +39,7 @@ block = connections * pipeline
 # https://docs.python.org/3/library/itertools.html
 def grouper(iterable, n, fillvalue=None):
     args = [iter(iterable)] * n
-    return izip_longest(fillvalue=fillvalue, *args)
+    return zip_longest(fillvalue=fillvalue, *args)
 
 # This function takes a list of objects and creates a hash where the keys are
 # the identifiers and the values are the objects. We will use it to create
