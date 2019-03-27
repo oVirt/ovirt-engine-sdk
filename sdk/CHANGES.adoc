@@ -2,6 +2,17 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.3.1 / Mar 27 2018
+Update to model 4.3.22.
+
+New features:
+
+* Add Hosted Engine disk types to content type
+  Bug-Url: https://bugzilla.redhat.com/1663626[1663626].
+
+* Add Hosted Engine disk types to content type
+  Bug-Url: https://bugzilla.redhat.com/1600788[1600788].
+
 == 4.3.0 / Jan 16 2018
 Update to model 4.3.21.
 
