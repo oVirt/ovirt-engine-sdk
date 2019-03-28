@@ -1586,6 +1586,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.service">service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.sync_all_networks">sync_all_networks</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.update">update</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ClusterService.upgrade">upgrade</a></li>
   </ul>
 
         </li>
@@ -11342,6 +11343,68 @@ For example, to update the cluster&#8217;s CPU:</p>
   &lt;/cpu&gt;
 &lt;/cluster&gt;</code></pre>
 </div>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ClusterService.upgrade">
+    <p>def <span class="ident">upgrade</span>(</p><p>self, async_=None, upgrade_action=None, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Start or finish upgrade process for the cluster based on the action value. This action marks the cluster for
+upgrade or clears the upgrade running flag on the cluster based on the action value which takes values of
+start or stop.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/clusters/123/upgrade</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With a request body like this to mark the cluster for upgrade:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code data-lang="xml">&lt;action&gt;
+    &lt;upgrade_action&gt;
+        start
+    &lt;/upgrade_action&gt;
+&lt;/action&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This method supports the following parameters:</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>upgrade_action</code></dt>
+<dd>
+<p>The action to be performed.</p>
+</dd>
+<dt class="hdlist1"><code>async_</code></dt>
+<dd>
+<p>Indicates if the action should be performed asynchronously.</p>
+</dd>
+<dt class="hdlist1"><code>headers</code></dt>
+<dd>
+<p>Additional HTTP headers.</p>
+</dd>
+<dt class="hdlist1"><code>query</code></dt>
+<dd>
+<p>Additional URL query parameters.</p>
+</dd>
+<dt class="hdlist1"><code>wait</code></dt>
+<dd>
+<p>If <code>True</code> wait for the response.</p>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -23677,7 +23740,7 @@ Use this service to manage permissions on the host object.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostService.remove">
-    <p>def <span class="ident">remove</span>(</p><p>self, async_=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">remove</span>(</p><p>self, force=None, async_=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -23700,6 +23763,11 @@ curl         --verbose         --cacert /etc/pki/ovirt-engine/ca.pem         --u
 </div>
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><code>force</code></dt>
+<dd>
+<p>Indicates that the host should be removed even if it is non-responsive,
+or if it is part of a Gluster Storage cluster and has volume bricks on it.</p>
+</dd>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
 <p>Indicates if the remove should be performed asynchronously.</p>
