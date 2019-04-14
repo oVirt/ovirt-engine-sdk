@@ -21,6 +21,7 @@
 Upload disk example code.
 
 Requires the qemu-img package for checking file type and virtual size.
+Requires the ovirt-imageio-common package > 1.5.0.
 
 Usage:
 
@@ -34,19 +35,12 @@ import logging
 import os
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
-import ssl
 import subprocess
 import sys
 import time
 
-from six.moves.http_client import HTTPSConnection
-from six.moves.urllib.parse import urlparse
-
-
-# This seems to give the best throughput when uploading from my laptop
-# SSD to a server that drop the data. You may need to tune this on your
-# setup.
-BUF_SIZE = 128 * 1024
+from ovirt_imageio_common import client
+from ovirt_imageio_common import ui
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
@@ -176,7 +170,8 @@ transfer = transfers_service.add(
     types.ImageTransfer(
         image=types.Image(
             id=disk.id
-        )
+        ),
+        format=disk_format, # Can be used only for ovirt-engine 4.3 or above
      )
 )
 
@@ -196,84 +191,25 @@ print("Uploading image...")
 # In this example, we will use Python's httplib.HTTPSConnection for transferring the data.
 if direct_upload:
     if transfer.transfer_url is not None:
-        destination_url = urlparse(transfer.transfer_url)
+        destination_url = transfer.transfer_url
     else:
         print("Direct upload to host not supported (requires ovirt-engine 4.2 or above).")
         sys.exit(1)
 else:
-    destination_url = urlparse(transfer.proxy_url)
-context = ssl.create_default_context()
+    destination_url = transfer.proxy_url
 
-# Note that ovirt-imageio-proxy by default checks the certificates, so if you don't have
-# your CA certificate of the engine in the system, you need to pass it to HTTPSConnection.
-context.load_verify_locations(cafile='ca.pem')
+image_size = os.path.getsize(image_path)
 
-proxy_connection = HTTPSConnection(
-    destination_url.hostname,
-    destination_url.port,
-    context=context,
-)
-
-# Send the request head. Note the following:
-#
-# - For ovirt-engine < 4.2, we must send the 'Authorization' header with
-#   the signed ticket received from the transfer service.
-#   I.e. proxy_connection.putheader('Authorization', transfer.signed_ticket)
-#
-# - For ovirt-engine < 4.2, the server requires 'Content-Range' header
-#   even when sending the entire file.
-#   I.e. proxy_connection.putheader('Content-Range',
-#            "bytes %d-%d/%d" % (0, image_size - 1, image_size))
-#
-# - the server requires also Content-Length.
-#
-
-proxy_connection.putrequest("PUT", destination_url.path)
-proxy_connection.putheader('Content-Length', "%d" % (image_size,))
-proxy_connection.endheaders()
-
-# Send the request body.
-
-# Note that we must send the number of bytes we promised in the
-# Content-Range header.
-
-start = last_progress = time.time()
-
-with open(image_path, "rb") as disk:
-    pos = 0
-    while pos < image_size:
-        # Send the next chunk to the proxy.
-        to_read = min(image_size - pos, BUF_SIZE)
-        chunk = disk.read(to_read)
-        if not chunk:
-            transfer_service.pause()
-            raise RuntimeError("Unexpected end of file at pos=%d" % pos)
-
-        proxy_connection.send(chunk)
-        pos += len(chunk)
-        now = time.time()
-
-        # Report progress every 10 seconds.
-        if now - last_progress > 10:
-            print("Uploaded %.2f%%" % (float(pos) / image_size * 100))
-            last_progress = now
-
-# Get the response
-response = proxy_connection.getresponse()
-if response.status != 200:
-    transfer_service.pause()
-    print("Upload failed: %s %s" % (response.status, response.reason))
-    sys.exit(1)
-
-elapsed = time.time() - start
-
-print("Uploaded %.2fg in %.2f seconds (%.2fm/s)" % (
-      image_size / float(1024**3), elapsed, image_size / 1024**2 / elapsed))
+with ui.ProgressBar(image_size) as pb:
+    client.upload(
+        image_path,
+        destination_url,
+        'ca.pem',
+        progress=pb.update)
 
 print("Finalizing transfer session...")
 # Successful cleanup
 transfer_service.finalize()
 connection.close()
-proxy_connection.close()
 
 print("Upload completed successfully")
