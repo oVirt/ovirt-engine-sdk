@@ -30,6 +30,8 @@ Usage:
 
 from __future__ import print_function
 
+import argparse
+import getpass
 import json
 import logging
 import os
@@ -44,51 +46,138 @@ from ovirt_imageio_common import ui
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
-direct_upload = False
-if sys.argv[1] == "-d" or sys.argv[1] == "--direct":
-    direct_upload = True
-    image_path = sys.argv[2]
-else:
-    image_path = sys.argv[1]
-image_size = os.path.getsize(image_path)
+def parse_args():
+    parser = argparse.ArgumentParser(description="Upload images")
+
+    parser.add_argument(
+        "filename",
+        help="path to image (e.g. /path/to/image.raw) "
+             "Supported formats: raw, qcow2, iso")
+
+    parser.add_argument(
+        "--engine-url",
+        required=True,
+        help="transfer URL (e.g. https://engine_fqdn:port)")
+
+    parser.add_argument(
+        "--username",
+        required=True,
+        help="username of engine API")
+
+    parser.add_argument(
+        "--password-file",
+        help="file containing password of the specified by user (if file is "
+             "not specified, read from standard input)")
+
+    parser.add_argument(
+        "--disk-format",
+        help="format of the created disk. Note: cannot convert qcow2 format to raw.")
+
+    parser.add_argument(
+        "--sd-name",
+        required=True,
+        help="name of the storage domain.")
+
+    # Note: unix socket works only when running this tool on the same host serving
+    # the image.
+    parser.add_argument(
+        "-c", "--cafile",
+        required=True,
+        help="path to oVirt engine certificate for verifying server.")
+
+    parser.add_argument(
+        "--insecure",
+        dest="secure",
+        action="store_false",
+        default=False,
+        help=("do not verify server certificates and host name (not "
+              "recommened)."))
+
+    parser.add_argument(
+        "-b", "--buffer-size",
+        type=lambda v: int(v) * 1024,
+        default=128 * 1024,
+        help=("buffer size in KiB for upload. The default (128 KiB) provides best "
+              "results in our tests, but you may like to tune this."))
+
+    parser.add_argument(
+        "-d", "--direct",
+        dest="direct",
+        default=False,
+        action="store_true",
+        help="upload directly to the daemon (if not set, upload to proxy on the engine host. "
+             "Uploading directly to the daemon is more efficient.")
+
+    return parser.parse_args()
+
+def get_image_info(filename):
+    print("Checking image...")
+
+    out = subprocess.check_output(
+        ["qemu-img", "info", "--output", "json", filename])
+    image_info = json.loads(out)
+
+    if image_info["format"] not in ("qcow2", "raw"):
+        raise RuntimeError("Unsupported image format %(format)s" % filename)
+
+    # Detect disk content type
+    #
+    # ISO format structure
+    # ---------------------------------------------------------------------------
+    # offset    type    value       comment
+    # ---------------------------------------------------------------------------
+    # 0x0000                        system area (e.g. DOS/MBR boot sector)
+    # 0x8000    int8    0x01        primary volume descriptor type code
+    # 0x8001    strA    "CD001"     primary volume descriptor indentifier
+    # 0x8006    int8    0x01        primary volume desctptor version
+    # 0x8007            0x00        unused field
+    #
+    # See https://wiki.osdev.org/ISO_9660#Overview_and_caveats for more info.
+
+    content_type = types.DiskContentType.DATA
+
+    if image_info["format"] == "raw":
+        with open(args.filename, "rb") as f:
+            f.seek(0x8000)
+            primary_volume_descriptor = f.read(8)
+        if primary_volume_descriptor == b"\x01CD001\x01\x00":
+            content_type = types.DiskContentType.ISO
+
+    image_info["content_type"] = content_type
+
+    if image_info["format"] == "raw":
+        image_info["transfer_format"] = types.DiskFormat.RAW
+    else:
+        image_info["transfer_format"] = types.DiskFormat.COW
+
+    return image_info
+
+def get_disk_format(image_info, args):
+    if image_info["format"] == "qcow2":
+        if args.disk_format == "raw":
+            raise RuntimeError("Cannot convert qcow2 format to raw")
+        disk_format = types.DiskFormat.COW
+    else:
+        if args.disk_format in ("raw", None):
+            disk_format = types.DiskFormat.RAW
+        elif args.disk_format == "cow":
+            disk_format = types.DiskFormat.COW
+        else:
+            raise RuntimeError("Invalid disk format: %s" % image_info["format"])
+
+    return disk_format
+
+
+args = parse_args()
 
 # Get image info using qemu-img
+image_info = get_image_info(args.filename)
+new_disk_format = get_disk_format(image_info, args)
 
-print("Checking image...")
-
-out = subprocess.check_output(
-    ["qemu-img", "info", "--output", "json", image_path])
-image_info = json.loads(out)
-
-if image_info["format"] not in ("qcow2", "raw"):
-    raise RuntimeError("Unsupported image format %(format)s" % image_info)
-
-print("Disk format: %s" % image_info["format"])
-
-# Detect disk content type
-#
-# ISO format structure
-# ---------------------------------------------------------------------------
-# offset    type    value       comment
-# ---------------------------------------------------------------------------
-# 0x0000                        system area (e.g. DOS/MBR boot sector)
-# 0x8000    int8    0x01        primary volume descriptor type code
-# 0x8001    strA    "CD001"     primary volume descriptor indentifier
-# 0x8006    int8    0x01        primary volume desctptor version
-# 0x8007            0x00        unused field
-#
-# See https://wiki.osdev.org/ISO_9660#Overview_and_caveats for more info.
-
-content_type = types.DiskContentType.DATA
-
-if image_info["format"] == "raw":
-    with open(image_path, "rb") as f:
-        f.seek(0x8000)
-        primary_volume_descriptor = f.read(8)
-    if primary_volume_descriptor == b"\x01CD001\x01\x00":
-        content_type = types.DiskContentType.ISO
-
-print("Disk content type: %s" % content_type)
+print("Uploaded image format: %s" % image_info["format"])
+print("Disk content type: %s" % image_info["content_type"])
+print("Disk format: %s" % new_disk_format)
+print("Transfer format: %s" % image_info["transfer_format"])
 
 # This example will connect to the server and create a new `floating`
 # disk, one that isn't attached to any virtual machine.
@@ -98,11 +187,17 @@ print("Disk content type: %s" % content_type)
 # Create the connection to the server:
 print("Connecting...")
 
+if args.password_file:
+    with open(args.password_file) as f:
+        password = f.read().rstrip('\n') # ovirt doesn't support empty lines in password
+else:
+    password = getpass.getpass()
+
 connection = sdk.Connection(
-    url='https://engine40.example.com/ovirt-engine/api',
-    username='admin@internal',
-    password='redhat123',
-    ca_file='ca.pem',
+    url=args.engine_url + '/ovirt-engine/api',
+    username=args.username,
+    password=password,
+    ca_file=args.cafile,
     debug=True,
     log=logging.getLogger(),
 )
@@ -110,41 +205,22 @@ connection = sdk.Connection(
 # Get the reference to the root service:
 system_service = connection.system_service()
 
-# Add the disk. Note the following:
-#
-# 1. The size of the disk is specified in bytes, so to create a disk
-#    of 10 GiB the value should be 10 * 2^30.
-#
-# 2. The disk size is indicated using the 'provisioned_size' attribute,
-#    but due to current limitations in the engine, the 'initial_size'
-#    attribute also needs to be explicitly provided for _copy on write_
-#    disks created on block storage domains, so that all the required
-#    space is allocated upfront, otherwise the upload will eventually
-#    fail.
-#
-# 3. The disk initial size must be bigger or the same as the size of the data
-#    you will upload.
-
 print("Creating disk...")
 
-if image_info["format"] == "qcow2":
-    disk_format = types.DiskFormat.COW
-else:
-    disk_format = types.DiskFormat.RAW
-
+image_size = os.path.getsize(args.filename)
 disks_service = connection.system_service().disks_service()
 disk = disks_service.add(
     disk=types.Disk(
-        name=os.path.basename(image_path),
-        content_type=content_type,
+        name=os.path.basename(args.filename),
+        content_type=image_info["content_type"],
         description='Uploaded disk',
-        format=disk_format,
+        format=new_disk_format,
         initial_size=image_size,
         provisioned_size=image_info["virtual-size"],
-        sparse=disk_format == types.DiskFormat.COW,
+        sparse=new_disk_format == types.DiskFormat.COW,
         storage_domains=[
             types.StorageDomain(
-                name='mydata'
+                name=args.sd_name
             )
         ]
     )
@@ -171,7 +247,8 @@ transfer = transfers_service.add(
         image=types.Image(
             id=disk.id
         ),
-        format=disk_format, # Can be used only for ovirt-engine 4.3 or above
+        # 'format' can be used only for ovirt-engine 4.3 or above
+        format=image_info["transfer_format"],
      )
 )
 
@@ -189,7 +266,7 @@ print("Uploading image...")
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it - regardless of the SDK.
 # In this example, we will use Python's httplib.HTTPSConnection for transferring the data.
-if direct_upload:
+if args.direct:
     if transfer.transfer_url is not None:
         destination_url = transfer.transfer_url
     else:
@@ -198,13 +275,14 @@ if direct_upload:
 else:
     destination_url = transfer.proxy_url
 
-image_size = os.path.getsize(image_path)
+image_size = os.path.getsize(args.filename)
 
 with ui.ProgressBar(image_size) as pb:
     client.upload(
-        image_path,
+        args.filename,
         destination_url,
-        'ca.pem',
+        args.cafile,
+        secure=args.secure,
         progress=pb.update)
 
 print("Finalizing transfer session...")
