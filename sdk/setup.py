@@ -82,7 +82,7 @@ setuptools.setup(
             libraries=[
                 'xml2',
             ],
-            sources=glob.glob('ext/*.c'),
+            sources=sorted(glob.glob('ext/*.c')),
         ),
     ]
 )
