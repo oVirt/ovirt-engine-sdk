@@ -141,6 +141,13 @@ def upload_disk_snapshot(disk_path):
         # Finalize the session.
         transfer_service.finalize()
 
+        # Waiting for finalize to complete
+        try:
+            while transfer_service.get():
+                time.sleep(1)
+        except sdk.NotFoundError:
+            pass
+
 def create_vm_from_ovf(ovf_file_path, vms_service):
     """
     Creates a new VM from the specified OVF
