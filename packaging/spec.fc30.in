@@ -17,19 +17,6 @@ Requires: libxml2
 This package contains the Python SDK for version 4 of the oVirt Engine
 API.
 
-%package -n python2-ovirt-engine-sdk4
-Summary:        %{summary}
-%{?python_provide:%python_provide python2-ovirt-engine-sdk4}
-BuildRequires: python2-devel
-Requires: python
-Requires: python-enum34
-Requires: python-pycurl >= 7.43.0-6
-Requires: python-six
-
-%description -n python2-ovirt-engine-sdk4
-This package contains the Python 2 SDK for version 4 of the oVirt Engine
-API.
-
 %package -n python3-ovirt-engine-sdk4
 Summary: oVirt Engine Software Development Kit (Python)
 BuildRequires: python3-devel
@@ -42,28 +29,24 @@ Requires: python3-six
 This package contains the Python 3 SDK for version 4 of the oVirt Engine
 API.
 
+
 %prep
 %setup -q -n ovirt-engine-sdk-python-%{tar_version}
 
+
 %build
-%py2_build
 %py3_build
 
-%install
-%py2_install
-%py3_install
 
-%files -n python2-ovirt-engine-sdk4
-%doc README.adoc
-%doc examples
-%license LICENSE.txt
-%{python2_sitearch}/*
+%install
+%py3_install
 
 %files -n python3-ovirt-engine-sdk4
 %doc README.adoc
 %doc examples
 %license LICENSE.txt
 %{python3_sitearch}/*
+
 
 %changelog
 * Thu Jun 06 2019 Sandro Bonazzola <sbonazzo@redhat.com> - 4.3.1-1
