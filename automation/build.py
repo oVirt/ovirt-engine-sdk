@@ -75,7 +75,7 @@ def python_versions():
         if result != 0:
             print("Python '%s' isn't installed on the system." % python_version)
         else:
-            python_versions.append(path.strip())
+            python_versions.append(path.strip().decode(encoding='utf-8', errors='strict'))
 
     return python_versions
 
@@ -121,7 +121,7 @@ def main():
         print("Extraction of commit info failed with exit code %d." % result)
         sys.exit(1)
     commit_re = re.compile(r"^(?P<id>[0-9a-f]{7}) (?P<title>.*)")
-    commit_match = commit_re.match(commit_info)
+    commit_match = commit_re.match(commit_info.decode(encoding='utf-8', errors='strict'))
     if commit_match is None:
         print("Commit info \"%s\" doesn't match format \"%s\"." % (commit_info, commit_re.pattern))
         sys.exit(1)
