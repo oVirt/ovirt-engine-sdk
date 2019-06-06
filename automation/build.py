@@ -4,6 +4,7 @@ import datetime
 import glob
 import lxml.etree
 import os
+import platform
 import re
 import shutil
 import subprocess
@@ -78,6 +79,11 @@ def python_versions():
             python_versions.append(path.strip().decode(encoding='utf-8', errors='strict'))
 
     return python_versions
+
+def is_rhel_8():
+    dist = platform.dist()
+    return len(dist) > 1 and dist[0] == 'redhat' and dist[1].startswith('8.')
+
 
 def main():
     # Clean the generated artifacts to the output directory:
@@ -179,6 +185,7 @@ def main():
             "--settings=%s" % settings_path,
             "-Dpython.command=%s" % python_command,
             "-Dsdk.version=%s" % pep440_version,
+            "-Dskipflake=%s" % is_rhel_8(),
         ])
     if result != 0:
         print("Maven build failed with exit code %d." % result)

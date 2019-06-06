@@ -106,6 +106,7 @@ limitations under the License.
               <goal>exec</goal>
             </goals>
             <configuration>
+              <skip>${skipflake}</skip>
               <executable>flake8</executable>
               <arguments>
                 <argument>--ignore=E501</argument>
