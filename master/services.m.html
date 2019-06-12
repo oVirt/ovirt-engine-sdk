@@ -24766,7 +24766,7 @@ is returned.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.HostsService.list">
-    <p>def <span class="ident">list</span>(</p><p>self, all_content=None, case_sensitive=None, filter=None, follow=None, max=None, migration_target_of=None, search=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">list</span>(</p><p>self, all_content=None, case_sensitive=None, check_vms_in_affinity_closure=None, filter=None, follow=None, max=None, migration_target_of=None, search=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -24872,6 +24872,25 @@ the virtual machine with ID 456 can be migrated to, send the following request:<
 <div class="literalblock">
 <div class="content">
 <pre>GET /ovirt-engine/api/hosts?migration_target_of=123,456</pre>
+</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1"><code>check_vms_in_affinity_closure</code></dt>
+<dd>
+<p>This parameter can be used with <code>migration_target_of</code>
+to get valid migration targets for the listed virtual machines
+and all other virtual machines that are in positive enforcing
+affinity with the listed virtual machines.
+This is useful in case the virtual machines will be migrated
+together with others in positive affinity groups.
+The default value is <code>false</code>.</p>
+</dd>
+</dl>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>GET /ovirt-engine/api/hosts?migration_target_of=123,456&amp;check_vms_in_affinity_closure=true</pre>
 </div>
 </div>
 <div class="dlist">
@@ -29627,7 +29646,7 @@ For example, to remove the label <code>exemplary</code> from a logical network h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code>DELETE /ovirt-engine/api/networks/123/labels/exemplary</code></pre>
+<pre class="pygments highlight"><code>DELETE /ovirt-engine/api/networks/123/networklabels/exemplary</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -29723,7 +29742,7 @@ For example, to attach the label <code>mylabel</code> to a logical network havin
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code>POST /ovirt-engine/api/networks/123/labels</code></pre>
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/networks/123/networklabels</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -29731,7 +29750,7 @@ For example, to attach the label <code>mylabel</code> to a logical network havin
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="pygments highlight"><code data-lang="xml">&lt;label id="mylabel"/&gt;</code></pre>
+<pre class="pygments highlight"><code data-lang="xml">&lt;network_label id="mylabel"/&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -51961,7 +51980,7 @@ Example:</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.VmService.migrate">
-    <p>def <span class="ident">migrate</span>(</p><p>self, async_=None, cluster=None, force=None, host=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">migrate</span>(</p><p>self, async_=None, cluster=None, force=None, host=None, migrate_vms_in_affinity_closure=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -52008,6 +52027,12 @@ This is an optional parameter. By default, it is set to <code>false</code>.</p>
 <p>Specifies a specific host that the virtual machine should migrate to. This is an optional parameter. By default,
 the {engine-name} automatically selects a default host for migration within the same cluster. If an API user
 requires a specific host, the user can specify the host with either an <code>id</code> or <code>name</code> parameter.</p>
+</dd>
+<dt class="hdlist1"><code>migrate_vms_in_affinity_closure</code></dt>
+<dd>
+<p>Migrate also all other virtual machines in positive enforcing affinity groups with this virtual machine,
+that are running on the same host.
+The default value is <code>false</code>.</p>
 </dd>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
