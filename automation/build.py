@@ -45,7 +45,7 @@ def eval_command(args):
     proc = subprocess.Popen(args, stdout=subprocess.PIPE)
     output, errors = proc.communicate()
     result = proc.wait()
-    return result, output
+    return result, output.decode(encoding='utf-8', errors='strict')
 
 
 def dec_version(version):
@@ -76,7 +76,7 @@ def python_versions():
         if result != 0:
             print("Python '%s' isn't installed on the system." % python_version)
         else:
-            python_versions.append(path.strip().decode(encoding='utf-8', errors='strict'))
+            python_versions.append(path.strip())
 
     return python_versions
 
@@ -127,7 +127,7 @@ def main():
         print("Extraction of commit info failed with exit code %d." % result)
         sys.exit(1)
     commit_re = re.compile(r"^(?P<id>[0-9a-f]{7}) (?P<title>.*)")
-    commit_match = commit_re.match(commit_info.decode(encoding='utf-8', errors='strict'))
+    commit_match = commit_re.match(commit_info)
     if commit_match is None:
         print("Commit info \"%s\" doesn't match format \"%s\"." % (commit_info, commit_re.pattern))
         sys.exit(1)
