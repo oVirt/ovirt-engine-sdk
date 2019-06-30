@@ -82,7 +82,6 @@ def parse_args():
     # the image.
     parser.add_argument(
         "-c", "--cafile",
-        required=True,
         help="path to oVirt engine certificate for verifying server.")
 
     parser.add_argument(
