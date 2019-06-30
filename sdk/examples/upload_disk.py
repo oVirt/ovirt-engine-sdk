@@ -91,7 +91,7 @@ def parse_args():
         action="store_false",
         default=False,
         help=("do not verify server certificates and host name (not "
-              "recommened)."))
+              "recommended)."))
 
     parser.add_argument(
         "-b", "--buffer-size",
