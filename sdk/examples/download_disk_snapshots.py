@@ -145,6 +145,13 @@ def download_disk_snapshot(disk_snapshot):
         if transfer_service is not None:
             transfer_service.finalize()
 
+            # Waiting for finalize to complete
+            try:
+                while transfer_service.get():
+                    time.sleep(1)
+            except sdk.NotFoundError:
+                pass
+
 if __name__ == "__main__":
 
     # Set relevant disk and stroage domain IDs
