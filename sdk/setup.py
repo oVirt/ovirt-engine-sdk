@@ -24,13 +24,8 @@ import os
 import setuptools
 import sys
 
-# Load the long description from the README:
-root_dir = os.path.abspath(os.path.dirname(__file__))
-doc_file = os.path.join(root_dir, 'README.adoc')
-with codecs.open(doc_file, encoding='utf-8') as doc_fd:
-    long_description = doc_fd.read()
-
 # Load the version from the 'version.py' file:
+root_dir = os.path.abspath(os.path.dirname(__file__))
 version_file = os.path.join(root_dir, 'lib', 'ovirtsdk4', 'version.py')
 with open(version_file) as version_fd:
     # This sets the VERSION variable that will be used subsequently:
@@ -52,7 +47,6 @@ setuptools.setup(
     name='ovirt-engine-sdk-python',
     version=VERSION,  # noqa: F821
     description='Python SDK for oVirt Engine API',
-    long_description=long_description,
     author='Michael Pasternak, Juan Hernandez, Ondra Machacek',
     author_email=(
         'mishka8520@yahoo.com, '
