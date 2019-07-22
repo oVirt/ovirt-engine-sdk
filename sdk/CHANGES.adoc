@@ -2,6 +2,15 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.3.3 / Jul 22 2019
+Update to model 4.3.27.
+
+* It should be possible to specify exact v4.0 as NFS version
+  https://bugzilla.redhat.com/1690026[1690026].
+
+* Add priority to AffinityGroup type
+  https://bugzilla.redhat.com/1680498[1680498].
+
 == 4.3.2 / Jul 3 2019
 Update to model 4.3.26.
 
