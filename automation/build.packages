@@ -7,7 +7,6 @@ maven
 python
 python-devel
 python-enum34
-python-flake8
 python-lxml
 python-nose
 python-pycurl
