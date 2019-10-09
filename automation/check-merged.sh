@@ -1,1 +1,1 @@
-build.py
+build-artifacts.sh
