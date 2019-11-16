@@ -229,7 +229,7 @@ disk = disks_service.add(
 # disk is locked:
 disk_service = disks_service.disk_service(disk.id)
 while True:
-    time.sleep(5)
+    time.sleep(1)
     disk = disk_service.get()
     if disk.status == types.DiskStatus.OK:
         break
