@@ -23,12 +23,10 @@ import argparse
 import logging
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
-import ssl
-import sys
 import time
 
-from six.moves.http_client import HTTPSConnection, HTTPException
-from six.moves.urllib.parse import urlparse
+from ovirt_imageio_common import client
+from ovirt_imageio_common import ui
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
@@ -60,6 +58,14 @@ def parse_args():
         "-c", "--cafile",
         required=True,
         help="path to oVirt engine certificate for verifying server.")
+
+    parser.add_argument(
+        "--insecure",
+        dest="secure",
+        action="store_false",
+        default=False,
+        help=("do not verify server certificates and host name (not "
+              "recommended)."))
 
     parser.add_argument(
         "--password-file",
@@ -141,73 +147,24 @@ while transfer.phase == types.ImageTransferPhase.INITIALIZING:
     transfer = transfer_service.get()
 
 if args.use_proxy:
-    download_url = urlparse(transfer.proxy_url)
+    download_url = transfer.proxy_url
 else:
-    download_url = urlparse(transfer.transfer_url)
+    download_url = transfer.transfer_url
 
 # At this stage, the SDK granted the permission to start transferring the disk, and the
-# user should choose its preferred tool for doing it - regardless of the SDK.
-# In this example, we will use Python's httplib.HTTPSConnection for transferring the data.
-
-context = ssl.create_default_context()
-
-# Note that ovirt-imageio by default checks the certificates, so if you don't have
-# your CA certificate of the engine in the system, you need to pass it to HTTPSConnection.
-context.load_verify_locations(cafile=args.cafile)
-
-download_connection = HTTPSConnection(
-    download_url.hostname,
-    download_url.port,
-    context=context,
-)
+# user should choose its preferred tool for doing it. We use the recommended
+# way, ovirt-imageio client library.
 
 print("Downloading image...")
 
 try:
-    # Send the request
-    download_connection.request('GET', download_url.path)
-    # Get response
-    r = download_connection.getresponse()
-
-    # Check the response status
-    if r.status not in (200, 204):
-        print("Error downloding (%s)" % (r.reason,))
-        try:
-            data = r.read(512)
-        except (EnvironmentError, HTTPException):
-            pass
-        else:
-            print("Response:")
-            print(data)
-        sys.exit(1)
-
-    start = last_progress = time.time()
-    image_size = int(r.getheader('Content-Length'))
-    with open(args.filename, "wb") as mydisk:
-        pos = 0
-        while pos < image_size:
-            # Calculate next chunk to read
-            to_read = min(image_size - pos, args.buffer_size)
-
-            # Read next chunk
-            chunk = r.read(to_read)
-            if not chunk:
-                raise RuntimeError("Socket disconnected")
-
-            # Write the content to file
-            mydisk.write(chunk)
-            pos += len(chunk)
-            now = time.time()
-
-            # Report progress every 10 seconds
-            if now - last_progress > 10:
-                print("Downloaded %.2f%%" % (pos / float(image_size) * 100))
-                last_progress = now
-
-    elapsed = time.time() - start
-    print("Downloaded %.2fg in %.2f seconds (%.2fm/s)" % (
-        image_size / float(1024**3), elapsed, image_size / 1024**2 / elapsed))
-
+    with ui.ProgressBar() as pb:
+        client.download(
+            download_url,
+            args.filename,
+            args.cafile,
+            secure=args.secure,
+            progress=pb)
 finally:
     # Finalize the session.
     print("Finalizing transfer session...")
