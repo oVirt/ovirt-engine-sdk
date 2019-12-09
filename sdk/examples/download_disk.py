@@ -87,11 +87,6 @@ while transfer.phase == types.ImageTransferPhase.INITIALIZING:
     time.sleep(1)
     transfer = transfer_service.get()
 
-# Set needed headers for downloading:
-transfer_headers = {
-    'Authorization': transfer.signed_ticket,
-}
-
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it - regardless of the SDK.
 # In this example, we will use Python's httplib.HTTPSConnection for transferring the data.
@@ -112,11 +107,7 @@ print("Downloading image...")
 
 try:
     # Send the request
-    proxy_connection.request(
-        'GET',
-        proxy_url.path,
-        headers=transfer_headers,
-    )
+    proxy_connection.request('GET', proxy_url.path)
     # Get response
     r = proxy_connection.getresponse()
 
