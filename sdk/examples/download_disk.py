@@ -134,6 +134,13 @@ transfer = transfers_service.add(
             id=disk.id
         ),
         direction=types.ImageTransferDirection.DOWNLOAD,
+
+        # format=raw enables the NBD backend, enbaling:
+        # - Download raw guest data, regardless of the disk format.
+        # - Collapsed qcow2 chains to single raw file.
+        # - Extents reporting for qcow2 images and raw images on file storage,
+        #   speeding up the transfer.
+        format=types.DiskFormat.RAW,
     )
 )
 
