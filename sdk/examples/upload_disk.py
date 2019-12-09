@@ -278,7 +278,7 @@ with ui.ProgressBar(image_size) as pb:
         destination_url,
         args.cafile,
         secure=args.secure,
-        progress=pb.update)
+        progress=pb)
 
 print("Finalizing transfer session...")
 # Successful cleanup
