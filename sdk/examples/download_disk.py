@@ -19,6 +19,7 @@
 
 from __future__ import print_function
 
+import argparse
 import logging
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
@@ -29,25 +30,77 @@ import time
 from six.moves.http_client import HTTPSConnection, HTTPException
 from six.moves.urllib.parse import urlparse
 
-
-# This is the size of each downloaded chunck.
-# May be tuned according to setup needs.
-BUF_SIZE = 128 * 1024
-
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
-
 # This example will connect to the server and download the data
-# of the disk, to the local qcow2 file.
+# of the disk to a local file.
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Download disk")
+
+    parser.add_argument(
+        "disk_uuid",
+        help="disk UUID to download")
+
+    parser.add_argument(
+        "filename",
+        help="path to downloaded disk")
+
+    parser.add_argument(
+        "--engine-url",
+        required=True,
+        help="oVirt engine URL (e.g. https://my-engine:port)")
+
+    parser.add_argument(
+        "--username",
+        required=True,
+        help="username of engine API")
+
+    parser.add_argument(
+        "-c", "--cafile",
+        required=True,
+        help="path to oVirt engine certificate for verifying server.")
+
+    parser.add_argument(
+        "--password-file",
+        help="file containing password of the specified by user (if file is "
+             "not specified, read from standard input)")
+
+    parser.add_argument(
+        "-b", "--buffer-size",
+        type=lambda v: int(v) * 1024,
+        default=128 * 1024,
+        help=("buffer size in KiB for upload. The default (128 KiB) provides "
+              "best results in our tests, but you may like to tune this"))
+
+    parser.add_argument(
+        "--use-proxy",
+        dest="use_proxy",
+        default=False,
+        action="store_true",
+        help="download via proxy on the engine host (less efficient)")
+
+    return parser.parse_args()
+
+
+def read_password(args):
+    if args.password_file:
+        with open(args.password_file) as f:
+            return f.readline().rstrip('\n')
+    else:
+        return getpass.getpass()
+
+
+args = parse_args()
 
 # Create the connection to the server:
 print("Connecting...")
 
 connection = sdk.Connection(
-    url='https://engine/ovirt-engine/api',
-    username='admin@internal',
-    password='123',
-    ca_file='ca.pem',
+    url=args.engine_url + '/ovirt-engine/api',
+    username=args.username,
+    password=read_password(args),
+    ca_file=args.cafile,
     debug=True,
     log=logging.getLogger(),
 )
@@ -59,7 +112,7 @@ system_service = connection.system_service()
 disks_service = connection.system_service().disks_service()
 
 # Find the disk we want to download by the id:
-disk_service = disks_service.disk_service('f2a0da15-2b7e-4ded-be3c-59ff968a6894')
+disk_service = disks_service.disk_service(args.disk_uuid)
 disk = disk_service.get()
 
 print("Creating a transfer session...")
@@ -87,19 +140,24 @@ while transfer.phase == types.ImageTransferPhase.INITIALIZING:
     time.sleep(1)
     transfer = transfer_service.get()
 
+if args.use_proxy:
+    download_url = urlparse(transfer.proxy_url)
+else:
+    download_url = urlparse(transfer.transfer_url)
+
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it - regardless of the SDK.
 # In this example, we will use Python's httplib.HTTPSConnection for transferring the data.
-proxy_url = urlparse(transfer.proxy_url)
+
 context = ssl.create_default_context()
 
-# Note that ovirt-imageio-proxy by default checks the certificates, so if you don't have
+# Note that ovirt-imageio by default checks the certificates, so if you don't have
 # your CA certificate of the engine in the system, you need to pass it to HTTPSConnection.
-context.load_verify_locations(cafile='ca.pem')
+context.load_verify_locations(cafile=args.cafile)
 
-proxy_connection = HTTPSConnection(
-    proxy_url.hostname,
-    proxy_url.port,
+download_connection = HTTPSConnection(
+    download_url.hostname,
+    download_url.port,
     context=context,
 )
 
@@ -107,9 +165,9 @@ print("Downloading image...")
 
 try:
     # Send the request
-    proxy_connection.request('GET', proxy_url.path)
+    download_connection.request('GET', download_url.path)
     # Get response
-    r = proxy_connection.getresponse()
+    r = download_connection.getresponse()
 
     # Check the response status
     if r.status not in (200, 204):
@@ -123,14 +181,13 @@ try:
             print(data)
         sys.exit(1)
 
-    path = "/path/to/disk.qcow2"
     start = last_progress = time.time()
     image_size = int(r.getheader('Content-Length'))
-    with open(path, "wb") as mydisk:
+    with open(args.filename, "wb") as mydisk:
         pos = 0
         while pos < image_size:
             # Calculate next chunk to read
-            to_read = min(image_size - pos, BUF_SIZE)
+            to_read = min(image_size - pos, args.buffer_size)
 
             # Read next chunk
             chunk = r.read(to_read)
