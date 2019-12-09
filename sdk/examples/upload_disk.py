@@ -74,6 +74,11 @@ def parse_args():
         help="format of the created disk. Note: cannot convert qcow2 format to raw.")
 
     parser.add_argument(
+        "--disk-sparse",
+        action="store_true",
+        help="create sparse disk. Cannot be used with raw format on block storage.")
+
+    parser.add_argument(
         "--sd-name",
         required=True,
         help="name of the storage domain.")
@@ -215,7 +220,7 @@ disk = disks_service.add(
         format=new_disk_format,
         initial_size=image_size,
         provisioned_size=image_info["virtual-size"],
-        sparse=new_disk_format == types.DiskFormat.COW,
+        sparse=args.disk_sparse,
         storage_domains=[
             types.StorageDomain(
                 name=args.sd_name
