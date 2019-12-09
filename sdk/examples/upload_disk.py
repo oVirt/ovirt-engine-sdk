@@ -100,12 +100,11 @@ def parse_args():
               "results in our tests, but you may like to tune this."))
 
     parser.add_argument(
-        "-d", "--direct",
-        dest="direct",
+        "--use-proxy",
+        dest="use_proxy",
         default=False,
         action="store_true",
-        help="upload directly to the daemon (if not set, upload to proxy on the engine host. "
-             "Uploading directly to the daemon is more efficient.")
+        help="upload via proxy on the engine host (less efficient)")
 
     return parser.parse_args()
 
@@ -265,14 +264,11 @@ print("Uploading image...")
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it - regardless of the SDK.
 # In this example, we will use Python's httplib.HTTPSConnection for transferring the data.
-if args.direct:
-    if transfer.transfer_url is not None:
-        destination_url = transfer.transfer_url
-    else:
-        print("Direct upload to host not supported (requires ovirt-engine 4.2 or above).")
-        sys.exit(1)
-else:
+
+if args.use_proxy:
     destination_url = transfer.proxy_url
+else:
+    destination_url = transfer.transfer_url
 
 image_size = os.path.getsize(args.filename)
 
