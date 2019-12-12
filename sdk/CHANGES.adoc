@@ -2,6 +2,31 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.4.0 / Dec 16 2019
+Update to model 4.4.11
+move from fc27 to fc30
+
+New features:
+
+* Make build.py script Python 3 compatible
+
+* automation: prepare for EL8 / python3 support
+
+* automation: add standard pipelines conf
+
+Bug Fixes:
+
+* Sort input file list so that ovirtsdk4/xml.so builds in a reproducible way
+  http://bugs.python.org/issue30461
+
+* packaging: adhere to fedora naming guidelines
+
+Deprecations:
+
+* packaging: drop fc28 spec (EOL)
+
+* automation: drop fc29 (EOL)
+
 == 4.3.1 / Mar 27 2018
 Update to model 4.3.22.
 
