@@ -21,7 +21,7 @@ need to do the following:
   # yum -y install \
   gcc \
   libxml2-devel \
-  python-devel
+  python3-devel
 
 Most of the source code of the Python SDK is automatically generated
 from the API model.
@@ -37,9 +37,9 @@ you will need to do the following:
   git \
   java-1.8.0-openjdk \
   maven \
-  python-flake8 \
-  python-nose \
-  python-wheel
+  python3-flake8 \
+  python3-nose \
+  python3-wheel
 
 To run the build use the following commands:
 
