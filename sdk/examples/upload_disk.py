@@ -71,7 +71,8 @@ def parse_args():
 
     parser.add_argument(
         "--disk-format",
-        help="format of the created disk. Note: cannot convert qcow2 format to raw.")
+        choices=("raw", "qcow2"),
+        help="format of the created disk (default image format)")
 
     parser.add_argument(
         "--disk-sparse",
@@ -114,7 +115,41 @@ def get_image_info(filename):
     image_info = json.loads(out)
 
     if image_info["format"] not in ("qcow2", "raw"):
-        raise RuntimeError("Unsupported image format %(format)s" % filename)
+        raise RuntimeError("Unsupported image format %(format)s" % image_info)
+
+    return image_info
+
+def get_disk_info(args, image_info):
+    disk_info = {}
+
+    disk_format = args.disk_format or image_info["format"]
+
+    # Convert qemu format names to oVirt constants ("raw", "cow").
+    if disk_format == "raw":
+        disk_info["format"] = types.DiskFormat.RAW
+    elif disk_format == "qcow2":
+        disk_info["format"] = types.DiskFormat.COW
+
+    # If we upload "fedora-30.img" to qcow2 disk, the disk name wil be
+    # "fedora-30.qcow2".
+    basename = os.path.splitext(os.path.basename(image_info["filename"]))[0]
+    disk_info["name"] = "{}.{}".format(basename, disk_format)
+
+    disk_info["provisioned_size"] = image_info["virtual-size"]
+
+    # The initial size is needed only for block storage (iSCSI, FC). We cannot
+    # use the actual image size because the image may be compressed.
+    out = subprocess.check_output([
+        "qemu-img",
+         "measure",
+         "-f", image_info["format"],
+         "-O", disk_format,
+         "--output", "json",
+         image_info["filename"]
+    ])
+    measure = json.loads(out)
+
+    disk_info["initial_size"] = measure["required"]
 
     # Detect disk content type
     #
@@ -133,52 +168,34 @@ def get_image_info(filename):
     content_type = types.DiskContentType.DATA
 
     if image_info["format"] == "raw":
-        with open(args.filename, "rb") as f:
+        with open(image_info["filename"], "rb") as f:
             f.seek(0x8000)
             primary_volume_descriptor = f.read(8)
         if primary_volume_descriptor == b"\x01CD001\x01\x00":
             content_type = types.DiskContentType.ISO
 
-    image_info["content_type"] = content_type
+    disk_info["content_type"] = content_type
 
-    if image_info["format"] == "raw":
-        image_info["transfer_format"] = types.DiskFormat.RAW
-    else:
-        image_info["transfer_format"] = types.DiskFormat.COW
-
-    return image_info
-
-def get_disk_format(image_info, args):
-    if image_info["format"] == "qcow2":
-        if args.disk_format == "raw":
-            raise RuntimeError("Cannot convert qcow2 format to raw")
-        disk_format = types.DiskFormat.COW
-    else:
-        if args.disk_format in ("raw", None):
-            disk_format = types.DiskFormat.RAW
-        elif args.disk_format == "cow":
-            disk_format = types.DiskFormat.COW
-        else:
-            raise RuntimeError("Invalid disk format: %s" % image_info["format"])
-
-    return disk_format
+    return disk_info
 
 
 args = parse_args()
 
-# Get image info using qemu-img
+# Get image and disk info using qemu-img
 image_info = get_image_info(args.filename)
-new_disk_format = get_disk_format(image_info, args)
+disk_info = get_disk_info(args, image_info)
 
-print("Uploaded image format: %s" % image_info["format"])
-print("Disk content type: %s" % image_info["content_type"])
-print("Disk format: %s" % new_disk_format)
-print("Transfer format: %s" % image_info["transfer_format"])
+print("Image format: %s" % image_info["format"])
+print("Disk format: %s" % disk_info["format"])
+print("Disk content type: %s" % disk_info["content_type"])
+print("Disk provisioned size: %s" % disk_info["provisioned_size"])
+print("Disk initial size: %s" % disk_info["initial_size"])
+print("Disk name: %s" % disk_info["name"])
 
 # This example will connect to the server and create a new `floating`
 # disk, one that isn't attached to any virtual machine.
 # Then using transfer service it will transfer disk data from local
-# qcow2 disk to the newly created disk in server.
+# image to the newly created disk in server.
 
 # Create the connection to the server:
 print("Connecting...")
@@ -203,16 +220,15 @@ system_service = connection.system_service()
 
 print("Creating disk...")
 
-image_size = os.path.getsize(args.filename)
 disks_service = connection.system_service().disks_service()
 disk = disks_service.add(
     disk=types.Disk(
-        name=os.path.basename(args.filename),
-        content_type=image_info["content_type"],
+        name=disk_info["name"],
+        content_type=disk_info["content_type"],
         description='Uploaded disk',
-        format=new_disk_format,
-        initial_size=image_size,
-        provisioned_size=image_info["virtual-size"],
+        format=disk_info["format"],
+        initial_size=disk_info["initial_size"],
+        provisioned_size=disk_info["provisioned_size"],
         sparse=args.disk_sparse,
         storage_domains=[
             types.StorageDomain(
@@ -243,8 +259,9 @@ transfer = transfers_service.add(
         image=types.Image(
             id=disk.id
         ),
-        # 'format' can be used only for ovirt-engine 4.3 or above
-        format=image_info["transfer_format"],
+        # Use raw format to enable NBD backend, supporting on-the-fly image
+        # format conversion.
+        format=types.DiskFormat.RAW,
      )
 )
 
@@ -260,17 +277,15 @@ while transfer.phase == types.ImageTransferPhase.INITIALIZING:
 print("Uploading image...")
 
 # At this stage, the SDK granted the permission to start transferring the disk, and the
-# user should choose its preferred tool for doing it - regardless of the SDK.
-# In this example, we will use Python's httplib.HTTPSConnection for transferring the data.
+# user should choose its preferred tool for doing it. We use the recommended
+# way, ovirt-imageio client library.
 
 if args.use_proxy:
     destination_url = transfer.proxy_url
 else:
     destination_url = transfer.transfer_url
 
-image_size = os.path.getsize(args.filename)
-
-with ui.ProgressBar(image_size) as pb:
+with ui.ProgressBar() as pb:
     client.upload(
         args.filename,
         destination_url,
