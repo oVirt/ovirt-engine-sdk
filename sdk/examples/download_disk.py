@@ -73,6 +73,13 @@ def parse_args():
              "not specified, read from standard input)")
 
     parser.add_argument(
+        "-f", "--format",
+        choices=("raw", "qcow2"),
+        default="qcow2",
+        help=("Downloaded file format. For best compatibility, use qcow2 "
+              "(default qcow2)"))
+
+    parser.add_argument(
         "--use-proxy",
         dest="use_proxy",
         default=False,
@@ -163,6 +170,7 @@ try:
             download_url,
             args.filename,
             args.cafile,
+            fmt=args.format,
             secure=args.secure,
             progress=pb)
 finally:
