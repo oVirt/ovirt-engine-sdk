@@ -98,13 +98,6 @@ def parse_args():
               "recommended)."))
 
     parser.add_argument(
-        "-b", "--buffer-size",
-        type=lambda v: int(v) * 1024,
-        default=128 * 1024,
-        help=("buffer size in KiB for upload. The default (128 KiB) provides best "
-              "results in our tests, but you may like to tune this."))
-
-    parser.add_argument(
         "--use-proxy",
         dest="use_proxy",
         default=False,
