@@ -1,9 +1,9 @@
 ---
 archs:
   - x86_64:
-      distro: [el7, fc30]
+      distro: [el7, el8, fc30]
   - ppc64le:
-      distro: el7
+      distro: [el7, el8]
   - s390x:
       distro: fc30
 release_branches:
