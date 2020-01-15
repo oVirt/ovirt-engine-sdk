@@ -20,6 +20,7 @@
 from __future__ import print_function
 
 import argparse
+import getpass
 import logging
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
