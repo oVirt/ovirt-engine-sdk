@@ -2,6 +2,12 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.4.1 / Jan 16 2019
+
+New features:
+
+* automation: add EL8
+
 == 4.4.0 / Dec 16 2019
 Update to model 4.4.11
 move from fc27 to fc30
