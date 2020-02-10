@@ -186,6 +186,7 @@ def create_disk(image_info, disk_id, sd_name, disks_service):
             format=types.DiskFormat.RAW,
             provisioned_size=provisioned_size,
             initial_size=initial_size,
+            # sparse=False, # In case of iSCSI Storage discomment this.
             storage_domains=[
                 types.StorageDomain(
                     name=sd_name
@@ -300,7 +301,7 @@ if __name__ == "__main__":
     vms_service = system_service.vms_service()
 
     # Get images chain (snapshots)
-    images_chain = get_images_chain(disk_path)
+    images_chain = get_images_chain(os.path.dirname(disk_path))
 
     try:
         # Create disk by base volume info
@@ -315,6 +316,18 @@ if __name__ == "__main__":
 
         # Locate VM service
         vm_service = vms_service.vm_service(vmId)
+
+        # Attach disk to vm
+        vm_service.disk_attachments_service().add(
+            types.DiskAttachment(
+                disk=disk,
+                interface=types.DiskInterface.VIRTIO,
+                bootable=False,
+                active=True,
+            )
+        )
+        # We waited until OK for it when we created the disk. We wait 5s for security
+        time.sleep(5)
 
         # Creating a snapshot for each image
         for image in images_chain[1:]:
