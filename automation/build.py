@@ -67,18 +67,6 @@ def dec_version(version):
     print("Decremented version is \"%s\"..." % result)
     return result
 
-
-def python_versions():
-    python_versions = []
-    for python_version in ['python2', 'python3']:
-        result, path = eval_command(['which', python_version])
-        if result != 0:
-            print("Python '%s' isn't installed on the system." % python_version)
-        else:
-            python_versions.append(path.strip())
-
-    return python_versions
-
 def main():
     # Clean the generated artifacts to the output directory:
     print("Cleaning output directory ...")
@@ -172,14 +160,13 @@ def main():
     with open(settings_path, "w") as settings_file:
         settings_file.write(SETTINGS)
 
-    for python_command in python_versions():
-        result = run_command([
-            "mvn",
-            "package",
-            "--settings=%s" % settings_path,
-            "-Dpython.command=%s" % python_command,
-            "-Dsdk.version=%s" % pep440_version,
-        ])
+    result = run_command([
+        "mvn",
+        "package",
+        "--settings=%s" % settings_path,
+        "-Dpython.command=%s" % 'python2',
+        "-Dsdk.version=%s" % pep440_version,
+    ])
     if result != 0:
         print("Maven build failed with exit code %d." % result)
         sys.exit(1)

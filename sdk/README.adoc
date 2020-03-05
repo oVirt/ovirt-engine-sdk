@@ -23,9 +23,6 @@ Then install the SDK packages. For Python 2:
 
   # dnf install python-ovirt-engine-sdk4
 
-For Python 3:
-
-  # dnf install python3-ovirt-engine-sdk4
 
 For other operating systems (and also for Fedora and CentOS) you can
 install the SDK using the `pip` command, which will download the source
@@ -43,12 +40,6 @@ CentOS:
   libxml2-devel \
   python-devel
 
-For Python 3:
-
-  # dnf -y install \
-  gcc \
-  libxml2-devel \
-  python3-devel
 
 If you are using distributions like Debian, or Ubuntu:
 
@@ -57,12 +48,7 @@ If you are using distributions like Debian, or Ubuntu:
   libxml2-dev \
   python-dev
 
-For Python 3:
 
-  # apt-get --assume-yes install \
-  gcc \
-  libxml2-dev \
-  python3-dev
 
 NOTE: The examples above use the `dnf` command, which is the default in
 Fedora 24. In CentOS 7 you may need to use the `yum` command, as `dnf`
@@ -243,8 +229,7 @@ vm = types.Vm(
 ----
 
 Attributes that are defined as enumerated values in the specification of
-the API are implemented as `enum` in Python, using the native support
-for enums in Python 3, and using the
+the API are implemented as `enum` in Python using the
 https://pypi.python.org/pypi/enum34[enum34] package in Python 2.7. For
 example, the `status` attribute of the `Vm` type is defined using the
 http://ovirt.github.io/ovirt-engine-api-model/master/#types/vm_status[VmStatus]
