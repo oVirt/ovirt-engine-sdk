@@ -82,8 +82,11 @@ def python_versions():
 
 def is_rhel_8():
     dist = platform.dist()
-    return len(dist) > 1 and dist[0] == 'redhat' and dist[1].startswith('8.')
+    return len(dist) > 1 and (dist[0] == 'redhat' or dist[0] == 'centos') and dist[1].startswith('8.')
 
+def is_rhel_7():
+    dist = platform.dist()
+    return len(dist) > 1 and (dist[0] == 'redhat' or dist[0] == 'centos') and dist[1].startswith('7.')
 
 def main():
     # Clean the generated artifacts to the output directory:
@@ -178,15 +181,37 @@ def main():
     with open(settings_path, "w") as settings_file:
         settings_file.write(SETTINGS)
 
-    for python_command in python_versions():
+    if is_rhel_8():
+        print("RHEL 8 identified, running with python 3")
         result = run_command([
             "mvn",
             "package",
             "--settings=%s" % settings_path,
-            "-Dpython.command=%s" % python_command,
+            "-Dpython.command=%s" % 'python3',
             "-Dsdk.version=%s" % pep440_version,
-            "-Dskipflake=%s" % is_rhel_8(),
+            "-Dskipflake=%s" % 'true',
         ])
+    else:
+        if is_rhel_7():
+            print("RHEL 7 identified, running with python 2")
+            result = run_command([
+                "mvn",
+                "package",
+                "--settings=%s" % settings_path,
+                "-Dpython.command=%s" % 'python2',
+                "-Dsdk.version=%s" % pep440_version,
+            ])
+        else:
+            print("Fedora identified, running with detected python versions on build server")
+            for python_command in python_versions():
+                result = run_command([
+                    "mvn",
+                    "package",
+                    "--settings=%s" % settings_path,
+                    "-Dpython.command=%s" % python_command,
+                    "-Dsdk.version=%s" % pep440_version,
+                ])
+
     if result != 0:
         print("Maven build failed with exit code %d." % result)
         sys.exit(1)
