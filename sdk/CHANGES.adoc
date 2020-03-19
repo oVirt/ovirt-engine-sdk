@@ -2,6 +2,14 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.4.2 / Mar 19 2020
+
+Update to model 4.4.14
+
+New features:
+
+* Make Travis depend on openjdk
+
 == 4.4.1 / Jan 16 2019
 
 New features:
