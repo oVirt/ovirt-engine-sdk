@@ -1656,6 +1656,7 @@ table {
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.network_filters_service">network_filters_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.networks_service">networks_service</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.permissions_service">permissions_service</a></li>
+    <li class="mono"><a href="#ovirtsdk4.services.ClusterService.refresh_gluster_heal_status">refresh_gluster_heal_status</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.remove">remove</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.reset_emulated_machine">reset_emulated_machine</a></li>
     <li class="mono"><a href="#ovirtsdk4.services.ClusterService.service">service</a></li>
@@ -12076,6 +12077,29 @@ of the current request. See <a href="#documents/003_common_concepts/follow">here
   
     <div class="desc"><div class="paragraph">
 <p>A reference to permissions.</p>
+</div>
+</div>
+
+  </div>
+  
+            
+  <div class="item">
+    <div class="name def" id="ovirtsdk4.services.ClusterService.refresh_gluster_heal_status">
+    <p>def <span class="ident">refresh_gluster_heal_status</span>(</p><p>self, headers=None, query=None, wait=True, **kwargs)</p>
+    </div>
+    
+
+    
+  
+    <div class="desc"><div class="paragraph">
+<p>Refresh the Gluster heal info for all volumes in cluster.
+For example, Cluster <code>123</code>, send a request like
+this:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="pygments highlight"><code>POST /ovirt-engine/api/clusters/123/refreshglusterhealstatus</code></pre>
+</div>
 </div>
 </div>
 
@@ -53952,7 +53976,7 @@ Optionally set by user when shutting down the virtual machine.</p>
             
   <div class="item">
     <div class="name def" id="ovirtsdk4.services.VmService.start">
-    <p>def <span class="ident">start</span>(</p><p>self, async_=None, authorized_key=None, filter=None, pause=None, use_cloud_init=None, use_ignition=None, use_sysprep=None, vm=None, volatile=None, headers=None, query=None, wait=True, **kwargs)</p>
+    <p>def <span class="ident">start</span>(</p><p>self, async_=None, authorized_key=None, filter=None, pause=None, use_cloud_init=None, use_ignition=None, use_initialization=None, use_sysprep=None, vm=None, volatile=None, headers=None, query=None, wait=True, **kwargs)</p>
     </div>
     
 
@@ -54028,6 +54052,14 @@ See <a href="https://en.wikipedia.org/wiki/Sysprep">this</a> for details.</p>
 <dd>
 <p>If set to <code>true</code>, the initialization type is set to <em>Ignition</em>. The default value is <code>false</code>.
 See <a href="https://coreos.com/ignition/docs/latest/">this</a> for details.</p>
+</dd>
+<dt class="hdlist1"><code>use_initialization</code></dt>
+<dd>
+<p>If set to <code>true</code>, the initialization type is set by the VM&#8217;s OS.
+Windows will set to <em>Sysprep</em>, Linux to <em>cloud-init</em> and RedHat CoreOS to <em>Ignition</em>.
+If any of the initialization-types are explicitly set (useCloudInit, useSysprep or useIgnition),
+they will be prioritized and this flag will be ignored.
+The default value is <code>false</code>.</p>
 </dd>
 <dt class="hdlist1"><code>async_</code></dt>
 <dd>
