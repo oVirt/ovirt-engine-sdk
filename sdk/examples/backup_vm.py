@@ -28,6 +28,8 @@ release official release that contains the support for incremental
 backup.
 Using this example requires a special libvirt version supporting
 incremental backup.
+
+Requires the ovirt-imageio-common package > 2.0.0.
 """
 
 from __future__ import print_function
@@ -43,8 +45,8 @@ from contextlib import closing
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
 
-from ovirt_imageio_common import client
-from ovirt_imageio_common import ui
+from ovirt_imageio import client
+from ovirt_imageio import ui
 
 logging.basicConfig(level=logging.WARNING)
 

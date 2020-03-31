@@ -17,6 +17,13 @@
 # limitations under the License.
 #
 
+"""
+
+Download disk example code.
+
+Requires the ovirt-imageio-common package > 2.0.0.
+"""
+
 from __future__ import print_function
 
 import argparse
@@ -26,8 +33,8 @@ import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
 import time
 
-from ovirt_imageio_common import client
-from ovirt_imageio_common import ui
+from ovirt_imageio import client
+from ovirt_imageio import ui
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 

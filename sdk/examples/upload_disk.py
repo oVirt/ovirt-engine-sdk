@@ -20,8 +20,7 @@
 """
 Upload disk example code.
 
-Requires the qemu-img package for checking file type and virtual size.
-Requires the ovirt-imageio-common package > 1.5.0.
+Requires the ovirt-imageio-common package > 2.0.0.
 
 Usage:
 
@@ -41,8 +40,8 @@ import subprocess
 import sys
 import time
 
-from ovirt_imageio_common import client
-from ovirt_imageio_common import ui
+from ovirt_imageio import client
+from ovirt_imageio import ui
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
