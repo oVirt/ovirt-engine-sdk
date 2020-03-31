@@ -236,7 +236,7 @@ def start_backup(connection, args):
     backups_service = vm_service.backups_service()
 
     if args.disk_uuid:
-        disks = args.disk_uuid
+        disks = [types.Disk(id=disk_id) for disk_id in args.disk_uuid]
     else:
         disks = get_vm_disks(connection, args.vm_uuid)
 
