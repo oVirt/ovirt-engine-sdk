@@ -78,6 +78,12 @@ def parse_args():
         help="create sparse disk. Cannot be used with raw format on block storage.")
 
     parser.add_argument(
+        "--enable-backup",
+        action="store_true",
+        help="creates a disk that can be used for incremental backup. "
+             "Allowed for disk with qcow2 format only")
+
+    parser.add_argument(
         "--sd-name",
         required=True,
         help="name of the storage domain.")
@@ -189,6 +195,7 @@ print("Disk content type: %s" % disk_info["content_type"])
 print("Disk provisioned size: %s" % disk_info["provisioned_size"])
 print("Disk initial size: %s" % disk_info["initial_size"])
 print("Disk name: %s" % disk_info["name"])
+print("Disk backup: %s" % args.enable_backup)
 
 # This example will connect to the server and create a new `floating`
 # disk, one that isn't attached to any virtual machine.
@@ -228,6 +235,7 @@ disk = disks_service.add(
         initial_size=disk_info["initial_size"],
         provisioned_size=disk_info["provisioned_size"],
         sparse=args.disk_sparse,
+        backup=types.DiskBackup.INCREMENTAL if args.enable_backup else None,
         storage_domains=[
             types.StorageDomain(
                 name=args.sd_name
