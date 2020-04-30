@@ -129,7 +129,7 @@ disks_service = connection.system_service().disks_service()
 disk_service = disks_service.disk_service(args.disk_uuid)
 disk = disk_service.get()
 
-print("Creating a transfer session...")
+print("Creating image transfer...")
 
 # Get a reference to the service that manages the image
 # transfer that was added in the previous step:
@@ -161,6 +161,16 @@ while transfer.phase == types.ImageTransferPhase.INITIALIZING:
     time.sleep(1)
     transfer = transfer_service.get()
 
+# You can use the transfer to locate logs for this transfer.
+print("Transfer ID: %s" % transfer.id)
+
+# Fetch the transfer host name. This is very useful for troubleshooting.
+hosts_service = connection.system_service().hosts_service()
+host_service = hosts_service.host_service(transfer.host.id)
+transfer_host = host_service.get()
+
+print("Transfer host: %s" % transfer_host.name)
+
 if args.use_proxy:
     download_url = transfer.proxy_url
 else:
@@ -183,7 +193,7 @@ try:
             progress=pb)
 finally:
     # Finalize the session.
-    print("Finalizing transfer session...")
+    print("Finalizing image transfer...")
     transfer_service.finalize()
 
 # Close the connection to the server:
