@@ -246,7 +246,9 @@ while True:
     if disk.status == types.DiskStatus.OK:
         break
 
-print("Creating transfer session...")
+print("Disk id: %s" % disk.id)
+
+print("Creating image transfer...")
 
 # Get a reference to the service that manages the image
 # transfer that was added in the previous step:
@@ -273,7 +275,15 @@ while transfer.phase == types.ImageTransferPhase.INITIALIZING:
     time.sleep(1)
     transfer = transfer_service.get()
 
-print("Uploading image...")
+# You can use the transfer id to locate logs for this transfer.
+print("Transfer ID: %s" % transfer.id)
+
+# Fetch the transfer host name. This is very useful for troubleshooting.
+hosts_service = connection.system_service().hosts_service()
+host_service = hosts_service.host_service(transfer.host.id)
+transfer_host = host_service.get()
+
+print("Transfer host: %s" % transfer_host.name)
 
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it. We use the recommended
@@ -284,6 +294,8 @@ if args.use_proxy:
 else:
     destination_url = transfer.transfer_url
 
+print("Uploading image...")
+
 with ui.ProgressBar() as pb:
     client.upload(
         args.filename,
@@ -292,7 +304,7 @@ with ui.ProgressBar() as pb:
         secure=args.secure,
         progress=pb)
 
-print("Finalizing transfer session...")
+print("Finalizing image transfer...")
 # Successful cleanup
 transfer_service.finalize()
 connection.close()
