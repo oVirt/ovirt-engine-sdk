@@ -273,7 +273,7 @@ template = templates_service.add(
         initialization=types.Initialization(
             configuration=types.Configuration(
                 type=types.ConfigurationType.OVA,
-                data=ovf_str
+                data=ovf_str.decode("utf-8")
             )
         ),
     ),
