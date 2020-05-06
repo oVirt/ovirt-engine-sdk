@@ -21,7 +21,7 @@
 
 Download disk example code.
 
-Requires the ovirt-imageio-common package > 2.0.0.
+Requires the ovirt-imageio-client package.
 """
 
 from __future__ import print_function
@@ -34,7 +34,6 @@ import ovirtsdk4.types as types
 import time
 
 from ovirt_imageio import client
-from ovirt_imageio import ui
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
@@ -183,7 +182,7 @@ else:
 print("Downloading image...")
 
 try:
-    with ui.ProgressBar() as pb:
+    with client.ProgressBar() as pb:
         client.download(
             download_url,
             args.filename,

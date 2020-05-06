@@ -20,7 +20,7 @@
 """
 Upload disk example code.
 
-Requires the ovirt-imageio-common package > 2.0.0.
+Requires the ovirt-imageio-client package.
 
 Usage:
 
@@ -41,7 +41,6 @@ import sys
 import time
 
 from ovirt_imageio import client
-from ovirt_imageio import ui
 
 logging.basicConfig(level=logging.DEBUG, filename='example.log')
 
@@ -296,7 +295,7 @@ else:
 
 print("Uploading image...")
 
-with ui.ProgressBar() as pb:
+with client.ProgressBar() as pb:
     client.upload(
         args.filename,
         destination_url,

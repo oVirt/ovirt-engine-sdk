@@ -29,7 +29,7 @@ backup.
 Using this example requires a special libvirt version supporting
 incremental backup.
 
-Requires the ovirt-imageio-common package > 2.0.0.
+Requires the ovirt-imageio-client package.
 """
 
 from __future__ import print_function
@@ -46,7 +46,6 @@ import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
 
 from ovirt_imageio import client
-from ovirt_imageio import ui
 
 logging.basicConfig(level=logging.WARNING)
 
@@ -376,7 +375,7 @@ def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=Fa
     try:
         # We must use the daemon for downloading a backup disk.
         download_url = transfer.transfer_url
-        with ui.ProgressBar() as pb:
+        with client.ProgressBar() as pb:
             client.download(
                 download_url,
                 disk_path,
