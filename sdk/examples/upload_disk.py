@@ -172,7 +172,9 @@ def get_disk_info(args, image_info):
             primary_volume_descriptor = f.read(8)
         if primary_volume_descriptor == b"\x01CD001\x01\x00":
             content_type = types.DiskContentType.ISO
-
+            basename = os.path.splitext(os.path.basename(image_info["filename"]))[0]
+            disk_info["name"] = "{}.{}".format(basename, "iso")
+            
     disk_info["content_type"] = content_type
 
     return disk_info
