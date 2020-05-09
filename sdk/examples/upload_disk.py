@@ -121,11 +121,6 @@ def get_disk_info(args, image_info):
     elif disk_format == "qcow2":
         disk_info["format"] = types.DiskFormat.COW
 
-    # If we upload "fedora-30.img" to qcow2 disk, the disk name wil be
-    # "fedora-30.qcow2".
-    basename = os.path.splitext(os.path.basename(image_info["filename"]))[0]
-    disk_info["name"] = "{}.{}".format(basename, disk_format)
-
     disk_info["provisioned_size"] = image_info["virtual-size"]
 
     # The initial size is needed only for block storage (iSCSI, FC). We cannot
@@ -164,6 +159,11 @@ def get_disk_info(args, image_info):
             primary_volume_descriptor = f.read(8)
         if primary_volume_descriptor == b"\x01CD001\x01\x00":
             content_type = types.DiskContentType.ISO
+
+    # Name the disk based on image file name, format and content type.
+    basename = os.path.splitext(os.path.basename(image_info["filename"]))[0]
+    ext = "iso" if content_type == types.DiskContentType.ISO else disk_format
+    disk_info["name"] = "{}.{}".format(basename, ext)
 
     disk_info["content_type"] = content_type
 
