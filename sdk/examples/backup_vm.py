@@ -324,9 +324,11 @@ def start_backup(connection, args):
         except sdk.NotFoundError:
             raise RuntimeError("Backup {} failed".format(backup.id))
 
-    progress(
-        "Created checkpoint %r (to use in --from-checkpoint-uuid "
-        "for the next incremental backup)" % backup.to_checkpoint_id)
+    if backup.to_checkpoint_id is not None:
+        progress(
+            "Created checkpoint %r (to use in --from-checkpoint-uuid "
+            "for the next incremental backup)" % backup.to_checkpoint_id)
+
     return backup
 
 
