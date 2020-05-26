@@ -36,6 +36,7 @@ from __future__ import print_function
 
 import argparse
 import getpass
+import inspect
 import logging
 import os
 import time
@@ -375,8 +376,16 @@ def get_backup_service(connection, vm_uuid, backup_uuid):
 def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=False):
     transfer = create_transfer(connection, backup_uuid, disk)
     try:
-        # We must use the daemon for downloading a backup disk.
         download_url = transfer.transfer_url
+
+        # Use proxy_url if available. Download will use proxy_url if
+        # transfer_url is not available.
+        parameters = inspect.signature(client.download).parameters
+        if "proxy_url" in parameters:
+            extra_args = {"proxy_url": transfer.proxy_url}
+        else:
+            extra_args = {}
+
         with client.ProgressBar() as pb:
             client.download(
                 download_url,
@@ -384,7 +393,8 @@ def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=Fa
                 args.cafile,
                 incremental=incremental,
                 secure=args.secure,
-                progress=pb)
+                progress=pb,
+                **extra_args)
     finally:
         finalize_transfer(connection, transfer)
 
