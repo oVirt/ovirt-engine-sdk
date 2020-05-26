@@ -28,6 +28,7 @@ from __future__ import print_function
 
 import argparse
 import getpass
+import inspect
 import logging
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
@@ -170,14 +171,22 @@ transfer_host = host_service.get()
 
 print("Transfer host: %s" % transfer_host.name)
 
+# At this stage, the SDK granted the permission to start transferring the disk, and the
+# user should choose its preferred tool for doing it. We use the recommended
+# way, ovirt-imageio client library.
+
+extra_args = {}
+
 if args.use_proxy:
     download_url = transfer.proxy_url
 else:
     download_url = transfer.transfer_url
 
-# At this stage, the SDK granted the permission to start transferring the disk, and the
-# user should choose its preferred tool for doing it. We use the recommended
-# way, ovirt-imageio client library.
+    # Use fallback to proxy_url if feature is available. Download will use the
+    # proxy_url if transfer_url is not accessible.
+    parameters = inspect.signature(client.download).parameters
+    if "proxy_url" in parameters:
+        extra_args = {"proxy_url": transfer.proxy_url}
 
 print("Downloading image...")
 
@@ -189,7 +198,8 @@ try:
             args.cafile,
             fmt=args.format,
             secure=args.secure,
-            progress=pb)
+            progress=pb,
+            **extra_args)
 finally:
     # Finalize the session.
     print("Finalizing image transfer...")

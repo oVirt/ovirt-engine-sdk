@@ -31,6 +31,7 @@ from __future__ import print_function
 
 import argparse
 import getpass
+import inspect
 import json
 import logging
 import os
@@ -296,20 +297,29 @@ print("Transfer host: %s" % transfer_host.name)
 # user should choose its preferred tool for doing it. We use the recommended
 # way, ovirt-imageio client library.
 
+extra_args = {}
+
 if args.use_proxy:
-    destination_url = transfer.proxy_url
+    upload_url = transfer.proxy_url
 else:
-    destination_url = transfer.transfer_url
+    upload_url = transfer.transfer_url
+
+    # Use fallback to proxy_url if feature is available. Upload will use the
+    # proxy_url if transfer_url is not accessible.
+    parameters = inspect.signature(client.download).parameters
+    if "proxy_url" in parameters:
+        extra_args = {"proxy_url": transfer.proxy_url}
 
 print("Uploading image...")
 
 with client.ProgressBar() as pb:
     client.upload(
         args.filename,
-        destination_url,
+        upload_url,
         args.cafile,
         secure=args.secure,
-        progress=pb)
+        progress=pb,
+        **extra_args)
 
 print("Finalizing image transfer...")
 # Successful cleanup
