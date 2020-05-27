@@ -202,7 +202,7 @@ def create_disk(image_info, disk_id, sd_name, disks_service):
 
     return disk
 
-def create_snapshot(description, image_id, disk_id, vm_service):
+def create_snapshot(description, image_info, image_id, disk_id, vm_service):
     """
     Creates a new snapshot for the specified disk_id.
     To ensure consistency with the uploaded chain, the sepcified
@@ -219,7 +219,8 @@ def create_snapshot(description, image_id, disk_id, vm_service):
                 types.DiskAttachment(
                     disk=types.Disk(
                         id=disk_id,
-                        image_id=image_id
+                        image_id=image_id,
+                        initial_size=image_info['actual-size']
                     )
                 )
             ]
@@ -320,7 +321,7 @@ if __name__ == "__main__":
         for image in images_chain[1:]:
             image_id = os.path.basename(image['filename'])
             print("Creating snapshot - Image: %s, Disk: %s" % (image_id, disk_id))
-            create_snapshot("description", image_id, disk_id, vm_service)
+            create_snapshot("description", image, image_id, disk_id, vm_service)
 
         # Uploading images
         for image in images_chain:
