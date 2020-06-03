@@ -300,6 +300,12 @@ def add_common_args(parser):
 def start_backup(connection, args):
     system_service = connection.system_service()
     vm_service = system_service.vms_service().vm_service(id=args.vm_uuid)
+    try:
+        vm = vm_service.get()
+    except sdk.NotFoundError:
+        raise RuntimeError(
+            "VM {} does not exist".format(args.vm_uuid)) from None
+
     backups_service = vm_service.backups_service()
 
     if args.disk_uuid:
