@@ -74,12 +74,6 @@ def main():
         help="Disk UUID to backup. May be used multiple times to backup "
              "multiple disks. If not specified, backup all VM disks."),
 
-    full_parser.add_argument(
-        "--backup-dir",
-        default="./",
-        help="Path to a directory to download backup disks"
-             "to (default current directory)")
-
     incremental_parser = subparsers.add_parser(
         "incremental",
         help="Run incremental backup.")
@@ -103,12 +97,6 @@ def main():
         action="append",
         help="Disk UUID to backup. May be used multiple times to backup "
              "multiple disks. If not specified, backup all VM disks."),
-
-    incremental_parser.add_argument(
-        "--backup-dir",
-        default="./",
-        help="Path to a directory to download backup disks "
-             "to (The default is the current directory)")
 
     start_parser = subparsers.add_parser(
         "start",
@@ -140,12 +128,6 @@ def main():
 
     add_common_args(download_parser)
     add_download_args(download_parser)
-
-    download_parser.add_argument(
-        "--backup-dir",
-        default="./",
-        help="Path to a directory to download backup disks "
-             "to (The default is the current directory).")
 
     download_parser.add_argument(
         "vm_uuid",
@@ -317,6 +299,12 @@ def add_download_args(parser):
              "(4) improves performance when backing up a single disk. "
              "You may want to use lower number if you back up many disks "
              "in the same time.")
+
+    parser.add_argument(
+        "--backup-dir",
+        default="./",
+        help="Path to a directory to download backup disks "
+             "to (The default is the current directory).")
 
 
 # Backup helpers
