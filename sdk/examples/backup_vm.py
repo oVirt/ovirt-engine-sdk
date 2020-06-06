@@ -62,6 +62,7 @@ def main():
     full_parser.set_defaults(command=cmd_full)
 
     add_common_args(full_parser)
+    add_download_args(full_parser)
 
     full_parser.add_argument(
         "vm_uuid",
@@ -86,6 +87,7 @@ def main():
     incremental_parser.set_defaults(command=cmd_incremental)
 
     add_common_args(incremental_parser)
+    add_download_args(incremental_parser)
 
     incremental_parser.add_argument(
         "vm_uuid",
@@ -137,6 +139,7 @@ def main():
     download_parser.set_defaults(command=cmd_download)
 
     add_common_args(download_parser)
+    add_download_args(download_parser)
 
     download_parser.add_argument(
         "--backup-dir",
@@ -305,6 +308,17 @@ def add_common_args(parser):
         help="log debug level messages to example.log")
 
 
+def add_download_args(parser):
+    parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=4,
+        help="maximum number of workers to use for backup. The default "
+             "(4) improves performance when backing up a single disk. "
+             "You may want to use lower number if you back up many disks "
+             "in the same time.")
+
+
 # Backup helpers
 
 def start_backup(connection, args):
@@ -394,13 +408,18 @@ def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=Fa
     try:
         download_url = transfer.transfer_url
 
+        extra_args = {}
+
+        parameters = inspect.signature(client.download).parameters
+
+        # Use multiple workers to speed up the download.
+        if "max_workers" in parameters:
+            extra_args["max_workers"] = args.max_workers
+
         # Use proxy_url if available. Download will use proxy_url if
         # transfer_url is not available.
-        parameters = inspect.signature(client.download).parameters
         if "proxy_url" in parameters:
-            extra_args = {"proxy_url": transfer.proxy_url}
-        else:
-            extra_args = {}
+            extra_args["proxy_url"] = transfer.proxy_url
 
         with client.ProgressBar() as pb:
             client.download(

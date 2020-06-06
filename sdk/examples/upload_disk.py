@@ -109,11 +109,21 @@ def parse_args():
         help="upload via proxy on the engine host (less efficient)")
 
     parser.add_argument(
+        "--max-workers",
+        type=int,
+        default=4,
+        help="Maximum number of workers to use for upload. The default "
+             "(4) improves performance when uploading a single disk. "
+             "You may want to use lower number if you upload many disks "
+             "in the same time.")
+
+    parser.add_argument(
         "--debug",
         action="store_true",
         help="log debug level messages to example.log")
 
     return parser.parse_args()
+
 
 def get_image_info(filename):
     print("Checking image...")
@@ -308,6 +318,12 @@ print("Transfer host: %s" % transfer_host.name)
 
 extra_args = {}
 
+parameters = inspect.signature(client.download).parameters
+
+# Use multiple workers to speed up the upload.
+if "max_workers" in parameters:
+        extra_args["max_workers"] = args.max_workers
+
 if args.use_proxy:
     upload_url = transfer.proxy_url
 else:
@@ -315,9 +331,8 @@ else:
 
     # Use fallback to proxy_url if feature is available. Upload will use the
     # proxy_url if transfer_url is not accessible.
-    parameters = inspect.signature(client.download).parameters
     if "proxy_url" in parameters:
-        extra_args = {"proxy_url": transfer.proxy_url}
+        extra_args["proxy_url"] = transfer.proxy_url
 
 print("Uploading image...")
 
