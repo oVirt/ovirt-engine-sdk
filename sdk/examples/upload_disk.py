@@ -43,8 +43,6 @@ import time
 
 from ovirt_imageio import client
 
-logging.basicConfig(level=logging.DEBUG, filename='example.log')
-
 def parse_args():
     parser = argparse.ArgumentParser(description="Upload images")
 
@@ -109,6 +107,11 @@ def parse_args():
         default=False,
         action="store_true",
         help="upload via proxy on the engine host (less efficient)")
+
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="log debug level messages to example.log")
 
     return parser.parse_args()
 
@@ -186,6 +189,12 @@ def get_disk_info(args, image_info):
 
 args = parse_args()
 
+logging.basicConfig(
+    level=logging.DEBUG if args.debug else logging.INFO,
+    filename="example.log",
+    format="%(asctime)s %(levelname)-7s (%(threadName)s) [%(name)s] %(message)s"
+)
+
 # Get image and disk info using qemu-img
 image_info = get_image_info(args.filename)
 disk_info = get_disk_info(args, image_info)
@@ -217,7 +226,7 @@ connection = sdk.Connection(
     username=args.username,
     password=password,
     ca_file=args.cafile,
-    debug=True,
+    debug=args.debug,
     log=logging.getLogger(),
 )
 

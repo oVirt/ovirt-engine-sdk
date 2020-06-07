@@ -36,8 +36,6 @@ import time
 
 from ovirt_imageio import client
 
-logging.basicConfig(level=logging.DEBUG, filename='example.log')
-
 # This example will connect to the server and download the data
 # of the disk to a local file.
 
@@ -94,6 +92,11 @@ def parse_args():
         action="store_true",
         help="download via proxy on the engine host (less efficient)")
 
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="log debug level messages to example.log")
+
     return parser.parse_args()
 
 
@@ -107,6 +110,12 @@ def read_password(args):
 
 args = parse_args()
 
+logging.basicConfig(
+    level=logging.DEBUG if args.debug else logging.INFO,
+    filename="example.log",
+    format="%(asctime)s %(levelname)-7s (%(threadName)s) [%(name)s] %(message)s"
+)
+
 # Create the connection to the server:
 print("Connecting...")
 
@@ -115,7 +124,7 @@ connection = sdk.Connection(
     username=args.username,
     password=read_password(args),
     ca_file=args.cafile,
-    debug=True,
+    debug=args.debug,
     log=logging.getLogger(),
 )
 

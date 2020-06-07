@@ -48,8 +48,6 @@ import ovirtsdk4.types as types
 
 from ovirt_imageio import client
 
-logging.basicConfig(level=logging.WARNING)
-
 start_time = time.time()
 
 
@@ -179,6 +177,13 @@ def main():
         help="UUID of the backup to finalize.")
 
     args = parser.parse_args()
+
+    logging.basicConfig(
+        level=logging.DEBUG if args.debug else logging.INFO,
+        filename="example.log",
+        format="%(asctime)s %(levelname)-7s (%(threadName)s) [%(name)s] %(message)s"
+    )
+
     args.command(args)
 
 
@@ -293,6 +298,11 @@ def add_common_args(parser):
         action="store_false",
         help=("Do not verify server certificates and host name "
               "(not recommended)."))
+
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="log debug level messages to example.log")
 
 
 # Backup helpers
@@ -495,6 +505,8 @@ def connect_engine(args):
         password=get_pass(args),
         ca_file=args.cafile,
         insecure=not args.secure,
+        debug=args.debug,
+        log=logging.getLogger(),
     )
 
 
