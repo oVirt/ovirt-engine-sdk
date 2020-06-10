@@ -36,6 +36,8 @@ import time
 
 from ovirt_imageio import client
 
+from helpers import imagetransfer
+
 # This example will connect to the server and download the data
 # of the disk to a local file.
 
@@ -147,6 +149,14 @@ disks_service = connection.system_service().disks_service()
 disk_service = disks_service.disk_service(args.disk_uuid)
 disk = disk_service.get()
 
+# Find a host for this transfer. This is an optional step allowing optimizing
+# the transfer using unix socket when running this code on a oVirt hypervisor
+# in the same data center.
+sd_id = disk.storage_domains[0].id
+sds_service = system_service.storage_domains_service()
+storage_domain = sds_service.storage_domain_service(sd_id).get()
+host = imagetransfer.find_host(connection, storage_domain.name)
+
 print("Creating image transfer...")
 
 # Get a reference to the service that manages the image
@@ -156,6 +166,7 @@ transfers_service = system_service.image_transfers_service()
 # Add a new image transfer:
 transfer = transfers_service.add(
     types.ImageTransfer(
+        host=host,
         image=types.Image(
             id=disk.id
         ),

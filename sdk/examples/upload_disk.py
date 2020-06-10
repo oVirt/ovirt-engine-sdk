@@ -43,6 +43,9 @@ import time
 
 from ovirt_imageio import client
 
+from helpers import imagetransfer
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Upload images")
 
@@ -87,8 +90,6 @@ def parse_args():
         required=True,
         help="name of the storage domain.")
 
-    # Note: unix socket works only when running this tool on the same host serving
-    # the image.
     parser.add_argument(
         "-c", "--cafile",
         help="path to oVirt engine certificate for verifying server.")
@@ -277,6 +278,11 @@ print("Disk id: %s" % disk.id)
 
 print("Creating image transfer...")
 
+# Find a host for this transfer. This is an optional step allowing optimizing
+# the transfer using unix socket when running this code on a oVirt hypervisor
+# in the same data center.
+host = imagetransfer.find_host(connection, args.sd_name)
+
 # Get a reference to the service that manages the image
 # transfer that was added in the previous step:
 transfers_service = system_service.image_transfers_service()
@@ -284,6 +290,7 @@ transfers_service = system_service.image_transfers_service()
 # Add a new image transfer:
 transfer = transfers_service.add(
     types.ImageTransfer(
+        host=host,
         image=types.Image(
             id=disk.id
         ),
