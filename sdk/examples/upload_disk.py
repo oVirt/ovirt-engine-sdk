@@ -274,7 +274,7 @@ while True:
     if disk.status == types.DiskStatus.OK:
         break
 
-print("Disk id: %s" % disk.id)
+print("Disk ID: %s" % disk.id)
 
 print("Creating image transfer...")
 
@@ -283,41 +283,11 @@ print("Creating image transfer...")
 # in the same data center.
 host = imagetransfer.find_host(connection, args.sd_name)
 
-# Get a reference to the service that manages the image
-# transfer that was added in the previous step:
-transfers_service = system_service.image_transfers_service()
+transfer = imagetransfer.create_transfer(connection, disk,
+    types.ImageTransferDirection.UPLOAD, host=host)
 
-# Add a new image transfer:
-transfer = transfers_service.add(
-    types.ImageTransfer(
-        host=host,
-        image=types.Image(
-            id=disk.id
-        ),
-        # Use raw format to enable NBD backend, supporting on-the-fly image
-        # format conversion.
-        format=types.DiskFormat.RAW,
-     )
-)
-
-# Get reference to the created transfer service:
-transfer_service = transfers_service.image_transfer_service(transfer.id)
-
-# After adding a new transfer for the disk, the transfer's status will be INITIALIZING.
-# Wait until the init phase is over. The actual transfer can start when its status is "Transferring".
-while transfer.phase == types.ImageTransferPhase.INITIALIZING:
-    time.sleep(1)
-    transfer = transfer_service.get()
-
-# You can use the transfer id to locate logs for this transfer.
 print("Transfer ID: %s" % transfer.id)
-
-# Fetch the transfer host name. This is very useful for troubleshooting.
-hosts_service = connection.system_service().hosts_service()
-host_service = hosts_service.host_service(transfer.host.id)
-transfer_host = host_service.get()
-
-print("Transfer host: %s" % transfer_host.name)
+print("Transfer host name: %s" % transfer.host.name)
 
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it. We use the recommended
@@ -353,8 +323,7 @@ with client.ProgressBar() as pb:
         **extra_args)
 
 print("Finalizing image transfer...")
-# Successful cleanup
-transfer_service.finalize()
+imagetransfer.finalize_transfer(connection, transfer, disk)
 connection.close()
 
 print("Upload completed successfully")
