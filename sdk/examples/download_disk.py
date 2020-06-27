@@ -159,46 +159,11 @@ host = imagetransfer.find_host(connection, storage_domain.name)
 
 print("Creating image transfer...")
 
-# Get a reference to the service that manages the image
-# transfer that was added in the previous step:
-transfers_service = system_service.image_transfers_service()
+transfer = imagetransfer.create_transfer(
+    connection, disk, types.ImageTransferDirection.DOWNLOAD, host=host)
 
-# Add a new image transfer:
-transfer = transfers_service.add(
-    types.ImageTransfer(
-        host=host,
-        image=types.Image(
-            id=disk.id
-        ),
-        direction=types.ImageTransferDirection.DOWNLOAD,
-
-        # format=raw enables the NBD backend, enbaling:
-        # - Download raw guest data, regardless of the disk format.
-        # - Collapsed qcow2 chains to single raw file.
-        # - Extents reporting for qcow2 images and raw images on file storage,
-        #   speeding up the transfer.
-        format=types.DiskFormat.RAW,
-    )
-)
-
-# Get reference to the created transfer service:
-transfer_service = transfers_service.image_transfer_service(transfer.id)
-
-# After adding a new transfer for the disk, the transfer's status will be INITIALIZING.
-# Wait until the init phase is over. The actual transfer can start when its status is "Transferring".
-while transfer.phase == types.ImageTransferPhase.INITIALIZING:
-    time.sleep(1)
-    transfer = transfer_service.get()
-
-# You can use the transfer to locate logs for this transfer.
 print("Transfer ID: %s" % transfer.id)
-
-# Fetch the transfer host name. This is very useful for troubleshooting.
-hosts_service = connection.system_service().hosts_service()
-host_service = hosts_service.host_service(transfer.host.id)
-transfer_host = host_service.get()
-
-print("Transfer host: %s" % transfer_host.name)
+print("Transfer host name: %s" % transfer.host.name)
 
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it. We use the recommended
@@ -235,9 +200,8 @@ try:
             progress=pb,
             **extra_args)
 finally:
-    # Finalize the session.
     print("Finalizing image transfer...")
-    transfer_service.finalize()
+    imagetransfer.finalize_transfer(connection, transfer, disk)
 
 # Close the connection to the server:
 connection.close()
