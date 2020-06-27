@@ -45,6 +45,7 @@ from contextlib import closing
 
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
+from helpers import imagetransfer
 
 from ovirt_imageio import client
 
@@ -392,8 +393,14 @@ def get_backup_service(connection, vm_uuid, backup_uuid):
 
 
 def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=False):
-    transfer = create_transfer(connection, backup_uuid, disk)
+    progress("Creating image transfer for disk %s" % disk.id)
+    transfer = imagetransfer.create_transfer(
+        connection,
+        disk,
+        types.ImageTransferDirection.DOWNLOAD,
+        backup=types.Backup(id=backup_uuid))
     try:
+        progress("Image transfer %s is ready" % transfer.id)
         download_url = transfer.transfer_url
 
         extra_args = {}
@@ -419,64 +426,8 @@ def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=Fa
                 progress=pb,
                 **extra_args)
     finally:
-        finalize_transfer(connection, transfer)
-
-
-def create_transfer(connection, backup_uuid, disk):
-    progress("Creating image transfer for disk %s" % disk.id)
-    transfers_service = connection.system_service().image_transfers_service()
-
-    transfer = transfers_service.add(
-        types.ImageTransfer(
-            disk=disk,
-            # required for when downloading backup disks
-            backup=types.Backup(id=backup_uuid),
-            direction=types.ImageTransferDirection.DOWNLOAD,
-            # required for when downloading backup disks
-            format=types.DiskFormat.RAW,
-        )
-    )
-
-    progress("Waiting until transfer %s will be ready" % transfer.id)
-
-    transfer_service = transfers_service.image_transfer_service(transfer.id)
-
-    while transfer.phase == types.ImageTransferPhase.INITIALIZING:
-        time.sleep(1)
-        transfer = transfer_service.get()
-
-    try:
-        transfer = transfer_service.get()
-    except sdk.NotFoundError:
-        # The system has removed the transfer.
-        raise RuntimeError("transfer %s was removed" % transfer.id)
-
-    if transfer.phase != types.ImageTransferPhase.TRANSFERRING:
-        progress("Canceling transfer %s" % transfer.id)
-        transfer_service.cancel()
-        raise RuntimeError(
-            "transfer {} initialization failed: {} != {}"
-            .format(transfer.id, transfer.phase, types.ImageTransferPhase.TRANSFERRING))
-
-    if transfer.transfer_url is None:
-        progress("Canceling transfer %s" % transfer.id)
-        transfer_service.cancel()
-        raise RuntimeError(
-            "Transfer {} missing transfer_url: {}".format(
-                transfer.id, transfer.transfer_url))
-
-    progress("Image transfer %s is ready" % transfer.id)
-    progress("Transfer url: %s" % transfer.transfer_url)
-    return transfer
-
-
-def finalize_transfer(connection, transfer):
-    progress("Finalizing transfer %s" % transfer.id)
-    transfers_service = connection.system_service().image_transfers_service()
-    transfer_service = transfers_service.image_transfer_service(transfer.id)
-    transfer_service.finalize()
-
-    # TODO: Wait until transfer is finalized and handle failures.
+        progress("Finalizing image transfer")
+        imagetransfer.finalize_transfer(connection, transfer, disk)
 
 
 def get_vm_disks(connection, vm_id):
