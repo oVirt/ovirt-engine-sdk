@@ -18,6 +18,9 @@ Image transfer helpers
 """
 
 import logging
+import time
+
+from ovirtsdk4 import types
 
 log = logging.getLogger("helpers")
 
@@ -56,8 +59,8 @@ def find_host(connection, sd_name):
     - If we run on host2, we can use use host2 for transferring disk1.
     - If we run on host3, we can use host3 for transferring disk2.
 
-    Args:
-        connection (ovirtsdk4.Connection): Connection instance
+    Arguments:
+        connection (ovirtsdk4.Connection): Connection to ovirt engine
         sd_name (str): Storage domain name
 
     Returns:
@@ -114,3 +117,182 @@ def find_host(connection, sd_name):
     log.debug("Using host id %s", host.id)
 
     return host
+
+
+def create_transfer(connection, disk, direction, host=None, backup=None,
+                    timeout=60):
+    """
+    Create image transfer for upload to disk or download from disk.
+
+    Arguments:
+        connection (ovirtsdk4.Connection): connection to ovirt engine
+        disk (ovirtsdk4.types.Disk): disk object
+        direction (ovirtsdk4.typles.ImageTransferDirection): transfer
+            direction (UPLOAD, DOWNLOAD)
+        host (ovirtsdk4.types.Host): host object that should perform the
+            transfer. If not specified engine will pick a random host.
+        backup (ovirtsdk4.types.Backup): When downloading backup, the backup
+            object owning the disks.
+        timeout (float, optional): number of seconds to wait for transfer
+            to become ready.
+
+    Returns:
+        ovirtsdk4.types.ImageTransfer in phase TRANSFERRING
+    """
+    log.info("Creating image transfer disk=%s direction=%s host=%s backup=%s",
+             disk.id, direction, host, backup)
+
+    transfers_service = connection.system_service().image_transfers_service()
+
+    # Add a new image transfer.
+    transfer = transfers_service.add(
+        types.ImageTransfer(
+            host=host,
+            image=types.Image(id=disk.id),
+            direction=direction,
+            backup=backup,
+
+            # format=raw uses the NBD backend, enabling:
+            # - Transfer raw guest data, regardless of the disk format.
+            # - Automatic format conversion to remote disk format. For example,
+            #   upload qcow2 image to raw disk, or raw image to qcow2 disk.
+            # - Collapsed qcow2 chains to single raw file.
+            # - Extents reporting for qcow2 images and raw images on file storage,
+            #   speeding up downloads.
+            format=types.DiskFormat.RAW,
+         )
+    )
+
+    # You can use the transfer id to locate logs for this transfer.
+    log.info("Transfer ID %s", transfer.id)
+
+    # At this point the transfer owns the disk and will delete the disk if the
+    # transfer is canceled, or if finalizing the transfer fails.
+
+    transfer_service = transfers_service.image_transfer_service(transfer.id)
+    start = time.time()
+
+    while True:
+        time.sleep(1)
+        try:
+            transfer = transfer_service.get()
+        except sdk.NotFoundError:
+            # The system has removed the disk and the transfer.
+            raise RuntimeError("Transfer {} was removed".format(transfer.id))
+
+        if transfer.phase == types.ImageTransferPhase.FINISHED_FAILURE:
+            # The system will remove the disk and the transfer soon.
+            raise RuntimeError("Transfer {} has failed".format(transfer.id))
+
+        if transfer.phase == types.ImageTransferPhase.PAUSED_SYSTEM:
+            transfer_service.cancel()
+            raise RuntimeError(
+                "Transfer {} was paused by system".format(transfer.id))
+
+        if transfer.phase == types.ImageTransferPhase.TRANSFERRING:
+            break
+
+        if transfer.phase != types.ImageTransferPhase.INITIALIZING:
+            transfer_service.cancel()
+            raise RuntimeError(
+                "Unexpected transfer {} phase {}"
+                .format(transfer.id, transfer.phase))
+
+        if time.time() > start + timeout:
+            log.info("Cancelling transfer %s", transfer.id)
+            transfer_service.cancel()
+            raise RuntimeError(
+                "Timed out waiting for transfer {}".format(transfer.id))
+
+    log.info("Transfer initialized in %.3f seconds", time.time() - start)
+
+    # Log the transfer host name. This is very useful for troubleshooting.
+    hosts_service = connection.system_service().hosts_service()
+    host_service = hosts_service.host_service(transfer.host.id)
+    transfer.host = host_service.get()
+
+    log.info("Transfer host name: %s", transfer.host.name)
+
+    return transfer
+
+
+def cancel_transfer(connection, transfer):
+    """
+    Cancel a transfer and remove the disk for upload transfer.
+
+    There is not need to cancel a download transfer, it can always be
+    finalized.
+    """
+    log.info("Cancelling transfer %s", transfer.id)
+    transfer_service = (connection.system_service()
+                            .image_transfers_service()
+                            .image_transfer_service(transfer.id))
+    transfer_service.cancel()
+
+
+def finalize_transfer(connection, transfer, disk, timeout=60):
+    """
+    Finalize a transfer, making the transfer disk available.
+
+    If finalizing succeeds, transfer's phase will change to FINISHED_SUCCESS
+    and the transfer's disk status will change to OK.  On upload errors, the
+    transfer's phase will change to FINISHED_FAILURE and the disk status will
+    change to ILLEGAL and it will be removed. In both cases the transfer entity
+    will be removed shortly after.
+
+    If oVirt fails to finalize the transfer, transfer's phase will change to
+    PAUSED_SYSTEM. In this case the disk's status will change to ILLEGAL and it
+    will not be removed.
+
+    For simplicity, we track only disk's status changes.
+
+    For more info see:
+    - http://ovirt.github.io/ovirt-engine-api-model/4.4/#services/image_transfer
+    - http://ovirt.github.io/ovirt-engine-sdk/master/types.m.html#ovirtsdk4.types.ImageTransfer
+
+    Arguments:
+        connection (ovirtsdk4.Connection): connection to ovirt engine
+        transfer (ovirtsdk4.types.ImageTransfer): image transfer to finalize
+        disk (ovirtsdk4.types.Disk): disk associated with the image transfer
+        timeout (float, optional): number of seconds to wait for transfer
+            to finalize.
+    """
+    log.info("Finalizing transfer %s for disk %s", transfer.id, disk.id)
+
+    transfer_service = (connection.system_service()
+                            .image_transfers_service()
+                            .image_transfer_service(transfer.id))
+
+    start = time.time()
+
+    transfer_service.finalize()
+
+    disk_service = (connection.system_service()
+                        .disks_service()
+                        .disk_service(disk.id))
+
+    while True:
+        time.sleep(1)
+        try:
+            disk = disk_service.get()
+        except sdk.NotFoundError:
+            # Disk verification failed and the system removed the disk.
+            raise RuntimeError(
+                "Transfer {} failed: disk {} was removed"
+                .format(transfer.id, disk.id))
+
+        if disk.status == types.DiskStatus.ILLEGAL:
+            # Disk verification failed or transfer was paused by the system.
+            raise RuntimeError(
+                "Transfer {} failed: disk {} is ILLEGAL"
+                .format(transfer.id, disk.id))
+
+        if disk.status == types.DiskStatus.OK:
+            break
+
+        if time.time() > start + timeout:
+            raise RuntimeError(
+                "Timed out waiting for transfer {} to finalize"
+                .format(transfer.id))
+
+    log.info("Transfer finalized in %.3f seconds", time.time() - start)
