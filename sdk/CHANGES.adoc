@@ -2,6 +2,12 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.4.4 / Jul 1 2020
+
+* Update to model 4.4.17
+
+* Improve examples code around image transfer features
+
 == 4.4.3 / May 18 2020
 
 * Update to model 4.4.16
@@ -164,7 +170,7 @@ New features:
 
 * Add `cancel` action to transfer image session.
 
-* Add `export` template as OVA to a given path on a host 
+* Add `export` template as OVA to a given path on a host
   https://bugzilla.redhat.com/1526033[#1526033].
 
 * Add service to list user groups
