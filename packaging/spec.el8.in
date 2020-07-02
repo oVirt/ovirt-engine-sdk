@@ -1,8 +1,8 @@
-%global tar_version 4.3.1
+%global tar_version 4.4.4
 
 Name: python-ovirt-engine-sdk4
 Summary: Python SDK for version 4 of the oVirt Engine API
-Version: 4.3.1
+Version: 4.4.4
 Release: 1%{?dist}
 Group: Development/Languages
 License: ASL 2.0
@@ -48,6 +48,10 @@ API.
 %{python3_sitearch}/*
 
 %changelog
+* Thu Jul 2 2020 Martin Perina <mperina@redhat.com> - 4.4.4-1
+- Update to model 4.4.17
+- Improve examples code around image transfer features
+
 * Thu Jun 06 2019 Sandro Bonazzola <sbonazzo@redhat.com> - 4.3.1-1
 - 4.3.1
 - Adhere to Fedora packaging guidelines naming schema
