@@ -120,7 +120,7 @@ def find_host(connection, sd_name):
 
 
 def create_transfer(connection, disk, direction, host=None, backup=None,
-                    timeout=60):
+                    inactivity_timeout=None, timeout=60):
     """
     Create image transfer for upload to disk or download from disk.
 
@@ -133,6 +133,9 @@ def create_transfer(connection, disk, direction, host=None, backup=None,
             transfer. If not specified engine will pick a random host.
         backup (ovirtsdk4.types.Backup): When downloading backup, the backup
             object owning the disks.
+        inactivity_timeout (int): Number of seconds engine will wait for client
+            activity before pausing the transfer. If not set, use engine
+            default value.
         timeout (float, optional): number of seconds to wait for transfer
             to become ready.
 
@@ -151,6 +154,7 @@ def create_transfer(connection, disk, direction, host=None, backup=None,
             image=types.Image(id=disk.id),
             direction=direction,
             backup=backup,
+            inactivity_timeout=inactivity_timeout,
 
             # format=raw uses the NBD backend, enabling:
             # - Transfer raw guest data, regardless of the disk format.
