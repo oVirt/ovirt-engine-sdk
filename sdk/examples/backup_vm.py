@@ -342,7 +342,9 @@ def start_backup(connection, args):
         try:
             backup = backup_service.get()
         except sdk.NotFoundError:
-            raise RuntimeError("Backup {} failed".format(backup.id))
+            failure_event = get_backup_events(connection, backup.id)[0]
+            raise RuntimeError(
+                "Backup {} failed: {}".format(backup.id, failure_event))
 
     if backup.to_checkpoint_id is not None:
         progress(
@@ -454,6 +456,14 @@ def get_pass(args):
         password = getpass.getpass()
 
     return password
+
+
+def get_backup_events(connection, search_id):
+    events_service = connection.system_service().events_service()
+
+    # Get the backup events arranged from the most recent event to the oldest
+    return [dict(code=event.code, description=event.description)
+            for event in events_service.list(search=str(search_id))]
 
 
 def connect_engine(args):
