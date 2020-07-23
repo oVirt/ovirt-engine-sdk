@@ -61,6 +61,10 @@ def add_engine_arguments(parser):
         action="store_true",
         help="log debug level messages to logfile")
 
+    parser.add_argument(
+        "--logfile",
+        default="example.log",
+        help="log file name (default example.log)")
 
 def create_connection(args):
     """
@@ -91,8 +95,8 @@ def progress(msg, start_time=time.monotonic()):
     print("[ %5.1f ] %s" % (time.monotonic() - start_time, msg))
 
 
-def configure_logging(args, filename="example.log"):
+def configure_logging(args):
     logging.basicConfig(
         level=logging.DEBUG if args.debug else logging.INFO,
-        filename=filename,
+        filename=args.logfile,
         format="%(asctime)s %(levelname)-7s (%(threadName)s) [%(name)s] %(message)s")
