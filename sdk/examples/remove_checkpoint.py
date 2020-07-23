@@ -35,12 +35,11 @@ import ovirtsdk4 as sdk
 from helpers import common
 from helpers.common import progress
 
-common.configure_logging()
-
 parser = argparse.ArgumentParser(description="Remove VM checkpoint")
 common.add_engine_arguments(parser)
 parser.add_argument("vm_uuid", help="UUID of the checkpoint VM")
 args = parser.parse_args()
+common.configure_logging(args)
 
 progress("Removing root checkpoint for VM %r" % args.vm_uuid)
 
