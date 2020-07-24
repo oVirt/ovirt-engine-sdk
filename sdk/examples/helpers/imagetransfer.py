@@ -20,6 +20,7 @@ Image transfer helpers
 import logging
 import time
 
+import ovirtsdk4 as sdk
 from ovirtsdk4 import types
 
 log = logging.getLogger("helpers")
