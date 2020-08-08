@@ -41,10 +41,14 @@ you will need to do the following:
   python3-nose \
   python3-wheel
 
-To run the build use the following commands:
+To build and run the tests use the following commands:
 
   $ git clone git://gerrit.ovirt.org/ovirt-engine-sdk
   $ mvn package
+
+To build without running the tests:
+
+  $ mvn package -Dskipflake=true -DskipTests=true
 
 This will build the code generator, run it to generate the SDK for the
 version of the API that corresponds to the branch of the SDK that you
