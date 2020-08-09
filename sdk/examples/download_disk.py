@@ -37,6 +37,8 @@ import time
 from ovirt_imageio import client
 
 from helpers import imagetransfer
+from helpers import units
+from helpers.units import MiB
 
 # This example will connect to the server and download the data
 # of the disk to a local file.
@@ -102,6 +104,15 @@ def parse_args():
              "(4) improves performance when downloading a single disk. "
              "You may want to use lower number if you download many disks "
              "in the same time.")
+
+    parser.add_argument(
+        "--buffer-size",
+        type=units.humansize,
+        default=client.BUFFER_SIZE,
+        help="Buffer size per worker. The default ({}) gives good "
+             "performance with the default number of workers. If you use "
+             "smaller number of workers you may want use larger value."
+             .format(client.BUFFER_SIZE))
 
     parser.add_argument(
         "--debug",
@@ -197,6 +208,7 @@ try:
             args.cafile,
             fmt=args.format,
             secure=args.secure,
+            buffer_size=args.buffer_size,
             progress=pb,
             **extra_args)
 finally:

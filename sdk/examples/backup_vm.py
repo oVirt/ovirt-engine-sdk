@@ -46,6 +46,8 @@ from contextlib import closing
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
 from helpers import imagetransfer
+from helpers import units
+from helpers.units import MiB
 
 from ovirt_imageio import client
 
@@ -302,6 +304,15 @@ def add_download_args(parser):
              "in the same time.")
 
     parser.add_argument(
+        "--buffer-size",
+        type=units.humansize,
+        default=client.BUFFER_SIZE,
+        help="Buffer size per worker. The default ({}) gives good "
+             "performance with the default number of workers. If you use "
+             "smaller number of workers you may want use larger value."
+             .format(client.BUFFER_SIZE))
+
+    parser.add_argument(
         "--backup-dir",
         default="./",
         help="Path to a directory to download backup disks "
@@ -425,6 +436,7 @@ def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=Fa
                 args.cafile,
                 incremental=incremental,
                 secure=args.secure,
+                buffer_size=args.buffer_size,
                 progress=pb,
                 **extra_args)
     finally:
