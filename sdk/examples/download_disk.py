@@ -18,33 +18,28 @@
 #
 
 """
-
 Download disk example code.
 
 Requires the ovirt-imageio-client package.
 """
 
-from __future__ import print_function
-
-import argparse
-import getpass
 import inspect
-import logging
-import ovirtsdk4 as sdk
-import ovirtsdk4.types as types
 import time
 
 from ovirt_imageio import client
 
+import ovirtsdk4.types as types
+
+from helpers import common
 from helpers import imagetransfer
 from helpers import units
-from helpers.units import MiB
+from helpers.common import progress
 
 # This example will connect to the server and download the data
 # of the disk to a local file.
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Download disk")
+    parser = common.ArgumentParser(description="Download disk")
 
     parser.add_argument(
         "disk_uuid",
@@ -53,34 +48,6 @@ def parse_args():
     parser.add_argument(
         "filename",
         help="path to downloaded disk")
-
-    parser.add_argument(
-        "--engine-url",
-        required=True,
-        help="oVirt engine URL (e.g. https://my-engine:port)")
-
-    parser.add_argument(
-        "--username",
-        required=True,
-        help="username of engine API")
-
-    parser.add_argument(
-        "-c", "--cafile",
-        required=True,
-        help="path to oVirt engine certificate for verifying server.")
-
-    parser.add_argument(
-        "--insecure",
-        dest="secure",
-        action="store_false",
-        default=False,
-        help=("do not verify server certificates and host name (not "
-              "recommended)."))
-
-    parser.add_argument(
-        "--password-file",
-        help="file containing password of the specified by user (if file is "
-             "not specified, read from standard input)")
 
     parser.add_argument(
         "-f", "--format",
@@ -114,44 +81,14 @@ def parse_args():
              "smaller number of workers you may want use larger value."
              .format(client.BUFFER_SIZE))
 
-    parser.add_argument(
-        "--debug",
-        action="store_true",
-        help="log debug level messages to example.log")
-
     return parser.parse_args()
 
 
-def read_password(args):
-    if args.password_file:
-        with open(args.password_file) as f:
-            return f.readline().rstrip('\n')
-    else:
-        return getpass.getpass()
-
-
 args = parse_args()
+common.configure_logging(args)
 
-logging.basicConfig(
-    level=logging.DEBUG if args.debug else logging.INFO,
-    filename="example.log",
-    format="%(asctime)s %(levelname)-7s (%(threadName)s) [%(name)s] %(message)s"
-)
-
-# Create the connection to the server:
-print("Connecting...")
-
-connection = sdk.Connection(
-    url=args.engine_url + '/ovirt-engine/api',
-    username=args.username,
-    password=read_password(args),
-    ca_file=args.cafile,
-    debug=args.debug,
-    log=logging.getLogger(),
-)
-
-# Get the reference to the root service:
-system_service = connection.system_service()
+progress("Connecting...")
+connection = common.create_connection(args)
 
 # Get the reference to the disks service:
 disks_service = connection.system_service().disks_service()
@@ -164,17 +101,17 @@ disk = disk_service.get()
 # the transfer using unix socket when running this code on a oVirt hypervisor
 # in the same data center.
 sd_id = disk.storage_domains[0].id
-sds_service = system_service.storage_domains_service()
+sds_service = connection.system_service().storage_domains_service()
 storage_domain = sds_service.storage_domain_service(sd_id).get()
 host = imagetransfer.find_host(connection, storage_domain.name)
 
-print("Creating image transfer...")
+progress("Creating image transfer...")
 
 transfer = imagetransfer.create_transfer(
     connection, disk, types.ImageTransferDirection.DOWNLOAD, host=host)
 
-print("Transfer ID: %s" % transfer.id)
-print("Transfer host name: %s" % transfer.host.name)
+progress("Transfer ID: %s" % transfer.id)
+progress("Transfer host name: %s" % transfer.host.name)
 
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it. We use the recommended
@@ -198,7 +135,7 @@ else:
     if "proxy_url" in parameters:
         extra_args["proxy_url"] = transfer.proxy_url
 
-print("Downloading image...")
+progress("Downloading image...")
 
 try:
     with client.ProgressBar() as pb:
@@ -212,7 +149,7 @@ try:
             progress=pb,
             **extra_args)
 finally:
-    print("Finalizing image transfer...")
+    progress("Finalizing image transfer...")
     imagetransfer.finalize_transfer(connection, transfer, disk)
 
 # Close the connection to the server:
