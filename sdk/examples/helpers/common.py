@@ -22,49 +22,73 @@ Engine connection helper for SDK examples, such as parsing command line argument
 and create connection to engine server.
 """
 
+import argparse
+import configparser
 import getpass
 import logging
-import ovirtsdk4 as sdk
+import os
 import time
 
+import ovirtsdk4 as sdk
 
-def add_engine_arguments(parser):
-    parser.add_argument(
-        "--engine-url",
-        required=True,
-        help="oVirt engine URL (e.g. https://engine_fqdn:port)")
 
-    parser.add_argument(
-        "--username",
-        required=True,
-        help="username of engine API")
+class ArgumentParser:
 
-    parser.add_argument(
-        "--password-file",
-        help="file containing password of the specified by user (if file is "
-             "not specified, read from standard input)")
+    def __init__(self, **kwargs):
+        self._parser = argparse.ArgumentParser(**kwargs)
 
-    parser.add_argument(
-        "-c", "--cafile",
-        help="path to oVirt engine certificate for verifying server.")
+        self._parser.add_argument(
+            "-c", "--config",
+            required=True,
+            help="Use engine connection details from [CONFIG] section in "
+                 "~/.config/ovirt.conf")
 
-    parser.add_argument(
-        "--insecure",
-        dest="secure",
-        action="store_false",
-        default=False,
-        help=("do not verify server certificates and host name (not "
-              "recommended)."))
+        self._parser.add_argument(
+            "--debug",
+            action="store_true",
+            help="log debug level messages to logfile")
 
-    parser.add_argument(
-        "--debug",
-        action="store_true",
-        help="log debug level messages to logfile")
+        self._parser.add_argument(
+            "--logfile",
+            default="example.log",
+            help="log file name (default example.log)")
 
-    parser.add_argument(
-        "--logfile",
-        default="example.log",
-        help="log file name (default example.log)")
+    def add_argument(self, *args, **kwargs):
+        self._parser.add_argument(*args, **kwargs)
+
+    def add_subparsers(self, *args, **kwargs):
+        return self._parser.add_subparsers(*args, **kwargs)
+
+    def parse_args(self):
+        args = self._parser.parse_args()
+
+        config = configparser.ConfigParser(interpolation=None)
+        config.read([os.path.expanduser("~/.config/ovirt.conf")])
+
+        # Required options.
+
+        args.engine_url = config.get(args.config, "engine_url")
+        args.username = config.get(args.config, "username")
+
+        # Optional options.
+
+        if config.has_option(args.config, "secure"):
+            args.secure = config.getboolean(args.config, "secure")
+        else:
+            args.secure = True
+
+        if config.has_option(args.config, "cafile"):
+            args.cafile = config.get(args.config, "cafile")
+        else:
+            args.cafile = ""
+
+        if config.has_option(args.config, "password"):
+            args.password = config.get(args.config, "password")
+        else:
+            args.password = getpass.getpass()
+
+        return args
+
 
 def create_connection(args):
     """
@@ -77,18 +101,11 @@ def create_connection(args):
     return sdk.Connection(
         url=args.engine_url + '/ovirt-engine/api',
         username=args.username,
-        password=read_password(args),
+        password=args.password,
         ca_file=args.cafile,
         debug=args.debug,
         log=logging.getLogger(),
     )
-
-def read_password(args):
-    if args.password_file:
-        with open(args.password_file) as f:
-            return f.read().rstrip('\n') # oVirt doesn't support empty lines in password
-    else:
-        return getpass.getpass()
 
 
 def progress(msg, start_time=time.monotonic()):

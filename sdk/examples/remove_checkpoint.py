@@ -26,7 +26,6 @@ but the feature is currently in tech-preview until libvirt will
 release official release that contains the support for incremental
 backup.
 """
-import argparse
 import time
 
 from contextlib import closing
@@ -35,8 +34,7 @@ import ovirtsdk4 as sdk
 from helpers import common
 from helpers.common import progress
 
-parser = argparse.ArgumentParser(description="Remove VM checkpoint")
-common.add_engine_arguments(parser)
+parser = common.ArgumentParser(description="Remove VM checkpoint")
 parser.add_argument("vm_uuid", help="UUID of the checkpoint VM")
 args = parser.parse_args()
 common.configure_logging(args)

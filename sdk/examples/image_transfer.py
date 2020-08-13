@@ -33,13 +33,7 @@ example.
 
 2. Run the image_ransfer.py
 
-$ ./image_transfer.py \
-    --engine-url https://engine3 \
-    --username admin@internal \
-    --password engine3-password \
-    --cafile engine3.pem \
-    upload \
-    e2b9464e-6d9d-4f92-8375-2e5e087c5674
+$ ./image_transfer.py -c engine3 upload e2b9464e-6d9d-4f92-8375-2e5e087c5674
 [   0.0 ] Connecting to engine...
 [   0.0 ] Looking up disk e2b9464e-6d9d-4f92-8375-2e5e087c5674
 [   0.3 ] Creating image transfer for upload
@@ -97,7 +91,6 @@ used by the image transfer.
 Requires ovirt-imageio-client >= 2.0.10-1
 """
 
-import argparse
 import time
 
 from contextlib import closing
@@ -111,8 +104,7 @@ from helpers.common import progress
 from ovirt_imageio.client import ImageioClient
 
 
-parser = argparse.ArgumentParser(description="Run an image transfer")
-common.add_engine_arguments(parser)
+parser = common.ArgumentParser(description="Run an image transfer")
 
 parser.add_argument(
     "direction",
