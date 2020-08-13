@@ -20,9 +20,6 @@ Upload disk from OVA file.
 Require ovirt-imageio-client >= 2.0.9
 """
 
-import argparse
-import getpass
-import logging
 import os
 import time
 
@@ -30,47 +27,15 @@ from contextlib import closing
 
 from ovirt_imageio import client
 
-import ovirtsdk4 as sdk
-import ovirtsdk4.types as types
+from ovirtsdk4 import types
+
 from helpers import imagetransfer
+from helpers import common
+from helpers.common import progress
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Upload disk from OVA")
-
-    # Common options.
-
-    parser.add_argument(
-        "--engine-url",
-        required=True,
-        help="oVirt engine URL (e.g. https://engine_fqdn:port)")
-
-    parser.add_argument(
-        "--username",
-        required=True,
-        help="username of engine API")
-
-    parser.add_argument(
-        "--password-file",
-        help="file containing password of the specified by user (if file is "
-             "not specified, read from standard input)")
-
-    parser.add_argument(
-        "-c", "--cafile",
-        help="path to oVirt engine certificate for verifying server.")
-
-    parser.add_argument(
-        "--insecure",
-        dest="secure",
-        action="store_false",
-        default=False,
-        help=("do not verify server certificates and host name (not "
-              "recommended)."))
-
-    parser.add_argument(
-        "--debug",
-        action="store_true",
-        help="log debug level messages to example.log")
+    parser = common.ArgumentParser(description="Upload disk from OVA")
 
     # Image options.
 
@@ -107,26 +72,6 @@ def parse_args():
              "Allowed for disk with qcow2 format only")
 
     return parser.parse_args()
-
-
-def read_password(args):
-    if args.password_file:
-        with open(args.password_file) as f:
-            # ovirt doesn't support empty lines in password
-            return f.read().rstrip('\n')
-    else:
-        return getpass.getpass()
-
-
-def create_connection(args):
-    return sdk.Connection(
-        url=args.engine_url + '/ovirt-engine/api',
-        username=args.username,
-        password=read_password(args),
-        ca_file=args.cafile,
-        debug=args.debug,
-        log=logging.getLogger(),
-    )
 
 
 def get_disk_info(args, image_info):
@@ -191,43 +136,37 @@ def create_disk(connection, args, disk_info):
 
 
 args = parse_args()
+common.configure_logging(args)
 
-logging.basicConfig(
-    level=logging.DEBUG if args.debug else logging.INFO,
-    filename="example.log",
-    format=("%(asctime)s %(levelname)-7s (%(threadName)s) [%(name)s] "
-            "%(message)s")
-)
-
-print("Checking image...")
+progress("Checking image...")
 
 image_info = client.info(args.ova_file, member=args.ova_disk_name)
 disk_info = get_disk_info(args, image_info)
 
-print("Image format: {}".format(image_info["format"]))
-print("Disk name: {}".format(disk_info["name"]))
-print("Disk format: {}".format(disk_info["format"]))
-print("Disk provisioned size: {}".format(disk_info["provisioned_size"]))
-print("Disk initial size: {}".format(disk_info["initial_size"]))
-print("Disk backup: {}".format(disk_info["backup"]))
+progress("Image format: {}".format(image_info["format"]))
+progress("Disk name: {}".format(disk_info["name"]))
+progress("Disk format: {}".format(disk_info["format"]))
+progress("Disk provisioned size: {}".format(disk_info["provisioned_size"]))
+progress("Disk initial size: {}".format(disk_info["initial_size"]))
+progress("Disk backup: {}".format(disk_info["backup"]))
 
-connection = create_connection(args)
+connection = common.create_connection(args)
 with closing(connection):
-    print("Creating disk...")
+    progress("Creating disk...")
     disk = create_disk(connection, args, disk_info)
-    print("Disk ID: {}".format(disk.id))
+    progress("Disk ID: {}".format(disk.id))
 
     # Try use local host for optimizing transfer.
     host = imagetransfer.find_host(connection, args.sd_name)
 
-    print("Creating image transfer...")
+    progress("Creating image transfer...")
     transfer = imagetransfer.create_transfer(
         connection, disk, types.ImageTransferDirection.UPLOAD, host=host)
     try:
-        print("Transfer ID: {}".format(transfer.id))
-        print("Transfer host name: {}".format(transfer.host.name))
+        progress("Transfer ID: {}".format(transfer.id))
+        progress("Transfer host name: {}".format(transfer.host.name))
 
-        print("Uploading disk {} from {}...".format(
+        progress("Uploading disk {} from {}...".format(
             args.ova_disk_name, os.path.basename(args.ova_file)))
 
         with client.ProgressBar() as pb:
@@ -240,11 +179,11 @@ with closing(connection):
                 proxy_url=transfer.proxy_url,
                 member=args.ova_disk_name)
     except Exception:
-        print("Upload failed, cancelling image transfer...")
+        progress("Upload failed, cancelling image transfer...")
         imagetransfer.cancel_transfer(connection, transfer)
         raise
 
-    print("Finalizing image transfer...")
+    progress("Finalizing image transfer...")
     imagetransfer.finalize_transfer(connection, transfer, disk)
 
-    print("Upload completed successfully")
+    progress("Upload completed successfully")
