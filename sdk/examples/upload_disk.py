@@ -21,55 +21,31 @@
 Upload disk example code.
 
 Requires the ovirt-imageio-client package.
-
-Usage:
-
-    upload_disk.py FILE
 """
 
-from __future__ import print_function
-
-import argparse
-import getpass
 import inspect
 import json
-import logging
 import os
-import ovirtsdk4 as sdk
-import ovirtsdk4.types as types
 import subprocess
-import sys
 import time
 
 from ovirt_imageio import client
 
+from ovirtsdk4 import types
+
+from helpers import common
 from helpers import imagetransfer
 from helpers import units
-from helpers.units import MiB
+from helpers.common import progress
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Upload images")
+    parser = common.ArgumentParser(description="Upload images")
 
     parser.add_argument(
         "filename",
         help="path to image (e.g. /path/to/image.raw) "
              "Supported formats: raw, qcow2, iso")
-
-    parser.add_argument(
-        "--engine-url",
-        required=True,
-        help="transfer URL (e.g. https://engine_fqdn:port)")
-
-    parser.add_argument(
-        "--username",
-        required=True,
-        help="username of engine API")
-
-    parser.add_argument(
-        "--password-file",
-        help="file containing password of the specified by user (if file is "
-             "not specified, read from standard input)")
 
     parser.add_argument(
         "--disk-format",
@@ -91,18 +67,6 @@ def parse_args():
         "--sd-name",
         required=True,
         help="name of the storage domain.")
-
-    parser.add_argument(
-        "-c", "--cafile",
-        help="path to oVirt engine certificate for verifying server.")
-
-    parser.add_argument(
-        "--insecure",
-        dest="secure",
-        action="store_false",
-        default=False,
-        help=("do not verify server certificates and host name (not "
-              "recommended)."))
 
     parser.add_argument(
         "--use-proxy",
@@ -129,16 +93,11 @@ def parse_args():
              "smaller number of workers you may want use larger value."
              .format(client.BUFFER_SIZE))
 
-    parser.add_argument(
-        "--debug",
-        action="store_true",
-        help="log debug level messages to example.log")
-
     return parser.parse_args()
 
 
 def get_image_info(filename):
-    print("Checking image...")
+    progress("Checking image...")
 
     out = subprocess.check_output(
         ["qemu-img", "info", "--output", "json", filename])
@@ -148,6 +107,7 @@ def get_image_info(filename):
         raise RuntimeError("Unsupported image format %(format)s" % image_info)
 
     return image_info
+
 
 def get_disk_info(args, image_info):
     disk_info = {}
@@ -210,52 +170,29 @@ def get_disk_info(args, image_info):
 
 
 args = parse_args()
-
-logging.basicConfig(
-    level=logging.DEBUG if args.debug else logging.INFO,
-    filename="example.log",
-    format="%(asctime)s %(levelname)-7s (%(threadName)s) [%(name)s] %(message)s"
-)
+common.configure_logging(args)
 
 # Get image and disk info using qemu-img
 image_info = get_image_info(args.filename)
 disk_info = get_disk_info(args, image_info)
 
-print("Image format: %s" % image_info["format"])
-print("Disk format: %s" % disk_info["format"])
-print("Disk content type: %s" % disk_info["content_type"])
-print("Disk provisioned size: %s" % disk_info["provisioned_size"])
-print("Disk initial size: %s" % disk_info["initial_size"])
-print("Disk name: %s" % disk_info["name"])
-print("Disk backup: %s" % args.enable_backup)
+progress("Image format: %s" % image_info["format"])
+progress("Disk format: %s" % disk_info["format"])
+progress("Disk content type: %s" % disk_info["content_type"])
+progress("Disk provisioned size: %s" % disk_info["provisioned_size"])
+progress("Disk initial size: %s" % disk_info["initial_size"])
+progress("Disk name: %s" % disk_info["name"])
+progress("Disk backup: %s" % args.enable_backup)
 
 # This example will connect to the server and create a new `floating`
 # disk, one that isn't attached to any virtual machine.
 # Then using transfer service it will transfer disk data from local
 # image to the newly created disk in server.
 
-# Create the connection to the server:
-print("Connecting...")
+progress("Connecting...")
+connection = common.create_connection(args)
 
-if args.password_file:
-    with open(args.password_file) as f:
-        password = f.read().rstrip('\n') # ovirt doesn't support empty lines in password
-else:
-    password = getpass.getpass()
-
-connection = sdk.Connection(
-    url=args.engine_url + '/ovirt-engine/api',
-    username=args.username,
-    password=password,
-    ca_file=args.cafile,
-    debug=args.debug,
-    log=logging.getLogger(),
-)
-
-# Get the reference to the root service:
-system_service = connection.system_service()
-
-print("Creating disk...")
+progress("Creating disk...")
 
 disks_service = connection.system_service().disks_service()
 disk = disks_service.add(
@@ -285,9 +222,9 @@ while True:
     if disk.status == types.DiskStatus.OK:
         break
 
-print("Disk ID: %s" % disk.id)
+progress("Disk ID: %s" % disk.id)
 
-print("Creating image transfer...")
+progress("Creating image transfer...")
 
 # Find a host for this transfer. This is an optional step allowing optimizing
 # the transfer using unix socket when running this code on a oVirt hypervisor
@@ -297,8 +234,8 @@ host = imagetransfer.find_host(connection, args.sd_name)
 transfer = imagetransfer.create_transfer(connection, disk,
     types.ImageTransferDirection.UPLOAD, host=host)
 
-print("Transfer ID: %s" % transfer.id)
-print("Transfer host name: %s" % transfer.host.name)
+progress("Transfer ID: %s" % transfer.id)
+progress("Transfer host name: %s" % transfer.host.name)
 
 # At this stage, the SDK granted the permission to start transferring the disk, and the
 # user should choose its preferred tool for doing it. We use the recommended
@@ -322,7 +259,7 @@ else:
     if "proxy_url" in parameters:
         extra_args["proxy_url"] = transfer.proxy_url
 
-print("Uploading image...")
+progress("Uploading image...")
 
 with client.ProgressBar() as pb:
     client.upload(
@@ -334,8 +271,8 @@ with client.ProgressBar() as pb:
         progress=pb,
         **extra_args)
 
-print("Finalizing image transfer...")
+progress("Finalizing image transfer...")
 imagetransfer.finalize_transfer(connection, transfer, disk)
 connection.close()
 
-print("Upload completed successfully")
+progress("Upload completed successfully")
