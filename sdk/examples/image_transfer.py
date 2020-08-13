@@ -164,6 +164,8 @@ with closing(connection):
                 time.sleep(50)
                 client.read(0, buf)
                 progress("Transfer is alive")
+    except KeyboardInterrupt:
+        print()
     finally:
         progress("Finalizing image transfer...")
         imagetransfer.finalize_transfer(connection, transfer, disk)
