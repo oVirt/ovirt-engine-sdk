@@ -98,15 +98,11 @@ Requires ovirt-imageio-client >= 2.0.10-1
 """
 
 import argparse
-import getpass
-import logging
-import sys
 import time
 
 from contextlib import closing
 
-import ovirtsdk4 as sdk
-import ovirtsdk4.types as types
+from ovirtsdk4 import types
 
 from helpers import common
 from helpers import imagetransfer
@@ -153,7 +149,8 @@ with closing(connection):
         progress("Transfer URL: %s" % transfer.transfer_url)
         progress("Proxy URL: %s" % transfer.proxy_url)
 
-        # The client will use transfer_url if possible, or fallback to proxy_url.
+        # The client will use transfer_url if possible, or fallback to
+        # proxy_url.
         with ImageioClient(
                 transfer.transfer_url,
                 cafile=args.cafile,
