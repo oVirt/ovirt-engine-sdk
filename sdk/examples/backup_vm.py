@@ -32,30 +32,25 @@ incremental backup.
 Requires the ovirt-imageio-client package.
 """
 
-from __future__ import print_function
-
-import argparse
-import getpass
 import inspect
-import logging
 import os
 import time
 
 from contextlib import closing
 
-import ovirtsdk4 as sdk
-import ovirtsdk4.types as types
-from helpers import imagetransfer
-from helpers import units
-from helpers.units import MiB
-
 from ovirt_imageio import client
 
-start_time = time.time()
+import ovirtsdk4 as sdk
+import ovirtsdk4.types as types
+
+from helpers import common
+from helpers import imagetransfer
+from helpers import units
+from helpers.common import progress
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Backup VM disks")
+    parser = common.ArgumentParser(description="Backup VM disks")
     subparsers = parser.add_subparsers(title="commands")
 
     full_parser = subparsers.add_parser(
@@ -64,7 +59,6 @@ def main():
 
     full_parser.set_defaults(command=cmd_full)
 
-    add_common_args(full_parser)
     add_download_args(full_parser)
 
     full_parser.add_argument(
@@ -83,7 +77,6 @@ def main():
 
     incremental_parser.set_defaults(command=cmd_incremental)
 
-    add_common_args(incremental_parser)
     add_download_args(incremental_parser)
 
     incremental_parser.add_argument(
@@ -107,8 +100,6 @@ def main():
 
     start_parser.set_defaults(command=cmd_start)
 
-    add_common_args(start_parser)
-
     start_parser.add_argument(
         "vm_uuid",
         help="UUID of the VM to backup.")
@@ -129,7 +120,6 @@ def main():
 
     download_parser.set_defaults(command=cmd_download)
 
-    add_common_args(download_parser)
     add_download_args(download_parser)
 
     download_parser.add_argument(
@@ -154,8 +144,6 @@ def main():
 
     stop_parser.set_defaults(command=cmd_stop)
 
-    add_common_args(stop_parser)
-
     stop_parser.add_argument(
         "vm_uuid",
         help="UUID of the VM for the backup.")
@@ -166,12 +154,7 @@ def main():
 
     args = parser.parse_args()
 
-    logging.basicConfig(
-        level=logging.DEBUG if args.debug else logging.INFO,
-        filename="example.log",
-        format="%(asctime)s %(levelname)-7s (%(threadName)s) [%(name)s] %(message)s"
-    )
-
+    common.configure_logging(args)
     args.command(args)
 
 
@@ -183,7 +166,7 @@ def cmd_full(args):
     """
     progress("Starting full backup for VM %s" % args.vm_uuid)
 
-    connection = connect_engine(args)
+    connection = common.create_connection(args)
     with closing(connection):
         args.from_checkpoint_uuid = None
         backup = start_backup(connection, args)
@@ -201,7 +184,7 @@ def cmd_incremental(args):
     """
     progress("Starting incremental backup for VM %s" % args.vm_uuid)
 
-    connection = connect_engine(args)
+    connection = common.create_connection(args)
     with closing(connection):
         backup = start_backup(connection, args)
         try:
@@ -226,7 +209,7 @@ def cmd_start(args):
     else:
         progress("Starting full backup for VM %r" % args.vm_uuid)
 
-    connection = connect_engine(args)
+    connection = common.create_connection(args)
 
     with closing(connection):
         backup = start_backup(connection, args)
@@ -240,7 +223,7 @@ def cmd_download(args):
     """
     progress("Downloading VM %s disks" % args.vm_uuid)
 
-    connection = connect_engine(args)
+    connection = common.create_connection(args)
     with closing(connection):
         download_backup(
             connection, args.backup_uuid, args, incremental=args.incremental)
@@ -254,7 +237,7 @@ def cmd_stop(args):
     """
     progress("Finalizing backup %s" % args.backup_uuid)
 
-    connection = connect_engine(args)
+    connection = common.create_connection(args)
     with closing(connection):
         stop_backup(connection, args.backup_uuid, args)
 
@@ -262,36 +245,6 @@ def cmd_stop(args):
 
 
 # Argument parsing
-
-def add_common_args(parser):
-    parser.add_argument(
-        "--engine-url",
-        help="URL to the engine server (e.g. https://engine_fqdn:port)")
-
-    parser.add_argument(
-        "--username",
-        help="Username of engine API")
-
-    parser.add_argument(
-        "--password-file",
-        help="Password of engine API (if a file is not specified, read from standard input)")
-
-    parser.add_argument(
-        "-c", "--cafile",
-        help="Path to oVirt engine certificate for verifying server.")
-
-    parser.add_argument(
-        "--insecure",
-        dest="secure",
-        action="store_false",
-        help=("Do not verify server certificates and host name "
-              "(not recommended)."))
-
-    parser.add_argument(
-        "--debug",
-        action="store_true",
-        help="log debug level messages to example.log")
-
 
 def add_download_args(parser):
     parser.add_argument(
@@ -444,6 +397,8 @@ def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=Fa
         imagetransfer.finalize_transfer(connection, transfer, disk)
 
 
+# General helpers
+
 def get_vm_disks(connection, vm_id):
     system_service = connection.system_service()
     vm_service = system_service.vms_service().vm_service(id=vm_id)
@@ -458,40 +413,12 @@ def get_vm_disks(connection, vm_id):
     return disks
 
 
-# General helpers
-
-def get_pass(args):
-    if args.password_file:
-        with open(args.password_file) as f:
-            password = f.read().rstrip('\n')
-    else:
-        password = getpass.getpass()
-
-    return password
-
-
 def get_backup_events(connection, search_id):
     events_service = connection.system_service().events_service()
 
     # Get the backup events arranged from the most recent event to the oldest
     return [dict(code=event.code, description=event.description)
             for event in events_service.list(search=str(search_id))]
-
-
-def connect_engine(args):
-    return sdk.Connection(
-        url=args.engine_url + '/ovirt-engine/api',
-        username=args.username,
-        password=get_pass(args),
-        ca_file=args.cafile,
-        insecure=not args.secure,
-        debug=args.debug,
-        log=logging.getLogger(),
-    )
-
-
-def progress(msg):
-    print("[ %5.1f ] %s" % (time.time() - start_time, msg))
 
 
 if __name__ == "__main__":
