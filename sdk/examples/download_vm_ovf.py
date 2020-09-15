@@ -55,7 +55,7 @@ if __name__ == "__main__":
         vm = vms_service.list(search="name=%s" % vm_name, all_content=True)[0]
         ovf_filename = "%s.ovf" % vm.id
         with open(ovf_filename, "wb") as ovf_file:
-            ovf_file.write(vm.initialization.configuration.data)
+            ovf_file.write(vm.initialization.configuration.data.encode("utf-8"))
     finally:
         # Close the connection to the server:
         connection.close()
