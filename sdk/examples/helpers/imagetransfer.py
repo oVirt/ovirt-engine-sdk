@@ -152,7 +152,7 @@ def create_transfer(connection, disk, direction, host=None, backup=None,
     transfer = transfers_service.add(
         types.ImageTransfer(
             host=host,
-            image=types.Image(id=disk.id),
+            disk=types.Disk(id=disk.id),
             direction=direction,
             backup=backup,
             inactivity_timeout=inactivity_timeout,
