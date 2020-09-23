@@ -120,16 +120,19 @@ def find_host(connection, sd_name):
     return host
 
 
-def create_transfer(connection, disk, direction, host=None, backup=None,
-                    inactivity_timeout=None, timeout=60):
+def create_transfer(
+        connection, disk=None, direction=types.ImageTransferDirection.UPLOAD,
+        host=None, backup=None, inactivity_timeout=None, timeout=60,
+        disk_snapshot=None, shallow=None):
     """
     Create image transfer for upload to disk or download from disk.
 
     Arguments:
         connection (ovirtsdk4.Connection): connection to ovirt engine
-        disk (ovirtsdk4.types.Disk): disk object
+        disk (ovirtsdk4.types.Disk): disk object. Not needed if disk_snaphost
+            is specified.
         direction (ovirtsdk4.typles.ImageTransferDirection): transfer
-            direction (UPLOAD, DOWNLOAD)
+            direction (default UPLOAD)
         host (ovirtsdk4.types.Host): host object that should perform the
             transfer. If not specified engine will pick a random host.
         backup (ovirtsdk4.types.Backup): When downloading backup, the backup
@@ -139,34 +142,57 @@ def create_transfer(connection, disk, direction, host=None, backup=None,
             default value.
         timeout (float, optional): number of seconds to wait for transfer
             to become ready.
+        disk_snapshot (ovirtsdk4.types.DiskSnapshot): transfer a disk snapshot
+            instead of current data of the disk.
+        shallow (bool): Download only the specified image instead of the entire
+            image chain. When downloading a disk transfer only the active disk
+            snapshot data. When downloading a disk snapshot, transfer only the
+            specified disk snaphost data.
 
     Returns:
         ovirtsdk4.types.ImageTransfer in phase TRANSFERRING
     """
-    log.info("Creating image transfer disk=%s direction=%s host=%s backup=%s",
-             disk.id, direction, host, backup)
+    log.info(
+        "Creating image transfer for %s=%s, direction=%s host=%s backup=%s "
+        "shallow=%s",
+        "disk_snapshot" if disk_snapshot else "disk",
+        disk_snapshot.id if disk_snapshot else disk.id,
+        direction,
+        host,
+        backup,
+        shallow,
+    )
+
+    # Create image transfer for disk or snapshot.
+
+    transfer = types.ImageTransfer(
+        host=host,
+        direction=direction,
+        backup=backup,
+        inactivity_timeout=inactivity_timeout,
+
+        # format=raw uses the NBD backend, enabling:
+        # - Transfer raw guest data, regardless of the disk format.
+        # - Automatic format conversion to remote disk format. For example,
+        #   upload qcow2 image to raw disk, or raw image to qcow2 disk.
+        # - Collapsed qcow2 chains to single raw file.
+        # - Extents reporting for qcow2 images and raw images on file storage,
+        #   speeding up downloads.
+        format=types.DiskFormat.RAW,
+
+        shallow=shallow,
+    )
+
+    if disk_snapshot:
+        transfer.snapshot = types.DiskSnapshot(id=disk_snapshot.id)
+    else:
+        transfer.disk = types.Disk(id=disk.id)
 
     transfers_service = connection.system_service().image_transfers_service()
 
-    # Add a new image transfer.
-    transfer = transfers_service.add(
-        types.ImageTransfer(
-            host=host,
-            disk=types.Disk(id=disk.id),
-            direction=direction,
-            backup=backup,
-            inactivity_timeout=inactivity_timeout,
-
-            # format=raw uses the NBD backend, enabling:
-            # - Transfer raw guest data, regardless of the disk format.
-            # - Automatic format conversion to remote disk format. For example,
-            #   upload qcow2 image to raw disk, or raw image to qcow2 disk.
-            # - Collapsed qcow2 chains to single raw file.
-            # - Extents reporting for qcow2 images and raw images on file storage,
-            #   speeding up downloads.
-            format=types.DiskFormat.RAW,
-         )
-    )
+    # Add the new transfer to engine. This starts the transfer and retruns a
+    # transfer ID that can be used to track this image transfer.
+    transfer = transfers_service.add(transfer)
 
     # You can use the transfer id to locate logs for this transfer.
     log.info("Transfer ID %s", transfer.id)
