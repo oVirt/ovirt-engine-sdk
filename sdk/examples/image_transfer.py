@@ -115,6 +115,11 @@ parser.add_argument(
     "disk_uuid",
     help="disk UUID for transfer")
 
+parser.add_argument(
+    "--shallow",
+    action="store_true",
+    help="Transfer only specified image instead of entire image chain.")
+
 args = parser.parse_args()
 common.configure_logging(args)
 
@@ -134,7 +139,8 @@ with closing(connection):
     else:
         direction = types.ImageTransferDirection.DOWNLOAD
 
-    transfer = imagetransfer.create_transfer(connection, disk, direction)
+    transfer = imagetransfer.create_transfer(
+        connection, disk, direction, shallow=args.shallow)
     try:
         progress("Transfer ID: %s" % transfer.id)
         progress("Transfer host name: %s" % transfer.host.name)
