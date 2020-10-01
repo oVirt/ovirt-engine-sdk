@@ -1,11 +1,9 @@
 ---
 archs:
   - x86_64:
-      distro: [el7, el8, fc30]
+      distro: [el8]
   - ppc64le:
-      distro: [el7, el8]
-  - s390x:
-      distro: fc30
+      distro: [el8]
 release_branches:
   master:
     - ovirt-master

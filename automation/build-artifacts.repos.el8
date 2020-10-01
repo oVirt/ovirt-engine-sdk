@@ -1,5 +1,0 @@
-# Provides python3-flake8
-epel8,https://dl.fedoraproject.org/pub/epel/8/Everything/$basearch/
-# Provides fixes for python3-flake8, could be removed once landing on stable
-# https://bodhi.fedoraproject.org/updates/FEDORA-EPEL-2019-2c080a59a6
-epel8-testing,https://dl.fedoraproject.org/pub/epel/testing/8/Everything/$basearch/
