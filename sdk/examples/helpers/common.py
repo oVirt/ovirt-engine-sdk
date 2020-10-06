@@ -41,17 +41,17 @@ class ArgumentParser:
             "-c", "--config",
             required=True,
             help="Use engine connection details from [CONFIG] section in "
-                 "~/.config/ovirt.conf")
+                 "~/.config/ovirt.conf.")
 
         self._parser.add_argument(
             "--debug",
             action="store_true",
-            help="log debug level messages to logfile")
+            help="Log debug level messages to logfile.")
 
         self._parser.add_argument(
             "--logfile",
             default="example.log",
-            help="log file name (default example.log)")
+            help="Log file name (default example.log).")
 
     def add_argument(self, *args, **kwargs):
         self._parser.add_argument(*args, **kwargs)

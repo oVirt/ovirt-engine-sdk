@@ -44,36 +44,37 @@ def parse_args():
 
     parser.add_argument(
         "filename",
-        help="path to image (e.g. /path/to/image.raw) "
-             "Supported formats: raw, qcow2, iso")
+        help="Path to image (e.g. /path/to/image.raw). "
+             "Supported formats: raw, qcow2, iso.")
 
     parser.add_argument(
         "--disk-format",
         choices=("raw", "qcow2"),
-        help="format of the created disk (default image format)")
+        help="Format of the created disk (default image format).")
 
     parser.add_argument(
         "--disk-sparse",
         action="store_true",
-        help="create sparse disk. Cannot be used with raw format on block storage.")
+        help="Create sparse disk. Cannot be used with raw format on "
+             "block storage.")
 
     parser.add_argument(
         "--enable-backup",
         action="store_true",
-        help="creates a disk that can be used for incremental backup. "
-             "Allowed for disk with qcow2 format only")
+        help="Creates a disk that can be used for incremental backup. "
+             "Allowed for disk with qcow2 format only.")
 
     parser.add_argument(
         "--sd-name",
         required=True,
-        help="name of the storage domain.")
+        help="Name of the storage domain.")
 
     parser.add_argument(
         "--use-proxy",
         dest="use_proxy",
         default=False,
         action="store_true",
-        help="upload via proxy on the engine host (less efficient)")
+        help="Upload via proxy on the engine host (less efficient).")
 
     parser.add_argument(
         "--max-workers",

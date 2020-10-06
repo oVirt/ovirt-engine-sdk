@@ -109,11 +109,11 @@ parser = common.ArgumentParser(description="Run an image transfer")
 parser.add_argument(
     "direction",
     choices=["upload", "download"],
-    help="transfer direction")
+    help="Transfer direction.")
 
 parser.add_argument(
     "disk_uuid",
-    help="disk UUID for transfer")
+    help="Disk UUID for transfer.")
 
 parser.add_argument(
     "--shallow",

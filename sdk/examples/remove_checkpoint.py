@@ -35,7 +35,7 @@ from helpers import common
 from helpers.common import progress
 
 parser = common.ArgumentParser(description="Remove VM checkpoint")
-parser.add_argument("vm_uuid", help="UUID of the checkpoint VM")
+parser.add_argument("vm_uuid", help="VM UUID for removing checkpoint.")
 args = parser.parse_args()
 common.configure_logging(args)
 

@@ -34,7 +34,7 @@ from helpers import imagetransfer
 
 parser = common.ArgumentParser(description="Compute disk checksum")
 
-parser.add_argument("disk_uuid", help="disk UUID")
+parser.add_argument("disk_uuid", help="Disk UUID.")
 
 args = parser.parse_args()
 common.configure_logging(args)

@@ -31,7 +31,7 @@ def parse_args():
 
     parser.add_argument(
         "disk_id",
-        help="disk ID to query")
+        help="Disk ID to query.")
 
     return parser.parse_args()
 

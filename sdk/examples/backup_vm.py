@@ -86,7 +86,8 @@ def main():
     incremental_parser.add_argument(
         "--from-checkpoint-uuid",
         required=True,
-        help="Perform incremental backup since the specified checkpoint UUID.")
+        help="Perform incremental backup since the specified checkpoint "
+             "UUID.")
 
     incremental_parser.add_argument(
         "--disk-uuid",
@@ -112,7 +113,8 @@ def main():
 
     start_parser.add_argument(
         "--from-checkpoint-uuid",
-        help="Perform incremental backup since the specified checkpoint UUID.")
+        help="Perform incremental backup since the specified checkpoint "
+             "UUID.")
 
     download_parser = subparsers.add_parser(
         "download",
@@ -134,9 +136,10 @@ def main():
     download_parser.add_argument(
         "--incremental",
         action="store_true",
-        help="Download incremental backup data in qcow2 format. The downloaded disk "
-             "should be rebased on the previous backup to restore the disk contents. "
-             "Can be used only if the backup was started with --from-checkpoint-uuid")
+        help="Download incremental backup data in qcow2 format. The "
+             "downloaded disk should be rebased on the previous backup "
+             "to restore the disk contents. Can be used only if the "
+             "backup was started with --from-checkpoint-uuid.")
 
     stop_parser = subparsers.add_parser(
         "stop",

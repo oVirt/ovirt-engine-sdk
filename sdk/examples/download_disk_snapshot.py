@@ -40,34 +40,34 @@ def parse_args():
 
     parser.add_argument(
         "sd_name",
-        help="storage domain name")
+        help="Storage domain name.")
 
     parser.add_argument(
         "disk_snapshot_uuid",
-        help="disk snsapshot UUID to download")
+        help="Disk snsapshot UUID to download.")
 
     parser.add_argument(
         "filename",
-        help="path to downloaded image")
+        help="Path to downloaded image.")
 
     parser.add_argument(
         "--backing-file",
-        help="Download selected disks snapshot data, rebasing on the given "
-             "backing file. Specified backing file must include data from "
-             "disk snapshost parent disk snapshot.")
+        help="Download selected disks snapshot data, rebasing on the "
+             "given backing file. Specified backing file must include "
+             "data from disk snapshost parent disk snapshot.")
 
     parser.add_argument(
         "--use-proxy",
         dest="use_proxy",
         default=False,
         action="store_true",
-        help="download via proxy on the engine host (less efficient)")
+        help="Download via proxy on the engine host (less efficient).")
 
     parser.add_argument(
         "--max-workers",
         type=int,
         default=4,
-        help="maximum number of workers to use for download. The default "
+        help="Maximum number of workers to use for download. The default "
              "(4) improves performance when downloading a single disk. "
              "You may want to use lower number if you download many disks "
              "in the same time.")

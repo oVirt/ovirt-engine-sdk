@@ -41,35 +41,35 @@ def parse_args():
 
     parser.add_argument(
         "ova_file",
-        help="path to OVA file")
+        help="Path to OVA file.")
 
     parser.add_argument(
         "--ova-disk-name",
         required=True,
-        help="name of the disk in the OVA file")
+        help="Name of the disk in the OVA file.")
 
     # Disk options.
 
     parser.add_argument(
         "--sd-name",
         required=True,
-        help="name of the storage domain.")
+        help="Name of the storage domain.")
 
     parser.add_argument(
         "--disk-format",
         choices=("raw", "qcow2"),
-        help="format of the created disk (default image format)")
+        help="Format of the created disk (default image format).")
 
     parser.add_argument(
         "--disk-sparse",
         action="store_true",
-        help="create sparse disk (raw sparse not supported on block storage)")
+        help="Create sparse disk (raw sparse not supported on block storage).")
 
     parser.add_argument(
         "--enable-backup",
         action="store_true",
-        help="creates a disk that can be used for incremental backup. "
-             "Allowed for disk with qcow2 format only")
+        help="Creates a disk that can be used for incremental backup. "
+             "Allowed for qcow2 format only.")
 
     return parser.parse_args()
 

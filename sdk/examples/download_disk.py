@@ -43,31 +43,31 @@ def parse_args():
 
     parser.add_argument(
         "disk_uuid",
-        help="disk UUID to download")
+        help="Disk UUID to download.")
 
     parser.add_argument(
         "filename",
-        help="path to downloaded disk")
+        help="Path to write downloaded image.")
 
     parser.add_argument(
         "-f", "--format",
         choices=("raw", "qcow2"),
         default="qcow2",
         help=("Downloaded file format. For best compatibility, use qcow2 "
-              "(default qcow2)"))
+              "(default qcow2)."))
 
     parser.add_argument(
         "--use-proxy",
         dest="use_proxy",
         default=False,
         action="store_true",
-        help="download via proxy on the engine host (less efficient)")
+        help="Download via proxy on the engine host (less efficient).")
 
     parser.add_argument(
         "--max-workers",
         type=int,
         default=4,
-        help="maximum number of workers to use for download. The default "
+        help="Maximum number of workers to use for download. The default "
              "(4) improves performance when downloading a single disk. "
              "You may want to use lower number if you download many disks "
              "in the same time.")
