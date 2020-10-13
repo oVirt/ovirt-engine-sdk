@@ -2,6 +2,19 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.4.5 / Oct 13 2020
+
+* Upgrade to Model 4.4.19
+
+* Upgrade to Metamodel 1.3.3
+
+* Upgrade to Java 11
+
+* Update build scripts and remove old ones
+
+* Use helper classes in example scripts
+
+
 == 4.4.4 / Jul 1 2020
 
 * Update to model 4.4.17
