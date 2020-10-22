@@ -155,7 +155,7 @@ def main():
     if version_qualifier is not None:
         pep440_version += version_qualifier
     if not is_release:
-        pep440_version += ".dev%s+git%s" % (version_date, commit_id)
+        pep440_version += ".dev%s+.git%s" % (version_date, commit_id)
     print("SDK version XYZ is \"%s\"." % version_xyz)
     print("SDK version qualifier is \"%s\"." % version_qualifier)
     print("SDK PEP440 version is \"%s\"." % pep440_version)
@@ -280,7 +280,7 @@ def main():
         rpm_release = dec_version(rpm_release)
         rpm_release += ".%s" % version_qualifier
     if not is_release:
-        rpm_release += ".%sgit%s" % (version_date, commit_id)
+        rpm_release += ".%s.git%s" % (version_date, commit_id)
     print("RPM version is \"%s\"." % rpm_version)
     print("RPM release is \"%s\"." % rpm_release)
 
