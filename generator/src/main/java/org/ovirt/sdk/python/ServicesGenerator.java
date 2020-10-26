@@ -493,6 +493,9 @@ public class ServicesGenerator implements PythonGenerator {
             else if (type == model.getDateType()) {
                 buffer.addLine("%1$s = Writer.render_date(%1$s)", arg);
             }
+            else if (type != model.getStringType()) {
+                buffer.addLine("%1$s = Writer.render_other(%1$s)", arg);
+            }
         }
         buffer.addLine("query['%1$s'] = %2$s", tag, arg);
         buffer.endBlock();

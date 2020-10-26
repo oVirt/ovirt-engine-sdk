@@ -73,7 +73,7 @@ limitations under the License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Version of the metamodel and model used to generate the SDK: -->
-    <metamodel.version>1.3.3</metamodel.version>
+    <metamodel.version>1.3.4</metamodel.version>
     <model.version>4.4.20</model.version>
 
     <!-- The command used to start Python: -->
