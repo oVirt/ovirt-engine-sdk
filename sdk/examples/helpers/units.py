@@ -15,7 +15,7 @@
 #
 
 """
-Helpeer functions and constnats for working with various units.
+Helper functions and constants for working with various units.
 """
 
 KiB = 1024
