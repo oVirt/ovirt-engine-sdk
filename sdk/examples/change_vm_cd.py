@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #
-# Copyright (c) 2016 Red Hat, Inc.
+# Copyright (c) 2020 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,25 +23,37 @@ import time
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
 
-logging.basicConfig(level=logging.DEBUG, filename='example.log')
+from helpers import common
 
 # This example will connect to the server and change CD of the virtual machine.
 
-# Create the connection to the server:
-connection = sdk.Connection(
-    url='https://engine40.example.com/ovirt-engine/api',
-    username='admin@internal',
-    password='redhat123',
-    ca_file='ca.pem',
-    debug=True,
-    log=logging.getLogger(),
-)
+parser = common.ArgumentParser(description="Change VM CD-ROM disk")
+
+parser.add_argument(
+    "vm_name",
+    help="Name of VM.")
+
+parser.add_argument(
+    "--disk-id",
+    required=True,
+    help="ID of the disk to be loaded into CD-ROM.")
+
+parser.add_argument(
+    "--permanent",
+    dest="current",
+    action="store_false",
+    help="If specified CD should be changed only after next boot."
+         "The change will be permanent.")
+
+args = parser.parse_args()
+common.configure_logging(args)
+connection = common.create_connection(args)
 
 # Get the reference to the "vms" service:
 vms_service = connection.system_service().vms_service()
 
 # Find the virtual machine:
-vm = vms_service.list(search='name=myvm')[0]
+vm = vms_service.list(search="name={}".format(args.vm_name))[0]
 
 # Locate the service that manages the virtual machine:
 vm_service = vms_service.vm_service(vm.id)
@@ -56,19 +68,19 @@ cdrom = cdroms_service.list()[0]
 # of the VM:
 cdrom_service = cdroms_service.cdrom_service(cdrom.id)
 
-# Change the CD of the VM to 'my_iso_file.iso'. By default the below
-# operation change permanently the disk that will be visible to the
-# virtual machine after the next boot, but they don't have any effect
-# on the currently running virtual machine. If you want to change the
-# disk that is visible to the current running virtual machine, change
-# the `current` parameter's value to `True`.
+# Change the CD of the VM to file with 'disk-id'. By default the change
+# to the disk is visible to the current running virtual machine immediately,
+# but won't be visible to the virtual machine after the next boot. If you
+# want to change CD permanently, use --permanent. Using this option will
+# change the CD permanently, but it will become visible only after next
+# boot.
 cdrom_service.update(
     cdrom=types.Cdrom(
         file=types.File(
-            id='my_iso_file.iso'
+            id=args.disk_id
         ),
     ),
-    current=False,
+    current=args.current,
 )
 
 # Close the connection to the server:
