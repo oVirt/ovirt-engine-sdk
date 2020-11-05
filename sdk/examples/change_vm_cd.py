@@ -37,8 +37,8 @@ parser.add_argument(
 
 parser.add_argument(
     "--disk-id",
-    required=True,
-    help="ID of the disk to be loaded into CD-ROM.")
+    help="ID of the disk to be loaded into CD-ROM. If not specified "
+         "the current CD will be ejected.")
 
 parser.add_argument(
     "--permanent",
