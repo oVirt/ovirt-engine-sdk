@@ -20,6 +20,8 @@
 import logging
 import time
 
+from contextlib import closing
+
 import ovirtsdk4 as sdk
 import ovirtsdk4.types as types
 
@@ -49,39 +51,38 @@ args = parser.parse_args()
 common.configure_logging(args)
 connection = common.create_connection(args)
 
-# Get the reference to the "vms" service:
-vms_service = connection.system_service().vms_service()
+with closing(connection):
+    # Get the reference to the "vms" service:
+    vms_service = connection.system_service().vms_service()
 
-# Find the virtual machine:
-vm = vms_service.list(search="name={}".format(args.vm_name))[0]
+    # Find the virtual machine:
+    vm = vms_service.list(search="name={}".format(args.vm_name))[0]
 
-# Locate the service that manages the virtual machine:
-vm_service = vms_service.vm_service(vm.id)
+    # Locate the service that manages the virtual machine:
+    vm_service = vms_service.vm_service(vm.id)
 
-# Locate the service that manages the CDROM devices of the VM:
-cdroms_service = vm_service.cdroms_service()
+    # Locate the service that manages the CDROM devices of the VM:
+    cdroms_service = vm_service.cdroms_service()
 
-# Get the first found CDROM:
-cdrom = cdroms_service.list()[0]
+    # Get the first found CDROM:
+    cdrom = cdroms_service.list()[0]
 
-# Locate the service that manages the CDROM device found in previous step
-# of the VM:
-cdrom_service = cdroms_service.cdrom_service(cdrom.id)
+    # Locate the service that manages the CDROM device found in previous step
+    # of the VM:
+    cdrom_service = cdroms_service.cdrom_service(cdrom.id)
 
-# Change the CD of the VM to file with 'disk-id'. By default the change
-# to the disk is visible to the current running virtual machine immediately,
-# but won't be visible to the virtual machine after the next boot. If you
-# want to change CD permanently, use --permanent. Using this option will
-# change the CD permanently, but it will become visible only after next
-# boot.
-cdrom_service.update(
-    cdrom=types.Cdrom(
-        file=types.File(
-            id=args.disk_id
+    # Change the CD of the VM to file with 'disk-id'. By default the change
+    # to the disk is visible to the current running virtual machine immediately,
+    # but won't be visible to the virtual machine after the next boot. If you
+    # want to change CD permanently, use --now=False. Using this option will
+    # change the CD permanently, but it will become visible only after next
+    # boot.
+    cdrom_service.update(
+        cdrom=types.Cdrom(
+            file=types.File(
+                id=args.disk_id
+            ),
         ),
-    ),
-    current=args.current,
-)
+        current=args.current,
+    )
 
-# Close the connection to the server:
-connection.close()
