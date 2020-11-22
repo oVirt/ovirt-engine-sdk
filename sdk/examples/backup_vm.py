@@ -176,6 +176,7 @@ def cmd_full(args):
         try:
             download_backup(connection, backup.id, args)
         finally:
+            progress("Finalizing backup")
             stop_backup(connection, backup.id, args)
 
     progress("Full backup completed successfully")
@@ -193,6 +194,7 @@ def cmd_incremental(args):
         try:
             download_backup(connection, backup.id, args, incremental=True)
         finally:
+            progress("Finalizing backup")
             stop_backup(connection, backup.id, args)
 
     progress("Incremental backup completed successfully")
@@ -326,7 +328,8 @@ def stop_backup(connection, backup_uuid, args):
 
     backup_service.finalize()
 
-    # TODO: Wait until backup is finalized.
+    progress("Waiting until backup is finalized")
+
     backup = backup_service.get()
     while backup.phase != types.BackupPhase.FINALIZING:
         time.sleep(1)
