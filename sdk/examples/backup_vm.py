@@ -349,12 +349,20 @@ def download_backup(connection, backup_uuid, args, incremental=False):
 
     backup_disks = backup_service.disks_service().list()
 
-    backup_type = "incremental" if incremental else "full"
     timestamp = time.strftime("%Y%m%d%H%M")
     for disk in backup_disks:
+        download_incremental = incremental
+        backup_mode = get_disk_backup_mode(connection, disk)
+        if download_incremental and backup_mode != types.DiskBackupMode.INCREMENTAL:
+            # if the disk wasn't a part of the previous checkpoint a full backup is taken
+            progress("The backup that was taken for disk %s is %s" % (disk.id, backup_mode))
+            download_incremental = False
+
+        backup_type = "incremental" if download_incremental else "full"
         file_name = "{}.{}.{}.qcow2".format(disk.id, timestamp, backup_type)
         disk_path = os.path.join(args.backup_dir, file_name)
-        download_disk(connection, backup_uuid, disk, disk_path, args, incremental=incremental)
+        download_disk(
+            connection, backup_uuid, disk, disk_path, args, incremental=download_incremental)
 
 
 def get_backup_service(connection, vm_uuid, backup_uuid):
@@ -425,6 +433,12 @@ def get_backup_events(connection, search_id):
     # Get the backup events arranged from the most recent event to the oldest
     return [dict(code=event.code, description=event.description)
             for event in events_service.list(search=str(search_id))]
+
+
+def get_disk_backup_mode(connection, disk):
+    system_service = connection.system_service()
+    disk_info = system_service.disks_service().disk_service(disk.id).get()
+    return disk_info.backup_mode
 
 
 if __name__ == "__main__":
