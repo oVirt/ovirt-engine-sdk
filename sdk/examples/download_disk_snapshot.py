@@ -44,7 +44,7 @@ def parse_args():
 
     parser.add_argument(
         "disk_snapshot_uuid",
-        help="Disk snsapshot UUID to download.")
+        help="Disk snapshot UUID to download.")
 
     parser.add_argument(
         "filename",
@@ -54,7 +54,7 @@ def parse_args():
         "--backing-file",
         help="Download selected disks snapshot data, rebasing on the "
              "given backing file. Specified backing file must include "
-             "data from disk snapshost parent disk snapshot.")
+             "data from disk snapshot parent disk snapshot.")
 
     parser.add_argument(
         "--use-proxy",
