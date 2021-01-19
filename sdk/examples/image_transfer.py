@@ -120,6 +120,19 @@ parser.add_argument(
     action="store_true",
     help="Transfer only specified image instead of entire image chain.")
 
+parser.add_argument(
+    "--inactivity-timeout",
+    type=int,
+    help="Keep the transfer alive for specified number of seconds if "
+         "the client is not active. (default 60)")
+
+parser.add_argument(
+    "--read-delay",
+    type=int,
+    default=50,
+    help="Keep the connection alive by reading from the server every "
+         "read-delay seconds (default 50).")
+
 args = parser.parse_args()
 common.configure_logging(args)
 
@@ -140,7 +153,9 @@ with closing(connection):
         direction = types.ImageTransferDirection.DOWNLOAD
 
     transfer = imagetransfer.create_transfer(
-        connection, disk, direction, shallow=args.shallow)
+        connection, disk, direction,
+        shallow=args.shallow,
+        inactivity_timeout=args.inactivity_timeout)
     try:
         progress("Transfer ID: %s" % transfer.id)
         progress("Transfer host name: %s" % transfer.host.name)
@@ -155,13 +170,12 @@ with closing(connection):
                 proxy_url=transfer.proxy_url) as client:
             progress("Conneted to imageio server")
 
-            # Lets read one block every 50 seconds. Each time we access the
-            # server, our ticket is extended.
+            # Keep the connection alive by reading from server.
             buf = bytearray(4096)
             while True:
-                time.sleep(50)
+                progress("Reading from server...")
                 client.read(0, buf)
-                progress("Transfer is alive")
+                time.sleep(args.read_delay)
     except KeyboardInterrupt:
         print()
     finally:
