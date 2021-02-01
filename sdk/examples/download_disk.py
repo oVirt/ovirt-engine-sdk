@@ -81,6 +81,12 @@ def parse_args():
              "smaller number of workers you may want use larger value."
              .format(client.BUFFER_SIZE))
 
+    parser.add_argument(
+        "--timeout-policy",
+        choices=('legacy', 'pause', 'cancel'),
+        default='cancel',
+        help="The action to be made for a timed out transfer")
+
     return parser.parse_args()
 
 
@@ -108,7 +114,8 @@ host = imagetransfer.find_host(connection, storage_domain.name)
 progress("Creating image transfer...")
 
 transfer = imagetransfer.create_transfer(
-    connection, disk, types.ImageTransferDirection.DOWNLOAD, host=host)
+    connection, disk, types.ImageTransferDirection.DOWNLOAD, host=host,
+    timeout_policy=types.ImageTransferTimeoutPolicy(args.timeout_policy))
 
 progress("Transfer ID: %s" % transfer.id)
 progress("Transfer host name: %s" % transfer.host.name)

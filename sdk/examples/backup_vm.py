@@ -141,6 +141,12 @@ def main():
              "to restore the disk contents. Can be used only if the "
              "backup was started with --from-checkpoint-uuid.")
 
+    download_parser.add_argument(
+        "--timeout-policy",
+        choices=('legacy', 'pause', 'cancel'),
+        default='cancel',
+        help="The action to be made for a timed out transfer")
+
     stop_parser = subparsers.add_parser(
         "stop",
         help="Stop VM backup.")
@@ -378,7 +384,8 @@ def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=Fa
         connection,
         disk,
         types.ImageTransferDirection.DOWNLOAD,
-        backup=types.Backup(id=backup_uuid))
+        backup=types.Backup(id=backup_uuid),
+        timeout_policy=types.ImageTransferTimeoutPolicy(args.timeout_policy))
     try:
         progress("Image transfer %s is ready" % transfer.id)
         download_url = transfer.transfer_url

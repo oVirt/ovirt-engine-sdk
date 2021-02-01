@@ -123,7 +123,8 @@ def find_host(connection, sd_name):
 def create_transfer(
         connection, disk=None, direction=types.ImageTransferDirection.UPLOAD,
         host=None, backup=None, inactivity_timeout=None, timeout=60,
-        disk_snapshot=None, shallow=None):
+        disk_snapshot=None, shallow=None,
+        timeout_policy=types.ImageTransferTimeoutPolicy.LEGACY):
     """
     Create image transfer for upload to disk or download from disk.
 
@@ -148,19 +149,22 @@ def create_transfer(
             image chain. When downloading a disk transfer only the active disk
             snapshot data. When downloading a disk snapshot, transfer only the
             specified disk snaphost data.
+        timeout_policy (ovirtsdk4.types.ImageTransferTimeoutPolicy): the action
+            to take after inactivity timeout.
 
     Returns:
         ovirtsdk4.types.ImageTransfer in phase TRANSFERRING
     """
     log.info(
         "Creating image transfer for %s=%s, direction=%s host=%s backup=%s "
-        "shallow=%s",
+        "shallow=%s timeout_policy=%s",
         "disk_snapshot" if disk_snapshot else "disk",
         disk_snapshot.id if disk_snapshot else disk.id,
         direction,
         host,
         backup,
         shallow,
+        timeout_policy,
     )
 
     # Create image transfer for disk or snapshot.
@@ -170,6 +174,7 @@ def create_transfer(
         direction=direction,
         backup=backup,
         inactivity_timeout=inactivity_timeout,
+        timeout_policy=timeout_policy,
 
         # format=raw uses the NBD backend, enabling:
         # - Transfer raw guest data, regardless of the disk format.
