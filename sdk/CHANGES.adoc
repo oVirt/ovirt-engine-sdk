@@ -2,10 +2,6 @@
 
 This document describes the relevant changes between releases of the SDK.
 
-== 4.4.9 / Feb 7 2020
-
-* Upgrade to Model 4.4.25
-
 == 4.4.9 / Dec 17 2020
 
 * Upgrade to Model 4.4.22
