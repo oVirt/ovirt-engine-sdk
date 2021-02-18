@@ -3,7 +3,7 @@ language: java
 matrix:
   include:
     - os: linux
-      jdk: openjdk8
+      jdk: openjdk11
     - os: osx
       env:
         global:
