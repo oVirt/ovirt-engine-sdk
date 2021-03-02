@@ -15,11 +15,11 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl --with-openssl; brew install python; sudo easy_install pip; fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install ruby ; fi
   - sudo gem install asciidoctor
-  - pip install --user python3-flake8
-  - pip install --user python3-nose
-  - pip install --user python3-pygments
-  - pip install --user python3-six
-  - pip install --user python3-wheel
+  - pip install --user flake8==3.7.9
+  - pip install --user nose
+  - pip install --user pygments
+  - pip install --user six
+  - pip install --user wheel
   - git clone https://github.com/machacekondra/pdoc.git pdoc
   - pip install --user ./pdoc -U
 
