@@ -1,22 +1,16 @@
 language: java
 
-matrix:
-  include:
-    - os: linux
-      jdk: openjdk11
-    - os: osx
-      env:
-        global:
-          - PYCURL_CURL_CONFIG=/usr/local/opt/curl/bin/curl-config
-          - LD_LIBRARY_PATH=/usr/local/opt/curl/lib:$LD_LIBRARY_PATH
-          - PYCURL_SSL_LIBRARY=openssl
+os: linux
+jdk: openjdk11
+env:
+  global:
+    - PYTHON=3.6.0
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install curl --with-openssl; brew install python; sudo easy_install pip; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install ruby ; fi
+  - sudo apt-get install ruby
   - sudo gem install asciidoctor
   - pip install --user flake8==3.7.9
-  - pip install --user nose
+  - pip install --user python3-nose=1.3.7
   - pip install --user pygments
   - pip install --user six
   - pip install --user wheel
@@ -24,11 +18,11 @@ before_install:
   - pip install --user ./pdoc -U
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mvn package -DskipTests ; fi
+  - mvn package -DskipTests
 
 after_success:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo pip install ./sdk -U ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then travis_wait 20 pdoc --overwrite --html --html-dir=target/generated-html/ sdk/lib/ovirtsdk4/ ; fi
+  - sudo pip install ./sdk -U
+  - travis_wait 20 pdoc --overwrite --html --html-dir=target/generated-html/ sdk/lib/ovirtsdk4/
 
 deploy:
   - provider: script
@@ -36,10 +30,8 @@ deploy:
     script: automation/deploy-on-gh-pages.sh master
     on:
       branch: master
-      condition: $TRAVIS_OS_NAME = linux
   - provider: script
     skip_cleanup: true
     script: automation/deploy-on-gh-pages.sh tagged
     on:
       tags: true
-      condition: $TRAVIS_OS_NAME = linux
