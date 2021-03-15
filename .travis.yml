@@ -4,6 +4,12 @@ os: linux
 python:
   - "3.6"
 
+env:
+  global:
+    - PYCURL_CURL_CONFIG=/usr/local/opt/curl/bin/curl-config
+    - LD_LIBRARY_PATH=/usr/local/opt/curl/lib:$LD_LIBRARY_PATH
+    - PYCURL_SSL_LIBRARY=openssl
+
 before_install:
   - sudo apt-get install ruby
   - sudo gem install asciidoctor
