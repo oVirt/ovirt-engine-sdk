@@ -4,6 +4,7 @@ os: linux
 python:
   - "3.6"
 
+
 env:
   global:
     - PYCURL_CURL_CONFIG=/usr/local/opt/curl/bin/curl-config
@@ -13,13 +14,13 @@ env:
 before_install:
   - sudo apt-get install ruby
   - sudo gem install asciidoctor
-  - pip install --user flake8==3.7.9
-  - pip install --user nose==1.3.7
-  - pip install --user pygments
-  - pip install --user six
-  - pip install --user wheel
+  - pip install flake8==3.7.9
+  - pip install nose==1.3.7
+  - pip install pygments
+  - pip install six
+  - pip install wheel
   - git clone https://github.com/machacekondra/pdoc.git pdoc
-  - pip install --user ./pdoc -U
+  - pip install ./pdoc -U
 
 install:
   - mvn package -DskipTests
