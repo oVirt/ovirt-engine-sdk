@@ -4,13 +4,6 @@ os: linux
 python:
   - "3.6"
 
-
-env:
-  global:
-    - PYCURL_CURL_CONFIG=/usr/local/opt/curl/bin/curl-config
-    - LD_LIBRARY_PATH=/usr/local/opt/curl/lib:$LD_LIBRARY_PATH
-    - PYCURL_SSL_LIBRARY=openssl
-
 before_install:
   - sudo apt-get install ruby
   - sudo gem install asciidoctor
@@ -22,11 +15,11 @@ before_install:
   - git clone https://github.com/machacekondra/pdoc.git pdoc
   - pip install ./pdoc -U
 
-install:
+script:
   - mvn package -DskipTests
 
 after_success:
-  - sudo pip install ./sdk -U
+  - pip install ./sdk -U
   - travis_wait 20 pdoc --overwrite --html --html-dir=target/generated-html/ sdk/lib/ovirtsdk4/
 
 deploy:
@@ -35,10 +28,9 @@ deploy:
     script: automation/deploy-on-gh-pages.sh master
     on:
       branch: master
-      condition: $TRAVIS_OS_NAME = linux
   - provider: script
     skip_cleanup: true
     script: automation/deploy-on-gh-pages.sh tagged
     on:
       tags: true
-      condition: $TRAVIS_OS_NAME = linux
+
