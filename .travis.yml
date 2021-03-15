@@ -35,8 +35,10 @@ deploy:
     script: automation/deploy-on-gh-pages.sh master
     on:
       branch: master
+      condition: $TRAVIS_OS_NAME = linux
   - provider: script
     skip_cleanup: true
     script: automation/deploy-on-gh-pages.sh tagged
     on:
       tags: true
+      condition: $TRAVIS_OS_NAME = linux
