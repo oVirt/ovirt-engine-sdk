@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (c) 2020 Red Hat, Inc.
+# Copyright (c) 2021 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ How to use this example
 Find the disk uuid, assuming e2b9464e-6d9d-4f92-8375-2e5e087c5674 in this
 example.
 
-2. Run the image_ransfer.py
+2. Run the image_transfer.py
 
 $ ./image_transfer.py -c engine3 upload e2b9464e-6d9d-4f92-8375-2e5e087c5674
 [   0.0 ] Connecting to engine...
