@@ -141,12 +141,6 @@ def main():
              "to restore the disk contents. Can be used only if the "
              "backup was started with --from-checkpoint-uuid.")
 
-    download_parser.add_argument(
-        "--timeout-policy",
-        choices=('legacy', 'pause', 'cancel'),
-        default='cancel',
-        help="The action to be made for a timed out transfer")
-
     stop_parser = subparsers.add_parser(
         "stop",
         help="Stop VM backup.")
@@ -281,6 +275,12 @@ def add_download_args(parser):
         default="./",
         help="Path to a directory to download backup disks "
              "to (The default is the current directory).")
+
+    parser.add_argument(
+        "--timeout-policy",
+        choices=('legacy', 'pause', 'cancel'),
+        default='cancel',
+        help="The action to be made for a timed out transfer.")
 
 
 # Backup helpers
