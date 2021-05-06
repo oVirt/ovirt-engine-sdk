@@ -71,6 +71,13 @@ def main():
         help="Disk UUID to backup. May be used multiple times to backup "
              "multiple disks. If not specified, backup all VM disks."),
 
+    full_parser.add_argument(
+        "--skip-download",
+        dest="download_backup",
+        action="store_false",
+        help="Download full backup disks should be skipped. If specified, VM backup will "
+             "start and stop without downloading the disks.")
+
     incremental_parser = subparsers.add_parser(
         "incremental",
         help="Run incremental backup.")
@@ -93,7 +100,14 @@ def main():
         "--disk-uuid",
         action="append",
         help="Disk UUID to backup. May be used multiple times to backup "
-             "multiple disks. If not specified, backup all VM disks."),
+             "multiple disks. If not specified, backup all VM disks.")
+
+    incremental_parser.add_argument(
+        "--skip-download",
+        dest="download_backup",
+        action="store_false",
+        help="Download incremental backup disks should be skipped. If specified, VM backup will "
+             "start and stop without downloading the disks.")
 
     start_parser = subparsers.add_parser(
         "start",
@@ -343,6 +357,10 @@ def stop_backup(connection, backup_uuid, args):
 
 
 def download_backup(connection, backup_uuid, args, incremental=False):
+    if not args.download_backup:
+        progress("Skipping download")
+        return
+
     backup_service = get_backup_service(connection, args.vm_uuid, backup_uuid)
 
     try:
