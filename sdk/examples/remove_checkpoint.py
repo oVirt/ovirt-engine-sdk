@@ -36,30 +36,27 @@ from helpers.common import progress
 
 parser = common.ArgumentParser(description="Remove VM checkpoint")
 parser.add_argument("vm_uuid", help="VM UUID for removing checkpoint.")
+parser.add_argument("checkpoint_uuid", help="The removed checkpoint UUID.")
 args = parser.parse_args()
 common.configure_logging(args)
 
-progress("Removing root checkpoint for VM %r" % args.vm_uuid)
+progress("Removing VM %r checkpoint %r" % (args.vm_uuid, args.checkpoint_uuid))
 
 # Create a connection to the server
 connection = common.create_connection(args)
 with closing(connection):
-    progress("Looking up checkpoints %s" % args.vm_uuid)
     system_service = connection.system_service()
     vm_service = system_service.vms_service().vm_service(id=args.vm_uuid)
     checkpoints_service = vm_service.checkpoints_service()
+    checkpoint_service = checkpoints_service.checkpoint_service(id=args.checkpoint_uuid)
 
-    # Validate that the VM has checkpoints
-    checkpoints = checkpoints_service.list()
-    if not checkpoints:
-        raise RuntimeError("VM {} has no checkpoints".format(args.vm_uuid))
+    # Validate that the VM has the requested checkpoint
+    try:
+        checkpoint_service.get()
+    except sdk.NotFoundError:
+        raise RuntimeError("VM {} has no checkpoint {}".format(args.vm_uuid, args.checkpoint_uuid))
 
-    # Get the first checkpoint in the chain
-    root_checkpoint = checkpoints_service.list()[0]
-    progress("Removing root checkpoint %r" % root_checkpoint.id)
-
-    # Removing the root checkpoint
-    checkpoint_service = checkpoints_service.checkpoint_service(id=root_checkpoint.id)
+    # Removing the checkpoint
     checkpoint_service.remove()
 
     # Validate that the checkpoint removed
@@ -67,4 +64,4 @@ with closing(connection):
         while checkpoint_service.get():
             time.sleep(1)
     except sdk.NotFoundError:
-        progress("Root checkpoint removed successfully")
+        progress("Checkpoint %r removed successfully" % args.checkpoint_uuid)
