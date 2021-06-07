@@ -181,7 +181,7 @@ def cmd_full(args):
     """
     Run full backup flow - start, download and stop backup.
     """
-    progress("Starting full backup for VM %s" % args.vm_uuid)
+    progress("Starting full backup for VM %r" % args.vm_uuid)
 
     connection = common.create_connection(args)
     with closing(connection):
@@ -200,7 +200,7 @@ def cmd_incremental(args):
     """
     Run incremental backup flow - start_incremental, download and stop backup.
     """
-    progress("Starting incremental backup for VM %s" % args.vm_uuid)
+    progress("Starting incremental backup for VM %r" % args.vm_uuid)
 
     connection = common.create_connection(args)
     with closing(connection):
@@ -233,14 +233,14 @@ def cmd_start(args):
     with closing(connection):
         backup = start_backup(connection, args)
 
-    progress("Backup %s is ready" % backup.id)
+    progress("Backup %r is ready" % backup.id)
 
 
 def cmd_download(args):
     """
     Download backup using the backup UUID printed by the start command.
     """
-    progress("Downloading VM %s disks" % args.vm_uuid)
+    progress("Downloading VM %r disks" % args.vm_uuid)
 
     connection = common.create_connection(args)
     with closing(connection):
@@ -254,13 +254,13 @@ def cmd_stop(args):
     """
     Stop backup using the backup UUID printed by the start command.
     """
-    progress("Finalizing backup %s" % args.backup_uuid)
+    progress("Finalizing backup %r" % args.backup_uuid)
 
     connection = common.create_connection(args)
     with closing(connection):
         stop_backup(connection, args.backup_uuid, args)
 
-    progress("Backup %s has finalized" % args.backup_uuid)
+    progress("Backup %r has been finalized" % args.backup_uuid)
 
 
 # Argument parsing
@@ -322,7 +322,7 @@ def start_backup(connection, args):
         )
     )
 
-    progress("Waiting until backup %s is ready" % backup.id)
+    progress("Waiting until backup %r is ready" % backup.id)
 
     backup_service = backups_service.backup_service(backup.id)
 
@@ -348,7 +348,7 @@ def stop_backup(connection, backup_uuid, args):
 
     backup_service.finalize()
 
-    progress("Waiting until backup is finalized")
+    progress("Waiting until backup is being finalized")
 
     backup = backup_service.get()
     while backup.phase != types.BackupPhase.FINALIZING:
@@ -379,7 +379,7 @@ def download_backup(connection, backup_uuid, args, incremental=False):
         backup_mode = get_disk_backup_mode(connection, disk)
         if download_incremental and backup_mode != types.DiskBackupMode.INCREMENTAL:
             # if the disk wasn't a part of the previous checkpoint a full backup is taken
-            progress("The backup that was taken for disk %s is %s" % (disk.id, backup_mode))
+            progress("The backup that was taken for disk %r is %r" % (disk.id, backup_mode))
             download_incremental = False
 
         backup_type = "incremental" if download_incremental else "full"
@@ -397,7 +397,7 @@ def get_backup_service(connection, vm_uuid, backup_uuid):
 
 
 def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=False):
-    progress("Creating image transfer for disk %s" % disk.id)
+    progress("Creating image transfer for disk %r" % disk.id)
     transfer = imagetransfer.create_transfer(
         connection,
         disk,
@@ -405,7 +405,7 @@ def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=Fa
         backup=types.Backup(id=backup_uuid),
         timeout_policy=types.ImageTransferTimeoutPolicy(args.timeout_policy))
     try:
-        progress("Image transfer %s is ready" % transfer.id)
+        progress("Image transfer %r is ready" % transfer.id)
         download_url = transfer.transfer_url
 
         extra_args = {}
