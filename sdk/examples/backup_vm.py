@@ -34,6 +34,7 @@ Requires the ovirt-imageio-client package.
 
 import inspect
 import os
+import sys
 import time
 
 from contextlib import closing
@@ -300,13 +301,10 @@ def add_download_args(parser):
 # Backup helpers
 
 def start_backup(connection, args):
+    verify_vm_exists(connection, args.vm_uuid)
+
     system_service = connection.system_service()
     vm_service = system_service.vms_service().vm_service(id=args.vm_uuid)
-    try:
-        vm = vm_service.get()
-    except sdk.NotFoundError:
-        raise RuntimeError(
-            "VM {} does not exist".format(args.vm_uuid)) from None
 
     backups_service = vm_service.backups_service()
 
@@ -328,12 +326,7 @@ def start_backup(connection, args):
 
     while backup.phase != types.BackupPhase.READY:
         time.sleep(1)
-        try:
-            backup = backup_service.get()
-        except sdk.NotFoundError:
-            failure_event = get_backup_events(connection, backup.id)[0]
-            raise RuntimeError(
-                "Backup {} failed: {}".format(backup.id, failure_event))
+        backup = get_backup(connection, backup_service, backup.id)
 
     if backup.to_checkpoint_id is not None:
         progress(
@@ -344,30 +337,32 @@ def start_backup(connection, args):
 
 
 def stop_backup(connection, backup_uuid, args):
+    verify_vm_exists(connection, args.vm_uuid)
+    verify_backup_exists(connection, args.vm_uuid, backup_uuid)
+
     backup_service = get_backup_service(connection, args.vm_uuid, backup_uuid)
 
     backup_service.finalize()
 
     progress("Waiting until backup is being finalized")
 
-    backup = backup_service.get()
+    backup = get_backup(connection, backup_service, backup_uuid)
     while backup.phase != types.BackupPhase.FINALIZING:
         time.sleep(1)
-        backup = backup_service.get()
+        backup = get_backup(connection, backup_service, backup_uuid)
 
 
 def download_backup(connection, backup_uuid, args, incremental=False):
+    verify_vm_exists(connection, args.vm_uuid)
+    verify_backup_exists(connection, args.vm_uuid, backup_uuid)
+
     if not args.download_backup:
         progress("Skipping download")
         return
 
     backup_service = get_backup_service(connection, args.vm_uuid, backup_uuid)
 
-    try:
-        backup = backup_service.get()
-    except sdk.NotFoundError:
-        raise RuntimeError("Backup {} not found".format(backup_uuid))
-
+    backup = get_backup(connection, backup_service, backup_uuid)
     if backup.phase != types.BackupPhase.READY:
         raise RuntimeError("Backup {} is not ready".format(backup_uuid))
 
@@ -464,6 +459,34 @@ def get_disk_backup_mode(connection, disk):
     system_service = connection.system_service()
     disk_info = system_service.disks_service().disk_service(disk.id).get()
     return disk_info.backup_mode
+
+
+def verify_vm_exists(connection, vm_uuid):
+    system_service = connection.system_service()
+    vm_service = system_service.vms_service().vm_service(id=vm_uuid)
+    try:
+        vm_service.get()
+    except sdk.NotFoundError:
+        progress("VM %r does not exist" % vm_uuid)
+        sys.exit(1)
+
+
+def verify_backup_exists(connection, vm_uuid, backup_uuid):
+    backup_service = get_backup_service(connection, vm_uuid, backup_uuid)
+    try:
+        backup_service.get()
+    except sdk.NotFoundError:
+        progress("Backup %r not found" % backup_uuid)
+        sys.exit(1)
+
+
+def get_backup(connection, backup_service, backup_uuid):
+    try:
+        return backup_service.get()
+    except sdk.NotFoundError:
+        failure_event = get_backup_events(connection, backup_uuid)[0]
+        raise RuntimeError(
+            "Backup {} failed: {}".format(backup_uuid, failure_event))
 
 
 if __name__ == "__main__":
