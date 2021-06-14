@@ -2,6 +2,15 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.4.13 / Jun 14 2021
+
+* Upgrade to Model 4.4.31
+
+Bug Fixes:
+
+* Preserve /dev/null when running under root user
+  https://bugzilla.redhat.com/1956750
+
 == 4.4.12 / Apr 27 2021
 
 * Upgrade to Model 4.4.29
