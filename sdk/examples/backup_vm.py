@@ -194,7 +194,7 @@ def cmd_full(args):
             progress("Finalizing backup")
             stop_backup(connection, backup.id, args)
 
-    progress("Full backup completed successfully")
+    progress("Full backup %r completed successfully" % backup.id)
 
 
 def cmd_incremental(args):
@@ -212,7 +212,7 @@ def cmd_incremental(args):
             progress("Finalizing backup")
             stop_backup(connection, backup.id, args)
 
-    progress("Incremental backup completed successfully")
+    progress("Incremental backup %r completed successfully" % backup.id)
 
 
 def cmd_start(args):
@@ -262,7 +262,7 @@ def cmd_stop(args):
     with closing(connection):
         stop_backup(connection, args.backup_uuid, args)
 
-    progress("Backup %r has been finalized" % args.backup_uuid)
+    progress("Backup %r completed successfully" % args.backup_uuid)
 
 
 # Argument parsing
@@ -323,8 +323,9 @@ def start_backup(connection, args):
 
     progress("Waiting until backup %r is ready" % backup.id)
 
+    # "get_backup()" invocation will raise if the backup failed.
+    # So we just need to wait until the backup phase is READY.
     backup_service = backups_service.backup_service(backup.id)
-
     while backup.phase != types.BackupPhase.READY:
         time.sleep(1)
         backup = get_backup(connection, backup_service, backup.id)
@@ -347,8 +348,10 @@ def stop_backup(connection, backup_uuid, args):
 
     progress("Waiting until backup is being finalized")
 
+    # "get_backup()" invocation will raise if the backup failed.
+    # So we just need to wait until the backup phase is SUCCEEDED.
     backup = get_backup(connection, backup_service, backup_uuid)
-    while backup.phase != types.BackupPhase.FINALIZING:
+    while backup.phase != types.BackupPhase.SUCCEEDED:
         time.sleep(1)
         backup = get_backup(connection, backup_service, backup_uuid)
 
@@ -363,6 +366,8 @@ def download_backup(connection, backup_uuid, args, incremental=False):
 
     backup_service = get_backup_service(connection, args.vm_uuid, backup_uuid)
 
+    # "get_backup()" invocation will raise if the backup failed.
+    # So we just need to verify that the backup phase is READY.
     backup = get_backup(connection, backup_service, backup_uuid)
     if backup.phase != types.BackupPhase.READY:
         raise RuntimeError("Backup {} is not ready".format(backup_uuid))
@@ -483,11 +488,18 @@ def verify_backup_exists(connection, vm_uuid, backup_uuid):
 
 def get_backup(connection, backup_service, backup_uuid):
     try:
-        return backup_service.get()
+        backup = backup_service.get()
     except sdk.NotFoundError:
         failure_event = get_backup_events(connection, backup_uuid)[0]
         raise RuntimeError(
-            "Backup {} failed: {}".format(backup_uuid, failure_event))
+            "Backup {} does not exist: {}".format(backup_uuid, failure_event))
+
+    if backup.phase == types.BackupPhase.FAILED:
+        failure_event = get_backup_events(connection, backup_uuid)[0]
+        raise RuntimeError(
+            "Backup {} has failed: {}".format(backup_uuid, failure_event))
+
+    return backup
 
 
 if __name__ == "__main__":
