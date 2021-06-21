@@ -242,6 +242,7 @@ def cmd_download(args):
     Download backup using the backup UUID printed by the start command.
     """
     progress("Downloading VM %r disks" % args.vm_uuid)
+    args.download_backup = True
 
     connection = common.create_connection(args)
     with closing(connection):
