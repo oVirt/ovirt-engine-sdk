@@ -2,6 +2,15 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.4.14 / Jul 6 2021
+
+Bug Fixes:
+
+* backup: use newly added "SUCCEEDED/FAILED" backup phases
+  https://bugzilla.redhat.com/1849861
+
+* backup_vm.py: fix download backup disk command
+
 == 4.4.13 / Jun 14 2021
 
 * Upgrade to Model 4.4.31
