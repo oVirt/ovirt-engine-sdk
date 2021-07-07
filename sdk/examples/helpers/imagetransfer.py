@@ -270,17 +270,24 @@ def finalize_transfer(connection, transfer, disk, timeout=60):
     """
     Finalize a transfer, making the transfer disk available.
 
-    If finalizing succeeds, transfer's phase will change to FINISHED_SUCCESS
-    and the transfer's disk status will change to OK.  On upload errors, the
-    transfer's phase will change to FINISHED_FAILURE and the disk status will
-    change to ILLEGAL and it will be removed. In both cases the transfer entity
-    will be removed shortly after.
+    If finalizing succeeds: the disk status will change to OK and transfer's
+    phase will change to FINISHED_SUCCESS.
+    On upload errors: the disk status will change to ILLEGAL, transfer's phase
+    will change to FINISHED_FAILURE and the disk will be removed.
+    In both cases the transfer entity:
+     a. prior to 4.4.7: removed shortly after the command finishes
+     b. 4.4.7 and later: stays in the database and is cleaned by the dedicated
+        thread after a few minutes.
 
     If oVirt fails to finalize the transfer, transfer's phase will change to
     PAUSED_SYSTEM. In this case the disk's status will change to ILLEGAL and it
     will not be removed.
 
-    For simplicity, we track only disk's status changes.
+    When working with oVirt 4.4.7 and later, it is enough to poll the image
+    transfer. However with older versions the transfer entity is removed from
+    the database after the the command finishes and before we can retrieve the
+    final transfer status. Thus the API returns a 404 error code. In that case
+    we need to check for the disk status.
 
     For more info see:
     - http://ovirt.github.io/ovirt-engine-api-model/4.4/#services/image_transfer
@@ -302,33 +309,44 @@ def finalize_transfer(connection, transfer, disk, timeout=60):
     start = time.time()
 
     transfer_service.finalize()
-
-    disk_service = (connection.system_service()
-                        .disks_service()
-                        .disk_service(disk.id))
-
     while True:
         time.sleep(1)
         try:
-            disk = disk_service.get()
+            transfer = transfer_service.get()
         except sdk.NotFoundError:
-            # Disk verification failed and the system removed the disk.
-            raise RuntimeError(
-                "Transfer {} failed: disk {} was removed"
-                .format(transfer.id, disk.id))
+            # Old engine (< 4.4.7): since the transfer was already deleted from
+            # the database, we can assume that the disk status is already
+            # updated, so we can check it only once.
+            disk_service = (connection.system_service()
+                                .disks_service()
+                                .disk_service(disk.id))
+            try:
+                disk = disk_service.get()
+            except sdk.NotFoundError:
+                # Disk verification failed and the system removed the disk.
+                raise RuntimeError(
+                    "Transfer {} failed: disk {} was removed"
+                    .format(transfer.id, disk.id))
 
-        if disk.status == types.DiskStatus.ILLEGAL:
-            # Disk verification failed or transfer was paused by the system.
-            raise RuntimeError(
-                "Transfer {} failed: disk {} is ILLEGAL"
-                .format(transfer.id, disk.id))
+            if disk.status == types.DiskStatus.OK:
+                break
 
-        if disk.status == types.DiskStatus.OK:
+            raise RuntimeError(
+                "Transfer {} failed: disk {} is '{}'"
+                .format(transfer.id, disk.id, disk.status))
+
+        log.debug("transfer.phase=%s", transfer.phase)
+        if transfer.phase == types.ImageTransferPhase.FINISHED_SUCCESS:
             break
+
+        if transfer.phase == types.ImageTransferPhase.FINISHED_FAILURE:
+            raise RuntimeError(
+                "Transfer {} failed, phase: {}"
+                .format(transfer.id, transfer.phase))
 
         if time.time() > start + timeout:
             raise RuntimeError(
-                "Timed out waiting for transfer {} to finalize"
-                .format(transfer.id))
+                "Timed out waiting for transfer {} to finalize, phase: {}"
+                .format(transfer.id, transfer.phase))
 
     log.info("Transfer finalized in %.3f seconds", time.time() - start)
