@@ -147,7 +147,11 @@ with closing(connection):
             extra_args["backing_file"] = os.path.basename(args.backing_file)
             extra_args["backing_format"] = "qcow2"
 
-        progress("Downloading image...")
+        # If we have a backing file we download single disk snapshot. Otherwise
+        # we download the entire disk contents at the time of the disk snapshot
+        # was created.
+        progress("Downloading %s..." %
+                 ("disk snapshot" if args.backing_file else "disk"))
 
         with client.ProgressBar() as pb:
             client.download(
@@ -163,3 +167,4 @@ with closing(connection):
         progress("Finalizing image transfer...")
         imagetransfer.finalize_transfer(
             connection, transfer, disk_snapshot.disk)
+        progress("Download completed successfully")
