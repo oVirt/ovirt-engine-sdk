@@ -145,7 +145,7 @@ with closing(connection):
         if "proxy_url" in parameters:
             extra_args["proxy_url"] = transfer.proxy_url
 
-    progress("Downloading image...")
+    progress("Downloading disk...")
 
     try:
         with client.ProgressBar() as pb:
@@ -161,3 +161,4 @@ with closing(connection):
     finally:
         progress("Finalizing image transfer...")
         imagetransfer.finalize_transfer(connection, transfer, disk)
+        progress("Download completed successfully")
