@@ -383,8 +383,7 @@ def download_backup(connection, backup_uuid, args, incremental=False):
             progress("The backup that was taken for disk %r is %r" % (disk.id, backup_mode))
             download_incremental = False
 
-        backup_type = "incremental" if download_incremental else "full"
-        file_name = "{}.{}.{}.qcow2".format(disk.id, timestamp, backup_type)
+        file_name = "{}.{}.{}.qcow2".format(disk.id, timestamp, backup_mode)
         disk_path = os.path.join(args.backup_dir, file_name)
         download_disk(
             connection, backup_uuid, disk, disk_path, args, incremental=download_incremental)
