@@ -346,8 +346,6 @@ def stop_backup(connection, backup_uuid, args):
 
     backup_service.finalize()
 
-    progress("Waiting until backup is being finalized")
-
     # "get_backup()" invocation will raise if the backup failed.
     # So we just need to wait until the backup phase is SUCCEEDED.
     backup = get_backup(connection, backup_service, backup_uuid)
@@ -384,7 +382,7 @@ def download_backup(connection, backup_uuid, args, incremental=False):
         # If incremental backup is not available, warn about it, since full
         # backup is much slower and takes much more storage.
         if incremental and not has_incremental:
-            progress("The backup that was taken for disk %r is %r" % (disk.id, backup_mode))
+            progress("Incremental backup not available for disk %r" % disk.id)
 
         file_name = "{}.{}.{}.qcow2".format(disk.id, timestamp, backup_mode)
         disk_path = os.path.join(args.backup_dir, file_name)
@@ -401,7 +399,8 @@ def get_backup_service(connection, vm_uuid, backup_uuid):
 
 
 def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=False):
-    progress("Creating image transfer for disk %r" % disk.id)
+    progress("Downloading %s backup for disk %r" %
+             ("incremental" if incremental else "full", disk.id))
     transfer = imagetransfer.create_transfer(
         connection,
         disk,
@@ -438,6 +437,7 @@ def download_disk(connection, backup_uuid, disk, disk_path, args, incremental=Fa
     finally:
         progress("Finalizing image transfer")
         imagetransfer.finalize_transfer(connection, transfer, disk)
+        progress("Download completed successfully")
 
 
 # General helpers
