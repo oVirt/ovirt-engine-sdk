@@ -26,6 +26,8 @@ Requires the ovirt-imageio-client package.
 import inspect
 import time
 
+from contextlib import closing
+
 from ovirt_imageio import client
 
 import ovirtsdk4.types as types
@@ -95,69 +97,67 @@ common.configure_logging(args)
 
 progress("Connecting...")
 connection = common.create_connection(args)
+with closing(connection):
 
-# Get the reference to the disks service:
-disks_service = connection.system_service().disks_service()
+    # Get the reference to the disks service:
+    disks_service = connection.system_service().disks_service()
 
-# Find the disk we want to download by the id:
-disk_service = disks_service.disk_service(args.disk_uuid)
-disk = disk_service.get()
+    # Find the disk we want to download by the id:
+    disk_service = disks_service.disk_service(args.disk_uuid)
+    disk = disk_service.get()
 
-# Find a host for this transfer. This is an optional step allowing optimizing
-# the transfer using unix socket when running this code on a oVirt hypervisor
-# in the same data center.
-sd_id = disk.storage_domains[0].id
-sds_service = connection.system_service().storage_domains_service()
-storage_domain = sds_service.storage_domain_service(sd_id).get()
-host = imagetransfer.find_host(connection, storage_domain.name)
+    # Find a host for this transfer. This is an optional step allowing
+    # optimizing the transfer using unix socket when running this code on a
+    # oVirt hypervisor in the same data center.
+    sd_id = disk.storage_domains[0].id
+    sds_service = connection.system_service().storage_domains_service()
+    storage_domain = sds_service.storage_domain_service(sd_id).get()
+    host = imagetransfer.find_host(connection, storage_domain.name)
 
-progress("Creating image transfer...")
+    progress("Creating image transfer...")
 
-transfer = imagetransfer.create_transfer(
-    connection, disk, types.ImageTransferDirection.DOWNLOAD, host=host,
-    timeout_policy=types.ImageTransferTimeoutPolicy(args.timeout_policy))
+    transfer = imagetransfer.create_transfer(
+        connection, disk, types.ImageTransferDirection.DOWNLOAD, host=host,
+        timeout_policy=types.ImageTransferTimeoutPolicy(args.timeout_policy))
 
-progress("Transfer ID: %s" % transfer.id)
-progress("Transfer host name: %s" % transfer.host.name)
+    progress("Transfer ID: %s" % transfer.id)
+    progress("Transfer host name: %s" % transfer.host.name)
 
-# At this stage, the SDK granted the permission to start transferring the disk, and the
-# user should choose its preferred tool for doing it. We use the recommended
-# way, ovirt-imageio client library.
+    # At this stage, the SDK granted the permission to start transferring the
+    # disk, and the user should choose its preferred tool for doing it. We use
+    # the recommended way, ovirt-imageio client library.
 
-extra_args = {}
+    extra_args = {}
 
-parameters = inspect.signature(client.download).parameters
+    parameters = inspect.signature(client.download).parameters
 
-# Use multiple workers to speed up the download.
-if "max_workers" in parameters:
-        extra_args["max_workers"] = args.max_workers
+    # Use multiple workers to speed up the download.
+    if "max_workers" in parameters:
+            extra_args["max_workers"] = args.max_workers
 
-if args.use_proxy:
-    download_url = transfer.proxy_url
-else:
-    download_url = transfer.transfer_url
+    if args.use_proxy:
+        download_url = transfer.proxy_url
+    else:
+        download_url = transfer.transfer_url
 
-    # Use fallback to proxy_url if feature is available. Download will use the
-    # proxy_url if transfer_url is not accessible.
-    if "proxy_url" in parameters:
-        extra_args["proxy_url"] = transfer.proxy_url
+        # Use fallback to proxy_url if feature is available. Download will use
+        # the proxy_url if transfer_url is not accessible.
+        if "proxy_url" in parameters:
+            extra_args["proxy_url"] = transfer.proxy_url
 
-progress("Downloading image...")
+    progress("Downloading image...")
 
-try:
-    with client.ProgressBar() as pb:
-        client.download(
-            download_url,
-            args.filename,
-            args.cafile,
-            fmt=args.format,
-            secure=args.secure,
-            buffer_size=args.buffer_size,
-            progress=pb,
-            **extra_args)
-finally:
-    progress("Finalizing image transfer...")
-    imagetransfer.finalize_transfer(connection, transfer, disk)
-
-# Close the connection to the server:
-connection.close()
+    try:
+        with client.ProgressBar() as pb:
+            client.download(
+                download_url,
+                args.filename,
+                args.cafile,
+                fmt=args.format,
+                secure=args.secure,
+                buffer_size=args.buffer_size,
+                progress=pb,
+                **extra_args)
+    finally:
+        progress("Finalizing image transfer...")
+        imagetransfer.finalize_transfer(connection, transfer, disk)
