@@ -119,35 +119,33 @@ with closing(connection):
     transfer = imagetransfer.create_transfer(
         connection, disk, types.ImageTransferDirection.DOWNLOAD, host=host,
         timeout_policy=types.ImageTransferTimeoutPolicy(args.timeout_policy))
+    try:
+        # oVirt started an image transfer for downloading the disk data. The
+        # transfer must be finalized when we are done.
 
-    progress("Transfer ID: %s" % transfer.id)
-    progress("Transfer host name: %s" % transfer.host.name)
+        progress("Transfer ID: %s" % transfer.id)
+        progress("Transfer host name: %s" % transfer.host.name)
 
-    # At this stage, the SDK granted the permission to start transferring the
-    # disk, and the user should choose its preferred tool for doing it. We use
-    # the recommended way, ovirt-imageio client library.
+        extra_args = {}
 
-    extra_args = {}
+        parameters = inspect.signature(client.download).parameters
 
-    parameters = inspect.signature(client.download).parameters
-
-    # Use multiple workers to speed up the download.
-    if "max_workers" in parameters:
+        # Use multiple workers to speed up the download.
+        if "max_workers" in parameters:
             extra_args["max_workers"] = args.max_workers
 
-    if args.use_proxy:
-        download_url = transfer.proxy_url
-    else:
-        download_url = transfer.transfer_url
+        if args.use_proxy:
+            download_url = transfer.proxy_url
+        else:
+            download_url = transfer.transfer_url
 
-        # Use fallback to proxy_url if feature is available. Download will use
-        # the proxy_url if transfer_url is not accessible.
-        if "proxy_url" in parameters:
-            extra_args["proxy_url"] = transfer.proxy_url
+            # Use fallback to proxy_url if feature is available. Download will
+            # use the proxy_url if transfer_url is not accessible.
+            if "proxy_url" in parameters:
+                extra_args["proxy_url"] = transfer.proxy_url
 
-    progress("Downloading disk...")
+        progress("Downloading disk...")
 
-    try:
         with client.ProgressBar() as pb:
             client.download(
                 download_url,
