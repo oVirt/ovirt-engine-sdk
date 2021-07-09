@@ -490,14 +490,14 @@ def get_backup(connection, backup_service, backup_uuid):
     try:
         backup = backup_service.get()
     except sdk.NotFoundError:
-        failure_event = get_backup_events(connection, backup_uuid)[0]
-        raise RuntimeError(
-            "Backup {} does not exist: {}".format(backup_uuid, failure_event))
+        last_event = get_backup_events(connection, backup_uuid)[0]
+        raise RuntimeError("Backup {} does not exist, last reported event: {}"
+                           .format(backup_uuid, last_event))
 
     if backup.phase == types.BackupPhase.FAILED:
-        failure_event = get_backup_events(connection, backup_uuid)[0]
-        raise RuntimeError(
-            "Backup {} has failed: {}".format(backup_uuid, failure_event))
+        last_event = get_backup_events(connection, backup_uuid)[0]
+        raise RuntimeError("Backup {} has failed, last reported event: {}"
+                           .format(backup_uuid, last_event))
 
     return backup
 
