@@ -245,43 +245,48 @@ with closing(connection):
     transfer = imagetransfer.create_transfer(connection, disk,
         types.ImageTransferDirection.UPLOAD, host=host,
         timeout_policy=types.ImageTransferTimeoutPolicy(args.timeout_policy))
+    try:
+        # oVirt started an image transfer for uploading the image data into the
+        # disk. Any error after this point must cancel the transfer, which will
+        # delete the disk with the partial data. If the data was uploaded
+        # successfuly, the transfer must be finalized.
 
-    progress("Transfer ID: %s" % transfer.id)
-    progress("Transfer host name: %s" % transfer.host.name)
+        progress("Transfer ID: %s" % transfer.id)
+        progress("Transfer host name: %s" % transfer.host.name)
 
-    # At this stage, the SDK granted the permission to start transferring the
-    # disk, and the user should choose its preferred tool for doing it. We use
-    # the recommended way, ovirt-imageio client library.
+        extra_args = {}
 
-    extra_args = {}
+        parameters = inspect.signature(client.download).parameters
 
-    parameters = inspect.signature(client.download).parameters
+        # Use multiple workers to speed up the upload.
+        if "max_workers" in parameters:
+            extra_args["max_workers"] = args.max_workers
 
-    # Use multiple workers to speed up the upload.
-    if "max_workers" in parameters:
-        extra_args["max_workers"] = args.max_workers
+        if args.use_proxy:
+            upload_url = transfer.proxy_url
+        else:
+            upload_url = transfer.transfer_url
 
-    if args.use_proxy:
-        upload_url = transfer.proxy_url
-    else:
-        upload_url = transfer.transfer_url
+            # Use fallback to proxy_url if feature is available. Upload will
+            # use the proxy_url if transfer_url is not accessible.
+            if "proxy_url" in parameters:
+                extra_args["proxy_url"] = transfer.proxy_url
 
-        # Use fallback to proxy_url if feature is available. Upload will use the
-        # proxy_url if transfer_url is not accessible.
-        if "proxy_url" in parameters:
-            extra_args["proxy_url"] = transfer.proxy_url
+        progress("Uploading image...")
 
-    progress("Uploading image...")
-
-    with client.ProgressBar() as pb:
-        client.upload(
-            args.filename,
-            upload_url,
-            args.cafile,
-            secure=args.secure,
-            buffer_size=args.buffer_size,
-            progress=pb,
-            **extra_args)
+        with client.ProgressBar() as pb:
+            client.upload(
+                args.filename,
+                upload_url,
+                args.cafile,
+                secure=args.secure,
+                buffer_size=args.buffer_size,
+                progress=pb,
+                **extra_args)
+    except:
+        progress("Canceling image transfer...")
+        imagetransfer.cancel_transfer(connection, transfer)
+        raise
 
     progress("Finalizing image transfer...")
     imagetransfer.finalize_transfer(connection, transfer, disk)
