@@ -28,6 +28,7 @@ import json
 import os
 import subprocess
 import time
+import uuid
 
 from contextlib import closing
 
@@ -59,6 +60,12 @@ def parse_args():
         action="store_true",
         help="Create sparse disk. Cannot be used with raw format on "
              "block storage.")
+
+    parser.add_argument(
+        "--disk-id",
+        type=validate_uuid,
+        help="A UUID for the new disk. If not specified oVirt will "
+             "create a new UUID.")
 
     parser.add_argument(
         "--enable-backup",
@@ -103,6 +110,14 @@ def parse_args():
         help="The action to be made for a timed out transfer")
 
     return parser.parse_args()
+
+
+def validate_uuid(s):
+    """
+    Validate that the argument is a valid uuid and return a normalized UUID
+    string.
+    """
+    return str(uuid.UUID(s))
 
 
 def get_image_info(filename):
@@ -208,6 +223,7 @@ with closing(connection):
     disks_service = connection.system_service().disks_service()
     disk = disks_service.add(
         disk=types.Disk(
+            id=args.disk_id,
             name=disk_info["name"],
             content_type=disk_info["content_type"],
             description='Uploaded disk',
