@@ -17,6 +17,7 @@ before_install:
   - pip install pygments
   - pip install six
   - pip install wheel
+  - pip install pycurl
   - git clone https://github.com/machacekondra/pdoc.git pdoc
   - pip install ./pdoc -U
 
