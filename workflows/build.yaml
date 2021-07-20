@@ -1,0 +1,101 @@
+
+name: ovirt-engine-sdk GitHub Actions
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  LD_LIBRARY_PATH: /usr/local/opt/curl/lib:$LD_LIBRARY_PATH
+  PYCURL_SSL_LIBRARY: openssl
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Install package dependencies
+        run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python-dev
+
+      - name: Install pypi dependencies
+        run: |
+          pip install flake8==3.7.9
+          pip install nose==1.3.7
+          pip install pygments
+          pip install six
+          pip install wheel
+          pip install pycurl
+          pip install pdoc
+
+      - name: Set git defaults
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Run maven build
+        run: mvn package -DskipTests -B
+
+      - name: Install created sdk
+        run: pip install ./sdk -U
+
+      - name: Checkout to gh-pages branch
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Create python documentation
+        run: pdoc -t gh-pages -o ./html ovirtsdk4
+
+      - name: Move created documentation to gh-pages master
+        run: |
+          mmv './html/ovirtsdk4/*.html' './html/ovirtsdk4/#1.m.html'
+          ls -l ./html/ovirtsdk4/
+          ls -l ./gh-pages/master/
+          cp ./html/ovirtsdk4.html ./gh-pages/master/index.html
+          cp ./html/ovirtsdk4/* ./gh-pages/master/
+          rm -rf ./html
+
+      - name: Push changes to gh-pages
+        run: |
+          cd gh-pages
+          commit=$(git log --format="%H" -n 1)
+          description=$(git describe --always)
+          if git status --porcelain 2>/dev/null| grep -E "^??|^M"
+          then
+            git add .
+            git commit -m "gh-pages ${description} ${commit}"
+            git push
+          fi
+          cd ..
+
+      - name: Check out target repository
+        uses: actions/checkout@v2
+        with:
+          repository: '${{ secrets.TARGET_REPO }}'
+          ssh-key: '${{ secrets.DEPLOY_KEY }}'
+          path: python-ovirt-engine-sdk4
+
+      - name: Copy SDK to repository
+        run: |
+          rm -rf sdk/dist sdk/target sdk/build sdk/tests sdk/pom.xml
+          cp -r sdk/lib/ovirt_engine_sdk_python.egg-info/PKG-INFO sdk/* ./python-ovirt-engine-sdk4/
+
+      - name: Push changes to python-ovirt-engine-sdk4
+        run: |
+          cd python-ovirt-engine-sdk4
+          if git status --porcelain 2>/dev/null| grep -E "^??|^M"
+          then
+            git add .
+            git commit -am "Sync with upstream"
+            git push
+          fi
+          cd ..
