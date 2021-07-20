@@ -1,0 +1,77 @@
+{% extends "default/module.html.jinja2" %}
+
+{% defaultmacro module_name() %}
+    <h1 class="modulename">
+        {% set parts = module.modulename.split(".") %}
+        {% for part in parts %}
+            {%- set fullname = ".".join(parts[:loop.index]) -%}
+            {%- if fullname in all_modules and fullname != module.modulename -%}
+                <a href="./{{ "../" * (loop.revindex0-1) }}{{ part }}.html">{{ part }}</a>
+            {%- else -%}
+                {{ part }}
+            {%- endif -%}
+            {%- if loop.nextitem -%}
+                <wbr>.
+            {%- endif -%}
+        {% endfor %}
+    </h1>
+{% enddefaultmacro %}
+
+{% block nav %}
+    <nav class="pdoc">
+        <label id="navtoggle" for="togglestate" class="pdoc-button">{% include 'navtoggle.svg' %}</label>
+        <input id="togglestate" type="checkbox">
+        <div>
+            {% block module_list_link %}
+                {% set parentmodule = ".".join(module.modulename.split(".")[:-1]) %}
+                {% if parentmodule and parentmodule in all_modules %}
+                    <a class="pdoc-button module-list-button" href="./index.html">
+                        {% include "box-arrow-in-left.svg" %}
+                        &nbsp;
+                        {{- parentmodule -}}
+                    </a>
+                {% elif all_modules|length > 1 %}
+                    <a class="pdoc-button module-list-button" href="../index.html">
+                        {% include "box-arrow-in-left.svg" %}
+                        &nbsp;
+                        SDK Versions
+                    </a>
+                {% endif %}
+            {% endblock %}
+
+            {% block search %}
+            {% endblock %}
+
+            {% block nav_title %}{% endblock %}
+
+            {% set index = module.docstring | render_docstring | attr("toc_html") %}
+            {% if index %}
+                <h2>Contents</h2>
+                {{ index | safe }}
+            {% endif %}
+
+            {% if module.submodules %}
+                <h2>Submodules</h2>
+                <ul>
+                    {% for submodule in module.submodules %}
+                        <li><a href="./{{ submodule.name }}.m.html">ovirtsdk4.{{ submodule.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if module.members %}
+                <h2>API Documentation</h2>
+                {{ nav_members(module.members.values()) }}
+            {% endif %}
+
+            {% block attribution %}
+                <a class="attribution" title="pdoc: Python API documentation generator" href="https://pdoc.dev">
+                    built with <span class="visually-hidden">pdoc</span><img
+                        alt="pdoc logo"
+                        src="data:image/svg+xml,
+                                {%- filter urlencode %}{% include "pdoc-logo.svg" %}{% endfilter %}"/>
+                </a>
+            {% endblock %}
+        </div>
+    </nav>
+{% endblock %}
