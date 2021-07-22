@@ -79,6 +79,11 @@ def main():
         help="Download full backup disks should be skipped. If specified, VM backup will "
              "start and stop without downloading the disks.")
 
+    full_parser.add_argument(
+        "--description",
+        dest="description",
+        help="A description for the created backup/checkpoint to persist in the Engine DB.")
+
     incremental_parser = subparsers.add_parser(
         "incremental",
         help="Run incremental backup.")
@@ -110,6 +115,11 @@ def main():
         help="Download incremental backup disks should be skipped. If specified, VM backup will "
              "start and stop without downloading the disks.")
 
+    incremental_parser.add_argument(
+        "--description",
+        dest="description",
+        help="A description for the created backup/checkpoint to persist in the Engine DB.")
+
     start_parser = subparsers.add_parser(
         "start",
         help="Start VM backup.")
@@ -130,6 +140,11 @@ def main():
         "--from-checkpoint-uuid",
         help="Perform incremental backup since the specified checkpoint "
              "UUID.")
+
+    start_parser.add_argument(
+        "--description",
+        dest="description",
+        help="A description for the created backup/checkpoint to persist in the Engine DB.")
 
     download_parser = subparsers.add_parser(
         "download",
@@ -317,7 +332,8 @@ def start_backup(connection, args):
     backup = backups_service.add(
         types.Backup(
             disks=disks,
-            from_checkpoint_id=args.from_checkpoint_uuid
+            from_checkpoint_id=args.from_checkpoint_uuid,
+            description=args.description
         )
     )
 
