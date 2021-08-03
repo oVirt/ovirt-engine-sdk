@@ -44,7 +44,7 @@
 
             {% block nav_title %}{% endblock %}
 
-            {% set index = module.docstring | render_docstring | attr("toc_html") %}
+            {% set index = module.docstring | to_markdown | to_html | attr("toc_html") %}
             {% if index %}
                 <h2>Contents</h2>
                 {{ index | safe }}
