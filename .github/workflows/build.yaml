@@ -41,7 +41,7 @@ jobs:
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Run maven build
-        run: mvn package -DskipTests -B
+        run: mvn package -Dskipflake=true -DskipTests -B
 
       - name: Install created sdk
         run: pip install ./sdk -U
