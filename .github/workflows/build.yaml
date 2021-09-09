@@ -1,9 +1,7 @@
 
 name: ovirt-engine-sdk GitHub Actions
 
-on:
-  push:
-    branches: [ master ]
+on: push
 
 env:
   LD_LIBRARY_PATH: /usr/local/opt/curl/lib:$LD_LIBRARY_PATH
@@ -55,13 +53,21 @@ jobs:
       - name: Create python documentation
         run: pdoc -t gh-pages -o ./html ovirtsdk4
 
-      - name: Move created documentation to gh-pages master
+      - name: Set FOLDER variable according to pushed branch
+        run: |
+          if [[ ${GITHUB_REF} == 'refs/heads/master' ]];
+          then
+            echo "FOLDER='master'" >> $GITHUB_ENV;
+          else
+            echo "FOLDER=${GITHUB_REF: -3}" >> $GITHUB_ENV;
+          fi
+
+      - name: Move created documentation to gh-pages
         run: |
           mmv './html/ovirtsdk4/*.html' './html/ovirtsdk4/#1.m.html'
-          ls -l ./html/ovirtsdk4/
-          ls -l ./gh-pages/master/
-          cp ./html/ovirtsdk4.html ./gh-pages/master/index.html
-          cp ./html/ovirtsdk4/* ./gh-pages/master/
+          mkdir -p ./html/${{env.FOLDER}}/
+          cp ./html/ovirtsdk4.html ./gh-pages/${{env.FOLDER}}/index.html
+          cp ./html/ovirtsdk4/* ./gh-pages/${{env.FOLDER}}/
           rm -rf ./html
 
       - name: Push changes to gh-pages
