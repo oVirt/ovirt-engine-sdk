@@ -65,7 +65,7 @@ jobs:
       - name: Move created documentation to gh-pages
         run: |
           mmv './html/ovirtsdk4/*.html' './html/ovirtsdk4/#1.m.html'
-          mkdir -p ./html/${{env.FOLDER}}/
+          mkdir -p ./gh-pages/${{env.FOLDER}}/
           cp ./html/ovirtsdk4.html ./gh-pages/${{env.FOLDER}}/index.html
           cp ./html/ovirtsdk4/* ./gh-pages/${{env.FOLDER}}/
           rm -rf ./html
