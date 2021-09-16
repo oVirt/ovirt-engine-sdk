@@ -1,11 +1,6 @@
-#!/usr/bin/bash -xe
-export PYTHON=python2
+#!/bin/bash -xe
 
-if [[ $(rpm --eval "%{fedora}") -gt 29 ]] ; then
-export PYTHON=python3
-fi
-if [[ $(rpm --eval "%{rhel}") -gt 7 ]] ; then
-export PYTHON=python3
-fi
+# Test build sdk
+export JAVA_HOME=/usr/lib/jvm/java-11
 
-${PYTHON} automation/build.py
+mvn package -B

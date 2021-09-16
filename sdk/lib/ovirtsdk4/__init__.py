@@ -390,8 +390,7 @@ class Connection(object):
 
         # Init curl easy:
         curl = pycurl.Curl()
-        curl.setopt(pycurl.COOKIEFILE, '/dev/null')
-        curl.setopt(pycurl.COOKIEJAR, '/dev/null')
+        curl.setopt(pycurl.COOKIEFILE, "")
 
         # Configure TLS parameters:
         if self._url.startswith('https'):

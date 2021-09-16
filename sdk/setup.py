@@ -47,12 +47,13 @@ setuptools.setup(
     name='ovirt-engine-sdk-python',
     version=VERSION,  # noqa: F821
     description='Python SDK for oVirt Engine API',
-    author='Michael Pasternak, Juan Hernandez, Ondra Machacek, Ori Liel',
+    author='Michael Pasternak, Juan Hernandez, Ondra Machacek, Ori Liel, Martin Necas',
     author_email=(
         'mishka8520@yahoo.com, '
         'juan.hernandez@redhat.com, '
         'omachace@redhat.com, '
-        'oliel@redhat.com'
+        'oliel@redhat.com, '
+        'mnecas@redhat.com'
     ),
     license='ASL2',
     classifiers=[

@@ -14,20 +14,16 @@ directory.
 
 == Installation
 
-The SDK can be installed in Fedora 24 and CentOS 7 using the RPM packages
+The SDK can be installed in CentOS Linux 8 and CentOS Stream using the RPM packages
 provided by the oVirt project. To do so install the oVirt release package:
 
-  # dnf install http://resources.ovirt.org/pub/yum-repo/ovirt-release41.rpm
+  # dnf install http://resources.ovirt.org/pub/yum-repo/ovirt-release44.rpm
 
-Then install the SDK packages. For Python 2:
-
-  # dnf install python-ovirt-engine-sdk4
-
-For Python 3:
+Then install the SDK packages. For Python 3:
 
   # dnf install python3-ovirt-engine-sdk4
 
-For other operating systems (and also for Fedora and CentOS) you can
+For other operating systems (and also for CentOS) you can
 install the SDK using the `pip` command, which will download the source
 from https://pypi.python.org/pypi[PyPI], build and install it.
 
@@ -41,13 +37,6 @@ CentOS:
   # dnf -y install \
   gcc \
   libxml2-devel \
-  python-devel
-
-For Python 3:
-
-  # dnf -y install \
-  gcc \
-  libxml2-devel \
   python3-devel
 
 If you are using distributions like Debian, or Ubuntu:
@@ -55,18 +44,8 @@ If you are using distributions like Debian, or Ubuntu:
   # apt-get --assume-yes install \
   gcc \
   libxml2-dev \
-  python-dev
-
-For Python 3:
-
-  # apt-get --assume-yes install \
-  gcc \
-  libxml2-dev \
   python3-dev
 
-NOTE: The examples above use the `dnf` command, which is the default in
-Fedora 24. In CentOS 7 you may need to use the `yum` command, as `dnf`
-is optional.
 
 == Usage
 
