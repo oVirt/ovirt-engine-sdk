@@ -89,6 +89,7 @@ jobs:
           repository: '${{ secrets.TARGET_REPO }}'
           ssh-key: '${{ secrets.DEPLOY_KEY }}'
           path: python-ovirt-engine-sdk4
+          ref: "${GITHUB_REF#refs/heads/}"
 
       - name: Copy SDK to repository
         run: |
