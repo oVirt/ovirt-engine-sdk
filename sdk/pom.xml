@@ -114,42 +114,6 @@ limitations under the License.
               </arguments>
             </configuration>
           </execution>
-
-          <!-- Run the tests: -->
-          <execution>
-            <id>test</id>
-            <phase>package</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <skip>${skipTests}</skip>
-              <executable>${python.command}</executable>
-              <arguments>
-                <argument>setup.py</argument>
-                <argument>nosetests</argument>
-              </arguments>
-            </configuration>
-          </execution>
-
-          <!-- Generate the distributions: -->
-          <execution>
-            <id>build</id>
-            <phase>package</phase>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <executable>${python.command}</executable>
-              <arguments>
-                <argument>setup.py</argument>
-                <argument>sdist</argument>
-                <argument>bdist</argument>
-                <argument>bdist_wheel</argument>
-              </arguments>
-            </configuration>
-          </execution>
-
         </executions>
         <dependencies>
           <dependency>

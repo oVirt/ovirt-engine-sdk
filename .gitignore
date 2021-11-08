@@ -17,7 +17,6 @@ sdk/lib/ovirtsdk4
 sdk/lib/ovirtsdk4/readers.py
 sdk/lib/ovirtsdk4/services.py
 sdk/lib/ovirtsdk4/types.py
-sdk/lib/ovirtsdk4/version.py
 sdk/lib/ovirtsdk4/writers.py
 settings.xml
 target/

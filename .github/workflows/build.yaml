@@ -105,7 +105,7 @@ jobs:
 
       - name: Copy SDK to repository
         run: |
-          rm -rf sdk/dist sdk/target sdk/build sdk/tests sdk/pom.xml
+          rm -rf sdk/target sdk/tests sdk/pom.xml
           cp -r sdk/lib/ovirt_engine_sdk_python.egg-info/PKG-INFO sdk/* ./python-ovirt-engine-sdk4/
 
       - name: Push changes to python-ovirt-engine-sdk4
