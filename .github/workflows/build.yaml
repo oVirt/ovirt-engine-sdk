@@ -26,16 +26,6 @@ jobs:
       - name: Install package dependencies
         run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python-dev
 
-      - name: Install pypi dependencies
-        run: |
-          pip install flake8==3.7.9
-          pip install nose==1.3.7
-          pip install pygments
-          pip install six
-          pip install wheel
-          pip install pycurl
-          pip install pdoc
-
       - name: Set git defaults
         run: |
           git config --global user.name 'github-actions[bot]'
@@ -43,48 +33,6 @@ jobs:
 
       - name: Run maven build
         run: mvn package -Dskipflake=true -DskipTests -B
-
-      - name: Install created sdk
-        run: pip install ./sdk -U
-
-      - name: Checkout to gh-pages branch
-        uses: actions/checkout@v2
-        with:
-          ref: gh-pages
-          path: gh-pages
-
-      - name: Create python documentation
-        run: pdoc -t gh-pages -o ./html ovirtsdk4
-
-      - name: Set FOLDER variable according to pushed branch
-        run: |
-          if [[ ${GITHUB_REF} == 'refs/heads/master' ]];
-          then
-            echo "FOLDER=master" >> $GITHUB_ENV;
-          else
-            echo "FOLDER=${GITHUB_REF: -3}" >> $GITHUB_ENV;
-          fi
-
-      - name: Move created documentation to gh-pages
-        run: |
-          mmv './html/ovirtsdk4/*.html' './html/ovirtsdk4/#1.m.html'
-          mkdir -p ./gh-pages/${{env.FOLDER}}/
-          cp ./html/ovirtsdk4.html ./gh-pages/${{env.FOLDER}}/index.html
-          cp ./html/ovirtsdk4/* ./gh-pages/${{env.FOLDER}}/
-          rm -rf ./html
-
-      - name: Push changes to gh-pages
-        run: |
-          cd gh-pages
-          commit=$(git log --format="%H" -n 1)
-          description=$(git describe --always)
-          if git status --porcelain 2>/dev/null| grep -E "^??|^M"
-          then
-            git add .
-            git commit -m "gh-pages ${description} ${commit}"
-            git push
-          fi
-          cd ..
 
       - name: Set FOLDER variable according to pushed branch
         run: |
