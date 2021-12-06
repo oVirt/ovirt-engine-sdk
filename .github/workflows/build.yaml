@@ -32,7 +32,7 @@ jobs:
         run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python-dev python3-pip
 
       - name: Install python dependencies
-        run: pip3 install flake8
+        run: pip3 install flake8==3.7.7
 
       - name: Set git defaults
         run: |
