@@ -32,7 +32,7 @@ jobs:
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Run maven build
-        run: mvn package -Dskipflake=true -DskipTests -B
+        run: mvn package -B
 
       - name: Set FOLDER variable according to pushed branch
         run: |

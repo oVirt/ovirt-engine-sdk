@@ -1,6 +1,0 @@
----
-archs:
-  - x86_64:
-      distro: [el8]
-  - ppc64le:
-      distro: [el8]
