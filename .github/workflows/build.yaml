@@ -1,19 +1,47 @@
 
 name: ovirt-engine-sdk GitHub Actions
 
-on:
-  pull_request:
-    branches:
-      - master
-  push:
-  workflow_dispatch:
-
 env:
   LD_LIBRARY_PATH: /usr/local/opt/curl/lib:$LD_LIBRARY_PATH
   PYCURL_SSL_LIBRARY: openssl
 
 jobs:
+  test:
+    on:
+      push:
+      workflow_dispatch:
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Update packages
+        run: sudo apt-get update
+
+      - name: Install package dependencies
+        run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python-dev python3-pip
+
+      - name: Install python dependencies
+        run: pip3 install flake8==3.7.7
+
+      - name: Run maven build
+        run: mvn package -B
+
   build:
+    on:
+      pull_request:
+        branches:
+          - master
+      push:
+        branches:
+          - master
+          - sdk_4.4
+        tags:
+      workflow_dispatch:
     runs-on: ubuntu-latest
 
     steps:
