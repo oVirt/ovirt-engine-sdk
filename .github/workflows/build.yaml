@@ -1,7 +1,12 @@
 
 name: ovirt-engine-sdk GitHub Actions
 
-on: push
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+  workflow_dispatch:
 
 env:
   LD_LIBRARY_PATH: /usr/local/opt/curl/lib:$LD_LIBRARY_PATH
@@ -24,7 +29,10 @@ jobs:
         run: sudo apt-get update
 
       - name: Install package dependencies
-        run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python-dev
+        run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python-dev python3-pip
+
+      - name: Install python dependencies
+        run: pip3 install flake8
 
       - name: Set git defaults
         run: |
