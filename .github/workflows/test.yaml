@@ -23,6 +23,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+          cache: 'maven'
 
       - name: Update packages
         run: sudo apt-get update
