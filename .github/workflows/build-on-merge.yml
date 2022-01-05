@@ -1,5 +1,4 @@
-
-name: ovirt-engine-sdk GitHub Actions
+name: build-on-merge
 
 on:
   push:
@@ -31,10 +30,7 @@ jobs:
         run: sudo apt-get update
 
       - name: Install package dependencies
-        run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python-dev python3-pip
-
-      - name: Install python dependencies
-        run: pip3 install flake8==3.7.7
+        run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python-dev python3-pip flake8
 
       - name: Set git defaults
         run: |
