@@ -1,6 +1,4 @@
-
-name: ovirt-engine-sdk GitHub Actions
-
+name: build-on-merge
 on: push
 
 env:
@@ -19,12 +17,13 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+          cache: 'maven'
 
       - name: Update packages
         run: sudo apt-get update
 
       - name: Install package dependencies
-        run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python-dev
+        run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python3-dev
 
       - name: Set git defaults
         run: |
