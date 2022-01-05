@@ -1,7 +1,13 @@
 
 name: ovirt-engine-sdk GitHub Actions
 
-on: push
+on:
+  push:
+    branches:
+      - master
+      - sdk_4.4
+    tags:
+  workflow_dispatch:
 
 env:
   LD_LIBRARY_PATH: /usr/local/opt/curl/lib:$LD_LIBRARY_PATH
@@ -19,12 +25,16 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+          cache: 'maven'
 
       - name: Update packages
         run: sudo apt-get update
 
       - name: Install package dependencies
-        run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python-dev
+        run: sudo apt-get install mmv libssl-dev libcurl4-openssl-dev python-dev python3-pip
+
+      - name: Install python dependencies
+        run: pip3 install flake8==3.7.7
 
       - name: Set git defaults
         run: |
@@ -32,7 +42,7 @@ jobs:
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Run maven build
-        run: mvn package -Dskipflake=true -DskipTests -B
+        run: mvn package -B
 
       - name: Set FOLDER variable according to pushed branch
         run: |
