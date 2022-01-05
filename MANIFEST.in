@@ -1,0 +1,4 @@
+include LICENSE.txt
+include README.adoc
+recursive-include ext *.c *.h
+recursive-include examples *.py

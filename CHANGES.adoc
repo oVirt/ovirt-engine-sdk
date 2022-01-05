@@ -1,0 +1,674 @@
+= Changes
+
+This document describes the relevant changes between releases of the SDK.
+
+== 4.4.14 / Jul 6 2021
+
+Bug Fixes:
+
+* backup: use newly added "SUCCEEDED/FAILED" backup phases
+  https://bugzilla.redhat.com/1849861
+
+* backup_vm.py: fix download backup disk command
+
+== 4.4.13 / Jun 14 2021
+
+* Upgrade to Model 4.4.31
+
+Bug Fixes:
+
+* Preserve /dev/null when running under root user
+  https://bugzilla.redhat.com/1956750
+
+== 4.4.12 / Apr 27 2021
+
+* Upgrade to Model 4.4.29
+
+== 4.4.11 / Apr 20 2021
+
+* Upgrade to Model 4.4.28
+
+== 4.4.10 / Feb 7 2021
+
+* Upgrade to Model 4.4.25
+
+== 4.4.9 / Dec 17 2020
+
+* Upgrade to Model 4.4.22
+
+== 4.4.8 / Dec 7 2020
+
+* Upgrade to Model 4.4.21
+
+== 4.4.7 / Nov 2 2020
+
+* Upgrade to Metamodel 1.3.4
+
+Bug Fixes:
+
+* Support enum URL parameters
+
+== 4.4.6 / Oct 20 2020
+
+* Upgrade to Model 4.4.20
+
+== 4.4.5 / Oct 13 2020
+
+* Upgrade to Model 4.4.19
+
+* Upgrade to Metamodel 1.3.3
+
+* Upgrade to Java 11
+
+* Update build scripts and remove old ones
+
+* Use helper classes in example scripts
+
+
+== 4.4.4 / Jul 1 2020
+
+* Update to model 4.4.17
+
+* Improve examples code around image transfer features
+
+== 4.4.3 / May 18 2020
+
+* Update to model 4.4.16
+
+* Updates to some example scripts
+
+
+== 4.4.2 / Mar 19 2020
+
+Update to model 4.4.14
+
+New features:
+
+* Make Travis depend on openjdk
+
+== 4.4.1 / Jan 16 2019
+
+New features:
+
+* automation: add EL8
+
+== 4.4.0 / Dec 16 2019
+Update to model 4.4.11
+move from fc27 to fc30
+
+New features:
+
+* Make build.py script Python 3 compatible
+
+* automation: prepare for EL8 / python3 support
+
+* automation: add standard pipelines conf
+
+Bug Fixes:
+
+* Sort input file list so that ovirtsdk4/xml.so builds in a reproducible way
+  http://bugs.python.org/issue30461
+
+* packaging: adhere to fedora naming guidelines
+
+Deprecations:
+
+* packaging: drop fc28 spec (EOL)
+
+* automation: drop fc29 (EOL)
+
+== 4.3.1 / Mar 27 2018
+Update to model 4.3.22.
+
+New features:
+
+* Add Hosted Engine disk types to content type
+  Bug-Url: https://bugzilla.redhat.com/1663626[1663626].
+
+* Add Hosted Engine disk types to content type
+  Bug-Url: https://bugzilla.redhat.com/1600788[1600788].
+
+== 4.3.0 / Jan 16 2018
+Update to model 4.3.21.
+
+New features:
+
+* Add `activate` input param to add/install/approve host
+  http://bugzilla.redhat.com/1561539[1561539].
+
+* Added support for incremental backup.
+
+* Added block size Storage domain property
+  https://bugzilla.redhat.com/1592916[1592916].
+
+* Added V5 storage format
+  https://bugzilla.redhat.com/1592916[1592916].
+
+* Add driverSensitiveOptions to managed block storage type.
+
+* Add managed block storage type.
+
+* Setup networks commit on success.
+
+* Add vGPU placement to Host
+  https://bugzilla.redhat.com/1641125[1641125].
+
+* Specify cloud-init protocol in vm intialization
+  https://bugzilla.redhat.com/1611889[1611889].
+
+* Added SATA to DiskInterface enum.
+
+* Add disks link to Snapshot type.
+
+Bug fixes:
+
+* Change HostNic statistics and labels to Link
+  https://bugzilla.redhat.com/1661207[1661207].
+
+
+== 4.2.9 / Oct 4 2018
+Update to model 4.2.37.
+
+New features:
+
+*  Add support for OpenStack Identity API v3
+   https://bugzilla.redhat.com/1598391[1598391].
+
+*  Added linkedGlusterVolume to the StorageServerConnection
+   type and services
+   https://bugzilla.redhat.com/1563257[1563257].
+
+== 4.2.8 / Aug 14 2018
+Update to model 4.2.36.
+
+New features:
+
+* Add sync all networks in cluster
+  https://bugzilla.redhat.com/1558847[1558847].
+
+* Add note to upgrade host
+  https://bugzilla.redhat.com/1603020[1603020].
+
+* Indicate network operation in progress
+  https://bugzilla.redhat.com/1477599[1477599].
+
+* Poly dhcpv6 and autoconf iface config
+  https://bugzilla.redhat.com/1360839[1360839].
+
+* Add 'Multi Queues Enabled' to VmBase
+  https://bugzilla.redhat.com/1574771[1574771].
+
+* Added Reduce action to Disk services
+  https://bugzilla.redhat.com/1443963[#1443963].
+
+* Add documentation to DiskService
+  https://bugzilla.redhat.com/1585572[1585572].
+
+== 4.2.7 / Jun 6 2018
+Update to model 4.2.33.
+
+New features:
+
+* Add search parameter to providers
+  https://bugzilla.redhat.com/1572071[#1572071].
+
+== 4.2.6 / Apr 17 2018
+Update to model 4.2.32.
+
+New features:
+
+* ImageTransfer - adding 'clientInactivityTimeout' property
+  https://bugzilla.redhat.com/1563278[#1563278].
+
+* Add architecture to OperatingSystemInfo
+  https://bugzilla.redhat.com/1552026[#1552026].
+
+* Add import template from configuration
+  https://bugzilla.redhat.com/1526032[#1526032].
+
+== 4.2.5 / Apr 10 2018
+Update to model 4.2.31.
+
+New features:
+
+* Add `cancel` action to transfer image session.
+
+* Add `export` template as OVA to a given path on a host
+  https://bugzilla.redhat.com/1526033[#1526033].
+
+* Add service to list user groups
+  https://bugzilla.redhat.com/1545716[1545716].
+
+* Expose `syncAllNetworks` command for `HostService`.
+
+* Move `VmPlacementPolicy` attribute from Vm to `VmBase`
+  https://bugzilla.redhat.com/1375678[#1375678].
+
+* Document `JobsService` as a searchable entity.
+
+* Add `lease` parameter to preview snapshot
+  https://bugzilla.redhat.com/1532577[#1532577].
+
+Bug fixes:
+
+* Add reason message to failed request.
+
+* Deprecate `OsType`
+  https://bugzilla.redhat.com/1537679[#1537679].
+
+== 4.2.4 / Jan 24 2018
+Bug fixes:
+
+* Change pycrul E_OPERATION_TIMEDOUT to E_OPERATION_TIMEOUTED.
+
+== 4.2.3 / Jan 17 2018
+Update to model 4.2.28 and metamodel 1.2.16.
+
+New features:
+
+* Deprecate the `discard_zeroes_data` attribute of the `LogicalUnit`
+  type and the `supports_discard_zeroes_data` of the `StorageDomain`
+  type, as they have been removed from the kernel.
+
+* Add new `content_type` attribute to the `Disk` type
+  https://bugzilla.redhat.com/1511420[#1511420].
+
+* Add support for setting external network providers by name when adding
+  or updating a cluster https://bugzilla.redhat.com/1511369[#1511369].
+
+* Add new `unmanaged` attribute to the `OpenStackNetworkProvider` type.
+
+* Move virtual NIC profile mappings insde registration configuration
+   https://bugzilla.redhat.com/1522799[#1522799].
+
+Bug fixes:
+
+* Make CPU type optional when adding a cluster
+  https://bugzilla.redhat.com/1525912[#1525912].
+
+== 4.2.2 / Nov 30 2017
+Update to model 4.2.26.
+
+* Added new `discovered_targets` output parameter to the operation that
+  discovers host iSCSI storage
+  https://bugzilla.redhat.com/1510860[#1510860].
+
+* Add new `S390X` value to the `Architecture` type.
+
+* Add new `DIAG288` value to the `WatchdogModel` type.
+
+* Add `OVA` value to the `ConfigurationType` enumerated type.
+
+* Add search parameters to the operation that lists jobs.
+
+* Add `auto_sync` attribute to the _OpenStack_ network provider type
+  https://bugzilla.redhat.com/1511823[#1511823].
+
+* Add operation to export a virtual machine as `OVA` file.
+
+* Add `active` and `transferred` attributes to the `ImageTransfer` type.
+
+* Add `external_provider` and `external_provider_physical_network`
+  attributes to the `Network` type.
+
+* Add `transfer_url` to the `ImageTransfer` type.
+
+* Add the `follow` parameter to all the `Get` and `List` operations.
+
+* Add the `force` parameter to the operation that puts a storage domain
+  into maintenance mode https://bugzilla.redhat.com/1321585[#1321585].
+
+* Deprecate the _OpenStack_ network provider `pluginType` attribute,
+  replacing it with `externalPluginType`.
+
+* Add `quota` and `diskProfile` parameters to the operations that move
+  and copy disks https://bugzilla.redhat.com/1496704[#1496704].
+
+* Add `authenticatedUser` and `effectiveUser` links to the `Api` type
+  https://bugzilla.redhat.com/472418[#1472418].
+
+* Add `reboot` parameter to the `upgrade` method of the service that
+  manages a host.
+
+* Add `registrationConfiguration` parameter to the operations that
+  register virtual machines and templates.
+
+* Add documentation explaining how to add snapshots with disk
+  attachments.
+
+* Add new services and types to enable automatic provisioning of
+  external network providers during host installation.
+
+* Add `storageErrorResumeBehaviour` to virtual machines, templates and
+  instance types https://bugzilla.redhat.com/1317450[#1317450].
+
+New features:
+
+* Add support for method extensions.
+
+Bug fixes:
+
+* No exceptions when 'raise_exception=False'.
+
+== 4.2.1-a2 / Sep 25 2017
+
+Update to model 4.2.19:
+
+* Add new `NicNetworkFilterParameter` type and related services.
+
+* Add `StorageDomainDisks` and `AttachedStorageDomainDisks`.
+
+* Add operation to register storage domain disk.
+
+* Add `all_content` parameter to snapshots services.
+
+* Add `default_route` value to the `NetworkUsage` enum.
+
+* Add the `all_content` parameter to `Host.Get` and `Hosts.List`.
+
+* Fix the documentation of the method that lists events
+  https://bugzilla.redhat.com/1447622[#1447622].
+
+* Fix the direction of the main parameter of the method that adds a
+  CDROM to a virtual machine. It should be input and output.
+
+* Add the `index` attribute to the `Event` type
+  https://bugzilla.redhat.com/1448511[#1448511].
+
+* Add `volatile` parameter to the method that starts a virtual machine.
+
+* Add `RefreshLun` method to the service that manages a disk.
+  https://bugzilla.redhat.com/1404389[#1404389].
+
+* Add Link Layer Discovery Protocol (LLDP).
+
+* Add a `refresh` parameter to `FilesService.list`.
+
+* Add `firewal_type` attribute to the `Cluster` type.
+
+* Add `has_illegal_images` attribute to the `Vm` type.
+
+* Add support for creating image transfers using disks and snapshots.
+
+* Add `size` and `type` properties to the `Image` type.
+
+* Add `total_size` attribute to the `Disk` type.
+
+* Add support for listing cluster level features, and enabling/disabing
+  them for clusters.
+
+* Storage domain identifier isn't mandatory to create quota limit.
+
+* Don't require deprecated affinity group attributes
+  https://bugzilla.redhat.com/1488729[#1488729].
+
+* Fix optional fields in storage domain add and update
+  https://bugzilla.redhat.com/1488929[1488929].
+
+* Add new `HIGH_PERFORMANCE` value to the `VmType` enum.
+
+* Add new types and services for access to system configuration options.
+
+== 4.2.0-a2 / June 6 2017
+Update to model 4.2.6 and metamodel 1.2.2.
+
+== 4.1.4 / May 25 2017
+Update to model 4.1.33 and metamodel 1.1.13:
+
+ * Add `readOnly` attribute to the `DiskAttachment` type.a
+
+ * Replace generic assigned networks services with services specific to
+   the type of object that they are assigned to, in particular data
+   centers and clusters.
+
+ * Add `driver` attribute to `HostDevice` type.
+
+New features:
+
+ * Add debug data prefixes to indicate direction
+   https://bugzilla.redhat.com/1451042[#1451042].
+
+ * Automatically replace bad token
+   https://bugzilla.redhat.com/1434830[#1434830].
+
+ * Add support for asynchronous requests
+   https://bugzilla.redhat.com/1436981[#1436981].
+
+ * Add generic writer
+   https://bugzilla.redhat.com/1444114[#1444114].
+
+ * Improve error message for wrong content type
+   https://bugzilla.redhat.com/1440292[#1440292].
+
+Improved examples.
+
+== 4.1.3 / Mar 15 2017
+
+Update to model 4.1.33 and metamodel 1.1.13:
+
+* Replace the `Seal` operation of the service that manages a template
+  with a new `seal` parameter in the operation that adds a template
+  https://bugzilla.redhat.com/1335642[#1335642].
+
+* Add `unregistered` parameter for the operations to list disks,
+  virtual machines, and templates in storage domains
+  https://bugzilla.redhat.com/1428159[#1428159].
+
+* Fix the direction of the `statistic` parameter of the `Statistic`
+  service, must be out only.
+
+* Revert the addition of the operation to update disks.
+
+== 4.1.2 / Mar 03 2017
+
+Bug fixes:
+
+ * Read correctly attributes with enum values.
+
+ * Don't avoid reserved words in enum values text
+
+== 4.1.1 / Mar 02 2017
+
+Update to model 4.1.31 and metamodel 1.1.12:
+
+New features:
+
+  * Add `auto_storage_select` attribute to the `VmPool` type.
+
+  * Add IPv6 details to the `NicConfiguration` type.
+
+  * Add NFS 4.2 support.
+
+  * Add new `lease` attribute to virtual machines and templates.
+
+  * Add `execution_host` link to the `Step` type.
+
+  * Add `initial_size` attribute to the `Disk` type.
+
+  * Add `succeeded` parameter to the operation that end an external job.
+
+  * Add support for custom headers and query parameters.
+
+  * Support strings as parameters to the `Reader.read` method.
+
+Bug fixes:
+
+* Move `vnic_profile_mappings` and `reassign_bad_macs` from
+  the `import` operation to the `register` operation
+  https://bugzilla.redhat.com/1425731[#1425731].
+
+* Ignore unsupported Enum values.
+
+* Merge link with element if it has same name.
+
+== 4.1.0 / Jan 31 2017
+
+Update to model 4.1.29:
+
+* Documentation improvements.
+
+* Add new `lease` attribute to virtual machines and templates.
+
+* Add `execution_host` link to the `Step` type.
+
+* Add `initial_size` attribute to the `Disk` type.
+
+* Add `succeeded` parameter to the operation that end an external job.
+
+Update to metamodel 1.1.10:
+
+* Fix reading of XML attributes of enum types
+  https://bugzilla.redhat.com/1408839[#1408839]
+
+== 4.1.0-a1 / Jan 9 2017
+
+Update to model 4.1.24:
+
+* Added new `v4` value to the `StorageFormat` enum.
+
+* Add `seal` operation to the service that manages templates.
+
+* Add `progress` attribute to the `Disk` and `Step` types.
+
+* Add `allow_partial_import` parameter to the operations that import
+  virtual machines and templates.
+
+* Add `ticket` operation to the service that manages the graphics
+  console of a virtual machine.
+
+* Added `urandom` to the `RngSource` enumerated type.
+
+* Added `migratable` flag to the `VnicProfile` type.
+
+* Add `gluster_tuned_profile` to the `Cluster` type.
+
+* Add `skip_if_gluster_bricks_up` and `skip_if_gluster_quorum_not_met`
+  attributes to the `FencingPolicy` type.
+
+* Add the `ImageTransferDirection` enumerated type and the `direction`
+  attribute to the `ImageTransfer` type.
+
+* Replace the generic `GraphicsConsole` and `GraphicsConsoles` with
+  specific services for virtual machines, templates and instance
+  types.
+
+* Deprecate the `legacy` USB type.
+
+* Add `remoteviewerconnectionfile` action to the `GraphicsConsole`
+  service.
+
+* Add `max` attribute to the `MemoryPolicy` type.
+
+* Make `Ip.version` optional.
+
+* Add the `active_slave` link to the `Bonding` type.
+
+* Add DNS configuration support to `Network` and `NetworkAttachment`.
+
+* Add the `uses_scsi_reservation` attribute to the `DiskAttachment`
+  type.
+
+* Add the `sparsify` method to `DiskService`.
+
+* Add the `discard_max_size` and `discard_zeroes_data` to the `LogicalUnit`
+  type.
+
+* Add `logical_name` attribute to the disk attachment type.
+
+* Add the `upgradecheck` action to the host service.
+
+* Add the `original_template` link to the virtual machine type.
+
+* Check return code of the HTTP reponses
+
+New features:
+
+* Enable compression by default https://bugzilla.redhat.com/1367826[#1367826].
+
+== 4.0.4 / Tue 15 2016
+
+Bug fixes:
+
+* Use COPYPOSTFIELDS for HTTP POST data https://bugzilla.redhat.com/1392878[#1392878].
+
+== 4.0.3 / Oct 26 2016
+
+Update to model 4.0.37 and metamodel 1.0.21.
+
+New features:
+
+* Add examples to the RPM packages.
+
+* Accept 200 code for 'Add' methods.
+
+Bug fixes:
+
+* Add missing `template` and `storage_domain` parameters to the
+  operation that imports an image.
+
+* Add the `next_run` parameter to the operation that updates a virtual
+  machine.
+
+* Add the `all_content` parameters to the operations that list and
+  retrieve virtual machines.
+
+* Fix building of SDK on Mac OS environment.
+
+== 4.0.2 / Sep 27 2016
+
+Update to model 4.0.35 and metamodel 1.0.20.
+
+New features:
+
+* Add the `sparsify` method to `DiskService`.
+
+* Add the `discardMaxSize` and `discardZeroesData` to the `LogicalUnit` type.
+
+* Add services to support disk attachments of virtual machines available
+  for import from storage domains.
+
+Bug fixes:
+
+* Fix the type of the `ticket` parameter of the `VmService.ticket` method.
+
+* Fix the type of the `authentication_method` attribute of the `Ssh` type.
+
+* Rename the `AuthenticationMethod` enum type to `SshAuthenticationMethod`.
+
+* Fix the name of the `exclusive` parameter o the `TemplateService.export` method.
+
+* Add the missing `cluster` parameter to the `OpenstackImageService.import` method.
+
+* Empty list is not written to XML.
+
+* Fix generating of singular and plural tag names.
+
+== 4.0.1 / Sep 6 2016
+
+Update to model 4.0.33.
+
+New features:
+
+* Add the `custom_scheduling_policy_properties` attribute to the
+  `Cluster` type.
+
+* Add services and types to support transfer of images.
+
+* Improve type checking.
+
+Bug fixes:
+
+* Remove the `add` and `remove` operations of virtual machine
+  CDROMs.
+
+* Fix the type of the `usages` attribute of the `Network` type, it
+  should be a list of values of the `NetworkUsage` enum, not a list
+  of strings.
+
+* Fix reading of lists of elements https://bugzilla.redhat.com/1373431[#1373431].
+
+* Accept `action` and `fault` from actions.
+
+* Fix reading of list of primitive and enum types.
+
+* Avoid of reading fault response in case response body is empty.
