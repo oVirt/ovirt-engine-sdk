@@ -2,6 +2,10 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.5.0 / Mar 29 2022
+
+* Bump model to 4.5.7
+
 == 4.4.14 / Jul 6 2021
 
 Bug Fixes:
