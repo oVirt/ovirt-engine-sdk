@@ -4,6 +4,7 @@ title: Python SDK Documentation
 
 # Python SDK Documentation
 
+- [oVirt 4.5](4.5/)
 - [oVirt 4.4](4.4/)
 - [oVirt 4.3](4.3/)
 - [oVirt 4.2](4.2/)

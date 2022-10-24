@@ -1,0 +1,1 @@
+This directory stores auto-generated documentation for all branches of python-sdk project
