@@ -1029,7 +1029,7 @@ class ConnectionBuilder(object):
 #   import ovirtsdk4 as sdk
 #   vm = sdk.types.Vm()
 #
-from ovirtsdk4 import readers  # noqa: F401
-from ovirtsdk4 import services  # noqa: F401
-from ovirtsdk4 import types  # noqa: F401
-from ovirtsdk4 import writers  # noqa: F401
+from ovirtsdk4 import readers  # noqa: F401 E402
+from ovirtsdk4 import services  # noqa: F401 E402
+from ovirtsdk4 import types  # noqa: F401 E402
+from ovirtsdk4 import writers  # noqa: F401 E402
