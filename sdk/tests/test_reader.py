@@ -400,8 +400,8 @@ def test_read_given_openstack_image_provider():
     """
     openstack_image_provider = Reader.read(
         make_buffer(
-            '<openstack_image_provider>' +
-                '<name>myprovider</name>' +
+            '<openstack_image_provider>'
+                '<name>myprovider</name>'
             '</openstack_image_provider>'
         )
     )
@@ -416,9 +416,9 @@ def test_read_given_two_openstack_image_providers():
     """
     openstack_image_providers = Reader.read(
         make_buffer(
-            '<openstack_image_providers>' +
-                '<openstack_image_provider/>' +
-                '<openstack_image_provider/>' +
+            '<openstack_image_providers>'
+                '<openstack_image_provider/>'
+                '<openstack_image_provider/>'
             '</openstack_image_providers>'
         )
     )
@@ -460,6 +460,7 @@ def test_read_unknonw_tag():
     with pytest.raises(Error) as context:
         Reader.read(cursor)
     assert str(context.value) == "Can't find a reader for tag 'html'"
+
 
 def test_read_supports_strings():
     """

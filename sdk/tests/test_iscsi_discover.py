@@ -49,11 +49,12 @@ class IscsiDiscoverTest(unittest.TestCase):
             ),
         )
         assert (
-            self.server.last_request_content ==
-            "<action>" +
-              "<iscsi>" +
-                "<address>iscsi.example.com</address>" +
-                "<port>3260</port>" +
-              "</iscsi>" +
-            "</action>"
+            self.server.last_request_content == (
+                "<action>"
+                    "<iscsi>"
+                        "<address>iscsi.example.com</address>"
+                        "<port>3260</port>"
+                    "</iscsi>"
+                "</action>"
+            )
         )

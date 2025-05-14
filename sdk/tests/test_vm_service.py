@@ -16,7 +16,6 @@
 # limitations under the License.
 #
 
-import re
 import ovirtsdk4
 import ovirtsdk4.types as types
 import unittest
@@ -99,8 +98,7 @@ class VmServiceTest(unittest.TestCase):
             clone_permissions=True
         )
         assert (
-            self.server.last_request_query ==
-            'clone=true&clone_permissions=true'
+            self.server.last_request_query == 'clone=true&clone_permissions=true'
         )
 
     def test_add_vm_from_scratch_with_clone_parameter(self):
@@ -124,8 +122,7 @@ class VmServiceTest(unittest.TestCase):
             clone_permissions=True
         )
         assert (
-            self.server.last_request_query ==
-            'clone=true&clone_permissions=true'
+            self.server.last_request_query == 'clone=true&clone_permissions=true'
         )
 
     def test_response_200_not_raise_exception(self):
@@ -280,12 +277,12 @@ class VmServiceTest(unittest.TestCase):
             path='vms/123/start',
             code=201,
             body=(
-              '<action>'
-                '<fault>'
-                  '<reason>myreason</reason>'
-                  '<detail>mydetail</detail>'
-                '</fault>'
-              '</action>'
+                '<action>'
+                    '<fault>'
+                        '<reason>myreason</reason>'
+                        '<detail>mydetail</detail>'
+                    '</fault>'
+                '</action>'
             )
         )
         with pytest.raises(ovirtsdk4.Error) as context:
@@ -303,10 +300,10 @@ class VmServiceTest(unittest.TestCase):
             path='vms/123/start',
             code=400,
             body=(
-              '<fault>'
-                '<reason>myreason</reason>'
-                '<detail>mydetail</detail>'
-              '</fault>'
+                '<fault>'
+                    '<reason>myreason</reason>'
+                    '<detail>mydetail</detail>'
+                '</fault>'
             )
         )
         with pytest.raises(ovirtsdk4.Error) as context:

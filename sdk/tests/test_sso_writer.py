@@ -55,10 +55,11 @@ def test_sso_method_id_is_attribute():
     SsoWriter.write_one(sso, writer)
     writer.flush()
     assert (
-        decode_buffer(buf) ==
-        '<sso>\n' +
-        '  <methods>\n' +
-        '    <method id="guest_agent"/>\n' +
-        '  </methods>\n' +
-        '</sso>\n'
+        decode_buffer(buf) == (
+            '<sso>\n'
+            '  <methods>\n'
+            '    <method id="guest_agent"/>\n'
+            '  </methods>\n'
+            '</sso>\n'
+        )
     )

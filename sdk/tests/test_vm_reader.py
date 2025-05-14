@@ -49,7 +49,6 @@ def test_reading_of_INHERITABLE_BOOLEAN_FALSE():
     assert result.migration.auto_converge == types.InheritableBoolean.FALSE
 
 
-
 def test_reading_of_INHERITABLE_BOOLEAN_TRUE():
     """
     Test reading the InheritableBoolean enum true value.
@@ -66,6 +65,7 @@ def test_reading_of_INHERITABLE_BOOLEAN_TRUE():
 
     assert isinstance(result, types.Vm)
     assert result.migration.auto_converge == types.InheritableBoolean.TRUE
+
 
 def test_reading_of_INHERITABLE_BOOLEAN_INHERIT():
     """
@@ -84,15 +84,16 @@ def test_reading_of_INHERITABLE_BOOLEAN_INHERIT():
     assert isinstance(result, types.Vm)
     assert result.migration.auto_converge == types.InheritableBoolean.INHERIT
 
+
 def test_reading_of_INHERITABLE_BOOLEAN_unsupported_value():
     """
     Test reading the InheritableBoolean enum unsupported value return None.
     """
     reader = XmlReader(make_buffer(
         '<vm>'
-        '<migration>'
-        '<auto_converge>ugly</auto_converge>'
-        '</migration>'
+            '<migration>'
+                '<auto_converge>ugly</auto_converge>'
+            '</migration>'
         '</vm>'
     ))
     result = VmReader.read_one(reader)
@@ -101,13 +102,14 @@ def test_reading_of_INHERITABLE_BOOLEAN_unsupported_value():
     assert isinstance(result, types.Vm)
     assert result.migration.auto_converge is None
 
+
 def test_reading_name_with_accents():
     """
     Test that reading a VM that has a name with accents works correctly.
     """
     reader = XmlReader(make_buffer(
         '<vm>'
-        '<name>áéíóúÁÉÍÓÚ</name>'
+            '<name>áéíóúÁÉÍÓÚ</name>'
         '</vm>'
     ))
     result = VmReader.read_one(reader)
