@@ -16,8 +16,6 @@
 # limitations under the License.
 #
 
-import six
-
 import ovirtsdk4.types as types
 
 from io import BytesIO
@@ -33,8 +31,7 @@ def make_buffer(text):
     """
     Creates an IO object to be used for writing.
     """
-    if six.PY3:
-        text = text.encode('utf-8')
+    text = text.encode('utf-8')
     return BytesIO(text)
 
 

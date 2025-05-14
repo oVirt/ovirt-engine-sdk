@@ -21,7 +21,6 @@ import json
 import os
 import pycurl
 import re
-import six
 import sys
 import threading
 
@@ -742,7 +741,7 @@ class Connection(object):
             return True
         except Error:
             if raise_exception:
-                six.reraise(*sys.exc_info())
+                raise
             return False
         except Exception as exception:
             if raise_exception:
@@ -929,7 +928,7 @@ class Connection(object):
         elif e_code == pycurl.E_OPERATION_TIMEOUTED:
             clazz = TimeoutError
 
-        six.reraise(clazz, clazz(error_msg), sys.exc_info()[2])
+        raise clazz(error_msg).with_traceback(sys.exc_info()[2])
 
     def _get_header_value(self, headers, name):
         """
