@@ -19,7 +19,6 @@
 import ovirtsdk4.types as types
 import unittest
 
-from nose.tools import assert_equal
 from .server import TestServer
 
 
@@ -49,8 +48,8 @@ class IscsiDiscoverTest(unittest.TestCase):
                 port=3260,
             ),
         )
-        assert_equal(
-            self.server.last_request_content,
+        assert (
+            self.server.last_request_content ==
             "<action>" +
               "<iscsi>" +
                 "<address>iscsi.example.com</address>" +

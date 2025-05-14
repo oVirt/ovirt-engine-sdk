@@ -19,10 +19,6 @@
 import ovirtsdk4.types as types
 
 from io import BytesIO
-from nose.tools import (
-    assert_equals,
-    assert_true,
-)
 from ovirtsdk4.readers import VmReader
 from ovirtsdk4.xml import XmlReader
 
@@ -49,8 +45,8 @@ def test_reading_of_INHERITABLE_BOOLEAN_FALSE():
     result = VmReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result, types.Vm))
-    assert_equals(result.migration.auto_converge, types.InheritableBoolean.FALSE)
+    assert isinstance(result, types.Vm)
+    assert result.migration.auto_converge == types.InheritableBoolean.FALSE
 
 
 
@@ -68,8 +64,8 @@ def test_reading_of_INHERITABLE_BOOLEAN_TRUE():
     result = VmReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result, types.Vm))
-    assert_equals(result.migration.auto_converge, types.InheritableBoolean.TRUE)
+    assert isinstance(result, types.Vm)
+    assert result.migration.auto_converge == types.InheritableBoolean.TRUE
 
 def test_reading_of_INHERITABLE_BOOLEAN_INHERIT():
     """
@@ -85,8 +81,8 @@ def test_reading_of_INHERITABLE_BOOLEAN_INHERIT():
     result = VmReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result, types.Vm))
-    assert_equals(result.migration.auto_converge, types.InheritableBoolean.INHERIT)
+    assert isinstance(result, types.Vm)
+    assert result.migration.auto_converge == types.InheritableBoolean.INHERIT
 
 def test_reading_of_INHERITABLE_BOOLEAN_unsupported_value():
     """
@@ -102,8 +98,8 @@ def test_reading_of_INHERITABLE_BOOLEAN_unsupported_value():
     result = VmReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result, types.Vm))
-    assert_equals(result.migration.auto_converge, None)
+    assert isinstance(result, types.Vm)
+    assert result.migration.auto_converge is None
 
 def test_reading_name_with_accents():
     """
@@ -117,5 +113,5 @@ def test_reading_name_with_accents():
     result = VmReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result, types.Vm))
-    assert_equals(result.name, 'áéíóúÁÉÍÓÚ')
+    assert isinstance(result, types.Vm)
+    assert result.name == 'áéíóúÁÉÍÓÚ'

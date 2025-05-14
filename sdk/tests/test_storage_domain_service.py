@@ -18,10 +18,6 @@
 
 import unittest
 
-from nose.tools import (
-    assert_is_not_none,
-    assert_equal
-)
 from .server import TestServer
 
 
@@ -44,7 +40,7 @@ class StorageDomainServiceTest(unittest.TestCase):
         """
         Check that reference to storage domains service is not none
         """
-        assert_is_not_none(self.sd_service)
+        assert self.sd_service is not None
 
     def test_get_list_of_storage_domains(self):
         """
@@ -54,8 +50,8 @@ class StorageDomainServiceTest(unittest.TestCase):
             "storagedomains", 200, "<storage_domains/>"
         )
         storage_domains = self.sd_service.list()
-        assert_is_not_none(storage_domains)
-        assert_equal(storage_domains, [])
+        assert storage_domains is not None
+        assert storage_domains == []
 
     def test_get_list_of_storage_domains_with_search(self):
         """
@@ -65,8 +61,8 @@ class StorageDomainServiceTest(unittest.TestCase):
             "storagedomains", 200, "<storage_domains/>"
         )
         storage_domains = self.sd_service.list(search="name=ugly")
-        assert_is_not_none(storage_domains)
-        assert_equal(storage_domains, [])
+        assert storage_domains is not None
+        assert storage_domains == []
 
     def test_get_storage_domain_by_id(self):
         """
@@ -79,5 +75,5 @@ class StorageDomainServiceTest(unittest.TestCase):
             body="<storage_domain id=\"123\"><name>testsd</name></storage_domain>"
         )
         dc = self.sd_service.storage_domain_service("123").get()
-        assert_equal(dc.id, "123")
-        assert_equal(dc.name, "testsd")
+        assert dc.id == "123"
+        assert dc.name == "testsd"

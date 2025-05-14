@@ -19,11 +19,6 @@
 import ovirtsdk4.types as types
 
 from io import BytesIO
-from nose.tools import (
-    assert_equals,
-    assert_is_none,
-    assert_true,
-)
 from ovirtsdk4.readers import NetworkReader
 from ovirtsdk4.xml import XmlReader
 
@@ -43,7 +38,7 @@ def test_network_with_no_usages():
     result = NetworkReader.read_one(reader)
     reader.close()
 
-    assert_is_none(result.usages)
+    assert result.usages is None
 
 
 def test_network_with_empty_usages():
@@ -54,8 +49,8 @@ def test_network_with_empty_usages():
     result = NetworkReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result.usages, list))
-    assert_equals(len(result.usages), 0)
+    assert isinstance(result.usages, list)
+    assert len(result.usages) == 0
 
 
 def test_network_with_one_usages():
@@ -70,9 +65,9 @@ def test_network_with_one_usages():
     result = NetworkReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result.usages, list))
-    assert_equals(len(result.usages), 1)
-    assert_equals(result.usages[0], types.NetworkUsage.VM)
+    assert isinstance(result.usages, list)
+    assert len(result.usages) == 1
+    assert result.usages[0] == types.NetworkUsage.VM
 
 
 def test_network_with_two_usages():
@@ -92,10 +87,10 @@ def test_network_with_two_usages():
     result = NetworkReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result.usages, list))
-    assert_equals(len(result.usages), 2)
-    assert_equals(result.usages[0], types.NetworkUsage.VM)
-    assert_equals(result.usages[1], types.NetworkUsage.DISPLAY)
+    assert isinstance(result.usages, list)
+    assert len(result.usages) == 2
+    assert result.usages[0] == types.NetworkUsage.VM
+    assert result.usages[1] == types.NetworkUsage.DISPLAY
 
 
 def test_unsupported_usage_dont_raise_exception():
@@ -116,7 +111,7 @@ def test_unsupported_usage_dont_raise_exception():
     result = NetworkReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result.usages, list))
-    assert_equals(len(result.usages), 2)
-    assert_is_none(result.usages[0])
-    assert_equals(result.usages[1], types.NetworkUsage.DISPLAY)
+    assert isinstance(result.usages, list)
+    assert len(result.usages) == 2
+    assert result.usages[0] is None
+    assert result.usages[1] == types.NetworkUsage.DISPLAY

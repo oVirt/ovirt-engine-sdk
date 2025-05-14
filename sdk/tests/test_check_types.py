@@ -19,12 +19,7 @@
 import ovirtsdk4.services as services
 import ovirtsdk4.types as types
 import unittest
-
-from nose.tools import (
-    assert_in,
-    assert_raises,
-)
-from .server import TestServer
+import pytest
 
 
 class CheckTypesTest(unittest.TestCase):
@@ -35,20 +30,20 @@ class CheckTypesTest(unittest.TestCase):
         generates an informative exception.
         """
         vm_service = services.VmService(None, None)
-        with assert_raises(TypeError) as context:
+        with pytest.raises(TypeError) as context:
             vm_service.start(
                 use_cloud_init='true',
                 vm=types.Disk(),
             )
-        message = str(context.exception)
-        assert_in(
+        message = str(context.value)
+        assert (
             "The 'use_cloud_init' parameter should be of type 'bool', "
-            "but it is of type 'str'",
+            "but it is of type 'str'" in
             message
         )
-        assert_in(
+        assert (
             "The 'vm' parameter should be of type 'Vm', but it is of "
-            "type 'Disk'",
+            "type 'Disk'" in
             message
         )
 
@@ -58,11 +53,11 @@ class CheckTypesTest(unittest.TestCase):
         generates an informative exception.
         """
         vms_service = services.VmsService(None, None)
-        with assert_raises(TypeError) as context:
+        with pytest.raises(TypeError) as context:
             vms_service.vm_service(types.Vm())
-        message = str(context.exception)
-        assert_in(
+        message = str(context.value)
+        assert (
             "The 'id' parameter should be of type 'str', but it is of "
-            "type 'Vm'.",
+            "type 'Vm'." in
             message
         )

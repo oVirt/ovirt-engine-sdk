@@ -24,10 +24,10 @@ import socket
 import ssl
 
 try:
-  from http.server import HTTPServer, BaseHTTPRequestHandler
+  from http.server import HTTPServer
   from http.server import SimpleHTTPRequestHandler
 except ImportError:
-  from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
+  from BaseHTTPServer import HTTPServer
   from SimpleHTTPServer import SimpleHTTPRequestHandler
 
 from threading import Thread
@@ -100,15 +100,21 @@ class TestServer(object):
 
             authorization = handler.headers.get('Authorization')
             if authorization != "Bearer %s" % self.TOKEN:
+                data = '401  - Unauthorized'.encode('utf-8')
+
                 handler.send_response(401)
-                handler.wfile.write('')
+                handler.send_header('Content-Length', len(data))
+                handler.end_headers()
+                handler.wfile.write()
             else:
+                data = body.encode('utf-8')
+
                 sleep(delay)
                 handler.send_response(code)
                 handler.send_header('Content-Type', 'application/xml')
+                handler.send_header('Content-Length', len(data))
                 handler.end_headers()
 
-                data = body.encode('utf-8')
                 handler.wfile.write(data)
 
         TestHandler.handlers[
@@ -117,21 +123,27 @@ class TestServer(object):
 
     def set_json_response(self, path, code, body):
         def _handle_request(handler):
+            data = json.dumps(body, ensure_ascii=False).encode('utf-8')
+
             handler.send_response(code)
             handler.send_header('Content-Type', 'application/json')
+            handler.send_header('Content-Length', len(data))
             handler.end_headers()
 
-            data = json.dumps(body, ensure_ascii=False).encode('utf-8')
             handler.wfile.write(data)
 
         TestHandler.handlers[path] = _handle_request
 
     def start_server(self, host='localhost'):
         self._httpd = HTTPServer((self.host(), self.port()), TestHandler)
-        self._httpd.socket = ssl.wrap_socket(
-            self._httpd.socket,
-            keyfile=self.__absolute_path('%s.key' % host),
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        context.minimum_version = ssl.TLSVersion.TLSv1_2
+        context.load_cert_chain(
             certfile=self.__absolute_path('%s.crt' % host),
+            keyfile=self.__absolute_path('%s.key' % host)
+        )
+        self._httpd.socket = context.wrap_socket(
+            self._httpd.socket,
             server_side=True
         )
         # Path handler for username/password authentication service:
@@ -168,7 +180,7 @@ class TestServer(object):
                 try:
                     server = HTTPServer(
                         (self.host(), port),
-                        BaseHTTPRequestHandler
+                        TestHandler
                     )
                     self.PORT = port
                     break

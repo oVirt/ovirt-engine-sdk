@@ -22,12 +22,6 @@ import ovirtsdk4.readers as readers
 import ovirtsdk4.types as types
 
 from io import BytesIO
-from nose.tools import (
-    assert_is_not_none,
-    assert_is_none,
-    assert_equals,
-    assert_true,
-)
 
 
 def make_reader(text):
@@ -47,11 +41,11 @@ def test_link_href():
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
-    assert_is_not_none(result)
-    assert_true(isinstance(result, types.Vm))
-    assert_is_not_none(result.nics)
-    assert_true(isinstance(result.nics, sdk.List))
-    assert_equals(result.nics.href, '/vms/123/nics')
+    assert result is not None
+    assert isinstance(result, types.Vm)
+    assert result.nics is not None
+    assert isinstance(result.nics, sdk.List)
+    assert result.nics.href == '/vms/123/nics'
 
 
 def test_element_after_link():
@@ -65,9 +59,9 @@ def test_element_after_link():
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
-    assert_is_not_none(result)
-    assert_true(isinstance(result, types.Vm))
-    assert_equals(result.name, 'myvm')
+    assert result is not None
+    assert isinstance(result, types.Vm)
+    assert result.name == 'myvm'
 
 
 def test_link_is_ignored_if_not_exists():
@@ -80,9 +74,9 @@ def test_link_is_ignored_if_not_exists():
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
-    assert_is_not_none(result)
-    assert_true(isinstance(result, types.Vm))
-    assert_is_none(result.nics)
+    assert result is not None
+    assert isinstance(result, types.Vm)
+    assert result.nics is None
 
 
 def test_link_is_ignored_if_no_rel():
@@ -95,9 +89,9 @@ def test_link_is_ignored_if_no_rel():
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
-    assert_is_not_none(result)
-    assert_true(isinstance(result, types.Vm))
-    assert_is_none(result.nics)
+    assert result is not None
+    assert isinstance(result, types.Vm)
+    assert result.nics is None
 
 
 def test_link_is_ignored_if_no_href():
@@ -110,9 +104,9 @@ def test_link_is_ignored_if_no_href():
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
-    assert_is_not_none(result)
-    assert_true(isinstance(result, types.Vm))
-    assert_is_none(result.nics)
+    assert result is not None
+    assert isinstance(result, types.Vm)
+    assert result.nics is None
 
 
 
@@ -127,14 +121,14 @@ def test_multiple_links():
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
-    assert_is_not_none(result)
-    assert_true(isinstance(result, types.Vm))
-    assert_is_not_none(result.nics)
-    assert_true(isinstance(result.nics, sdk.List))
-    assert_equals(result.nics.href, '/vms/123/nics')
-    assert_is_not_none(result.cdroms)
-    assert_true(isinstance(result.cdroms, sdk.List))
-    assert_equals(result.cdroms.href, '/vms/123/cdroms')
+    assert result is not None
+    assert isinstance(result, types.Vm)
+    assert result.nics is not None
+    assert isinstance(result.nics, sdk.List)
+    assert result.nics.href == '/vms/123/nics'
+    assert result.cdroms is not None
+    assert isinstance(result.cdroms, sdk.List)
+    assert result.cdroms.href == '/vms/123/cdroms'
 
 
 def test_attribute_after_multiple_links():
@@ -149,6 +143,6 @@ def test_attribute_after_multiple_links():
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
-    assert_is_not_none(result)
-    assert_true(isinstance(result, types.Vm))
-    assert_equals(result.name, 'myvm')
+    assert result is not None
+    assert isinstance(result, types.Vm)
+    assert result.name == 'myvm'

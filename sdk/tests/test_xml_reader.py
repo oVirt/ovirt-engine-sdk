@@ -17,7 +17,6 @@
 #
 
 from io import BytesIO
-from nose.tools import *
 from ovirtsdk4.xml import XmlReader
 
 
@@ -35,7 +34,7 @@ def test_get_attribute_with_value():
     method returns the value.
     """
     reader = make_reader('<root id="123"/>')
-    assert_equals(reader.get_attribute('id'), '123')
+    assert reader.get_attribute('id') == '123'
 
 
 def test_get_empty_attribute():
@@ -44,7 +43,7 @@ def test_get_empty_attribute():
     returns an empty string.
     """
     reader = make_reader('<root id=""/>')
-    assert_equals(reader.get_attribute('id'), '')
+    assert reader.get_attribute('id') == ''
 
 
 def test_get_non_existent_attribute():
@@ -53,7 +52,7 @@ def test_get_non_existent_attribute():
     method returns `None`.
     """
     reader = make_reader('<root/>')
-    assert_equals(reader.get_attribute('id'), None)
+    assert reader.get_attribute('id') is None
 
 
 def test_read_empty_element():
@@ -62,7 +61,7 @@ def test_read_empty_element():
     returns `None`.
     """
     reader = make_reader('<root/>')
-    assert_equals(reader.read_element(), None)
+    assert reader.read_element() is None
 
 
 def test_read_blank_element():
@@ -71,7 +70,7 @@ def test_read_blank_element():
     returns an empty string.
     """
     reader = make_reader('<root></root>')
-    assert_equals(reader.read_element(), '')
+    assert reader.read_element() == ''
 
 
 def test_read_empty_list():
@@ -80,7 +79,7 @@ def test_read_empty_list():
     returns an empty list.
     """
     reader = make_reader('<list></list>')
-    assert_equals(reader.read_elements(), [])
+    assert reader.read_elements() == []
 
 
 def test_read_list_with_empty_element():
@@ -89,7 +88,7 @@ def test_read_list_with_empty_element():
     returns a list containing `None`.
     """
     reader = make_reader('<list><item/></list>')
-    assert_equals(reader.read_elements(), [None])
+    assert reader.read_elements() == [None]
 
 
 def test_read_list_with_blank_element():
@@ -98,7 +97,7 @@ def test_read_list_with_blank_element():
     returns a list containing an empty string.
     """
     reader = make_reader('<list><item></item></list>')
-    assert_equals(reader.read_elements(), [''])
+    assert reader.read_elements() == ['']
 
 
 def test_read_list_one_element():
@@ -107,7 +106,7 @@ def test_read_list_one_element():
     returns a list containing it.
     """
     reader = make_reader('<list><item>first</item></list>')
-    assert_equals(reader.read_elements(), ['first'])
+    assert reader.read_elements() == ['first']
 
 
 def test_read_list_two_element():
@@ -121,7 +120,7 @@ def test_read_list_two_element():
             <item>second</item>
         </list>
     """)
-    assert_equals(reader.read_elements(), ['first', 'second'])
+    assert reader.read_elements() == ['first', 'second']
 
 
 def test_forward_with_preceding_test():
@@ -131,8 +130,8 @@ def test_forward_with_preceding_test():
     """
     reader = make_reader('<root>text<target/></root>')
     reader.read()
-    assert_equals(reader.forward(), True)
-    assert_equals(reader.node_name(), 'target')
+    assert reader.forward()
+    assert reader.node_name() == 'target'
 
 
 def test_forward_end_of_document():
@@ -142,7 +141,7 @@ def test_forward_end_of_document():
     """
     reader = make_reader('<root/>')
     reader.read()
-    assert_equals(reader.forward(), False)
+    assert not reader.forward()
 
 
 def test_forward_with_empty_element():
@@ -152,9 +151,9 @@ def test_forward_with_empty_element():
     """
     reader = make_reader('<root><target/></root>')
     reader.read()
-    assert_equals(reader.forward(), True)
-    assert_equals(reader.node_name(), 'target')
-    assert_equals(reader.empty_element(), True)
+    assert reader.forward()
+    assert reader.node_name() == 'target'
+    assert reader.empty_element()
 
 
 def test_read_element_after_empty_list():
@@ -165,8 +164,8 @@ def test_read_element_after_empty_list():
     """
     reader = make_reader('<root><list/><value>next</value></root>')
     reader.read()
-    assert_equals(reader.read_elements(), [])
-    assert_equals(reader.read_element(), 'next')
+    assert reader.read_elements() == []
+    assert reader.read_element() == 'next'
 
 
 def test_read_accents():
@@ -175,4 +174,4 @@ def test_read_accents():
     works correctly.
     """
     reader = make_reader('<root>áéíóúÁÉÍÓÚ</root>')
-    assert_equals(reader.read_element(), 'áéíóúÁÉÍÓÚ')
+    assert reader.read_element() == 'áéíóúÁÉÍÓÚ'

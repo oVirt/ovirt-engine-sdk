@@ -18,8 +18,8 @@
 
 import ovirtsdk4 as sdk
 import unittest
+import pytest
 
-from nose.tools import raises
 from .server import TestServer
 
 
@@ -34,31 +34,31 @@ class ConnectionErrorTest(unittest.TestCase):
     def teardown_class(cls):
         cls.server.stop_server()
 
-    @raises(sdk.ConnectionError)
     def test_incorrect_server_fqdn(self):
         """
         Fail if server has incorrect FQDN.
         """
-        connection = sdk.Connection(
-            username=self.server.user(),
-            password=self.server.password(),
-            insecure=True,
-            url='https://300.300.300.300/ovirt-engine/api',
-        )
-        connection.test(raise_exception=True)
-        connection.close()
+        with pytest.raises(sdk.ConnectionError):
+            connection = sdk.Connection(
+                username=self.server.user(),
+                password=self.server.password(),
+                insecure=True,
+                url='https://300.300.300.300/ovirt-engine/api',
+            )
+            connection.test(raise_exception=True)
+            connection.close()
 
-    @raises(sdk.ConnectionError)
     def test_incorrect_server_address(self):
         """
         Fail if server has incorrect address.
         """
-        connection = sdk.Connection(
-            username=self.server.user(),
-            password=self.server.password(),
-            insecure=True,
-            url='https://bad.host/ovirt-engine/api',
-        )
-        connection.test(raise_exception=True)
-        connection.close()
+        with pytest.raises(sdk.ConnectionError):
+            connection = sdk.Connection(
+                username=self.server.user(),
+                password=self.server.password(),
+                insecure=True,
+                url='https://bad.host/ovirt-engine/api',
+            )
+            connection.test(raise_exception=True)
+            connection.close()
 
