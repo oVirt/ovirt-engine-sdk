@@ -16,8 +16,6 @@
 # limitations under the License.
 #
 
-import six
-
 from ovirtsdk4 import AuthError
 from ovirtsdk4 import Error
 from ovirtsdk4 import NotFoundError
@@ -100,7 +98,7 @@ class Service(object):
                     msg += ' '
                 msg = msg + 'HTTP response message is "%s".' % response.message
 
-        if isinstance(detail, six.string_types):
+        if isinstance(detail, str):
             if msg:
                 msg += ' '
             msg = msg + detail + '.'

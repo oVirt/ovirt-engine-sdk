@@ -16,8 +16,6 @@
 # limitations under the License.
 #
 
-import six
-
 from io import BytesIO
 from nose.tools import *
 from ovirtsdk4.xml import XmlReader
@@ -27,8 +25,7 @@ def make_reader(text):
     """
     Creates an IO objec that reads from the given text.
     """
-    if six.PY3:
-        text = text.encode('utf-8')
+    text = text.encode('utf-8')
     return XmlReader(BytesIO(text))
 
 
