@@ -18,11 +18,8 @@
 
 import ovirtsdk4 as sdk
 import unittest
+import pytest
 
-from nose.tools import (
-    assert_equals,
-    assert_raises,
-)
 from .server import TestServer
 
 
@@ -51,12 +48,12 @@ class InvalidAuthTest(unittest.TestCase):
                 'error_description': "Cannot authenticate user 'admin@internal': The username or password is incorrect..",
             },
         )
-        with assert_raises(sdk.AuthError) as ctx:
+        with pytest.raises(sdk.AuthError) as ctx:
             connection.authenticate()
-        message = str(ctx.exception)
-        assert_equals(
+        message = str(ctx.value)
+        assert (
             "Error during SSO authentication access_denied : Cannot authenticate user 'admin@internal': "
-            "The username or password is incorrect..",
+            "The username or password is incorrect.." ==
             message
         )
 
@@ -74,11 +71,11 @@ class InvalidAuthTest(unittest.TestCase):
                 'error_code': 'access_denied',
             },
         )
-        with assert_raises(sdk.AuthError) as ctx:
+        with pytest.raises(sdk.AuthError) as ctx:
             connection.authenticate()
-        message = str(ctx.exception)
-        assert_equals(
+        message = str(ctx.value)
+        assert (
             "Error during SSO authentication access_denied : Cannot authenticate user 'admin@internal': "
-            "The username or password is incorrect..",
+            "The username or password is incorrect.." ==
             message
         )

@@ -19,11 +19,6 @@
 import ovirtsdk4.types as types
 
 from io import BytesIO
-from nose.tools import (
-    assert_equals,
-    assert_is_none,
-    assert_true,
-)
 from ovirtsdk4.readers import ClusterReader
 from ovirtsdk4.xml import XmlReader
 
@@ -49,9 +44,9 @@ def test_cluster_with_no_rng_sources_and_switch_type():
     result = ClusterReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result, types.Cluster))
-    assert_equals(result.required_rng_sources, [])
-    assert_equals(result.switch_type, types.SwitchType.LEGACY)
+    assert isinstance(result, types.Cluster)
+    assert result.required_rng_sources == []
+    assert result.switch_type == types.SwitchType.LEGACY
 
 
 
@@ -67,5 +62,5 @@ def test_unsupported_switch_type_dont_raise_exception():
     result = ClusterReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result, types.Cluster))
-    assert_is_none(result.switch_type)
+    assert isinstance(result, types.Cluster)
+    assert result.switch_type is None

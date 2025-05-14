@@ -19,10 +19,6 @@
 import ovirtsdk4.types as types
 
 from io import BytesIO
-from nose.tools import (
-    assert_equals,
-    assert_true,
-)
 from ovirtsdk4.readers import AffinityGroupReader
 from ovirtsdk4.xml import XmlReader
 
@@ -48,13 +44,10 @@ def test_affinity_group_reader_with_assigned_vms():
     result = AffinityGroupReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result, types.AffinityGroup))
-    assert_true(len(result.vms) > 0)
-    assert_equals(
-        result.vms.href,
-        '/ovirt-engine/api/clusters/123/affinitygroups/456/vms'
-    )
-    assert_equals(result.vms[0].id, '123')
+    assert isinstance(result, types.AffinityGroup)
+    assert len(result.vms) > 0
+    assert result.vms.href == '/ovirt-engine/api/clusters/123/affinitygroups/456/vms'
+    assert result.vms[0].id == '123'
 
 
 def test_affinity_group_reader_with_assigned_vms_no_order():
@@ -72,10 +65,7 @@ def test_affinity_group_reader_with_assigned_vms_no_order():
     result = AffinityGroupReader.read_one(reader)
     reader.close()
 
-    assert_true(isinstance(result, types.AffinityGroup))
-    assert_true(len(result.vms) > 0)
-    assert_equals(
-        result.vms.href,
-        '/ovirt-engine/api/clusters/123/affinitygroups/456/vms'
-    )
-    assert_equals(result.vms[0].id, '123')
+    assert isinstance(result, types.AffinityGroup)
+    assert len(result.vms) > 0
+    assert result.vms.href == '/ovirt-engine/api/clusters/123/affinitygroups/456/vms'
+    assert result.vms[0].id == '123'

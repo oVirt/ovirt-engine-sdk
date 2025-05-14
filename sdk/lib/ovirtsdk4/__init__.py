@@ -689,7 +689,7 @@ class Connection(object):
 
         # Prepare headers:
         header_lines = [
-            'User-Agent: PythonSDK/%s' % version.VERSION,
+            'User-Agent: PythonSDK/%s' % get_version(),
             'Accept: application/json'
         ]
         curl.setopt(pycurl.HTTPHEADER, header_lines)

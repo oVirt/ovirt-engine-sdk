@@ -17,7 +17,6 @@
 #
 
 from io import BytesIO
-from nose.tools import *
 from ovirtsdk4 import types
 from ovirtsdk4 import readers
 from ovirtsdk4.xml import XmlReader
@@ -38,10 +37,10 @@ def test_read_one_with_empty_xml():
     reader = make_reader('<fault/>')
     result = readers.FaultReader.read_one(reader)
     reader.close()
-    assert_is_not_none(result)
-    assert_is(type(result), types.Fault)
-    assert_is_none(result.reason)
-    assert_is_none(result.detail)
+    assert result is not None
+    assert type(result) is types.Fault
+    assert result.reason is None
+    assert result.detail is None
 
 
 def test_read_one_with_reason_only():
@@ -52,10 +51,10 @@ def test_read_one_with_reason_only():
     reader = make_reader('<fault><reason>myreason</reason></fault>')
     result = readers.FaultReader.read_one(reader)
     reader.close()
-    assert_is_not_none(result)
-    assert_is(type(result), types.Fault)
-    assert_equals(result.reason, 'myreason')
-    assert_is_none(result.detail)
+    assert result is not None
+    assert type(result) is types.Fault
+    assert result.reason == 'myreason'
+    assert result.detail is None
 
 
 def test_read_one_with_detail_only():
@@ -66,10 +65,10 @@ def test_read_one_with_detail_only():
     reader = make_reader('<fault><detail>mydetail</detail></fault>')
     result = readers.FaultReader.read_one(reader)
     reader.close()
-    assert_is_not_none(result)
-    assert_is(type(result), types.Fault)
-    assert_is_none(result.reason)
-    assert_equals(result.detail, 'mydetail')
+    assert result is not None
+    assert type(result) is types.Fault
+    assert result.reason is None
+    assert result.detail == 'mydetail'
 
 
 def test_read_one_with_reason_and_detail():
@@ -85,8 +84,8 @@ def test_read_one_with_reason_and_detail():
     """)
     result = readers.FaultReader.read_one(reader)
     reader.close()
-    assert_is_not_none(result)
-    assert_is(type(result), types.Fault)
-    assert_equals(result.reason, 'myreason')
-    assert_equals(result.detail, 'mydetail')
+    assert result is not None
+    assert type(result) is types.Fault
+    assert result.reason == 'myreason'
+    assert result.detail == 'mydetail'
 

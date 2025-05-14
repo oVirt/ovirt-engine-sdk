@@ -18,10 +18,6 @@
 
 import unittest
 
-from nose.tools import (
-    assert_is_not_none,
-    assert_equal
-)
 from .server import TestServer
 
 
@@ -44,7 +40,7 @@ class DataCenterServiceTest(unittest.TestCase):
         """
         Check that reference to data centers service is not none
         """
-        assert_is_not_none(self.data_centers_service)
+        assert self.data_centers_service is not None
 
     def test_get_list_of_data_centers(self):
         """
@@ -52,8 +48,8 @@ class DataCenterServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("datacenters", 200, "<data_centers/>")
         data_centers = self.data_centers_service.list()
-        assert_is_not_none(data_centers)
-        assert_equal(data_centers, [])
+        assert data_centers is not None
+        assert data_centers == []
 
     def test_get_list_of_data_centers_with_search(self):
         """
@@ -61,8 +57,8 @@ class DataCenterServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("datacenters", 200, "<data_centers/>")
         data_centers = self.data_centers_service.list(search="name=ugly")
-        assert_is_not_none(data_centers)
-        assert_equal(data_centers, [])
+        assert data_centers is not None
+        assert data_centers == []
 
     def test_get_data_center_by_id(self):
         """
@@ -75,5 +71,5 @@ class DataCenterServiceTest(unittest.TestCase):
             body="<data_center id=\"123\"><name>testdc</name></data_center>"
         )
         dc = self.data_centers_service.data_center_service("123").get()
-        assert_equal(dc.id, "123")
-        assert_equal(dc.name, "testdc")
+        assert dc.id == "123"
+        assert dc.name == "testdc"
