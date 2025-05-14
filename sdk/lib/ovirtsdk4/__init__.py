@@ -30,9 +30,11 @@ except ImportError:
     from urllib import urlencode
     from urlparse import urlparse
 
-from ovirtsdk4 import version
 from ovirtsdk4.http import Response
 
+def get_version():
+    from ovirtsdk4 import version
+    return version.VERSION
 
 class Error(Exception):
     """
@@ -43,20 +45,22 @@ class Error(Exception):
     def __init__(self, message, code=None, fault=None):
         """
         Creates an instance of Error class.
-
-        `message`:: The exception message.
-
-        `code`:: An error code associated to the error. For HTTP related
+        """
+        super(Error, self).__init__(message)
+        """
+        Creates an instance of Error class.
+        """
+        self.code = code
+        """
+        An error code associated to the error. For HTTP related
         errors, this will be the HTTP response code returned by the server.
         For example, if retrieving of a virtual machine fails because it
         doesn't exist this attribute will contain the integer value 404. Note
-        that this may be `nil` if the error is not HTTP related.
-
-        `fault`:: The `Fault` object associated to the error.
-        """
-        super(Error, self).__init__(message)
-        self.code = code
+        that this may be `nil` if the error is not HTTP related."""
         self.fault = fault
+        """
+        The `Fault` object associated to the error.
+        """
 
 
 class AuthError(Error):
@@ -229,70 +233,87 @@ class Connection(object):
 
         This method supports the following parameters:
 
-        `url`:: A string containing the base URL of the server, usually
+        `url` \n
+        A string containing the base URL of the server, usually
         something like `https://server.example.com/ovirt-engine/api`.
 
-        `username`:: The name of the user, something like `admin@internal`.
+        `username` \n
+        The name of the user, something like `admin@internal`.
 
-        `password`:: The name password of the user.
+        `password` \n
+        The name password of the user.
 
-        `token`:: : The token to be used to access API. Optionally, user can
+        `token` \n
+        The token to be used to access API. Optionally, user can
         use token, instead of username and password to access API. If user
         don't specify `token` parameter, SDK will automatically create one.
 
-        `insecure`:: A boolean flag that indicates if the server TLS
+        `insecure` \n
+        A boolean flag that indicates if the server TLS
         certificate and host name should be checked.
 
-        `ca_file`:: A PEM file containing the trusted CA certificates. The
+        `ca_file` \n
+        A PEM file containing the trusted CA certificates. The
         certificate presented by the server will be verified using these CA
         certificates. If `ca_file` parameter is not set, system wide
         CA certificate store is used.
 
-        `debug`:: A boolean flag indicating if debug output should be
+        `debug` \n
+        A boolean flag indicating if debug output should be
         generated. If the value is `True` and the `log` parameter isn't
         `None` then the data sent to and received from the server will
         be written to the log. Be aware that user names and passwords will
         also be written, so handle it with care.
 
-        `log`:: The logger where the log messages will be written.
+        `log` \n
+        The logger where the log messages will be written.
 
-        `kerberos`:: A boolean flag indicating if Kerberos
+        `kerberos` \n
+        A boolean flag indicating if Kerberos
         authentication should be used instead of the default basic
         authentication.
 
-        `timeout`:: The maximum total time to wait for the response, in
+        `timeout` \n
+        The maximum total time to wait for the response, in
         seconds. A value of zero (the default) means wait for ever. If
         the timeout expires before the response is received an exception
         will be raised.
 
-        `compress`:: A boolean flag indicating if the SDK should ask
+        `compress` \n
+        A boolean flag indicating if the SDK should ask
         the server to send compressed responses. The default is `True`.
         Note that this is a hint for the server, and that it may return
         uncompressed data even when this parameter is set to `True`.
         Note that compression will be disabled if user pass `debug`
         parameter set to `true`, so the debug messages are in plain text.
 
-        `sso_url`:: A string containing the base SSO URL of the serve.
+        `sso_url` \n
+        A string containing the base SSO URL of the serve.
         Default SSO url is computed from the `url` if no `sso_url` is provided.
 
-        `sso_revoke_url`:: A string containing the base URL of the SSO
+        `sso_revoke_url` \n
+        A string containing the base URL of the SSO
         revoke service. This needs to be specified only when using
         an external authentication service. By default this URL
         is automatically calculated from the value of the `url` parameter,
         so that SSO token revoke will be performed using the SSO service
         that is part of the engine.
 
-        `sso_token_name`:: The token name in the JSON SSO response returned
+        `sso_token_name` \n
+        The token name in the JSON SSO response returned
         from the SSO server. Default value is `access_token`.
 
-        `headers`:: A dictionary with headers which should be send with every
+        `headers` \n
+        A dictionary with headers which should be send with every
         request.
 
-        `connections`:: The maximum number of connections to open to the host.
+        `connections` \n
+        The maximum number of connections to open to the host.
         If the value is `0` (the default) then the number of connections will
         be unlimited.
 
-        `pipeline`:: The maximum number of request to put in an HTTP pipeline
+        `pipeline` \n
+        The maximum number of request to put in an HTTP pipeline
         without waiting for the response. If the value is `0` (the default)
         then pipelining is disabled.
         """
@@ -359,7 +380,8 @@ class Connection(object):
 
         This method supports the following parameters.
 
-        `request`:: The Request object containing the details of the HTTP
+        `request` \n
+        The Request object containing the details of the HTTP
         request to send.
 
         The returned value is a Request object containing the details of the
@@ -444,7 +466,7 @@ class Connection(object):
         for header_name, header_value in headers_dict.items():
             header_lines.append('%s: %s' % (header_name, header_value))
 
-        header_lines.append('User-Agent: PythonSDK/%s' % version.VERSION)
+        header_lines.append('User-Agent: PythonSDK/%s' % get_version())
         header_lines.append('Version: 4')
         header_lines.append('Content-Type: application/xml')
         header_lines.append('Accept: application/xml')
@@ -795,7 +817,7 @@ class Connection(object):
         """
         Releases the resources used by this connection.
 
-        `logout`:: A boolean, which specify if token should be revoked,
+        `logout` A boolean, which specify if token should be revoked,
         and so user should be logged out.
         """
 
@@ -817,10 +839,10 @@ class Connection(object):
 
         This method supports the following parameters:
 
-        `path`:: The path that will be added to the base URL. The default is an
+        `path` The path that will be added to the base URL. The default is an
         empty string.
 
-        `query`:: A dictionary containing the query parameters to add to the
+        `query` A dictionary containing the query parameters to add to the
         URL. The keys of the dictionary should be strings containing the names
         of the parameters, and the values should be strings containing the
         values.
@@ -840,7 +862,7 @@ class Connection(object):
          XML then it does nothing. If it isn't XML then it raises an
          exception.
 
-         `response`:: The HTTP response to check.
+         `response` The HTTP response to check.
         """
         return self._check_content_type(
             self.__XML_CONTENT_TYPE_RE,
@@ -854,7 +876,7 @@ class Connection(object):
          JSON then it does nothing. If it isn't JSON then it raises an
          exception.
 
-         `response`:: The HTTP response to check.
+         `response` The HTTP response to check.
         """
         return self._check_content_type(
             self.__JSON_CONTENT_TYPE_RE,
@@ -867,10 +889,10 @@ class Connection(object):
         Checks the given content type and raises an exception if it isn't the
         expected one.
 
-        `expected_re`:: The regular expression used to check the expected
+        `expected_re` The regular expression used to check the expected
                         content type.
-        `expected_name`:: The name of the expected content type.
-        `headers`:: The HTTP headers to check.
+        `expected_name` The name of the expected content type.
+        `headers` The HTTP headers to check.
         """
         content_type = self._get_header_value(headers, 'content-type')
         if expected_re.match(content_type) is None:
@@ -891,7 +913,7 @@ class Connection(object):
         """
         Read the response.
 
-        `context`:: tuple which contains cur easy, response body,
+        `context` tuple which contains cur easy, response body,
         response headers, original request
         """
         # Extract the response code and body:
@@ -934,8 +956,8 @@ class Connection(object):
         """
         Return header value by its name.
 
-        `headers`:: list of headers
-        `name`:: name of the header
+        `headers` list of headers
+        `name` name of the header
         """
         return next(
             (h.split(':')[1].strip() for h in headers if h.lower().startswith(name)),
@@ -983,8 +1005,7 @@ class ConnectionBuilder(object):
     equivalent to calling the constructor of the `Connection`
     class. Typical use will be like this:
 
-    [source,python]
-    ----
+    ```python
     # Create the builder once:
     builder = ConnectionBuilder(
         url='https://enginer40.example.com/ovirt-engine/api',
@@ -1000,7 +1021,7 @@ class ConnectionBuilder(object):
     # Create and use a second connection:
     with builder.build() as connection:
        ...
-    ----
+    ```
     """
 
     def __init__(self, **kwargs):
@@ -1028,7 +1049,7 @@ class ConnectionBuilder(object):
 #   import ovirtsdk4 as sdk
 #   vm = sdk.types.Vm()
 #
-from ovirtsdk4 import readers  # noqa: F401 E402
-from ovirtsdk4 import services  # noqa: F401 E402
-from ovirtsdk4 import types  # noqa: F401 E402
-from ovirtsdk4 import writers  # noqa: F401 E402
+import ovirtsdk4.readers as readers  # noqa: F401
+import ovirtsdk4.writers as writers  # noqa: F401
+import ovirtsdk4.types as types  # noqa: F401
+import ovirtsdk4.services as services  # noqa: F401
