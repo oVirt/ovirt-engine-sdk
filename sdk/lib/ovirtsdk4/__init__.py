@@ -32,9 +32,11 @@ except ImportError:
 
 from ovirtsdk4.http import Response
 
+
 def get_version():
     from ovirtsdk4 import version
     return version.VERSION
+
 
 class Error(Exception):
     """
@@ -1049,7 +1051,7 @@ class ConnectionBuilder(object):
 #   import ovirtsdk4 as sdk
 #   vm = sdk.types.Vm()
 #
-import ovirtsdk4.readers as readers  # noqa: F401
-import ovirtsdk4.writers as writers  # noqa: F401
-import ovirtsdk4.types as types  # noqa: F401
-import ovirtsdk4.services as services  # noqa: F401
+import ovirtsdk4.readers as readers  # noqa: E402, F401
+import ovirtsdk4.writers as writers  # noqa: E402, F401
+import ovirtsdk4.types as types  # noqa: E402, F401
+import ovirtsdk4.services as services  # noqa: E402, F401

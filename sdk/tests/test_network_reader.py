@@ -76,11 +76,11 @@ def test_network_with_two_usages():
     """
     reader = XmlReader(
         make_buffer(
-            '<network>' +
-                '<usages>' +
-                    '<usage>vm</usage>' +
-                    '<usage>display</usage>' +
-                '</usages>' +
+            '<network>'
+                '<usages>'
+                    '<usage>vm</usage>'
+                    '<usage>display</usage>'
+                '</usages>'
             '</network>'
         )
     )
@@ -100,11 +100,11 @@ def test_unsupported_usage_dont_raise_exception():
     """
     reader = XmlReader(
         make_buffer(
-            '<network>' +
-            '<usages>' +
-            '<usage>ugly</usage>' +
-            '<usage>display</usage>' +
-            '</usages>' +
+            '<network>'
+                '<usages>'
+                    '<usage>ugly</usage>'
+                    '<usage>display</usage>'
+                '</usages>'
             '</network>'
         )
     )

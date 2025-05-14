@@ -36,8 +36,8 @@ def test_link_href():
     Checks that given an link the corresponding attribute is populate
     """
     reader = make_reader(
-        '<vm>' +
-          '<link rel="nics" href="/vms/123/nics"/>' +
+        '<vm>'
+          '<link rel="nics" href="/vms/123/nics"/>'
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
@@ -53,8 +53,8 @@ def test_element_after_link():
     Check that another attribute after link is read correctly
     """
     reader = make_reader(
-        '<vm>' +
-          '<link rel="nics" href="/vms/123/nics"/>' +
+        '<vm>'
+          '<link rel="nics" href="/vms/123/nics"/>'
           '<name>myvm</name>'
         '</vm>'
     )
@@ -69,8 +69,8 @@ def test_link_is_ignored_if_not_exists():
     Check that the link is ignored if there is no such link
     """
     reader = make_reader(
-        '<vm>' +
-          '<link rel="junks" href="/junks"/>' +
+        '<vm>'
+          '<link rel="junks" href="/junks"/>'
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
@@ -84,8 +84,8 @@ def test_link_is_ignored_if_no_rel():
     Check that the link is ignored if there is no rel
     """
     reader = make_reader(
-        '<vm>' +
-          '<link href="/junks"/>' +
+        '<vm>'
+          '<link href="/junks"/>'
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
@@ -99,8 +99,8 @@ def test_link_is_ignored_if_no_href():
     Check that the link is ignored if there is no href
     """
     reader = make_reader(
-        '<vm>' +
-          '<link rel="nics"/>' +
+        '<vm>'
+          '<link rel="nics"/>'
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
@@ -109,15 +109,14 @@ def test_link_is_ignored_if_no_href():
     assert result.nics is None
 
 
-
 def test_multiple_links():
     """
     Check that the multiple links are read correctly
     """
     reader = make_reader(
-        '<vm>' +
-          '<link rel="nics" href="/vms/123/nics"/>' +
-          '<link rel="cdroms" href="/vms/123/cdroms"/>' +
+        '<vm>'
+          '<link rel="nics" href="/vms/123/nics"/>'
+          '<link rel="cdroms" href="/vms/123/cdroms"/>'
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)
@@ -136,10 +135,10 @@ def test_attribute_after_multiple_links():
     Check when the multiple links, following attribute is populated correctly
     """
     reader = make_reader(
-        '<vm>' +
-          '<link rel="nics" href="/vms/123/nics"/>' +
-          '<link rel="cdroms" href="/vms/123/cdroms"/>' +
-          '<name>myvm</name>' +
+        '<vm>'
+          '<link rel="nics" href="/vms/123/nics"/>'
+          '<link rel="cdroms" href="/vms/123/cdroms"/>'
+          '<name>myvm</name>'
         '</vm>'
     )
     result = readers.VmReader.read_one(reader)

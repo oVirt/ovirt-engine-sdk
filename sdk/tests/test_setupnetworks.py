@@ -66,28 +66,29 @@ class SetupNetworksTest(unittest.TestCase):
             ]
         )
         assert (
-            self.server.last_request_content ==
-            "<action>" +
-              "<modified_bonds>" +
-                "<host_nic>" +
-                  "<bonding>" +
-                    "<options>" +
-                      "<option>" +
-                        "<name>mode</name>" +
-                        "<type>4</type>" +
-                      "</option>" +
-                    "</options>" +
-                    "<slaves>" +
-                      "<host_nic>" +
-                        "<name>eth1</name>" +
-                      "</host_nic>" +
-                      "<host_nic>" +
-                        "<name>eth2</name>" +
-                      "</host_nic>" +
-                    "</slaves>" +
-                  "</bonding>" +
-                  "<name>bond0</name>" +
-                "</host_nic>" +
-              "</modified_bonds>" +
-            "</action>"
+            self.server.last_request_content == (
+                "<action>"
+                  "<modified_bonds>"
+                    "<host_nic>"
+                      "<bonding>"
+                        "<options>"
+                          "<option>"
+                            "<name>mode</name>"
+                            "<type>4</type>"
+                          "</option>"
+                        "</options>"
+                        "<slaves>"
+                          "<host_nic>"
+                            "<name>eth1</name>"
+                          "</host_nic>"
+                          "<host_nic>"
+                            "<name>eth2</name>"
+                          "</host_nic>"
+                        "</slaves>"
+                      "</bonding>"
+                      "<name>bond0</name>"
+                    "</host_nic>"
+                  "</modified_bonds>"
+                "</action>"
+            )
         )

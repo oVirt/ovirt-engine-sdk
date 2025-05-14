@@ -61,4 +61,3 @@ class ConnectionErrorTest(unittest.TestCase):
             )
             connection.test(raise_exception=True)
             connection.close()
-

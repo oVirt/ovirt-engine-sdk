@@ -36,10 +36,10 @@ def test_cluster_with_no_rng_sources_and_switch_type():
     empty list works correctly.
     """
     reader = XmlReader(make_buffer(
-      '<cluster>'
+        '<cluster>'
         '<required_rng_sources/>'
         '<switch_type>legacy</switch_type>'
-      '</cluster>'
+        '</cluster>'
     ))
     result = ClusterReader.read_one(reader)
     reader.close()
@@ -47,7 +47,6 @@ def test_cluster_with_no_rng_sources_and_switch_type():
     assert isinstance(result, types.Cluster)
     assert result.required_rng_sources == []
     assert result.switch_type == types.SwitchType.LEGACY
-
 
 
 def test_unsupported_switch_type_dont_raise_exception():

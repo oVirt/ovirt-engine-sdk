@@ -64,10 +64,11 @@ def test_write_network_with_empty_usages():
     NetworkWriter.write_one(network, writer)
     writer.flush()
     assert (
-        decode_buffer(buf) ==
-        '<network>\n' +
-        '  <usages/>\n' +
-        '</network>\n'
+        decode_buffer(buf) == (
+            '<network>\n'
+            '  <usages/>\n'
+            '</network>\n'
+        )
     )
 
 
@@ -86,12 +87,13 @@ def test_write_network_with_one_usages():
     NetworkWriter.write_one(network, writer)
     writer.flush()
     assert (
-        decode_buffer(buf) ==
-        '<network>\n' +
-        '  <usages>\n' +
-        '    <usage>vm</usage>\n' +
-        '  </usages>\n' +
-        '</network>\n'
+        decode_buffer(buf) == (
+            '<network>\n'
+            '  <usages>\n'
+            '    <usage>vm</usage>\n'
+            '  </usages>\n'
+            '</network>\n'
+        )
     )
 
 
@@ -111,11 +113,12 @@ def test_write_network_with_two_usages():
     NetworkWriter.write_one(network, writer)
     writer.flush()
     assert (
-        decode_buffer(buf) ==
-        '<network>\n' +
-        '  <usages>\n' +
-        '    <usage>vm</usage>\n' +
-        '    <usage>display</usage>\n' +
-        '  </usages>\n' +
-        '</network>\n'
+        decode_buffer(buf) == (
+            '<network>\n'
+            '  <usages>\n'
+            '    <usage>vm</usage>\n'
+            '    <usage>display</usage>\n'
+            '  </usages>\n'
+            '</network>\n'
+        )
     )

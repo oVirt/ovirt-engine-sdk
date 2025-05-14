@@ -53,8 +53,7 @@ class InvalidAuthTest(unittest.TestCase):
         message = str(ctx.value)
         assert (
             "Error during SSO authentication access_denied : Cannot authenticate user 'admin@internal': "
-            "The username or password is incorrect.." ==
-            message
+            "The username or password is incorrect.." == message
         )
 
     def test_invalid_credentials_openid(self):
@@ -76,6 +75,5 @@ class InvalidAuthTest(unittest.TestCase):
         message = str(ctx.value)
         assert (
             "Error during SSO authentication access_denied : Cannot authenticate user 'admin@internal': "
-            "The username or password is incorrect.." ==
-            message
+            "The username or password is incorrect.." == message
         )

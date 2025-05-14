@@ -88,4 +88,3 @@ def test_read_one_with_reason_and_detail():
     assert type(result) is types.Fault
     assert result.reason == 'myreason'
     assert result.detail == 'mydetail'
-
