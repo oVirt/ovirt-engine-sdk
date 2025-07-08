@@ -29,11 +29,14 @@ import org.ovirt.api.metamodel.concepts.Model;
 public interface PythonGenerator {
     /**
      * Set the directory were the output should be generated.
+     *  @param out the path to the output directory.
      */
     void setOut(File out);
 
     /**
      * Generates the code for the given model.
+     * @param model the model to be used to generate the code.
+     * @throws IOException in case of I/O errors.
      */
     void generate(Model model) throws IOException;
 }

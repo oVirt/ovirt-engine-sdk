@@ -80,6 +80,7 @@ public class PythonReservedWords {
 
     /**
      * Produces the set of Python reserved words.
+     * @return a set filled with the reserved words in Python as strings.
      */
     @Produces
     @ReservedWords(language = "python")

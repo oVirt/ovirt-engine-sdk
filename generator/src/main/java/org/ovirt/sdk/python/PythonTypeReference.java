@@ -28,27 +28,51 @@ public class PythonTypeReference {
     private String text;
     private List<String> imports = new ArrayList<>(1);
 
+    /**
+     * Get the text regarding the reference
+     * @return a string with the text of the reference.
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Set the text regarding the reference.
+     * @param newText the new text of the reference.
+     */
     public void setText(String newText) {
         text = newText;
     }
 
+    /**
+     * Set the text regarding the reference using a class.
+     * @param clazz the class of which to use the simple name as the text of the reference.
+     */
     public void setText(Class<?> clazz) {
         text = clazz.getSimpleName();
     }
 
+    /**
+     * Get the list of imports that are necessary to use this type reference.
+     * @return a list of strings with the imports.
+     */
     public List<String> getImports() {
         return new ArrayList<>(imports);
     }
 
+    /**
+     * Set the list of imports that are necessary to use this type reference.
+     * @param newImports a list of strings with the imports.
+     */
     public void setImports(List<String> newImports) {
         imports.clear();
         imports.addAll(newImports);
     }
 
+    /**
+     * Add a new import to the existing list of imports that are necessary to use this type reference.
+     * @param newImport a string with the new import.
+     */
     public void addImport(String newImport) {
         imports.add(newImport);
     }

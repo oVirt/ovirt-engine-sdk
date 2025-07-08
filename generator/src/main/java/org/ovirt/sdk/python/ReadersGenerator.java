@@ -41,7 +41,9 @@ import org.ovirt.api.metamodel.tool.SchemaNames;
  * This class is responsible for generating the classes that create instances of model types from XML documents.
  */
 public class ReadersGenerator implements PythonGenerator {
-    // The directory were the output will be generated:
+    /**
+     * The directory were the output will be generated:
+     */
     protected File out;
 
     // Reference to the objects used to generate the code:

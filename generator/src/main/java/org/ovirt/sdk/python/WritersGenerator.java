@@ -36,7 +36,9 @@ import org.ovirt.api.metamodel.tool.SchemaNames;
  * corresponding XML documents.
  */
 public class WritersGenerator implements PythonGenerator {
-    // The directory were the output will be generated:
+    /**
+     * The directory were the output will be generated:
+     */
     protected File out;
 
     // Reference to the objects used to generate the code:

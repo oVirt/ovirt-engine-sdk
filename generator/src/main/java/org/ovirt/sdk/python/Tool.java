@@ -34,6 +34,9 @@ import org.ovirt.api.metamodel.analyzer.ModelAnalyzer;
 import org.ovirt.api.metamodel.concepts.Model;
 import org.ovirt.api.metamodel.tool.BuiltinTypes;
 
+/**
+ * Class that is used to run the Python generators.
+ */
 @ApplicationScoped
 public class Tool {
     // The names of the command line options:
