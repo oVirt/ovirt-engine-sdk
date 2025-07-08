@@ -162,7 +162,7 @@ public class WritersGenerator implements PythonGenerator {
         buffer.addLine("plural = '%1$s'", pluralTagName);
         buffer.endBlock();
         buffer.addLine("writer.write_start(plural)");
-        buffer.addLine("if type(objs) == List:");
+        buffer.addLine("if isinstance(objs, List):");
         buffer.startBlock();
         buffer.addLine("href = objs.href");
         buffer.addLine("if href is not None:");
