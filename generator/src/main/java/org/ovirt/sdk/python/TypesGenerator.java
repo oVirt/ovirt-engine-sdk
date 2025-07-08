@@ -41,7 +41,9 @@ import org.ovirt.api.metamodel.tool.Names;
  * This class is responsible for generating the classes that represent the types of the model.
  */
 public class TypesGenerator implements PythonGenerator {
-    // The directory were the output will be generated:
+    /**
+     * The directory were the output will be generated:
+     */
     protected File out;
 
     // Reference to the objects used to generate the code:

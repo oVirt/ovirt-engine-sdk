@@ -57,6 +57,7 @@ public class PythonBuffer {
 
     /**
      * Sets the file name.
+     * @param newFileName the new file name.
      */
     public void setFileName(String newFileName) {
         fileName = newFileName;
@@ -64,6 +65,7 @@ public class PythonBuffer {
 
     /**
      * Sets the module name:
+     * @param newModuleName the new module name.
      */
     public void setModuleName(String newModuleName) {
         moduleName = newModuleName;
@@ -87,6 +89,8 @@ public class PythonBuffer {
 
     /**
      * Adds one import.
+     * @param format A format string as described in Format string syntax
+     * @param args Arguments referenced by the format specifiers in the format string. If there are more arguments than format specifiers, the extra arguments are ignored. The maximum number of arguments is limited by the maximum dimension of a Java array as defined by The Java™ Virtual Machine Specification
      */
     public void addImport(String format, Object ... args) {
         // Format the line:
@@ -100,6 +104,7 @@ public class PythonBuffer {
 
     /**
      * Adds multiple imports.
+     * @param imports the imports to add, each one is a string that will be added as an import.
      */
     public void addImports(List<String> imports) {
         imports.forEach(this::addImport);
@@ -115,6 +120,8 @@ public class PythonBuffer {
     /**
      * Adds a formatted line to the body of the class. The given {@code args} are formatted using the
      * provided {@code format} using the {@link String#format(String, Object...)} method.
+     * @param format A format string as described in Format string syntax
+     * @param args Arguments referenced by the format specifiers in the format string. If there are more arguments than format specifiers, the extra arguments are ignored. The maximum number of arguments is limited by the maximum dimension of a Java array as defined by The Java™ Virtual Machine Specification
      */
     public void addLine(String format, Object ... args) {
         // Format the line:
@@ -133,6 +140,7 @@ public class PythonBuffer {
 
     /**
      * Adds a non-formatted line to the body of the class.
+     * @param line the non formatted line in question
      */
     public void addRawLine(String line) {
         StringBuilder buffer = new StringBuilder(line);

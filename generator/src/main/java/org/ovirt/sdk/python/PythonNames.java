@@ -69,6 +69,7 @@ public class PythonNames {
 
     /**
      * Sets the version.
+     * @param newVersion the new version in string form.
      */
     public void setVersion(String newVersion) {
         version = newVersion;
@@ -76,6 +77,7 @@ public class PythonNames {
 
     /**
      * Get the version.
+     * @return the version in string form.
      */
     public String getVersion() {
         return version;
@@ -83,6 +85,7 @@ public class PythonNames {
 
     /**
      * Get the name of the root module.
+     * @return the name of the root module.
      */
     public String getRootModuleName() {
         return rootModuleName;
@@ -90,6 +93,7 @@ public class PythonNames {
 
     /**
      * Get the name of the types module.
+     * @return the name of the types module.
      */
     public String getTypesModuleName() {
         return getModuleName(TYPES_MODULE);
@@ -97,6 +101,7 @@ public class PythonNames {
 
     /**
      * Get the name of the readers module.
+     * @return the name of the readers module.
      */
     public String getReadersModuleName() {
         return getModuleName(READERS_MODULE);
@@ -104,6 +109,7 @@ public class PythonNames {
 
     /**
      * Get the name of the writers module.
+     * @return the name of the writers module.
      */
     public String getWritersModuleName() {
         return getModuleName(WRITERS_MODULE);
@@ -111,6 +117,7 @@ public class PythonNames {
 
     /**
      * Get the name of the services module.
+     * @return the name of the services module.
      */
     public String getServicesModuleName() {
         return getModuleName(SERVICES_MODULE);
@@ -118,6 +125,7 @@ public class PythonNames {
 
     /**
      * Get the name of the version module.
+     * @return the name of the version module.
      */
     public String getVersionModuleName() {
         return getModuleName(VERSION_MODULE);
@@ -125,6 +133,8 @@ public class PythonNames {
 
     /**
      * Get the complete name of the given module.
+     * @param relativeNames the relative names of the module, if any.
+     * @return the complete name of the module.
      */
     public String getModuleName(String... relativeNames) {
         StringBuilder buffer = new StringBuilder();
@@ -140,14 +150,17 @@ public class PythonNames {
 
     /**
      * Calculates the Python name that corresponds to the given type.
+     * @param type the type for which to build the class name.
+     * @return the Python class name.
      */
     public PythonClassName getTypeName(Type type) {
         return buildClassName(type.getName(), null, TYPES_MODULE);
     }
 
     /**
-     * Calculates that should be used in Python to reference the given type. For example, for the boolean type it will
-     * return the {@code bool} string.
+     * Calculates that should be used in Python to reference the given type.
+     * @param type the type for which to build the reference.
+     * @return the python reference. For example, for the boolean type it will the {@code bool} string.
      */
     public PythonTypeReference getTypeReference(Type type) {
         PythonTypeReference reference = new PythonTypeReference();
@@ -189,6 +202,7 @@ public class PythonNames {
     }
     /**
      * Calculates the Python name of the base class of the services.
+     * @return the python class name object of the base service.
      */
     public PythonClassName getBaseServiceName() {
         return buildClassName(SERVICE_NAME, null, SERVICES_MODULE);
@@ -196,6 +210,8 @@ public class PythonNames {
 
     /**
      * Calculates the Python name that corresponds to the given service.
+     * @param service the service for which to build the class name.
+     * @return the Python class name object.
      */
     public PythonClassName getServiceName(Service service) {
         return buildClassName(service.getName(), SERVICE_NAME, SERVICES_MODULE);
@@ -203,6 +219,8 @@ public class PythonNames {
 
     /**
      * Calculates the Python name of the reader for the given type.
+     * @param type the type for which to build the class name.
+     * @return the Python class name object.
      */
     public PythonClassName getReaderName(Type type) {
         return buildClassName(type.getName(), READER_NAME, READERS_MODULE);
@@ -210,6 +228,8 @@ public class PythonNames {
 
     /**
      * Calculates the Python name of the writer for the given type.
+     * @param type the type for which to build the class name.
+     * @return the Python class name object.
      */
     public PythonClassName getWriterName(Type type) {
         return buildClassName(type.getName(), WRITER_NAME, WRITERS_MODULE);
@@ -239,6 +259,8 @@ public class PythonNames {
 
     /**
      * Returns a representation of the given name using the capitalization style typically used for Python classes.
+     * @param name the given name.
+     * @return a string with the name in class style.
      */
     public String getClassStyleName(Name name) {
         return name.words().map(words::capitalize).collect(joining());
@@ -246,6 +268,8 @@ public class PythonNames {
 
     /**
      * Returns a representation of the given name using the capitalization style typically used for Python members.
+     * @param name the given name.
+     * @return a string with the name in member style.
      */
     public String getMemberStyleName(Name name) {
         String result = name.words().map(String::toLowerCase).collect(joining("_"));
@@ -257,6 +281,8 @@ public class PythonNames {
 
     /**
      * Returns a representation of the given name using the capitalization style typically used for Python constants.
+     * @param name the given name
+     * @return a string with the name in constant style.
      */
     public String getConstantStyleName(Name name) {
         return name.words().map(String::toUpperCase).collect(joining("_"));
@@ -264,6 +290,8 @@ public class PythonNames {
 
     /**
      * Returns a representation of the given name using the capitalization style typically used for Python modules.
+     * @param name the given name
+     * @return a string with the name in module style.
      */
     public String getModuleStyleName(Name name) {
         String result = name.words().map(String::toLowerCase).collect(joining("_"));

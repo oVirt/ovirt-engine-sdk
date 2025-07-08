@@ -57,7 +57,9 @@ public class ServicesGenerator implements PythonGenerator {
     private static final Name REMOVE = NameParser.parseUsingCase("Remove");
     private static final Name UPDATE = NameParser.parseUsingCase("Update");
 
-    // The directory were the output will be generated:
+    /**
+     * The directory were the output will be generated:
+     */
     protected File out;
 
     // Reference to the objects used to generate the code:
