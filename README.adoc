@@ -74,3 +74,42 @@ The generated `.tar.gz` and `.whl` files will be located in the
   sdk/dist/ovirt-engine-sdk-4.0.0a0.linux-x86_64.tar.gz
   sdk/dist/ovirt-engine-sdk-4.0.0a0.tar.gz
   sdk/dist/ovirt_engine_sdk-4.0.0a0-cp27-none-linux_x86_64.whl
+
+
+== Release
+
+To create a new release available on Maven Central one should provide a settings.xml file in the .m2 folder following the structure:
+[source, xml]
+-----
+<settings>
+    <servers>
+        <server>
+            <id>central</id>
+            <username>${mvn_central_generated_username}</username>
+            <password>${mvn_central_generated_pwd}</password>
+        </server>
+    </servers>
+    <profiles>
+        <profile>
+            <id>central</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <gpg.executable>gpg2</gpg.executable>
+                <gpg.passphrase>${gpg_passphrase}</gpg.passphrase>
+            </properties>
+        </profile>
+    </profiles>
+</settings>
+----
+
+After that all version tags need to be updated, that can be done using:
+
+$ mvn release:prepare
+
+NOTE: Snapshot versions do currently have a shelf life of 90 days on maven central.
+
+To start generating your release and pushing it towards maven central run:
+
+$ mvn deploy -Psign
