@@ -958,7 +958,7 @@ class Connection(object):
         # some as arrays of bytes, so we need to check the type of the
         # provided data and convert it to strings before trying to
         # manipulate it with the "replace", "strip" and "split" methods:
-        text = data.decode('utf-8') if type(data) == bytes else data
+        text = data.decode('utf-8') if isinstance(data, bytes) else data
 
         # Split the debug data into lines and send a debug message for
         # each line:
