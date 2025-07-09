@@ -18,11 +18,8 @@
 
 import ovirtsdk4 as sdk
 import unittest
+import pytest
 
-from nose.tools import (
-    assert_true,
-    raises
-)
 from .server import TestServer
 
 
@@ -38,19 +35,19 @@ class ConnectionCreateTest(unittest.TestCase):
     def teardown_class(cls):
         cls.server.stop_server()
 
-    @raises(sdk.Error)
     def test_secure_mode_without_ca(self):
         """
         Test connection can be created when no CA is provided
         """
-        connection = sdk.Connection(
-            url=self.server.url(),
-            username=self.server.user(),
-            password=self.server.password(),
-            ca_file='ugly.pem'
-        )
-        connection.authenticate()
-        connection.close()
+        with pytest.raises(sdk.Error):
+            connection = sdk.Connection(
+                url=self.server.url(),
+                username=self.server.user(),
+                password=self.server.password(),
+                ca_file='ugly.pem'
+            )
+            connection.authenticate()
+            connection.close()
 
     def test_secure_mode_with_ca(self):
         """
@@ -90,17 +87,17 @@ class ConnectionCreateTest(unittest.TestCase):
         connection.authenticate()
         connection.close()
 
-    @raises(sdk.Error)
     def test_invalid_header(self):
         """
         When invalid header is used Error should be raised
         """
-        request = sdk.http.Request(
-            method='GET',
-            headers={'X-header': 'žčě'},
-        )
-        connection = self.server.connection()
-        connection.send(request)
+        with pytest.raises(sdk.Error):
+            request = sdk.http.Request(
+                method='GET',
+                headers={'X-header': 'žčě'},
+            )
+            connection = self.server.connection()
+            connection.send(request)
 
     def test_valid_header(self):
         """

@@ -17,7 +17,6 @@
 #
 
 from io import BytesIO
-from nose.tools import *
 from ovirtsdk4.xml import XmlWriter
 
 
@@ -45,4 +44,4 @@ def test_write_string():
     writer = XmlWriter(buf)
     writer.write_element('value', 'myvalue')
     writer.flush()
-    assert_equals(decode_buffer(buf), '<value>myvalue</value>')
+    assert decode_buffer(buf) == '<value>myvalue</value>'

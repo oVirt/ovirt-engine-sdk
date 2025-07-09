@@ -19,11 +19,6 @@
 import ovirtsdk4.types as types
 
 from io import BytesIO
-from nose.tools import (
-    assert_equals,
-    assert_is_none,
-    assert_true,
-)
 from ovirtsdk4.writers import NetworkWriter
 from ovirtsdk4.xml import XmlWriter
 
@@ -53,7 +48,7 @@ def test_write_network_with_no_usages():
     writer = XmlWriter(buf, indent=True)
     NetworkWriter.write_one(network, writer)
     writer.flush()
-    assert_equals(decode_buffer(buf), '<network/>\n')
+    assert decode_buffer(buf) == '<network/>\n'
 
 
 def test_write_network_with_empty_usages():
@@ -68,11 +63,12 @@ def test_write_network_with_empty_usages():
     writer = XmlWriter(buf, indent=True)
     NetworkWriter.write_one(network, writer)
     writer.flush()
-    assert_equals(
-        decode_buffer(buf),
-        '<network>\n' +
-        '  <usages/>\n' +
-        '</network>\n'
+    assert (
+        decode_buffer(buf) == (
+            '<network>\n'
+            '  <usages/>\n'
+            '</network>\n'
+        )
     )
 
 
@@ -90,13 +86,14 @@ def test_write_network_with_one_usages():
     writer = XmlWriter(buf, indent=True)
     NetworkWriter.write_one(network, writer)
     writer.flush()
-    assert_equals(
-        decode_buffer(buf),
-        '<network>\n' +
-        '  <usages>\n' +
-        '    <usage>vm</usage>\n' +
-        '  </usages>\n' +
-        '</network>\n'
+    assert (
+        decode_buffer(buf) == (
+            '<network>\n'
+            '  <usages>\n'
+            '    <usage>vm</usage>\n'
+            '  </usages>\n'
+            '</network>\n'
+        )
     )
 
 
@@ -115,12 +112,13 @@ def test_write_network_with_two_usages():
     writer = XmlWriter(buf, indent=True)
     NetworkWriter.write_one(network, writer)
     writer.flush()
-    assert_equals(
-        decode_buffer(buf),
-        '<network>\n' +
-        '  <usages>\n' +
-        '    <usage>vm</usage>\n' +
-        '    <usage>display</usage>\n' +
-        '  </usages>\n' +
-        '</network>\n'
+    assert (
+        decode_buffer(buf) == (
+            '<network>\n'
+            '  <usages>\n'
+            '    <usage>vm</usage>\n'
+            '    <usage>display</usage>\n'
+            '  </usages>\n'
+            '</network>\n'
+        )
     )

@@ -17,11 +17,10 @@
 #
 
 from ovirtsdk4 import types
-from nose.tools import assert_equal
 
 
 def test_enum():
     """
     Check Architecture.x86_64 exists and has expected value
     """
-    assert_equal(str(types.Architecture.X86_64), 'x86_64')
+    assert str(types.Architecture.X86_64) == 'x86_64'

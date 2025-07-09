@@ -18,10 +18,6 @@
 
 import unittest
 
-from nose.tools import (
-    assert_is_not_none,
-    assert_equal,
-)
 from .server import TestServer
 
 
@@ -44,7 +40,7 @@ class ClusterServiceTest(unittest.TestCase):
         """
         Check that reference to clusters service is not none
         """
-        assert_is_not_none(self.clusters_service)
+        assert self.clusters_service is not None
 
     def test_get_list_of_clusters(self):
         """
@@ -52,8 +48,8 @@ class ClusterServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("clusters", 200, "<clusters/>")
         clusters = self.clusters_service.list()
-        assert_is_not_none(clusters)
-        assert_equal(clusters, [])
+        assert clusters is not None
+        assert clusters == []
 
     def test_get_list_of_clusters_with_search(self):
         """
@@ -61,8 +57,8 @@ class ClusterServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("clusters", 200, "<clusters/>")
         clusters = self.clusters_service.list(search="name=ugly")
-        assert_is_not_none(clusters)
-        assert_equal(clusters, [])
+        assert clusters is not None
+        assert clusters == []
 
     def test_get_cluster_by_id(self):
         """
@@ -75,5 +71,5 @@ class ClusterServiceTest(unittest.TestCase):
             body="<cluster id=\"123\"><name>testcluster</name></cluster>"
         )
         cluster = self.clusters_service.cluster_service("123").get()
-        assert_equal(cluster.id, "123")
-        assert_equal(cluster.name, "testcluster")
+        assert cluster.id == "123"
+        assert cluster.name == "testcluster"

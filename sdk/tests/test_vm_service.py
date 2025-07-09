@@ -20,12 +20,8 @@ import ovirtsdk4
 import ovirtsdk4.types as types
 import unittest
 
-from nose.tools import (
-    assert_is_not_none,
-    assert_equal,
-    assert_raises,
-    assert_regexp_matches
-)
+import pytest
+
 from .server import TestServer
 
 
@@ -48,7 +44,7 @@ class VmServiceTest(unittest.TestCase):
         """
         Check that reference to vm service is not none
         """
-        assert_is_not_none(self.vms_service)
+        assert self.vms_service is not None
 
     def test_get_list_of_vms(self):
         """
@@ -56,8 +52,8 @@ class VmServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("vms", 200, "<vms/>")
         vms = self.vms_service.list()
-        assert_is_not_none(vms)
-        assert_equal(vms, [])
+        assert vms is not None
+        assert vms == []
 
     def test_get_list_of_storage_domains_with_search(self):
         """
@@ -65,8 +61,8 @@ class VmServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("vms", 200, "<vms/>")
         vms = self.vms_service.list(search="name=ugly")
-        assert_is_not_none(vms)
-        assert_equal(vms, [])
+        assert vms is not None
+        assert vms == []
 
     def test_get_vm_by_id(self):
         """
@@ -79,8 +75,8 @@ class VmServiceTest(unittest.TestCase):
             body="<vm id=\"123\"><name>testvm</name></vm>"
         )
         dc = self.vms_service.vm_service("123").get()
-        assert_equal(dc.id, "123")
-        assert_equal(dc.name, "testvm")
+        assert dc.id == "123"
+        assert dc.name == "testvm"
 
     def test_add_vm_with_clone_parameter(self):
         """
@@ -88,7 +84,7 @@ class VmServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("vms", 201, "<vm/>")
         self.vms_service.add(types.Vm(), clone=True)
-        assert_equal(self.server.last_request_query, 'clone=true')
+        assert self.server.last_request_query == 'clone=true'
 
     def test_add_vm_with_clone_and_clone_permissions_parameters(self):
         """
@@ -101,9 +97,8 @@ class VmServiceTest(unittest.TestCase):
             clone=True,
             clone_permissions=True
         )
-        assert_equal(
-            self.server.last_request_query,
-            'clone=true&clone_permissions=true'
+        assert (
+            self.server.last_request_query == 'clone=true&clone_permissions=true'
         )
 
     def test_add_vm_from_scratch_with_clone_parameter(self):
@@ -113,7 +108,7 @@ class VmServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("vms", 201, "<vm/>")
         self.vms_service.add_from_scratch(types.Vm(), clone=True)
-        assert_equal(self.server.last_request_query, 'clone=true')
+        assert self.server.last_request_query == 'clone=true'
 
     def test_add_vm_from_scratch_with_clone_and_clone_permissions_parameters(self):
         """
@@ -126,9 +121,8 @@ class VmServiceTest(unittest.TestCase):
             clone=True,
             clone_permissions=True
         )
-        assert_equal(
-            self.server.last_request_query,
-            'clone=true&clone_permissions=true'
+        assert (
+            self.server.last_request_query == 'clone=true&clone_permissions=true'
         )
 
     def test_response_200_not_raise_exception(self):
@@ -160,18 +154,18 @@ class VmServiceTest(unittest.TestCase):
         Test that get raises an 404 error if the VM does not exist
         """
         self.server.set_xml_response("vms/123", 404, "")
-        with assert_raises(ovirtsdk4.NotFoundError) as context:
+        with pytest.raises(ovirtsdk4.NotFoundError) as context:
             self.vms_service.vm_service('123').get()
-        assert_regexp_matches(str(context.exception), "404")
+        assert "404" in str(context.value)
 
     def test_error_code_is_returned_in_exception(self):
         """
         Test that 404 error code is returned in exception if VM don't exist
         """
         self.server.set_xml_response("vms/123", 404, "")
-        with assert_raises(ovirtsdk4.NotFoundError) as context:
+        with pytest.raises(ovirtsdk4.NotFoundError) as context:
             self.vms_service.vm_service('123').get()
-        assert_equal(context.exception.code, 404)
+        assert context.value.code == 404
 
     def test_start_with_custom_parameter(self):
         """
@@ -179,7 +173,7 @@ class VmServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("vms/123/start", 200, "<action/>")
         self.vms_service.vm_service("123").start(query={'my': 'value'})
-        assert_equal(self.server.last_request_query, 'my=value')
+        assert self.server.last_request_query == 'my=value'
 
     def test_start_with_two_custom_parameters(self):
         """
@@ -189,7 +183,7 @@ class VmServiceTest(unittest.TestCase):
         self.vms_service.vm_service("123").start(
             query={'my': 'value', 'your': 'value'}
         )
-        assert_equal(self.server.last_request_query, 'my=value&your=value')
+        assert self.server.last_request_query == 'my=value&your=value'
 
     def test_start_with_custom_header(self):
         """
@@ -197,7 +191,7 @@ class VmServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("vms/123/start", 200, "<action/>")
         self.vms_service.vm_service("123").start(headers={'my': 'value'})
-        assert_equal(self.server.last_request_headers.get('my'), 'value')
+        assert self.server.last_request_headers.get('my') == 'value'
 
     def test_start_with_two_custom_headers(self):
         """
@@ -207,8 +201,8 @@ class VmServiceTest(unittest.TestCase):
         self.vms_service.vm_service("123").start(
             headers={'my': 'value', 'your': 'value'}
         )
-        assert_equal(self.server.last_request_headers.get('my'), 'value')
-        assert_equal(self.server.last_request_headers.get('your'), 'value')
+        assert self.server.last_request_headers.get('my') == 'value'
+        assert self.server.last_request_headers.get('your') == 'value'
 
     def test_add_vm_with_custom_parameter(self):
         """
@@ -216,7 +210,7 @@ class VmServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("vms", 201, "<vm/>")
         self.vms_service.add(types.Vm(), query={'my': 'value'})
-        assert_equal(self.server.last_request_query, 'my=value')
+        assert self.server.last_request_query == 'my=value'
 
     def test_add_vm_with_two_custom_parameters(self):
         """
@@ -224,7 +218,7 @@ class VmServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("vms", 201, "<vm/>")
         self.vms_service.add(types.Vm(), query={'my': 'value', 'your': 'value'})
-        assert_equal(self.server.last_request_query, 'my=value&your=value')
+        assert self.server.last_request_query == 'my=value&your=value'
 
     def test_add_vm_with_custom_header(self):
         """
@@ -232,7 +226,7 @@ class VmServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("vms", 201, "<vm/>")
         self.vms_service.add(types.Vm(), headers={'my': 'value'})
-        assert_equal(self.server.last_request_headers.get('my'), 'value')
+        assert self.server.last_request_headers.get('my') == 'value'
 
     def test_add_vm_with_two_custom_headers(self):
         """
@@ -240,8 +234,8 @@ class VmServiceTest(unittest.TestCase):
         """
         self.server.set_xml_response("vms", 201, "<vm/>")
         self.vms_service.add(types.Vm(), headers={'my': 'value', 'your': 'value'})
-        assert_equal(self.server.last_request_headers.get('my'), 'value')
-        assert_equal(self.server.last_request_headers.get('your'), 'value')
+        assert self.server.last_request_headers.get('my') == 'value'
+        assert self.server.last_request_headers.get('your') == 'value'
 
     def test_add_vm_with_global_header(self):
         """
@@ -251,7 +245,7 @@ class VmServiceTest(unittest.TestCase):
         vms_service = connection.system_service().vms_service()
         self.server.set_xml_response("vms", 201, "<vm/>")
         vms_service.add(types.Vm())
-        assert_equal(self.server.last_request_headers.get('my'), 'value')
+        assert self.server.last_request_headers.get('my') == 'value'
 
     def test_start_vm_with_global_header(self):
         """
@@ -261,7 +255,7 @@ class VmServiceTest(unittest.TestCase):
         vms_service = connection.system_service().vms_service()
         self.server.set_xml_response("vms/123/start", 200, "<action/>")
         vms_service.vm_service("123").start()
-        assert_equal(self.server.last_request_headers.get('my'), 'value')
+        assert self.server.last_request_headers.get('my') == 'value'
 
     def test_add_vm_with_global_header_overridden(self):
         """
@@ -272,7 +266,7 @@ class VmServiceTest(unittest.TestCase):
         vms_service = connection.system_service().vms_service()
         self.server.set_xml_response("vms", 201, "<vm/>")
         vms_service.add(types.Vm(), headers={'my': 'overridden'})
-        assert_equal(self.server.last_request_headers.get('my'), 'overridden')
+        assert self.server.last_request_headers.get('my') == 'overridden'
 
     def test_when_the_server_return_fault_it_raises_error_with_fault(self):
         """
@@ -282,19 +276,20 @@ class VmServiceTest(unittest.TestCase):
         self.server.set_xml_response(
             path='vms/123/start',
             code=201,
-            body=
-              '<action>' +
-                '<fault>' +
-                  '<reason>myreason</reason>' +
-                  '<detail>mydetail</detail>' +
-                '</fault>' +
-              '</action>'
+            body=(
+                '<action>'
+                    '<fault>'
+                        '<reason>myreason</reason>'
+                        '<detail>mydetail</detail>'
+                    '</fault>'
+                '</action>'
+            )
         )
-        with assert_raises(ovirtsdk4.Error) as context:
+        with pytest.raises(ovirtsdk4.Error) as context:
             self.vms_service.vm_service('123').start()
-            assert_regexp_matches(str(context.exception), 'myreason')
-            assert_equal(context.exception.fault.reason, 'myreason')
-            assert_equal(context.exception.fault.detail, 'mydetail')
+        assert 'myreason' in str(context.value)
+        assert context.value.fault.reason == 'myreason'
+        assert context.value.fault.detail == 'mydetail'
 
     def test_the_server_return_fault_without_action_it_raises_error(self):
         """
@@ -304,14 +299,15 @@ class VmServiceTest(unittest.TestCase):
         self.server.set_xml_response(
             path='vms/123/start',
             code=400,
-            body=
-              '<fault>' +
-                '<reason>myreason</reason>' +
-                '<detail>mydetail</detail>' +
-              '</fault>'
+            body=(
+                '<fault>'
+                    '<reason>myreason</reason>'
+                    '<detail>mydetail</detail>'
+                '</fault>'
+            )
         )
-        with assert_raises(ovirtsdk4.Error) as context:
+        with pytest.raises(ovirtsdk4.Error) as context:
             self.vms_service.vm_service('123').start()
-            assert_regexp_matches(str(context.exception), 'myreason')
-            assert_equal(context.exception.fault.reason, 'myreason')
-            assert_equal(context.exception.fault.detail, 'mydetail')
+        assert 'myreason' in str(context.value)
+        assert context.value.fault.reason == 'myreason'
+        assert context.value.fault.detail == 'mydetail'

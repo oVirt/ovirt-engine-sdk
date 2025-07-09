@@ -16,8 +16,6 @@
 # limitations under the License.
 #
 
-import six
-
 from ovirtsdk4 import AuthError
 from ovirtsdk4 import Error
 from ovirtsdk4 import NotFoundError
@@ -36,10 +34,13 @@ class Future(object):
         """
         Creates a new future result.
 
-        `connection`:: The connection to be used by this future.
-        `context`:: The request that this future will wait for when the `wait`
+        `connection` \n
+        The connection to be used by this future.
+        `context` \n
+        The request that this future will wait for when the `wait`
         method is called.
-        `code`:: The function that will be executed to check the response, and
+        `code` \n
+        The function that will be executed to check the response, and
         to convert its body into the right type of object.
         """
         self._connection = connection
@@ -100,7 +101,7 @@ class Service(object):
                     msg += ' '
                 msg = msg + 'HTTP response message is "%s".' % response.message
 
-        if isinstance(detail, six.string_types):
+        if isinstance(detail, str):
             if msg:
                 msg += ' '
             msg = msg + detail + '.'

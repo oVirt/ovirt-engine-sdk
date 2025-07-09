@@ -19,9 +19,6 @@
 import ovirtsdk4.types as types
 
 from io import BytesIO
-from nose.tools import (
-    assert_equals,
-)
 from ovirtsdk4.writers import SsoWriter
 from ovirtsdk4.xml import XmlWriter
 
@@ -57,11 +54,12 @@ def test_sso_method_id_is_attribute():
     writer = XmlWriter(buf, indent=True)
     SsoWriter.write_one(sso, writer)
     writer.flush()
-    assert_equals(
-        decode_buffer(buf),
-        '<sso>\n' +
-        '  <methods>\n' +
-        '    <method id="guest_agent"/>\n' +
-        '  </methods>\n' +
-        '</sso>\n'
+    assert (
+        decode_buffer(buf) == (
+            '<sso>\n'
+            '  <methods>\n'
+            '    <method id="guest_agent"/>\n'
+            '  </methods>\n'
+            '</sso>\n'
+        )
     )

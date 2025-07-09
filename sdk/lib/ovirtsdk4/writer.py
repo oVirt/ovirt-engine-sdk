@@ -113,9 +113,11 @@ class Writer(object):
         """
         Registers a write method.
 
-        `typ`:: The type.
+        `typ` \n
+        The type.
 
-        `writer`:: The reference to the method that writes the XML
+        `writer` \n
+        The reference to the method that writes the XML
         object corresponding to the type.
         """
         cls._writers[typ] = writer
@@ -127,13 +129,16 @@ class Writer(object):
         the type. For example, if the type of the object is `Vm` then it
         will write the `vm` tag, with its contents.
 
-        `obj`:: The object to write.
+        `obj` \n
+        The object to write.
 
-        `target`:: The XML writer where the output will be written. If
+        `target` \n
+        The XML writer where the output will be written. If
         this parameter isn't given, or if the value is `None` the method
         will return a string containing the XML document.
 
-        `root`:: The name of the root tag of the generated XML document.
+        `root` \n
+        The name of the root tag of the generated XML document.
         This isn't needed when writing single objects, as the tag is
         calculated from the type of the object. For example, if the
         object isa virtual machine then the tag will be `vm`. But when
@@ -141,7 +146,8 @@ class Writer(object):
         be empty, or have different types of objects. In this case, for
         lists, if it isn't provided an exception will be raised.
 
-        `indent`:: Indicates if the output should be indented, for
+        `indent` \n
+        Indicates if the output should be indented, for
         easier reading by humans.
         """
         # If the target is `None` then create a temporary XML writer to
