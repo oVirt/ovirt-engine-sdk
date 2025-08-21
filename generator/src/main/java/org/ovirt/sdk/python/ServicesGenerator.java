@@ -627,18 +627,17 @@ public class ServicesGenerator implements PythonGenerator {
             List<String> lines = method.parameters()
                 .filter(predicate)
                 .filter(p -> p.getDoc() != null)
-                .map(p -> String.format("`%s`:: %s", pythonNames.getMemberStyleName(p.getName()), p.getDoc()))
+                .map(p -> String.format(":param %s: %s", pythonNames.getMemberStyleName(p.getName()), p.getDoc()))
                 .collect(toList());
 
             if (!lines.isEmpty()) {
-                buffer.addLine("This method supports the following parameters:");
                 buffer.addLine();
                 lines.forEach(this::generateDocText);
-                buffer.addLine("`headers`:: Additional HTTP headers.");
+                buffer.addLine(":param headers: Additional HTTP headers.");
                 buffer.addLine();
-                buffer.addLine("`query`:: Additional URL query parameters.");
+                buffer.addLine(":param query: Additional URL query parameters.");
                 buffer.addLine();
-                buffer.addLine("`wait`:: If `True` wait for the response.");
+                buffer.addLine(":param wait: If `True` wait for the response.");
             }
         }
         buffer.endComment();
