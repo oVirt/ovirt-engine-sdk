@@ -34,14 +34,13 @@ class Future(object):
         """
         Creates a new future result.
 
-        `connection` \n
-        The connection to be used by this future.
-        `context` \n
-        The request that this future will wait for when the `wait`
-        method is called.
-        `code` \n
-        The function that will be executed to check the response, and
-        to convert its body into the right type of object.
+        :param connection: The connection to be used by this future.
+
+        :param context: The request that this future will wait for when the
+        `wait` method is called.
+
+        :param code: The function that will be executed to check the response,
+        and to convert its body into the right type of object.
         """
         self._connection = connection
         self._context = context
