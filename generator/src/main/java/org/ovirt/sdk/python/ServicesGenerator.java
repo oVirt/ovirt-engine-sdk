@@ -32,7 +32,6 @@ import java.util.function.Predicate;
 import javax.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.Concept;
-import org.ovirt.api.metamodel.concepts.ListType;
 import org.ovirt.api.metamodel.concepts.Locator;
 import org.ovirt.api.metamodel.concepts.Method;
 import org.ovirt.api.metamodel.concepts.Model;
@@ -41,7 +40,6 @@ import org.ovirt.api.metamodel.concepts.NameParser;
 import org.ovirt.api.metamodel.concepts.Parameter;
 import org.ovirt.api.metamodel.concepts.PrimitiveType;
 import org.ovirt.api.metamodel.concepts.Service;
-import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
 import org.ovirt.api.metamodel.tool.Names;
 import org.ovirt.api.metamodel.tool.SchemaNames;

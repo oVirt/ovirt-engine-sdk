@@ -186,7 +186,8 @@ class Connection(object):
     __XML_CONTENT_TYPE_RE = re.compile(r"^\s*(application|text)/xml\s*(;.*)?$")
 
     # Regular expression used to check JSON content type.
-    __JSON_CONTENT_TYPE_RE = re.compile(r"^\s*(application|text)/json\s*(;.*)?$")
+    __JSON_CONTENT_TYPE_RE = \
+        re.compile(r"^\s*(application|text)/json\s*(;.*)?$")
 
     # The typical URL path, used just to generate informative error messages.
     __TYPICAL_PATH = '/ovirt-engine/api'
@@ -395,10 +396,10 @@ class Connection(object):
 
     def authenticate(self):
         """
-        Return token which can be used for authentication instead of credentials.
-        It will be created, if it not exists, yet. By default the token will be
-        revoked when the connection is closed, unless the `logout` parameter of
-        the `close` method is `False`.
+        Return token which can be used for authentication instead of
+        credentials. It will be created, if it not exists, yet.
+        By default the token will be revoked when the connection is closed,
+        unless the `logout` parameter of the `close` method is `False`.
         """
         try:
             if self._sso_token is None:
@@ -542,9 +543,9 @@ class Connection(object):
                     # If the request failed because of authentication, and it
                     # wasn't a request to the SSO service, then the most likely
                     # cause is an expired SSO token. In this case we need to
-                    # request a new token, and try the original request again, but
-                    # only once. It if fails again, we just return the failed
-                    # response.
+                    # request a new token, and try the original request again,
+                    # but only once. If it fails again, we just return the
+                    # failed response.
                     if response.code == 401 and not failed_auth:
                         self._sso_token = self._get_access_token()
                         context = self.__send(context[3])
@@ -656,9 +657,11 @@ class Connection(object):
     def _get_sso_error(self, sso_response):
         # OpenId define `error_description` field, OAuth doesn't:
         if 'error_description' in sso_response:
-            sso_error = (sso_response.get('error'), sso_response.get('error_description'))
+            sso_error = (sso_response.get('error'),
+                         sso_response.get('error_description'))
         else:
-            sso_error = (sso_response.get('error_code'), sso_response.get('error'))
+            sso_error = (sso_response.get('error_code'),
+                         sso_response.get('error'))
 
         return sso_error
 
@@ -722,7 +725,8 @@ class Connection(object):
         header_lines = headers_text.split('\n')
 
         # Check the returned content type:
-        self._check_content_type(self.__JSON_CONTENT_TYPE_RE, 'JSON', header_lines)
+        self._check_content_type(self.__JSON_CONTENT_TYPE_RE, 'JSON',
+                                 header_lines)
 
         return json.loads(body_buf.getvalue().decode('utf-8'))
 
@@ -807,7 +811,8 @@ class Connection(object):
             )
 
         # Remove the prefix from the URL, follow the path to the relevant
-        # service and invoke the "get", or "list method to retrieve its representation:
+        # service and invoke the "get", or "list method to retrieve its
+        # representation:
         path = href[len(prefix):]
         service = self.service(path)
         if isinstance(obj, List):
@@ -898,7 +903,8 @@ class Connection(object):
         """
         content_type = self._get_header_value(headers, 'content-type')
         if expected_re.match(content_type) is None:
-            msg = "The response content type '{}' isn't the expected {}".format(
+            msg = "The response content type '{}' isn't the expected {}"
+            msg = msg.format(
                 content_type,
                 expected_name,
             )
@@ -962,7 +968,8 @@ class Connection(object):
         `name` name of the header
         """
         return next(
-            (h.split(':')[1].strip() for h in headers if h.lower().startswith(name)),
+            (h.split(':')[1].strip() for h in headers
+             if h.lower().startswith(name)),
             None
         )
 

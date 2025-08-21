@@ -27,7 +27,6 @@ import java.util.Formatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.inject.Inject;
 
 import org.apache.commons.io.FileUtils;
 
@@ -37,9 +36,6 @@ import org.apache.commons.io.FileUtils;
  * rest of the source.
  */
 public class PythonBuffer {
-    // Reference to the object used to generate names:
-    @Inject private PythonNames pythonNames;
-
     // The name of the file:
     private String fileName;
 
@@ -95,9 +91,9 @@ public class PythonBuffer {
     public void addImport(String format, Object ... args) {
         // Format the line:
         StringBuilder buffer = new StringBuilder();
-        Formatter formatter = new Formatter(buffer);
-        formatter.format(format, args);
-
+        try (Formatter formatter = new Formatter(buffer)) {
+            formatter.format(format, args);
+        }
         // Add the line to the set:
         imports.add(buffer.toString());
     }
@@ -126,9 +122,9 @@ public class PythonBuffer {
     public void addLine(String format, Object ... args) {
         // Format the line:
         StringBuilder buffer = new StringBuilder();
-        Formatter formatter = new Formatter(buffer);
-        formatter.format(format, args);
-
+        try (Formatter formatter = new Formatter(buffer)) {
+            formatter.format(format, args);
+        }
         // Indent the line if not empty:
         if (buffer.length() > 0) {
             for (int i = 0; i < level; i++) {
