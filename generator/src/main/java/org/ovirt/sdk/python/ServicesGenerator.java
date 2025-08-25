@@ -659,7 +659,7 @@ public class ServicesGenerator implements PythonGenerator {
             Collections.addAll(lines, doc.split("\n"));
         }
         if (!lines.isEmpty()) {
-            lines.stream().filter(l -> !l.isEmpty()).forEach(buffer::addRawLine);
+            lines.stream().filter(l -> !l.isEmpty()).forEach(buffer::prepParameterLine);
             buffer.addLine();
         }
     }
