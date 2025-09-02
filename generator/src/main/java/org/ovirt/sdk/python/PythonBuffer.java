@@ -1,5 +1,7 @@
 /*
-Copyright (c) 2016 Red Hat, Inc.
+The oVirt Project - Ovirt Engine SDK
+
+Copyright oVirt Authors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -179,7 +181,7 @@ public class PythonBuffer {
 
         // License:
         buffer.append("#\n");
-        buffer.append("# Copyright (c) 2016 Red Hat, Inc.\n");
+        buffer.append("# Copyright oVirt Authors\n");
         buffer.append("#\n");
         buffer.append("# Licensed under the Apache License, Version 2.0 (the \"License\");\n");
         buffer.append("# you may not use this file except in compliance with the License.\n");
