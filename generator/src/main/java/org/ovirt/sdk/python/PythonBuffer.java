@@ -171,6 +171,11 @@ public class PythonBuffer {
             prepLine = replaceTypeAttributeXrefs(prepLine);
             prepLine = replaceTypeXrefs(prepLine);
             addRawLine(prepLine);
+        } else if (line.contains("<<documents/003_common_concepts/follow, here>>")){
+            String prepLine = line.strip();
+            prepLine = prepLine.replace("<<documents/003_common_concepts/follow, here>>", 
+            "[here](https://ovirt.github.io/ovirt-engine-api-model/master/#documents/003_common_concepts/follow)");
+            addRawLine(prepLine);
         } else {
             addRawLine(line);
         }
