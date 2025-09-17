@@ -29,6 +29,9 @@ import java.util.Formatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 
@@ -153,6 +156,95 @@ public class PythonBuffer {
 
         // Add the line to the list:
         lines.add(buffer.toString());
+    }
+
+    /**
+     * Assure xref hyperlinks with pdoc links are replaced
+     */
+    public void prepParameterLine(String line) {
+        if (line.contains("xref:")) {
+            // Only process lines that contain xref references
+            // to avoid unnecessary processing
+            String prepLine = line.strip();
+            prepLine = replaceServiceMethodsXrefs(prepLine);
+            prepLine = replaceServiceXrefs(prepLine);
+            prepLine = replaceTypeAttributeXrefs(prepLine);
+            prepLine = replaceTypeXrefs(prepLine);
+            addRawLine(prepLine);
+        } else {
+            addRawLine(line);
+        }
+    }
+
+    /**
+     * Replaces the xref types with attributes with the corresponding pdoc link.
+     */
+    public String replaceTypeAttributeXrefs(String input) {
+        return replaceWithPattern(input, "xref:types/([^\\[]+)/attributes/([^\\]]+)\\[([^\\]]+)]", match -> {  
+            String typeName = match.group(1);
+            String attributeName = match.group(2);
+            return "`ovirtsdk4.types." + underscoretoCamelCase(typeName) + "." + attributeName + "`";
+        });
+    }
+
+    /**
+     * Replaces the xref services with methods with the corresponding pdoc link.
+     */
+    public String replaceServiceMethodsXrefs(String input) {
+        return replaceWithPattern(input, "xref:services/([^-\\]]+(?:-[^-\\]]+)*)/methods/([^-\\]]+)\\[([^\\]]+)]", match -> {
+            String serviceName = match.group(1);
+            String methodName = match.group(2);
+            return "`" + underscoretoCamelCase(serviceName) + "Service" + "." + methodName + "`";
+        });
+    }
+
+    /**
+     * Replaces the xref services with the corresponding pdoc link.
+     */
+    public String replaceServiceXrefs(String input) {
+        return replaceWithPattern(input, "xref:services/([^\\[]+)\\[([^\\]]+)]", match -> {
+            String serviceName = match.group(1);
+            return "`" + underscoretoCamelCase(serviceName) + "Service`";
+        });
+    }
+
+    /**
+     * Replaces the xref types with the corresponding pdoc link.
+     */
+    public String replaceTypeXrefs(String input) {
+        return replaceWithPattern(input, "xref:types/([^\\[]+)\\[[^\\]]+]", match -> {
+            String typeString = match.group(1);
+            return "`ovirtsdk4.types." + underscoretoCamelCase(typeString) + "`";
+        });
+    }
+
+    private String underscoretoCamelCase(String doc) {
+        String[] words = doc.split("_");
+        StringBuilder result = new StringBuilder();
+        for (String word : words) {
+            if (word.isEmpty()) {
+                continue;
+            }
+            result.append(Character.toUpperCase(word.charAt(0)));
+            result.append(word.substring(1));
+        }
+        return result.toString();
+    }
+
+    /**
+     * Generic method to replace patterns in a string using a formatter function
+     */
+    private String replaceWithPattern(String input, String patternStr, Function<Matcher, String> formatter) {
+        StringBuffer result = new StringBuffer();
+        Pattern pattern = Pattern.compile(patternStr);
+        Matcher match = pattern.matcher(input);
+        boolean found = false;
+        while (match.find()) {
+            found = true;
+            match.appendReplacement(result, formatter.apply(match));
+        }
+        match.appendTail(result);
+        return found ? result.toString() : input;
     }
 
     /**
