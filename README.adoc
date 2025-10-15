@@ -15,10 +15,10 @@ The SDK uses http://www.xmlsoft.org[libxml2] for parsing and rendering
 XML documents, and the part that interacts with this library is written
 in C. This means that before building you must make sure you have the C
 compiler and the required header and libraries files installed in your
-system. For example to install with the `yum` package manager you will
+system. For example to install with the `dnf` package manager you will
 need to do the following:
 
-  # yum -y install \
+  # dnf -y install \
   gcc \
   libxml2-devel \
   python3-devel
@@ -30,20 +30,19 @@ The code generator is a Java program that resides in the `generator`
 directory. This Java program will get the API model and the metamodel
 artifacts from the available Maven repositories. Because of that in
 order to build the Python SDK you need to install some additional
-dependencies. For example to install with the `yum` package manager
+dependencies. For example to install with the `dnf` package manager
 you will need to do the following:
 
-  # yum -y install \
+  # dnf -y install \
   git \
-  java-1.8.0-openjdk \
-  maven \
+  maven-openjdk21 \
+  maven-local-openjdk21 \
   python3-flake8 \
-  python3-nose \
   python3-wheel
 
 To build and run the tests use the following commands:
 
-  $ git clone git://gerrit.ovirt.org/ovirt-engine-sdk
+  $ git clone git@github.com:oVirt/ovirt-engine-sdk.git
   $ mvn package
 
 To build without running the tests:
