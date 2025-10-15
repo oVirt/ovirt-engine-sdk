@@ -2,6 +2,22 @@
 
 This document describes the relevant changes between releases of the SDK.
 
+== 4.5.1 / Oct 14 2025
+
+* Bump apache-commons-io to 2.7
+
+* Build on Java 21
+
+* Drop dependency on python-six
+
+* Convert tests from nose to pytest
+
+* Update Java and Weld dependencies
+
+* Bump model to 4.6.1
+
+* Bump metamodel to 1.3.11
+
 == 4.5.0 / Mar 29 2022
 
 * Bump model to 4.5.7
