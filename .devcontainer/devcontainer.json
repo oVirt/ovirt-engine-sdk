@@ -1,10 +1,11 @@
 {
     "name": "oVirt-engine-sdk",
-    "remoteUser": "root",
     "mounts": [
-        "source=${localEnv:HOME}/.m2,target=/root/.m2,type=bind,consistency=cached"
+        "source=${localEnv:HOME}/.m2,target=/home/build/.m2,type=bind,consistency=cached"
     ],
     "build": {
         "dockerfile": "../Dockerfile"
-    }
+    },
+    "remoteUser": "build",
+    "updateRemoteUserUID": true
 }
