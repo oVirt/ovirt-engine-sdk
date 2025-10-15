@@ -5,7 +5,7 @@ on:
     branches:
       - master
       - sdk_4.4
-    tags:
+    tags: ['*']
   workflow_dispatch:
 
 jobs:
