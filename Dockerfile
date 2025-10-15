@@ -1,15 +1,22 @@
-FROM mcr.microsoft.com/devcontainers/java:11
+FROM quay.io/ovirt/buildcontainer:el9stream
 
-RUN apt-get update && apt-get install -y \
+ARG USERNAME=build
+ENV USERNAME=$USERNAME
+
+RUN dnf install -y \
     git \
-    maven \
+    maven-openjdk21 \
+    maven-local-openjdk21 \
     gcc \
-    libxml2-dev \
+    libxml2-devel \
     gnupg \
     python3 \
-    python3-dev \
+    python3-devel \
     python3-pip \
-    && apt-get clean
+    && dnf clean all
 
 RUN python3 -m pip install --upgrade pip \
-    && pip3 install flake8 nose wheel
+    && pip3 install flake8 wheel
+
+# Set default User
+USER $USERNAME
