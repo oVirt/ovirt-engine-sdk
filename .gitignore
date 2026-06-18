@@ -7,6 +7,9 @@
 *.rpm
 *.so
 *.spec
+.classpath
+.project
+.settings/
 .bash_history
 .eggs/
 .idea/
